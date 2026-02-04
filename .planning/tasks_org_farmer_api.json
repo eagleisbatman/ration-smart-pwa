@@ -1,0 +1,629 @@
+{
+  "project": "RationSmart PWA - Organization Persona & API Integration",
+  "version": "1.0.0",
+  "created": "2026-02-04",
+  "status": "planning",
+  "summary": "Bridge API gaps, introduce Organization User persona with farmer management, enhance native-like PWA UI",
+
+  "phases": [
+    {
+      "id": "phase-1",
+      "name": "Backend Foundation",
+      "description": "Database models and migrations for Organization, Farmer, and Yield tracking",
+      "status": "pending",
+      "tasks": [
+        {
+          "id": "1.1",
+          "title": "Create OrganizationModel",
+          "description": "Add new SQLAlchemy model for organizations (universities, NGOs, cooperatives)",
+          "file": "/ration-smart-backend/app/models.py",
+          "priority": "high",
+          "status": "pending",
+          "dependencies": [],
+          "acceptance_criteria": [
+            "Model has id, name, type, country_id, created_at, is_active fields",
+            "Relationship to users defined",
+            "Type enum includes: university, ngo, cooperative, government"
+          ]
+        },
+        {
+          "id": "1.2",
+          "title": "Create FarmerProfileModel",
+          "description": "Add model for farmer profiles managed by organization users",
+          "file": "/ration-smart-backend/app/models.py",
+          "priority": "high",
+          "status": "pending",
+          "dependencies": ["1.1"],
+          "acceptance_criteria": [
+            "Model has basic info: name, phone, village, district, state",
+            "Baseline data: total_cattle, land_acres, farming_type",
+            "Foreign keys to organization and managing user",
+            "Timestamps for created_at and updated_at"
+          ]
+        },
+        {
+          "id": "1.3",
+          "title": "Create YieldDataModel",
+          "description": "Add model to track farmer yield data as feedback loop",
+          "file": "/ration-smart-backend/app/models.py",
+          "priority": "medium",
+          "status": "pending",
+          "dependencies": ["1.2"],
+          "acceptance_criteria": [
+            "Links to farmer_profile_id, cow_profile_id, diet_recommendation_id",
+            "Fields: collection_date, milk_yield_liters, fat_percentage, snf_percentage",
+            "Tracks collected_by_user_id for audit",
+            "Notes field for additional observations"
+          ]
+        },
+        {
+          "id": "1.4",
+          "title": "Extend UserInformationModel",
+          "description": "Add organization_id foreign key to existing user model",
+          "file": "/ration-smart-backend/app/models.py",
+          "priority": "high",
+          "status": "pending",
+          "dependencies": ["1.1"],
+          "acceptance_criteria": [
+            "organization_id column added (nullable)",
+            "Relationship to OrganizationModel defined",
+            "Existing users unaffected (null org_id)"
+          ]
+        },
+        {
+          "id": "1.5",
+          "title": "Extend CowProfileModel",
+          "description": "Add app_user_id and farmer_profile_id to cow profiles",
+          "file": "/ration-smart-backend/app/models.py",
+          "priority": "high",
+          "status": "pending",
+          "dependencies": ["1.2"],
+          "acceptance_criteria": [
+            "farmer_profile_id column added (nullable)",
+            "app_user_id column added (nullable)",
+            "Existing telegram_user_id functionality preserved",
+            "Cow can belong to either telegram user OR app user OR farmer"
+          ]
+        },
+        {
+          "id": "1.6",
+          "title": "Create Alembic migration",
+          "description": "Generate and test database migration script",
+          "file": "/ration-smart-backend/alembic/versions/",
+          "priority": "high",
+          "status": "pending",
+          "dependencies": ["1.1", "1.2", "1.3", "1.4", "1.5"],
+          "acceptance_criteria": [
+            "Migration creates all new tables",
+            "Migration adds all new columns",
+            "Downgrade properly reverses changes",
+            "Migration tested on staging database"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "phase-2",
+      "name": "Backend API Routers",
+      "description": "Create new API endpoints for organization, farmer, and yield management",
+      "status": "pending",
+      "tasks": [
+        {
+          "id": "2.1",
+          "title": "Create Organization Router",
+          "description": "CRUD endpoints for organizations",
+          "file": "/ration-smart-backend/routers/organizations.py",
+          "priority": "high",
+          "status": "pending",
+          "dependencies": ["1.6"],
+          "acceptance_criteria": [
+            "POST /organizations/ - Create organization",
+            "GET /organizations/ - List organizations (admin only)",
+            "GET /organizations/{org_id} - Get organization details",
+            "PUT /organizations/{org_id} - Update organization",
+            "GET /organizations/{org_id}/users - List org users",
+            "GET /organizations/{org_id}/farmers - List org farmers"
+          ]
+        },
+        {
+          "id": "2.2",
+          "title": "Create Farmer Profile Router",
+          "description": "CRUD endpoints for farmer profiles",
+          "file": "/ration-smart-backend/routers/farmer_profiles.py",
+          "priority": "high",
+          "status": "pending",
+          "dependencies": ["1.6"],
+          "acceptance_criteria": [
+            "POST /farmer-profiles/ - Create farmer profile",
+            "GET /farmer-profiles/ - List farmer profiles (filtered by org/user)",
+            "GET /farmer-profiles/{id} - Get farmer details with cows",
+            "PUT /farmer-profiles/{id} - Update farmer profile",
+            "DELETE /farmer-profiles/{id} - Soft delete (archive)",
+            "Proper authorization checks"
+          ]
+        },
+        {
+          "id": "2.3",
+          "title": "Create Yield Data Router",
+          "description": "Endpoints for recording and querying yield data",
+          "file": "/ration-smart-backend/routers/yield_data.py",
+          "priority": "medium",
+          "status": "pending",
+          "dependencies": ["1.6"],
+          "acceptance_criteria": [
+            "POST /yield-data/ - Record yield data",
+            "GET /yield-data/farmer/{farmer_id} - Farmer's yield history",
+            "GET /yield-data/cow/{cow_id} - Cow's yield history",
+            "GET /yield-data/analytics/{org_id} - Aggregated analytics"
+          ]
+        },
+        {
+          "id": "2.4",
+          "title": "Adapt Cow Profiles Router",
+          "description": "Add app_user_id support alongside telegram_user_id",
+          "file": "/ration-smart-backend/routers/cow_profiles.py",
+          "priority": "high",
+          "status": "pending",
+          "dependencies": ["1.6"],
+          "acceptance_criteria": [
+            "All endpoints accept user_id as alternative to telegram_user_id",
+            "Filter by farmer_profile_id supported",
+            "Existing Telegram bot functionality preserved",
+            "Backward compatible"
+          ]
+        },
+        {
+          "id": "2.5",
+          "title": "Mount new routers in main.py",
+          "description": "Register all new routers in FastAPI app",
+          "file": "/ration-smart-backend/app/main.py",
+          "priority": "high",
+          "status": "pending",
+          "dependencies": ["2.1", "2.2", "2.3"],
+          "acceptance_criteria": [
+            "organizations_router mounted",
+            "farmer_profiles_router mounted",
+            "yield_data_router mounted",
+            "All routes accessible via OpenAPI docs"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "phase-3",
+      "name": "PWA API Integration",
+      "description": "Create adapter layer to bridge PWA paths to backend paths",
+      "status": "pending",
+      "tasks": [
+        {
+          "id": "3.1",
+          "title": "Create API Adapter Service",
+          "description": "Map PWA /api/v1/* paths to backend direct paths",
+          "file": "/ration-smart-pwa/src/services/api-adapter.ts",
+          "priority": "high",
+          "status": "pending",
+          "dependencies": [],
+          "acceptance_criteria": [
+            "ENDPOINT_MAP covers all current PWA endpoints",
+            "Request transformers handle schema differences",
+            "Response transformers normalize backend responses",
+            "Fallback for unmapped endpoints"
+          ]
+        },
+        {
+          "id": "3.2",
+          "title": "Update Axios Boot File",
+          "description": "Add request/response interceptors for adapter",
+          "file": "/ration-smart-pwa/src/boot/axios.ts",
+          "priority": "high",
+          "status": "pending",
+          "dependencies": ["3.1"],
+          "acceptance_criteria": [
+            "Request interceptor transforms URL and body",
+            "Response interceptor transforms data",
+            "Error handling preserved",
+            "Retry logic unaffected"
+          ]
+        },
+        {
+          "id": "3.3",
+          "title": "Create Organizations Store",
+          "description": "Pinia store for organization data",
+          "file": "/ration-smart-pwa/src/stores/organizations.ts",
+          "priority": "medium",
+          "status": "pending",
+          "dependencies": ["3.1"],
+          "acceptance_criteria": [
+            "currentOrganization state",
+            "fetchOrganization action",
+            "updateOrganization action (admin)",
+            "Offline caching with Dexie"
+          ]
+        },
+        {
+          "id": "3.4",
+          "title": "Create Farmers Store",
+          "description": "Pinia store for farmer profile management",
+          "file": "/ration-smart-pwa/src/stores/farmers.ts",
+          "priority": "high",
+          "status": "pending",
+          "dependencies": ["3.1"],
+          "acceptance_criteria": [
+            "farmers list state",
+            "currentFarmer state",
+            "CRUD actions: fetch, create, update, archive",
+            "Filter by organization",
+            "Offline queue for creates/updates"
+          ]
+        },
+        {
+          "id": "3.5",
+          "title": "Create Yields Store",
+          "description": "Pinia store for yield data collection",
+          "file": "/ration-smart-pwa/src/stores/yields.ts",
+          "priority": "medium",
+          "status": "pending",
+          "dependencies": ["3.1"],
+          "acceptance_criteria": [
+            "recordYield action",
+            "getYieldHistory action",
+            "getAnalytics action",
+            "Offline queue for submissions"
+          ]
+        },
+        {
+          "id": "3.6",
+          "title": "Update Auth Store",
+          "description": "Add organization context to user auth",
+          "file": "/ration-smart-pwa/src/stores/auth.ts",
+          "priority": "medium",
+          "status": "pending",
+          "dependencies": ["3.3"],
+          "acceptance_criteria": [
+            "User object includes organization_id",
+            "Load organization on login if present",
+            "Organization-scoped permissions"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "phase-4",
+      "name": "PWA Farmer Management UI",
+      "description": "Create pages and components for farmer profile management",
+      "status": "pending",
+      "tasks": [
+        {
+          "id": "4.1",
+          "title": "Create FarmerListPage",
+          "description": "List view of all farmers managed by user",
+          "file": "/ration-smart-pwa/src/pages/farmers/FarmerListPage.vue",
+          "priority": "high",
+          "status": "pending",
+          "dependencies": ["3.4"],
+          "acceptance_criteria": [
+            "Displays farmer cards with summary info",
+            "Search and filter functionality",
+            "Pull-to-refresh support",
+            "FAB to add new farmer",
+            "Responsive: list on mobile, grid on tablet/desktop"
+          ]
+        },
+        {
+          "id": "4.2",
+          "title": "Create FarmerFormPage",
+          "description": "Create/edit farmer profile form",
+          "file": "/ration-smart-pwa/src/pages/farmers/FarmerFormPage.vue",
+          "priority": "high",
+          "status": "pending",
+          "dependencies": ["3.4"],
+          "acceptance_criteria": [
+            "All baseline fields included",
+            "Validation for required fields",
+            "Save works offline (queued)",
+            "Edit mode pre-fills existing data",
+            "Touch-friendly input sizes"
+          ]
+        },
+        {
+          "id": "4.3",
+          "title": "Create FarmerDetailPage",
+          "description": "View farmer profile with cows and history",
+          "file": "/ration-smart-pwa/src/pages/farmers/FarmerDetailPage.vue",
+          "priority": "high",
+          "status": "pending",
+          "dependencies": ["3.4"],
+          "acceptance_criteria": [
+            "Shows all farmer info",
+            "Lists farmer's cows",
+            "Quick action: Add cow, Record yield",
+            "Recent yield history",
+            "Edit button in header"
+          ]
+        },
+        {
+          "id": "4.4",
+          "title": "Create FarmerCard Component",
+          "description": "Reusable card to display farmer summary",
+          "file": "/ration-smart-pwa/src/components/farmers/FarmerCard.vue",
+          "priority": "medium",
+          "status": "pending",
+          "dependencies": [],
+          "acceptance_criteria": [
+            "Shows name, village, cattle count",
+            "Clickable to open detail",
+            "Swipe actions for quick edit/call",
+            "Offline indicator if pending sync"
+          ]
+        },
+        {
+          "id": "4.5",
+          "title": "Create FarmerSelector Component",
+          "description": "Dropdown/dialog to select farmer for operations",
+          "file": "/ration-smart-pwa/src/components/farmers/FarmerSelector.vue",
+          "priority": "medium",
+          "status": "pending",
+          "dependencies": ["3.4"],
+          "acceptance_criteria": [
+            "Searchable dropdown",
+            "Works in forms (cow creation, yield logging)",
+            "Shows recent farmers first",
+            "Option to create new farmer"
+          ]
+        },
+        {
+          "id": "4.6",
+          "title": "Update Router with Farmer Routes",
+          "description": "Add farmer routes to Vue Router",
+          "file": "/ration-smart-pwa/src/router/routes.ts",
+          "priority": "high",
+          "status": "pending",
+          "dependencies": ["4.1", "4.2", "4.3"],
+          "acceptance_criteria": [
+            "/farmers - FarmerListPage",
+            "/farmers/new - FarmerFormPage (create)",
+            "/farmers/:id - FarmerDetailPage",
+            "/farmers/:id/edit - FarmerFormPage (edit)",
+            "Auth guard on all routes"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "phase-5",
+      "name": "PWA Native-Like UI",
+      "description": "Enhance PWA with native-feeling responsive UI",
+      "status": "pending",
+      "tasks": [
+        {
+          "id": "5.1",
+          "title": "Enhance MainLayout Responsiveness",
+          "description": "Implement device-specific layouts",
+          "file": "/ration-smart-pwa/src/layouts/MainLayout.vue",
+          "priority": "high",
+          "status": "pending",
+          "dependencies": [],
+          "acceptance_criteria": [
+            "Mobile (<600px): Bottom nav + hamburger drawer",
+            "Tablet (600-1024px): Collapsible sidebar",
+            "Desktop (>1024px): Persistent sidebar",
+            "Smooth transitions between layouts",
+            "Safe area handling for notched devices"
+          ]
+        },
+        {
+          "id": "5.2",
+          "title": "Create Native-Like Styles",
+          "description": "Touch-optimized CSS for native feel",
+          "file": "/ration-smart-pwa/src/css/native-like.scss",
+          "priority": "high",
+          "status": "pending",
+          "dependencies": [],
+          "acceptance_criteria": [
+            "44px minimum touch targets",
+            "iOS safe area padding",
+            "Smooth touch scrolling",
+            "Disabled text selection on buttons",
+            "No tap highlight on iOS"
+          ]
+        },
+        {
+          "id": "5.3",
+          "title": "Create PullToRefresh Component",
+          "description": "Native-feeling pull-to-refresh gesture",
+          "file": "/ration-smart-pwa/src/components/native/PullToRefresh.vue",
+          "priority": "medium",
+          "status": "pending",
+          "dependencies": [],
+          "acceptance_criteria": [
+            "Visual indicator during pull",
+            "Threshold before triggering refresh",
+            "Emits refresh event",
+            "Works with q-scroll-area"
+          ]
+        },
+        {
+          "id": "5.4",
+          "title": "Create SwipeAction Component",
+          "description": "Swipe to reveal actions on list items",
+          "file": "/ration-smart-pwa/src/components/native/SwipeAction.vue",
+          "priority": "low",
+          "status": "pending",
+          "dependencies": [],
+          "acceptance_criteria": [
+            "Swipe left reveals action buttons",
+            "Configurable actions (edit, delete, call)",
+            "Smooth animation",
+            "Works on q-item"
+          ]
+        },
+        {
+          "id": "5.5",
+          "title": "Create SkeletonLoader Components",
+          "description": "Loading placeholders for all content types",
+          "file": "/ration-smart-pwa/src/components/native/SkeletonLoader.vue",
+          "priority": "medium",
+          "status": "pending",
+          "dependencies": [],
+          "acceptance_criteria": [
+            "Card skeleton for lists",
+            "Form skeleton for forms",
+            "Detail skeleton for detail pages",
+            "Animated shimmer effect"
+          ]
+        },
+        {
+          "id": "5.6",
+          "title": "Update Bottom Navigation",
+          "description": "Enhance mobile bottom nav with all key actions",
+          "file": "/ration-smart-pwa/src/components/layout/BottomNav.vue",
+          "priority": "high",
+          "status": "pending",
+          "dependencies": [],
+          "acceptance_criteria": [
+            "5 items max: Home, Farmers, Diet, Logs, More",
+            "Active state highlighting",
+            "Badge for pending syncs",
+            "Proper safe area padding"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "phase-6",
+      "name": "Yield Collection & Reports",
+      "description": "Implement yield data collection and simplified reports",
+      "status": "pending",
+      "tasks": [
+        {
+          "id": "6.1",
+          "title": "Create YieldFormPage",
+          "description": "Form to record yield data for a farmer/cow",
+          "file": "/ration-smart-pwa/src/pages/yields/YieldFormPage.vue",
+          "priority": "medium",
+          "status": "pending",
+          "dependencies": ["3.5", "4.5"],
+          "acceptance_criteria": [
+            "Select farmer (or auto from context)",
+            "Select cow from farmer's cows",
+            "Input: date, milk_yield, fat%, snf%",
+            "Optional notes field",
+            "Save works offline"
+          ]
+        },
+        {
+          "id": "6.2",
+          "title": "Create YieldHistoryPage",
+          "description": "View yield history with charts",
+          "file": "/ration-smart-pwa/src/pages/yields/YieldHistoryPage.vue",
+          "priority": "medium",
+          "status": "pending",
+          "dependencies": ["3.5"],
+          "acceptance_criteria": [
+            "Filter by farmer/cow/date range",
+            "Line chart showing trends",
+            "Summary statistics",
+            "Export to CSV option"
+          ]
+        },
+        {
+          "id": "6.3",
+          "title": "Create Simplified PDF Generator",
+          "description": "Backend endpoint for farmer-friendly reports",
+          "file": "/ration-smart-backend/routers/farmer_reports.py",
+          "priority": "medium",
+          "status": "pending",
+          "dependencies": ["2.2"],
+          "acceptance_criteria": [
+            "Single page PDF layout",
+            "Large, readable fonts",
+            "Simple diet table format",
+            "Expected benefits highlighted",
+            "WhatsApp-friendly dimensions"
+          ]
+        },
+        {
+          "id": "6.4",
+          "title": "Add Share Functionality",
+          "description": "Share PDF via WhatsApp/native share",
+          "file": "/ration-smart-pwa/src/composables/useShare.ts",
+          "priority": "low",
+          "status": "pending",
+          "dependencies": ["6.3"],
+          "acceptance_criteria": [
+            "Uses Web Share API if available",
+            "Fallback to download link",
+            "Share report with farmer's phone",
+            "Track sharing analytics"
+          ]
+        }
+      ]
+    }
+  ],
+
+  "milestones": [
+    {
+      "id": "M1",
+      "name": "Backend Ready",
+      "description": "All backend models, migrations, and APIs complete",
+      "target_tasks": ["1.6", "2.5"],
+      "status": "pending"
+    },
+    {
+      "id": "M2",
+      "name": "API Integration Complete",
+      "description": "PWA can communicate with backend through adapter",
+      "target_tasks": ["3.2", "3.6"],
+      "status": "pending"
+    },
+    {
+      "id": "M3",
+      "name": "Farmer Management Live",
+      "description": "Users can create and manage farmer profiles",
+      "target_tasks": ["4.6"],
+      "status": "pending"
+    },
+    {
+      "id": "M4",
+      "name": "Native-Like UI Complete",
+      "description": "PWA feels native on all devices",
+      "target_tasks": ["5.1", "5.2", "5.6"],
+      "status": "pending"
+    },
+    {
+      "id": "M5",
+      "name": "Full Feature Complete",
+      "description": "All features including yield collection and reports",
+      "target_tasks": ["6.4"],
+      "status": "pending"
+    }
+  ],
+
+  "risks": [
+    {
+      "id": "R1",
+      "description": "Database migration could affect existing data",
+      "mitigation": "Test on staging first, create backups, use nullable columns",
+      "severity": "high"
+    },
+    {
+      "id": "R2",
+      "description": "API adapter may miss edge cases",
+      "mitigation": "Comprehensive endpoint mapping, error handling, logging",
+      "severity": "medium"
+    },
+    {
+      "id": "R3",
+      "description": "Responsive UI inconsistent across devices",
+      "mitigation": "Test on real devices, use Quasar's breakpoint system",
+      "severity": "medium"
+    }
+  ],
+
+  "notes": [
+    "PWA uses /api/v1/* paths but backend uses direct paths - adapter layer bridges this",
+    "Backend has both UserInformationModel (app) and TelegramUserModel (bot) - cow profiles need to support both",
+    "Existing PDF generation is 1820 lines - creating simplified version for farmers separately",
+    "Offline support critical - all forms should queue locally when offline"
+  ]
+}

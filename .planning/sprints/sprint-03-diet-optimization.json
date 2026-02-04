@@ -1,0 +1,405 @@
+{
+  "sprint": {
+    "id": "SPRINT-03",
+    "name": "Diet Optimization",
+    "description": "Implement the core diet optimization workflow - the main value proposition of the app. Allow users to input animal details and receive optimized diet recommendations.",
+    "status": "planned",
+    "duration": "2 weeks",
+    "start_date": "2026-03-04",
+    "end_date": "2026-03-18",
+    "user_stories": [
+      {
+        "id": "US-013",
+        "title": "Diet Optimization Form",
+        "description": "As a farmer, I want to input my cow's details so that I can get an optimized diet recommendation.",
+        "priority": "critical",
+        "story_points": 13,
+        "tasks": [
+          {
+            "id": "T-013-01",
+            "title": "Create diet optimization page",
+            "description": "Build the main diet optimization page with step-by-step form wizard.",
+            "status": "pending",
+            "estimated_hours": 4,
+            "assignee": null
+          },
+          {
+            "id": "T-013-02",
+            "title": "Build step 1: Select cow or enter new",
+            "description": "Allow selecting existing cow profile or entering details for new cow.",
+            "status": "pending",
+            "estimated_hours": 3,
+            "assignee": null
+          },
+          {
+            "id": "T-013-03",
+            "title": "Build step 2: Animal characteristics",
+            "description": "Form for breed, weight, state, parity, gestation day, lactation day.",
+            "status": "pending",
+            "estimated_hours": 4,
+            "assignee": null
+          },
+          {
+            "id": "T-013-04",
+            "title": "Build step 3: Production targets",
+            "description": "Form for milk yield target, fat %, protein %, weight gain target.",
+            "status": "pending",
+            "estimated_hours": 3,
+            "assignee": null
+          },
+          {
+            "id": "T-013-05",
+            "title": "Build step 4: Environmental factors",
+            "description": "Form for temperature, grazing hours, walking distance, topography.",
+            "status": "pending",
+            "estimated_hours": 3,
+            "assignee": null
+          },
+          {
+            "id": "T-013-06",
+            "title": "Build step 5: Feed selection",
+            "description": "Allow user to select available feeds from master feed list.",
+            "status": "pending",
+            "estimated_hours": 4,
+            "assignee": null
+          },
+          {
+            "id": "T-013-07",
+            "title": "Implement step navigation",
+            "description": "Build stepper component with progress indicator and validation per step.",
+            "status": "pending",
+            "estimated_hours": 3,
+            "assignee": null
+          },
+          {
+            "id": "T-013-08",
+            "title": "Add form state persistence",
+            "description": "Save form progress locally so users don't lose data if they leave.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          }
+        ],
+        "acceptance_criteria": [
+          "Form wizard guides user through 5 steps",
+          "User can select existing cow to pre-fill data",
+          "Each step validates before allowing next",
+          "Progress is shown with stepper indicator",
+          "Form state persists if user leaves and returns"
+        ],
+        "test_cases": [
+          {
+            "id": "TC-013-01",
+            "title": "Complete Form Flow",
+            "steps": ["Start optimization", "Complete all 5 steps", "Submit"],
+            "expected_result": "Form submits successfully"
+          },
+          {
+            "id": "TC-013-02",
+            "title": "Select Existing Cow",
+            "steps": ["Start optimization", "Select cow from dropdown"],
+            "expected_result": "Form pre-fills with cow data"
+          },
+          {
+            "id": "TC-013-03",
+            "title": "Form Persistence",
+            "steps": ["Start form", "Fill step 1-2", "Navigate away", "Return"],
+            "expected_result": "Form data is preserved"
+          }
+        ]
+      },
+      {
+        "id": "US-014",
+        "title": "Submit Optimization Request",
+        "description": "As a farmer, I want to submit my data and receive an optimized diet.",
+        "priority": "critical",
+        "story_points": 8,
+        "tasks": [
+          {
+            "id": "T-014-01",
+            "title": "Build request payload",
+            "description": "Construct API request body from form data matching backend schema.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-014-02",
+            "title": "Submit to optimization API",
+            "description": "POST to /diet-recommendation-working/ endpoint.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-014-03",
+            "title": "Implement loading state",
+            "description": "Show progress indicator during optimization (can take 10-30 seconds).",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-014-04",
+            "title": "Handle optimization timeout",
+            "description": "Handle timeout gracefully with retry option.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-014-05",
+            "title": "Handle infeasible diet response",
+            "description": "Show clear message when no feasible diet is found with suggestions.",
+            "status": "pending",
+            "estimated_hours": 3,
+            "assignee": null
+          },
+          {
+            "id": "T-014-06",
+            "title": "Track optimization event",
+            "description": "Log analytics event for optimization request.",
+            "status": "pending",
+            "estimated_hours": 1,
+            "assignee": null
+          }
+        ],
+        "acceptance_criteria": [
+          "Request sends all required parameters",
+          "Loading indicator shows during optimization",
+          "Timeout after 60 seconds with retry option",
+          "Infeasible result shows helpful message",
+          "Analytics event tracks optimization attempts"
+        ],
+        "test_cases": [
+          {
+            "id": "TC-014-01",
+            "title": "Successful Optimization",
+            "steps": ["Complete form", "Submit"],
+            "expected_result": "Optimized diet is returned"
+          },
+          {
+            "id": "TC-014-02",
+            "title": "Infeasible Diet",
+            "steps": ["Enter impossible constraints", "Submit"],
+            "expected_result": "Shows 'No feasible diet found' with suggestions"
+          }
+        ]
+      },
+      {
+        "id": "US-015",
+        "title": "View Diet Results",
+        "description": "As a farmer, I want to see the optimized diet recommendation clearly.",
+        "priority": "critical",
+        "story_points": 8,
+        "tasks": [
+          {
+            "id": "T-015-01",
+            "title": "Create diet results page",
+            "description": "Build page to display optimization results with all data tables.",
+            "status": "pending",
+            "estimated_hours": 4,
+            "assignee": null
+          },
+          {
+            "id": "T-015-02",
+            "title": "Display feed ingredients table",
+            "description": "Show table with feed name, quantity (kg), cost per day.",
+            "status": "pending",
+            "estimated_hours": 3,
+            "assignee": null
+          },
+          {
+            "id": "T-015-03",
+            "title": "Display nutrient supply table",
+            "description": "Show nutrients supplied vs required with adequacy indicators.",
+            "status": "pending",
+            "estimated_hours": 3,
+            "assignee": null
+          },
+          {
+            "id": "T-015-04",
+            "title": "Display cost summary",
+            "description": "Show total daily cost, cost per liter of milk.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-015-05",
+            "title": "Display warnings",
+            "description": "Show any warnings from the optimization (marginal nutrients, etc.).",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-015-06",
+            "title": "Add share/save actions",
+            "description": "Add buttons to save diet, generate PDF, or share.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-015-07",
+            "title": "Cache results locally",
+            "description": "Save results to Dexie for offline viewing later.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          }
+        ],
+        "acceptance_criteria": [
+          "Feed ingredients show with quantities and costs",
+          "Nutrient table shows supply vs requirement",
+          "Cost summary shows total and per-liter cost",
+          "Warnings display clearly in orange/red",
+          "Results are cached for offline viewing"
+        ],
+        "test_cases": [
+          {
+            "id": "TC-015-01",
+            "title": "View Results",
+            "steps": ["Complete optimization", "View results page"],
+            "expected_result": "All data tables display correctly"
+          },
+          {
+            "id": "TC-015-02",
+            "title": "Offline Results",
+            "steps": ["View results", "Go offline", "Navigate to diet history", "View same diet"],
+            "expected_result": "Results display from cache"
+          }
+        ]
+      },
+      {
+        "id": "US-016",
+        "title": "Diet History",
+        "description": "As a farmer, I want to view past diet recommendations so I can compare and track changes.",
+        "priority": "medium",
+        "story_points": 5,
+        "tasks": [
+          {
+            "id": "T-016-01",
+            "title": "Create diet history page",
+            "description": "Build page showing list of past diet optimizations.",
+            "status": "pending",
+            "estimated_hours": 3,
+            "assignee": null
+          },
+          {
+            "id": "T-016-02",
+            "title": "Create diet history card",
+            "description": "Card showing cow name, date, cost, status (active/archived).",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-016-03",
+            "title": "Implement filter by cow",
+            "description": "Allow filtering diet history by specific cow.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-016-04",
+            "title": "Load history from local + server",
+            "description": "Merge local cached diets with server data.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          }
+        ],
+        "acceptance_criteria": [
+          "Shows all past diet recommendations",
+          "Can filter by cow",
+          "Tapping card shows full diet details",
+          "Works offline with cached data"
+        ],
+        "test_cases": [
+          {
+            "id": "TC-016-01",
+            "title": "View History",
+            "steps": ["Navigate to diet history"],
+            "expected_result": "Shows list of past diets"
+          },
+          {
+            "id": "TC-016-02",
+            "title": "Filter by Cow",
+            "steps": ["Select cow from filter", "View list"],
+            "expected_result": "Only diets for that cow show"
+          }
+        ]
+      },
+      {
+        "id": "US-017",
+        "title": "Diet Evaluation (Existing Diet)",
+        "description": "As a farmer, I want to evaluate my current feeding practice to see how it compares.",
+        "priority": "medium",
+        "story_points": 5,
+        "tasks": [
+          {
+            "id": "T-017-01",
+            "title": "Create evaluate diet tab/option",
+            "description": "Add option to evaluate existing diet instead of optimizing.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-017-02",
+            "title": "Build feed quantity input form",
+            "description": "Allow entering current feed quantities being fed.",
+            "status": "pending",
+            "estimated_hours": 3,
+            "assignee": null
+          },
+          {
+            "id": "T-017-03",
+            "title": "Submit evaluation API",
+            "description": "POST to /diet-evaluation-working/ endpoint.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-017-04",
+            "title": "Display evaluation results",
+            "description": "Show nutrient adequacy, cost analysis, improvement suggestions.",
+            "status": "pending",
+            "estimated_hours": 3,
+            "assignee": null
+          }
+        ],
+        "acceptance_criteria": [
+          "User can enter current feed quantities",
+          "Evaluation shows nutrient supply vs requirements",
+          "Displays where current diet is deficient/excessive",
+          "Shows cost comparison with optimized diet"
+        ],
+        "test_cases": [
+          {
+            "id": "TC-017-01",
+            "title": "Evaluate Diet",
+            "steps": ["Select evaluate option", "Enter feed quantities", "Submit"],
+            "expected_result": "Shows evaluation with nutrient analysis"
+          }
+        ]
+      }
+    ],
+    "sprint_goals": [
+      "Complete diet optimization workflow end-to-end",
+      "Display optimization results clearly",
+      "Support diet evaluation feature",
+      "Cache results for offline viewing"
+    ],
+    "definition_of_done": [
+      "Optimization works with all input combinations",
+      "Results display all relevant data clearly",
+      "Error states are handled gracefully",
+      "Form progress is preserved on navigation"
+    ]
+  }
+}

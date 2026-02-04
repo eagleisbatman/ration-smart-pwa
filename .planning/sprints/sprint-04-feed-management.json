@@ -1,0 +1,375 @@
+{
+  "sprint": {
+    "id": "SPRINT-04",
+    "name": "Feed Management",
+    "description": "Allow users to view master feeds, create custom feeds, and manage feed availability for diet optimization.",
+    "status": "planned",
+    "duration": "2 weeks",
+    "start_date": "2026-03-18",
+    "end_date": "2026-04-01",
+    "user_stories": [
+      {
+        "id": "US-018",
+        "title": "View Master Feed Library",
+        "description": "As a farmer, I want to browse available feeds so I can select appropriate ones for my cattle.",
+        "priority": "high",
+        "story_points": 5,
+        "tasks": [
+          {
+            "id": "T-018-01",
+            "title": "Create feeds list page",
+            "description": "Build page showing all available feeds grouped by category.",
+            "status": "pending",
+            "estimated_hours": 3,
+            "assignee": null
+          },
+          {
+            "id": "T-018-02",
+            "title": "Create feed card component",
+            "description": "Card showing feed name, type, category, price per kg.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-018-03",
+            "title": "Implement category tabs/filter",
+            "description": "Filter feeds by category (Roughage, Concentrate, etc.).",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-018-04",
+            "title": "Implement search",
+            "description": "Add search box to filter feeds by name.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-018-05",
+            "title": "Cache feed library locally",
+            "description": "Store feed library in Dexie for offline access.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          }
+        ],
+        "acceptance_criteria": [
+          "All country-specific feeds display",
+          "Feeds grouped/filterable by category",
+          "Search filters feeds by name",
+          "Works offline with cached data"
+        ],
+        "test_cases": [
+          {
+            "id": "TC-018-01",
+            "title": "Browse Feeds",
+            "steps": ["Navigate to Feeds tab"],
+            "expected_result": "All available feeds display"
+          },
+          {
+            "id": "TC-018-02",
+            "title": "Filter by Category",
+            "steps": ["Select 'Roughage' category"],
+            "expected_result": "Only roughage feeds show"
+          },
+          {
+            "id": "TC-018-03",
+            "title": "Search Feeds",
+            "steps": ["Type 'maize' in search"],
+            "expected_result": "Only feeds with 'maize' in name show"
+          }
+        ]
+      },
+      {
+        "id": "US-019",
+        "title": "View Feed Details",
+        "description": "As a farmer, I want to see detailed nutritional information about a feed.",
+        "priority": "medium",
+        "story_points": 3,
+        "tasks": [
+          {
+            "id": "T-019-01",
+            "title": "Create feed detail page",
+            "description": "Build page showing all feed nutritional parameters.",
+            "status": "pending",
+            "estimated_hours": 3,
+            "assignee": null
+          },
+          {
+            "id": "T-019-02",
+            "title": "Display nutrient breakdown",
+            "description": "Show table with DM, CP, EE, CF, NDF, ADF, minerals, etc.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-019-03",
+            "title": "Display price information",
+            "description": "Show price per kg, price source, last updated date.",
+            "status": "pending",
+            "estimated_hours": 1,
+            "assignee": null
+          }
+        ],
+        "acceptance_criteria": [
+          "All 17+ nutritional parameters display",
+          "Price information is visible",
+          "Units are clearly labeled"
+        ],
+        "test_cases": [
+          {
+            "id": "TC-019-01",
+            "title": "View Feed Detail",
+            "steps": ["Tap on a feed card"],
+            "expected_result": "Full nutritional breakdown displays"
+          }
+        ]
+      },
+      {
+        "id": "US-020",
+        "title": "Create Custom Feed",
+        "description": "As a farmer, I want to add a custom feed if my local feed isn't in the library.",
+        "priority": "high",
+        "story_points": 8,
+        "tasks": [
+          {
+            "id": "T-020-01",
+            "title": "Create add custom feed page",
+            "description": "Build form for creating custom feed with all parameters.",
+            "status": "pending",
+            "estimated_hours": 4,
+            "assignee": null
+          },
+          {
+            "id": "T-020-02",
+            "title": "Build feed name and type inputs",
+            "description": "Input for feed name, select for feed type and category.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-020-03",
+            "title": "Build nutritional parameter inputs",
+            "description": "Inputs for DM, CP, NDF, etc. with validation.",
+            "status": "pending",
+            "estimated_hours": 4,
+            "assignee": null
+          },
+          {
+            "id": "T-020-04",
+            "title": "Build price input",
+            "description": "Input for price per kg with currency.",
+            "status": "pending",
+            "estimated_hours": 1,
+            "assignee": null
+          },
+          {
+            "id": "T-020-05",
+            "title": "Submit to custom feed API",
+            "description": "POST to /insert-custom-feed/ endpoint.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-020-06",
+            "title": "Implement offline custom feed creation",
+            "description": "Queue custom feed locally if offline.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-020-07",
+            "title": "Add helper tooltips",
+            "description": "Add info icons explaining each nutritional parameter.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          }
+        ],
+        "acceptance_criteria": [
+          "User can enter all feed parameters",
+          "Validation ensures data quality",
+          "Custom feed appears in feed list after creation",
+          "Works offline with sync later"
+        ],
+        "test_cases": [
+          {
+            "id": "TC-020-01",
+            "title": "Create Custom Feed",
+            "steps": ["Fill all required fields", "Submit"],
+            "expected_result": "Feed created and appears in list"
+          },
+          {
+            "id": "TC-020-02",
+            "title": "Validation",
+            "steps": ["Leave required field empty", "Submit"],
+            "expected_result": "Error message shows"
+          }
+        ]
+      },
+      {
+        "id": "US-021",
+        "title": "Edit Custom Feed",
+        "description": "As a farmer, I want to update my custom feed if I made a mistake or values changed.",
+        "priority": "medium",
+        "story_points": 3,
+        "tasks": [
+          {
+            "id": "T-021-01",
+            "title": "Create edit feed form",
+            "description": "Reuse create form with pre-populated values.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-021-02",
+            "title": "Submit to update API",
+            "description": "POST to /update-custom-feed/ endpoint.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-021-03",
+            "title": "Handle offline edits",
+            "description": "Queue edits for sync when offline.",
+            "status": "pending",
+            "estimated_hours": 1,
+            "assignee": null
+          }
+        ],
+        "acceptance_criteria": [
+          "Form pre-fills with current feed data",
+          "Changes save and reflect in feed list",
+          "Works offline"
+        ],
+        "test_cases": [
+          {
+            "id": "TC-021-01",
+            "title": "Edit Feed",
+            "steps": ["Open edit form", "Change price", "Save"],
+            "expected_result": "Price updates in feed list"
+          }
+        ]
+      },
+      {
+        "id": "US-022",
+        "title": "Delete Custom Feed",
+        "description": "As a farmer, I want to remove a custom feed I no longer use.",
+        "priority": "low",
+        "story_points": 2,
+        "tasks": [
+          {
+            "id": "T-022-01",
+            "title": "Add delete option",
+            "description": "Add delete button with confirmation dialog.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-022-02",
+            "title": "Submit delete API",
+            "description": "DELETE to /feeds/delete-feed/{feed_id}.",
+            "status": "pending",
+            "estimated_hours": 1,
+            "assignee": null
+          }
+        ],
+        "acceptance_criteria": [
+          "Confirmation required before delete",
+          "Feed removed from list after confirmation",
+          "Only custom feeds can be deleted (not master feeds)"
+        ],
+        "test_cases": [
+          {
+            "id": "TC-022-01",
+            "title": "Delete Feed",
+            "steps": ["Tap delete on custom feed", "Confirm"],
+            "expected_result": "Feed removed from list"
+          }
+        ]
+      },
+      {
+        "id": "US-023",
+        "title": "Feed Selection for Diet",
+        "description": "As a farmer, I want to select which feeds are available to me for diet optimization.",
+        "priority": "high",
+        "story_points": 5,
+        "tasks": [
+          {
+            "id": "T-023-01",
+            "title": "Create feed selector component",
+            "description": "Multi-select component for choosing available feeds.",
+            "status": "pending",
+            "estimated_hours": 3,
+            "assignee": null
+          },
+          {
+            "id": "T-023-02",
+            "title": "Implement select all by category",
+            "description": "Allow selecting all feeds in a category at once.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-023-03",
+            "title": "Save feed preferences",
+            "description": "Store user's typical feed selection for reuse.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-023-04",
+            "title": "Integrate with diet form",
+            "description": "Use selector in diet optimization step 5.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          }
+        ],
+        "acceptance_criteria": [
+          "User can select multiple feeds",
+          "Category-level selection works",
+          "Selection is saved for next time",
+          "Selected feeds sent to optimization API"
+        ],
+        "test_cases": [
+          {
+            "id": "TC-023-01",
+            "title": "Select Feeds",
+            "steps": ["Open feed selector", "Select 5 feeds"],
+            "expected_result": "5 feeds shown as selected"
+          },
+          {
+            "id": "TC-023-02",
+            "title": "Save Preferences",
+            "steps": ["Select feeds", "Complete diet", "Start new diet"],
+            "expected_result": "Previous feed selection is pre-selected"
+          }
+        ]
+      }
+    ],
+    "sprint_goals": [
+      "Full feed library browsing and search",
+      "Custom feed CRUD functionality",
+      "Feed selection integrated with diet optimization"
+    ],
+    "definition_of_done": [
+      "All feed types display correctly",
+      "Custom feeds sync with server",
+      "Feed selection persists between sessions",
+      "Offline access to feed library"
+    ]
+  }
+}

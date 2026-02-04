@@ -1,0 +1,461 @@
+{
+  "sprint": {
+    "id": "SPRINT-05",
+    "name": "Daily Logging & Reports",
+    "description": "Implement daily milk production logging with full offline support, and report viewing/downloading functionality.",
+    "status": "planned",
+    "duration": "2 weeks",
+    "start_date": "2026-04-01",
+    "end_date": "2026-04-15",
+    "user_stories": [
+      {
+        "id": "US-024",
+        "title": "Log Daily Milk Production",
+        "description": "As a farmer, I want to log my cow's daily milk production to track performance.",
+        "priority": "high",
+        "story_points": 8,
+        "tasks": [
+          {
+            "id": "T-024-01",
+            "title": "Create milk log page",
+            "description": "Build page for logging daily milk production.",
+            "status": "pending",
+            "estimated_hours": 3,
+            "assignee": null
+          },
+          {
+            "id": "T-024-02",
+            "title": "Build cow selector",
+            "description": "Dropdown to select cow for logging.",
+            "status": "pending",
+            "estimated_hours": 1,
+            "assignee": null
+          },
+          {
+            "id": "T-024-03",
+            "title": "Build date picker",
+            "description": "Date input defaulting to today, allowing past dates.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-024-04",
+            "title": "Build morning/evening yield inputs",
+            "description": "Numeric inputs for morning and evening milk yield in liters.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-024-05",
+            "title": "Build notes field",
+            "description": "Optional textarea for notes about the day.",
+            "status": "pending",
+            "estimated_hours": 1,
+            "assignee": null
+          },
+          {
+            "id": "T-024-06",
+            "title": "Submit to daily logs API",
+            "description": "POST to /bot-daily-logs/ endpoint.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-024-07",
+            "title": "Implement offline logging",
+            "description": "Queue logs locally when offline with auto-sync.",
+            "status": "pending",
+            "estimated_hours": 3,
+            "assignee": null
+          },
+          {
+            "id": "T-024-08",
+            "title": "Show daily total",
+            "description": "Calculate and display morning + evening total.",
+            "status": "pending",
+            "estimated_hours": 1,
+            "assignee": null
+          }
+        ],
+        "acceptance_criteria": [
+          "Can select cow and date",
+          "Can enter morning and evening milk yield",
+          "Total calculates automatically",
+          "Works fully offline with sync indicator",
+          "Duplicate date check (update vs create)"
+        ],
+        "test_cases": [
+          {
+            "id": "TC-024-01",
+            "title": "Log Milk",
+            "steps": ["Select cow", "Enter yields", "Submit"],
+            "expected_result": "Log saved, confirmation shown"
+          },
+          {
+            "id": "TC-024-02",
+            "title": "Offline Logging",
+            "steps": ["Go offline", "Log milk", "Check logs"],
+            "expected_result": "Log shows with 'pending sync' indicator"
+          },
+          {
+            "id": "TC-024-03",
+            "title": "Sync on Reconnect",
+            "steps": ["Create offline log", "Go online", "Wait 5 seconds"],
+            "expected_result": "Log syncs automatically"
+          }
+        ]
+      },
+      {
+        "id": "US-025",
+        "title": "View Milk Log History",
+        "description": "As a farmer, I want to see past milk production logs to track trends.",
+        "priority": "high",
+        "story_points": 5,
+        "tasks": [
+          {
+            "id": "T-025-01",
+            "title": "Create logs history page",
+            "description": "Build page showing list of milk logs.",
+            "status": "pending",
+            "estimated_hours": 3,
+            "assignee": null
+          },
+          {
+            "id": "T-025-02",
+            "title": "Create log entry card",
+            "description": "Card showing date, cow, yields, total.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-025-03",
+            "title": "Implement date range filter",
+            "description": "Filter logs by date range (last 7 days, last month, custom).",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-025-04",
+            "title": "Implement cow filter",
+            "description": "Filter logs by specific cow.",
+            "status": "pending",
+            "estimated_hours": 1,
+            "assignee": null
+          },
+          {
+            "id": "T-025-05",
+            "title": "Show summary statistics",
+            "description": "Display average, total, min, max for filtered period.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          }
+        ],
+        "acceptance_criteria": [
+          "Shows all logs in chronological order",
+          "Can filter by date range and cow",
+          "Summary stats show for filtered data",
+          "Works offline with cached logs"
+        ],
+        "test_cases": [
+          {
+            "id": "TC-025-01",
+            "title": "View History",
+            "steps": ["Navigate to log history"],
+            "expected_result": "Shows recent logs"
+          },
+          {
+            "id": "TC-025-02",
+            "title": "Filter by Date",
+            "steps": ["Select 'Last 7 days'"],
+            "expected_result": "Only last week's logs show"
+          }
+        ]
+      },
+      {
+        "id": "US-026",
+        "title": "Edit Milk Log",
+        "description": "As a farmer, I want to correct a milk log entry if I made a mistake.",
+        "priority": "medium",
+        "story_points": 3,
+        "tasks": [
+          {
+            "id": "T-026-01",
+            "title": "Add edit option to log cards",
+            "description": "Add edit button/swipe action to log entries.",
+            "status": "pending",
+            "estimated_hours": 1,
+            "assignee": null
+          },
+          {
+            "id": "T-026-02",
+            "title": "Create edit log form",
+            "description": "Reuse log form with pre-populated values.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-026-03",
+            "title": "Submit update API",
+            "description": "PUT to /bot-daily-logs/{log_id}.",
+            "status": "pending",
+            "estimated_hours": 1,
+            "assignee": null
+          },
+          {
+            "id": "T-026-04",
+            "title": "Handle offline edits",
+            "description": "Queue edits for sync.",
+            "status": "pending",
+            "estimated_hours": 1,
+            "assignee": null
+          }
+        ],
+        "acceptance_criteria": [
+          "Can edit any log entry",
+          "Changes reflect immediately (optimistic)",
+          "Works offline"
+        ],
+        "test_cases": [
+          {
+            "id": "TC-026-01",
+            "title": "Edit Log",
+            "steps": ["Tap edit on log", "Change yield", "Save"],
+            "expected_result": "Yield updates in history"
+          }
+        ]
+      },
+      {
+        "id": "US-027",
+        "title": "Quick Log Widget",
+        "description": "As a farmer, I want a quick way to log milk from the home screen.",
+        "priority": "medium",
+        "story_points": 3,
+        "tasks": [
+          {
+            "id": "T-027-01",
+            "title": "Create home page quick log widget",
+            "description": "Card on home page for quick milk logging.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-027-02",
+            "title": "Show pending entries",
+            "description": "Show cows that haven't been logged today.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-027-03",
+            "title": "Quick entry form",
+            "description": "Compact form for logging without leaving home page.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          }
+        ],
+        "acceptance_criteria": [
+          "Widget shows on home page",
+          "Shows which cows need logging",
+          "Can log quickly without navigation"
+        ],
+        "test_cases": [
+          {
+            "id": "TC-027-01",
+            "title": "Quick Log",
+            "steps": ["On home page", "Use quick log widget", "Enter yields"],
+            "expected_result": "Log saved without leaving home page"
+          }
+        ]
+      },
+      {
+        "id": "US-028",
+        "title": "View Diet Reports",
+        "description": "As a farmer, I want to view saved diet reports so I can reference them.",
+        "priority": "medium",
+        "story_points": 5,
+        "tasks": [
+          {
+            "id": "T-028-01",
+            "title": "Create reports list page",
+            "description": "Build page showing saved diet reports.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-028-02",
+            "title": "Fetch reports from API",
+            "description": "GET from /pdf-reports/{user_id}.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-028-03",
+            "title": "Create report card",
+            "description": "Card showing report name, cow, date, actions.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-028-04",
+            "title": "Cache report metadata",
+            "description": "Store report list locally for offline browsing.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          }
+        ],
+        "acceptance_criteria": [
+          "Shows list of saved reports",
+          "Report metadata available offline",
+          "Can navigate to view full report"
+        ],
+        "test_cases": [
+          {
+            "id": "TC-028-01",
+            "title": "View Reports",
+            "steps": ["Navigate to Reports tab"],
+            "expected_result": "Shows list of saved reports"
+          }
+        ]
+      },
+      {
+        "id": "US-029",
+        "title": "Download/Share Report",
+        "description": "As a farmer, I want to download or share a diet report.",
+        "priority": "medium",
+        "story_points": 5,
+        "tasks": [
+          {
+            "id": "T-029-01",
+            "title": "Add download button",
+            "description": "Button to download PDF report.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-029-02",
+            "title": "Implement PDF download",
+            "description": "Fetch PDF from /pdf-report/{report_id}/{user_id} and trigger download.",
+            "status": "pending",
+            "estimated_hours": 3,
+            "assignee": null
+          },
+          {
+            "id": "T-029-03",
+            "title": "Add share button",
+            "description": "Use Web Share API to share report.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-029-04",
+            "title": "Handle share fallback",
+            "description": "Fall back to copy link if Web Share not supported.",
+            "status": "pending",
+            "estimated_hours": 1,
+            "assignee": null
+          }
+        ],
+        "acceptance_criteria": [
+          "Can download PDF report",
+          "Can share report (where supported)",
+          "Fallback for unsupported browsers"
+        ],
+        "test_cases": [
+          {
+            "id": "TC-029-01",
+            "title": "Download PDF",
+            "steps": ["Tap download on report"],
+            "expected_result": "PDF downloads to device"
+          },
+          {
+            "id": "TC-029-02",
+            "title": "Share Report",
+            "steps": ["Tap share on report"],
+            "expected_result": "Native share sheet opens"
+          }
+        ]
+      },
+      {
+        "id": "US-030",
+        "title": "Generate New Report",
+        "description": "As a farmer, I want to generate a PDF report from a diet optimization.",
+        "priority": "medium",
+        "story_points": 3,
+        "tasks": [
+          {
+            "id": "T-030-01",
+            "title": "Add 'Save as Report' action",
+            "description": "Button on diet results to save as PDF report.",
+            "status": "pending",
+            "estimated_hours": 1,
+            "assignee": null
+          },
+          {
+            "id": "T-030-02",
+            "title": "Call generate PDF API",
+            "description": "POST to /generate-pdf-report/ with diet data.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-030-03",
+            "title": "Show generation progress",
+            "description": "Loading indicator while PDF generates.",
+            "status": "pending",
+            "estimated_hours": 1,
+            "assignee": null
+          },
+          {
+            "id": "T-030-04",
+            "title": "Navigate to report after creation",
+            "description": "Take user to report view after successful generation.",
+            "status": "pending",
+            "estimated_hours": 1,
+            "assignee": null
+          }
+        ],
+        "acceptance_criteria": [
+          "Can save diet results as PDF report",
+          "Report appears in reports list",
+          "Can immediately view/download generated report"
+        ],
+        "test_cases": [
+          {
+            "id": "TC-030-01",
+            "title": "Generate Report",
+            "steps": ["View diet results", "Tap 'Save as Report'"],
+            "expected_result": "PDF report generated and shown"
+          }
+        ]
+      }
+    ],
+    "sprint_goals": [
+      "Full milk logging with offline support",
+      "Log history with filtering",
+      "Report viewing and downloading"
+    ],
+    "definition_of_done": [
+      "Milk logging works fully offline",
+      "Sync is reliable and automatic",
+      "Reports download correctly",
+      "Share functionality works on supported platforms"
+    ]
+  }
+}

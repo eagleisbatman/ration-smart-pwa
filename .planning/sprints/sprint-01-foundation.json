@@ -1,0 +1,450 @@
+{
+  "sprint": {
+    "id": "SPRINT-01",
+    "name": "Foundation & Authentication",
+    "description": "Set up the Quasar PWA project with core infrastructure, authentication flow, and basic PWA capabilities.",
+    "status": "planned",
+    "duration": "2 weeks",
+    "start_date": "2026-02-04",
+    "end_date": "2026-02-18",
+    "user_stories": [
+      {
+        "id": "US-001",
+        "title": "Project Scaffolding",
+        "description": "As a developer, I want a properly configured Quasar PWA project so that I can build the application with best practices.",
+        "priority": "high",
+        "story_points": 5,
+        "tasks": [
+          {
+            "id": "T-001-01",
+            "title": "Initialize Quasar project with PWA mode",
+            "description": "Create new Quasar project using 'bun create quasar' with TypeScript, Composition API, Pinia, SCSS, and PWA mode enabled.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-001-02",
+            "title": "Configure quasar.config.ts for PWA",
+            "description": "Set up PWA configuration with InjectManifest workbox mode, manifest settings, and iOS meta tags.",
+            "status": "pending",
+            "estimated_hours": 3,
+            "assignee": null
+          },
+          {
+            "id": "T-001-03",
+            "title": "Set up project structure",
+            "description": "Create folder structure for components, composables, stores, services, and lib/offline modules.",
+            "status": "pending",
+            "estimated_hours": 1,
+            "assignee": null
+          },
+          {
+            "id": "T-001-04",
+            "title": "Install and configure dependencies",
+            "description": "Install dexie, axios, axios-retry, date-fns, uuid and configure boot files.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-001-05",
+            "title": "Set up SCSS variables and design tokens",
+            "description": "Configure Material 3 design tokens, color palette (green primary for agriculture), typography, and spacing system.",
+            "status": "pending",
+            "estimated_hours": 3,
+            "assignee": null
+          }
+        ],
+        "acceptance_criteria": [
+          "Project builds without errors using 'bun run build'",
+          "PWA manifest is generated correctly",
+          "Service worker registers in development mode",
+          "All dependencies are installed and boot files load",
+          "SCSS variables are available throughout the app"
+        ],
+        "test_cases": [
+          {
+            "id": "TC-001-01",
+            "title": "Build Verification",
+            "steps": ["Run 'bun run build'", "Check dist/pwa folder exists", "Verify manifest.json is generated"],
+            "expected_result": "Build completes successfully with PWA assets"
+          },
+          {
+            "id": "TC-001-02",
+            "title": "Dev Server Test",
+            "steps": ["Run 'bun dev'", "Open browser DevTools > Application > Service Workers"],
+            "expected_result": "Service worker registers and shows as active"
+          }
+        ]
+      },
+      {
+        "id": "US-002",
+        "title": "API Service Layer",
+        "description": "As a developer, I want a robust API service layer so that I can communicate with the backend reliably.",
+        "priority": "high",
+        "story_points": 5,
+        "tasks": [
+          {
+            "id": "T-002-01",
+            "title": "Create axios instance with interceptors",
+            "description": "Set up axios instance with base URL, request/response interceptors, and error handling.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-002-02",
+            "title": "Implement retry logic",
+            "description": "Configure axios-retry for automatic retries on network failures with exponential backoff.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-002-03",
+            "title": "Create API service modules",
+            "description": "Create service modules for auth, cow profiles, feeds, diet optimization, and reports.",
+            "status": "pending",
+            "estimated_hours": 4,
+            "assignee": null
+          },
+          {
+            "id": "T-002-04",
+            "title": "Implement token management",
+            "description": "Store and manage auth tokens, add to requests, handle token expiration.",
+            "status": "pending",
+            "estimated_hours": 3,
+            "assignee": null
+          }
+        ],
+        "acceptance_criteria": [
+          "API calls include authorization header when token exists",
+          "Failed requests retry up to 3 times with backoff",
+          "401 responses trigger logout flow",
+          "Network errors show user-friendly messages"
+        ],
+        "test_cases": [
+          {
+            "id": "TC-002-01",
+            "title": "Auth Header Test",
+            "steps": ["Set auth token", "Make API request", "Inspect request headers"],
+            "expected_result": "Authorization header contains token"
+          },
+          {
+            "id": "TC-002-02",
+            "title": "Retry Test",
+            "steps": ["Simulate network failure", "Make API request", "Observe retry attempts"],
+            "expected_result": "Request retries 3 times before failing"
+          }
+        ]
+      },
+      {
+        "id": "US-003",
+        "title": "User Registration",
+        "description": "As a new user, I want to register an account so that I can use the app to optimize my cattle's diet.",
+        "priority": "high",
+        "story_points": 8,
+        "tasks": [
+          {
+            "id": "T-003-01",
+            "title": "Create registration page UI",
+            "description": "Build registration form with email, PIN, country selection, breed selection, and user role fields.",
+            "status": "pending",
+            "estimated_hours": 4,
+            "assignee": null
+          },
+          {
+            "id": "T-003-02",
+            "title": "Implement country dropdown with API",
+            "description": "Fetch countries from /auth/countries endpoint and populate dropdown.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-003-03",
+            "title": "Implement breed dropdown based on country",
+            "description": "Fetch breeds from /auth/breeds/{country_id} when country is selected.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-003-04",
+            "title": "Implement form validation",
+            "description": "Add validation for email format, PIN (4 digits), required fields with error messages.",
+            "status": "pending",
+            "estimated_hours": 3,
+            "assignee": null
+          },
+          {
+            "id": "T-003-05",
+            "title": "Connect to registration API",
+            "description": "Submit registration to POST /auth/register and handle success/error responses.",
+            "status": "pending",
+            "estimated_hours": 3,
+            "assignee": null
+          }
+        ],
+        "acceptance_criteria": [
+          "User can enter email, 4-digit PIN, select country and breed",
+          "Country dropdown populates from API",
+          "Breeds filter based on selected country",
+          "Validation errors display inline with clear messages",
+          "Successful registration redirects to login",
+          "API errors display in toast notification"
+        ],
+        "test_cases": [
+          {
+            "id": "TC-003-01",
+            "title": "Valid Registration",
+            "steps": ["Fill all required fields with valid data", "Submit form"],
+            "expected_result": "Account created, redirected to login"
+          },
+          {
+            "id": "TC-003-02",
+            "title": "Invalid Email",
+            "steps": ["Enter invalid email format", "Submit form"],
+            "expected_result": "Error message: 'Please enter a valid email'"
+          },
+          {
+            "id": "TC-003-03",
+            "title": "Breed Filtering",
+            "steps": ["Select country", "Open breed dropdown"],
+            "expected_result": "Only breeds for selected country appear"
+          }
+        ]
+      },
+      {
+        "id": "US-004",
+        "title": "User Login",
+        "description": "As a registered user, I want to log in so that I can access my data.",
+        "priority": "high",
+        "story_points": 5,
+        "tasks": [
+          {
+            "id": "T-004-01",
+            "title": "Create login page UI",
+            "description": "Build login form with email and PIN fields, 'Forgot PIN' link, and submit button.",
+            "status": "pending",
+            "estimated_hours": 3,
+            "assignee": null
+          },
+          {
+            "id": "T-004-02",
+            "title": "Implement PIN input component",
+            "description": "Create a 4-digit PIN input with auto-focus, masked input, and numpad-friendly design.",
+            "status": "pending",
+            "estimated_hours": 3,
+            "assignee": null
+          },
+          {
+            "id": "T-004-03",
+            "title": "Connect to login API",
+            "description": "Submit to POST /auth/login, store token and user data on success.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-004-04",
+            "title": "Implement auth store",
+            "description": "Create Pinia store for auth state: user, token, isAuthenticated, login/logout actions.",
+            "status": "pending",
+            "estimated_hours": 3,
+            "assignee": null
+          },
+          {
+            "id": "T-004-05",
+            "title": "Implement route guards",
+            "description": "Add navigation guards to protect authenticated routes and redirect to login.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          }
+        ],
+        "acceptance_criteria": [
+          "User can enter email and 4-digit PIN",
+          "PIN input shows dots/asterisks for masking",
+          "Successful login stores token and redirects to home",
+          "Invalid credentials show error message",
+          "Protected routes redirect to login when not authenticated"
+        ],
+        "test_cases": [
+          {
+            "id": "TC-004-01",
+            "title": "Successful Login",
+            "steps": ["Enter valid email", "Enter valid PIN", "Submit"],
+            "expected_result": "User is logged in and redirected to home"
+          },
+          {
+            "id": "TC-004-02",
+            "title": "Invalid Credentials",
+            "steps": ["Enter wrong email/PIN", "Submit"],
+            "expected_result": "Error: 'Invalid email or PIN'"
+          },
+          {
+            "id": "TC-004-03",
+            "title": "Route Protection",
+            "steps": ["Log out", "Navigate to /cows"],
+            "expected_result": "Redirected to /login"
+          }
+        ]
+      },
+      {
+        "id": "US-005",
+        "title": "Main Layout & Navigation",
+        "description": "As a user, I want intuitive navigation so that I can easily access different app features.",
+        "priority": "high",
+        "story_points": 5,
+        "tasks": [
+          {
+            "id": "T-005-01",
+            "title": "Create main layout component",
+            "description": "Build main layout with header, bottom navigation (mobile), and content area.",
+            "status": "pending",
+            "estimated_hours": 3,
+            "assignee": null
+          },
+          {
+            "id": "T-005-02",
+            "title": "Implement bottom navigation",
+            "description": "Create mobile-friendly bottom tab bar with icons for Home, Cows, Diet, Feeds, Profile.",
+            "status": "pending",
+            "estimated_hours": 3,
+            "assignee": null
+          },
+          {
+            "id": "T-005-03",
+            "title": "Create header component",
+            "description": "Build header with app title, offline indicator, and optional back button.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-005-04",
+            "title": "Set up router with all routes",
+            "description": "Configure Vue Router with all page routes and lazy loading.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-005-05",
+            "title": "Implement page transitions",
+            "description": "Add slide/fade transitions between pages for native feel.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          }
+        ],
+        "acceptance_criteria": [
+          "Bottom navigation shows on mobile with 5 tabs",
+          "Active tab is highlighted",
+          "Header shows page title and offline indicator when offline",
+          "Page transitions are smooth (< 300ms)",
+          "Navigation works with browser back button"
+        ],
+        "test_cases": [
+          {
+            "id": "TC-005-01",
+            "title": "Bottom Navigation",
+            "steps": ["Tap each tab in bottom nav"],
+            "expected_result": "Page changes and tab highlights"
+          },
+          {
+            "id": "TC-005-02",
+            "title": "Offline Indicator",
+            "steps": ["Go offline in DevTools", "Check header"],
+            "expected_result": "Offline indicator appears"
+          }
+        ]
+      },
+      {
+        "id": "US-006",
+        "title": "Offline Storage Setup",
+        "description": "As a user, I want my data to persist locally so that I can use the app offline.",
+        "priority": "high",
+        "story_points": 8,
+        "tasks": [
+          {
+            "id": "T-006-01",
+            "title": "Set up Dexie.js database schema",
+            "description": "Create IndexedDB schema with tables for users, cows, feeds, diets, milkLogs, syncQueue.",
+            "status": "pending",
+            "estimated_hours": 4,
+            "assignee": null
+          },
+          {
+            "id": "T-006-02",
+            "title": "Implement sync manager",
+            "description": "Create sync manager class to queue operations, process queue, and handle conflicts.",
+            "status": "pending",
+            "estimated_hours": 5,
+            "assignee": null
+          },
+          {
+            "id": "T-006-03",
+            "title": "Create network status composable",
+            "description": "Build composable to track online/offline status reactively.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-006-04",
+            "title": "Implement auto-sync on reconnect",
+            "description": "Automatically process sync queue when device comes back online.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-006-05",
+            "title": "Create offline indicator component",
+            "description": "Build banner component showing offline status and pending sync count.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          }
+        ],
+        "acceptance_criteria": [
+          "Data persists after closing browser",
+          "Operations queue when offline",
+          "Queue processes automatically when back online",
+          "User sees pending sync count",
+          "Sync failures show clear error with retry option"
+        ],
+        "test_cases": [
+          {
+            "id": "TC-006-01",
+            "title": "Offline Data Persistence",
+            "steps": ["Create data online", "Close browser", "Reopen browser offline"],
+            "expected_result": "Data is still visible"
+          },
+          {
+            "id": "TC-006-02",
+            "title": "Sync Queue Processing",
+            "steps": ["Go offline", "Create milk log", "Go online"],
+            "expected_result": "Milk log syncs to server automatically"
+          }
+        ]
+      }
+    ],
+    "sprint_goals": [
+      "Working auth flow (register/login)",
+      "Main navigation structure",
+      "API service layer connected to backend",
+      "Offline storage foundation with Dexie.js"
+    ],
+    "definition_of_done": [
+      "All code is TypeScript with proper typing",
+      "Components use Composition API with script setup",
+      "No console errors in development",
+      "Responsive design works on mobile and desktop",
+      "Basic accessibility (ARIA labels, focus management)"
+    ]
+  }
+}

@@ -1,0 +1,300 @@
+// App-wide styles for RationSmart PWA
+
+// Import Quasar variables
+@import 'quasar.variables.scss';
+
+// Import native-like PWA enhancements
+@import 'native-like.scss';
+
+// ============================================
+// Base Styles
+// ============================================
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// iOS safe areas
+body {
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+// ============================================
+// Touch Optimizations
+// ============================================
+
+// Minimum touch target size (44x44px recommended)
+button,
+a,
+[role="button"],
+.q-btn,
+.q-item {
+  min-height: 44px;
+}
+
+// Prevent text selection on interactive elements
+button,
+[role="button"],
+.q-btn {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+// Smooth scrolling
+.q-page,
+.q-scroll-area {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+// ============================================
+// Typography
+// ============================================
+
+.text-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.text-line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.text-line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+// ============================================
+// Card Styles
+// ============================================
+
+.q-card {
+  border-radius: 12px;
+
+  &.q-card--bordered {
+    border-color: rgba(0, 0, 0, 0.08);
+  }
+}
+
+// ============================================
+// List Styles
+// ============================================
+
+.q-list--bordered {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+// ============================================
+// Form Styles
+// ============================================
+
+.q-field--outlined .q-field__control {
+  border-radius: 8px;
+}
+
+// ============================================
+// Button Styles
+// ============================================
+
+.q-btn {
+  border-radius: 8px;
+  text-transform: none;
+  font-weight: 500;
+}
+
+// FAB button
+.q-btn--fab {
+  border-radius: 16px;
+}
+
+// ============================================
+// Chip Styles
+// ============================================
+
+.q-chip {
+  border-radius: 8px;
+}
+
+// ============================================
+// Dialog Styles
+// ============================================
+
+.q-dialog__inner--minimized > div {
+  border-radius: 16px;
+}
+
+// ============================================
+// Banner Styles
+// ============================================
+
+.q-banner {
+  border-radius: 12px;
+}
+
+// ============================================
+// Stepper Styles
+// ============================================
+
+.q-stepper {
+  border-radius: 12px;
+}
+
+// ============================================
+// Tab Styles
+// ============================================
+
+.q-tabs {
+  background: rgba(0, 0, 0, 0.03);
+  border-radius: 8px;
+  padding: 4px;
+
+  .q-tab {
+    border-radius: 6px;
+
+    &.q-tab--active {
+      background: white;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+  }
+}
+
+// ============================================
+// Avatar Styles
+// ============================================
+
+.q-avatar {
+  font-weight: 500;
+}
+
+// ============================================
+// Bottom Navigation
+// ============================================
+
+.q-footer .q-tabs {
+  background: transparent;
+  padding: 0;
+
+  .q-tab {
+    border-radius: 0;
+
+    &.q-tab--active {
+      background: transparent;
+      box-shadow: none;
+    }
+  }
+}
+
+// ============================================
+// Animations
+// ============================================
+
+// Page transitions
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+// Slide transitions
+.slide-up-enter-active,
+.slide-up-leave-active {
+  transition: all 0.3s ease;
+}
+
+.slide-up-enter-from,
+.slide-up-leave-to {
+  transform: translateY(100%);
+  opacity: 0;
+}
+
+.slide-down-enter-active,
+.slide-down-leave-active {
+  transition: all 0.3s ease;
+}
+
+.slide-down-enter-from,
+.slide-down-leave-to {
+  transform: translateY(-100%);
+}
+
+// ============================================
+// Loading States
+// ============================================
+
+.skeleton-animation {
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes skeleton-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+// ============================================
+// Utility Classes
+// ============================================
+
+.rounded-borders {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.full-height {
+  height: 100%;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+// ============================================
+// PWA Specific
+// ============================================
+
+// Standalone mode styles
+@media (display-mode: standalone) {
+  // Hide browser-specific UI elements
+  .browser-only {
+    display: none !important;
+  }
+}
+
+// Print styles
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}

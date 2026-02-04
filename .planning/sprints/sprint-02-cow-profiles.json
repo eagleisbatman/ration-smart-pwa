@@ -1,0 +1,432 @@
+{
+  "sprint": {
+    "id": "SPRINT-02",
+    "name": "Cow Profile Management",
+    "description": "Implement full CRUD for cow profiles with offline support, allowing farmers to manage their herd.",
+    "status": "planned",
+    "duration": "2 weeks",
+    "start_date": "2026-02-18",
+    "end_date": "2026-03-04",
+    "user_stories": [
+      {
+        "id": "US-007",
+        "title": "View Cow List",
+        "description": "As a farmer, I want to see a list of all my cows so that I can manage my herd.",
+        "priority": "high",
+        "story_points": 5,
+        "tasks": [
+          {
+            "id": "T-007-01",
+            "title": "Create cow list page",
+            "description": "Build page with list of cow cards showing name, breed, weight, and status.",
+            "status": "pending",
+            "estimated_hours": 3,
+            "assignee": null
+          },
+          {
+            "id": "T-007-02",
+            "title": "Create cow card component",
+            "description": "Build reusable card showing cow avatar, name, breed, current state (lactating/dry/calf).",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-007-03",
+            "title": "Implement pull-to-refresh",
+            "description": "Add pull-to-refresh gesture to reload cow list from API.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-007-04",
+            "title": "Create skeleton loader for list",
+            "description": "Build skeleton placeholder while cow list is loading.",
+            "status": "pending",
+            "estimated_hours": 1,
+            "assignee": null
+          },
+          {
+            "id": "T-007-05",
+            "title": "Create empty state component",
+            "description": "Show friendly empty state with 'Add your first cow' CTA when no cows exist.",
+            "status": "pending",
+            "estimated_hours": 1,
+            "assignee": null
+          },
+          {
+            "id": "T-007-06",
+            "title": "Implement local-first data loading",
+            "description": "Load cows from Dexie first, then sync with API in background.",
+            "status": "pending",
+            "estimated_hours": 3,
+            "assignee": null
+          }
+        ],
+        "acceptance_criteria": [
+          "List shows all user's cows with key details",
+          "Skeleton appears while loading",
+          "Pull-to-refresh syncs with server",
+          "Empty state shows when no cows",
+          "Works offline with cached data"
+        ],
+        "test_cases": [
+          {
+            "id": "TC-007-01",
+            "title": "List Display",
+            "steps": ["Login", "Navigate to Cows tab"],
+            "expected_result": "All user's cows are listed"
+          },
+          {
+            "id": "TC-007-02",
+            "title": "Offline List",
+            "steps": ["View cow list", "Go offline", "Refresh page"],
+            "expected_result": "Cows still display from cache"
+          }
+        ]
+      },
+      {
+        "id": "US-008",
+        "title": "Add New Cow",
+        "description": "As a farmer, I want to add a new cow to my herd so that I can track and optimize its diet.",
+        "priority": "high",
+        "story_points": 8,
+        "tasks": [
+          {
+            "id": "T-008-01",
+            "title": "Create add cow form page",
+            "description": "Build form with all cow profile fields: name, breed, weight, state, milk production, etc.",
+            "status": "pending",
+            "estimated_hours": 4,
+            "assignee": null
+          },
+          {
+            "id": "T-008-02",
+            "title": "Implement cow state selector",
+            "description": "Create state selector (Lactating, Dry, Pregnant, Calf) that shows/hides relevant fields.",
+            "status": "pending",
+            "estimated_hours": 3,
+            "assignee": null
+          },
+          {
+            "id": "T-008-03",
+            "title": "Build weight input with validation",
+            "description": "Create numeric input for body weight with min/max validation.",
+            "status": "pending",
+            "estimated_hours": 1,
+            "assignee": null
+          },
+          {
+            "id": "T-008-04",
+            "title": "Build milk production fields",
+            "description": "Create inputs for target milk yield, fat %, protein % (shown only for lactating cows).",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-008-05",
+            "title": "Build pregnancy fields",
+            "description": "Create inputs for gestation day, parity (shown for pregnant/lactating cows).",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-008-06",
+            "title": "Implement form validation",
+            "description": "Add comprehensive validation with inline error messages.",
+            "status": "pending",
+            "estimated_hours": 3,
+            "assignee": null
+          },
+          {
+            "id": "T-008-07",
+            "title": "Connect to create cow API",
+            "description": "Submit to POST /cow-profiles/ with optimistic UI update.",
+            "status": "pending",
+            "estimated_hours": 3,
+            "assignee": null
+          },
+          {
+            "id": "T-008-08",
+            "title": "Implement offline cow creation",
+            "description": "Queue cow creation locally if offline, sync when back online.",
+            "status": "pending",
+            "estimated_hours": 3,
+            "assignee": null
+          }
+        ],
+        "acceptance_criteria": [
+          "Form has all required fields: name, breed, weight, state",
+          "Conditional fields show based on cow state",
+          "Validation prevents invalid submissions",
+          "Success shows confirmation and returns to list",
+          "Works offline with 'pending sync' indicator"
+        ],
+        "test_cases": [
+          {
+            "id": "TC-008-01",
+            "title": "Create Lactating Cow",
+            "steps": ["Fill form with lactating cow details", "Submit"],
+            "expected_result": "Cow created, appears in list"
+          },
+          {
+            "id": "TC-008-02",
+            "title": "Conditional Fields",
+            "steps": ["Select 'Dry' state", "Check form fields"],
+            "expected_result": "Milk production fields are hidden"
+          },
+          {
+            "id": "TC-008-03",
+            "title": "Offline Creation",
+            "steps": ["Go offline", "Create cow", "Check list"],
+            "expected_result": "Cow shows with 'pending sync' indicator"
+          }
+        ]
+      },
+      {
+        "id": "US-009",
+        "title": "View Cow Details",
+        "description": "As a farmer, I want to view detailed information about a specific cow so that I can monitor its status.",
+        "priority": "medium",
+        "story_points": 5,
+        "tasks": [
+          {
+            "id": "T-009-01",
+            "title": "Create cow detail page",
+            "description": "Build page showing all cow information in organized sections.",
+            "status": "pending",
+            "estimated_hours": 3,
+            "assignee": null
+          },
+          {
+            "id": "T-009-02",
+            "title": "Display cow information sections",
+            "description": "Show sections for basic info, production data, and recent diets.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-009-03",
+            "title": "Show recent diet history",
+            "description": "Display last 5 diet recommendations for this cow.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-009-04",
+            "title": "Add quick action buttons",
+            "description": "Add buttons for 'Get Diet', 'Log Milk', 'Edit', 'Delete'.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          }
+        ],
+        "acceptance_criteria": [
+          "All cow details display in organized layout",
+          "Recent diet history shows if available",
+          "Quick action buttons work correctly",
+          "Page loads quickly from local cache"
+        ],
+        "test_cases": [
+          {
+            "id": "TC-009-01",
+            "title": "View Details",
+            "steps": ["Tap cow card from list"],
+            "expected_result": "Cow detail page shows all information"
+          },
+          {
+            "id": "TC-009-02",
+            "title": "Quick Action - Get Diet",
+            "steps": ["Tap 'Get Diet' button"],
+            "expected_result": "Navigates to diet form with cow pre-selected"
+          }
+        ]
+      },
+      {
+        "id": "US-010",
+        "title": "Edit Cow Profile",
+        "description": "As a farmer, I want to update my cow's information as it changes over time.",
+        "priority": "medium",
+        "story_points": 5,
+        "tasks": [
+          {
+            "id": "T-010-01",
+            "title": "Create edit cow form",
+            "description": "Reuse add form with pre-populated data for editing.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-010-02",
+            "title": "Implement optimistic update",
+            "description": "Update UI immediately, revert on API failure.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-010-03",
+            "title": "Handle offline edits",
+            "description": "Queue edits locally when offline, sync when online.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-010-04",
+            "title": "Show edit confirmation",
+            "description": "Display toast notification on successful update.",
+            "status": "pending",
+            "estimated_hours": 1,
+            "assignee": null
+          }
+        ],
+        "acceptance_criteria": [
+          "Form pre-populates with current cow data",
+          "Changes save immediately (optimistic)",
+          "Offline edits queue for sync",
+          "Success shows confirmation toast"
+        ],
+        "test_cases": [
+          {
+            "id": "TC-010-01",
+            "title": "Edit Cow",
+            "steps": ["Open edit form", "Change weight", "Save"],
+            "expected_result": "Weight updates immediately in UI"
+          },
+          {
+            "id": "TC-010-02",
+            "title": "Offline Edit",
+            "steps": ["Go offline", "Edit cow", "Check detail page"],
+            "expected_result": "Shows updated data with 'pending' indicator"
+          }
+        ]
+      },
+      {
+        "id": "US-011",
+        "title": "Delete Cow",
+        "description": "As a farmer, I want to remove a cow from my herd when sold or deceased.",
+        "priority": "low",
+        "story_points": 3,
+        "tasks": [
+          {
+            "id": "T-011-01",
+            "title": "Add delete button with confirmation",
+            "description": "Add delete option with confirmation dialog.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-011-02",
+            "title": "Implement soft delete for sync",
+            "description": "Mark as deleted locally, sync deletion to server.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-011-03",
+            "title": "Handle cascade effects",
+            "description": "Handle related data (diets, logs) appropriately on delete.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          }
+        ],
+        "acceptance_criteria": [
+          "Delete requires confirmation",
+          "Cow removed from list after confirmation",
+          "Deletion syncs to server",
+          "Related diet history remains viewable"
+        ],
+        "test_cases": [
+          {
+            "id": "TC-011-01",
+            "title": "Delete Cow",
+            "steps": ["Tap delete", "Confirm"],
+            "expected_result": "Cow removed from list"
+          },
+          {
+            "id": "TC-011-02",
+            "title": "Cancel Delete",
+            "steps": ["Tap delete", "Cancel"],
+            "expected_result": "Cow remains in list"
+          }
+        ]
+      },
+      {
+        "id": "US-012",
+        "title": "Cow Store (Pinia)",
+        "description": "As a developer, I want centralized cow state management for consistent data access.",
+        "priority": "high",
+        "story_points": 5,
+        "tasks": [
+          {
+            "id": "T-012-01",
+            "title": "Create cows Pinia store",
+            "description": "Build store with state, getters, and actions for cow CRUD.",
+            "status": "pending",
+            "estimated_hours": 3,
+            "assignee": null
+          },
+          {
+            "id": "T-012-02",
+            "title": "Implement Dexie integration",
+            "description": "Connect store to Dexie for local persistence.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-012-03",
+            "title": "Add sync status tracking",
+            "description": "Track sync status per cow (synced, pending, error).",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-012-04",
+            "title": "Implement computed getters",
+            "description": "Add getters for filtered cows (by state, by sync status).",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          }
+        ],
+        "acceptance_criteria": [
+          "Store manages all cow data centrally",
+          "Data persists to Dexie automatically",
+          "Sync status is trackable per cow",
+          "Getters provide filtered views"
+        ],
+        "test_cases": [
+          {
+            "id": "TC-012-01",
+            "title": "Store Persistence",
+            "steps": ["Add cow", "Refresh page"],
+            "expected_result": "Cow still exists from Dexie"
+          }
+        ]
+      }
+    ],
+    "sprint_goals": [
+      "Complete cow CRUD functionality",
+      "Full offline support for cow management",
+      "Native-feeling list and detail views"
+    ],
+    "definition_of_done": [
+      "All CRUD operations work online and offline",
+      "Optimistic UI updates with proper error handling",
+      "Data syncs correctly when coming back online",
+      "Forms have proper validation and feedback"
+    ]
+  }
+}

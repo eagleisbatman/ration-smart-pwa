@@ -1,0 +1,608 @@
+{
+  "sprint": {
+    "id": "SPRINT-06",
+    "name": "PWA Features & Polish",
+    "description": "Complete PWA features including install prompt, service worker optimization, push notifications, and final polish for production readiness.",
+    "status": "planned",
+    "duration": "2 weeks",
+    "start_date": "2026-04-15",
+    "end_date": "2026-04-30",
+    "user_stories": [
+      {
+        "id": "US-031",
+        "title": "Add to Home Screen Prompt",
+        "description": "As a user, I want to be prompted to install the app so I can access it like a native app.",
+        "priority": "high",
+        "story_points": 5,
+        "tasks": [
+          {
+            "id": "T-031-01",
+            "title": "Create A2HS prompt component",
+            "description": "Build banner component that shows install prompt.",
+            "status": "pending",
+            "estimated_hours": 3,
+            "assignee": null
+          },
+          {
+            "id": "T-031-02",
+            "title": "Capture beforeinstallprompt event",
+            "description": "Intercept browser's install prompt event.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-031-03",
+            "title": "Implement smart timing",
+            "description": "Show prompt after user engagement, not immediately.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-031-04",
+            "title": "Handle dismissal",
+            "description": "Don't show again for 7 days if dismissed.",
+            "status": "pending",
+            "estimated_hours": 1,
+            "assignee": null
+          },
+          {
+            "id": "T-031-05",
+            "title": "iOS manual install instructions",
+            "description": "Show instructions for iOS users (Safari > Share > Add to Home).",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          }
+        ],
+        "acceptance_criteria": [
+          "Install prompt shows on supported browsers",
+          "iOS users see manual instructions",
+          "Dismissed prompt doesn't reappear for 7 days",
+          "Prompt doesn't show if already installed"
+        ],
+        "test_cases": [
+          {
+            "id": "TC-031-01",
+            "title": "Install Prompt Android/Chrome",
+            "steps": ["Open app in Chrome", "Use app for 30 seconds"],
+            "expected_result": "Install prompt banner appears"
+          },
+          {
+            "id": "TC-031-02",
+            "title": "iOS Instructions",
+            "steps": ["Open app in Safari iOS"],
+            "expected_result": "Shows 'Add to Home Screen' instructions"
+          }
+        ]
+      },
+      {
+        "id": "US-032",
+        "title": "App Update Prompt",
+        "description": "As a user, I want to know when a new version is available.",
+        "priority": "high",
+        "story_points": 3,
+        "tasks": [
+          {
+            "id": "T-032-01",
+            "title": "Create update prompt component",
+            "description": "Dialog component for app update notification.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-032-02",
+            "title": "Detect service worker update",
+            "description": "Listen for updatefound event on SW registration.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-032-03",
+            "title": "Implement skip waiting flow",
+            "description": "Prompt user to reload for new version.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          }
+        ],
+        "acceptance_criteria": [
+          "Shows prompt when new version available",
+          "User can dismiss or update immediately",
+          "App reloads cleanly on update"
+        ],
+        "test_cases": [
+          {
+            "id": "TC-032-01",
+            "title": "Update Prompt",
+            "steps": ["Deploy new version", "User has old version open"],
+            "expected_result": "Update prompt appears"
+          }
+        ]
+      },
+      {
+        "id": "US-033",
+        "title": "Offline Page",
+        "description": "As a user, I want a friendly offline page when navigating to uncached content.",
+        "priority": "medium",
+        "story_points": 3,
+        "tasks": [
+          {
+            "id": "T-033-01",
+            "title": "Create offline page",
+            "description": "Build friendly offline fallback page.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-033-02",
+            "title": "Configure service worker fallback",
+            "description": "Return offline page for failed navigation requests.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-033-03",
+            "title": "Add retry button",
+            "description": "Button to retry loading the page.",
+            "status": "pending",
+            "estimated_hours": 1,
+            "assignee": null
+          }
+        ],
+        "acceptance_criteria": [
+          "Friendly offline page shows when offline",
+          "Clear message about offline status",
+          "Retry button works when back online"
+        ],
+        "test_cases": [
+          {
+            "id": "TC-033-01",
+            "title": "Offline Fallback",
+            "steps": ["Go offline", "Try to navigate to new page"],
+            "expected_result": "Shows offline page instead of error"
+          }
+        ]
+      },
+      {
+        "id": "US-034",
+        "title": "Push Notifications",
+        "description": "As a user, I want to receive reminders to log milk production.",
+        "priority": "medium",
+        "story_points": 8,
+        "tasks": [
+          {
+            "id": "T-034-01",
+            "title": "Request notification permission",
+            "description": "Prompt for notification permission at appropriate time.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-034-02",
+            "title": "Register push subscription",
+            "description": "Register with push service and send token to backend.",
+            "status": "pending",
+            "estimated_hours": 3,
+            "assignee": null
+          },
+          {
+            "id": "T-034-03",
+            "title": "Handle push events in SW",
+            "description": "Show notification when push message received.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-034-04",
+            "title": "Handle notification click",
+            "description": "Open app to relevant page on notification tap.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-034-05",
+            "title": "Notification settings page",
+            "description": "Allow user to enable/disable notification types.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          }
+        ],
+        "acceptance_criteria": [
+          "Permission requested at appropriate time",
+          "Notifications received when app is closed",
+          "Tapping notification opens correct page",
+          "User can manage notification preferences"
+        ],
+        "test_cases": [
+          {
+            "id": "TC-034-01",
+            "title": "Receive Notification",
+            "steps": ["Enable notifications", "Close app", "Trigger notification from server"],
+            "expected_result": "Notification appears on device"
+          }
+        ]
+      },
+      {
+        "id": "US-035",
+        "title": "Performance Optimization",
+        "description": "As a user, I want the app to load quickly and feel responsive.",
+        "priority": "high",
+        "story_points": 5,
+        "tasks": [
+          {
+            "id": "T-035-01",
+            "title": "Implement route-based code splitting",
+            "description": "Lazy load route components for smaller initial bundle.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-035-02",
+            "title": "Optimize images",
+            "description": "Compress images, use WebP format where supported.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-035-03",
+            "title": "Configure service worker caching",
+            "description": "Optimize caching strategies for different asset types.",
+            "status": "pending",
+            "estimated_hours": 3,
+            "assignee": null
+          },
+          {
+            "id": "T-035-04",
+            "title": "Implement virtual scrolling",
+            "description": "Use virtual scroll for long lists (feeds, logs).",
+            "status": "pending",
+            "estimated_hours": 3,
+            "assignee": null
+          },
+          {
+            "id": "T-035-05",
+            "title": "Run Lighthouse audit",
+            "description": "Audit and fix issues to achieve 90+ score.",
+            "status": "pending",
+            "estimated_hours": 3,
+            "assignee": null
+          }
+        ],
+        "acceptance_criteria": [
+          "Lighthouse PWA score 90+",
+          "Lighthouse Performance score 80+",
+          "First contentful paint < 2 seconds",
+          "Long lists scroll smoothly"
+        ],
+        "test_cases": [
+          {
+            "id": "TC-035-01",
+            "title": "Lighthouse Audit",
+            "steps": ["Run Lighthouse on production build"],
+            "expected_result": "PWA score 90+, Performance 80+"
+          }
+        ]
+      },
+      {
+        "id": "US-036",
+        "title": "User Profile & Settings",
+        "description": "As a user, I want to manage my profile and app settings.",
+        "priority": "medium",
+        "story_points": 5,
+        "tasks": [
+          {
+            "id": "T-036-01",
+            "title": "Create profile page",
+            "description": "Build page showing user information.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-036-02",
+            "title": "Edit profile form",
+            "description": "Allow updating name, country, breed preferences.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-036-03",
+            "title": "Change PIN functionality",
+            "description": "Form to change account PIN.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-036-04",
+            "title": "Settings page",
+            "description": "Build settings page with notification, sync, and display options.",
+            "status": "pending",
+            "estimated_hours": 3,
+            "assignee": null
+          },
+          {
+            "id": "T-036-05",
+            "title": "Logout functionality",
+            "description": "Clear local data and tokens on logout.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          }
+        ],
+        "acceptance_criteria": [
+          "User can view and edit profile",
+          "User can change PIN",
+          "Settings persist locally",
+          "Logout clears all local data"
+        ],
+        "test_cases": [
+          {
+            "id": "TC-036-01",
+            "title": "Edit Profile",
+            "steps": ["Go to profile", "Change name", "Save"],
+            "expected_result": "Name updates successfully"
+          },
+          {
+            "id": "TC-036-02",
+            "title": "Logout",
+            "steps": ["Tap logout", "Confirm"],
+            "expected_result": "Redirected to login, data cleared"
+          }
+        ]
+      },
+      {
+        "id": "US-037",
+        "title": "App Icons & Splash Screens",
+        "description": "As a user, I want the app to have professional icons and splash screens.",
+        "priority": "high",
+        "story_points": 3,
+        "tasks": [
+          {
+            "id": "T-037-01",
+            "title": "Create app icon set",
+            "description": "Generate all required icon sizes (192, 512, maskable).",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-037-02",
+            "title": "Create iOS apple-touch-icons",
+            "description": "Generate iOS-specific icon sizes.",
+            "status": "pending",
+            "estimated_hours": 1,
+            "assignee": null
+          },
+          {
+            "id": "T-037-03",
+            "title": "Create splash screens",
+            "description": "Generate splash screens for various device sizes.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-037-04",
+            "title": "Configure manifest icons",
+            "description": "Update manifest with all icon references.",
+            "status": "pending",
+            "estimated_hours": 1,
+            "assignee": null
+          }
+        ],
+        "acceptance_criteria": [
+          "App icon appears correctly when installed",
+          "Splash screen shows on app launch",
+          "Icons work on both Android and iOS"
+        ],
+        "test_cases": [
+          {
+            "id": "TC-037-01",
+            "title": "Install Icon",
+            "steps": ["Install PWA on device"],
+            "expected_result": "App icon shows on home screen"
+          }
+        ]
+      },
+      {
+        "id": "US-038",
+        "title": "Error Handling & Analytics",
+        "description": "As a developer, I want comprehensive error handling and usage analytics.",
+        "priority": "medium",
+        "story_points": 5,
+        "tasks": [
+          {
+            "id": "T-038-01",
+            "title": "Implement global error boundary",
+            "description": "Catch and display friendly error messages.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-038-02",
+            "title": "Add error logging service",
+            "description": "Log errors for debugging (integrate with backend /events).",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-038-03",
+            "title": "Track key user events",
+            "description": "Log events for diet optimization, cow creation, milk logging.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-038-04",
+            "title": "Create analytics composable",
+            "description": "Build reusable composable for event tracking.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          }
+        ],
+        "acceptance_criteria": [
+          "Errors show user-friendly messages",
+          "Critical errors are logged to backend",
+          "Key user actions are tracked",
+          "Analytics events queue when offline"
+        ],
+        "test_cases": [
+          {
+            "id": "TC-038-01",
+            "title": "Error Boundary",
+            "steps": ["Trigger an error in a component"],
+            "expected_result": "Friendly error message shows, not crash"
+          }
+        ]
+      },
+      {
+        "id": "US-039",
+        "title": "Accessibility Audit",
+        "description": "As a user with disabilities, I want to use the app with assistive technologies.",
+        "priority": "medium",
+        "story_points": 5,
+        "tasks": [
+          {
+            "id": "T-039-01",
+            "title": "Add ARIA labels",
+            "description": "Ensure all interactive elements have proper labels.",
+            "status": "pending",
+            "estimated_hours": 3,
+            "assignee": null
+          },
+          {
+            "id": "T-039-02",
+            "title": "Ensure keyboard navigation",
+            "description": "All features accessible via keyboard.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-039-03",
+            "title": "Check color contrast",
+            "description": "Ensure text meets WCAG contrast requirements.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-039-04",
+            "title": "Test with screen reader",
+            "description": "Test app with VoiceOver/TalkBack.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          }
+        ],
+        "acceptance_criteria": [
+          "Lighthouse accessibility score 90+",
+          "All features keyboard accessible",
+          "Color contrast meets WCAG AA",
+          "Screen reader can navigate all content"
+        ],
+        "test_cases": [
+          {
+            "id": "TC-039-01",
+            "title": "Keyboard Navigation",
+            "steps": ["Navigate entire app using only keyboard"],
+            "expected_result": "All features accessible"
+          }
+        ]
+      },
+      {
+        "id": "US-040",
+        "title": "Production Deployment",
+        "description": "As a developer, I want to deploy the PWA to production.",
+        "priority": "critical",
+        "story_points": 5,
+        "tasks": [
+          {
+            "id": "T-040-01",
+            "title": "Configure environment variables",
+            "description": "Set up production API URL, keys, etc.",
+            "status": "pending",
+            "estimated_hours": 1,
+            "assignee": null
+          },
+          {
+            "id": "T-040-02",
+            "title": "Set up CI/CD pipeline",
+            "description": "Configure automated builds and deployments.",
+            "status": "pending",
+            "estimated_hours": 3,
+            "assignee": null
+          },
+          {
+            "id": "T-040-03",
+            "title": "Configure HTTPS",
+            "description": "Ensure production serves over HTTPS.",
+            "status": "pending",
+            "estimated_hours": 1,
+            "assignee": null
+          },
+          {
+            "id": "T-040-04",
+            "title": "Set up CDN",
+            "description": "Configure CDN for static assets.",
+            "status": "pending",
+            "estimated_hours": 2,
+            "assignee": null
+          },
+          {
+            "id": "T-040-05",
+            "title": "Final Lighthouse audit",
+            "description": "Run final audit on production URL.",
+            "status": "pending",
+            "estimated_hours": 1,
+            "assignee": null
+          }
+        ],
+        "acceptance_criteria": [
+          "PWA accessible at production URL",
+          "HTTPS enabled",
+          "Lighthouse scores meet targets",
+          "CI/CD deploys on merge to main"
+        ],
+        "test_cases": [
+          {
+            "id": "TC-040-01",
+            "title": "Production Deploy",
+            "steps": ["Merge to main", "Wait for deployment"],
+            "expected_result": "New version live at production URL"
+          }
+        ]
+      }
+    ],
+    "sprint_goals": [
+      "Complete PWA installation experience",
+      "Performance optimization and Lighthouse 90+",
+      "Push notifications working",
+      "Production deployment ready"
+    ],
+    "definition_of_done": [
+      "Lighthouse PWA score 90+",
+      "All PWA features work on Android and iOS",
+      "Install prompt shows correctly",
+      "App is deployed to production"
+    ]
+  }
+}

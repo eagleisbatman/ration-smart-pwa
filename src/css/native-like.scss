@@ -1,0 +1,340 @@
+/**
+ * Native-Like PWA Styles
+ * Touch-optimized styles for a native app feel
+ */
+
+// ========================================
+// Touch Targets (44px minimum - Apple HIG)
+// ========================================
+
+.q-btn,
+.q-item,
+.q-tab,
+[role='button'] {
+  min-height: 44px;
+}
+
+.q-btn--round {
+  min-width: 44px;
+}
+
+// ========================================
+// iOS Safe Areas
+// ========================================
+
+body {
+  // Support for notched devices
+  padding-top: env(safe-area-inset-top);
+  padding-right: env(safe-area-inset-right);
+  padding-left: env(safe-area-inset-left);
+}
+
+// Header respects safe area
+.q-header {
+  padding-top: env(safe-area-inset-top);
+}
+
+// Footer respects safe area
+.q-footer {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+// ========================================
+// Smooth Touch Scrolling
+// ========================================
+
+.q-page,
+.q-scroll-area__container,
+.scrollable {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+// Prevent bounce on body (keeps scroll in containers)
+html,
+body {
+  overscroll-behavior: none;
+}
+
+// ========================================
+// Disable Text Selection on Interactive Elements
+// ========================================
+
+.q-btn,
+.q-tab,
+.q-item--clickable,
+.q-chip--clickable,
+.q-fab,
+[role='button'] {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+// Enable text selection for content
+.q-card__section,
+.text-body1,
+.text-body2,
+.text-caption {
+  -webkit-user-select: auto;
+  user-select: auto;
+}
+
+// ========================================
+// Touch Feedback
+// ========================================
+
+// Subtle press effect
+.q-btn:active,
+.q-item--clickable:active,
+.q-chip--clickable:active {
+  opacity: 0.85;
+  transform: scale(0.98);
+  transition: transform 0.1s ease-out, opacity 0.1s ease-out;
+}
+
+// ========================================
+// Smooth Transitions
+// ========================================
+
+// Page transitions
+.q-page {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+// Card animations
+.q-card {
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.q-card:active {
+  transform: scale(0.995);
+}
+
+// ========================================
+// Native-like Card Styling
+// ========================================
+
+.q-card {
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+// ========================================
+// Native-like List Styling
+// ========================================
+
+.q-list--bordered {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.q-item {
+  transition: background-color 0.15s ease;
+}
+
+// ========================================
+// Pull-to-Refresh Indicator
+// ========================================
+
+.pull-to-refresh {
+  position: relative;
+
+  &__indicator {
+    position: absolute;
+    top: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: transform 0.2s ease-out;
+  }
+
+  &--pulling &__indicator {
+    transform: translateX(-50%) translateY(50px);
+  }
+}
+
+// ========================================
+// Skeleton Loading Animations
+// ========================================
+
+@keyframes skeleton-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.06) 25%,
+    rgba(0, 0, 0, 0.1) 50%,
+    rgba(0, 0, 0, 0.06) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s ease-in-out infinite;
+  border-radius: 4px;
+}
+
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+// ========================================
+// Bottom Sheet Styling
+// ========================================
+
+.bottom-sheet {
+  border-radius: 16px 16px 0 0;
+
+  &__handle {
+    width: 36px;
+    height: 4px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 2px;
+    margin: 8px auto 16px;
+  }
+}
+
+// ========================================
+// Input Enhancements
+// ========================================
+
+// Larger touch targets for inputs
+.q-field__control {
+  min-height: 48px;
+}
+
+// iOS-style focus ring
+.q-field--outlined.q-field--focused .q-field__control {
+  box-shadow: 0 0 0 2px var(--q-primary);
+}
+
+// ========================================
+// Floating Action Button
+// ========================================
+
+.q-fab {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:active {
+    transform: scale(0.95);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+}
+
+// ========================================
+// Status Bar Integration (iOS)
+// ========================================
+
+// When app is in standalone mode
+@media (display-mode: standalone) {
+  .q-header {
+    padding-top: max(20px, env(safe-area-inset-top));
+  }
+}
+
+// ========================================
+// Landscape Support
+// ========================================
+
+@media screen and (orientation: landscape) {
+  // Adjust for landscape safe areas
+  .q-drawer {
+    padding-left: env(safe-area-inset-left);
+  }
+
+  .q-page {
+    padding-right: env(safe-area-inset-right);
+  }
+}
+
+// ========================================
+// Dark Mode Support
+// ========================================
+
+.body--dark {
+  .q-card {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .skeleton {
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.06) 25%,
+      rgba(255, 255, 255, 0.1) 50%,
+      rgba(255, 255, 255, 0.06) 75%
+    );
+    background-size: 200% 100%;
+  }
+
+  .bottom-sheet__handle {
+    background: rgba(255, 255, 255, 0.3);
+  }
+}
+
+// ========================================
+// Responsive Typography
+// ========================================
+
+// Slightly larger text on mobile for readability
+@media screen and (max-width: 599px) {
+  .text-body2 {
+    font-size: 0.9375rem; // 15px
+  }
+
+  .text-caption {
+    font-size: 0.8125rem; // 13px
+  }
+}
+
+// ========================================
+// Disabled State
+// ========================================
+
+.q-btn--disabled,
+.q-item--disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+// ========================================
+// Pending Sync Indicator
+// ========================================
+
+.sync-pending {
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 8px;
+    height: 8px;
+    background-color: var(--q-warning);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.1);
+  }
+}
