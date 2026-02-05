@@ -1,0 +1,15 @@
+# Nixpacks configuration for Railway deployment
+# Quasar PWA static site
+
+[phases.setup]
+nixPkgs = ["nodejs_20"]
+
+[phases.install]
+cmds = ["npm install -g bun", "bun install"]
+
+[phases.build]
+cmds = ["bun run build"]
+
+[start]
+# Serve static files from dist/spa using a simple static server
+cmd = "npx serve dist/spa -l ${PORT:-3000} -s"
