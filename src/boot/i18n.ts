@@ -77,9 +77,12 @@ export function setLocale(locale: string): void {
 
 /**
  * Get current locale
+ * Note: With legacy: false, i18n.global.locale is a Ref<string>
  */
 export function getLocale(): string {
-  return String(i18n.global.locale);
+  // In composition API mode (legacy: false), locale is a Ref
+  // Access the value property directly
+  return (i18n.global.locale as unknown as { value: string }).value;
 }
 
 /**
