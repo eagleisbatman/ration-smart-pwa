@@ -1,6 +1,8 @@
 {
-  "extends": "@quasar/app-vite/tsconfig-preset",
   "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
     "baseUrl": ".",
     "paths": {
       "src/*": ["src/*"],
@@ -9,7 +11,8 @@
       "layouts/*": ["src/layouts/*"],
       "pages/*": ["src/pages/*"],
       "stores/*": ["src/stores/*"],
-      "boot/*": ["src/boot/*"]
+      "boot/*": ["src/boot/*"],
+      "#q-app/*": ["node_modules/@quasar/app-vite/*"]
     },
     "strict": true,
     "noImplicitAny": true,
@@ -26,7 +29,9 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "lib": ["ESNext", "DOM", "WebWorker"]
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "jsx": "preserve",
+    "types": ["vite/client", "@quasar/app-vite"]
   },
   "include": [
     "src/**/*.ts",
