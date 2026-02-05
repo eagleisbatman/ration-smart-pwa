@@ -1,14 +1,14 @@
 <template>
   <div class="register-page">
-    <q-form @submit="onSubmit" class="q-gutter-md">
+    <q-form class="q-gutter-md" @submit="onSubmit">
       <!-- Name -->
       <q-input
         v-model="form.name"
-        label="Your Name"
+        :label="$t('profile.fullName')"
         outlined
-        :rules="[(val) => !!val || 'Name is required']"
+        :rules="[(val) => !!val || $t('validation.required')]"
       >
-        <template v-slot:prepend>
+        <template #prepend>
           <q-icon name="person" />
         </template>
       </q-input>
@@ -24,8 +24,8 @@
         color="grey-3"
         text-color="grey-8"
         :options="[
-          { label: 'Email', value: 'email' },
-          { label: 'Phone', value: 'phone' },
+          { label: $t('auth.email'), value: 'email' },
+          { label: $t('auth.phone'), value: 'phone' },
         ]"
       />
 
@@ -33,15 +33,15 @@
       <q-input
         v-if="registerMethod === 'email'"
         v-model="form.email"
-        label="Email Address"
+        :label="$t('auth.email')"
         type="email"
         outlined
         :rules="[
-          (val) => !!val || 'Email is required',
-          (val) => /.+@.+\..+/.test(val) || 'Enter a valid email',
+          (val) => !!val || $t('validation.required'),
+          (val) => /.+@.+\..+/.test(val) || $t('validation.invalidEmail'),
         ]"
       >
-        <template v-slot:prepend>
+        <template #prepend>
           <q-icon name="email" />
         </template>
       </q-input>
@@ -50,13 +50,13 @@
       <q-input
         v-else
         v-model="form.phone"
-        label="Phone Number"
+        :label="$t('auth.phone')"
         type="tel"
         outlined
         mask="##########"
-        :rules="[(val) => !!val || 'Phone number is required']"
+        :rules="[(val) => !!val || $t('validation.required')]"
       >
-        <template v-slot:prepend>
+        <template #prepend>
           <q-icon name="phone" />
         </template>
       </q-input>
@@ -64,14 +64,14 @@
       <!-- Country Selection -->
       <q-select
         v-model="form.country_code"
-        label="Country"
+        :label="$t('profile.country')"
         outlined
         :options="countryOptions"
         emit-value
         map-options
-        :rules="[(val) => !!val || 'Please select a country']"
+        :rules="[(val) => !!val || $t('validation.required')]"
       >
-        <template v-slot:prepend>
+        <template #prepend>
           <q-icon name="public" />
         </template>
       </q-select>
@@ -79,19 +79,19 @@
       <!-- PIN Input -->
       <q-input
         v-model="form.pin"
-        label="Create PIN (4 digits)"
+        :label="$t('auth.createPin')"
         :type="showPin ? 'text' : 'password'"
         outlined
         mask="####"
         :rules="[
-          (val) => !!val || 'PIN is required',
-          (val) => val.length === 4 || 'PIN must be 4 digits',
+          (val) => !!val || $t('validation.required'),
+          (val) => val.length === 4 || $t('validation.pinLength'),
         ]"
       >
-        <template v-slot:prepend>
+        <template #prepend>
           <q-icon name="lock" />
         </template>
-        <template v-slot:append>
+        <template #append>
           <q-icon
             :name="showPin ? 'visibility_off' : 'visibility'"
             class="cursor-pointer"
@@ -103,16 +103,16 @@
       <!-- Confirm PIN -->
       <q-input
         v-model="form.confirmPin"
-        label="Confirm PIN"
+        :label="$t('auth.confirmPin')"
         :type="showPin ? 'text' : 'password'"
         outlined
         mask="####"
         :rules="[
-          (val) => !!val || 'Please confirm your PIN',
-          (val) => val === form.pin || 'PINs do not match',
+          (val) => !!val || $t('validation.required'),
+          (val) => val === form.pin || $t('validation.pinMismatch'),
         ]"
       >
-        <template v-slot:prepend>
+        <template #prepend>
           <q-icon name="lock" />
         </template>
       </q-input>
@@ -124,7 +124,7 @@
 
       <!-- Submit Button -->
       <q-btn
-        label="Create Account"
+        :label="$t('auth.createAccount')"
         type="submit"
         color="primary"
         class="full-width"
@@ -135,13 +135,13 @@
 
       <!-- Login Link -->
       <div class="text-center q-mt-md">
-        <span class="text-grey-7">Already have an account?</span>
+        <span class="text-grey-7">{{ $t('auth.haveAccount') }}</span>
         <q-btn
           flat
           dense
           no-caps
           color="primary"
-          label="Login"
+          :label="$t('auth.login')"
           @click="router.push('/auth/login')"
         />
       </div>
@@ -153,7 +153,6 @@
 import { ref, reactive, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from 'src/stores/auth';
-
 const router = useRouter();
 const authStore = useAuthStore();
 
@@ -175,6 +174,7 @@ const countryOptions = [
   { label: 'Ethiopia', value: 'ET' },
   { label: 'Nepal', value: 'NP' },
   { label: 'Bangladesh', value: 'BD' },
+  { label: 'Vietnam', value: 'VN' },
   { label: 'Other', value: 'OTHER' },
 ];
 
@@ -192,7 +192,10 @@ async function onSubmit() {
   const success = await authStore.register(data);
 
   if (success) {
-    router.push('/');
+    // Store country for onboarding flow
+    sessionStorage.setItem('selected_country', form.country_code);
+    // Start onboarding flow
+    router.push('/auth/language');
   }
 }
 </script>

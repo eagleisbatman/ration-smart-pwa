@@ -240,7 +240,7 @@ export const useYieldsStore = defineStore('yields', () => {
       // Save locally for offline sync
       yieldRecords.value.unshift(localRecord);
       await db.yieldData.put(localRecord);
-      await db.addToSyncQueue('yield', localId, 'create', input as Record<string, unknown>);
+      await db.addToSyncQueue('yield', localId, 'create', input as unknown as Record<string, unknown>);
 
       return localRecord;
     } finally {

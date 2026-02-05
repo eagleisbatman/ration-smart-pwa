@@ -25,7 +25,7 @@
       />
 
       <!-- Report Preview (if available) -->
-      <q-card flat bordered v-if="report.file_url">
+      <q-card v-if="report.file_url" flat bordered>
         <q-card-section>
           <div class="text-center q-pa-xl">
             <q-icon name="picture_as_pdf" size="64px" color="negative" />

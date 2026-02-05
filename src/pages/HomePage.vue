@@ -92,7 +92,7 @@
       </template>
       <template v-else>
         <q-list bordered separator class="rounded-borders q-mb-lg">
-          <q-item v-for="log in todayLogs" :key="log.id" clickable v-ripple>
+          <q-item v-for="log in todayLogs" :key="log.id" v-ripple clickable>
             <q-item-section avatar>
               <q-avatar color="primary" text-color="white">
                 <q-icon name="pets" />

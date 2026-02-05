@@ -1,6 +1,6 @@
 <template>
   <q-page class="q-pa-md">
-    <q-form @submit="onSubmit" class="q-gutter-md">
+    <q-form class="q-gutter-md" @submit="onSubmit">
       <!-- Avatar -->
       <div class="text-center q-mb-lg">
         <q-avatar size="100px" color="primary" text-color="white">
@@ -15,7 +15,7 @@
         outlined
         :rules="[(val) => !!val || 'Name is required']"
       >
-        <template v-slot:prepend>
+        <template #prepend>
           <q-icon name="person" />
         </template>
       </q-input>
@@ -29,7 +29,7 @@
         :readonly="!!authStore.user?.email"
         :hint="authStore.user?.email ? 'Contact support to change email' : ''"
       >
-        <template v-slot:prepend>
+        <template #prepend>
           <q-icon name="email" />
         </template>
       </q-input>
@@ -42,7 +42,7 @@
         :readonly="!!authStore.user?.phone"
         :hint="authStore.user?.phone ? 'Contact support to change phone' : ''"
       >
-        <template v-slot:prepend>
+        <template #prepend>
           <q-icon name="phone" />
         </template>
       </q-input>
@@ -56,7 +56,7 @@
         emit-value
         map-options
       >
-        <template v-slot:prepend>
+        <template #prepend>
           <q-icon name="public" />
         </template>
       </q-select>
@@ -70,7 +70,7 @@
         emit-value
         map-options
       >
-        <template v-slot:prepend>
+        <template #prepend>
           <q-icon name="language" />
         </template>
       </q-select>
@@ -135,7 +135,7 @@
         </q-card-section>
 
         <q-card-actions align="right">
-          <q-btn flat label="Cancel" v-close-popup />
+          <q-btn v-close-popup flat label="Cancel" />
           <q-btn
             flat
             label="Change"

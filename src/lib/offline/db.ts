@@ -8,6 +8,10 @@ export interface User {
   name?: string;
   country_code: string;
   language: string;
+  language_code?: string;
+  user_role?: string;
+  organization_id?: string | null;
+  self_farmer_profile_id?: string | null;
   created_at: string;
   updated_at: string;
 }

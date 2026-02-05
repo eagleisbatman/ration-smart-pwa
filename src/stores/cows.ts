@@ -79,7 +79,7 @@ export const useCowsStore = defineStore('cows', () => {
 
   async function getCow(id: string): Promise<Cow | null> {
     // Try local first
-    let cow = await db.cows.get(id);
+    const cow = await db.cows.get(id);
 
     if (!cow && isOnline.value) {
       try {

@@ -2,8 +2,8 @@
   <q-page class="q-pa-md">
     <!-- Stepper -->
     <q-stepper
-      v-model="step"
       ref="stepper"
+      v-model="step"
       color="primary"
       animated
       flat
@@ -118,7 +118,7 @@
           placeholder="Search feeds..."
           class="q-mb-md"
         >
-          <template v-slot:prepend>
+          <template #prepend>
             <q-icon name="search" />
           </template>
         </q-input>
@@ -127,8 +127,8 @@
           <q-item
             v-for="feed in filteredFeeds"
             :key="feed.id"
-            tag="label"
             v-ripple
+            tag="label"
           >
             <q-item-section side>
               <q-checkbox
@@ -143,7 +143,7 @@
                 {{ feed.category }} · CP: {{ feed.cp_percentage }}% · TDN: {{ feed.tdn_percentage }}%
               </q-item-label>
             </q-item-section>
-            <q-item-section side v-if="feed.price_per_kg">
+            <q-item-section v-if="feed.price_per_kg" side>
               <q-item-label caption>₹{{ feed.price_per_kg }}/kg</q-item-label>
             </q-item-section>
           </q-item>
@@ -163,7 +163,7 @@
           :options="goalOptions"
           color="primary"
         >
-          <template v-slot:label="opt">
+          <template #label="opt">
             <div class="row items-center">
               <q-icon :name="opt.icon" size="24px" class="q-mr-sm" :color="opt.color" />
               <div>
@@ -220,7 +220,7 @@
 
         <!-- Offline Warning -->
         <q-banner v-if="!isOnline" class="bg-warning text-white q-mb-md" rounded>
-          <template v-slot:avatar>
+          <template #avatar>
             <q-icon name="cloud_off" />
           </template>
           Diet optimization requires an internet connection. Please go online to continue.
@@ -228,30 +228,30 @@
       </q-step>
 
       <!-- Navigation -->
-      <template v-slot:navigation>
+      <template #navigation>
         <q-stepper-navigation>
           <q-btn
             v-if="step > 1"
             flat
             color="primary"
             label="Back"
-            @click="stepper?.previous()"
             class="q-mr-sm"
+            @click="stepper?.previous()"
           />
           <q-btn
             v-if="step < 5"
             color="primary"
             label="Continue"
-            @click="stepper?.next()"
             :disable="!canProceed"
+            @click="stepper?.next()"
           />
           <q-btn
             v-else
             color="primary"
             label="Generate Diet"
-            @click="submitDiet"
             :loading="optimizing"
             :disable="!isOnline || form.available_feeds.length < 2"
+            @click="submitDiet"
           />
         </q-stepper-navigation>
       </template>

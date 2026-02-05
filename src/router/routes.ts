@@ -24,6 +24,31 @@ const routes: RouteRecordRaw[] = [
         component: () => import('pages/auth/CountrySelectPage.vue'),
         meta: { requiresGuest: true },
       },
+      // New onboarding flow
+      {
+        path: 'language',
+        name: 'language-select',
+        component: () => import('pages/auth/LanguageSelectPage.vue'),
+        meta: { requiresAuth: true, isOnboarding: true },
+      },
+      {
+        path: 'role',
+        name: 'role-select',
+        component: () => import('pages/auth/RoleSelectPage.vue'),
+        meta: { requiresAuth: true, isOnboarding: true },
+      },
+      {
+        path: 'organization',
+        name: 'org-select',
+        component: () => import('pages/auth/OrgSelectPage.vue'),
+        meta: { requiresAuth: true, isOnboarding: true },
+      },
+      {
+        path: 'profile-setup',
+        name: 'profile-setup',
+        component: () => import('pages/auth/MyProfileSetupPage.vue'),
+        meta: { requiresAuth: true, isOnboarding: true },
+      },
     ],
   },
 

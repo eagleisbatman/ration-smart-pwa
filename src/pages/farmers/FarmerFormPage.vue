@@ -1,6 +1,6 @@
 <template>
   <q-page class="q-pa-md">
-    <q-form @submit="onSubmit" class="q-gutter-md">
+    <q-form class="q-gutter-md" @submit="onSubmit">
       <!-- Basic Info Section -->
       <div class="text-subtitle1 text-weight-medium q-mb-sm">Basic Information</div>
 
@@ -114,13 +114,13 @@
           The farmer profile will be archived and hidden from the list. Associated data will be preserved.
         </q-card-section>
         <q-card-actions align="right">
-          <q-btn flat label="Cancel" v-close-popup />
+          <q-btn v-close-popup flat label="Cancel" />
           <q-btn
             flat
             label="Archive"
             color="negative"
-            @click="onArchive"
             :loading="loading"
+            @click="onArchive"
           />
         </q-card-actions>
       </q-card>

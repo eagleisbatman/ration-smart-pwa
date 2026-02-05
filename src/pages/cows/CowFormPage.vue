@@ -1,6 +1,6 @@
 <template>
   <q-page class="q-pa-md">
-    <q-form @submit="onSubmit" class="q-gutter-md">
+    <q-form class="q-gutter-md" @submit="onSubmit">
       <!-- Basic Info Section -->
       <div class="text-subtitle1 text-weight-medium q-mb-sm">Basic Information</div>
 
@@ -153,7 +153,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted } from 'vue';
+import { reactive, computed, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useQuasar } from 'quasar';
 import { useCowsStore, CowInput } from 'src/stores/cows';

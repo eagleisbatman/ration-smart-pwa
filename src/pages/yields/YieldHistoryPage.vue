@@ -77,8 +77,8 @@
           <q-item
             v-for="record in yieldRecords"
             :key="record.id"
-            clickable
             v-ripple
+            clickable
           >
             <q-item-section avatar>
               <q-avatar color="positive" text-color="white">
@@ -150,8 +150,8 @@
         </q-card-section>
 
         <q-card-actions align="right">
-          <q-btn flat label="Clear" @click="clearDateFilter" v-close-popup />
-          <q-btn flat label="Apply" color="primary" @click="applyDateFilter" v-close-popup />
+          <q-btn v-close-popup flat label="Clear" @click="clearDateFilter" />
+          <q-btn v-close-popup flat label="Apply" color="primary" @click="applyDateFilter" />
         </q-card-actions>
       </q-card>
     </q-dialog>

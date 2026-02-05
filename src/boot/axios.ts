@@ -43,17 +43,17 @@ api.interceptors.request.use(
 
     // Add API key header
     const apiKey = process.env.APP_API_KEY;
-    if (apiKey) {
+    if (apiKey && adaptedConfig.headers) {
       adaptedConfig.headers['X-API-Key'] = apiKey;
     }
 
     // Add auth token if available
-    if (authStore.token) {
+    if (authStore.token && adaptedConfig.headers) {
       adaptedConfig.headers['Authorization'] = `Bearer ${authStore.token}`;
     }
 
     // Add user ID header if available
-    if (authStore.userId) {
+    if (authStore.userId && adaptedConfig.headers) {
       adaptedConfig.headers['X-User-ID'] = authStore.userId;
     }
 

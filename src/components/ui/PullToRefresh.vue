@@ -1,5 +1,5 @@
 <template>
-  <q-pull-to-refresh @refresh="onRefresh" :color="color">
+  <q-pull-to-refresh :color="color" @refresh="onRefresh">
     <slot />
   </q-pull-to-refresh>
 </template>

@@ -9,10 +9,10 @@
         placeholder="Search cows..."
         class="q-mb-md"
       >
-        <template v-slot:prepend>
+        <template #prepend>
           <q-icon name="search" />
         </template>
-        <template v-slot:append v-if="searchQuery">
+        <template v-if="searchQuery" #append>
           <q-icon name="close" class="cursor-pointer" @click="searchQuery = ''" />
         </template>
       </q-input>
@@ -40,8 +40,8 @@
           <q-item
             v-for="cow in filteredCows"
             :key="cow.id"
-            clickable
             v-ripple
+            clickable
             @click="router.push(`/cows/${cow.id}`)"
           >
             <q-item-section avatar>

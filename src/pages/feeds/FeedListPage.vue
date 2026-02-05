@@ -21,10 +21,10 @@
         placeholder="Search feeds..."
         class="q-mb-md"
       >
-        <template v-slot:prepend>
+        <template #prepend>
           <q-icon name="search" />
         </template>
-        <template v-slot:append v-if="searchQuery">
+        <template v-if="searchQuery" #append>
           <q-icon name="close" class="cursor-pointer" @click="searchQuery = ''" />
         </template>
       </q-input>
@@ -61,8 +61,8 @@
             <q-item
               v-for="feed in categoryFeeds"
               :key="feed.id"
-              clickable
               v-ripple
+              clickable
               @click="router.push(`/feeds/${feed.id}`)"
             >
               <q-item-section avatar>

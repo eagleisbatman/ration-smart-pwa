@@ -18,6 +18,8 @@ const API_ENDPOINTS: Record<SyncQueueItem['entity_type'], string> = {
   feed: '/api/v1/feeds/custom',
   diet: '/api/v1/diet',
   milk_log: '/api/v1/milk-logs',
+  farmer: '/api/v1/farmers',
+  yield: '/api/v1/yield-data',
 };
 
 // Update pending count
@@ -119,6 +121,7 @@ async function markEntitySynced(
   operation: SyncQueueItem['operation']
 ): Promise<void> {
   const table = getTableForEntityType(entityType);
+  if (!table) return;
 
   if (operation === 'delete') {
     // Remove from local DB after successful delete sync
@@ -140,6 +143,12 @@ function getTableForEntityType(entityType: SyncQueueItem['entity_type']) {
       return db.diets;
     case 'milk_log':
       return db.milkLogs;
+    case 'farmer':
+      return db.farmerProfiles;
+    case 'yield':
+      return db.yieldData;
+    default:
+      return undefined;
   }
 }
 
@@ -208,6 +217,8 @@ export async function queueDelete(
 
   // Check if entity was ever synced (has _synced: true)
   const table = getTableForEntityType(entityType);
+  if (!table) return;
+
   const entity = await table.get(entityId);
 
   if (entity && (entity as { _synced?: boolean })._synced) {

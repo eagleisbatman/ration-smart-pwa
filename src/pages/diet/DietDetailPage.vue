@@ -13,7 +13,7 @@
         :class="`bg-${getStatusColor(diet.status)} text-white q-mb-md`"
         rounded
       >
-        <template v-slot:avatar>
+        <template #avatar>
           <q-icon :name="getStatusIcon(diet.status)" />
         </template>
         <template v-if="diet.status === 'processing'">

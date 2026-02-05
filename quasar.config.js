@@ -7,7 +7,7 @@ module.exports = configure((/* ctx */) => {
       errors: true,
     },
 
-    boot: ['axios', 'dexie', 'pwa'],
+    boot: ['axios', 'dexie', 'pwa', 'i18n'],
 
     css: ['app.scss'],
 

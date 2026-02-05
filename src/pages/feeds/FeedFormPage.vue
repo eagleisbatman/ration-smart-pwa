@@ -1,6 +1,6 @@
 <template>
   <q-page class="q-pa-md">
-    <q-form @submit="onSubmit" class="q-gutter-md">
+    <q-form class="q-gutter-md" @submit="onSubmit">
       <!-- Basic Info -->
       <q-input
         v-model="form.name"

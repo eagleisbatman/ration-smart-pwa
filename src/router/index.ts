@@ -24,6 +24,7 @@ export default route(function (/* { store, ssrContext } */) {
   // Navigation guards
   Router.beforeEach((to, _from, next) => {
     const authStore = useAuthStore();
+    const isOnboardingRoute = to.matched.some((record) => record.meta.isOnboarding);
 
     // Check if route requires authentication
     if (to.matched.some((record) => record.meta.requiresAuth)) {
@@ -35,13 +36,24 @@ export default route(function (/* { store, ssrContext } */) {
         });
         return;
       }
+
+      // Check if authenticated user needs to complete onboarding
+      if (authStore.needsOnboarding && !isOnboardingRoute) {
+        // Redirect to onboarding flow
+        next({ path: '/auth/language' });
+        return;
+      }
     }
 
     // Check if route requires guest (non-authenticated)
     if (to.matched.some((record) => record.meta.requiresGuest)) {
       if (authStore.isAuthenticated) {
-        // Redirect to home
-        next({ path: '/' });
+        // Check if user needs onboarding before going to home
+        if (authStore.needsOnboarding) {
+          next({ path: '/auth/language' });
+        } else {
+          next({ path: '/' });
+        }
         return;
       }
     }

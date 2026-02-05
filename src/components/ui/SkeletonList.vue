@@ -1,7 +1,7 @@
 <template>
   <div class="skeleton-list">
     <q-item v-for="i in count" :key="i" class="q-py-md">
-      <q-item-section avatar v-if="showAvatar">
+      <q-item-section v-if="showAvatar" avatar>
         <q-skeleton type="QAvatar" size="48px" />
       </q-item-section>
 
@@ -9,12 +9,12 @@
         <q-item-label>
           <q-skeleton type="text" width="70%" />
         </q-item-label>
-        <q-item-label caption v-if="showCaption">
+        <q-item-label v-if="showCaption" caption>
           <q-skeleton type="text" width="50%" />
         </q-item-label>
       </q-item-section>
 
-      <q-item-section side v-if="showSide">
+      <q-item-section v-if="showSide" side>
         <q-skeleton type="text" width="40px" />
       </q-item-section>
     </q-item>

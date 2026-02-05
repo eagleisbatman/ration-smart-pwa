@@ -6,8 +6,8 @@
       <q-item
         v-for="country in countries"
         :key="country.code"
-        clickable
         v-ripple
+        clickable
         @click="selectCountry(country.code)"
       >
         <q-item-section avatar>

@@ -4,7 +4,7 @@
       <q-card-section class="row items-center q-pb-none">
         <div class="text-h6">Install RationSmart</div>
         <q-space />
-        <q-btn icon="close" flat round dense v-close-popup @click="dismiss" />
+        <q-btn v-close-popup icon="close" flat round dense @click="dismiss" />
       </q-card-section>
 
       <q-card-section class="text-center q-pt-md">
@@ -33,22 +33,22 @@
       <q-card-actions align="center" class="q-pb-md">
         <template v-if="!isIOS">
           <q-btn
+            v-close-popup
             label="Not Now"
             flat
             color="grey"
             @click="dismiss"
-            v-close-popup
           />
           <q-btn
             label="Install"
             color="primary"
             unelevated
-            @click="install"
             :loading="installing"
+            @click="install"
           />
         </template>
         <template v-else>
-          <q-btn label="Got it" color="primary" unelevated v-close-popup @click="dismiss" />
+          <q-btn v-close-popup label="Got it" color="primary" unelevated @click="dismiss" />
         </template>
       </q-card-actions>
     </q-card>

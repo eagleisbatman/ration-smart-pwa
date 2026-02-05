@@ -143,8 +143,8 @@
               <q-item
                 v-for="cow in cows"
                 :key="cow.id"
-                clickable
                 v-ripple
+                clickable
                 @click="router.push(`/cows/${cow.id}`)"
               >
                 <q-item-section avatar>

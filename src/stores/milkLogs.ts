@@ -156,7 +156,7 @@ export const useMilkLogsStore = defineStore('milkLogs', () => {
 
   async function getLog(id: string): Promise<MilkLog | null> {
     // Try local first
-    let log = await db.milkLogs.get(id);
+    const log = await db.milkLogs.get(id);
 
     if (!log && isOnline.value) {
       try {

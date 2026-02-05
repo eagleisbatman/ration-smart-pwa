@@ -138,7 +138,7 @@ export const useFeedsStore = defineStore('feeds', () => {
 
   async function getFeed(id: string): Promise<Feed | null> {
     // Try local first
-    let feed = await db.feeds.get(id);
+    const feed = await db.feeds.get(id);
 
     if (!feed && isOnline.value) {
       try {

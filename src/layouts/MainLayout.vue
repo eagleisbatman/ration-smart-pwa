@@ -32,7 +32,7 @@
 
         <SyncStatusChip v-if="isAuthenticated" />
 
-        <q-btn flat round dense icon="more_vert" v-if="showMenu">
+        <q-btn v-if="showMenu" flat round dense icon="more_vert">
           <q-menu>
             <q-list style="min-width: 150px">
               <slot name="menu-items" />
@@ -65,9 +65,9 @@
           <q-item
             v-for="item in navItems"
             :key="item.to"
+            v-ripple
             :to="item.to"
             clickable
-            v-ripple
             :active="isActive(item.to)"
             active-class="text-primary bg-grey-2"
           >
@@ -75,14 +75,14 @@
               <q-icon :name="item.icon" />
             </q-item-section>
             <q-item-section>{{ item.label }}</q-item-section>
-            <q-item-section side v-if="item.badge">
+            <q-item-section v-if="item.badge" side>
               <q-badge :label="item.badge" color="primary" />
             </q-item-section>
           </q-item>
 
           <q-separator class="q-my-md" />
 
-          <q-item clickable v-ripple @click="logout">
+          <q-item v-ripple clickable @click="logout">
             <q-item-section avatar>
               <q-icon name="logout" />
             </q-item-section>

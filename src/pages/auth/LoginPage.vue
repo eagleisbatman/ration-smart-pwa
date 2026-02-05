@@ -1,6 +1,6 @@
 <template>
   <div class="login-page">
-    <q-form @submit="onSubmit" class="q-gutter-md">
+    <q-form class="q-gutter-md" @submit="onSubmit">
       <!-- Login Method Toggle -->
       <q-btn-toggle
         v-model="loginMethod"
@@ -12,8 +12,8 @@
         color="grey-3"
         text-color="grey-8"
         :options="[
-          { label: 'Email', value: 'email' },
-          { label: 'Phone', value: 'phone' },
+          { label: $t('auth.email'), value: 'email' },
+          { label: $t('auth.phone'), value: 'phone' },
         ]"
         class="q-mb-md"
       />
@@ -22,15 +22,15 @@
       <q-input
         v-if="loginMethod === 'email'"
         v-model="form.email"
-        label="Email Address"
+        :label="$t('auth.email')"
         type="email"
         outlined
         :rules="[
-          (val) => !!val || 'Email is required',
-          (val) => /.+@.+\..+/.test(val) || 'Enter a valid email',
+          (val) => !!val || $t('validation.required'),
+          (val) => /.+@.+\..+/.test(val) || $t('validation.invalidEmail'),
         ]"
       >
-        <template v-slot:prepend>
+        <template #prepend>
           <q-icon name="email" />
         </template>
       </q-input>
@@ -39,13 +39,13 @@
       <q-input
         v-else
         v-model="form.phone"
-        label="Phone Number"
+        :label="$t('auth.phone')"
         type="tel"
         outlined
         mask="##########"
-        :rules="[(val) => !!val || 'Phone number is required']"
+        :rules="[(val) => !!val || $t('validation.required')]"
       >
-        <template v-slot:prepend>
+        <template #prepend>
           <q-icon name="phone" />
         </template>
       </q-input>
@@ -53,19 +53,19 @@
       <!-- PIN Input -->
       <q-input
         v-model="form.pin"
-        label="PIN"
+        :label="$t('auth.pin')"
         :type="showPin ? 'text' : 'password'"
         outlined
         mask="####"
         :rules="[
-          (val) => !!val || 'PIN is required',
-          (val) => val.length === 4 || 'PIN must be 4 digits',
+          (val) => !!val || $t('validation.required'),
+          (val) => val.length === 4 || $t('validation.pinLength'),
         ]"
       >
-        <template v-slot:prepend>
+        <template #prepend>
           <q-icon name="lock" />
         </template>
-        <template v-slot:append>
+        <template #append>
           <q-icon
             :name="showPin ? 'visibility_off' : 'visibility'"
             class="cursor-pointer"
@@ -81,7 +81,7 @@
 
       <!-- Submit Button -->
       <q-btn
-        label="Login"
+        :label="$t('auth.login')"
         type="submit"
         color="primary"
         class="full-width"
@@ -92,13 +92,13 @@
 
       <!-- Register Link -->
       <div class="text-center q-mt-md">
-        <span class="text-grey-7">Don't have an account?</span>
+        <span class="text-grey-7">{{ $t('auth.noAccount') }}</span>
         <q-btn
           flat
           dense
           no-caps
           color="primary"
-          label="Register"
+          :label="$t('auth.register')"
           @click="router.push('/auth/register')"
         />
       </div>
@@ -110,7 +110,6 @@
 import { ref, reactive, computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useAuthStore } from 'src/stores/auth';
-
 const router = useRouter();
 const route = useRoute();
 const authStore = useAuthStore();
@@ -136,9 +135,17 @@ async function onSubmit() {
   const success = await authStore.login(credentials);
 
   if (success) {
-    // Redirect to intended page or home
-    const redirect = route.query.redirect as string;
-    router.push(redirect || '/');
+    // Load user profile to check onboarding status
+    await authStore.loadUserProfile();
+
+    // Check if user needs to complete onboarding
+    if (authStore.needsOnboarding) {
+      router.push('/auth/language');
+    } else {
+      // Redirect to intended page or home
+      const redirect = route.query.redirect as string;
+      router.push(redirect || '/');
+    }
   }
 }
 </script>

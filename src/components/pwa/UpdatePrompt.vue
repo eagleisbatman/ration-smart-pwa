@@ -16,8 +16,8 @@
           label="Update Now"
           color="primary"
           unelevated
-          @click="update"
           :loading="updating"
+          @click="update"
         />
       </q-card-actions>
     </q-card>

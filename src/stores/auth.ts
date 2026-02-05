@@ -8,6 +8,10 @@ export interface AuthState {
   token: string | null;
   userId: string | null;
   isAuthenticated: boolean;
+  userRole: string;
+  preferredLanguage: string;
+  selfFarmerProfileId: string | null;
+  needsOnboarding: boolean;
 }
 
 export const useAuthStore = defineStore('auth', () => {
@@ -18,10 +22,16 @@ export const useAuthStore = defineStore('auth', () => {
   const loading = ref(false);
   const error = ref<string | null>(null);
 
+  // Extended state for generic user system
+  const userRole = ref<string>(localStorage.getItem('user_role') || 'farmer');
+  const preferredLanguage = ref<string>(localStorage.getItem('preferred_language') || 'en');
+  const selfFarmerProfileId = ref<string | null>(localStorage.getItem('self_farmer_profile_id'));
+
   // Computed
   const isAuthenticated = computed(() => !!token.value && !!userId.value);
   const userCountry = computed(() => user.value?.country_code || 'IN');
-  const userLanguage = computed(() => user.value?.language || 'en');
+  const userLanguage = computed(() => user.value?.language_code || preferredLanguage.value || 'en');
+  const needsOnboarding = computed(() => isAuthenticated.value && !selfFarmerProfileId.value);
 
   // Actions
   async function register(data: {
@@ -130,6 +140,20 @@ export const useAuthStore = defineStore('auth', () => {
       const response = await api.get(`/api/v1/users/${userId.value}`);
       user.value = response.data;
       await db.users.put(response.data);
+
+      // Update extended state from user data
+      if (response.data.user_role) {
+        userRole.value = response.data.user_role;
+        localStorage.setItem('user_role', response.data.user_role);
+      }
+      if (response.data.language_code) {
+        preferredLanguage.value = response.data.language_code;
+        localStorage.setItem('preferred_language', response.data.language_code);
+      }
+      if (response.data.self_farmer_profile_id) {
+        selfFarmerProfileId.value = response.data.self_farmer_profile_id;
+        localStorage.setItem('self_farmer_profile_id', response.data.self_farmer_profile_id);
+      }
     } catch {
       // Fallback to local cache
       const cachedUser = await db.users.get(userId.value);
@@ -181,12 +205,101 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
+  async function updateUserSettings(settings: {
+    user_role?: string;
+    language_code?: string;
+    organization_id?: string | null;
+  }): Promise<boolean> {
+    if (!userId.value) return false;
+
+    loading.value = true;
+    error.value = null;
+
+    try {
+      const response = await api.put(`/api/v1/users/${userId.value}/settings`, settings);
+
+      // Update local state
+      if (settings.user_role) {
+        userRole.value = settings.user_role;
+        localStorage.setItem('user_role', settings.user_role);
+      }
+      if (settings.language_code) {
+        preferredLanguage.value = settings.language_code;
+        localStorage.setItem('preferred_language', settings.language_code);
+      }
+
+      // Update user object if returned
+      if (response.data) {
+        user.value = { ...user.value, ...response.data };
+        await db.users.put(user.value as User);
+      }
+
+      return true;
+    } catch (err) {
+      error.value = extractErrorMessage(err);
+      return false;
+    } finally {
+      loading.value = false;
+    }
+  }
+
+  async function createSelfProfile(profileData: {
+    name: string;
+    phone?: string | null;
+    village?: string | null;
+    district?: string | null;
+    state?: string | null;
+  }): Promise<boolean> {
+    if (!userId.value) return false;
+
+    loading.value = true;
+    error.value = null;
+
+    try {
+      const response = await api.post(`/api/v1/users/${userId.value}/self-profile`, profileData);
+
+      // Store the self farmer profile ID
+      if (response.data?.id) {
+        selfFarmerProfileId.value = response.data.id;
+        localStorage.setItem('self_farmer_profile_id', response.data.id);
+      }
+
+      return true;
+    } catch (err) {
+      error.value = extractErrorMessage(err);
+      return false;
+    } finally {
+      loading.value = false;
+    }
+  }
+
+  async function getSelfProfile(): Promise<unknown | null> {
+    if (!userId.value) return null;
+
+    try {
+      const response = await api.get(`/api/v1/users/${userId.value}/self-profile`);
+      if (response.data?.id) {
+        selfFarmerProfileId.value = response.data.id;
+        localStorage.setItem('self_farmer_profile_id', response.data.id);
+      }
+      return response.data;
+    } catch {
+      return null;
+    }
+  }
+
   function clearAuth(): void {
     user.value = null;
     token.value = null;
     userId.value = null;
+    userRole.value = 'farmer';
+    preferredLanguage.value = 'en';
+    selfFarmerProfileId.value = null;
     localStorage.removeItem('auth_token');
     localStorage.removeItem('user_id');
+    localStorage.removeItem('user_role');
+    localStorage.removeItem('preferred_language');
+    localStorage.removeItem('self_farmer_profile_id');
   }
 
   async function logout(): Promise<void> {
@@ -209,16 +322,23 @@ export const useAuthStore = defineStore('auth', () => {
     userId,
     loading,
     error,
+    userRole,
+    preferredLanguage,
+    selfFarmerProfileId,
     // Computed
     isAuthenticated,
     userCountry,
     userLanguage,
+    needsOnboarding,
     // Actions
     register,
     login,
     verifyPin,
     loadUserProfile,
     updateProfile,
+    updateUserSettings,
+    createSelfProfile,
+    getSelfProfile,
     changePin,
     clearAuth,
     logout,

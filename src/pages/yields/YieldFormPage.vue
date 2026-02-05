@@ -1,6 +1,6 @@
 <template>
   <q-page class="q-pa-md">
-    <q-form @submit="onSubmit" class="q-gutter-md">
+    <q-form class="q-gutter-md" @submit="onSubmit">
       <!-- Farmer Selection -->
       <div class="text-subtitle1 text-weight-medium q-mb-sm">Farmer</div>
 
@@ -14,7 +14,7 @@
         :rules="[(val) => !!val || 'Farmer is required']"
         @update:model-value="onFarmerChange"
       >
-        <template v-slot:prepend>
+        <template #prepend>
           <q-icon name="person" />
         </template>
       </q-select>
@@ -31,7 +31,7 @@
         :disable="!form.farmer_profile_id"
         hint="Leave empty for farm-level yield"
       >
-        <template v-slot:prepend>
+        <template #prepend>
           <q-icon name="pets" />
         </template>
       </q-select>
@@ -47,7 +47,7 @@
         outlined
         :rules="[(val) => !!val || 'Date is required']"
       >
-        <template v-slot:prepend>
+        <template #prepend>
           <q-icon name="calendar_today" />
         </template>
       </q-input>
@@ -67,10 +67,10 @@
           (val) => val >= 0 || 'Cannot be negative',
         ]"
       >
-        <template v-slot:prepend>
+        <template #prepend>
           <q-icon name="water_drop" />
         </template>
-        <template v-slot:append>
+        <template #append>
           <span class="text-grey-6">L</span>
         </template>
       </q-input>
@@ -89,7 +89,7 @@
           ]"
           hint="Optional"
         >
-          <template v-slot:append>
+          <template #append>
             <span class="text-grey-6">%</span>
           </template>
         </q-input>
@@ -107,7 +107,7 @@
           ]"
           hint="Optional"
         >
-          <template v-slot:append>
+          <template #append>
             <span class="text-grey-6">%</span>
           </template>
         </q-input>

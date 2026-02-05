@@ -177,7 +177,7 @@ export const useFarmersStore = defineStore('farmers', () => {
       // Save locally for offline sync
       farmers.value.push(localFarmer);
       await db.farmerProfiles.put(localFarmer);
-      await db.addToSyncQueue('farmer', localId, 'create', input as Record<string, unknown>);
+      await db.addToSyncQueue('farmer', localId, 'create', input as unknown as Record<string, unknown>);
 
       return localFarmer;
     } finally {

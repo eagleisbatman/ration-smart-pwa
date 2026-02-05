@@ -3,7 +3,7 @@
     <!-- Report Types -->
     <div class="text-subtitle1 q-mb-sm">Generate Report</div>
     <div class="row q-col-gutter-sm q-mb-lg">
-      <div class="col-6" v-for="type in reportTypes" :key="type.value">
+      <div v-for="type in reportTypes" :key="type.value" class="col-6">
         <q-card
           flat
           bordered
@@ -35,8 +35,8 @@
         <q-item
           v-for="report in reports"
           :key="report.id"
-          clickable
           v-ripple
+          clickable
           @click="viewReport(report)"
         >
           <q-item-section avatar>
@@ -85,7 +85,7 @@
                 outlined
                 readonly
               >
-                <template v-slot:append>
+                <template #append>
                   <q-icon name="event" class="cursor-pointer">
                     <q-popup-proxy cover>
                       <q-date v-model="reportParams.start_date" mask="YYYY-MM-DD" />
@@ -101,7 +101,7 @@
                 outlined
                 readonly
               >
-                <template v-slot:append>
+                <template #append>
                   <q-icon name="event" class="cursor-pointer">
                     <q-popup-proxy cover>
                       <q-date v-model="reportParams.end_date" mask="YYYY-MM-DD" />
@@ -114,7 +114,7 @@
         </q-card-section>
 
         <q-card-actions align="right">
-          <q-btn flat label="Cancel" v-close-popup />
+          <q-btn v-close-popup flat label="Cancel" />
           <q-btn
             flat
             label="Generate"

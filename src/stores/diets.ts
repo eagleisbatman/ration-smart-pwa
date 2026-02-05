@@ -115,7 +115,7 @@ export const useDietsStore = defineStore('diets', () => {
 
   async function getDiet(id: string): Promise<Diet | null> {
     // Try local first
-    let diet = await db.diets.get(id);
+    const diet = await db.diets.get(id);
 
     if (!diet && isOnline.value) {
       try {
