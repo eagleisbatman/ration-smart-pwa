@@ -117,6 +117,8 @@
     "village": "Village",
     "district": "District",
     "state": "State",
+    "subdistrict": "Sub-district",
+    "block": "Block",
     "country": "Country",
     "organization": "Organization",
     "role": "Role",
@@ -124,7 +126,18 @@
     "editProfile": "Edit Profile",
     "updateProfile": "Update Profile",
     "profileUpdated": "Profile updated successfully",
-    "memberSince": "Member since"
+    "memberSince": "Member since",
+    "location": "Location",
+    "shareLocation": "Share My Location",
+    "gettingLocation": "Getting location...",
+    "locationCaptured": "Location captured",
+    "refresh": "Refresh",
+    "enterManually": "Enter location manually",
+    "geolocationNotSupported": "Location services not supported by your browser",
+    "locationPermissionDenied": "Location permission denied. Please enable location access.",
+    "locationUnavailable": "Location unavailable. Please try again.",
+    "locationTimeout": "Location request timed out. Please try again.",
+    "locationError": "Failed to get location. You can enter it manually."
   },
   "cow": {
     "myCows": "My Cows",
