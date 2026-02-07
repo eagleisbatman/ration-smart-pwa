@@ -9,6 +9,7 @@ This document explains **exactly** what happens at each step when a user interac
 ### Authentication & Setup
 1. [New User Registration Flow](#1-new-user-registration-flow)
 2. [Returning User Login Flow](#2-returning-user-login-flow)
+2b. [Forgot PIN Flow](#2b-forgot-pin-flow)
 3. [Onboarding Flow (After Registration)](#3-onboarding-flow-after-registration)
 4. [Profile Setup Details](#4-profile-setup-details)
 5. [What Gets Saved & Where](#5-what-gets-saved--where)
@@ -53,13 +54,18 @@ This document explains **exactly** what happens at each step when a user interac
 │  [Email] [Phone]                    │
 │                                     │
 │  ┌─────────────────────────────┐   │
-│  │ ✉️ Email                    │   │ (or Phone if selected)
+│  │ ✉️ Email                    │   │ (if Email selected)
 │  │ [___________________]       │   │
+│  └─────────────────────────────┘   │
+│  --- OR if Phone selected: ---     │
+│  ┌─────────────────────────────┐   │
+│  │ 📱 Phone                    │   │
+│  │ 🇮🇳 +91  [__________]       │   │  ← Flag + dial code prefix
 │  └─────────────────────────────┘   │
 │                                     │
 │  ┌─────────────────────────────┐   │
 │  │ 🌍 Country                  │   │
-│  │ [India ▼]                   │   │
+│  │ [🇮🇳 India (+91) ▼]         │   │  ← Flag icon + dial code
 │  └─────────────────────────────┘   │
 │                                     │
 │  ┌─────────────────────────────┐   │
@@ -86,8 +92,8 @@ This document explains **exactly** what happens at each step when a user interac
 |-------|------------------|------------------|---------|
 | **Full Name** | Their name | Cannot be empty | "Ramesh Kumar" |
 | **Email** | Email address | Must have @ and domain | "ramesh@gmail.com" |
-| **Phone** | 10-digit mobile number | Exactly 10 digits | "9876543210" |
-| **Country** | Select from dropdown | Must select one | India, Kenya, Ethiopia, Nepal, Bangladesh, Vietnam |
+| **Phone** | Mobile number (digit count varies by country) | Validated per country mask | "9876543210" (India, 10 digits) |
+| **Country** | Select from dropdown (flag icon + name + dial code) | Must select one | India (+91), Kenya (+254), Ethiopia (+251), Nepal (+977), Bangladesh (+880), Vietnam (+84) |
 | **PIN** | 4-digit password | Exactly 4 numbers | "1234" |
 | **Confirm PIN** | Same PIN again | Must match above PIN | "1234" |
 
@@ -130,20 +136,34 @@ This document explains **exactly** what happens at each step when a user interac
 
 ```
 ┌─────────────────────────────────────┐
-│           Welcome Back              │
+│         🐄 RationSmart              │
+│   Optimize your cattle nutrition    │
 │                                     │
+│  ── Credentials ──                  │
 │  How would you like to login?       │
 │  [Email] [Phone]                    │
 │                                     │
 │  ┌─────────────────────────────┐   │
-│  │ ✉️ Email                    │   │
+│  │ ✉️ Email                    │   │  (if Email selected)
 │  │ [___________________]       │   │
 │  └─────────────────────────────┘   │
+│  --- OR if Phone selected: ---     │
+│  ┌─────────────────────────────┐   │
+│  │ 🌍 Country                  │   │
+│  │ [🇮🇳 India (+91) ▼]         │   │  ← Flag + dial code
+│  └─────────────────────────────┘   │
+│  ┌─────────────────────────────┐   │
+│  │ 📱 Phone                    │   │
+│  │ 🇮🇳 +91  [__________]       │   │  ← Flag + dial code prefix
+│  └─────────────────────────────┘   │
 │                                     │
+│  ── Security ──                     │
 │  ┌─────────────────────────────┐   │
 │  │ 🔒 PIN                      │   │
 │  │ [____] 👁️                   │   │
 │  └─────────────────────────────┘   │
+│                                     │
+│  ☐ Remember me       Forgot PIN?   │
 │                                     │
 │  ┌─────────────────────────────┐   │
 │  │          Login              │   │
@@ -152,6 +172,12 @@ This document explains **exactly** what happens at each step when a user interac
 │  Don't have an account? Register    │
 └─────────────────────────────────────┘
 ```
+
+**Login Page Features:**
+- **Email/Phone toggle**: Switch between email and phone login methods
+- **Phone login**: Shows country selector dropdown with flag icon + name + dial code; phone input has flag icon and dial code prefix, input mask varies by country (e.g., 10 digits for India, 9 for Kenya)
+- **Remember Me checkbox**: When checked, session persists across browser restarts (localStorage). When unchecked, session clears on browser close (sessionStorage).
+- **Forgot PIN? link**: Navigates to `/auth/forgot-pin` page for PIN recovery
 
 ### What Happens When User Taps "Login":
 
@@ -171,6 +197,59 @@ This document explains **exactly** what happens at each step when a user interac
 
 ---
 
+## 2b. Forgot PIN Flow
+
+### Screen: Forgot PIN Page (`/auth/forgot-pin`)
+
+**How to get here:** Login page → tap "Forgot PIN?" link
+
+**What the user sees:**
+
+```
+┌─────────────────────────────────────┐
+│       Reset Your PIN                │
+│                                     │
+│  Enter your email or phone number   │
+│  and we'll send you a PIN reset.    │
+│                                     │
+│  [Email] [Phone]                    │
+│                                     │
+│  ┌─────────────────────────────┐   │  (if Email selected)
+│  │ ✉️ Email                    │   │
+│  │ [___________________]       │   │
+│  └─────────────────────────────┘   │
+│  --- OR if Phone selected: ---     │
+│  ┌─────────────────────────────┐   │
+│  │ 🌍 Country                  │   │
+│  │ [🇮🇳 India (+91) ▼]         │   │  ← Flag + dial code
+│  └─────────────────────────────┘   │
+│  ┌─────────────────────────────┐   │
+│  │ 📱 Phone                    │   │
+│  │ 🇮🇳 +91  [__________]       │   │  ← Flag + dial code prefix
+│  └─────────────────────────────┘   │
+│                                     │
+│  ┌─────────────────────────────┐   │
+│  │      Send Reset Link        │   │
+│  └─────────────────────────────┘   │
+│                                     │
+│  ← Back to Login                    │
+└─────────────────────────────────────┘
+```
+
+**What happens when user submits:**
+1. System sends POST `/api/v1/auth/forgot-pin` with email or phone (E.164 format)
+2. If account found: Success banner shown, "Redirecting to login in 3s..."
+3. Auto-redirects to `/auth/login` after 3-second countdown
+4. If account not found: Error message "We couldn't find an account with that information"
+
+**Features:**
+- Same Email/Phone toggle as Login and Register pages
+- Phone method includes country selector with flag icons and dial codes
+- Phone input has country-specific mask (same as Login/Register)
+- "Back to Login" link always visible
+
+---
+
 ## 3. Onboarding Flow (After Registration)
 
 This is a 4-step process that runs **once** after registration (or first login if incomplete).
@@ -185,16 +264,16 @@ This is a 4-step process that runs **once** after registration (or first login i
 │           Step 1 of 4               │
 │                                     │
 │  ┌─────────────────────────────┐   │
-│  │ 🇬🇧  English         ○      │   │
+│  │  English              ○    │   │
 │  └─────────────────────────────┘   │
 │  ┌─────────────────────────────┐   │
-│  │ 🇮🇳  हिन्दी (Hindi)   ●      │   │  ← Selected
+│  │  हिन्दी (Hindi)        ●    │   │  ← Selected
 │  └─────────────────────────────┘   │
 │  ┌─────────────────────────────┐   │
-│  │ 🇮🇳  తెలుగు (Telugu)  ○      │   │
+│  │  తెలుగు (Telugu)       ○    │   │
 │  └─────────────────────────────┘   │
 │  ┌─────────────────────────────┐   │
-│  │ 🇮🇳  ಕನ್ನಡ (Kannada)  ○      │   │
+│  │  ಕನ್ನಡ (Kannada)       ○    │   │
 │  └─────────────────────────────┘   │
 │  ... (22 languages total)          │
 │                                     │

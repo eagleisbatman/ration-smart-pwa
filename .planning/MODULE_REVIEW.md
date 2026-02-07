@@ -44,8 +44,8 @@ This document tracks a comprehensive review of all RationSmart modules across:
 ### High Priority (Functionality)
 | ID | Module | Gap | Impact |
 |----|--------|-----|--------|
-| H1 | Auth | Login page missing "Forgot PIN?" link | Users cannot recover access |
-| H2 | Auth | Country list hardcoded in frontend, not fetched from API | New countries won't appear |
+| H1 | Auth | ~~Login page missing "Forgot PIN?" link~~ | ✅ FIXED - ForgotPinPage added with email/phone support, auto-redirect |
+| H2 | Auth | ~~Country list hardcoded in frontend, not fetched from API~~ | ✅ FIXED - Countries fetched from API, alpha-3→alpha-2 conversion in adapter |
 | H3 | Auth | Database schema may be missing columns: user_role, admin_level, organization_id, location fields | Data model incomplete |
 | H4 | Auth | No email/phone verification flow | Account security risk |
 | H5 | Onboarding | Role mismatch: Frontend has 'student', backend expects 'extension_worker', 'feed_supplier', 'other' | Role validation may fail |
@@ -76,8 +76,8 @@ This document tracks a comprehensive review of all RationSmart modules across:
 ### Medium Priority (UX/Polish)
 | ID | Module | Gap | Impact |
 |----|--------|-----|--------|
-| M1 | Auth | Login/Register pages lack branding (no logo, app name, tagline) | Poor first impression |
-| M2 | Auth | No country flags in registration dropdown | Less intuitive |
+| M1 | Auth | ~~Login/Register pages lack branding (no logo, app name, tagline)~~ | ✅ FIXED - Logo, app name, and tagline added to Login/Register pages |
+| M2 | Auth | ~~No country flags in registration dropdown~~ | ✅ FIXED - SVG flag icons + dial codes in all auth dropdowns (Login, Register, ForgotPin) |
 | M3 | Auth | Toggle buttons use grey background, not visually distinct | Confusing state |
 | M4 | Auth | Minimal page styling (just 8px padding) | Looks unfinished |
 | M5 | Auth | No visual hierarchy - all inputs same prominence | Harder to scan |
@@ -279,15 +279,7 @@ This document tracks a comprehensive review of all RationSmart modules across:
 }
 ```
 
-**⚠️ GAP H2:** Country options hardcoded:
-```javascript
-const countryOptions = [
-  { label: 'India', value: 'IN' },
-  { label: 'Kenya', value: 'KE' },
-  // ... hardcoded
-];
-```
-Should fetch from `/auth/countries` API.
+**✅ GAP H2 — FIXED:** Country options are now fetched from `/auth/countries` API via `authStore.fetchCountries()`. The API adapter in `src/services/api-adapter.ts` maps the endpoint and converts backend alpha-3 codes (IND, KEN, BGD) to frontend alpha-2 codes (IN, KE, BD) in the response transform. A `FALLBACK_COUNTRIES` constant is used when the API is unavailable (offline).
 
 ---
 
@@ -352,17 +344,18 @@ Should fetch from `/auth/countries` API.
 - No dismiss button
 - No specific error guidance
 
-**⚠️ GAP H1: Missing "Forgot PIN?"**
-- Login page has no recovery option
-- Users locked out if PIN forgotten
-- Backend has `/auth/forgot-pin` endpoint but no UI
+**✅ GAP H1 — FIXED: "Forgot PIN?" added**
+- Login page now has "Forgot PIN?" link under PIN field
+- ForgotPinPage at `/auth/forgot-pin` supports both email and phone methods
+- Phone method includes country selector with flag icons and dial codes
+- Shows success banner with 3-second auto-redirect to login
 
 **Design Recommendations:**
-1. Add logo and welcome text at top
+1. ✅ Add logo and welcome text at top — DONE (branding added to Login/Register)
 2. Use card-based layout with max-width 400px
-3. Add country flags to dropdown
+3. ✅ Add country flags to dropdown — DONE (SVG flag icons + dial codes in all auth dropdowns)
 4. Make toggle more prominent with icons
-5. Add "Forgot PIN?" link under PIN field
+5. ✅ Add "Forgot PIN?" link under PIN field — DONE (with Remember Me checkbox)
 6. Style error banner with icon and actionable text
 7. Add subtle background pattern or gradient
 8. Consider illustration for auth pages
@@ -418,10 +411,10 @@ The frontend uses an API adapter that transforms paths:
 
 | Priority | Gap ID | Action |
 |----------|--------|--------|
-| **Critical** | C1 | Fix phone format: Add country code prefix to phone number |
-| **Critical** | C2 | Fix country: Either lookup country_id from code or change API |
-| **High** | H1 | Add "Forgot PIN?" link and page |
-| **High** | H2 | Fetch countries from API instead of hardcoding |
+| **Critical** | C1 | ✅ Fix phone format: Add country code prefix to phone number |
+| **Critical** | C2 | ✅ Fix country: Either lookup country_id from code or change API |
+| **High** | H1 | ✅ Add "Forgot PIN?" link and page |
+| **High** | H2 | ✅ Fetch countries from API instead of hardcoding |
 | **High** | H3 | Verify database has all required columns |
 | **High** | H4 | Design email/phone verification flow |
 | **Medium** | M1-M7 | UI redesign of auth pages |

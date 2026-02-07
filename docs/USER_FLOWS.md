@@ -25,7 +25,7 @@ RationSmart PWA is a Progressive Web App for cattle nutrition optimization. It s
 | Step | Screen | URL | User Action | What Happens |
 |------|--------|-----|-------------|--------------|
 | 1 | Landing | `/auth/login` | Taps "Register" | Redirects to registration |
-| 2 | Register | `/auth/register` | Enters email/phone + creates 4-digit PIN + selects country | Account created, auto-logged in |
+| 2 | Register | `/auth/register` | Enters email/phone + creates 4-digit PIN + selects country (with flag icon and dial code) | Account created, auto-logged in |
 | 3 | Language | `/auth/language` | Selects preferred language from 22 options | UI language changes, preference saved |
 | 4 | Role | `/auth/role` | Selects their role (Farmer, Student, etc.) | Role saved to profile |
 | 5 | Organization | `/auth/organization` | Selects organization OR "Not Affiliated" | Links user to org (optional) |
@@ -55,6 +55,20 @@ RationSmart PWA is a Progressive Web App for cattle nutrition optimization. It s
 | 1 | Login | `/auth/login` | Enters email/phone + 4-digit PIN | Credentials verified |
 | 2a | Home | `/` | If onboarding complete | Dashboard shown |
 | 2b | Language | `/auth/language` | If onboarding incomplete | Continues onboarding flow |
+
+### Login Page Features
+- **Email/Phone toggle**: Switch between email and phone login methods
+- **Phone login**: Country selector with flag icon and dial code prefix (e.g., IN +91), phone mask varies by country
+- **Remember Me**: Checkbox to persist session across browser restarts
+- **Forgot PIN?**: Link to PIN recovery page (`/auth/forgot-pin`)
+
+### Forgot PIN Flow
+
+| Step | Screen | URL | User Action | What Happens |
+|------|--------|-----|-------------|--------------|
+| 1 | Login | `/auth/login` | Taps "Forgot PIN?" | Redirects to forgot-pin page |
+| 2 | Forgot PIN | `/auth/forgot-pin` | Selects email or phone, enters details | PIN reset request sent |
+| 3 | Success | `/auth/forgot-pin` | Sees success banner | Auto-redirects to login after 3 seconds |
 
 ---
 
@@ -217,7 +231,7 @@ RationSmart PWA is a Progressive Web App for cattle nutrition optimization. It s
 |-------|------|-------------|
 | `/auth/login` | LoginPage | Email/phone + PIN login |
 | `/auth/register` | RegisterPage | New user registration |
-| `/auth/country` | CountrySelectPage | Country selection (registration) |
+| `/auth/forgot-pin` | ForgotPinPage | PIN reset via email/phone |
 
 ### Onboarding Routes (Authenticated, One-time)
 
