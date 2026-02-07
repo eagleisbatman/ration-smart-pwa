@@ -53,10 +53,22 @@
               emit-value
               map-options
               dense
+              :loading="authStore.countriesLoading"
               class="q-mb-sm"
             >
               <template #prepend>
                 <q-icon name="public" />
+              </template>
+              <template #option="scope">
+                <q-item v-bind="scope.itemProps">
+                  <q-item-section avatar class="min-w-0" style="min-width: 0; padding-right: 8px">
+                    <span class="text-h6">{{ scope.opt.flag }}</span>
+                  </q-item-section>
+                  <q-item-section>{{ scope.opt.label }}</q-item-section>
+                </q-item>
+              </template>
+              <template #selected-item="scope">
+                <span>{{ scope.opt.flag }} {{ scope.opt.label }}</span>
               </template>
             </q-select>
 
@@ -188,7 +200,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed } from 'vue';
+import { ref, reactive, computed, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useAuthStore } from 'src/stores/auth';
@@ -206,17 +218,38 @@ const form = reactive({
   email: '',
   phone: '',
   pin: '',
-  country_code: 'IN', // Default to India for phone login E.164 formatting
+  country_code: 'IN',
 });
 
-const countryOptions = computed(() => [
-  { label: t('countries.withCode.IN'), value: 'IN' },
-  { label: t('countries.withCode.KE'), value: 'KE' },
-  { label: t('countries.withCode.ET'), value: 'ET' },
-  { label: t('countries.withCode.NP'), value: 'NP' },
-  { label: t('countries.withCode.BD'), value: 'BD' },
-  { label: t('countries.withCode.VN'), value: 'VN' },
-]);
+/** Convert a 2-letter ISO country code to its flag emoji. */
+function countryCodeToFlag(code: string): string {
+  return [...code.toUpperCase()]
+    .map((ch) => String.fromCodePoint(0x1f1e6 + ch.charCodeAt(0) - 65))
+    .join('');
+}
+
+// Hardcoded fallback in case API is unreachable
+const FALLBACK_COUNTRIES = [
+  { country_code: 'IN', name: 'India' },
+  { country_code: 'KE', name: 'Kenya' },
+  { country_code: 'ET', name: 'Ethiopia' },
+  { country_code: 'NP', name: 'Nepal' },
+  { country_code: 'BD', name: 'Bangladesh' },
+  { country_code: 'VN', name: 'Vietnam' },
+];
+
+const countryOptions = computed(() => {
+  const source = authStore.countries.length > 0 ? authStore.countries : FALLBACK_COUNTRIES;
+  return source.map((c) => ({
+    label: t(`countries.${c.country_code}`, c.name || c.country_code),
+    value: c.country_code,
+    flag: countryCodeToFlag(c.country_code),
+  }));
+});
+
+onMounted(() => {
+  authStore.fetchCountries();
+});
 
 const loading = computed(() => authStore.loading);
 const error = computed(() => authStore.error);
