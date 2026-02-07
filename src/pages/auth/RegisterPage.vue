@@ -18,7 +18,15 @@
           :rules="[(val) => !!val || $t('validation.required')]"
         >
           <template #prepend>
-            <q-icon name="public" />
+            <span class="fi" :class="`fi-${form.country_code.toLowerCase()}`" style="font-size: 1.2em;" />
+          </template>
+          <template #option="scope">
+            <q-item v-bind="scope.itemProps">
+              <q-item-section avatar style="min-width: 32px;">
+                <span class="fi" :class="`fi-${scope.opt.code.toLowerCase()}`" style="font-size: 1.2em;" />
+              </q-item-section>
+              <q-item-section>{{ scope.opt.label }}</q-item-section>
+            </q-item>
           </template>
         </q-select>
       </div>
@@ -89,6 +97,7 @@
             :rules="[(val) => !!val || $t('validation.required')]"
           >
             <template #prepend>
+              <span class="fi q-mr-xs" :class="`fi-${form.country_code.toLowerCase()}`" style="font-size: 1.2em;" />
               <span class="text-body2 text-weight-medium text-grey-8 q-mr-xs">{{ selectedDialCode }}</span>
             </template>
           </q-input>
@@ -249,6 +258,7 @@ const countryOptions = computed(() => {
     return {
       label: dialCode ? `${name} (${dialCode})` : name,
       value: c.country_code,
+      code: c.country_code,
     };
   });
 });
