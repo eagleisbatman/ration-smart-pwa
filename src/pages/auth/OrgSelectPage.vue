@@ -131,7 +131,8 @@ const { t } = useI18n();
 
 const loading = ref(false);
 const organizations = ref<Organization[]>([]);
-const selectedOrgId = ref<string | null>(null);
+// Restore previous selection when navigating back
+const selectedOrgId = ref<string | null>(getOnboardingItem('onboarding_org_id'));
 const searchQuery = ref('');
 
 // Get country from session or default to India

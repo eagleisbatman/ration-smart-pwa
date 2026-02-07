@@ -1,8 +1,13 @@
 import { boot } from 'quasar/wrappers';
 import axios, { AxiosInstance, AxiosError, InternalAxiosRequestConfig } from 'axios';
 import axiosRetry from 'axios-retry';
+import { Notify } from 'quasar';
+import type { Router } from 'vue-router';
 import { useAuthStore } from 'src/stores/auth';
 import { handleRequestInterceptor, handleResponseInterceptor } from 'src/services/api-adapter';
+
+// Router instance set during boot, used by the 401 interceptor to redirect
+let appRouter: Router | null = null;
 
 declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {
@@ -75,8 +80,21 @@ api.interceptors.response.use(
 
     // Handle 401 Unauthorized - token expired
     if (error.response?.status === 401) {
+      // Only show notification if user was previously authenticated
+      if (authStore.isAuthenticated) {
+        Notify.create({
+          type: 'warning',
+          message: 'Session expired. Please log in again.',
+          icon: 'lock_clock',
+          position: 'top',
+          timeout: 4000,
+        });
+      }
       authStore.clearAuth();
-      // Redirect to login will be handled by router guard
+      // Redirect to login immediately (avoid stale page state)
+      if (appRouter && appRouter.currentRoute.value.path !== '/auth/login') {
+        appRouter.push('/auth/login');
+      }
     }
 
     // Handle network errors for offline support
@@ -89,7 +107,8 @@ api.interceptors.response.use(
   }
 );
 
-export default boot(({ app }) => {
+export default boot(({ app, router }) => {
+  appRouter = router;
   // Make axios available globally
   app.config.globalProperties.$axios = axios;
   app.config.globalProperties.$api = api;
