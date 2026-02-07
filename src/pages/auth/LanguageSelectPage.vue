@@ -151,36 +151,37 @@ const countryLanguageMap: Record<string, string[]> = {
   MA: ['ar', 'fr', 'en'],
 };
 
-// Flag mapping per language code
-const flagMap: Record<string, string> = {
-  en: '\u{1F1EC}\u{1F1E7}',  // GB flag
-  hi: '\u{1F1EE}\u{1F1F3}',  // IN flag
-  te: '\u{1F1EE}\u{1F1F3}',
-  kn: '\u{1F1EE}\u{1F1F3}',
-  mr: '\u{1F1EE}\u{1F1F3}',
-  ta: '\u{1F1EE}\u{1F1F3}',
-  bn: '\u{1F1EE}\u{1F1F3}',
-  ml: '\u{1F1EE}\u{1F1F3}',
-  gu: '\u{1F1EE}\u{1F1F3}',
-  pa: '\u{1F1EE}\u{1F1F3}',
-  or: '\u{1F1EE}\u{1F1F3}',
-  as: '\u{1F1EE}\u{1F1F3}',
-  ur: '\u{1F1EE}\u{1F1F3}',
-  ne: '\u{1F1F3}\u{1F1F5}',  // NP flag
-  vi: '\u{1F1FB}\u{1F1F3}',  // VN flag
-  am: '\u{1F1EA}\u{1F1F9}',  // ET flag
-  om: '\u{1F1EA}\u{1F1F9}',
-  id: '\u{1F1EE}\u{1F1E9}',  // ID flag
-  fil: '\u{1F1F5}\u{1F1ED}', // PH flag
-  th: '\u{1F1F9}\u{1F1ED}',  // TH flag
-  ar: '\u{1F1F2}\u{1F1E6}',  // MA flag
-  fr: '\u{1F1EB}\u{1F1F7}',  // FR flag
+// Language code to short label mapping (replaces Unicode flag emoji that renders
+// as broken boxes on Windows and some Android devices)
+const langLabelMap: Record<string, string> = {
+  en: 'EN',
+  hi: 'HI',
+  te: 'TE',
+  kn: 'KN',
+  mr: 'MR',
+  ta: 'TA',
+  bn: 'BN',
+  ml: 'ML',
+  gu: 'GU',
+  pa: 'PA',
+  or: 'OR',
+  as: 'AS',
+  ur: 'UR',
+  ne: 'NE',
+  vi: 'VI',
+  am: 'AM',
+  om: 'OM',
+  id: 'ID',
+  fil: 'FIL',
+  th: 'TH',
+  ar: 'AR',
+  fr: 'FR',
 };
 
-// Build the full list of languages with flags from availableLocales
+// Build the full list of languages from availableLocales
 const allLanguages = availableLocales.map(locale => ({
   ...locale,
-  flag: flagMap[locale.value] || '\u{1F310}',
+  flag: langLabelMap[locale.value] || locale.value.toUpperCase(),
 }));
 
 // Get the user's selected country
@@ -201,7 +202,9 @@ const otherLanguages = computed(() => {
   return allLanguages.filter(l => !recommendedCodes.has(l.value));
 });
 
-const selectedLanguage = ref<string>(localStorage.getItem('locale') || 'en');
+const selectedLanguage = ref<string>(
+  getOnboardingItem('onboarding_language') || localStorage.getItem('locale') || 'en'
+);
 
 // Auto-expand "Other Languages" if the current selection is in that section
 const isSelectedInOther = countryCodes.length > 0 && !countryCodes.includes(selectedLanguage.value);

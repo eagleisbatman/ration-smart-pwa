@@ -26,7 +26,7 @@
         :hint="$t('profile.phoneHintSetup')"
         type="tel"
         outlined
-        mask="##########"
+        :mask="phoneMask"
       >
         <template #prepend>
           <q-icon name="phone" />
@@ -192,6 +192,7 @@ import { useAuthStore } from 'src/stores/auth';
 import { api } from 'src/boot/axios';
 import { useI18n } from 'vue-i18n';
 import { getOnboardingItem, clearOnboardingData } from 'src/lib/onboarding-storage';
+import { COUNTRY_PHONE_MASKS } from 'src/services/api-adapter';
 import OnboardingProgress from 'src/components/ui/OnboardingProgress.vue';
 
 const router = useRouter();
@@ -206,6 +207,10 @@ const showManualEntry = ref(false);
 const locationError = ref<string | null>(null);
 const formattedAddress = ref<string | null>(null);
 const error = ref<string | null>(null);
+
+// Phone mask based on the country selected during registration
+const onboardingCountry = getOnboardingItem('selected_country') || 'IN';
+const phoneMask = COUNTRY_PHONE_MASKS[onboardingCountry] || COUNTRY_PHONE_MASKS['OTHER'];
 
 const form = reactive({
   name: '',

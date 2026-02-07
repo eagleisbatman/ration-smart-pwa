@@ -162,7 +162,9 @@ export const useAuthStore = defineStore('auth', () => {
       token.value = authToken;
       userId.value = responseUserId;
 
-      // Persist to localStorage
+      // Always persist to localStorage after registration (not sessionStorage).
+      // New users proceed directly into onboarding, so we keep them signed in
+      // across tabs/refreshes — equivalent to "remember me" by default.
       if (authToken) {
         localStorage.setItem('auth_token', authToken);
       }

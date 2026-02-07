@@ -24,13 +24,7 @@ const routes: RouteRecordRaw[] = [
         component: () => import('pages/auth/ForgotPinPage.vue'),
         meta: { requiresGuest: true },
       },
-      {
-        path: 'country',
-        name: 'country-select',
-        component: () => import('pages/auth/CountrySelectPage.vue'),
-        meta: { requiresGuest: true },
-      },
-      // New onboarding flow
+      // Onboarding flow
       {
         path: 'language',
         name: 'language-select',

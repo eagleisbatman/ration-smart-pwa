@@ -72,7 +72,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { setOnboardingItem } from 'src/lib/onboarding-storage';
+import { getOnboardingItem, setOnboardingItem } from 'src/lib/onboarding-storage';
 import OnboardingProgress from 'src/components/ui/OnboardingProgress.vue';
 
 const router = useRouter();
@@ -86,7 +86,8 @@ const roles = [
   { value: 'other', icon: 'more_horiz' },
 ];
 
-const selectedRole = ref<string | null>(null);
+// Restore previous selection when navigating back
+const selectedRole = ref<string | null>(getOnboardingItem('onboarding_role'));
 const showValidation = ref(false);
 
 function selectRole(role: string) {

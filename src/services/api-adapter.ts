@@ -22,6 +22,27 @@ export const COUNTRY_DIAL_CODES: Record<string, string> = {
   OTHER: '+1', // Default fallback
 };
 
+// Phone number masks per country (# = digit)
+export const COUNTRY_PHONE_MASKS: Record<string, string> = {
+  IN: '##########',     // 10 digits
+  KE: '#########',      // 9 digits
+  ET: '#########',      // 9 digits
+  NP: '##########',     // 10 digits
+  BD: '###########',    // 11 digits
+  VN: '#########',      // 9-10 digits
+  OTHER: '##############', // up to 14 digits
+};
+
+// Fallback country list when API is unreachable
+export const FALLBACK_COUNTRIES = [
+  { country_code: 'IN', name: 'India' },
+  { country_code: 'KE', name: 'Kenya' },
+  { country_code: 'ET', name: 'Ethiopia' },
+  { country_code: 'NP', name: 'Nepal' },
+  { country_code: 'BD', name: 'Bangladesh' },
+  { country_code: 'VN', name: 'Vietnam' },
+] as const;
+
 // Cache for country code to UUID mapping
 let countryCache: Record<string, string> | null = null;
 
@@ -36,7 +57,7 @@ export async function fetchAndCacheCountries(): Promise<Record<string, string>> 
   try {
     // Import api dynamically to avoid circular dependency
     const { api } = await import('src/boot/axios');
-    const response = await api.get('/auth/countries');
+    const response = await api.get('/api/v1/countries');
     const countries = response.data as Array<{ id: string; country_code: string }>;
 
     countryCache = {};
@@ -370,6 +391,9 @@ const ENDPOINT_MAP: Record<string, EndpointMapping> = {
   // ============================================================================
   // COUNTRIES ENDPOINT (for onboarding)
   // ============================================================================
+  '/api/v1/auth/forgot-pin': {
+    path: '/auth/forgot-pin',
+  },
   '/api/v1/countries': {
     path: '/auth/countries',
     transform: {

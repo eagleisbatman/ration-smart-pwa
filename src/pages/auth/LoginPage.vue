@@ -66,7 +66,7 @@
               :label="$t('auth.phone')"
               type="tel"
               outlined
-              mask="##########"
+              :mask="selectedPhoneMask"
               :rules="[(val) => !!val || $t('validation.required')]"
             >
               <template #prepend>
@@ -193,7 +193,7 @@ import { ref, reactive, computed, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useAuthStore } from 'src/stores/auth';
-import { COUNTRY_DIAL_CODES } from 'src/services/api-adapter';
+import { COUNTRY_DIAL_CODES, COUNTRY_PHONE_MASKS, FALLBACK_COUNTRIES } from 'src/services/api-adapter';
 
 const { t } = useI18n();
 const router = useRouter();
@@ -211,16 +211,6 @@ const form = reactive({
   country_code: 'IN',
 });
 
-// Hardcoded fallback in case API is unreachable
-const FALLBACK_COUNTRIES = [
-  { country_code: 'IN', name: 'India' },
-  { country_code: 'KE', name: 'Kenya' },
-  { country_code: 'ET', name: 'Ethiopia' },
-  { country_code: 'NP', name: 'Nepal' },
-  { country_code: 'BD', name: 'Bangladesh' },
-  { country_code: 'VN', name: 'Vietnam' },
-];
-
 const countryOptions = computed(() => {
   const source = authStore.countries.length > 0 ? authStore.countries : FALLBACK_COUNTRIES;
   return source.map((c) => {
@@ -237,8 +227,19 @@ const selectedDialCode = computed(() => {
   return COUNTRY_DIAL_CODES[form.country_code] || '';
 });
 
+const selectedPhoneMask = computed(() => {
+  return COUNTRY_PHONE_MASKS[form.country_code] || COUNTRY_PHONE_MASKS['OTHER'];
+});
+
 onMounted(() => {
   authStore.fetchCountries();
+
+  // Pre-fill email from query param (e.g., after registration)
+  const emailParam = route.query.email as string;
+  if (emailParam) {
+    form.email = emailParam;
+    loginMethod.value = 'email';
+  }
 });
 
 const loading = computed(() => authStore.loading);

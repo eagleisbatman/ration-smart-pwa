@@ -9,6 +9,9 @@
       <!-- Success Message -->
       <q-banner v-if="success" dense class="bg-positive text-white q-mb-md" rounded>
         {{ $t('auth.forgotPinSuccess') }}
+        <div v-if="redirectCountdown > 0" class="text-caption q-mt-xs">
+          {{ $t('auth.redirectingToLogin', { seconds: redirectCountdown }) }}
+        </div>
       </q-banner>
 
       <!-- Error Message -->
@@ -75,7 +78,7 @@
             :label="$t('auth.phone')"
             type="tel"
             outlined
-            mask="##########"
+            :mask="selectedPhoneMask"
             :rules="[(val) => !!val || $t('validation.required')]"
           >
             <template #prepend>
@@ -113,12 +116,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted } from 'vue';
+import { ref, reactive, computed, onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { api } from 'src/boot/axios';
 import { useAuthStore } from 'src/stores/auth';
-import { formatPhoneE164, COUNTRY_DIAL_CODES } from 'src/services/api-adapter';
+import { formatPhoneE164, COUNTRY_DIAL_CODES, COUNTRY_PHONE_MASKS, FALLBACK_COUNTRIES } from 'src/services/api-adapter';
 
 const { t } = useI18n();
 const router = useRouter();
@@ -131,15 +134,6 @@ const form = reactive({
   phone: '',
   country_code: 'IN',
 });
-
-const FALLBACK_COUNTRIES = [
-  { country_code: 'IN', name: 'India' },
-  { country_code: 'KE', name: 'Kenya' },
-  { country_code: 'ET', name: 'Ethiopia' },
-  { country_code: 'NP', name: 'Nepal' },
-  { country_code: 'BD', name: 'Bangladesh' },
-  { country_code: 'VN', name: 'Vietnam' },
-];
 
 const countryOptions = computed(() => {
   const source = authStore.countries.length > 0 ? authStore.countries : FALLBACK_COUNTRIES;
@@ -157,6 +151,10 @@ const selectedDialCode = computed(() => {
   return COUNTRY_DIAL_CODES[form.country_code] || '';
 });
 
+const selectedPhoneMask = computed(() => {
+  return COUNTRY_PHONE_MASKS[form.country_code] || COUNTRY_PHONE_MASKS['OTHER'];
+});
+
 onMounted(() => {
   authStore.fetchCountries();
 });
@@ -164,6 +162,12 @@ onMounted(() => {
 const loading = ref(false);
 const error = ref<string | null>(null);
 const success = ref(false);
+const redirectCountdown = ref(0);
+let redirectTimer: ReturnType<typeof setInterval> | null = null;
+
+onUnmounted(() => {
+  if (redirectTimer) clearInterval(redirectTimer);
+});
 
 async function onSubmit() {
   loading.value = true;
@@ -177,6 +181,16 @@ async function onSubmit() {
 
     await api.post('/api/v1/auth/forgot-pin', payload);
     success.value = true;
+
+    // Auto-redirect to login after 3 seconds
+    redirectCountdown.value = 3;
+    redirectTimer = setInterval(() => {
+      redirectCountdown.value--;
+      if (redirectCountdown.value <= 0) {
+        if (redirectTimer) clearInterval(redirectTimer);
+        router.push('/auth/login');
+      }
+    }, 1000);
   } catch (err: unknown) {
     if (err && typeof err === 'object' && 'response' in err) {
       const response = (err as { response?: { data?: { detail?: string }; status?: number } })
