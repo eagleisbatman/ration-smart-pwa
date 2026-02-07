@@ -57,16 +57,18 @@
   },
   "roles": {
     "farmer": "کسان",
-    "student": "طالب علم",
+    "extension_worker": "توسیعی کارکن",
     "nutritionist": "غذائیت کے ماہر",
-    "extensionWorker": "توسیعی کارکن",
     "researcher": "محقق",
+    "feed_supplier": "چارہ فراہم کنندہ",
+    "other": "دیگر",
     "admin": "منتظم",
     "farmerDesc": "میں اپنے مویشیوں کی دیکھ بھال کرتا ہوں",
-    "studentDesc": "میں جانوروں کی غذائیت کے بارے میں سیکھ رہا ہوں",
+    "extension_workerDesc": "میں اپنے علاقے کے کسانوں کی مدد کرتا ہوں",
     "nutritionistDesc": "میں کسانوں کو چارہ بنانے کے بارے میں مشورہ دیتا ہوں",
-    "extensionWorkerDesc": "میں اپنے علاقے کے کسانوں کی مدد کرتا ہوں",
     "researcherDesc": "میں مویشیوں کی غذائیت اور کھیتی کے طریقوں کا مطالعہ کرتا ہوں",
+    "feed_supplierDesc": "میں جانوروں کی خوراک کی مصنوعات فراہم کرتا ہوں",
+    "otherDesc": "اوپر درج نہیں کیا گیا کوئی اور کردار",
     "adminDesc": "میں سسٹم کا انتظام کرتا ہوں"
   },
   "auth": {
@@ -106,7 +108,9 @@
     "step1of4": "مرحلہ 1/4",
     "step2of4": "مرحلہ 2/4",
     "step3of4": "مرحلہ 3/4",
-    "step4of4": "مرحلہ 4/4"
+    "step4of4": "مرحلہ 4/4",
+    "recommendedLanguages": "تجویز کردہ",
+    "otherLanguages": "دیگر زبانیں"
   },
   "profile": {
     "myProfile": "میری پروفائل",
@@ -245,7 +249,27 @@
     "thisWeek": "اس ہفتے",
     "thisMonth": "اس مہینے",
     "average": "اوسط",
-    "total": "کل"
+    "total": "کل",
+    "quickLog": {
+      "button": "Quick Log All",
+      "title": "Quick Log - All Cows",
+      "date": "Date",
+      "cowName": "Cow",
+      "morning": "Morning (L)",
+      "evening": "Evening (L)",
+      "total": "Total",
+      "saveAll": "Save All",
+      "saveRow": "Save",
+      "saved": "Saved",
+      "noCows": "No active cows found. Add a cow first.",
+      "allSaved": "All milk logs saved successfully!",
+      "rowSaved": "Milk log saved for {cowName}",
+      "noEntries": "Please enter at least one milk reading",
+      "close": "Close",
+      "savingAll": "Saving all entries...",
+      "duplicateFound": "Log already exists for {cowName} on this date - updated",
+      "entriesSaved": "{count} log saved | {count} logs saved"
+    }
   },
   "reports": {
     "reports": "رپورٹیں",
@@ -309,7 +333,14 @@
     "logout": "لاگ آؤٹ",
     "logoutConfirm": "کیا آپ لاگ آؤٹ کرنا چاہتے ہیں؟",
     "deleteAccount": "اکاؤنٹ حذف کریں",
-    "deleteAccountWarning": "یہ عمل واپس نہیں ہو سکتا۔ آپ کا تمام ڈیٹا مستقل طور پر حذف ہو جائے گا۔"
+    "deleteAccountWarning": "یہ عمل واپس نہیں ہو سکتا۔ آپ کا تمام ڈیٹا مستقل طور پر حذف ہو جائے گا۔",
+    "orgTypes": {
+      "university": "یونیورسٹی",
+      "government": "حکومت",
+      "ngo": "این جی او",
+      "cooperative": "تعاونی",
+      "research": "تحقیقی ادارہ"
+    }
   },
   "farmer": {
     "farmers": "کسان",
@@ -324,7 +355,17 @@
     "addFirstFarmer": "ان کی گائیوں کا انتظام کرنے کے لیے جس کسان کی آپ مدد کرتے ہیں اسے شامل کریں",
     "farmerAdded": "کسان کامیابی سے شامل ہوا",
     "farmerUpdated": "کسان کامیابی سے اپ ڈیٹ ہوا",
-    "farmerDeleted": "کسان ہٹا دیا گیا"
+    "farmerDeleted": "کسان ہٹا دیا گیا",
+    "farmingTypes": {
+      "dairy": "دودھ کی کھیتی",
+      "mixed": "مخلوط کھیتی",
+      "crop": "فصل کی کھیتی"
+    },
+    "filter": {
+      "all": "تمام",
+      "dairy": "دودھ",
+      "mixed": "مخلوط"
+    }
   },
   "errors": {
     "generic": "کچھ غلط ہو گیا۔ براہ کرم دوبارہ کوشش کریں۔",

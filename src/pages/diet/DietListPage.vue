@@ -10,9 +10,9 @@
       <template v-else-if="diets.length === 0">
         <EmptyState
           icon="restaurant"
-          title="No Diet Plans"
-          description="Create your first diet plan to optimize your cattle's nutrition and reduce feed costs."
-          action-label="Create Diet"
+          :title="$t('diet.noDietPlans')"
+          :description="$t('diet.createFirstDiet')"
+          :action-label="$t('diet.createDiet')"
           action-icon="add"
           @action="router.push('/diet/new')"
         />
@@ -20,6 +20,26 @@
 
       <!-- Diet List -->
       <template v-else>
+        <!-- Cost Trend Chart (collapsible) -->
+        <q-card
+          v-if="completedDietsWithCost.length >= 2"
+          flat
+          bordered
+          class="q-mb-md"
+          style="border-radius: 12px;"
+        >
+          <q-expansion-item
+            icon="trending_up"
+            :label="$t('diets.costTrend')"
+            header-class="text-subtitle1"
+            default-opened
+          >
+            <q-card-section class="q-pt-none">
+              <DietCostChart :diets="diets" />
+            </q-card-section>
+          </q-expansion-item>
+        </q-card>
+
         <q-card
           v-for="diet in diets"
           :key="diet.id"
@@ -37,7 +57,7 @@
 
               <div class="col q-ml-md">
                 <div class="text-subtitle1">
-                  {{ diet.cow_name || 'General Diet' }}
+                  {{ diet.cow_name || $t('diet.generalDiet') }}
                 </div>
                 <div class="text-caption text-grey-7">
                   {{ formatDate(diet.created_at) }}
@@ -51,10 +71,10 @@
                   size="sm"
                   dense
                 >
-                  {{ diet.status }}
+                  {{ getStatusLabel(diet.status) }}
                 </q-chip>
                 <div v-if="diet.total_cost" class="text-caption text-grey-7 q-mt-xs">
-                  ₹{{ diet.total_cost.toFixed(2) }}/day
+                  {{ formatCurrency(diet.total_cost) }}{{ $t('diet.perDay') }}
                 </div>
               </div>
             </div>
@@ -62,16 +82,16 @@
             <!-- Summary for completed diets -->
             <div v-if="diet.status === 'completed' && diet.dm_intake" class="row q-mt-sm q-col-gutter-sm">
               <div class="col-4 text-center">
-                <div class="text-caption text-grey-7">DM Intake</div>
-                <div class="text-body2">{{ diet.dm_intake.toFixed(1) }} kg</div>
+                <div class="text-caption text-grey-7">{{ $t('diet.dmIntake') }}</div>
+                <div class="text-body2">{{ diet.dm_intake.toFixed(1) }} {{ $t('diet.kg') }}</div>
               </div>
               <div class="col-4 text-center">
-                <div class="text-caption text-grey-7">Goal</div>
+                <div class="text-caption text-grey-7">{{ $t('diet.goal') }}</div>
                 <div class="text-body2 text-capitalize">{{ formatGoal(diet.optimization_goal) }}</div>
               </div>
               <div class="col-4 text-center">
-                <div class="text-caption text-grey-7">Cost</div>
-                <div class="text-body2">₹{{ diet.total_cost?.toFixed(0) }}</div>
+                <div class="text-caption text-grey-7">{{ $t('diet.cost') }}</div>
+                <div class="text-body2">{{ formatCurrency(diet.total_cost ?? 0) }}</div>
               </div>
             </div>
           </q-card-section>
@@ -89,18 +109,26 @@
 <script setup lang="ts">
 import { computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import { format } from 'date-fns';
 import { useDietsStore } from 'src/stores/diets';
+import { useCurrency } from 'src/composables/useCurrency';
 
 const router = useRouter();
+const { t } = useI18n();
+const { formatCurrency } = useCurrency();
 import PullToRefresh from 'src/components/ui/PullToRefresh.vue';
 import SkeletonCard from 'src/components/ui/SkeletonCard.vue';
 import EmptyState from 'src/components/ui/EmptyState.vue';
+import DietCostChart from 'src/components/diet/DietCostChart.vue';
 
 const dietsStore = useDietsStore();
 
 const loading = computed(() => dietsStore.loading);
 const diets = computed(() => dietsStore.diets);
+const completedDietsWithCost = computed(() =>
+  diets.value.filter((d) => d.status === 'completed' && d.total_cost != null && d.total_cost > 0)
+);
 
 function formatDate(dateStr: string): string {
   return format(new Date(dateStr), 'MMM d, yyyy h:mm a');
@@ -108,11 +136,20 @@ function formatDate(dateStr: string): string {
 
 function formatGoal(goal: string): string {
   const goals: Record<string, string> = {
-    minimize_cost: 'Min Cost',
-    maximize_milk: 'Max Milk',
-    balanced: 'Balanced',
+    minimize_cost: t('diet.goals.minCost'),
+    maximize_milk: t('diet.goals.maxMilk'),
+    balanced: t('diet.goals.balanced'),
   };
   return goals[goal] || goal;
+}
+
+function getStatusLabel(status: string): string {
+  const labels: Record<string, string> = {
+    completed: t('diet.statusLabel.completed'),
+    processing: t('diet.statusLabel.processing'),
+    failed: t('diet.statusLabel.failed'),
+  };
+  return labels[status] || t('diet.statusLabel.pending');
 }
 
 function getStatusColor(status: string): string {

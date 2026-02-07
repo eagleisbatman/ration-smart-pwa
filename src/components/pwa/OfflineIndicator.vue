@@ -2,9 +2,9 @@
   <transition name="slide-down">
     <div v-if="!isOnline" class="offline-indicator">
       <q-icon name="cloud_off" class="q-mr-sm" />
-      <span>You're offline</span>
+      <span>{{ $t('offline.youAreOffline') }}</span>
       <span v-if="hasPendingChanges" class="q-ml-sm pending-text">
-        ({{ pendingCount }} pending)
+        ({{ $t('offline.pending', { count: pendingCount }) }})
       </span>
     </div>
   </transition>

@@ -4,7 +4,10 @@
     <q-list bordered class="rounded-borders q-mb-md">
       <q-item v-ripple clickable @click="router.push('/settings/profile')">
         <q-item-section avatar>
-          <q-avatar color="primary" text-color="white">
+          <q-avatar v-if="profileImage" size="40px">
+            <q-img :src="profileImage" :ratio="1" />
+          </q-avatar>
+          <q-avatar v-else color="primary" text-color="white">
             <q-icon name="person" />
           </q-avatar>
         </q-item-section>
@@ -128,6 +131,21 @@
 
       <q-separator />
 
+      <q-item v-ripple clickable @click="showSyncHistory = true">
+        <q-item-section avatar>
+          <q-icon name="history" />
+        </q-item-section>
+        <q-item-section>
+          <q-item-label>{{ $t('settings.syncHistory') }}</q-item-label>
+          <q-item-label caption>{{ $t('settings.syncHistoryDesc') }}</q-item-label>
+        </q-item-section>
+        <q-item-section side>
+          <q-icon name="chevron_right" />
+        </q-item-section>
+      </q-item>
+
+      <q-separator />
+
       <q-item v-ripple clickable @click="confirmClearCache">
         <q-item-section avatar>
           <q-icon name="delete_sweep" color="negative" />
@@ -154,7 +172,7 @@
 
       <q-separator />
 
-      <q-item v-ripple clickable>
+      <q-item v-ripple clickable @click="router.push('/settings/help')">
         <q-item-section avatar>
           <q-icon name="help" />
         </q-item-section>
@@ -162,13 +180,13 @@
           <q-item-label>{{ $t('settings.helpSupport') }}</q-item-label>
         </q-item-section>
         <q-item-section side>
-          <q-icon name="open_in_new" />
+          <q-icon name="chevron_right" />
         </q-item-section>
       </q-item>
 
       <q-separator />
 
-      <q-item v-ripple clickable>
+      <q-item v-ripple clickable @click="router.push('/settings/privacy')">
         <q-item-section avatar>
           <q-icon name="policy" />
         </q-item-section>
@@ -176,7 +194,7 @@
           <q-item-label>{{ $t('settings.privacyPolicy') }}</q-item-label>
         </q-item-section>
         <q-item-section side>
-          <q-icon name="open_in_new" />
+          <q-icon name="chevron_right" />
         </q-item-section>
       </q-item>
     </q-list>
@@ -250,6 +268,9 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
+
+    <!-- Sync History Drawer -->
+    <SyncHistoryDrawer v-model="showSyncHistory" />
 
     <!-- Organization Dialog -->
     <q-dialog v-model="showOrgDialog">
@@ -337,6 +358,7 @@ import { db } from 'src/lib/offline/db';
 import { availableLocales, setLocale, getLocale } from 'src/boot/i18n';
 import { api } from 'src/boot/axios';
 import { useI18n } from 'vue-i18n';
+import SyncHistoryDrawer from 'src/components/pwa/SyncHistoryDrawer.vue';
 
 interface Organization {
   id: string;
@@ -359,6 +381,8 @@ const {
 } = useOfflineSync();
 
 const notifications = ref(false);
+const showSyncHistory = ref(false);
+const profileImage = ref<string | null>(localStorage.getItem('profile_image'));
 
 // Language
 const showLanguageDialog = ref(false);
@@ -373,10 +397,11 @@ const showRoleDialog = ref(false);
 const selectedRole = ref(authStore.userRole);
 const roles = [
   { value: 'farmer', icon: 'agriculture' },
-  { value: 'student', icon: 'school' },
+  { value: 'extension_worker', icon: 'groups' },
   { value: 'nutritionist', icon: 'science' },
-  { value: 'extensionWorker', icon: 'groups' },
   { value: 'researcher', icon: 'biotech' },
+  { value: 'feed_supplier', icon: 'storefront' },
+  { value: 'other', icon: 'more_horiz' },
 ];
 
 // Organization
@@ -397,7 +422,7 @@ const filteredOrganizations = computed(() => {
   );
 });
 
-const userName = computed(() => authStore.user?.name || 'User');
+const userName = computed(() => authStore.user?.name || t('profile.defaultUserName'));
 const userEmail = computed(() => authStore.user?.email || authStore.user?.phone || '');
 
 // Fetch organizations when dialog opens
@@ -438,14 +463,10 @@ function getOrgTypeColor(type: string): string {
 }
 
 function formatOrgType(type: string): string {
-  const labels: Record<string, string> = {
-    university: 'University',
-    government: 'Government',
-    ngo: 'NGO',
-    cooperative: 'Cooperative',
-    research: 'Research Institute',
-  };
-  return labels[type] || type;
+  const key = `settings.orgTypes.${type}`;
+  const translated = t(key);
+  // If key not found, t() returns the key itself, so fallback to type
+  return translated === key ? type : translated;
 }
 
 async function changeLanguage(locale: string) {

@@ -11,14 +11,14 @@
       class="diet-stepper"
     >
       <!-- Step 1: Select Cow -->
-      <q-step :name="1" title="Cow" icon="pets" :done="step > 1">
-        <div class="text-subtitle1 q-mb-md">Select a cow or enter details manually</div>
+      <q-step :name="1" :title="$t('diet.wizard.stepCow')" :icon="COW_ICON" :done="step > 1">
+        <div class="text-subtitle1 q-mb-md">{{ $t('diet.wizard.selectCowOrManual') }}</div>
 
         <q-option-group
           v-model="inputMode"
           :options="[
-            { label: 'Select from my cows', value: 'select' },
-            { label: 'Enter manually', value: 'manual' },
+            { label: $t('diet.wizard.selectFromMyCows'), value: 'select' },
+            { label: $t('diet.wizard.enterManually'), value: 'manual' },
           ]"
           color="primary"
           class="q-mb-md"
@@ -27,7 +27,7 @@
         <template v-if="inputMode === 'select'">
           <q-select
             v-model="form.cow_id"
-            label="Select Cow"
+            :label="$t('diet.wizard.selectCow')"
             outlined
             :options="cowOptions"
             emit-value
@@ -39,7 +39,7 @@
         <template v-else>
           <q-input
             v-model="form.cow_name"
-            label="Cow Name (optional)"
+            :label="$t('diet.wizard.cowNameOptional')"
             outlined
             class="q-mb-sm"
           />
@@ -47,23 +47,23 @@
       </q-step>
 
       <!-- Step 2: Animal Details -->
-      <q-step :name="2" title="Details" icon="info" :done="step > 2">
-        <div class="text-subtitle1 q-mb-md">Animal Information</div>
+      <q-step :name="2" :title="$t('diet.wizard.stepDetails')" icon="info" :done="step > 2">
+        <div class="text-subtitle1 q-mb-md">{{ $t('diet.wizard.animalInformation') }}</div>
 
         <div class="row q-col-gutter-sm">
           <div class="col-6">
             <q-input
               v-model.number="form.weight_kg"
-              label="Weight (kg)"
+              :label="$t('diet.wizard.weightKg')"
               type="number"
               outlined
-              :rules="[(val) => val > 0 || 'Required']"
+              :rules="[(val) => val > 0 || $t('diet.wizard.required')]"
             />
           </div>
           <div class="col-6">
             <q-input
               v-model.number="form.milk_yield_liters"
-              label="Milk Yield (L/day)"
+              :label="$t('diet.wizard.milkYieldPerDay')"
               type="number"
               step="0.1"
               outlined
@@ -75,7 +75,7 @@
           <div class="col-6">
             <q-input
               v-model.number="form.milk_fat_percentage"
-              label="Milk Fat %"
+              :label="$t('diet.wizard.milkFatPercent')"
               type="number"
               step="0.1"
               outlined
@@ -84,7 +84,7 @@
           <div class="col-6">
             <q-select
               v-model="form.lactation_stage"
-              label="Lactation Stage"
+              :label="$t('diet.wizard.lactationStage')"
               outlined
               :options="lactationOptions"
               emit-value
@@ -93,29 +93,57 @@
           </div>
         </div>
 
-        <q-toggle v-model="form.is_pregnant" label="Pregnant" class="q-mt-sm" />
+        <q-toggle v-model="form.is_pregnant" :label="$t('diet.wizard.pregnant')" class="q-mt-sm" />
 
         <q-input
           v-if="form.is_pregnant"
           v-model.number="form.pregnancy_month"
-          label="Pregnancy Month"
+          :label="$t('diet.wizard.pregnancyMonth')"
           type="number"
           outlined
           class="q-mt-sm"
         />
+
+        <div class="row q-col-gutter-sm q-mt-sm">
+          <div class="col-6">
+            <div class="text-caption q-mb-xs">{{ $t('diet.wizard.bodyConditionScore') }}</div>
+            <q-slider
+              v-model="form.body_condition_score"
+              :min="1"
+              :max="5"
+              :step="0.5"
+              snap
+              label
+              :label-value="$t('cow.bcsValue', { score: form.body_condition_score })"
+              color="primary"
+              markers
+              class="q-mx-sm"
+            />
+            <div class="text-caption text-grey-6 text-center">{{ $t('cow.bcsHint') }}</div>
+          </div>
+          <div class="col-6">
+            <q-input
+              v-model.number="form.age_months"
+              :label="$t('diet.wizard.ageMonths')"
+              type="number"
+              outlined
+              :hint="$t('diet.wizard.ageMonthsHint')"
+            />
+          </div>
+        </div>
       </q-step>
 
       <!-- Step 3: Select Feeds -->
-      <q-step :name="3" title="Feeds" icon="grass" :done="step > 3">
+      <q-step :name="3" :title="$t('diet.wizard.stepFeeds')" icon="grass" :done="step > 3">
         <div class="text-subtitle1 q-mb-md">
-          Select available feeds ({{ form.available_feeds.length }} selected)
+          {{ $t('diet.wizard.selectAvailableFeeds', { count: form.available_feeds.length }) }}
         </div>
 
         <q-input
           v-model="feedSearch"
           outlined
           dense
-          placeholder="Search feeds..."
+          :placeholder="$t('diet.wizard.searchFeeds')"
           class="q-mb-md"
         >
           <template #prepend>
@@ -140,23 +168,23 @@
             <q-item-section>
               <q-item-label>{{ feed.name }}</q-item-label>
               <q-item-label caption>
-                {{ feed.category }} · CP: {{ feed.cp_percentage }}% · TDN: {{ feed.tdn_percentage }}%
+                {{ feed.category }} · {{ $t('diet.cpLabel') }}: {{ feed.cp_percentage }}% · {{ $t('diet.tdnLabel') }}: {{ feed.tdn_percentage }}%
               </q-item-label>
             </q-item-section>
             <q-item-section v-if="feed.price_per_kg" side>
-              <q-item-label caption>₹{{ feed.price_per_kg }}/kg</q-item-label>
+              <q-item-label caption>{{ formatCurrency(feed.price_per_kg) }}{{ $t('units.perKg') }}</q-item-label>
             </q-item-section>
           </q-item>
         </q-list>
 
         <q-banner v-if="form.available_feeds.length < 3" class="bg-warning text-white q-mt-md" rounded>
-          Select at least 3 feeds for better optimization results
+          {{ $t('diet.wizard.selectAtLeast3Feeds') }}
         </q-banner>
       </q-step>
 
       <!-- Step 4: Optimization Goal -->
-      <q-step :name="4" title="Goal" icon="flag" :done="step > 4">
-        <div class="text-subtitle1 q-mb-md">What do you want to optimize?</div>
+      <q-step :name="4" :title="$t('diet.wizard.stepGoal')" icon="flag" :done="step > 4">
+        <div class="text-subtitle1 q-mb-md">{{ $t('diet.wizard.whatToOptimize') }}</div>
 
         <q-option-group
           v-model="form.optimization_goal"
@@ -176,42 +204,48 @@
 
         <q-input
           v-model.number="form.budget_per_day"
-          label="Daily Budget (optional)"
+          :label="$t('diet.wizard.dailyBudgetOptional')"
           type="number"
           outlined
-          prefix="₹"
-          hint="Leave empty for no budget limit"
+          :prefix="getCurrencySymbol()"
+          :hint="$t('diet.wizard.noBudgetLimit')"
           class="q-mt-lg"
         />
       </q-step>
 
       <!-- Step 5: Review & Submit -->
-      <q-step :name="5" title="Review" icon="check">
-        <div class="text-subtitle1 q-mb-md">Review and Generate Diet</div>
+      <q-step :name="5" :title="$t('diet.wizard.stepReview')" icon="check">
+        <div class="text-subtitle1 q-mb-md">{{ $t('diet.wizard.reviewAndGenerate') }}</div>
 
         <q-card flat bordered class="q-mb-md">
           <q-list>
             <q-item>
               <q-item-section>
-                <q-item-label caption>Cow</q-item-label>
-                <q-item-label>{{ form.cow_name || 'Manual Entry' }}</q-item-label>
+                <q-item-label caption>{{ $t('diet.wizard.cow') }}</q-item-label>
+                <q-item-label>{{ form.cow_name || $t('diet.wizard.manualEntry') }}</q-item-label>
               </q-item-section>
             </q-item>
             <q-item>
               <q-item-section>
-                <q-item-label caption>Weight / Milk Yield</q-item-label>
-                <q-item-label>{{ form.weight_kg }} kg / {{ form.milk_yield_liters }} L/day</q-item-label>
+                <q-item-label caption>{{ $t('diet.wizard.weightMilkYield') }}</q-item-label>
+                <q-item-label>{{ form.weight_kg }} {{ $t('diet.kg') }} / {{ form.milk_yield_liters }} {{ $t('units.l') }}/{{ $t('units.perDay').replace('/', '') }}</q-item-label>
               </q-item-section>
             </q-item>
             <q-item>
               <q-item-section>
-                <q-item-label caption>Selected Feeds</q-item-label>
-                <q-item-label>{{ form.available_feeds.length }} feeds</q-item-label>
+                <q-item-label caption>{{ $t('diet.wizard.bcsAndAge') }}</q-item-label>
+                <q-item-label>{{ $t('cow.bcsValue', { score: form.body_condition_score }) }} · {{ form.age_months ? $t('diet.wizard.ageMonthsValue', { months: form.age_months }) : $t('diet.wizard.notSpecified') }}</q-item-label>
               </q-item-section>
             </q-item>
             <q-item>
               <q-item-section>
-                <q-item-label caption>Optimization Goal</q-item-label>
+                <q-item-label caption>{{ $t('diet.wizard.selectedFeeds') }}</q-item-label>
+                <q-item-label>{{ $t('diet.wizard.feedsCount', { count: form.available_feeds.length }) }}</q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item>
+              <q-item-section>
+                <q-item-label caption>{{ $t('diet.wizard.optimizationGoal') }}</q-item-label>
                 <q-item-label class="text-capitalize">{{ formatGoal(form.optimization_goal) }}</q-item-label>
               </q-item-section>
             </q-item>
@@ -223,7 +257,7 @@
           <template #avatar>
             <q-icon name="cloud_off" />
           </template>
-          Diet optimization requires an internet connection. Please go online to continue.
+          {{ $t('diet.wizard.offlineWarning') }}
         </q-banner>
       </q-step>
 
@@ -234,21 +268,21 @@
             v-if="step > 1"
             flat
             color="primary"
-            label="Back"
+            :label="$t('diet.wizard.back')"
             class="q-mr-sm"
-            @click="stepper?.previous()"
+            @click="onStepBack"
           />
           <q-btn
             v-if="step < 5"
             color="primary"
-            label="Continue"
+            :label="$t('diet.wizard.continue')"
             :disable="!canProceed"
-            @click="stepper?.next()"
+            @click="onStepNext"
           />
           <q-btn
             v-else
             color="primary"
-            label="Generate Diet"
+            :label="$t('diet.wizard.generateDiet')"
             :loading="optimizing"
             :disable="!isOnline || form.available_feeds.length < 2"
             @click="submitDiet"
@@ -263,10 +297,18 @@
 import { ref, reactive, computed, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useQuasar, QStepper } from 'quasar';
+import { useI18n } from 'vue-i18n';
 import { useDietsStore, DietInput } from 'src/stores/diets';
 import { useCowsStore } from 'src/stores/cows';
 import { useFeedsStore } from 'src/stores/feeds';
 import { isOnline } from 'src/boot/pwa';
+import { COW_ICON } from 'src/boot/icons';
+import { useCurrency } from 'src/composables/useCurrency';
+import { useHapticFeedback } from 'src/composables/useHapticFeedback';
+
+const { t } = useI18n();
+const { formatCurrency, getCurrencySymbol } = useCurrency();
+const { success, error: hapticError, light, medium } = useHapticFeedback();
 
 // Template refs
 const stepper = ref<QStepper | null>(null);
@@ -283,6 +325,7 @@ const inputMode = ref<'select' | 'manual'>('select');
 const feedSearch = ref('');
 
 const queryCowId = route.query.cow_id as string | undefined;
+const regenerateFromId = route.query.regenerateFrom as string | undefined;
 
 const form = reactive<DietInput>({
   cow_id: queryCowId,
@@ -291,6 +334,8 @@ const form = reactive<DietInput>({
   milk_yield_liters: 10,
   milk_fat_percentage: 4.0,
   lactation_stage: 'mid',
+  body_condition_score: 3,
+  age_months: undefined,
   is_pregnant: false,
   pregnancy_month: undefined,
   activity_level: 'normal',
@@ -319,36 +364,36 @@ const filteredFeeds = computed(() => {
   );
 });
 
-const lactationOptions = [
-  { label: 'Early (0-100 days)', value: 'early' },
-  { label: 'Mid (100-200 days)', value: 'mid' },
-  { label: 'Late (200+ days)', value: 'late' },
-  { label: 'Dry', value: 'dry' },
-];
+const lactationOptions = computed(() => [
+  { label: t('diet.wizard.lactationEarly'), value: 'early' },
+  { label: t('diet.wizard.lactationMid'), value: 'mid' },
+  { label: t('diet.wizard.lactationLate'), value: 'late' },
+  { label: t('diet.wizard.lactationDry'), value: 'dry' },
+]);
 
-const goalOptions = [
+const goalOptions = computed(() => [
   {
-    label: 'Minimize Cost',
+    label: t('diet.goals.minimizeCost'),
     value: 'minimize_cost',
     icon: 'savings',
     color: 'positive',
-    description: 'Get the cheapest diet that meets nutritional needs',
+    description: t('diet.goals.minimizeCostDesc'),
   },
   {
-    label: 'Maximize Milk',
+    label: t('diet.goals.maximizeMilk'),
     value: 'maximize_milk',
     icon: 'water_drop',
     color: 'primary',
-    description: 'Optimize for maximum milk production',
+    description: t('diet.goals.maximizeMilkDesc'),
   },
   {
-    label: 'Balanced',
+    label: t('diet.goals.balanced'),
     value: 'balanced',
     icon: 'balance',
     color: 'secondary',
-    description: 'Balance between cost and production',
+    description: t('diet.goals.balancedDesc'),
   },
-];
+]);
 
 const canProceed = computed(() => {
   switch (step.value) {
@@ -376,27 +421,43 @@ function onCowSelected(cowId: string) {
     form.is_pregnant = cow.is_pregnant;
     form.pregnancy_month = cow.pregnancy_month;
     form.activity_level = cow.activity_level;
+    form.body_condition_score = cow.body_condition_score ?? 3;
+    form.age_months = cow.age_months;
   }
 }
 
 function formatGoal(goal: string): string {
   const goals: Record<string, string> = {
-    minimize_cost: 'Minimize Cost',
-    maximize_milk: 'Maximize Milk',
-    balanced: 'Balanced',
+    minimize_cost: t('diet.goals.minimizeCost'),
+    maximize_milk: t('diet.goals.maximizeMilk'),
+    balanced: t('diet.goals.balanced'),
   };
   return goals[goal] || goal;
 }
 
+function onStepBack() {
+  light(); // Haptic feedback on step change
+  stepper.value?.previous();
+}
+
+function onStepNext() {
+  light(); // Haptic feedback on step change
+  stepper.value?.next();
+}
+
 async function submitDiet() {
+  medium(); // Haptic feedback on submit
   const diet = await dietsStore.optimizeDiet(form);
 
   if (diet) {
+    success(); // Haptic feedback on successful operation
     $q.notify({
       type: 'positive',
-      message: 'Diet optimization started!',
+      message: t('diet.wizard.dietStarted'),
     });
     router.push(`/diet/${diet.id}`);
+  } else {
+    hapticError(); // Haptic feedback on error
   }
 }
 
@@ -404,8 +465,29 @@ onMounted(async () => {
   await cowsStore.fetchCows();
   await feedsStore.fetchAllFeeds();
 
-  // Pre-select cow if from query
-  if (queryCowId) {
+  // Pre-fill from previous diet for regeneration
+  if (regenerateFromId) {
+    const inputData = await dietsStore.getInputDataForRegeneration(regenerateFromId);
+    if (inputData) {
+      form.cow_id = inputData.cow_id;
+      form.cow_name = inputData.cow_name || '';
+      form.weight_kg = inputData.weight_kg;
+      form.milk_yield_liters = inputData.milk_yield_liters;
+      form.milk_fat_percentage = inputData.milk_fat_percentage;
+      form.lactation_stage = inputData.lactation_stage;
+      form.body_condition_score = inputData.body_condition_score ?? 3;
+      form.age_months = inputData.age_months;
+      form.is_pregnant = inputData.is_pregnant ?? false;
+      form.pregnancy_month = inputData.pregnancy_month;
+      form.activity_level = inputData.activity_level ?? 'normal';
+      form.optimization_goal = inputData.optimization_goal;
+      form.available_feeds = inputData.available_feeds;
+      form.feed_constraints = inputData.feed_constraints;
+      form.budget_per_day = inputData.budget_per_day;
+      inputMode.value = inputData.cow_id ? 'select' : 'manual';
+    }
+  } else if (queryCowId) {
+    // Pre-select cow if from query
     inputMode.value = 'select';
     onCowSelected(queryCowId);
   }

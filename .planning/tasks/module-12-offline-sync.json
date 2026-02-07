@@ -1,0 +1,609 @@
+[
+  {
+    "module": "12-offline-sync",
+    "taskId": "H27",
+    "priority": "high",
+    "title": "Internationalize offline UI text - hardcoded English strings",
+    "description": "All offline-related UI components have hardcoded English text that needs to be moved to i18n. This includes: OfflineIndicator.vue ('You're offline', 'pending'), AddToHomeScreen.vue ('Install RationSmart', 'Not Now', 'Install', 'Install app for better experience', iOS instructions), UpdatePrompt.vue ('Update Available', 'Later', 'Update Now', 'Update available'), SyncStatusChip.vue (tooltip 'Last synced:', 'Never'), and useOfflineSync.ts composable notifications ('All changes synced successfully', 'Back online. Syncing...', 'Cannot sync while offline', 'changes could not be synced') plus status text ('Offline', 'Syncing...', 'pending', 'Synced').",
+    "files": [
+      "src/components/pwa/OfflineIndicator.vue",
+      "src/components/pwa/AddToHomeScreen.vue",
+      "src/components/pwa/UpdatePrompt.vue",
+      "src/components/ui/SyncStatusChip.vue",
+      "src/composables/useOfflineSync.ts",
+      "src/i18n/en.json",
+      "src/i18n/hi.json",
+      "src/i18n/te.json",
+      "src/i18n/kn.json",
+      "src/i18n/vi.json",
+      "src/i18n/mr.json"
+    ],
+    "changes": [
+      {
+        "file": "src/i18n/en.json",
+        "action": "modify",
+        "details": "Add new 'pwa' section with keys: offline.youreOffline, offline.pending, offline.pendingCount, sync.synced, sync.syncing, sync.syncingProgress, sync.offline, sync.pending, sync.allSynced, sync.backOnline, sync.cannotSyncOffline, sync.syncFailed, sync.lastSynced, sync.never, install.title, install.installButton, install.notNow, install.gotIt, install.bannerText, install.description, install.iosInstructions, install.iosStep1, install.iosStep2, install.iosStep3, update.available, update.title, update.description, update.later, update.updateNow, update.bannerText"
+      },
+      {
+        "file": "src/components/pwa/OfflineIndicator.vue",
+        "action": "modify",
+        "details": "Import useI18n from vue-i18n. Replace hardcoded 'You're offline' with $t('pwa.offline.youreOffline'). Replace '({{ pendingCount }} pending)' with $t('pwa.offline.pendingCount', { count: pendingCount })"
+      },
+      {
+        "file": "src/components/pwa/AddToHomeScreen.vue",
+        "action": "modify",
+        "details": "Import useI18n. Replace all hardcoded strings: 'Install RationSmart' -> $t('pwa.install.title'), 'Install RationSmart on your device...' -> $t('pwa.install.description'), 'Not Now' -> $t('pwa.install.notNow'), 'Install' -> $t('pwa.install.installButton'), 'Got it' -> $t('pwa.install.gotIt'), 'Install app for better experience' -> $t('pwa.install.bannerText'), iOS instructions steps -> $t('pwa.install.iosStep1'), $t('pwa.install.iosStep2'), $t('pwa.install.iosStep3')"
+      },
+      {
+        "file": "src/components/pwa/UpdatePrompt.vue",
+        "action": "modify",
+        "details": "Import useI18n. Replace: 'Update Available' -> $t('pwa.update.title'), description text -> $t('pwa.update.description'), 'Later' -> $t('pwa.update.later'), 'Update Now' -> $t('pwa.update.updateNow'), 'Update available' (banner) -> $t('pwa.update.bannerText')"
+      },
+      {
+        "file": "src/components/ui/SyncStatusChip.vue",
+        "action": "modify",
+        "details": "Import useI18n. Replace tooltip 'Last synced:' -> $t('pwa.sync.lastSynced'), 'Never' -> $t('pwa.sync.never')"
+      },
+      {
+        "file": "src/composables/useOfflineSync.ts",
+        "action": "modify",
+        "details": "Import i18n instance or pass $t function. Replace all notification messages and syncStatusText values with i18n keys: 'All changes synced successfully' -> t('pwa.sync.allSynced'), 'Back online. Syncing...' -> t('pwa.sync.backOnline', { count }), 'Cannot sync while offline' -> t('pwa.sync.cannotSyncOffline'), syncStatusText cases: 'Offline' -> t('pwa.sync.offline'), 'Syncing...' -> t('pwa.sync.syncingProgress', { percent }), 'pending' -> t('pwa.sync.pending', { count }), 'Synced' -> t('pwa.sync.synced')"
+      }
+    ],
+    "acceptanceCriteria": [
+      "All PWA/offline UI text uses i18n translation keys",
+      "New 'pwa' section added to en.json with all required keys",
+      "Hindi, Telugu, Kannada, Vietnamese, and Marathi translations added",
+      "No hardcoded English strings remain in OfflineIndicator, AddToHomeScreen, UpdatePrompt, SyncStatusChip, or useOfflineSync",
+      "Notification messages from Quasar $q.notify also use i18n"
+    ],
+    "testScenarios": [
+      {
+        "scenario": "Verify offline indicator in Hindi",
+        "steps": [
+          "Set app language to Hindi in settings",
+          "Turn off network connection or use DevTools offline mode",
+          "Observe the offline indicator banner"
+        ],
+        "expectedResult": "Banner displays Hindi text for 'You are offline' and pending count"
+      },
+      {
+        "scenario": "Verify sync notifications in Telugu",
+        "steps": [
+          "Set app language to Telugu",
+          "Create offline changes",
+          "Reconnect to network"
+        ],
+        "expectedResult": "Sync notification messages appear in Telugu"
+      },
+      {
+        "scenario": "Verify PWA install dialog in Vietnamese",
+        "steps": [
+          "Set app language to Vietnamese",
+          "Clear PWA dismissal from IndexedDB",
+          "Wait for install prompt or trigger manually"
+        ],
+        "expectedResult": "Install dialog shows Vietnamese text for title, description, and buttons"
+      }
+    ],
+    "status": "completed",
+    "estimatedEffort": "medium"
+  },
+  {
+    "module": "12-offline-sync",
+    "taskId": "H28",
+    "priority": "high",
+    "title": "Fix API endpoint mismatches in sync-manager",
+    "description": "The API_ENDPOINTS mapping in sync-manager.ts may not match actual backend routes. Current mapping: cow -> '/api/v1/cows', feed -> '/api/v1/feeds/custom', diet -> '/api/v1/diet', milk_log -> '/api/v1/milk-logs', farmer -> '/api/v1/farmers', yield -> '/api/v1/yield-data'. Backend actual routes: cow-profiles uses '/cow-profiles' prefix, farmer-profiles uses '/farmer-profiles' prefix, yield-data uses '/yield-data' prefix, feeds router has no '/api/v1/' prefix visible. Need to verify and align all endpoints with actual backend API structure.",
+    "files": [
+      "src/lib/offline/sync-manager.ts",
+      "src/boot/axios.ts"
+    ],
+    "changes": [
+      {
+        "file": "src/lib/offline/sync-manager.ts",
+        "action": "modify",
+        "details": "Update API_ENDPOINTS mapping to match actual backend routes: cow -> '/cow-profiles' (verify), feed -> verify feeds endpoint structure, diet -> verify diet endpoint, milk_log -> verify if this maps to bot-daily-logs or different route, farmer -> '/farmer-profiles', yield -> '/yield-data'. Also verify if '/api/v1/' prefix is needed or if axios baseURL handles it"
+      },
+      {
+        "file": "src/boot/axios.ts",
+        "action": "modify",
+        "details": "Verify baseURL configuration and ensure it aligns with sync-manager endpoint paths. If baseURL includes '/api/v1', then sync-manager endpoints should NOT include this prefix"
+      }
+    ],
+    "acceptanceCriteria": [
+      "All API_ENDPOINTS in sync-manager.ts match actual backend route prefixes",
+      "Axios baseURL and sync-manager endpoints work together correctly",
+      "CREATE operations for all entity types reach correct backend endpoints",
+      "UPDATE operations correctly append entity_id to endpoints",
+      "DELETE operations correctly append entity_id to endpoints",
+      "No 404 errors when syncing any entity type"
+    ],
+    "testScenarios": [
+      {
+        "scenario": "Verify cow sync endpoint",
+        "steps": [
+          "Create a cow profile while offline",
+          "Go back online",
+          "Monitor network requests in DevTools"
+        ],
+        "expectedResult": "POST request goes to correct endpoint (e.g., /cow-profiles) and returns 200/201"
+      },
+      {
+        "scenario": "Verify farmer profile sync",
+        "steps": [
+          "Create a farmer profile while offline",
+          "Go back online",
+          "Monitor network requests"
+        ],
+        "expectedResult": "POST request goes to /farmer-profiles and succeeds"
+      },
+      {
+        "scenario": "Verify yield data sync",
+        "steps": [
+          "Log yield data while offline",
+          "Reconnect to network",
+          "Check network tab"
+        ],
+        "expectedResult": "POST request goes to /yield-data endpoint and succeeds"
+      },
+      {
+        "scenario": "Verify update operation includes entity ID",
+        "steps": [
+          "Edit an existing cow profile while offline",
+          "Reconnect to network",
+          "Monitor network requests"
+        ],
+        "expectedResult": "PUT request goes to /cow-profiles/{cowId} with correct ID in path"
+      }
+    ],
+    "status": "completed",
+    "estimatedEffort": "medium"
+  },
+  {
+    "module": "12-offline-sync",
+    "taskId": "M57",
+    "priority": "medium",
+    "title": "Add offline fallback page when network and cache both fail",
+    "description": "Currently the service worker uses NetworkFirst strategy for navigation but has no offline fallback page when both network request fails AND there's no cached version. Users see a browser error page instead of a branded offline experience. Need to add an offline.html fallback page and configure the service worker to serve it when navigation fails completely.",
+    "files": [
+      "src-pwa/custom-service-worker.ts",
+      "public/offline.html"
+    ],
+    "changes": [
+      {
+        "file": "public/offline.html",
+        "action": "create",
+        "details": "Create a standalone offline fallback HTML page with: RationSmart branding/logo, message explaining user is offline and cached page not available, suggestion to check connection and retry, auto-reload button that checks navigator.onLine, minimal inline CSS (no external dependencies), meta viewport for mobile, use app theme colors (#2E7D32 primary green)"
+      },
+      {
+        "file": "src-pwa/custom-service-worker.ts",
+        "action": "modify",
+        "details": "1) Add offline.html to precache list. 2) Modify NavigationRoute to use setCatchHandler or wrap in try/catch. 3) When navigation fetch fails and no cache, respond with cached offline.html. Use: import { setCatchHandler } from 'workbox-routing'; setCatchHandler(async ({ event }) => { if (event.request.destination === 'document') { return caches.match('/offline.html'); } return Response.error(); });"
+      }
+    ],
+    "acceptanceCriteria": [
+      "offline.html is precached during service worker install",
+      "When navigation fails with no cache, offline.html is served instead of browser error",
+      "Offline page displays RationSmart branding",
+      "Offline page has a retry/reload button",
+      "Offline page is mobile-responsive",
+      "Offline page works without any external dependencies (self-contained)"
+    ],
+    "testScenarios": [
+      {
+        "scenario": "Access uncached page while offline",
+        "steps": [
+          "Install PWA and let service worker activate",
+          "Clear all caches except precache",
+          "Go offline in DevTools",
+          "Navigate to a page that was never cached (e.g., deep link)"
+        ],
+        "expectedResult": "Offline fallback page displays with RationSmart branding instead of browser error"
+      },
+      {
+        "scenario": "Verify retry button works",
+        "steps": [
+          "Trigger offline fallback page to display",
+          "Reconnect to network",
+          "Click retry/reload button"
+        ],
+        "expectedResult": "Page reloads and shows correct content"
+      },
+      {
+        "scenario": "Verify offline page is precached",
+        "steps": [
+          "Open DevTools Application tab",
+          "Check precache storage",
+          "Look for offline.html entry"
+        ],
+        "expectedResult": "offline.html appears in precache with correct revision hash"
+      }
+    ],
+    "status": "completed",
+    "estimatedEffort": "small"
+  },
+  {
+    "module": "12-offline-sync",
+    "taskId": "M58",
+    "priority": "medium",
+    "title": "Add conflict detection and resolution for sync",
+    "description": "Currently the sync system uses 'last write wins' without any conflict detection or user warning. When the same entity is modified both locally and on the server, local changes silently overwrite server changes (or vice versa). Need to add: 1) updated_at timestamp comparison, 2) conflict detection during sync, 3) user notification when conflicts occur, 4) option to choose local or server version (or merge for compatible fields).",
+    "files": [
+      "src/lib/offline/sync-manager.ts",
+      "src/lib/offline/db.ts",
+      "src/components/pwa/SyncConflictDialog.vue",
+      "src/composables/useOfflineSync.ts",
+      "src/i18n/en.json"
+    ],
+    "changes": [
+      {
+        "file": "src/lib/offline/db.ts",
+        "action": "modify",
+        "details": "Add _local_updated_at field to all syncable entity interfaces (Cow, Feed, Diet, MilkLog, FarmerProfile, YieldData). This tracks when local changes were made. Add new table 'syncConflicts' with schema: id (auto), entity_type, entity_id, local_data, server_data, detected_at, resolved (boolean)"
+      },
+      {
+        "file": "src/lib/offline/sync-manager.ts",
+        "action": "modify",
+        "details": "1) Before pushing updates, fetch current server version. 2) Compare server updated_at with local _local_updated_at and server version we had when making local change. 3) If server version is newer, detect conflict. 4) Store conflict in syncConflicts table. 5) Export conflictCount ref and hasConflicts computed. 6) Add resolveConflict(conflictId, choice: 'local' | 'server') function"
+      },
+      {
+        "file": "src/components/pwa/SyncConflictDialog.vue",
+        "action": "create",
+        "details": "Create dialog component showing: entity name, type, and key differences between local and server versions. Provide buttons: 'Keep My Changes' (use local), 'Use Server Version' (discard local), 'Keep Both' (if applicable - creates duplicate). Show diff of changed fields. Include 'Apply to all similar conflicts' checkbox"
+      },
+      {
+        "file": "src/composables/useOfflineSync.ts",
+        "action": "modify",
+        "details": "Import and expose conflictCount, hasConflicts from sync-manager. Add watch to show notification when new conflicts detected. Add resolveAllConflicts function"
+      },
+      {
+        "file": "src/i18n/en.json",
+        "action": "modify",
+        "details": "Add conflict resolution strings under 'pwa.conflict': title, description, keepLocal, useServer, keepBoth, applyToAll, conflictDetected, conflictCount, localVersion, serverVersion, modifiedFields"
+      }
+    ],
+    "acceptanceCriteria": [
+      "Conflicts are detected when server entity has newer updated_at than local base version",
+      "Conflicts are stored in IndexedDB syncConflicts table",
+      "User is notified when conflicts are detected during sync",
+      "SyncConflictDialog shows meaningful diff between versions",
+      "User can choose to keep local changes or use server version",
+      "Conflict resolution properly updates both local DB and sync queue",
+      "Conflict count is visible in UI (e.g., badge on sync status)"
+    ],
+    "testScenarios": [
+      {
+        "scenario": "Detect conflict on cow profile update",
+        "steps": [
+          "Edit cow 'Lakshmi' on device A while offline",
+          "Edit same cow 'Lakshmi' on device B while online (server updated)",
+          "Bring device A online and sync"
+        ],
+        "expectedResult": "Conflict detected, dialog appears showing both versions with differences highlighted"
+      },
+      {
+        "scenario": "Resolve conflict by keeping local",
+        "steps": [
+          "Trigger conflict scenario",
+          "In conflict dialog, click 'Keep My Changes'"
+        ],
+        "expectedResult": "Local version is pushed to server, conflict removed from queue, entity marked as synced"
+      },
+      {
+        "scenario": "Resolve conflict by using server version",
+        "steps": [
+          "Trigger conflict scenario",
+          "In conflict dialog, click 'Use Server Version'"
+        ],
+        "expectedResult": "Local entity updated with server data, pending sync item removed, no data pushed"
+      }
+    ],
+    "status": "completed",
+    "estimatedEffort": "large"
+  },
+  {
+    "module": "12-offline-sync",
+    "taskId": "M59",
+    "priority": "medium",
+    "title": "Add farmer and yield entities to forcePullFromServer",
+    "description": "The forcePullFromServer function in sync-manager.ts only handles cow, feed, diet, and milk_log entities. It's missing farmer (farmerProfiles) and yield (yieldData) entities which were added in DB version 2. Users cannot force-refresh these entity types from the server, leaving potential stale data issues.",
+    "files": [
+      "src/lib/offline/sync-manager.ts"
+    ],
+    "changes": [
+      {
+        "file": "src/lib/offline/sync-manager.ts",
+        "action": "modify",
+        "details": "Add two new cases to forcePullFromServer switch statement: case 'farmer': await db.farmerProfiles.clear(); if (Array.isArray(serverData)) { await db.farmerProfiles.bulkPut(serverData.map((item) => ({ ...item, _synced: true, _deleted: false }))); } break; case 'yield': await db.yieldData.clear(); if (Array.isArray(serverData)) { await db.yieldData.bulkPut(serverData.map((item) => ({ ...item, _synced: true, _deleted: false }))); } break;"
+      }
+    ],
+    "acceptanceCriteria": [
+      "forcePullFromServer('farmer') fetches from farmer-profiles endpoint",
+      "forcePullFromServer('farmer') clears and repopulates db.farmerProfiles",
+      "forcePullFromServer('yield') fetches from yield-data endpoint",
+      "forcePullFromServer('yield') clears and repopulates db.yieldData",
+      "Both new cases properly set _synced: true and _deleted: false flags",
+      "No TypeScript errors in sync-manager.ts"
+    ],
+    "testScenarios": [
+      {
+        "scenario": "Force pull farmer profiles",
+        "steps": [
+          "Have some farmer profiles in local IndexedDB",
+          "Add new farmer profile directly on server (via another device or API)",
+          "Call forcePullFromServer('farmer')"
+        ],
+        "expectedResult": "Local farmerProfiles table is cleared and repopulated with all server data including new profile"
+      },
+      {
+        "scenario": "Force pull yield data",
+        "steps": [
+          "Have some yield records locally",
+          "Modify yield records on server",
+          "Call forcePullFromServer('yield')"
+        ],
+        "expectedResult": "Local yieldData table reflects exact server state"
+      },
+      {
+        "scenario": "Verify flags are set correctly",
+        "steps": [
+          "Force pull farmer profiles",
+          "Query db.farmerProfiles.toArray()",
+          "Inspect _synced and _deleted flags"
+        ],
+        "expectedResult": "All records have _synced: true and _deleted: false"
+      }
+    ],
+    "status": "completed",
+    "estimatedEffort": "small"
+  },
+  {
+    "module": "12-offline-sync",
+    "taskId": "M60",
+    "priority": "medium",
+    "title": "Add sync history log visible to users",
+    "description": "Users have no visibility into sync history - what was synced, when, and whether it succeeded or failed. Need to add a sync log/history feature that records sync operations and allows users to view past sync activity, especially useful for debugging sync issues in the field.",
+    "files": [
+      "src/lib/offline/db.ts",
+      "src/lib/offline/sync-manager.ts",
+      "src/components/pwa/SyncHistoryDrawer.vue",
+      "src/pages/settings/SyncSettingsPage.vue",
+      "src/i18n/en.json"
+    ],
+    "changes": [
+      {
+        "file": "src/lib/offline/db.ts",
+        "action": "modify",
+        "details": "Add new table 'syncHistory' with schema: ++id, timestamp, operation (push|pull), entity_type, entity_id, status (success|failed|conflict), error_message, details (JSON). Add index on timestamp. Add version 3 migration to create this table. Add helper methods: addSyncHistoryEntry(), getSyncHistory(limit), clearOldSyncHistory(daysToKeep)"
+      },
+      {
+        "file": "src/lib/offline/sync-manager.ts",
+        "action": "modify",
+        "details": "After each syncItem() call (success or failure), log to syncHistory table. Include entity_type, entity_id, operation type, timestamp, success/failure status, and error message if failed. Add exports: getSyncHistory, clearSyncHistory"
+      },
+      {
+        "file": "src/components/pwa/SyncHistoryDrawer.vue",
+        "action": "create",
+        "details": "Create a slide-out drawer or expandable panel showing sync history. Display: timestamp (relative like '2 min ago'), entity type icon, operation (created/updated/deleted), status (success checkmark, error X), entity name if available. Add filter by entity type and status. Add 'Clear History' button. Limit to last 100 entries by default with 'Load More'"
+      },
+      {
+        "file": "src/pages/settings/SyncSettingsPage.vue",
+        "action": "modify",
+        "details": "Add 'View Sync History' button/link that opens SyncHistoryDrawer. Show summary stats: total synced today, failed today, last successful sync time"
+      },
+      {
+        "file": "src/i18n/en.json",
+        "action": "modify",
+        "details": "Add syncHistory section: title, noHistory, clearHistory, clearHistoryConfirm, operation.push, operation.pull, status.success, status.failed, status.conflict, loadMore, filterByType, filterByStatus, syncedAt, entityTypes.cow, entityTypes.feed, etc."
+      }
+    ],
+    "acceptanceCriteria": [
+      "Sync operations are logged to syncHistory table in IndexedDB",
+      "Sync history includes timestamp, entity type, operation, status, and error details",
+      "Users can view sync history from Settings page",
+      "History shows relative timestamps (e.g., '5 minutes ago')",
+      "Failed syncs show error message for debugging",
+      "Users can filter history by entity type and status",
+      "Users can clear sync history",
+      "Old history (>30 days) is automatically pruned"
+    ],
+    "testScenarios": [
+      {
+        "scenario": "View successful sync history",
+        "steps": [
+          "Create a cow profile while online",
+          "Go to Settings > Sync History"
+        ],
+        "expectedResult": "See entry showing cow creation with success status and timestamp"
+      },
+      {
+        "scenario": "View failed sync in history",
+        "steps": [
+          "Create invalid data that will fail server validation while offline",
+          "Go online and let sync attempt fail",
+          "View sync history"
+        ],
+        "expectedResult": "See entry with failed status and error message from server"
+      },
+      {
+        "scenario": "Filter history by entity type",
+        "steps": [
+          "Sync various entity types",
+          "Open sync history",
+          "Filter by 'Cow' only"
+        ],
+        "expectedResult": "Only cow-related sync entries are shown"
+      },
+      {
+        "scenario": "Clear sync history",
+        "steps": [
+          "Generate some sync history",
+          "Click 'Clear History' and confirm"
+        ],
+        "expectedResult": "Sync history is empty after clearing"
+      }
+    ],
+    "status": "completed",
+    "estimatedEffort": "medium"
+  },
+  {
+    "module": "12-offline-sync",
+    "taskId": "L23",
+    "priority": "low",
+    "title": "Make manifest.json lang attribute dynamic based on user preference",
+    "description": "The manifest.json has lang hardcoded as 'en'. While the manifest is static, we can generate multiple manifest files for different languages or use a dynamic manifest approach. This affects how the PWA is presented in app stores and install prompts.",
+    "files": [
+      "public/manifest.json",
+      "quasar.config.js",
+      "src/boot/pwa.ts"
+    ],
+    "changes": [
+      {
+        "file": "public/manifest.json",
+        "action": "modify",
+        "details": "Keep as default English manifest. This serves as fallback."
+      },
+      {
+        "file": "quasar.config.js",
+        "action": "modify",
+        "details": "If using Quasar's PWA mode, configure pwa.manifest to be generated at build time. Consider creating manifest variants: manifest.hi.json, manifest.vi.json, etc. with localized name, short_name, description, and lang fields"
+      },
+      {
+        "file": "src/boot/pwa.ts",
+        "action": "modify",
+        "details": "On app init, detect user's language preference (from stored setting or navigator.language). Dynamically update the manifest link element: const link = document.querySelector('link[rel=manifest]'); link.href = `/manifest.${langCode}.json`; This allows the correct localized manifest to be used for install prompts"
+      }
+    ],
+    "acceptanceCriteria": [
+      "Manifest files exist for supported languages (at minimum: en, hi, vi, te, kn)",
+      "Each manifest has appropriate lang attribute matching its language",
+      "App name and description are translated in each manifest",
+      "Boot code switches manifest based on user language preference",
+      "Install prompt shows localized app name and description"
+    ],
+    "testScenarios": [
+      {
+        "scenario": "Install PWA with Hindi preference",
+        "steps": [
+          "Set app language to Hindi in settings or use Hindi browser",
+          "Clear installed PWA and caches",
+          "Visit app and trigger install prompt"
+        ],
+        "expectedResult": "Install prompt shows Hindi app name and description"
+      },
+      {
+        "scenario": "Verify manifest lang attribute",
+        "steps": [
+          "Fetch /manifest.hi.json directly",
+          "Check lang field value"
+        ],
+        "expectedResult": "lang field is 'hi' in Hindi manifest"
+      },
+      {
+        "scenario": "Fallback to English manifest",
+        "steps": [
+          "Set browser to unsupported language",
+          "Check which manifest is loaded"
+        ],
+        "expectedResult": "Falls back to default manifest.json with lang: 'en'"
+      }
+    ],
+    "status": "completed",
+    "estimatedEffort": "small"
+  },
+  {
+    "module": "12-offline-sync",
+    "taskId": "L24",
+    "priority": "low",
+    "title": "Add storage quota warning when IndexedDB approaches limit",
+    "description": "There's no monitoring of IndexedDB storage usage. On devices with limited storage, users could hit quota limits without warning, causing sync failures and data loss. Need to monitor storage usage and warn users before they hit limits.",
+    "files": [
+      "src/lib/offline/db.ts",
+      "src/composables/useStorageQuota.ts",
+      "src/components/pwa/StorageWarningBanner.vue",
+      "src/layouts/MainLayout.vue",
+      "src/i18n/en.json"
+    ],
+    "changes": [
+      {
+        "file": "src/composables/useStorageQuota.ts",
+        "action": "create",
+        "details": "Create composable that uses StorageManager API to check quota: const { quota, usage } = await navigator.storage.estimate(); Calculate usagePercent = (usage / quota) * 100. Export reactive refs: storageUsage (bytes), storageQuota (bytes), usagePercent, isNearLimit (>80%), isCritical (>95%). Include function checkStorageQuota() to refresh values. Set up periodic check (every 5 minutes when app is active)"
+      },
+      {
+        "file": "src/components/pwa/StorageWarningBanner.vue",
+        "action": "create",
+        "details": "Dismissable warning banner that appears when isNearLimit is true. Shows: 'Storage is {percent}% full. Consider syncing data or clearing cache.' At critical level (>95%), banner is persistent (not dismissable) and more urgent. Include link to Settings > Clear Cache. Show usage in human-readable format (e.g., '45 MB of 50 MB used')"
+      },
+      {
+        "file": "src/layouts/MainLayout.vue",
+        "action": "modify",
+        "details": "Import and include StorageWarningBanner component. Position it below OfflineIndicator but above main content"
+      },
+      {
+        "file": "src/lib/offline/db.ts",
+        "action": "modify",
+        "details": "Add method getStorageStats() that returns: tableCount for each table, approximate total records, estimated size if available"
+      },
+      {
+        "file": "src/i18n/en.json",
+        "action": "modify",
+        "details": "Add storage section: warning.title, warning.nearLimit, warning.critical, usage.format ('{used} of {total} used'), actions.clearCache, actions.syncNow, actions.viewDetails"
+      }
+    ],
+    "acceptanceCriteria": [
+      "Storage usage is monitored using StorageManager API",
+      "Warning banner appears when usage exceeds 80% of quota",
+      "Critical banner (non-dismissable) appears above 95% usage",
+      "Usage is displayed in human-readable format",
+      "Users can navigate to cache clearing from warning banner",
+      "Storage check happens periodically (every 5 minutes)",
+      "Works gracefully on browsers without StorageManager API (no errors, just no monitoring)"
+    ],
+    "testScenarios": [
+      {
+        "scenario": "Display warning at 80% usage",
+        "steps": [
+          "Fill IndexedDB with test data to exceed 80% quota (may need to simulate)",
+          "Refresh app or wait for periodic check"
+        ],
+        "expectedResult": "Yellow warning banner appears showing storage percentage"
+      },
+      {
+        "scenario": "Display critical warning at 95% usage",
+        "steps": [
+          "Fill IndexedDB to exceed 95% quota",
+          "Observe banner behavior"
+        ],
+        "expectedResult": "Red critical banner appears and cannot be dismissed"
+      },
+      {
+        "scenario": "Dismiss warning banner",
+        "steps": [
+          "Trigger warning banner at 80% level",
+          "Click dismiss/close button"
+        ],
+        "expectedResult": "Banner disappears but will reappear on next check if still near limit"
+      },
+      {
+        "scenario": "Navigate to cache clearing",
+        "steps": [
+          "Trigger warning banner",
+          "Click 'Clear Cache' link"
+        ],
+        "expectedResult": "Navigates to Settings page with cache clearing option"
+      },
+      {
+        "scenario": "Handle unsupported browser",
+        "steps": [
+          "Test on browser without StorageManager API",
+          "Check console for errors"
+        ],
+        "expectedResult": "No errors thrown, storage monitoring simply disabled"
+      }
+    ],
+    "status": "completed",
+    "estimatedEffort": "medium"
+  }
+]

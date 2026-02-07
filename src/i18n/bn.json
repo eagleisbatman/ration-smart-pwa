@@ -57,16 +57,18 @@
   },
   "roles": {
     "farmer": "কৃষক",
-    "student": "ছাত্র",
+    "extension_worker": "সম্প্রসারণ কর্মী",
     "nutritionist": "পুষ্টিবিদ",
-    "extensionWorker": "সম্প্রসারণ কর্মী",
     "researcher": "গবেষক",
+    "feed_supplier": "খাদ্য সরবরাহকারী",
+    "other": "অন্যান্য",
     "admin": "প্রশাসক",
     "farmerDesc": "আমি নিজের গবাদি পশু দেখাশোনা করি",
-    "studentDesc": "আমি পশু পুষ্টি সম্পর্কে শিখছি",
+    "extension_workerDesc": "আমি আমার সম্প্রদায়ের কৃষকদের সাহায্য করি",
     "nutritionistDesc": "আমি কৃষকদের খাদ্য তৈরিতে পরামর্শ দিই",
-    "extensionWorkerDesc": "আমি আমার সম্প্রদায়ের কৃষকদের সাহায্য করি",
     "researcherDesc": "আমি গবাদি পুষ্টি ও কৃষি নিয়ে গবেষণা করি",
+    "feed_supplierDesc": "আমি পশু খাদ্য পণ্য সরবরাহ করি",
+    "otherDesc": "উপরে তালিকাভুক্ত নয় এমন অন্য ভূমিকা",
     "adminDesc": "আমি সিস্টেম পরিচালনা করি"
   },
   "auth": {
@@ -106,7 +108,9 @@
     "step1of4": "ধাপ ১/৪",
     "step2of4": "ধাপ ২/৪",
     "step3of4": "ধাপ ৩/৪",
-    "step4of4": "ধাপ ৪/৪"
+    "step4of4": "ধাপ ৪/৪",
+    "recommendedLanguages": "প্রস্তাবিত",
+    "otherLanguages": "অন্যান্য ভাষা"
   },
   "profile": {
     "myProfile": "আমার প্রোফাইল",
@@ -245,7 +249,27 @@
     "thisWeek": "এই সপ্তাহ",
     "thisMonth": "এই মাস",
     "average": "গড়",
-    "total": "মোট"
+    "total": "মোট",
+    "quickLog": {
+      "button": "Quick Log All",
+      "title": "Quick Log - All Cows",
+      "date": "Date",
+      "cowName": "Cow",
+      "morning": "Morning (L)",
+      "evening": "Evening (L)",
+      "total": "Total",
+      "saveAll": "Save All",
+      "saveRow": "Save",
+      "saved": "Saved",
+      "noCows": "No active cows found. Add a cow first.",
+      "allSaved": "All milk logs saved successfully!",
+      "rowSaved": "Milk log saved for {cowName}",
+      "noEntries": "Please enter at least one milk reading",
+      "close": "Close",
+      "savingAll": "Saving all entries...",
+      "duplicateFound": "Log already exists for {cowName} on this date - updated",
+      "entriesSaved": "{count} log saved | {count} logs saved"
+    }
   },
   "reports": {
     "reports": "রিপোর্ট",
@@ -309,7 +333,14 @@
     "logout": "লগআউট",
     "logoutConfirm": "আপনি কি লগআউট করতে চান?",
     "deleteAccount": "অ্যাকাউন্ট মুছুন",
-    "deleteAccountWarning": "এই কাজ পূর্বাবস্থায় ফেরানো যাবে না। আপনার সব ডেটা স্থায়ীভাবে মুছে যাবে।"
+    "deleteAccountWarning": "এই কাজ পূর্বাবস্থায় ফেরানো যাবে না। আপনার সব ডেটা স্থায়ীভাবে মুছে যাবে।",
+    "orgTypes": {
+      "university": "বিশ্ববিদ্যালয়",
+      "government": "সরকার",
+      "ngo": "এনজিও",
+      "cooperative": "সমবায়",
+      "research": "গবেষণা প্রতিষ্ঠান"
+    }
   },
   "farmer": {
     "farmers": "কৃষক",
@@ -324,7 +355,17 @@
     "addFirstFarmer": "গরু পরিচালনার জন্য আপনি যে কৃষককে সাহায্য করেন তাকে যোগ করুন",
     "farmerAdded": "কৃষক সফলভাবে যোগ হয়েছে",
     "farmerUpdated": "কৃষক সফলভাবে আপডেট হয়েছে",
-    "farmerDeleted": "কৃষক সরিয়ে দেওয়া হয়েছে"
+    "farmerDeleted": "কৃষক সরিয়ে দেওয়া হয়েছে",
+    "farmingTypes": {
+      "dairy": "দুগ্ধ খামার",
+      "mixed": "মিশ্র চাষ",
+      "crop": "শস্য চাষ"
+    },
+    "filter": {
+      "all": "সব",
+      "dairy": "দুগ্ধ",
+      "mixed": "মিশ্র"
+    }
   },
   "errors": {
     "generic": "কিছু ভুল হয়েছে। আবার চেষ্টা করুন।",

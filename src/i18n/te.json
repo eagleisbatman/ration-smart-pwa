@@ -57,16 +57,18 @@
   },
   "roles": {
     "farmer": "రైతు",
-    "student": "విద్యార్థి",
+    "extension_worker": "విస్తరణ కార్యకర్త",
     "nutritionist": "పోషణ నిపుణుడు",
-    "extensionWorker": "విస్తరణ కార్యకర్త",
     "researcher": "పరిశోధకుడు",
+    "feed_supplier": "మేత సరఫరాదారు",
+    "other": "ఇతరం",
     "admin": "నిర్వాహకుడు",
     "farmerDesc": "నేను నా పశువులను నిర్వహిస్తాను",
-    "studentDesc": "నేను పశు పోషణ గురించి నేర్చుకుంటున్నాను",
+    "extension_workerDesc": "నేను నా సమాజంలోని రైతులకు సహాయం చేస్తాను",
     "nutritionistDesc": "నేను రైతులకు మేత సూత్రీకరణపై సలహా ఇస్తాను",
-    "extensionWorkerDesc": "నేను నా సమాజంలోని రైతులకు సహాయం చేస్తాను",
     "researcherDesc": "నేను పశు పోషణ మరియు వ్యవసాయ పద్ధతులను అధ్యయనం చేస్తాను",
+    "feed_supplierDesc": "నేను పశు మేత ఉత్పత్తులను సరఫరా చేస్తాను",
+    "otherDesc": "పైన జాబితా చేయని ఇతర పాత్ర",
     "adminDesc": "నేను వ్యవస్థను నిర్వహిస్తాను"
   },
   "auth": {
@@ -106,7 +108,9 @@
     "step1of4": "దశ 1/4",
     "step2of4": "దశ 2/4",
     "step3of4": "దశ 3/4",
-    "step4of4": "దశ 4/4"
+    "step4of4": "దశ 4/4",
+    "recommendedLanguages": "సిఫార్సు చేయబడినవి",
+    "otherLanguages": "ఇతర భాషలు"
   },
   "profile": {
     "myProfile": "నా ప్రొఫైల్",
@@ -245,7 +249,27 @@
     "thisWeek": "ఈ వారం",
     "thisMonth": "ఈ నెల",
     "average": "సగటు",
-    "total": "మొత్తం"
+    "total": "మొత్తం",
+    "quickLog": {
+      "button": "Quick Log All",
+      "title": "Quick Log - All Cows",
+      "date": "Date",
+      "cowName": "Cow",
+      "morning": "Morning (L)",
+      "evening": "Evening (L)",
+      "total": "Total",
+      "saveAll": "Save All",
+      "saveRow": "Save",
+      "saved": "Saved",
+      "noCows": "No active cows found. Add a cow first.",
+      "allSaved": "All milk logs saved successfully!",
+      "rowSaved": "Milk log saved for {cowName}",
+      "noEntries": "Please enter at least one milk reading",
+      "close": "Close",
+      "savingAll": "Saving all entries...",
+      "duplicateFound": "Log already exists for {cowName} on this date - updated",
+      "entriesSaved": "{count} log saved | {count} logs saved"
+    }
   },
   "reports": {
     "reports": "నివేదికలు",
@@ -309,7 +333,14 @@
     "logout": "లాగ్అవుట్",
     "logoutConfirm": "మీరు ఖచ్చితంగా లాగ్అవుట్ చేయాలనుకుంటున్నారా?",
     "deleteAccount": "ఖాతా తొలగించు",
-    "deleteAccountWarning": "ఈ చర్య రద్దు చేయడం సాధ్యం కాదు. మీ మొత్తం డేటా శాశ్వతంగా తొలగించబడుతుంది."
+    "deleteAccountWarning": "ఈ చర్య రద్దు చేయడం సాధ్యం కాదు. మీ మొత్తం డేటా శాశ్వతంగా తొలగించబడుతుంది.",
+    "orgTypes": {
+      "university": "విశ్వవిద్యాలయం",
+      "government": "ప్రభుత్వం",
+      "ngo": "ఎన్జీఓ",
+      "cooperative": "సహకార సంస్థ",
+      "research": "పరిశోధన సంస్థ"
+    }
   },
   "farmer": {
     "farmers": "రైతులు",
@@ -324,7 +355,17 @@
     "addFirstFarmer": "వారి ఆవులను నిర్వహించడానికి మీరు సహాయం చేసే రైతును జోడించండి",
     "farmerAdded": "రైతు విజయవంతంగా జోడించబడింది",
     "farmerUpdated": "రైతు విజయవంతంగా అప్‌డేట్ అయింది",
-    "farmerDeleted": "రైతు తొలగించబడింది"
+    "farmerDeleted": "రైతు తొలగించబడింది",
+    "farmingTypes": {
+      "dairy": "పాడి పశుపోషణ",
+      "mixed": "మిశ్రమ వ్యవసాయం",
+      "crop": "పంట వ్యవసాయం"
+    },
+    "filter": {
+      "all": "అన్ని",
+      "dairy": "పాడి",
+      "mixed": "మిశ్రమ"
+    }
   },
   "errors": {
     "generic": "ఏదో తప్పు జరిగింది. దయచేసి మళ్ళీ ప్రయత్నించండి.",

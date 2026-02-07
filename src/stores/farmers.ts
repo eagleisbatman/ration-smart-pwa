@@ -4,6 +4,7 @@ import { api } from 'src/boot/axios';
 import { db, FarmerProfile } from 'src/lib/offline/db';
 import { useAuthStore } from './auth';
 import { v4 as uuidv4 } from 'uuid';
+import { i18n } from 'src/boot/i18n';
 
 export interface FarmerInput {
   organization_id?: string;
@@ -16,6 +17,7 @@ export interface FarmerInput {
   total_cattle?: number;
   land_acres?: number;
   farming_type?: string;
+  image_url?: string;
 }
 
 export interface FarmerSummary {
@@ -40,17 +42,21 @@ export const useFarmersStore = defineStore('farmers', () => {
   const farmerCount = computed(() => farmers.value.length);
   const activeFarmers = computed(() => farmers.value.filter((f) => f.is_active));
   const activeFarmerCount = computed(() => activeFarmers.value.length);
+  const isManagingFarmers = computed(() => activeFarmers.value.length > 0);
+
+  // Helper to get translated text
+  const t = i18n.global.t;
 
   // Helper to extract error message
   function extractErrorMessage(err: unknown): string {
     if (err && typeof err === 'object' && 'response' in err) {
       const axiosError = err as { response?: { data?: { detail?: string } } };
-      return axiosError.response?.data?.detail || 'An error occurred';
+      return axiosError.response?.data?.detail || t('errors.generic');
     }
     if (err instanceof Error) {
       return err.message;
     }
-    return 'An unexpected error occurred';
+    return t('errors.generic');
   }
 
   // Actions
@@ -151,6 +157,7 @@ export const useFarmersStore = defineStore('farmers', () => {
       total_cattle: input.total_cattle || 0,
       land_acres: input.land_acres,
       farming_type: input.farming_type,
+      image_url: input.image_url,
       is_active: true,
       created_at: now,
       updated_at: now,
@@ -193,7 +200,7 @@ export const useFarmersStore = defineStore('farmers', () => {
     // Find current farmer for optimistic update
     const farmer = farmers.value.find((f) => f.id === id);
     if (!farmer) {
-      error.value = 'Farmer not found';
+      error.value = t('farmer.farmerNotFound');
       loading.value = false;
       return false;
     }
@@ -364,6 +371,7 @@ export const useFarmersStore = defineStore('farmers', () => {
     farmerCount,
     activeFarmers,
     activeFarmerCount,
+    isManagingFarmers,
     // Actions
     fetchFarmers,
     fetchFarmer,

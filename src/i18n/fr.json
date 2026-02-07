@@ -57,16 +57,18 @@
   },
   "roles": {
     "farmer": "Éleveur",
-    "student": "Étudiant",
+    "extension_worker": "Agent de vulgarisation",
     "nutritionist": "Nutritionniste",
-    "extensionWorker": "Agent de vulgarisation",
     "researcher": "Chercheur",
+    "feed_supplier": "Fournisseur d'aliments",
+    "other": "Autre",
     "admin": "Administrateur",
     "farmerDesc": "Je gère mon propre bétail",
-    "studentDesc": "J'apprends la nutrition animale",
+    "extension_workerDesc": "Je soutiens les éleveurs de ma communauté",
     "nutritionistDesc": "Je conseille les éleveurs sur la formulation des aliments",
-    "extensionWorkerDesc": "Je soutiens les éleveurs de ma communauté",
     "researcherDesc": "J'étudie la nutrition bovine et les pratiques agricoles",
+    "feed_supplierDesc": "Je fournis des produits d'alimentation animale",
+    "otherDesc": "Autre rôle non listé ci-dessus",
     "adminDesc": "Je gère le système"
   },
   "auth": {
@@ -106,7 +108,9 @@
     "step1of4": "Étape 1 sur 4",
     "step2of4": "Étape 2 sur 4",
     "step3of4": "Étape 3 sur 4",
-    "step4of4": "Étape 4 sur 4"
+    "step4of4": "Étape 4 sur 4",
+    "recommendedLanguages": "Recommandées",
+    "otherLanguages": "Autres langues"
   },
   "profile": {
     "myProfile": "Mon profil",
@@ -245,7 +249,27 @@
     "thisWeek": "Cette semaine",
     "thisMonth": "Ce mois",
     "average": "Moyenne",
-    "total": "Total"
+    "total": "Total",
+    "quickLog": {
+      "button": "Quick Log All",
+      "title": "Quick Log - All Cows",
+      "date": "Date",
+      "cowName": "Cow",
+      "morning": "Morning (L)",
+      "evening": "Evening (L)",
+      "total": "Total",
+      "saveAll": "Save All",
+      "saveRow": "Save",
+      "saved": "Saved",
+      "noCows": "No active cows found. Add a cow first.",
+      "allSaved": "All milk logs saved successfully!",
+      "rowSaved": "Milk log saved for {cowName}",
+      "noEntries": "Please enter at least one milk reading",
+      "close": "Close",
+      "savingAll": "Saving all entries...",
+      "duplicateFound": "Log already exists for {cowName} on this date - updated",
+      "entriesSaved": "{count} log saved | {count} logs saved"
+    }
   },
   "reports": {
     "reports": "Rapports",
@@ -309,7 +333,14 @@
     "logout": "Déconnexion",
     "logoutConfirm": "Êtes-vous sûr de vouloir vous déconnecter ?",
     "deleteAccount": "Supprimer le compte",
-    "deleteAccountWarning": "Cette action est irréversible. Toutes vos données seront définitivement supprimées."
+    "deleteAccountWarning": "Cette action est irréversible. Toutes vos données seront définitivement supprimées.",
+    "orgTypes": {
+      "university": "Université",
+      "government": "Gouvernement",
+      "ngo": "ONG",
+      "cooperative": "Coopérative",
+      "research": "Institut de recherche"
+    }
   },
   "farmer": {
     "farmers": "Éleveurs",
@@ -324,7 +355,17 @@
     "addFirstFarmer": "Ajoutez un éleveur que vous soutenez pour gérer ses vaches",
     "farmerAdded": "Éleveur ajouté avec succès",
     "farmerUpdated": "Éleveur mis à jour avec succès",
-    "farmerDeleted": "Éleveur supprimé"
+    "farmerDeleted": "Éleveur supprimé",
+    "farmingTypes": {
+      "dairy": "Élevage laitier",
+      "mixed": "Élevage mixte",
+      "crop": "Culture"
+    },
+    "filter": {
+      "all": "Tous",
+      "dairy": "Laitier",
+      "mixed": "Mixte"
+    }
   },
   "errors": {
     "generic": "Une erreur s'est produite. Veuillez réessayer.",

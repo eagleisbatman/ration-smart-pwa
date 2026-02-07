@@ -17,13 +17,22 @@
           <q-icon :name="getStatusIcon(diet.status)" />
         </template>
         <template v-if="diet.status === 'processing'">
-          Optimization in progress... This may take a few seconds.
+          {{ $t('diet.status.processing') }}
         </template>
         <template v-else-if="diet.status === 'failed'">
-          Optimization failed. Please try again with different parameters.
+          {{ $t('diet.status.failed') }}
         </template>
         <template v-else>
-          Waiting to start optimization...
+          {{ $t('diet.status.waiting') }}
+        </template>
+        <template v-if="diet.status === 'failed'" #action>
+          <q-btn
+            flat
+            color="white"
+            :label="$t('diet.tryAgain')"
+            icon="refresh"
+            @click="regenerateDiet"
+          />
         </template>
       </q-banner>
 
@@ -32,14 +41,14 @@
         <q-card-section>
           <div class="row items-center">
             <div class="col">
-              <div class="text-h6">{{ diet.cow_name || 'Diet Plan' }}</div>
+              <div class="text-h6">{{ diet.cow_name || $t('diet.dietPlan') }}</div>
               <div class="text-caption text-grey-7">{{ formatDate(diet.created_at) }}</div>
             </div>
             <q-chip
               :color="getStatusColor(diet.status)"
               text-color="white"
             >
-              {{ diet.status }}
+              {{ getStatusLabel(diet.status) }}
             </q-chip>
           </div>
         </q-card-section>
@@ -51,52 +60,52 @@
         <div class="row q-col-gutter-sm q-mb-md">
           <div class="col-4">
             <q-card flat bordered class="text-center q-pa-sm">
-              <div class="text-h5 text-primary">₹{{ diet.total_cost?.toFixed(0) }}</div>
-              <div class="text-caption text-grey-7">Daily Cost</div>
+              <div class="text-h5 text-primary">{{ formatCurrency(diet.total_cost ?? 0) }}</div>
+              <div class="text-caption text-grey-7">{{ $t('diet.dailyCost') }}</div>
             </q-card>
           </div>
           <div class="col-4">
             <q-card flat bordered class="text-center q-pa-sm">
               <div class="text-h5 text-secondary">{{ diet.dm_intake?.toFixed(1) }}</div>
-              <div class="text-caption text-grey-7">DM (kg)</div>
+              <div class="text-caption text-grey-7">{{ $t('diet.dmKg') }}</div>
             </q-card>
           </div>
           <div class="col-4">
             <q-card flat bordered class="text-center q-pa-sm">
               <div class="text-h5 text-accent">{{ resultData.feeds?.length || 0 }}</div>
-              <div class="text-caption text-grey-7">Feeds</div>
+              <div class="text-caption text-grey-7">{{ $t('diet.feeds') }}</div>
             </q-card>
           </div>
         </div>
 
         <!-- Feed Breakdown -->
-        <div class="text-subtitle1 q-mb-sm">Recommended Feeds</div>
+        <div class="text-subtitle1 q-mb-sm">{{ $t('diet.recommendedFeeds') }}</div>
         <q-card flat bordered class="q-mb-md">
           <q-list separator>
             <q-item v-for="feed in resultData.feeds" :key="feed.feed_id">
               <q-item-section>
                 <q-item-label>{{ feed.feed_name }}</q-item-label>
                 <q-item-label caption>
-                  DM: {{ feed.dm_contribution?.toFixed(2) }}kg ·
-                  CP: {{ feed.cp_contribution?.toFixed(1) }}g
+                  {{ $t('diet.dmLabel') }}: {{ feed.dm_contribution?.toFixed(2) }}{{ $t('diet.kg') }} ·
+                  {{ $t('diet.cpLabel') }}: {{ feed.cp_contribution?.toFixed(1) }}{{ $t('diet.g') }}
                 </q-item-label>
               </q-item-section>
               <q-item-section side>
-                <q-item-label class="text-h6">{{ feed.amount_kg?.toFixed(2) }} kg</q-item-label>
-                <q-item-label caption>₹{{ feed.cost?.toFixed(2) }}</q-item-label>
+                <q-item-label class="text-h6">{{ feed.amount_kg?.toFixed(2) }} {{ $t('diet.kg') }}</q-item-label>
+                <q-item-label caption>{{ formatCurrency(feed.cost ?? 0) }}</q-item-label>
               </q-item-section>
             </q-item>
           </q-list>
         </q-card>
 
         <!-- Nutrient Balance -->
-        <div class="text-subtitle1 q-mb-sm">Nutrient Balance</div>
+        <div class="text-subtitle1 q-mb-sm">{{ $t('diet.nutrientBalance') }}</div>
         <q-card flat bordered class="q-mb-md">
           <q-card-section>
             <div class="q-mb-md">
               <div class="row justify-between q-mb-xs">
-                <span>Crude Protein (CP)</span>
-                <span>{{ resultData.nutrient_balance?.cp_supplied?.toFixed(0) }} / {{ resultData.nutrient_balance?.cp_requirement?.toFixed(0) }}g</span>
+                <span>{{ $t('diet.crudeProteinCP') }}</span>
+                <span>{{ resultData.nutrient_balance?.cp_supplied?.toFixed(0) }} / {{ resultData.nutrient_balance?.cp_requirement?.toFixed(0) }}{{ $t('diet.g') }}</span>
               </div>
               <q-linear-progress
                 :value="cpProgress"
@@ -107,8 +116,8 @@
 
             <div class="q-mb-md">
               <div class="row justify-between q-mb-xs">
-                <span>Total Digestible Nutrients (TDN)</span>
-                <span>{{ resultData.nutrient_balance?.tdn_supplied?.toFixed(0) }} / {{ resultData.nutrient_balance?.tdn_requirement?.toFixed(0) }}g</span>
+                <span>{{ $t('diet.totalDigestibleNutrients') }}</span>
+                <span>{{ resultData.nutrient_balance?.tdn_supplied?.toFixed(0) }} / {{ resultData.nutrient_balance?.tdn_requirement?.toFixed(0) }}{{ $t('diet.g') }}</span>
               </div>
               <q-linear-progress
                 :value="tdnProgress"
@@ -119,8 +128,8 @@
 
             <div>
               <div class="row justify-between q-mb-xs">
-                <span>Dry Matter (DM)</span>
-                <span>{{ resultData.nutrient_balance?.dm_supplied?.toFixed(2) }} / {{ resultData.nutrient_balance?.dm_requirement?.toFixed(2) }}kg</span>
+                <span>{{ $t('diet.dryMatterDM') }}</span>
+                <span>{{ resultData.nutrient_balance?.dm_supplied?.toFixed(2) }} / {{ resultData.nutrient_balance?.dm_requirement?.toFixed(2) }}{{ $t('diet.kg') }}</span>
               </div>
               <q-linear-progress
                 :value="dmProgress"
@@ -133,7 +142,7 @@
 
         <!-- Recommendations -->
         <template v-if="resultData.recommendations?.length">
-          <div class="text-subtitle1 q-mb-sm">Recommendations</div>
+          <div class="text-subtitle1 q-mb-sm">{{ $t('diet.recommendations') }}</div>
           <q-card flat bordered class="q-mb-md">
             <q-list>
               <q-item v-for="(rec, i) in resultData.recommendations" :key="i">
@@ -148,7 +157,7 @@
 
         <!-- Warnings -->
         <template v-if="resultData.warnings?.length">
-          <div class="text-subtitle1 q-mb-sm">Warnings</div>
+          <div class="text-subtitle1 q-mb-sm">{{ $t('diet.warnings') }}</div>
           <q-card flat bordered class="bg-negative-light">
             <q-list>
               <q-item v-for="(warn, i) in resultData.warnings" :key="i">
@@ -166,7 +175,17 @@
       <div class="row q-col-gutter-sm q-mt-md">
         <div class="col-6">
           <q-btn
-            label="New Diet"
+            v-if="diet.status === 'completed'"
+            :label="$t('diet.optimizeAgain')"
+            icon="refresh"
+            color="secondary"
+            class="full-width"
+            unelevated
+            @click="regenerateDiet"
+          />
+          <q-btn
+            v-else
+            :label="$t('diet.newDiet')"
             icon="add"
             color="primary"
             class="full-width"
@@ -176,7 +195,7 @@
         </div>
         <div class="col-6">
           <q-btn
-            label="Delete"
+            :label="$t('diet.delete')"
             icon="delete"
             color="negative"
             flat
@@ -185,6 +204,37 @@
           />
         </div>
       </div>
+
+      <!-- Reminder Button -->
+      <div class="q-mt-sm">
+        <q-btn
+          flat
+          icon="alarm"
+          :label="$t('diet.reminder.setReminder')"
+          color="primary"
+          class="full-width"
+          @click="showReminderDialog = true"
+        >
+          <q-badge v-if="reminderActive" color="positive" floating rounded>
+            <q-icon name="check" size="10px" />
+          </q-badge>
+        </q-btn>
+        <div v-if="reminderActive" class="text-caption text-positive text-center q-mt-xs">
+          {{ $t('diet.reminder.active') }}
+        </div>
+      </div>
+
+      <!-- Compare Button (completed diets only) -->
+      <div v-if="diet.status === 'completed'" class="q-mt-sm">
+        <q-btn
+          flat
+          icon="compare_arrows"
+          :label="$t('diet.compare')"
+          color="primary"
+          class="full-width"
+          @click="router.push({ name: 'diet-compare', query: { diet1: dietId } })"
+        />
+      </div>
     </template>
 
     <!-- Not Found -->
@@ -192,12 +242,85 @@
       <EmptyState
         icon="error_outline"
         icon-color="negative"
-        title="Diet Not Found"
-        description="The diet plan you're looking for doesn't exist."
-        action-label="Go Back"
+        :title="$t('diet.dietNotFound')"
+        :description="$t('diet.dietNotFoundDesc')"
+        :action-label="$t('diet.goBack')"
         @action="router.back()"
       />
     </template>
+
+    <!-- Share FAB - only visible for completed diets -->
+    <q-page-sticky
+      v-if="diet && diet.status === 'completed' && diet.result_data"
+      position="bottom-right"
+      :offset="[18, 18]"
+    >
+      <q-btn
+        fab
+        icon="share"
+        color="primary"
+        :aria-label="$t('export.share')"
+        @click="showShareSheet = true"
+      />
+    </q-page-sticky>
+
+    <!-- Share Bottom Sheet -->
+    <q-dialog v-model="showShareSheet" position="bottom">
+      <q-card style="width: 100%; max-width: 400px;">
+        <q-card-section class="row items-center q-pb-none">
+          <div class="text-h6">{{ $t('export.shareOptions') }}</div>
+          <q-space />
+          <q-btn icon="close" flat round dense v-close-popup />
+        </q-card-section>
+        <q-list padding>
+          <q-item clickable v-close-popup @click="handleShare">
+            <q-item-section avatar>
+              <q-icon name="share" color="primary" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>{{ $t('export.shareDiet') }}</q-item-label>
+            </q-item-section>
+          </q-item>
+
+          <q-item clickable v-close-popup @click="handleWhatsApp">
+            <q-item-section avatar>
+              <q-icon name="send" color="green" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>{{ $t('export.whatsApp') }}</q-item-label>
+            </q-item-section>
+          </q-item>
+
+          <q-item clickable v-close-popup @click="handlePrint">
+            <q-item-section avatar>
+              <q-icon name="print" color="grey-8" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>{{ $t('export.print') }}</q-item-label>
+            </q-item-section>
+          </q-item>
+
+          <q-item clickable v-close-popup @click="handleCopy">
+            <q-item-section avatar>
+              <q-icon name="content_copy" color="grey-8" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>{{ $t('export.copySummary') }}</q-item-label>
+            </q-item-section>
+          </q-item>
+        </q-list>
+      </q-card>
+    </q-dialog>
+
+    <!-- Diet Reminder Dialog -->
+    <DietReminderDialog
+      v-if="diet"
+      v-model="showReminderDialog"
+      :diet-id="dietId"
+      :diet-title="diet.cow_name || $t('diet.dietPlan')"
+      :cow-name="diet.cow_name"
+      @saved="onReminderSaved"
+    />
   </q-page>
 </template>
 
@@ -205,11 +328,20 @@
 import { ref, computed, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useQuasar } from 'quasar';
+import { useI18n } from 'vue-i18n';
 import { format } from 'date-fns';
 import { useDietsStore } from 'src/stores/diets';
 import { Diet } from 'src/lib/offline/db';
 import SkeletonCard from 'src/components/ui/SkeletonCard.vue';
 import EmptyState from 'src/components/ui/EmptyState.vue';
+import DietReminderDialog from 'src/components/diet/DietReminderDialog.vue';
+import { useCurrency } from 'src/composables/useCurrency';
+import { useExport, DietExportData } from 'src/composables/useExport';
+import { hasActiveReminder } from 'src/lib/diet-reminders';
+
+const { t } = useI18n();
+const { formatCurrency } = useCurrency();
+const { formatDietText, shareContent, shareViaWhatsApp, copyToClipboard, printDiet } = useExport();
 
 // Type for diet result data
 interface DietResultFeed {
@@ -270,6 +402,15 @@ function formatDate(dateStr: string): string {
   return format(new Date(dateStr), 'MMMM d, yyyy h:mm a');
 }
 
+function getStatusLabel(status: string): string {
+  const labels: Record<string, string> = {
+    completed: t('diet.statusLabel.completed'),
+    processing: t('diet.statusLabel.processing'),
+    failed: t('diet.statusLabel.failed'),
+  };
+  return labels[status] || t('diet.statusLabel.pending');
+}
+
 function getStatusColor(status: string): string {
   switch (status) {
     case 'completed':
@@ -296,16 +437,84 @@ function getStatusIcon(status: string): string {
   }
 }
 
+// --- Reminder ---
+const showReminderDialog = ref(false);
+const reminderActive = ref(false);
+
+function refreshReminderStatus(): void {
+  reminderActive.value = hasActiveReminder(dietId.value);
+}
+
+function onReminderSaved(): void {
+  refreshReminderStatus();
+}
+
+// --- Share / Export ---
+const showShareSheet = ref(false);
+
+function buildExportData(): DietExportData {
+  const d = diet.value!;
+  const rd = resultData.value;
+  const goalLabels: Record<string, string> = {
+    minimize_cost: t('diet.goals.minimizeCost'),
+    maximize_milk: t('diet.goals.maximizeMilk'),
+    balanced: t('diet.goals.balanced'),
+  };
+  return {
+    cowName: d.cow_name || t('diet.dietPlan'),
+    date: formatDate(d.created_at),
+    goal: goalLabels[d.optimization_goal] || d.optimization_goal,
+    feeds: (rd.feeds || []).map((f) => ({
+      name: f.feed_name,
+      amount: Number(f.amount_kg?.toFixed(2) ?? 0),
+      cost: formatCurrency(f.cost ?? 0),
+    })),
+    totalCost: formatCurrency(d.total_cost ?? 0),
+    dmIntake: Number(d.dm_intake?.toFixed(1) ?? 0),
+    status: d.status,
+  };
+}
+
+function handleShare() {
+  const exportData = buildExportData();
+  const text = formatDietText(exportData);
+  shareContent(t('export.shareDiet'), text);
+}
+
+function handleWhatsApp() {
+  const exportData = buildExportData();
+  const text = formatDietText(exportData);
+  shareViaWhatsApp(text);
+}
+
+function handlePrint() {
+  const exportData = buildExportData();
+  printDiet(exportData);
+}
+
+async function handleCopy() {
+  const exportData = buildExportData();
+  const text = formatDietText(exportData);
+  const success = await copyToClipboard(text);
+  if (success) {
+    $q.notify({ type: 'positive', message: t('export.copied') });
+  }
+}
+
+function regenerateDiet() {
+  router.push({ path: '/diet/new', query: { regenerateFrom: dietId.value } });
+}
+
 function confirmDelete() {
   $q.dialog({
-    title: 'Delete Diet Plan',
-    message: 'Are you sure you want to delete this diet plan?',
+    title: t('diet.deleteDietPlan'),
+    message: t('diet.deleteConfirm'),
     cancel: true,
     persistent: true,
   }).onOk(async () => {
     const success = await dietsStore.deleteDiet(dietId.value);
     if (success) {
-      $q.notify({ type: 'positive', message: 'Diet deleted' });
+      $q.notify({ type: 'positive', message: t('diet.dietDeleted') });
       router.push('/diet');
     }
   });
@@ -315,6 +524,7 @@ onMounted(async () => {
   loading.value = true;
   diet.value = await dietsStore.getDiet(dietId.value);
   loading.value = false;
+  refreshReminderStatus();
 });
 </script>
 

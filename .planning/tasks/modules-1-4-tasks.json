@@ -1,0 +1,2389 @@
+{
+  "metadata": {
+    "createdAt": "2026-02-06",
+    "sourceDocument": "/.planning/MODULE_REVIEW.md",
+    "modules": [
+      "1-auth",
+      "2-onboarding",
+      "3-dashboard",
+      "4-cow-management"
+    ],
+    "totalTasks": 52,
+    "breakdown": {
+      "critical": 6,
+      "high": 13,
+      "medium": 27,
+      "low": 8
+    }
+  },
+  "tasks": [
+    {
+      "module": "1-auth",
+      "taskId": "C1",
+      "priority": "critical",
+      "title": "Fix phone number E.164 format mismatch",
+      "description": "Frontend sends 10-digit phone number but backend expects E.164 format (+91...). Phone registration will fail because the backend validates and stores phone numbers in international format.",
+      "files": [
+        "src/pages/auth/RegisterPage.vue",
+        "src/pages/auth/LoginPage.vue",
+        "src/stores/auth.ts"
+      ],
+      "changes": [
+        {
+          "file": "src/pages/auth/RegisterPage.vue",
+          "action": "modify",
+          "details": "Prepend country calling code (e.g., +91 for India) to phone number before sending to API. Use selected country to determine calling code."
+        },
+        {
+          "file": "src/pages/auth/LoginPage.vue",
+          "action": "modify",
+          "details": "Apply same phone formatting for login. Either store/retrieve formatted phone or prepend code on login."
+        },
+        {
+          "file": "src/stores/auth.ts",
+          "action": "modify",
+          "details": "Add utility function formatPhoneE164(phone: string, countryCode: string): string that converts local phone to E.164 format."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Phone registration sends +91XXXXXXXXXX format for India",
+        "Phone login sends phone in same format as registration",
+        "Calling code dynamically determined by selected country",
+        "Backend successfully validates and stores phone number"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Register with Indian phone",
+          "steps": [
+            "Go to registration page",
+            "Select phone method",
+            "Select India as country",
+            "Enter 10-digit phone: 9876543210",
+            "Submit registration"
+          ],
+          "expectedResult": "API receives phone as +919876543210, registration succeeds"
+        },
+        {
+          "scenario": "Login with Indian phone",
+          "steps": [
+            "Go to login page",
+            "Select phone method",
+            "Enter 10-digit phone: 9876543210",
+            "Submit login"
+          ],
+          "expectedResult": "API receives phone as +919876543210, login succeeds"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "small"
+    },
+    {
+      "module": "1-auth",
+      "taskId": "C2",
+      "priority": "critical",
+      "title": "Fix country_code to country_id UUID mismatch",
+      "description": "Frontend sends country_code as string (e.g., 'IN') but backend expects country_id as UUID. Registration may fail because the backend cannot find the country by code string.",
+      "files": [
+        "src/pages/auth/RegisterPage.vue",
+        "src/stores/auth.ts",
+        "src/services/api-adapter.ts"
+      ],
+      "changes": [
+        {
+          "file": "src/pages/auth/RegisterPage.vue",
+          "action": "modify",
+          "details": "Fetch countries from /auth/countries API on mount. Store country objects with both code and id. Use country_id (UUID) when submitting registration."
+        },
+        {
+          "file": "src/stores/auth.ts",
+          "action": "modify",
+          "details": "Add fetchCountries() action that calls /auth/countries API. Add countries state to store country list with id, name, country_code, currency."
+        },
+        {
+          "file": "src/services/api-adapter.ts",
+          "action": "modify",
+          "details": "Ensure /auth/countries endpoint is properly mapped if not already."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Countries fetched from /auth/countries API on registration page load",
+        "Country dropdown displays names but submits country_id (UUID)",
+        "Registration API receives country_id as valid UUID",
+        "Offline fallback uses cached countries from IndexedDB"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Register with dynamic country list",
+          "steps": [
+            "Go to registration page",
+            "Verify country dropdown loads from API",
+            "Select India from dropdown",
+            "Complete registration form",
+            "Submit registration"
+          ],
+          "expectedResult": "API receives country_id as UUID (e.g., 'abc123-...''), not 'IN'"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "medium"
+    },
+    {
+      "module": "1-auth",
+      "taskId": "H1",
+      "priority": "high",
+      "title": "Add Forgot PIN link and page",
+      "description": "Login page has no PIN recovery option. Users are locked out if they forget their PIN. Backend has /auth/forgot-pin endpoint but no UI exists.",
+      "files": [
+        "src/pages/auth/LoginPage.vue",
+        "src/pages/auth/ForgotPinPage.vue",
+        "src/router/routes.ts"
+      ],
+      "changes": [
+        {
+          "file": "src/pages/auth/LoginPage.vue",
+          "action": "modify",
+          "details": "Add 'Forgot PIN?' link below PIN input field. Link should navigate to /auth/forgot-pin route."
+        },
+        {
+          "file": "src/pages/auth/ForgotPinPage.vue",
+          "action": "create",
+          "details": "Create new page with: email input, submit button. Calls POST /auth/forgot-pin with email. Shows success message that reset link sent."
+        },
+        {
+          "file": "src/router/routes.ts",
+          "action": "modify",
+          "details": "Add route { path: '/auth/forgot-pin', component: ForgotPinPage, meta: { requiresAuth: false } }"
+        }
+      ],
+      "acceptanceCriteria": [
+        "Forgot PIN link visible on login page",
+        "ForgotPinPage accessible at /auth/forgot-pin",
+        "User can enter email and request PIN reset",
+        "Success message shown after request",
+        "Error handling for invalid email"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Request PIN reset",
+          "steps": [
+            "Go to login page",
+            "Click 'Forgot PIN?' link",
+            "Enter registered email",
+            "Click submit"
+          ],
+          "expectedResult": "Success message shown: 'PIN reset link sent to your email'"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "medium"
+    },
+    {
+      "module": "1-auth",
+      "taskId": "H2",
+      "priority": "high",
+      "title": "Fetch countries from API instead of hardcoding",
+      "description": "Country list is hardcoded in RegisterPage. New countries added to database won't appear in the UI without code changes.",
+      "files": [
+        "src/pages/auth/RegisterPage.vue",
+        "src/stores/auth.ts"
+      ],
+      "changes": [
+        {
+          "file": "src/stores/auth.ts",
+          "action": "modify",
+          "details": "Add: countries state array, fetchCountries() action that calls GET /auth/countries, cache countries in localStorage/IndexedDB for offline."
+        },
+        {
+          "file": "src/pages/auth/RegisterPage.vue",
+          "action": "modify",
+          "details": "Remove hardcoded countryOptions. Call authStore.fetchCountries() on mount. Compute countryOptions from authStore.countries. Handle loading state."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Countries fetched from API on page load",
+        "Dropdown shows all active countries from database",
+        "Loading state while fetching",
+        "Cached countries available offline"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Countries load from API",
+          "steps": [
+            "Clear cache",
+            "Go to registration page",
+            "Inspect network requests"
+          ],
+          "expectedResult": "GET /auth/countries called, dropdown populated with response"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "small"
+    },
+    {
+      "module": "1-auth",
+      "taskId": "H3",
+      "priority": "high",
+      "title": "Verify database has all required user columns",
+      "description": "Backend model expects columns that may not exist in migrations: user_role, admin_level, organization_id, location_lat/lng, language_code, region, self_farmer_profile_id.",
+      "files": [
+        "backend/app/alembic/versions/*.py",
+        "backend/app/models/user.py"
+      ],
+      "changes": [
+        {
+          "file": "backend/app/alembic/versions/",
+          "action": "modify",
+          "details": "Create new migration if columns missing. Add: user_role VARCHAR(50), admin_level VARCHAR(50), organization_id UUID FK, location_lat DECIMAL, location_lng DECIMAL, language_code VARCHAR(10), region VARCHAR(255), self_farmer_profile_id UUID FK."
+        }
+      ],
+      "acceptanceCriteria": [
+        "All columns in User ORM model exist in database",
+        "Migration runs without errors",
+        "Rollback migration works",
+        "Existing user data preserved"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Verify schema completeness",
+          "steps": [
+            "Run alembic upgrade head",
+            "Connect to database",
+            "Inspect user_information table columns"
+          ],
+          "expectedResult": "All expected columns present with correct types"
+        }
+      ],
+      "status": "blocked",
+      "estimatedEffort": "medium",
+      "statusReason": "Backend task - requires backend team"
+    },
+    {
+      "module": "1-auth",
+      "taskId": "H4",
+      "priority": "high",
+      "title": "Design email/phone verification flow",
+      "description": "No email or phone verification exists. Accounts can be created with fake emails/phones. This is a security risk and may lead to account recovery issues.",
+      "files": [
+        "src/pages/auth/VerifyPage.vue",
+        "src/router/routes.ts",
+        "backend/app/api/endpoints/auth.py"
+      ],
+      "changes": [
+        {
+          "file": "src/pages/auth/VerifyPage.vue",
+          "action": "create",
+          "details": "Create verification page with OTP input (6 digits). Page receives email/phone from query params. Submit calls verification endpoint."
+        },
+        {
+          "file": "src/router/routes.ts",
+          "action": "modify",
+          "details": "Add /auth/verify route. Redirect here after registration if verification required."
+        },
+        {
+          "file": "backend/app/api/endpoints/auth.py",
+          "action": "modify",
+          "details": "Add POST /auth/send-otp and POST /auth/verify-otp endpoints. Send OTP via email/SMS. Store OTP with expiry in Redis or database."
+        }
+      ],
+      "acceptanceCriteria": [
+        "OTP sent to email/phone after registration",
+        "User redirected to verification page",
+        "OTP expires after 10 minutes",
+        "3 retry attempts before lockout",
+        "Account marked verified in database"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Verify email after registration",
+          "steps": [
+            "Complete registration",
+            "Check email for OTP",
+            "Enter OTP on verification page",
+            "Submit"
+          ],
+          "expectedResult": "Account verified, redirected to onboarding"
+        }
+      ],
+      "status": "blocked",
+      "estimatedEffort": "large",
+      "statusReason": "Backend task - requires backend team"
+    },
+    {
+      "module": "1-auth",
+      "taskId": "M1",
+      "priority": "medium",
+      "title": "Add branding to Login/Register pages",
+      "description": "Login and Register pages have no app logo, name, or tagline. Poor first impression for new users.",
+      "files": [
+        "src/pages/auth/LoginPage.vue",
+        "src/pages/auth/RegisterPage.vue",
+        "src/assets/logo.svg"
+      ],
+      "changes": [
+        {
+          "file": "src/pages/auth/LoginPage.vue",
+          "action": "modify",
+          "details": "Add header section with: RationSmart logo (centered, 80px), app name 'RationSmart' in h4, tagline 'Optimize your cattle nutrition' in body2 grey text."
+        },
+        {
+          "file": "src/pages/auth/RegisterPage.vue",
+          "action": "modify",
+          "details": "Same branding header as LoginPage for consistency."
+        },
+        {
+          "file": "src/assets/logo.svg",
+          "action": "create",
+          "details": "If not exists, create or obtain RationSmart logo SVG file."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Logo displayed centered at top of auth pages",
+        "App name clearly visible below logo",
+        "Tagline adds context for new users",
+        "Consistent branding across login and register"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Visual branding check",
+          "steps": [
+            "Navigate to /auth/login",
+            "Observe page header"
+          ],
+          "expectedResult": "Logo, app name, and tagline visible at top of page"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "small"
+    },
+    {
+      "module": "1-auth",
+      "taskId": "M2",
+      "priority": "medium",
+      "title": "Add country flags to registration dropdown",
+      "description": "Country dropdown shows plain text labels only. Flags would make selection more intuitive and visually appealing.",
+      "files": [
+        "src/pages/auth/RegisterPage.vue"
+      ],
+      "changes": [
+        {
+          "file": "src/pages/auth/RegisterPage.vue",
+          "action": "modify",
+          "details": "Create custom option template for q-select showing flag emoji + country name. Map country codes to flags: IN -> India, KE -> Kenya, ET -> Ethiopia, VN -> Vietnam. Use country.country_code from API to determine flag."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Each country shows flag emoji before name",
+        "Flags display correctly on all devices",
+        "Selected value shows flag in input"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Country flags visible",
+          "steps": [
+            "Go to registration page",
+            "Click country dropdown"
+          ],
+          "expectedResult": "Each country shows appropriate flag emoji"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "small"
+    },
+    {
+      "module": "1-auth",
+      "taskId": "M3",
+      "priority": "medium",
+      "title": "Improve toggle button visual distinction",
+      "description": "Email/Phone toggle buttons use grey-3 for unselected state with low contrast. Selected state not visually distinct enough.",
+      "files": [
+        "src/pages/auth/LoginPage.vue",
+        "src/pages/auth/RegisterPage.vue"
+      ],
+      "changes": [
+        {
+          "file": "src/pages/auth/LoginPage.vue",
+          "action": "modify",
+          "details": "Change toggle styling: unselected -> white background with grey border, selected -> primary color fill with white text. Add icons: email icon for Email, phone icon for Phone."
+        },
+        {
+          "file": "src/pages/auth/RegisterPage.vue",
+          "action": "modify",
+          "details": "Apply same toggle styling changes as LoginPage."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Clear visual difference between selected and unselected",
+        "Icons added to toggle options",
+        "Meets accessibility contrast ratios"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Toggle state visibility",
+          "steps": [
+            "Go to login page",
+            "Click between Email and Phone toggle"
+          ],
+          "expectedResult": "Selected option clearly highlighted, unselected clearly different"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "small"
+    },
+    {
+      "module": "1-auth",
+      "taskId": "M4",
+      "priority": "medium",
+      "title": "Improve auth page layout and styling",
+      "description": "Pages have minimal styling (just 8px padding). No max-width constraint, no vertical centering, no background treatment. Looks unfinished.",
+      "files": [
+        "src/pages/auth/LoginPage.vue",
+        "src/pages/auth/RegisterPage.vue",
+        "src/css/auth.scss"
+      ],
+      "changes": [
+        {
+          "file": "src/pages/auth/LoginPage.vue",
+          "action": "modify",
+          "details": "Wrap content in card with max-width: 400px, center horizontally. Add vertical padding. Add subtle background gradient or pattern to page."
+        },
+        {
+          "file": "src/pages/auth/RegisterPage.vue",
+          "action": "modify",
+          "details": "Same layout improvements as LoginPage."
+        },
+        {
+          "file": "src/css/auth.scss",
+          "action": "create",
+          "details": "Create shared auth page styles: .auth-page, .auth-card, .auth-header classes."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Form centered horizontally on desktop",
+        "Max-width prevents form stretching on large screens",
+        "Adequate padding around form elements",
+        "Subtle visual treatment on background"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Desktop layout check",
+          "steps": [
+            "View login page on 1920px wide screen"
+          ],
+          "expectedResult": "Form card centered, not stretched to full width"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "small"
+    },
+    {
+      "module": "1-auth",
+      "taskId": "M5",
+      "priority": "medium",
+      "title": "Add visual hierarchy to form inputs",
+      "description": "All inputs have same visual weight. Primary action button same size as inputs. No grouping of related fields makes form harder to scan.",
+      "files": [
+        "src/pages/auth/LoginPage.vue",
+        "src/pages/auth/RegisterPage.vue"
+      ],
+      "changes": [
+        {
+          "file": "src/pages/auth/LoginPage.vue",
+          "action": "modify",
+          "details": "Group related inputs visually. Make primary button larger and more prominent. Add section dividers or spacing between input groups."
+        },
+        {
+          "file": "src/pages/auth/RegisterPage.vue",
+          "action": "modify",
+          "details": "Group: identity (name), contact (email/phone), location (country), security (PIN). Add section headers if needed. Larger submit button."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Clear visual grouping of related fields",
+        "Primary action button prominently styled",
+        "Easy to scan form structure",
+        "Consistent spacing between groups"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Form scanability",
+          "steps": [
+            "Go to registration page",
+            "Quickly scan form"
+          ],
+          "expectedResult": "Can identify sections: personal info, contact, security at a glance"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "small"
+    },
+    {
+      "module": "1-auth",
+      "taskId": "M6",
+      "priority": "medium",
+      "title": "Improve error banner design",
+      "description": "Error banner is plain red block with no icon, dismiss button, or specific guidance. Could be more helpful and less alarming.",
+      "files": [
+        "src/pages/auth/LoginPage.vue",
+        "src/pages/auth/RegisterPage.vue",
+        "src/components/ui/ErrorBanner.vue"
+      ],
+      "changes": [
+        {
+          "file": "src/components/ui/ErrorBanner.vue",
+          "action": "create",
+          "details": "Create reusable error banner component with: error icon, error message, dismiss button (X), softer red color (not alarming), optional action button for recovery."
+        },
+        {
+          "file": "src/pages/auth/LoginPage.vue",
+          "action": "modify",
+          "details": "Replace q-banner with ErrorBanner component. Pass error message as prop."
+        },
+        {
+          "file": "src/pages/auth/RegisterPage.vue",
+          "action": "modify",
+          "details": "Use ErrorBanner component for error display."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Error banner has icon for quick recognition",
+        "User can dismiss error",
+        "Color is noticeable but not alarming",
+        "Error text is clear and actionable"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Error banner display",
+          "steps": [
+            "Go to login",
+            "Enter wrong credentials",
+            "Submit"
+          ],
+          "expectedResult": "Error banner appears with icon, message, and dismiss option"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "small"
+    },
+    {
+      "module": "1-auth",
+      "taskId": "M7",
+      "priority": "medium",
+      "title": "Add PIN strength indicator",
+      "description": "No feedback on PIN strength. Users may choose weak PINs like 1234 or 0000 without warning.",
+      "files": [
+        "src/pages/auth/RegisterPage.vue",
+        "src/components/ui/PinStrengthIndicator.vue"
+      ],
+      "changes": [
+        {
+          "file": "src/components/ui/PinStrengthIndicator.vue",
+          "action": "create",
+          "details": "Create PIN strength component that evaluates: sequential numbers (1234), repeated digits (1111), common patterns (1234, 0000, 2580). Show weak/medium/strong with color indicator."
+        },
+        {
+          "file": "src/pages/auth/RegisterPage.vue",
+          "action": "modify",
+          "details": "Add PinStrengthIndicator below PIN input. Warn but don't block weak PINs."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Strength indicator shows below PIN field",
+        "Weak PINs show warning (red)",
+        "Strong PINs show green indicator",
+        "User can still submit weak PIN (warning only)"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Weak PIN warning",
+          "steps": [
+            "Go to registration",
+            "Enter PIN: 1234"
+          ],
+          "expectedResult": "Weak PIN indicator shown in red"
+        },
+        {
+          "scenario": "Strong PIN indication",
+          "steps": [
+            "Go to registration",
+            "Enter PIN: 7293"
+          ],
+          "expectedResult": "Strong PIN indicator shown in green"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "small"
+    },
+    {
+      "module": "1-auth",
+      "taskId": "L1",
+      "priority": "low",
+      "title": "Add Remember Me option on login",
+      "description": "No option to stay logged in. Minor convenience feature for users on personal devices.",
+      "files": [
+        "src/pages/auth/LoginPage.vue",
+        "src/stores/auth.ts"
+      ],
+      "changes": [
+        {
+          "file": "src/pages/auth/LoginPage.vue",
+          "action": "modify",
+          "details": "Add checkbox 'Remember me' below PIN input. When checked, store token in localStorage with longer expiry. When unchecked, use sessionStorage."
+        },
+        {
+          "file": "src/stores/auth.ts",
+          "action": "modify",
+          "details": "Add rememberMe parameter to login action. Conditionally use localStorage vs sessionStorage for token storage."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Remember me checkbox visible on login",
+        "Checked: session persists after browser close",
+        "Unchecked: session ends on browser close"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Remember me works",
+          "steps": [
+            "Login with Remember me checked",
+            "Close browser completely",
+            "Reopen and navigate to app"
+          ],
+          "expectedResult": "User still logged in"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "small"
+    },
+    {
+      "module": "1-auth",
+      "taskId": "L2",
+      "priority": "low",
+      "title": "Add biometric login option",
+      "description": "No fingerprint or face ID login option. Future enhancement for mobile PWA users.",
+      "files": [
+        "src/pages/auth/LoginPage.vue",
+        "src/composables/useBiometrics.ts"
+      ],
+      "changes": [
+        {
+          "file": "src/composables/useBiometrics.ts",
+          "action": "create",
+          "details": "Create composable using Web Authentication API (WebAuthn). Check if biometrics available. Register/authenticate with biometric credentials."
+        },
+        {
+          "file": "src/pages/auth/LoginPage.vue",
+          "action": "modify",
+          "details": "Add biometric login button if available. Show fingerprint/face icon based on device capability."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Biometric option shows only if device supports it",
+        "User can register biometric after first login",
+        "Subsequent logins can use biometric",
+        "Fallback to PIN always available"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Biometric login on supported device",
+          "steps": [
+            "Login with PIN first time",
+            "Enable biometric in settings",
+            "Logout",
+            "Tap biometric login button"
+          ],
+          "expectedResult": "Device prompts for fingerprint/face, login succeeds"
+        }
+      ],
+      "status": "skipped",
+      "estimatedEffort": "large",
+      "notes": "Low priority - biometric not reliable on all PWA devices"
+    },
+    {
+      "module": "2-onboarding",
+      "taskId": "C3",
+      "priority": "critical",
+      "title": "Create administrative_level_names database migration",
+      "description": "The administrative_level_names table is defined in ORM model but has no Alembic migration. This table maps level_1-6 to country-specific labels (India: State/District/Taluka, Ethiopia: Region/Zone/Woreda).",
+      "files": [
+        "backend/app/alembic/versions/XXXX_add_admin_level_names.py",
+        "backend/app/models/location.py"
+      ],
+      "changes": [
+        {
+          "file": "backend/app/alembic/versions/XXXX_add_admin_level_names.py",
+          "action": "create",
+          "details": "Create migration for: id UUID PK, country_id UUID FK, level_1_name VARCHAR (e.g., 'State'), level_2_name VARCHAR (e.g., 'District'), level_3_name VARCHAR, level_4_name VARCHAR, level_5_name VARCHAR, level_6_name VARCHAR, created_at, updated_at."
+        },
+        {
+          "file": "backend/app/models/location.py",
+          "action": "modify",
+          "details": "Verify ORM model matches migration columns."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Migration creates administrative_level_names table",
+        "Table has FK to country table",
+        "Seed data for India, Ethiopia, Kenya, Vietnam",
+        "Migration can be rolled back cleanly"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Migration runs successfully",
+          "steps": [
+            "Run alembic upgrade head",
+            "Query administrative_level_names table"
+          ],
+          "expectedResult": "Table exists with correct columns"
+        }
+      ],
+      "status": "blocked",
+      "statusReason": "Backend migration task - requires backend team",
+      "estimatedEffort": "medium"
+    },
+    {
+      "module": "2-onboarding",
+      "taskId": "C4",
+      "priority": "critical",
+      "title": "Fix LanguageSelectPage array indices mismatch",
+      "description": "LanguageSelectPage uses wrong array indices for availableLocales. Comments say Telugu/Kannada/Vietnamese but actual values are Bengali/Telugu/Marathi. Vietnamese flag assigned to Indian language.",
+      "files": [
+        "src/pages/auth/LanguageSelectPage.vue",
+        "src/i18n/index.ts"
+      ],
+      "changes": [
+        {
+          "file": "src/pages/auth/LanguageSelectPage.vue",
+          "action": "modify",
+          "details": "Replace hardcoded index references with dynamic lookup by locale code. Map flags to locale codes directly: { en: 'GB', hi: 'IN', te: 'IN', kn: 'IN', vi: 'VN', mr: 'IN', bn: 'IN', ta: 'IN', am: 'ET' }. Display languages in alphabetical order or by popularity."
+        },
+        {
+          "file": "src/i18n/index.ts",
+          "action": "modify",
+          "details": "Ensure availableLocales exports locale objects with: code, name (native), flag emoji."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Each language shows correct flag",
+        "Vietnamese shows Vietnam flag, not India flag",
+        "Language names match their locale codes",
+        "Selection saves correct locale code"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Language selection accuracy",
+          "steps": [
+            "Go to language select page",
+            "Verify Vietnamese shows VN flag",
+            "Select Vietnamese",
+            "Check saved preference"
+          ],
+          "expectedResult": "Vietnamese shows Vietnam flag, saves 'vi' locale code"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "small"
+    },
+    {
+      "module": "2-onboarding",
+      "taskId": "C5",
+      "priority": "critical",
+      "title": "Fix OrgSelectPage API path mismatch",
+      "description": "OrgSelectPage uses /api/v1/organizations but backend expects /organizations. Organization list won't load without proper API path mapping.",
+      "files": [
+        "src/pages/auth/OrgSelectPage.vue",
+        "src/services/api-adapter.ts"
+      ],
+      "changes": [
+        {
+          "file": "src/services/api-adapter.ts",
+          "action": "modify",
+          "details": "Verify /api/v1/organizations maps to /organizations in backend. Add mapping if missing: pathMap['/api/v1/organizations'] = '/organizations'."
+        },
+        {
+          "file": "src/pages/auth/OrgSelectPage.vue",
+          "action": "modify",
+          "details": "Confirm API call uses correct path. Add error handling if organizations fail to load."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Organizations load successfully on OrgSelectPage",
+        "API adapter correctly maps path",
+        "Error handling if API fails",
+        "Loading state while fetching"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Organizations load",
+          "steps": [
+            "Navigate to /auth/organization",
+            "Wait for page load"
+          ],
+          "expectedResult": "Organization list displays from API"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "small"
+    },
+    {
+      "module": "2-onboarding",
+      "taskId": "H5",
+      "priority": "high",
+      "title": "Fix role value mismatches between frontend and backend",
+      "description": "Frontend sends 'student' (backend doesn't have), 'extensionWorker' (backend expects 'extension_worker'). Missing roles: 'feed_supplier', 'other'.",
+      "files": [
+        "src/pages/auth/RoleSelectPage.vue",
+        "src/types/user.ts"
+      ],
+      "changes": [
+        {
+          "file": "src/pages/auth/RoleSelectPage.vue",
+          "action": "modify",
+          "details": "Update roles array: remove 'student', change 'extensionWorker' to 'extension_worker', add 'feed_supplier' with appropriate icon, add 'other' option. Update role descriptions."
+        },
+        {
+          "file": "src/types/user.ts",
+          "action": "modify",
+          "details": "Update UserRole type to match backend: 'farmer' | 'extension_worker' | 'nutritionist' | 'researcher' | 'feed_supplier' | 'other'."
+        }
+      ],
+      "acceptanceCriteria": [
+        "All frontend roles match backend enum exactly",
+        "No 'student' role option",
+        "extension_worker uses snake_case",
+        "feed_supplier and other roles available",
+        "i18n keys exist for new roles"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Role selection saves correctly",
+          "steps": [
+            "Go to role selection page",
+            "Select Extension Worker",
+            "Complete onboarding",
+            "Check user settings in database"
+          ],
+          "expectedResult": "user_role saved as 'extension_worker' (snake_case)"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "small"
+    },
+    {
+      "module": "2-onboarding",
+      "taskId": "H6",
+      "priority": "high",
+      "title": "Fix settings API to use query params instead of body",
+      "description": "PUT /auth/users/{user_id}/settings expects query parameters but frontend sends body parameters. Settings update will fail.",
+      "files": [
+        "src/pages/auth/MyProfileSetupPage.vue",
+        "src/stores/auth.ts"
+      ],
+      "changes": [
+        {
+          "file": "src/stores/auth.ts",
+          "action": "modify",
+          "details": "Change updateSettings action to send data as query params: api.put(`/auth/users/${userId}/settings?user_role=${role}&language_code=${lang}&organization_id=${orgId}`). URL-encode values properly."
+        },
+        {
+          "file": "src/pages/auth/MyProfileSetupPage.vue",
+          "action": "modify",
+          "details": "Update any direct API calls to use query params pattern."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Settings update API called with query params",
+        "Role, language, organization_id passed as query strings",
+        "Settings persist correctly",
+        "Works with special characters in values"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Settings update works",
+          "steps": [
+            "Complete profile setup with role: farmer, language: hi",
+            "Submit",
+            "Check network request"
+          ],
+          "expectedResult": "Request URL includes ?user_role=farmer&language_code=hi"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "small"
+    },
+    {
+      "module": "2-onboarding",
+      "taskId": "H7",
+      "priority": "high",
+      "title": "Add Amharic language to LanguageSelectPage",
+      "description": "Ethiopia is a focus country but Amharic (official language) is not shown in LanguageSelectPage. Ethiopian users cannot select their native language.",
+      "files": [
+        "src/pages/auth/LanguageSelectPage.vue",
+        "src/i18n/am.json"
+      ],
+      "changes": [
+        {
+          "file": "src/pages/auth/LanguageSelectPage.vue",
+          "action": "modify",
+          "details": "Add Amharic to displayed languages list: { code: 'am', name: 'Amharic', nativeName: 'Amharic', flag: 'ET' }. Position appropriately (perhaps near top for Ethiopia users)."
+        },
+        {
+          "file": "src/i18n/am.json",
+          "action": "modify",
+          "details": "Verify Amharic translations exist for all UI strings. Fill gaps if needed."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Amharic appears in language selection",
+        "Ethiopia flag shown for Amharic",
+        "Selecting Amharic changes UI language",
+        "All common strings translated in am.json"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Select Amharic language",
+          "steps": [
+            "Go to language selection",
+            "Find and select Amharic",
+            "Continue to next step"
+          ],
+          "expectedResult": "Amharic saved as preference, UI updates to Amharic"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "small"
+    },
+    {
+      "module": "2-onboarding",
+      "taskId": "H8",
+      "priority": "high",
+      "title": "Fix country field lookup code vs country_code",
+      "description": "OrgSelectPage looks for country.code but API returns country.country_code. Country filtering for organizations will fail.",
+      "files": [
+        "src/pages/auth/OrgSelectPage.vue"
+      ],
+      "changes": [
+        {
+          "file": "src/pages/auth/OrgSelectPage.vue",
+          "action": "modify",
+          "details": "Change country lookup: const country = countriesRes.data.find((c) => c.country_code === countryCode); Access country.country_code not country.code throughout file."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Country lookup uses correct field name",
+        "Organizations filter by user's country",
+        "Organizations for India show when India selected"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Organization filtering works",
+          "steps": [
+            "Register with India as country",
+            "Navigate to organization selection",
+            "View organization list"
+          ],
+          "expectedResult": "Only Indian organizations shown (NDRI, Amul, Digital Green, etc.)"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "small"
+    },
+    {
+      "module": "2-onboarding",
+      "taskId": "M8",
+      "priority": "medium",
+      "title": "Add branding to onboarding pages",
+      "description": "No app logo on any onboarding page. Just 'Step X of 4' text. Inconsistent brand experience after auth pages.",
+      "files": [
+        "src/pages/auth/LanguageSelectPage.vue",
+        "src/pages/auth/RoleSelectPage.vue",
+        "src/pages/auth/OrgSelectPage.vue",
+        "src/pages/auth/MyProfileSetupPage.vue",
+        "src/components/ui/OnboardingHeader.vue"
+      ],
+      "changes": [
+        {
+          "file": "src/components/ui/OnboardingHeader.vue",
+          "action": "create",
+          "details": "Create shared header component with: logo (smaller, 48px), step indicator text, optional back button. Takes currentStep and totalSteps as props."
+        },
+        {
+          "file": "src/pages/auth/LanguageSelectPage.vue",
+          "action": "modify",
+          "details": "Add OnboardingHeader component at top."
+        },
+        {
+          "file": "src/pages/auth/RoleSelectPage.vue",
+          "action": "modify",
+          "details": "Add OnboardingHeader component."
+        },
+        {
+          "file": "src/pages/auth/OrgSelectPage.vue",
+          "action": "modify",
+          "details": "Add OnboardingHeader component."
+        },
+        {
+          "file": "src/pages/auth/MyProfileSetupPage.vue",
+          "action": "modify",
+          "details": "Add OnboardingHeader component."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Logo visible on all onboarding pages",
+        "Consistent header across steps",
+        "Step indicator clearly visible"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Onboarding branding consistent",
+          "steps": [
+            "Navigate through all 4 onboarding steps"
+          ],
+          "expectedResult": "Logo and step indicator visible on each page"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "small"
+    },
+    {
+      "module": "2-onboarding",
+      "taskId": "M9",
+      "priority": "medium",
+      "title": "Filter languages by country/region",
+      "description": "Only 6 languages shown out of 22 available. Should show country-relevant languages based on user's selected country.",
+      "files": [
+        "src/pages/auth/LanguageSelectPage.vue",
+        "src/data/countryLanguages.ts"
+      ],
+      "changes": [
+        {
+          "file": "src/data/countryLanguages.ts",
+          "action": "create",
+          "details": "Create mapping of country codes to primary languages: { IN: ['en', 'hi', 'te', 'kn', 'mr', 'ta', 'bn'], ET: ['en', 'am', 'om'], KE: ['en', 'sw'], VN: ['vi', 'en'] }."
+        },
+        {
+          "file": "src/pages/auth/LanguageSelectPage.vue",
+          "action": "modify",
+          "details": "Get user's country from registration data. Filter availableLocales to show country-relevant languages first, then 'Other languages' section for rest. Always include English."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Languages filtered by user's country",
+        "Indian users see Indian languages first",
+        "Ethiopian users see Amharic, Oromo",
+        "Other languages available in expandable section"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Country-specific language filtering",
+          "steps": [
+            "Register with Ethiopia as country",
+            "Go to language selection"
+          ],
+          "expectedResult": "Amharic and English shown prominently, other languages in 'More' section"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "medium"
+    },
+    {
+      "module": "2-onboarding",
+      "taskId": "M10",
+      "priority": "medium",
+      "title": "Add visual progress indicator bar",
+      "description": "Just text 'Step 1 of 4' shown. Visual progress bar would help users understand overall flow and how far they've progressed.",
+      "files": [
+        "src/components/ui/ProgressBar.vue",
+        "src/pages/auth/LanguageSelectPage.vue",
+        "src/pages/auth/RoleSelectPage.vue",
+        "src/pages/auth/OrgSelectPage.vue",
+        "src/pages/auth/MyProfileSetupPage.vue"
+      ],
+      "changes": [
+        {
+          "file": "src/components/ui/ProgressBar.vue",
+          "action": "create",
+          "details": "Create progress component showing: 4 step circles connected by lines, filled circles for completed steps, current step highlighted, step labels optional. Props: currentStep, totalSteps, labels[]."
+        },
+        {
+          "file": "src/pages/auth/LanguageSelectPage.vue",
+          "action": "modify",
+          "details": "Add ProgressBar with currentStep=1."
+        },
+        {
+          "file": "src/pages/auth/RoleSelectPage.vue",
+          "action": "modify",
+          "details": "Add ProgressBar with currentStep=2."
+        },
+        {
+          "file": "src/pages/auth/OrgSelectPage.vue",
+          "action": "modify",
+          "details": "Add ProgressBar with currentStep=3."
+        },
+        {
+          "file": "src/pages/auth/MyProfileSetupPage.vue",
+          "action": "modify",
+          "details": "Add ProgressBar with currentStep=4."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Visual progress bar on each onboarding page",
+        "Completed steps shown as filled",
+        "Current step highlighted",
+        "Smooth visual transition between steps"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Progress bar updates",
+          "steps": [
+            "Start onboarding",
+            "Navigate through each step"
+          ],
+          "expectedResult": "Progress bar fills as user advances through steps"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "small"
+    },
+    {
+      "module": "2-onboarding",
+      "taskId": "M11",
+      "priority": "medium",
+      "title": "Request location permission before auto-fetching",
+      "description": "MyProfileSetupPage auto-fetches location on mount without asking user. May trigger browser permission prompt unexpectedly. Privacy intrusive.",
+      "files": [
+        "src/pages/auth/MyProfileSetupPage.vue"
+      ],
+      "changes": [
+        {
+          "file": "src/pages/auth/MyProfileSetupPage.vue",
+          "action": "modify",
+          "details": "Remove onMounted geolocation call. Add explicit 'Share My Location' button. Show explanation of why location is helpful. Only call geolocation when button clicked. Add 'Skip' or 'Enter manually' alternative."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Location not fetched automatically",
+        "Clear button to share location",
+        "Explanation of location use",
+        "Manual entry alternative available"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Location permission flow",
+          "steps": [
+            "Navigate to profile setup page",
+            "Observe location field"
+          ],
+          "expectedResult": "No browser permission prompt on page load. 'Share Location' button visible."
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "small"
+    },
+    {
+      "module": "2-onboarding",
+      "taskId": "M12",
+      "priority": "medium",
+      "title": "Add skip indicators for optional fields",
+      "description": "Phone number and location are optional but no clear indication. Users may feel forced to provide data they don't want to share.",
+      "files": [
+        "src/pages/auth/MyProfileSetupPage.vue"
+      ],
+      "changes": [
+        {
+          "file": "src/pages/auth/MyProfileSetupPage.vue",
+          "action": "modify",
+          "details": "Add '(Optional)' suffix to optional field labels. Add 'Skip this step' link for entire optional sections. Use hint text explaining why optional data is useful."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Optional fields clearly labeled as optional",
+        "Users can skip without feeling forced",
+        "Benefits of providing optional data explained"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Skip optional fields",
+          "steps": [
+            "Go to profile setup",
+            "Leave phone empty",
+            "Skip location",
+            "Submit"
+          ],
+          "expectedResult": "Profile created successfully without phone or location"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "small"
+    },
+    {
+      "module": "2-onboarding",
+      "taskId": "M13",
+      "priority": "medium",
+      "title": "Persist onboarding state in localStorage",
+      "description": "Onboarding state uses sessionStorage only. If user closes browser mid-onboarding, they must restart from beginning.",
+      "files": [
+        "src/stores/onboarding.ts",
+        "src/pages/auth/LanguageSelectPage.vue"
+      ],
+      "changes": [
+        {
+          "file": "src/stores/onboarding.ts",
+          "action": "modify",
+          "details": "Change from sessionStorage to localStorage for onboarding state. Add timestamp to detect stale data. Clear state on successful completion. Add resumeOnboarding() action."
+        },
+        {
+          "file": "src/pages/auth/LanguageSelectPage.vue",
+          "action": "modify",
+          "details": "On mount, check for existing onboarding state. If found, offer to resume from last step."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Onboarding state persists across browser close",
+        "User can resume from last step",
+        "State cleared after completion",
+        "Stale state (>24h) discarded"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Resume onboarding",
+          "steps": [
+            "Start onboarding, complete step 1 and 2",
+            "Close browser",
+            "Reopen and navigate to onboarding"
+          ],
+          "expectedResult": "Prompted to resume from step 3"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "small"
+    },
+    {
+      "module": "2-onboarding",
+      "taskId": "M14",
+      "priority": "medium",
+      "title": "Remove default role selection",
+      "description": "RoleSelectPage defaults to 'farmer' selected. May not reflect user's actual role. Users might not notice and proceed with wrong role.",
+      "files": [
+        "src/pages/auth/RoleSelectPage.vue"
+      ],
+      "changes": [
+        {
+          "file": "src/pages/auth/RoleSelectPage.vue",
+          "action": "modify",
+          "details": "Change selectedRole initial value from 'farmer' to null/undefined. Disable 'Next' button until role selected. Add validation message: 'Please select your role'."
+        }
+      ],
+      "acceptanceCriteria": [
+        "No role pre-selected",
+        "User must actively choose role",
+        "Next button disabled until selection made"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Role selection required",
+          "steps": [
+            "Navigate to role selection page",
+            "Try to click Next without selecting"
+          ],
+          "expectedResult": "Next button disabled or shows validation message"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "small"
+    },
+    {
+      "module": "2-onboarding",
+      "taskId": "L3",
+      "priority": "low",
+      "title": "Add type-specific icons for organizations",
+      "description": "Organizations use colored avatars with first letter only. Type-specific icons would be more intuitive.",
+      "files": [
+        "src/pages/auth/OrgSelectPage.vue"
+      ],
+      "changes": [
+        {
+          "file": "src/pages/auth/OrgSelectPage.vue",
+          "action": "modify",
+          "details": "Replace letter avatars with type-based icons: University -> school, Government -> account_balance, NGO -> volunteer_activism, Cooperative -> groups, Other -> business. Keep colored background."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Each organization type has distinctive icon",
+        "Icons match organization type",
+        "Visual distinction between org types"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Organization icons display",
+          "steps": [
+            "Go to organization selection",
+            "View org list"
+          ],
+          "expectedResult": "Universities show school icon, NGOs show volunteer icon, etc."
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "small"
+    },
+    {
+      "module": "2-onboarding",
+      "taskId": "L4",
+      "priority": "low",
+      "title": "Enhance role cards with larger icons/illustrations",
+      "description": "Role cards are compact with small icons. Larger icons or illustrations would improve engagement and clarity.",
+      "files": [
+        "src/pages/auth/RoleSelectPage.vue"
+      ],
+      "changes": [
+        {
+          "file": "src/pages/auth/RoleSelectPage.vue",
+          "action": "modify",
+          "details": "Increase role card size. Use larger icons (48px or larger). Add role description below title. Consider custom illustrations for each role. Add subtle animation on selection."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Role cards are larger and more engaging",
+        "Icons clearly visible",
+        "Role descriptions help user choose",
+        "Visual feedback on selection"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Role card engagement",
+          "steps": [
+            "Go to role selection",
+            "View role cards"
+          ],
+          "expectedResult": "Cards are visually appealing with clear icons and descriptions"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "small"
+    },
+    {
+      "module": "3-dashboard",
+      "taskId": "C6",
+      "priority": "critical",
+      "title": "Implement totalMilk aggregation for extension workers",
+      "description": "ExtensionWorkerDashboard totalMilk computed returns 0 (TODO in code). Extension workers see wrong stats for their managed farmers.",
+      "files": [
+        "src/components/dashboard/ExtensionWorkerDashboard.vue",
+        "src/stores/milkLogs.ts"
+      ],
+      "changes": [
+        {
+          "file": "src/stores/milkLogs.ts",
+          "action": "modify",
+          "details": "Add getTotalMilkForFarmers(farmerIds: string[]): number method. Aggregates today's milk from milk logs where farmer_profile_id in farmerIds."
+        },
+        {
+          "file": "src/components/dashboard/ExtensionWorkerDashboard.vue",
+          "action": "modify",
+          "details": "Replace TODO computed with: const totalMilk = computed(() => milkLogsStore.getTotalMilkForFarmers(farmersStore.activeFarmers.map(f => f.id))). Fetch milk logs for all managed farmers on mount."
+        }
+      ],
+      "acceptanceCriteria": [
+        "totalMilk shows sum of today's milk from all managed farmers",
+        "Updates when farmers list changes",
+        "Handles empty farmers list (returns 0)",
+        "Offline support using cached milk logs"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Total milk aggregation",
+          "steps": [
+            "Login as extension worker",
+            "View dashboard with 3 managed farmers",
+            "Check total milk stat"
+          ],
+          "expectedResult": "Total milk shows sum of all 3 farmers' today milk logs"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "medium"
+    },
+    {
+      "module": "3-dashboard",
+      "taskId": "H9",
+      "priority": "high",
+      "title": "Add farmer_profile_id filter to cows store",
+      "description": "Cows store filters by user_id only, not farmer_profile_id. Extension workers viewing a managed farmer's cows won't see correct data.",
+      "files": [
+        "src/stores/cows.ts"
+      ],
+      "changes": [
+        {
+          "file": "src/stores/cows.ts",
+          "action": "modify",
+          "details": "Add optional farmerProfileId parameter to fetchCows(). When provided, filter cows by farmer_profile_id instead of user_id. Add getCowsForFarmer(farmerProfileId) getter."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Can fetch cows for specific farmer profile",
+        "Extension worker can view managed farmer's cows",
+        "Backward compatible with user_id filtering",
+        "IndexedDB caches cows by farmer_profile_id"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "View managed farmer's cows",
+          "steps": [
+            "Login as extension worker",
+            "Select a managed farmer",
+            "View their cows"
+          ],
+          "expectedResult": "Only selected farmer's cows shown, not all cows"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "medium"
+    },
+    {
+      "module": "3-dashboard",
+      "taskId": "H10",
+      "priority": "high",
+      "title": "Implement Recent Activity feed for extension workers",
+      "description": "ExtensionWorkerDashboard Recent Activity section is placeholder showing 'Select a farmer first'. Should show recent actions across all managed farmers.",
+      "files": [
+        "src/components/dashboard/ExtensionWorkerDashboard.vue",
+        "src/stores/activity.ts"
+      ],
+      "changes": [
+        {
+          "file": "src/stores/activity.ts",
+          "action": "create",
+          "details": "Create activity store to aggregate recent events: milk logs, diet plans, cow additions. getRecentActivity(farmerIds: string[], limit: number) returns sorted list of activities."
+        },
+        {
+          "file": "src/components/dashboard/ExtensionWorkerDashboard.vue",
+          "action": "modify",
+          "details": "Replace placeholder with activity feed component. Show: icon, farmer name, action type, timestamp. Limit to 10 most recent. Link to relevant detail pages."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Recent activity shows actions from all managed farmers",
+        "Activities sorted by timestamp descending",
+        "Shows action type icon, farmer name, time",
+        "Clicking activity navigates to detail"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Activity feed displays",
+          "steps": [
+            "Login as extension worker managing 3 farmers",
+            "View dashboard"
+          ],
+          "expectedResult": "Activity feed shows recent milk logs, diets, cow additions from all 3 farmers"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "medium"
+    },
+    {
+      "module": "3-dashboard",
+      "taskId": "H11",
+      "priority": "high",
+      "title": "Verify quick action routes exist",
+      "description": "Quick actions link to /logs/new, /diet/new, /cows/new which may not exist in router. Navigation could fail.",
+      "files": [
+        "src/router/routes.ts",
+        "src/components/dashboard/FarmerDashboard.vue"
+      ],
+      "changes": [
+        {
+          "file": "src/router/routes.ts",
+          "action": "modify",
+          "details": "Verify routes exist: { path: '/logs/new', ... }, { path: '/diet/new', ... }, { path: '/cows/new', ... }. Add if missing with appropriate components."
+        },
+        {
+          "file": "src/components/dashboard/FarmerDashboard.vue",
+          "action": "modify",
+          "details": "Use named routes instead of paths for type safety: router.push({ name: 'milk-log-new' }) instead of router.push('/logs/new')."
+        }
+      ],
+      "acceptanceCriteria": [
+        "All quick action routes exist and work",
+        "Navigation from dashboard succeeds",
+        "Routes use named navigation for safety"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Quick action navigation",
+          "steps": [
+            "Go to farmer dashboard",
+            "Click 'Log Milk' quick action"
+          ],
+          "expectedResult": "Navigates to milk log creation page"
+        },
+        {
+          "scenario": "All quick actions work",
+          "steps": [
+            "Test each quick action button: Log Milk, Get Diet, Add Cow"
+          ],
+          "expectedResult": "Each navigates to correct page without 404"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "small"
+    },
+    {
+      "module": "3-dashboard",
+      "taskId": "M15",
+      "priority": "medium",
+      "title": "Add app branding to home dashboard",
+      "description": "No app logo on home dashboard. Just plain 'Welcome, [Name]!' greeting. No visual brand identity.",
+      "files": [
+        "src/components/dashboard/FarmerDashboard.vue",
+        "src/components/dashboard/ExtensionWorkerDashboard.vue"
+      ],
+      "changes": [
+        {
+          "file": "src/components/dashboard/FarmerDashboard.vue",
+          "action": "modify",
+          "details": "Add small logo (32px) in header row next to welcome text. Or add logo as page header before greeting."
+        },
+        {
+          "file": "src/components/dashboard/ExtensionWorkerDashboard.vue",
+          "action": "modify",
+          "details": "Same branding addition as FarmerDashboard."
+        }
+      ],
+      "acceptanceCriteria": [
+        "RationSmart logo visible on dashboard",
+        "Logo size appropriate for dashboard context",
+        "Consistent with branding on other pages"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Dashboard branding visible",
+          "steps": [
+            "Login and view dashboard"
+          ],
+          "expectedResult": "RationSmart logo visible in dashboard header area"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "small"
+    },
+    {
+      "module": "3-dashboard",
+      "taskId": "M16",
+      "priority": "medium",
+      "title": "Add trend indicators to statistics cards",
+      "description": "Statistics cards show just numbers with labels. No trend indicators (up/down), no comparison to previous period, no mini-charts.",
+      "files": [
+        "src/components/dashboard/FarmerDashboard.vue",
+        "src/components/ui/StatCard.vue"
+      ],
+      "changes": [
+        {
+          "file": "src/components/ui/StatCard.vue",
+          "action": "create",
+          "details": "Create reusable stat card with: value, label, trend (up/down/flat), change percentage, optional sparkline. Props: value, label, previousValue, showTrend."
+        },
+        {
+          "file": "src/components/dashboard/FarmerDashboard.vue",
+          "action": "modify",
+          "details": "Replace inline stat display with StatCard components. Pass previousWeek/previousMonth values for trend calculation."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Stats show trend arrow (green up, red down, grey flat)",
+        "Percentage change shown when available",
+        "Comparison period clear (vs last week)",
+        "Clean visual design"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Trend indicators display",
+          "steps": [
+            "Have milk data for current and previous week",
+            "View dashboard"
+          ],
+          "expectedResult": "Today's Milk stat shows trend arrow and % change vs last week"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "medium"
+    },
+    {
+      "module": "3-dashboard",
+      "taskId": "M17",
+      "priority": "medium",
+      "title": "Display store errors in FarmerDashboard",
+      "description": "Stores track error state but FarmerDashboard doesn't display errors to user. Silent failures possible.",
+      "files": [
+        "src/components/dashboard/FarmerDashboard.vue"
+      ],
+      "changes": [
+        {
+          "file": "src/components/dashboard/FarmerDashboard.vue",
+          "action": "modify",
+          "details": "Add error banner section. Check cowsStore.error, milkLogsStore.error, dietsStore.error. Display with retry button. Use ErrorBanner component if created."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Errors from stores displayed to user",
+        "Retry button attempts to refetch data",
+        "Error clears on successful retry",
+        "Multiple errors can be shown"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Error display on API failure",
+          "steps": [
+            "Simulate API failure for cows endpoint",
+            "Load dashboard"
+          ],
+          "expectedResult": "Error message shown: 'Failed to load cows. [Retry]'"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "small"
+    },
+    {
+      "module": "3-dashboard",
+      "taskId": "M18",
+      "priority": "medium",
+      "title": "Replace grey icon empty states with illustrations",
+      "description": "Empty states show grey Material icons. Not engaging or motivating for new users who haven't added data yet.",
+      "files": [
+        "src/components/dashboard/FarmerDashboard.vue",
+        "src/assets/illustrations/"
+      ],
+      "changes": [
+        {
+          "file": "src/assets/illustrations/",
+          "action": "create",
+          "details": "Add/obtain empty state illustrations: empty-cows.svg (friendly cow), empty-milk.svg (milk bucket), empty-diet.svg (feed bowl). Simple, on-brand line art style."
+        },
+        {
+          "file": "src/components/dashboard/FarmerDashboard.vue",
+          "action": "modify",
+          "details": "Replace grey q-icon in empty states with illustration images. Add engaging text: 'Add your first cow to get started!' instead of just 'No cows'."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Empty states use custom illustrations",
+        "Illustrations match app visual style",
+        "Encouraging copy guides user action",
+        "Clear CTA button to add data"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "New user empty state",
+          "steps": [
+            "Login as new user with no data",
+            "View dashboard"
+          ],
+          "expectedResult": "Friendly illustration and encouraging text instead of grey icons"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "medium"
+    },
+    {
+      "module": "3-dashboard",
+      "taskId": "M19",
+      "priority": "medium",
+      "title": "Add onboarding prompts for new users",
+      "description": "No tooltips, tips, or guided prompts for first-time users. Poor discoverability of features.",
+      "files": [
+        "src/components/dashboard/FarmerDashboard.vue",
+        "src/composables/useOnboardingTips.ts"
+      ],
+      "changes": [
+        {
+          "file": "src/composables/useOnboardingTips.ts",
+          "action": "create",
+          "details": "Create composable tracking which tips user has seen. Methods: showTip(tipId), dismissTip(tipId), hasSeenTip(tipId). Store in localStorage."
+        },
+        {
+          "file": "src/components/dashboard/FarmerDashboard.vue",
+          "action": "modify",
+          "details": "Add welcome tip for new users: 'Start by adding your cows, then log daily milk production'. Show coachmarks pointing to quick actions. Dismiss after first use."
+        }
+      ],
+      "acceptanceCriteria": [
+        "New users see welcome/getting started tips",
+        "Tips can be dismissed",
+        "Tips don't reappear after dismissal",
+        "Helpful guidance for key features"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "New user tips",
+          "steps": [
+            "Login as brand new user",
+            "View dashboard"
+          ],
+          "expectedResult": "Welcome tip appears explaining how to get started"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "medium"
+    },
+    {
+      "module": "3-dashboard",
+      "taskId": "M20",
+      "priority": "medium",
+      "title": "Add notifications/alerts section to dashboard",
+      "description": "No alerts or notifications section on dashboard. Backend has reminder settings but no UI to display them.",
+      "files": [
+        "src/components/dashboard/FarmerDashboard.vue",
+        "src/stores/notifications.ts"
+      ],
+      "changes": [
+        {
+          "file": "src/stores/notifications.ts",
+          "action": "create",
+          "details": "Create notifications store: fetch notifications from API or generate locally (missing milk logs, diet reminders, etc.). Mark as read. Filter unread."
+        },
+        {
+          "file": "src/components/dashboard/FarmerDashboard.vue",
+          "action": "modify",
+          "details": "Add notifications section above quick actions. Show alert icon with unread count in header. List unread notifications with dismiss option."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Notifications section visible on dashboard",
+        "Shows reminders for: log milk, check diet",
+        "Notifications can be dismissed",
+        "Unread count shown in header"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Notification display",
+          "steps": [
+            "Have user with daily reminder enabled",
+            "Don't log milk today",
+            "View dashboard in afternoon"
+          ],
+          "expectedResult": "Notification: 'Remember to log today's milk'"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "medium"
+    },
+    {
+      "module": "3-dashboard",
+      "taskId": "M21",
+      "priority": "medium",
+      "title": "Add pagination to ExtensionWorkerDashboard farmers list",
+      "description": "Farmers list limited to 5, no 'Load more' or pagination. Extension workers with many farmers see truncated list.",
+      "files": [
+        "src/components/dashboard/ExtensionWorkerDashboard.vue"
+      ],
+      "changes": [
+        {
+          "file": "src/components/dashboard/ExtensionWorkerDashboard.vue",
+          "action": "modify",
+          "details": "Remove hardcoded .slice(0, 5). Add 'Show more' button if farmers > 5. Implement infinite scroll or pagination. Keep 'View All' link to full farmers list page."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Initial load shows 5 farmers",
+        "Load more button fetches next 5",
+        "View All link goes to full list",
+        "Loading indicator during fetch"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Load more farmers",
+          "steps": [
+            "Login as extension worker with 15 farmers",
+            "View dashboard",
+            "Click 'Show more'"
+          ],
+          "expectedResult": "List expands to show 10 farmers"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "small"
+    },
+    {
+      "module": "3-dashboard",
+      "taskId": "L5",
+      "priority": "low",
+      "title": "Add micro-interactions to quick action buttons",
+      "description": "Quick action buttons are static. Adding subtle animations would improve UX feel.",
+      "files": [
+        "src/components/dashboard/FarmerDashboard.vue",
+        "src/css/animations.scss"
+      ],
+      "changes": [
+        {
+          "file": "src/css/animations.scss",
+          "action": "create",
+          "details": "Add animation classes: .pulse-on-tap (scale pulse), .lift-on-hover (slight elevation), .ripple-effect."
+        },
+        {
+          "file": "src/components/dashboard/FarmerDashboard.vue",
+          "action": "modify",
+          "details": "Add animation classes to quick action buttons. Consider icon animation on hover (icon bounces or spins slightly)."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Buttons have subtle hover effect",
+        "Tap feedback animation",
+        "Animations don't hinder usability",
+        "Respects prefers-reduced-motion"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Button animations",
+          "steps": [
+            "Hover over quick action button",
+            "Tap/click button"
+          ],
+          "expectedResult": "Subtle lift on hover, ripple on tap"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "small"
+    },
+    {
+      "module": "3-dashboard",
+      "taskId": "L6",
+      "priority": "low",
+      "title": "Add weather widget to dashboard",
+      "description": "Weather information useful for dairy farming context. Nice-to-have feature for farmers.",
+      "files": [
+        "src/components/dashboard/WeatherWidget.vue",
+        "src/components/dashboard/FarmerDashboard.vue"
+      ],
+      "changes": [
+        {
+          "file": "src/components/dashboard/WeatherWidget.vue",
+          "action": "create",
+          "details": "Create weather widget using free weather API (OpenWeatherMap). Show: current temp, conditions icon, high/low. Use cached location from profile. Cache weather data for 1 hour."
+        },
+        {
+          "file": "src/components/dashboard/FarmerDashboard.vue",
+          "action": "modify",
+          "details": "Add WeatherWidget in header area or as separate card. Only show if user has location set."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Weather shows for user's location",
+        "Updates periodically",
+        "Graceful handling if location unavailable",
+        "Minimal API calls (cached)"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Weather display",
+          "steps": [
+            "User with location set views dashboard"
+          ],
+          "expectedResult": "Current weather shown for their location"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "medium",
+      "completedAt": "2026-02-07",
+      "notes": "Implemented in session 4"
+    },
+    {
+      "module": "4-cow-management",
+      "taskId": "H12",
+      "priority": "high",
+      "title": "Fetch breeds from API based on country",
+      "description": "Breed options hardcoded in CowFormPage. Backend has /auth/breeds/{country_id} API but frontend doesn't use it. Wrong breeds shown for user's country.",
+      "files": [
+        "src/pages/cows/CowFormPage.vue",
+        "src/stores/cows.ts"
+      ],
+      "changes": [
+        {
+          "file": "src/stores/cows.ts",
+          "action": "modify",
+          "details": "Add breeds state array. Add fetchBreeds(countryId: string) action that calls GET /auth/breeds/{country_id}. Cache breeds by country in IndexedDB."
+        },
+        {
+          "file": "src/pages/cows/CowFormPage.vue",
+          "action": "modify",
+          "details": "Remove hardcoded breedOptions. Call cowsStore.fetchBreeds(userCountryId) on mount. Use cowsStore.breeds for dropdown options. Add loading state."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Breeds fetched from API based on user's country",
+        "Indian users see Indian breeds (Sahiwal, Gir, etc.)",
+        "Ethiopian users see Ethiopian breeds",
+        "Breeds cached for offline use"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Country-specific breeds",
+          "steps": [
+            "Login as Indian user",
+            "Go to add cow form",
+            "Click breed dropdown"
+          ],
+          "expectedResult": "Dropdown shows Indian breeds: Sahiwal, Gir, Tharparkar, HF Cross, Jersey Cross"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "medium"
+    },
+    {
+      "module": "4-cow-management",
+      "taskId": "H13",
+      "priority": "high",
+      "title": "Internationalize cow management module text",
+      "description": "All text in CowFormPage, CowListPage, CowDetailPage is hardcoded English. Non-English users cannot use the app effectively.",
+      "files": [
+        "src/pages/cows/CowFormPage.vue",
+        "src/pages/cows/CowListPage.vue",
+        "src/pages/cows/CowDetailPage.vue",
+        "src/i18n/en.json"
+      ],
+      "changes": [
+        {
+          "file": "src/i18n/en.json",
+          "action": "modify",
+          "details": "Add i18n keys under 'cow' namespace: cow.form.nameLabel, cow.form.nameRequired, cow.form.breedLabel, cow.form.breedRequired, cow.form.weightLabel, cow.form.weightPositive, cow.form.weightTooHigh, cow.form.ageLabel, cow.form.yieldLabel, cow.form.fatLabel, cow.form.lactationLabel, cow.form.bcsLabel, cow.form.activityLabel, cow.form.pregnantLabel, cow.form.pregnancyMonthLabel, cow.form.notesLabel, cow.form.addButton, cow.form.updateButton, cow.form.deleteButton, cow.list.searchPlaceholder, cow.list.noCows, cow.list.addFirst, cow.detail.quickStats, cow.detail.weight, cow.detail.yield, cow.detail.fat"
+        },
+        {
+          "file": "src/pages/cows/CowFormPage.vue",
+          "action": "modify",
+          "details": "Replace all hardcoded strings with $t() calls. Examples: 'Cow Name *' -> $t('cow.form.nameLabel'), 'Name is required' -> $t('cow.form.nameRequired'), 'Add Cow' -> $t('cow.form.addButton')"
+        },
+        {
+          "file": "src/pages/cows/CowListPage.vue",
+          "action": "modify",
+          "details": "Replace: 'Search cows...' -> $t('cow.list.searchPlaceholder'), 'No cows added yet' -> $t('cow.list.noCows')"
+        },
+        {
+          "file": "src/pages/cows/CowDetailPage.vue",
+          "action": "modify",
+          "details": "Replace all hardcoded strings with $t() calls for labels, stats, actions."
+        }
+      ],
+      "i18nKeys": {
+        "cow.form.basicInfo": "Basic Information",
+        "cow.form.nameLabel": "Cow Name",
+        "cow.form.nameRequired": "Name is required",
+        "cow.form.breedLabel": "Breed",
+        "cow.form.breedRequired": "Breed is required",
+        "cow.form.weightLabel": "Weight (kg)",
+        "cow.form.weightPositive": "Weight must be greater than 0",
+        "cow.form.weightTooHigh": "Weight seems too high",
+        "cow.form.ageLabel": "Age (months)",
+        "cow.form.milkProduction": "Milk Production",
+        "cow.form.yieldLabel": "Average Daily Yield (liters)",
+        "cow.form.yieldNonNegative": "Yield cannot be negative",
+        "cow.form.fatLabel": "Milk Fat %",
+        "cow.form.fatNonNegative": "Fat % cannot be negative",
+        "cow.form.fatTooHigh": "Fat % seems too high",
+        "cow.form.lactationLabel": "Lactation Stage",
+        "cow.form.lactationRequired": "Lactation stage is required",
+        "cow.form.healthStatus": "Health & Status",
+        "cow.form.bcsLabel": "Body Condition Score",
+        "cow.form.bcsHint": "1 (very thin) to 5 (very fat)",
+        "cow.form.activityLabel": "Activity Level",
+        "cow.form.pregnantLabel": "Pregnant",
+        "cow.form.pregnancyMonthLabel": "Pregnancy Month",
+        "cow.form.notesLabel": "Notes",
+        "cow.form.notesHint": "Any additional information",
+        "cow.form.addButton": "Add Cow",
+        "cow.form.updateButton": "Update Cow",
+        "cow.form.deleteButton": "Delete Cow",
+        "cow.list.searchPlaceholder": "Search cows...",
+        "cow.list.noCows": "No cows added yet",
+        "cow.list.addFirst": "Add your first cow to get started",
+        "cow.detail.weight": "Weight",
+        "cow.detail.yield": "Yield",
+        "cow.detail.fat": "Fat %"
+      },
+      "acceptanceCriteria": [
+        "All visible text uses $t() translation function",
+        "No hardcoded English strings in cow pages",
+        "i18n keys exist in en.json",
+        "UI works in other languages when translations added"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Hindi language display",
+          "steps": [
+            "Set language to Hindi",
+            "Go to cow form page"
+          ],
+          "expectedResult": "All labels show in Hindi (once translations added)"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "medium"
+    },
+    {
+      "module": "4-cow-management",
+      "taskId": "M22",
+      "priority": "medium",
+      "title": "Replace generic pets icon with cow icon",
+      "description": "Uses generic 'pets' Material icon throughout cow module. Should use cow-specific icon for better UX.",
+      "files": [
+        "src/pages/cows/CowFormPage.vue",
+        "src/pages/cows/CowListPage.vue",
+        "src/pages/cows/CowDetailPage.vue",
+        "src/components/dashboard/FarmerDashboard.vue"
+      ],
+      "changes": [
+        {
+          "file": "src/pages/cows/CowListPage.vue",
+          "action": "modify",
+          "details": "Replace icon='pets' with custom cow icon. Options: 1) Use MDI icon 'mdi-cow', 2) Create custom cow SVG component, 3) Use emoji '\ud83d\udc04' in avatar. Apply consistently across all cow-related UI."
+        },
+        {
+          "file": "src/pages/cows/CowFormPage.vue",
+          "action": "modify",
+          "details": "Update any 'pets' icons to cow icon."
+        },
+        {
+          "file": "src/pages/cows/CowDetailPage.vue",
+          "action": "modify",
+          "details": "Update avatar and any cow icons."
+        },
+        {
+          "file": "src/components/dashboard/FarmerDashboard.vue",
+          "action": "modify",
+          "details": "Update cow-related icons in dashboard."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Cow icon used instead of generic pets",
+        "Consistent across all cow-related UI",
+        "Icon renders correctly at all sizes",
+        "Works in both light and dark themes"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Cow icon consistency",
+          "steps": [
+            "Navigate through cow list, detail, form pages"
+          ],
+          "expectedResult": "All pages show cow-specific icon, not generic pets"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "small"
+    },
+    {
+      "module": "4-cow-management",
+      "taskId": "M23",
+      "priority": "medium",
+      "title": "Add cow photo upload feature",
+      "description": "No image/photo field for cows. Farmers often identify cows by markings. Photo would help visual identification.",
+      "files": [
+        "src/pages/cows/CowFormPage.vue",
+        "src/stores/cows.ts",
+        "src/composables/useImageUpload.ts"
+      ],
+      "changes": [
+        {
+          "file": "src/composables/useImageUpload.ts",
+          "action": "create",
+          "details": "Create composable for image upload: capture from camera, select from gallery, compress image, convert to base64 or upload to storage. Return image URL."
+        },
+        {
+          "file": "src/pages/cows/CowFormPage.vue",
+          "action": "modify",
+          "details": "Add image picker at top of form. Show placeholder cow icon if no image. Allow camera capture or gallery selection. Preview selected image."
+        },
+        {
+          "file": "src/stores/cows.ts",
+          "action": "modify",
+          "details": "Add image_url to cow interface. Include in create/update payloads."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Can capture photo from camera",
+        "Can select from device gallery",
+        "Image preview shown in form",
+        "Image saved with cow record",
+        "Image shown in list and detail views"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Add cow with photo",
+          "steps": [
+            "Go to add cow form",
+            "Tap photo placeholder",
+            "Take photo with camera",
+            "Complete form and save"
+          ],
+          "expectedResult": "Cow saved with photo, photo visible in cow list"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "medium"
+    },
+    {
+      "module": "4-cow-management",
+      "taskId": "M24",
+      "priority": "medium",
+      "title": "Add trend indicators to cow quick stats",
+      "description": "Quick stats on CowDetailPage show current values only. No comparison to previous week/month, no trend arrows.",
+      "files": [
+        "src/pages/cows/CowDetailPage.vue",
+        "src/stores/milkLogs.ts"
+      ],
+      "changes": [
+        {
+          "file": "src/stores/milkLogs.ts",
+          "action": "modify",
+          "details": "Add getCowYieldTrend(cowId): { current: number, previous: number, change: number } method. Compares this week average to last week."
+        },
+        {
+          "file": "src/pages/cows/CowDetailPage.vue",
+          "action": "modify",
+          "details": "Add trend indicator to yield stat. Show up/down arrow with percentage change. Use green for increase, red for decrease."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Yield stat shows trend arrow",
+        "Percentage change displayed",
+        "Green up arrow for increase",
+        "Red down arrow for decrease"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Yield trend display",
+          "steps": [
+            "View cow detail for cow with 2 weeks of milk logs",
+            "Check yield stat"
+          ],
+          "expectedResult": "Shows current yield with trend arrow vs last week"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "small"
+    },
+    {
+      "module": "4-cow-management",
+      "taskId": "M25",
+      "priority": "medium",
+      "title": "Translate validation messages in cow form",
+      "description": "Validation messages like 'Name is required', 'Weight must be greater than 0' are hardcoded English. Not translated.",
+      "files": [
+        "src/pages/cows/CowFormPage.vue",
+        "src/i18n/en.json"
+      ],
+      "changes": [
+        {
+          "file": "src/pages/cows/CowFormPage.vue",
+          "action": "modify",
+          "details": "Replace validation message strings with $t() calls. Example: :rules=\"[(val) => !!val || $t('cow.form.nameRequired')]\" instead of [(val) => !!val || 'Name is required']"
+        },
+        {
+          "file": "src/i18n/en.json",
+          "action": "modify",
+          "details": "Ensure all validation message keys exist: cow.form.nameRequired, cow.form.breedRequired, cow.form.weightPositive, cow.form.weightTooHigh, cow.form.yieldNonNegative, cow.form.fatNonNegative, cow.form.fatTooHigh, cow.form.lactationRequired, cow.form.pregnancyMonthMin, cow.form.pregnancyMonthMax"
+        }
+      ],
+      "acceptanceCriteria": [
+        "All validation messages use $t()",
+        "Messages translate when language changes",
+        "Keys exist in en.json"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Validation in Hindi",
+          "steps": [
+            "Set language to Hindi",
+            "Go to cow form",
+            "Submit empty form"
+          ],
+          "expectedResult": "Validation messages appear in Hindi"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "small"
+    },
+    {
+      "module": "4-cow-management",
+      "taskId": "M26",
+      "priority": "medium",
+      "title": "Add bulk selection and actions to cow list",
+      "description": "Cannot select multiple cows. No bulk archive/delete. Tedious for farmers with large herds who need to manage many cows.",
+      "files": [
+        "src/pages/cows/CowListPage.vue",
+        "src/stores/cows.ts"
+      ],
+      "changes": [
+        {
+          "file": "src/pages/cows/CowListPage.vue",
+          "action": "modify",
+          "details": "Add selection mode toggle. When active, show checkboxes on each cow row. Add floating action bar when items selected: 'X selected - Archive | Delete'. Confirm dialog for destructive actions."
+        },
+        {
+          "file": "src/stores/cows.ts",
+          "action": "modify",
+          "details": "Add bulkArchive(ids: string[]) and bulkDelete(ids: string[]) actions."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Can enter selection mode",
+        "Can select multiple cows",
+        "Bulk archive works",
+        "Bulk delete with confirmation",
+        "Exit selection mode cancels selection"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Bulk archive cows",
+          "steps": [
+            "Go to cow list",
+            "Long press to enter selection mode",
+            "Select 3 cows",
+            "Tap Archive"
+          ],
+          "expectedResult": "3 cows archived, removed from active list"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "medium"
+    },
+    {
+      "module": "4-cow-management",
+      "taskId": "M27",
+      "priority": "medium",
+      "title": "Add color/tag field for cow identification",
+      "description": "Many farmers identify cows by color or ear tag number. No such field exists in the cow form.",
+      "files": [
+        "src/pages/cows/CowFormPage.vue",
+        "src/stores/cows.ts",
+        "src/types/cow.ts"
+      ],
+      "changes": [
+        {
+          "file": "src/types/cow.ts",
+          "action": "modify",
+          "details": "Add to Cow interface: tag_number?: string, coat_color?: string"
+        },
+        {
+          "file": "src/pages/cows/CowFormPage.vue",
+          "action": "modify",
+          "details": "Add Tag Number input (optional text field) and Coat Color input (text or dropdown with common colors: Black, Brown, White, Spotted, etc.)"
+        },
+        {
+          "file": "src/stores/cows.ts",
+          "action": "modify",
+          "details": "Include tag_number and coat_color in create/update payloads."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Tag number field available in form",
+        "Coat color field available in form",
+        "Fields shown in cow detail view",
+        "Searchable by tag number in list"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Add cow with tag",
+          "steps": [
+            "Go to add cow form",
+            "Enter tag number: A-123",
+            "Select color: Spotted",
+            "Save cow"
+          ],
+          "expectedResult": "Cow saved with tag and color, visible in detail view"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "small"
+    },
+    {
+      "module": "4-cow-management",
+      "taskId": "L7",
+      "priority": "low",
+      "title": "Add milk yield trend chart to cow detail page",
+      "description": "No visualization of yield over time on cow detail page. Chart would help farmers see production trends.",
+      "files": [
+        "src/pages/cows/CowDetailPage.vue",
+        "src/components/charts/YieldChart.vue"
+      ],
+      "changes": [
+        {
+          "file": "src/components/charts/YieldChart.vue",
+          "action": "create",
+          "details": "Create simple line chart component using lightweight charting library (Chart.js or ECharts). Props: data array of { date, yield } objects. Show last 30 days by default."
+        },
+        {
+          "file": "src/pages/cows/CowDetailPage.vue",
+          "action": "modify",
+          "details": "Add YieldChart section below quick stats. Pass cow's milk log data. Add period selector: 7 days, 30 days, 90 days."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Line chart shows yield over time",
+        "Can switch between time periods",
+        "Chart renders well on mobile",
+        "Empty state when no data"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "View yield chart",
+          "steps": [
+            "Go to cow detail with 30 days of milk logs",
+            "View yield chart section"
+          ],
+          "expectedResult": "Line chart shows milk production trend over 30 days"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "medium"
+    },
+    {
+      "module": "4-cow-management",
+      "taskId": "L8",
+      "priority": "low",
+      "title": "Add health history/events tracking",
+      "description": "No cow health history or events tracking. Can't record vaccinations, illnesses, treatments for complete health record.",
+      "files": [
+        "src/pages/cows/CowDetailPage.vue",
+        "src/pages/cows/HealthEventForm.vue",
+        "src/stores/healthEvents.ts"
+      ],
+      "changes": [
+        {
+          "file": "src/stores/healthEvents.ts",
+          "action": "create",
+          "details": "Create health events store: fetchEvents(cowId), createEvent(cowId, event), event types: vaccination, illness, treatment, deworming, vet_visit. Store with date, type, notes, cost."
+        },
+        {
+          "file": "src/pages/cows/HealthEventForm.vue",
+          "action": "create",
+          "details": "Create form for adding health event: date picker, event type dropdown, notes textarea, cost input."
+        },
+        {
+          "file": "src/pages/cows/CowDetailPage.vue",
+          "action": "modify",
+          "details": "Add Health History section with timeline of events. Add button to add new event. Show most recent events with 'View all' link."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Can add health events to cow",
+        "Events shown in timeline",
+        "Event types: vaccination, illness, treatment",
+        "Events stored and retrievable"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Record vaccination",
+          "steps": [
+            "Go to cow detail",
+            "Click 'Add Health Event'",
+            "Select Vaccination type",
+            "Enter date and notes",
+            "Save"
+          ],
+          "expectedResult": "Vaccination appears in health history timeline"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "large",
+      "completedAt": "2026-02-07",
+      "notes": "Implemented in session 3"
+    }
+  ]
+}

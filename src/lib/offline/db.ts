@@ -19,7 +19,10 @@ export interface User {
 export interface Cow {
   id: string;
   user_id: string;
+  farmer_profile_id?: string;
   name: string;
+  tag_number?: string;
+  coat_color?: string;
   breed: string;
   weight_kg: number;
   milk_yield_liters: number;
@@ -30,6 +33,7 @@ export interface Cow {
   is_pregnant: boolean;
   pregnancy_month?: number;
   activity_level: string;
+  image_url?: string;
   notes?: string;
   is_active: boolean;
   created_at: string;
@@ -50,6 +54,7 @@ export interface Feed {
   p_percentage?: number;
   ndf_percentage?: number;
   price_per_kg?: number;
+  image_url?: string;
   is_custom: boolean;
   user_id?: string;
   country_code?: string;
@@ -87,6 +92,8 @@ export interface MilkLog {
   evening_liters?: number;
   total_liters: number;
   fat_percentage?: number;
+  snf_percentage?: number;
+  temperature?: number;
   notes?: string;
   created_at: string;
   updated_at: string;
@@ -137,6 +144,7 @@ export interface FarmerProfile {
   total_cattle: number;
   land_acres?: number;
   farming_type?: string; // dairy, mixed, crop
+  image_url?: string;
   is_active: boolean;
   created_at: string;
   updated_at: string;
@@ -162,6 +170,17 @@ export interface YieldData {
   _deleted: boolean;
 }
 
+export interface ReportQueueItem {
+  id?: number;
+  report_type: string;
+  parameters: Record<string, unknown>;
+  title: string;
+  requested_at: string;
+  status: 'queued' | 'processing' | 'completed' | 'failed';
+  error_message?: string;
+  result_report_id?: string;
+}
+
 export interface SyncQueueItem {
   id?: number;
   entity_type: 'cow' | 'feed' | 'diet' | 'milk_log' | 'farmer' | 'yield';
@@ -171,6 +190,61 @@ export interface SyncQueueItem {
   created_at: string;
   retry_count: number;
   last_error?: string;
+}
+
+export interface SyncConflict {
+  id?: number;
+  entity_type: SyncQueueItem['entity_type'];
+  entity_id: string;
+  local_data: Record<string, unknown>;
+  server_data: Record<string, unknown>;
+  detected_at: string;
+  resolved: boolean;
+}
+
+export interface SyncHistoryEntry {
+  id?: number;
+  timestamp: string;
+  operation: 'push' | 'pull';
+  entity_type: SyncQueueItem['entity_type'];
+  entity_id: string;
+  entity_name?: string;
+  action: 'create' | 'update' | 'delete';
+  status: 'success' | 'failed' | 'conflict';
+  error_message?: string;
+}
+
+export interface FeedPriceHistory {
+  id?: string;
+  feed_id: string;
+  price_per_kg: number;
+  recorded_at: string;
+}
+
+export interface HealthEvent {
+  id?: string;
+  cow_id: string;
+  event_type: string; // 'vaccination' | 'treatment' | 'illness' | 'deworming' | 'checkup' | 'other'
+  title: string;
+  description?: string;
+  event_date: string;
+  next_due_date?: string;
+  veterinarian?: string;
+  cost?: number;
+  created_at?: string;
+  updated_at?: string;
+  _synced?: boolean;
+  _deleted?: boolean;
+  _cached_at?: string;
+}
+
+export interface ReportTemplate {
+  id?: string;
+  name: string;
+  report_type: string;
+  parameters: Record<string, unknown>;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface AppSettings {
@@ -189,7 +263,13 @@ class RationSmartDB extends Dexie {
   organizations!: Table<Organization, string>;
   farmerProfiles!: Table<FarmerProfile, string>;
   yieldData!: Table<YieldData, string>;
+  reportQueue!: Table<ReportQueueItem, number>;
   syncQueue!: Table<SyncQueueItem, number>;
+  syncConflicts!: Table<SyncConflict, number>;
+  syncHistory!: Table<SyncHistoryEntry, number>;
+  healthEvents!: Table<HealthEvent, string>;
+  feedPriceHistory!: Table<FeedPriceHistory, string>;
+  reportTemplates!: Table<ReportTemplate, string>;
   settings!: Table<AppSettings, string>;
 
   constructor() {
@@ -220,6 +300,117 @@ class RationSmartDB extends Dexie {
       syncQueue: '++id, entity_type, entity_id, operation, created_at, retry_count',
       settings: 'key',
     });
+
+    // Version 3: Add sync conflicts table
+    this.version(3).stores({
+      users: 'id, email, phone, country_code, organization_id',
+      cows: 'id, user_id, farmer_profile_id, name, breed, is_active, _synced, _deleted, [user_id+is_active], [farmer_profile_id+is_active]',
+      feeds: 'id, user_id, name, category, is_custom, country_code, _synced, _deleted, [user_id+is_custom]',
+      diets: 'id, user_id, cow_id, status, created_at, _synced, [user_id+status]',
+      milkLogs: 'id, user_id, cow_id, log_date, _synced, _deleted, [user_id+cow_id], [user_id+log_date]',
+      reports: 'id, user_id, report_type, status, created_at, _cached_at',
+      organizations: 'id, name, type, country_id, is_active, _synced',
+      farmerProfiles: 'id, organization_id, managed_by_user_id, name, village, district, is_active, _synced, _deleted, [managed_by_user_id+is_active], [organization_id+is_active]',
+      yieldData: 'id, farmer_profile_id, cow_profile_id, collection_date, collected_by_user_id, _synced, _deleted, [farmer_profile_id+collection_date]',
+      syncQueue: '++id, entity_type, entity_id, operation, created_at, retry_count',
+      syncConflicts: '++id, entity_type, entity_id, detected_at, resolved',
+      settings: 'key',
+    });
+
+    // Version 4: Add sync history table
+    this.version(4).stores({
+      users: 'id, email, phone, country_code, organization_id',
+      cows: 'id, user_id, farmer_profile_id, name, breed, is_active, _synced, _deleted, [user_id+is_active], [farmer_profile_id+is_active]',
+      feeds: 'id, user_id, name, category, is_custom, country_code, _synced, _deleted, [user_id+is_custom]',
+      diets: 'id, user_id, cow_id, status, created_at, _synced, [user_id+status]',
+      milkLogs: 'id, user_id, cow_id, log_date, _synced, _deleted, [user_id+cow_id], [user_id+log_date]',
+      reports: 'id, user_id, report_type, status, created_at, _cached_at',
+      organizations: 'id, name, type, country_id, is_active, _synced',
+      farmerProfiles: 'id, organization_id, managed_by_user_id, name, village, district, is_active, _synced, _deleted, [managed_by_user_id+is_active], [organization_id+is_active]',
+      yieldData: 'id, farmer_profile_id, cow_profile_id, collection_date, collected_by_user_id, _synced, _deleted, [farmer_profile_id+collection_date]',
+      syncQueue: '++id, entity_type, entity_id, operation, created_at, retry_count',
+      syncConflicts: '++id, entity_type, entity_id, detected_at, resolved',
+      syncHistory: '++id, timestamp, entity_type, status',
+      settings: 'key',
+    });
+
+    // Version 5: Add report generation queue table
+    this.version(5).stores({
+      users: 'id, email, phone, country_code, organization_id',
+      cows: 'id, user_id, farmer_profile_id, name, breed, is_active, _synced, _deleted, [user_id+is_active], [farmer_profile_id+is_active]',
+      feeds: 'id, user_id, name, category, is_custom, country_code, _synced, _deleted, [user_id+is_custom]',
+      diets: 'id, user_id, cow_id, status, created_at, _synced, [user_id+status]',
+      milkLogs: 'id, user_id, cow_id, log_date, _synced, _deleted, [user_id+cow_id], [user_id+log_date]',
+      reports: 'id, user_id, report_type, status, created_at, _cached_at',
+      organizations: 'id, name, type, country_id, is_active, _synced',
+      farmerProfiles: 'id, organization_id, managed_by_user_id, name, village, district, is_active, _synced, _deleted, [managed_by_user_id+is_active], [organization_id+is_active]',
+      yieldData: 'id, farmer_profile_id, cow_profile_id, collection_date, collected_by_user_id, _synced, _deleted, [farmer_profile_id+collection_date]',
+      reportQueue: '++id, report_type, status, requested_at',
+      syncQueue: '++id, entity_type, entity_id, operation, created_at, retry_count',
+      syncConflicts: '++id, entity_type, entity_id, detected_at, resolved',
+      syncHistory: '++id, timestamp, entity_type, status',
+      settings: 'key',
+    });
+
+    // Version 6: Add health events table
+    this.version(6).stores({
+      users: 'id, email, phone, country_code, organization_id',
+      cows: 'id, user_id, farmer_profile_id, name, breed, is_active, _synced, _deleted, [user_id+is_active], [farmer_profile_id+is_active]',
+      feeds: 'id, user_id, name, category, is_custom, country_code, _synced, _deleted, [user_id+is_custom]',
+      diets: 'id, user_id, cow_id, status, created_at, _synced, [user_id+status]',
+      milkLogs: 'id, user_id, cow_id, log_date, _synced, _deleted, [user_id+cow_id], [user_id+log_date]',
+      reports: 'id, user_id, report_type, status, created_at, _cached_at',
+      organizations: 'id, name, type, country_id, is_active, _synced',
+      farmerProfiles: 'id, organization_id, managed_by_user_id, name, village, district, is_active, _synced, _deleted, [managed_by_user_id+is_active], [organization_id+is_active]',
+      yieldData: 'id, farmer_profile_id, cow_profile_id, collection_date, collected_by_user_id, _synced, _deleted, [farmer_profile_id+collection_date]',
+      reportQueue: '++id, report_type, status, requested_at',
+      syncQueue: '++id, entity_type, entity_id, operation, created_at, retry_count',
+      syncConflicts: '++id, entity_type, entity_id, detected_at, resolved',
+      syncHistory: '++id, timestamp, entity_type, status',
+      healthEvents: 'id, cow_id, event_type, event_date, next_due_date, _synced, _deleted, [cow_id+event_date]',
+      settings: 'key',
+    });
+
+    // Version 7: Add feed price history table
+    this.version(7).stores({
+      users: 'id, email, phone, country_code, organization_id',
+      cows: 'id, user_id, farmer_profile_id, name, breed, is_active, _synced, _deleted, [user_id+is_active], [farmer_profile_id+is_active]',
+      feeds: 'id, user_id, name, category, is_custom, country_code, _synced, _deleted, [user_id+is_custom]',
+      diets: 'id, user_id, cow_id, status, created_at, _synced, [user_id+status]',
+      milkLogs: 'id, user_id, cow_id, log_date, _synced, _deleted, [user_id+cow_id], [user_id+log_date]',
+      reports: 'id, user_id, report_type, status, created_at, _cached_at',
+      organizations: 'id, name, type, country_id, is_active, _synced',
+      farmerProfiles: 'id, organization_id, managed_by_user_id, name, village, district, is_active, _synced, _deleted, [managed_by_user_id+is_active], [organization_id+is_active]',
+      yieldData: 'id, farmer_profile_id, cow_profile_id, collection_date, collected_by_user_id, _synced, _deleted, [farmer_profile_id+collection_date]',
+      reportQueue: '++id, report_type, status, requested_at',
+      syncQueue: '++id, entity_type, entity_id, operation, created_at, retry_count',
+      syncConflicts: '++id, entity_type, entity_id, detected_at, resolved',
+      syncHistory: '++id, timestamp, entity_type, status',
+      healthEvents: 'id, cow_id, event_type, event_date, next_due_date, _synced, _deleted, [cow_id+event_date]',
+      feedPriceHistory: 'id, feed_id, recorded_at, [feed_id+recorded_at]',
+      settings: 'key',
+    });
+
+    // Version 8: Add report templates table
+    this.version(8).stores({
+      users: 'id, email, phone, country_code, organization_id',
+      cows: 'id, user_id, farmer_profile_id, name, breed, is_active, _synced, _deleted, [user_id+is_active], [farmer_profile_id+is_active]',
+      feeds: 'id, user_id, name, category, is_custom, country_code, _synced, _deleted, [user_id+is_custom]',
+      diets: 'id, user_id, cow_id, status, created_at, _synced, [user_id+status]',
+      milkLogs: 'id, user_id, cow_id, log_date, _synced, _deleted, [user_id+cow_id], [user_id+log_date]',
+      reports: 'id, user_id, report_type, status, created_at, _cached_at',
+      organizations: 'id, name, type, country_id, is_active, _synced',
+      farmerProfiles: 'id, organization_id, managed_by_user_id, name, village, district, is_active, _synced, _deleted, [managed_by_user_id+is_active], [organization_id+is_active]',
+      yieldData: 'id, farmer_profile_id, cow_profile_id, collection_date, collected_by_user_id, _synced, _deleted, [farmer_profile_id+collection_date]',
+      reportQueue: '++id, report_type, status, requested_at',
+      syncQueue: '++id, entity_type, entity_id, operation, created_at, retry_count',
+      syncConflicts: '++id, entity_type, entity_id, detected_at, resolved',
+      syncHistory: '++id, timestamp, entity_type, status',
+      healthEvents: 'id, cow_id, event_type, event_date, next_due_date, _synced, _deleted, [cow_id+event_date]',
+      feedPriceHistory: 'id, feed_id, recorded_at, [feed_id+recorded_at]',
+      reportTemplates: 'id, name, report_type, created_at',
+      settings: 'key',
+    });
   }
 
   // Clear all user-specific data (for logout)
@@ -233,9 +424,42 @@ class RationSmartDB extends Dexie {
       this.organizations.clear(),
       this.farmerProfiles.clear(),
       this.yieldData.clear(),
+      this.healthEvents.clear(),
+      this.feedPriceHistory.clear(),
+      this.reportTemplates.clear(),
+      this.reportQueue.clear(),
       this.syncQueue.clear(),
+      this.syncConflicts.clear(),
+      this.syncHistory.clear(),
       this.users.clear(),
     ]);
+  }
+
+  // Add a sync conflict
+  async addSyncConflict(
+    entityType: SyncQueueItem['entity_type'],
+    entityId: string,
+    localData: Record<string, unknown>,
+    serverData: Record<string, unknown>
+  ): Promise<number> {
+    return this.syncConflicts.add({
+      entity_type: entityType,
+      entity_id: entityId,
+      local_data: localData,
+      server_data: serverData,
+      detected_at: new Date().toISOString(),
+      resolved: false,
+    });
+  }
+
+  // Get all unresolved sync conflicts
+  async getSyncConflicts(): Promise<SyncConflict[]> {
+    return this.syncConflicts.where('resolved').equals(0).toArray();
+  }
+
+  // Mark a sync conflict as resolved
+  async resolveSyncConflict(id: number): Promise<void> {
+    await this.syncConflicts.update(id, { resolved: true });
   }
 
   // Get pending sync items
@@ -268,9 +492,56 @@ class RationSmartDB extends Dexie {
   // Update sync queue item retry count
   async updateSyncQueueRetry(id: number, error: string): Promise<void> {
     await this.syncQueue.update(id, {
-      retry_count: (await this.syncQueue.get(id))?.retry_count ?? 0 + 1,
+      retry_count: ((await this.syncQueue.get(id))?.retry_count ?? 0) + 1,
       last_error: error,
     });
+  }
+
+  // Add a sync history entry
+  async addSyncHistoryEntry(entry: Omit<SyncHistoryEntry, 'id'>): Promise<number> {
+    return this.syncHistory.add(entry as SyncHistoryEntry);
+  }
+
+  // Get sync history entries ordered by timestamp desc
+  async getSyncHistory(limit = 50, offset = 0): Promise<SyncHistoryEntry[]> {
+    return this.syncHistory
+      .orderBy('timestamp')
+      .reverse()
+      .offset(offset)
+      .limit(limit)
+      .toArray();
+  }
+
+  // Clear all sync history
+  async clearSyncHistory(): Promise<void> {
+    await this.syncHistory.clear();
+  }
+
+  // Prune sync history entries older than N days
+  async pruneOldSyncHistory(daysToKeep = 30): Promise<number> {
+    const cutoff = new Date();
+    cutoff.setDate(cutoff.getDate() - daysToKeep);
+    const cutoffISO = cutoff.toISOString();
+
+    return this.syncHistory
+      .where('timestamp')
+      .below(cutoffISO)
+      .delete();
+  }
+
+  // Add item to report generation queue
+  async addToReportQueue(item: Omit<ReportQueueItem, 'id'>): Promise<number> {
+    return this.reportQueue.add(item as ReportQueueItem);
+  }
+
+  // Get all queued (pending) report requests
+  async getQueuedReports(): Promise<ReportQueueItem[]> {
+    return this.reportQueue.where('status').equals('queued').toArray();
+  }
+
+  // Update a report queue item (status, error, result)
+  async updateReportQueueItem(id: number, updates: Partial<ReportQueueItem>): Promise<void> {
+    await this.reportQueue.update(id, updates);
   }
 
   // Get/set app settings

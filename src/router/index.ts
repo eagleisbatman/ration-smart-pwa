@@ -29,6 +29,11 @@ export default route(function (/* { store, ssrContext } */) {
     // Check if route requires authentication
     if (to.matched.some((record) => record.meta.requiresAuth)) {
       if (!authStore.isAuthenticated) {
+        // When offline with no cached auth, show offline page instead of login
+        if (!navigator.onLine && to.name !== 'offline') {
+          next({ name: 'offline' });
+          return;
+        }
         // Redirect to login with return URL
         next({
           path: '/auth/login',

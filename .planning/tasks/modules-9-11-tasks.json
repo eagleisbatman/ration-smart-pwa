@@ -1,0 +1,1347 @@
+{
+  "metadata": {
+    "generatedAt": "2026-02-06T12:00:00Z",
+    "modules": [
+      "9-yield-history",
+      "10-reports",
+      "11-settings-profile"
+    ],
+    "totalTasks": 24,
+    "breakdown": {
+      "critical": 0,
+      "high": 6,
+      "medium": 12,
+      "low": 6
+    }
+  },
+  "tasks": [
+    {
+      "module": "9-yield-history",
+      "taskId": "H21",
+      "priority": "high",
+      "title": "Internationalize Yield History Module",
+      "description": "All text in YieldHistoryPage and YieldFormPage is hardcoded in English. This includes: 'Filter by Farmer', 'No Yield Records', 'Start recording milk yields...', 'Record Yield' button, 'Records', 'Avg L/day', 'Avg Fat', 'Filter by Date', 'From', 'To', all form labels, hints, and validation messages. All user-visible text must use $t() for i18n support.",
+      "files": [
+        "src/pages/yields/YieldHistoryPage.vue",
+        "src/pages/yields/YieldFormPage.vue",
+        "src/i18n/en.json",
+        "src/i18n/hi.json",
+        "src/i18n/bn.json",
+        "src/i18n/te.json",
+        "src/i18n/mr.json",
+        "src/i18n/kn.json"
+      ],
+      "changes": [
+        {
+          "file": "src/pages/yields/YieldHistoryPage.vue",
+          "action": "modify",
+          "details": "Replace all hardcoded strings with $t() calls. Add: $t('yields.filterByFarmer'), $t('yields.noRecords'), $t('yields.startRecording'), $t('yields.recordYield'), $t('yields.records'), $t('yields.avgYield'), $t('yields.avgFat'), $t('yields.filterByDate'), $t('common.from'), $t('common.to')"
+        },
+        {
+          "file": "src/pages/yields/YieldFormPage.vue",
+          "action": "modify",
+          "details": "Replace hardcoded form labels: $t('yields.selectFarmer'), $t('yields.selectCow'), $t('yields.collectionDate'), $t('yields.milkYield'), $t('yields.fatPercentage'), $t('yields.snfPercentage'), $t('yields.notes'), $t('common.save'), $t('validation.required')"
+        },
+        {
+          "file": "src/i18n/en.json",
+          "action": "modify",
+          "details": "Add yields section with all translation keys: filterByFarmer, noRecords, startRecording, recordYield, records, avgYield, avgFat, filterByDate, selectFarmer, selectCow, collectionDate, milkYield, fatPercentage, snfPercentage, notes"
+        },
+        {
+          "file": "src/i18n/hi.json",
+          "action": "modify",
+          "details": "Add Hindi translations for all yields keys"
+        },
+        {
+          "file": "src/i18n/bn.json",
+          "action": "modify",
+          "details": "Add Bengali translations for all yields keys"
+        },
+        {
+          "file": "src/i18n/te.json",
+          "action": "modify",
+          "details": "Add Telugu translations for all yields keys"
+        },
+        {
+          "file": "src/i18n/mr.json",
+          "action": "modify",
+          "details": "Add Marathi translations for all yields keys"
+        },
+        {
+          "file": "src/i18n/kn.json",
+          "action": "modify",
+          "details": "Add Kannada translations for all yields keys"
+        }
+      ],
+      "acceptanceCriteria": [
+        "All user-visible text in YieldHistoryPage uses $t() calls",
+        "All user-visible text in YieldFormPage uses $t() calls",
+        "All validation error messages use $t() calls",
+        "Translation keys exist in en.json under 'yields' section",
+        "When switching language to Hindi, all yield module text displays in Hindi",
+        "No hardcoded English strings remain in the templates"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Language switching on Yield History page",
+          "steps": [
+            "Navigate to /yields",
+            "Verify page title and all labels are in current language",
+            "Go to Settings and change language to Hindi",
+            "Return to /yields",
+            "Verify all text now displays in Hindi"
+          ],
+          "expectedResult": "All text including 'Filter by Farmer', 'Records', 'Avg L/day', 'Avg Fat' displays in Hindi"
+        },
+        {
+          "scenario": "Form validation messages in selected language",
+          "steps": [
+            "Set language to Bengali",
+            "Navigate to /yields/new",
+            "Submit form without required fields",
+            "Check validation messages"
+          ],
+          "expectedResult": "Validation messages appear in Bengali"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "large"
+    },
+    {
+      "module": "9-yield-history",
+      "taskId": "H22",
+      "priority": "high",
+      "title": "Fix Hardcoded Date Locale in Yield History",
+      "description": "Date formatting uses hardcoded 'en-US' locale: new Date(dateString).toLocaleDateString('en-US', {...}). This should use the user's preferred locale from i18n settings. Implement consistent date formatting using date-fns with locale support.",
+      "files": [
+        "src/pages/yields/YieldHistoryPage.vue",
+        "src/composables/useDateFormat.ts",
+        "src/boot/i18n.ts"
+      ],
+      "changes": [
+        {
+          "file": "src/composables/useDateFormat.ts",
+          "action": "create",
+          "details": "Create composable that provides formatDate(), formatDateTime(), formatDateRange() functions. Use date-fns format() with locale from i18n. Import locales: import { enUS, hi, bn, te, mr, kn } from 'date-fns/locale'. Map language codes to date-fns locales."
+        },
+        {
+          "file": "src/pages/yields/YieldHistoryPage.vue",
+          "action": "modify",
+          "details": "Replace toLocaleDateString('en-US', ...) with formatDate() from useDateFormat composable. Import: const { formatDate } = useDateFormat()"
+        },
+        {
+          "file": "src/boot/i18n.ts",
+          "action": "modify",
+          "details": "Export current locale reactively so useDateFormat can access it"
+        }
+      ],
+      "acceptanceCriteria": [
+        "Date formatting respects user's selected language/locale",
+        "Dates display in local format when Hindi is selected (e.g., '6 \u092b\u093c\u0930\u0935\u0930\u0940 2026')",
+        "Dates display in local format when Bengali is selected",
+        "useDateFormat composable is reusable across all modules",
+        "No hardcoded 'en-US' locale strings in yield pages"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Date display in Hindi",
+          "steps": [
+            "Set app language to Hindi",
+            "Navigate to /yields",
+            "View yield record dates"
+          ],
+          "expectedResult": "Dates show Hindi month names and localized format (e.g., '6 \u092b\u093c\u0930\u0935\u0930\u0940 2026')"
+        },
+        {
+          "scenario": "Date display in English",
+          "steps": [
+            "Set app language to English",
+            "Navigate to /yields",
+            "View yield record dates"
+          ],
+          "expectedResult": "Dates show English format (e.g., 'February 6, 2026')"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "medium",
+      "notes": {
+        "supportedLocales": [
+          {
+            "code": "en",
+            "dateFnsLocale": "enUS"
+          },
+          {
+            "code": "hi",
+            "dateFnsLocale": "hi"
+          },
+          {
+            "code": "bn",
+            "dateFnsLocale": "bn"
+          },
+          {
+            "code": "te",
+            "dateFnsLocale": "te"
+          },
+          {
+            "code": "mr",
+            "dateFnsLocale": "mr"
+          },
+          {
+            "code": "kn",
+            "dateFnsLocale": "kn"
+          },
+          {
+            "code": "ta",
+            "dateFnsLocale": "ta"
+          },
+          {
+            "code": "gu",
+            "dateFnsLocale": "gu"
+          }
+        ]
+      }
+    },
+    {
+      "module": "9-yield-history",
+      "taskId": "M45",
+      "priority": "medium",
+      "title": "Replace Generic Person Icon for Farmer Selection",
+      "description": "The farmer selection dropdown uses a generic 'person' Material icon. This should be replaced with a farmer-specific icon (agriculture, farming) to better represent the domain context and improve visual clarity.",
+      "files": [
+        "src/pages/yields/YieldFormPage.vue",
+        "src/pages/yields/YieldHistoryPage.vue"
+      ],
+      "changes": [
+        {
+          "file": "src/pages/yields/YieldFormPage.vue",
+          "action": "modify",
+          "details": "Replace icon='person' with icon='agriculture' in farmer select component. If 'agriculture' not available, use 'eco' or custom SVG icon"
+        },
+        {
+          "file": "src/pages/yields/YieldHistoryPage.vue",
+          "action": "modify",
+          "details": "Replace icon='person' with icon='agriculture' in farmer filter dropdown"
+        }
+      ],
+      "acceptanceCriteria": [
+        "Farmer selection shows agriculture/farming icon instead of generic person",
+        "Icon is visually distinct from cow and user profile icons",
+        "Icon renders correctly on all screen sizes"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Visual inspection of farmer icon",
+          "steps": [
+            "Navigate to /yields/new",
+            "Look at the farmer selection dropdown",
+            "Compare with other person icons in the app"
+          ],
+          "expectedResult": "Farmer dropdown shows a distinct agriculture-themed icon, not generic person"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "small"
+    },
+    {
+      "module": "9-yield-history",
+      "taskId": "M46",
+      "priority": "medium",
+      "title": "Replace Generic Pets Icon for Cow Selection",
+      "description": "The cow selection dropdown uses 'pets' icon which is generic and could represent any animal. Should use a cow-specific icon for clarity and domain relevance.",
+      "files": [
+        "src/pages/yields/YieldFormPage.vue"
+      ],
+      "changes": [
+        {
+          "file": "src/pages/yields/YieldFormPage.vue",
+          "action": "modify",
+          "details": "Replace icon='pets' with custom cow icon. Options: 1) Use SVG cow icon from assets, 2) Use 'cruelty_free' Material icon (closest to animal), 3) Create cow icon component. Ensure consistency with CowProfilePage and other cow references."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Cow selection shows cow-specific icon instead of generic pets icon",
+        "Icon is consistent with cow icons used in other modules (CowProfilePage, CowListPage)",
+        "Icon is clearly distinguishable as a cow"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Visual inspection of cow icon",
+          "steps": [
+            "Navigate to /yields/new",
+            "Select a farmer to enable cow dropdown",
+            "Look at the cow selection dropdown icon"
+          ],
+          "expectedResult": "Cow dropdown shows a cow-specific icon, not generic pets paw"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "small"
+    },
+    {
+      "module": "9-yield-history",
+      "taskId": "M47",
+      "priority": "medium",
+      "title": "Add Yield Trend Chart Visualization",
+      "description": "The yield history page only shows a list view. Extension workers need quick visual insights into yield trends over time. Add a chart component showing yield trends to help identify patterns and compare performance.",
+      "files": [
+        "src/pages/yields/YieldHistoryPage.vue",
+        "src/components/reports/YieldTrendChart.vue"
+      ],
+      "changes": [
+        {
+          "file": "src/components/reports/YieldTrendChart.vue",
+          "action": "create",
+          "details": "Create chart component using vue-chartjs or similar. Props: yieldData[], dateRange. Show line chart with date on X-axis, milk yield (liters) on Y-axis. Include average line, optional fat% overlay. Support responsive sizing."
+        },
+        {
+          "file": "src/pages/yields/YieldHistoryPage.vue",
+          "action": "modify",
+          "details": "Add toggle between list view and chart view. Import YieldTrendChart component. Pass filtered yield records to chart. Add 'view mode' toggle button (list/chart icons)."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Chart displays yield data over time with clear date labels",
+        "Users can toggle between list view and chart view",
+        "Chart is responsive and readable on mobile devices",
+        "Chart shows average yield line for reference",
+        "Empty state shown when no data available for chart"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "View yield trend chart",
+          "steps": [
+            "Navigate to /yields",
+            "Ensure there are multiple yield records",
+            "Toggle to chart view"
+          ],
+          "expectedResult": "Line chart displays showing yield values over time with clear axis labels"
+        },
+        {
+          "scenario": "Chart with date filter",
+          "steps": [
+            "Apply date range filter (last 30 days)",
+            "View chart"
+          ],
+          "expectedResult": "Chart only shows data points within the selected date range"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "large"
+    },
+    {
+      "module": "9-yield-history",
+      "taskId": "M48",
+      "priority": "medium",
+      "title": "Add Edit Functionality for Yield Records",
+      "description": "The store has updateYield function but the UI only supports creating new records. Users cannot edit existing yield records to correct mistakes. Add edit page/functionality to allow updating yield records.",
+      "files": [
+        "src/pages/yields/YieldFormPage.vue",
+        "src/pages/yields/YieldHistoryPage.vue",
+        "src/router/routes.ts"
+      ],
+      "changes": [
+        {
+          "file": "src/router/routes.ts",
+          "action": "modify",
+          "details": "Add route for editing yields: { path: '/yields/:id/edit', component: YieldFormPage, props: true }"
+        },
+        {
+          "file": "src/pages/yields/YieldFormPage.vue",
+          "action": "modify",
+          "details": "Support edit mode: Accept id prop/route param. If id provided, fetch existing yield record and populate form. Change 'Record Yield' to 'Update Yield' in edit mode. Call updateYield instead of recordYield on save when editing."
+        },
+        {
+          "file": "src/pages/yields/YieldHistoryPage.vue",
+          "action": "modify",
+          "details": "Make yield cards clickable/navigable. Add click handler to navigate to /yields/:id/edit. Add edit icon on yield card. Consider swipe-to-edit on mobile."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Clicking a yield record navigates to edit form",
+        "Edit form pre-populates with existing record data",
+        "Save button calls updateYield and navigates back",
+        "Edit works offline (queued for sync)",
+        "Success notification shows 'Yield updated' not 'Yield recorded'"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Edit existing yield record",
+          "steps": [
+            "Navigate to /yields",
+            "Tap on an existing yield record",
+            "Verify form is pre-filled with existing data",
+            "Change milk yield value",
+            "Save changes"
+          ],
+          "expectedResult": "Record is updated, user returns to list, updated value is displayed"
+        },
+        {
+          "scenario": "Edit while offline",
+          "steps": [
+            "Go offline",
+            "Edit a yield record",
+            "Save changes",
+            "Verify 'Pending' sync status shows"
+          ],
+          "expectedResult": "Edit is saved locally and queued for sync, shows pending indicator"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "medium"
+    },
+    {
+      "module": "9-yield-history",
+      "taskId": "L17",
+      "priority": "low",
+      "title": "Add Farmer Yield Comparison View",
+      "description": "Allow extension workers to compare yield performance across different farmers they manage. This helps identify best practices and farmers who may need additional support.",
+      "files": [
+        "src/pages/yields/YieldComparisonPage.vue",
+        "src/router/routes.ts"
+      ],
+      "changes": [
+        {
+          "file": "src/pages/yields/YieldComparisonPage.vue",
+          "action": "create",
+          "details": "Create comparison page showing multiple farmers' yield data side by side. Include bar chart comparing average yields, table with farmer rankings, filter by date range. Allow selecting which farmers to compare."
+        },
+        {
+          "file": "src/router/routes.ts",
+          "action": "modify",
+          "details": "Add route: { path: '/yields/compare', component: YieldComparisonPage }"
+        }
+      ],
+      "acceptanceCriteria": [
+        "Extension workers can select multiple farmers to compare",
+        "Comparison shows average yield, total records, trend direction",
+        "Visual chart makes comparison easy to understand",
+        "Can filter comparison by date range"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Compare two farmers",
+          "steps": [
+            "Navigate to /yields/compare",
+            "Select Farmer A and Farmer B",
+            "View comparison"
+          ],
+          "expectedResult": "Side-by-side comparison showing each farmer's average yield and trend"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "large",
+      "completedAt": "2026-02-07",
+      "notes": "Implemented in session 3"
+    },
+    {
+      "module": "9-yield-history",
+      "taskId": "L18",
+      "priority": "low",
+      "title": "Add Yield Data Export (CSV/PDF)",
+      "description": "Allow users to export yield data for reporting, record-keeping, or sharing with others. Support CSV for data analysis and PDF for printable reports.",
+      "files": [
+        "src/pages/yields/YieldHistoryPage.vue",
+        "src/services/exportService.ts"
+      ],
+      "changes": [
+        {
+          "file": "src/services/exportService.ts",
+          "action": "create",
+          "details": "Create export service with functions: exportToCSV(data, filename), exportToPDF(data, template). Use papaparse for CSV generation, pdfmake or jspdf for PDF. Include proper headers and formatting."
+        },
+        {
+          "file": "src/pages/yields/YieldHistoryPage.vue",
+          "action": "modify",
+          "details": "Add export button/menu with CSV and PDF options. Pass filtered yield data to export service. Show loading state during export, success notification on complete."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Export CSV button generates downloadable CSV file",
+        "Export PDF button generates downloadable PDF report",
+        "Export respects current filters (date range, farmer)",
+        "CSV includes all yield fields with proper headers",
+        "PDF has professional formatting with headers and totals"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Export filtered data to CSV",
+          "steps": [
+            "Apply date range filter",
+            "Click Export > CSV",
+            "Open downloaded file"
+          ],
+          "expectedResult": "CSV file contains only records within filtered date range, proper column headers"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "medium"
+    },
+    {
+      "module": "10-reports",
+      "taskId": "H23",
+      "priority": "high",
+      "title": "Internationalize Reports Module",
+      "description": "All text in ReportListPage and ReportDetailPage is hardcoded in English. This includes: 'Generate Report', 'Milk Production', 'Feed Consumption', 'Cow Performance', 'Cost Analysis', 'Recent Reports', 'No reports generated yet', 'Start Date', 'End Date', 'Select Cow', 'Generate', 'Cancel', 'Download PDF', 'Report Parameters', 'Report Type', 'Date Range'. All must use $t() for i18n.",
+      "files": [
+        "src/pages/reports/ReportListPage.vue",
+        "src/pages/reports/ReportDetailPage.vue",
+        "src/i18n/en.json",
+        "src/i18n/hi.json",
+        "src/i18n/bn.json",
+        "src/i18n/te.json",
+        "src/i18n/mr.json",
+        "src/i18n/kn.json"
+      ],
+      "changes": [
+        {
+          "file": "src/pages/reports/ReportListPage.vue",
+          "action": "modify",
+          "details": "Replace hardcoded strings: $t('reports.generate'), $t('reports.types.milkProduction'), $t('reports.types.feedConsumption'), $t('reports.types.cowPerformance'), $t('reports.types.costAnalysis'), $t('reports.recent'), $t('reports.noReports'), $t('reports.startDate'), $t('reports.endDate'), $t('reports.selectCow'), $t('common.generate'), $t('common.cancel')"
+        },
+        {
+          "file": "src/pages/reports/ReportDetailPage.vue",
+          "action": "modify",
+          "details": "Replace hardcoded strings: $t('reports.downloadPdf'), $t('reports.parameters'), $t('reports.type'), $t('reports.dateRange'), $t('reports.notFound'), $t('reports.pdfReady')"
+        },
+        {
+          "file": "src/i18n/en.json",
+          "action": "modify",
+          "details": "Add reports section with keys: generate, recent, noReports, startDate, endDate, selectCow, downloadPdf, parameters, type, dateRange, notFound, pdfReady, types.milkProduction, types.feedConsumption, types.cowPerformance, types.costAnalysis"
+        },
+        {
+          "file": "src/i18n/hi.json",
+          "action": "modify",
+          "details": "Add Hindi translations for all reports keys"
+        },
+        {
+          "file": "src/i18n/bn.json",
+          "action": "modify",
+          "details": "Add Bengali translations for all reports keys"
+        }
+      ],
+      "acceptanceCriteria": [
+        "All text in ReportListPage uses $t() calls",
+        "All text in ReportDetailPage uses $t() calls",
+        "Report type names are translated",
+        "Translation keys exist in en.json under 'reports' section",
+        "When language is Hindi, all reports text displays in Hindi"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Report page in Hindi",
+          "steps": [
+            "Set language to Hindi",
+            "Navigate to /reports",
+            "View report type cards and recent reports list"
+          ],
+          "expectedResult": "All text including 'Milk Production', 'Recent Reports', 'Generate' displays in Hindi"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "large"
+    },
+    {
+      "module": "10-reports",
+      "taskId": "H24",
+      "priority": "high",
+      "title": "Replace Generic Pets Icon for Cow Performance Report",
+      "description": "The Cow Performance report type uses a generic 'pets' icon. This should be replaced with a cow-specific icon to match the domain context and be consistent with cow icons used elsewhere in the app.",
+      "files": [
+        "src/pages/reports/ReportListPage.vue"
+      ],
+      "changes": [
+        {
+          "file": "src/pages/reports/ReportListPage.vue",
+          "action": "modify",
+          "details": "In the report types array/config, change cow_performance icon from 'pets' to cow-specific icon. Use same cow icon as determined in M46 for consistency."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Cow Performance report card shows cow-specific icon",
+        "Icon is consistent with cow icons used in Yield and Cow modules",
+        "Icon is clearly distinguishable as representing cattle"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Visual inspection of report icons",
+          "steps": [
+            "Navigate to /reports",
+            "Look at the four report type cards"
+          ],
+          "expectedResult": "Cow Performance card shows a cow icon, not generic pets/paw icon"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "small"
+    },
+    {
+      "module": "10-reports",
+      "taskId": "M49",
+      "priority": "medium",
+      "title": "Add Offline Report Generation Queue",
+      "description": "Report generation currently requires internet connection. When offline, users cannot queue reports for later generation. Add offline queuing so users can request reports while offline and have them generated when connectivity returns.",
+      "files": [
+        "src/pages/reports/ReportListPage.vue",
+        "src/stores/reports.ts",
+        "src/lib/offline/db.ts"
+      ],
+      "changes": [
+        {
+          "file": "src/stores/reports.ts",
+          "action": "create",
+          "details": "Create reports store with: state for pending generation requests, action to queue report generation, action to process queue when online. Use sync queue pattern from yields store."
+        },
+        {
+          "file": "src/lib/offline/db.ts",
+          "action": "modify",
+          "details": "Add pendingReportRequests table to store queued report generation requests with parameters"
+        },
+        {
+          "file": "src/pages/reports/ReportListPage.vue",
+          "action": "modify",
+          "details": "When offline, queue generation request instead of failing. Show 'Queued for generation' status. Process queue when coming back online."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Can request report generation while offline",
+        "Queued requests show 'Pending' status",
+        "Reports are automatically generated when device comes online",
+        "User is notified when queued report is ready"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Queue report while offline",
+          "steps": [
+            "Go offline",
+            "Navigate to /reports",
+            "Select Milk Production report",
+            "Set date range and click Generate"
+          ],
+          "expectedResult": "Report is queued, shows as 'Pending generation' in recent reports list"
+        },
+        {
+          "scenario": "Process queue on reconnect",
+          "steps": [
+            "Have a queued report from offline",
+            "Reconnect to internet",
+            "Wait for sync"
+          ],
+          "expectedResult": "Queued report is generated, status changes to 'completed'"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "large"
+    },
+    {
+      "module": "10-reports",
+      "taskId": "M50",
+      "priority": "medium",
+      "title": "Localize Date Formatting in Reports",
+      "description": "Date formatting uses format(new Date(dateStr), 'MMM d, yyyy h:mm a') which results in English month abbreviations regardless of user's language. Use the useDateFormat composable (from H22) to show dates in user's locale.",
+      "files": [
+        "src/pages/reports/ReportListPage.vue",
+        "src/pages/reports/ReportDetailPage.vue"
+      ],
+      "changes": [
+        {
+          "file": "src/pages/reports/ReportListPage.vue",
+          "action": "modify",
+          "details": "Import useDateFormat composable. Replace format() calls with formatDate() or formatDateTime() from composable. Apply to report timestamps and date range displays."
+        },
+        {
+          "file": "src/pages/reports/ReportDetailPage.vue",
+          "action": "modify",
+          "details": "Import useDateFormat composable. Replace format() calls with localized formatting. Apply to report created_at timestamp and date range parameters display."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Report timestamps display in user's selected language",
+        "Date range parameters display in localized format",
+        "Hindi dates show Hindi month names",
+        "Consistent date format across all reports pages"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Report dates in Telugu",
+          "steps": [
+            "Set language to Telugu",
+            "Navigate to /reports",
+            "View recent report timestamps"
+          ],
+          "expectedResult": "Dates display in Telugu format with localized month names"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "small",
+      "dependencies": [
+        "H22"
+      ]
+    },
+    {
+      "module": "10-reports",
+      "taskId": "M51",
+      "priority": "medium",
+      "title": "Add Report Scheduling Feature",
+      "description": "Users must manually generate each report. Extension workers may want automated recurring reports (daily, weekly, monthly). Add scheduling capability to automate report generation.",
+      "files": [
+        "src/pages/reports/ReportListPage.vue",
+        "src/pages/reports/ScheduleReportDialog.vue",
+        "src/stores/reports.ts"
+      ],
+      "changes": [
+        {
+          "file": "src/pages/reports/ScheduleReportDialog.vue",
+          "action": "create",
+          "details": "Create dialog component for scheduling: report type selection, frequency (daily/weekly/monthly), delivery method (in-app, email), start date. Preview next generation dates."
+        },
+        {
+          "file": "src/pages/reports/ReportListPage.vue",
+          "action": "modify",
+          "details": "Add 'Schedule Report' option alongside Generate. Show list of active schedules. Allow viewing/editing/canceling schedules."
+        },
+        {
+          "file": "src/stores/reports.ts",
+          "action": "modify",
+          "details": "Add actions for creating, updating, deleting report schedules. Store schedules locally and sync with backend."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Users can schedule recurring reports",
+        "Supported frequencies: daily, weekly, monthly",
+        "Scheduled reports show in a separate section",
+        "Can cancel or modify existing schedules",
+        "Scheduled reports generate automatically on schedule"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Schedule weekly milk production report",
+          "steps": [
+            "Navigate to /reports",
+            "Click 'Schedule Report'",
+            "Select Milk Production, Weekly frequency",
+            "Save schedule"
+          ],
+          "expectedResult": "Schedule is created and shows in 'Scheduled Reports' section"
+        }
+      ],
+      "status": "blocked",
+      "estimatedEffort": "large",
+      "blockedBy": "Requires backend cron/scheduler for recurring reports"
+    },
+    {
+      "module": "10-reports",
+      "taskId": "M52",
+      "priority": "medium",
+      "title": "Add Inline PDF Preview or Summary",
+      "description": "Report detail page shows only a placeholder 'PDF Report Ready' message. Users must download the PDF to see content. Add inline preview or text summary of report content.",
+      "files": [
+        "src/pages/reports/ReportDetailPage.vue",
+        "src/components/reports/ReportPreview.vue"
+      ],
+      "changes": [
+        {
+          "file": "src/components/reports/ReportPreview.vue",
+          "action": "create",
+          "details": "Create preview component that either: 1) Embeds PDF viewer using pdf.js or vue-pdf, or 2) Shows key metrics/summary extracted from report data. Support pinch-zoom on mobile."
+        },
+        {
+          "file": "src/pages/reports/ReportDetailPage.vue",
+          "action": "modify",
+          "details": "Replace placeholder with ReportPreview component. Show loading state while preview loads. Keep download button as secondary action."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Users can preview report content without downloading",
+        "Preview is readable on mobile devices",
+        "Download PDF button still available for full download",
+        "Preview loads quickly (or shows key metrics first)"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Preview completed report",
+          "steps": [
+            "Navigate to /reports",
+            "Click on a completed report",
+            "View report detail page"
+          ],
+          "expectedResult": "Report content is visible inline, either as PDF embed or summary view"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "large"
+    },
+    {
+      "module": "10-reports",
+      "taskId": "L19",
+      "priority": "low",
+      "title": "Add Report Sharing (Email, WhatsApp)",
+      "description": "Allow users to share generated reports directly via email or WhatsApp. Useful for extension workers sharing reports with farmers or supervisors.",
+      "files": [
+        "src/pages/reports/ReportDetailPage.vue",
+        "src/services/shareService.ts"
+      ],
+      "changes": [
+        {
+          "file": "src/services/shareService.ts",
+          "action": "create",
+          "details": "Create share service using Web Share API where available. Fallback to mailto: and whatsapp:// links. Support sharing file attachment or link."
+        },
+        {
+          "file": "src/pages/reports/ReportDetailPage.vue",
+          "action": "modify",
+          "details": "Add Share button with dropdown: Email, WhatsApp, Copy Link. Use shareService to handle sharing logic."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Share button opens share options",
+        "Can share via email with PDF attachment",
+        "Can share via WhatsApp with link or file",
+        "Uses native share sheet where available (Web Share API)"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Share report via WhatsApp",
+          "steps": [
+            "View completed report",
+            "Click Share > WhatsApp"
+          ],
+          "expectedResult": "WhatsApp opens with pre-filled message and report link/attachment"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "medium"
+    },
+    {
+      "module": "10-reports",
+      "taskId": "L20",
+      "priority": "low",
+      "title": "Add Custom Report Templates",
+      "description": "Currently only four predefined report types are available. Allow users or administrators to create custom report templates with selected data fields and formatting.",
+      "files": [
+        "src/pages/reports/CustomReportBuilder.vue",
+        "src/router/routes.ts"
+      ],
+      "changes": [
+        {
+          "file": "src/pages/reports/CustomReportBuilder.vue",
+          "action": "create",
+          "details": "Create report builder page with: data source selection (cows, yields, milk logs, feeds), field selection checkboxes, grouping options, chart type selection, preview capability, save as template."
+        },
+        {
+          "file": "src/router/routes.ts",
+          "action": "modify",
+          "details": "Add route: { path: '/reports/custom', component: CustomReportBuilder }"
+        }
+      ],
+      "acceptanceCriteria": [
+        "Users can create custom report templates",
+        "Template builder allows field selection and ordering",
+        "Custom templates appear alongside standard report types",
+        "Can edit and delete custom templates"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Create custom report template",
+          "steps": [
+            "Navigate to /reports/custom",
+            "Select data fields",
+            "Configure grouping",
+            "Save template"
+          ],
+          "expectedResult": "Custom template saved and available for generation"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "large",
+      "completedAt": "2026-02-07",
+      "notes": "Implemented in session 4"
+    },
+    {
+      "module": "11-settings-profile",
+      "taskId": "H25",
+      "priority": "high",
+      "title": "Internationalize ProfilePage",
+      "description": "ProfilePage has ALL text hardcoded in English while SettingsPage uses i18n (inconsistent). Hardcoded strings include: 'Edit Profile', 'Name', 'Email', 'Phone', 'cannot be changed', 'contact support to change', 'Country', 'Language', 'Save Changes', 'Security', 'Change PIN', and all validation messages. Must use $t() for all text.",
+      "files": [
+        "src/pages/settings/ProfilePage.vue",
+        "src/i18n/en.json",
+        "src/i18n/hi.json",
+        "src/i18n/bn.json",
+        "src/i18n/te.json",
+        "src/i18n/mr.json",
+        "src/i18n/kn.json"
+      ],
+      "changes": [
+        {
+          "file": "src/pages/settings/ProfilePage.vue",
+          "action": "modify",
+          "details": "Replace all hardcoded strings with $t() calls: $t('profile.editProfile'), $t('profile.name'), $t('profile.email'), $t('profile.phone'), $t('profile.cannotChange'), $t('profile.contactSupport'), $t('profile.country'), $t('profile.language'), $t('profile.saveChanges'), $t('profile.security'), $t('profile.changePin'), $t('profile.currentPin'), $t('profile.newPin'), $t('profile.confirmPin'), $t('validation.required'), $t('validation.pinMismatch')"
+        },
+        {
+          "file": "src/i18n/en.json",
+          "action": "modify",
+          "details": "Add profile section with all keys: editProfile, name, email, phone, cannotChange, contactSupport, country, language, saveChanges, security, changePin, currentPin, newPin, confirmPin"
+        },
+        {
+          "file": "src/i18n/hi.json",
+          "action": "modify",
+          "details": "Add Hindi translations: editProfile='\u092a\u094d\u0930\u094b\u092b\u093c\u093e\u0907\u0932 \u0938\u0902\u092a\u093e\u0926\u093f\u0924 \u0915\u0930\u0947\u0902', name='\u0928\u093e\u092e', email='\u0908\u092e\u0947\u0932', etc."
+        },
+        {
+          "file": "src/i18n/bn.json",
+          "action": "modify",
+          "details": "Add Bengali translations for all profile keys"
+        },
+        {
+          "file": "src/i18n/te.json",
+          "action": "modify",
+          "details": "Add Telugu translations for all profile keys"
+        },
+        {
+          "file": "src/i18n/mr.json",
+          "action": "modify",
+          "details": "Add Marathi translations for all profile keys"
+        },
+        {
+          "file": "src/i18n/kn.json",
+          "action": "modify",
+          "details": "Add Kannada translations for all profile keys"
+        }
+      ],
+      "acceptanceCriteria": [
+        "All text in ProfilePage uses $t() calls",
+        "ProfilePage and SettingsPage have consistent i18n approach",
+        "All validation messages are translated",
+        "PIN change dialog text is translated",
+        "Translation keys exist in en.json under 'profile' section"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "ProfilePage in Hindi",
+          "steps": [
+            "Set language to Hindi in SettingsPage",
+            "Navigate to Profile (Edit Profile)",
+            "View all form labels and buttons"
+          ],
+          "expectedResult": "All text displays in Hindi: '\u092a\u094d\u0930\u094b\u092b\u093c\u093e\u0907\u0932 \u0938\u0902\u092a\u093e\u0926\u093f\u0924 \u0915\u0930\u0947\u0902', '\u0928\u093e\u092e', '\u0908\u092e\u0947\u0932', '\u092c\u0926\u0932\u093e\u0935 \u0938\u0939\u0947\u091c\u0947\u0902'"
+        },
+        {
+          "scenario": "PIN change dialog translation",
+          "steps": [
+            "Set language to Bengali",
+            "Navigate to Profile",
+            "Click Change PIN"
+          ],
+          "expectedResult": "PIN change dialog shows Bengali labels for Current PIN, New PIN, Confirm PIN"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "large"
+    },
+    {
+      "module": "11-settings-profile",
+      "taskId": "H26",
+      "priority": "high",
+      "title": "Fetch Country and Language Options from API",
+      "description": "ProfilePage has hardcoded country options (5 countries) and language options (6 languages). Backend has API endpoints /auth/countries and /auth/languages that should be used. Adding new countries/languages currently requires code changes.",
+      "files": [
+        "src/pages/settings/ProfilePage.vue",
+        "src/stores/auth.ts",
+        "src/services/api.ts"
+      ],
+      "changes": [
+        {
+          "file": "src/stores/auth.ts",
+          "action": "modify",
+          "details": "Add state for: availableCountries[], availableLanguages[]. Add actions: fetchCountries() calls GET /auth/countries, fetchLanguages() calls GET /auth/languages. Cache results in IndexedDB for offline use."
+        },
+        {
+          "file": "src/pages/settings/ProfilePage.vue",
+          "action": "modify",
+          "details": "Remove hardcoded countryOptions and languageOptions arrays. Import from authStore. On mount, call authStore.fetchCountries() and authStore.fetchLanguages() if not cached. Use authStore.availableCountries and authStore.availableLanguages for dropdown options."
+        },
+        {
+          "file": "src/services/api.ts",
+          "action": "modify",
+          "details": "Add API methods: getCountries(): Promise<Country[]>, getLanguages(): Promise<Language[]>. Response types: Country { id: string, name: string, code: string }, Language { code: string, name: string, nativeName: string }"
+        }
+      ],
+      "acceptanceCriteria": [
+        "Country dropdown options are fetched from /auth/countries API",
+        "Language dropdown options are fetched from /auth/languages API",
+        "Options are cached locally for offline access",
+        "New countries/languages from API appear automatically",
+        "No hardcoded country or language lists in frontend code"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Countries from API",
+          "steps": [
+            "Navigate to Profile page",
+            "Open Country dropdown",
+            "Check available options"
+          ],
+          "expectedResult": "Dropdown shows countries from API, may include more than original 5 hardcoded options"
+        },
+        {
+          "scenario": "Offline country selection",
+          "steps": [
+            "Load Profile page once (to cache)",
+            "Go offline",
+            "Reload Profile page",
+            "Open Country dropdown"
+          ],
+          "expectedResult": "Country options are available from cache even when offline"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "medium",
+      "notes": {
+        "currentHardcodedCountries": [
+          {
+            "label": "India",
+            "value": "IN"
+          },
+          {
+            "label": "Kenya",
+            "value": "KE"
+          },
+          {
+            "label": "Ethiopia",
+            "value": "ET"
+          },
+          {
+            "label": "Nepal",
+            "value": "NP"
+          },
+          {
+            "label": "Bangladesh",
+            "value": "BD"
+          }
+        ],
+        "currentHardcodedLanguages": [
+          {
+            "label": "English",
+            "value": "en"
+          },
+          {
+            "label": "Hindi",
+            "value": "hi"
+          },
+          {
+            "label": "Bengali",
+            "value": "bn"
+          },
+          {
+            "label": "Telugu",
+            "value": "te"
+          },
+          {
+            "label": "Marathi",
+            "value": "mr"
+          },
+          {
+            "label": "Kannada",
+            "value": "kn"
+          }
+        ]
+      }
+    },
+    {
+      "module": "11-settings-profile",
+      "taskId": "M53",
+      "priority": "medium",
+      "title": "Add Profile Photo/Avatar Support",
+      "description": "Profile page uses generic 'person' Material icon for all users. There's no visual personalization - all users look the same. Add profile photo upload capability to allow user avatars.",
+      "files": [
+        "src/pages/settings/ProfilePage.vue",
+        "src/components/ui/AvatarUpload.vue",
+        "src/stores/auth.ts"
+      ],
+      "changes": [
+        {
+          "file": "src/components/ui/AvatarUpload.vue",
+          "action": "create",
+          "details": "Create avatar upload component: circular image preview, click to select photo, camera capture option on mobile, crop/resize before upload, progress indicator, default avatar fallback."
+        },
+        {
+          "file": "src/pages/settings/ProfilePage.vue",
+          "action": "modify",
+          "details": "Replace static person icon with AvatarUpload component. Show current avatar if set, default icon if not. Enable upload on click."
+        },
+        {
+          "file": "src/stores/auth.ts",
+          "action": "modify",
+          "details": "Add uploadAvatar(file: File) action that uploads to backend and updates user.profile_image_url. Handle image compression before upload."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Users can upload profile photo",
+        "Photo is displayed as circular avatar",
+        "Can take photo with camera on mobile",
+        "Default icon shown if no photo uploaded",
+        "Photo is compressed before upload to save bandwidth"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Upload profile photo",
+          "steps": [
+            "Navigate to Profile page",
+            "Click on avatar area",
+            "Select photo from gallery",
+            "Save profile"
+          ],
+          "expectedResult": "Photo is uploaded and displayed as avatar"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "large",
+      "dependencies": [
+        "M54"
+      ]
+    },
+    {
+      "module": "11-settings-profile",
+      "taskId": "M54",
+      "priority": "medium",
+      "title": "Add profile_image_url Database Field",
+      "description": "Database user_information table lacks profile_image_url field to store avatar URL. This backend change is required to support profile photo upload feature.",
+      "files": [
+        "Backend: app/models/user.py",
+        "Backend: alembic/versions/xxx_add_profile_image.py"
+      ],
+      "changes": [
+        {
+          "file": "Backend: app/models/user.py",
+          "action": "modify",
+          "details": "Add profile_image_url: Optional[str] field to UserInformation model"
+        },
+        {
+          "file": "Backend: alembic migration",
+          "action": "create",
+          "details": "Create migration to add profile_image_url column to user_information table"
+        },
+        {
+          "file": "Backend: app/api/auth.py",
+          "action": "modify",
+          "details": "Add endpoint PUT /api/v1/auth/avatar for uploading profile image. Handle image storage (S3 or local). Return URL for stored image."
+        }
+      ],
+      "acceptanceCriteria": [
+        "profile_image_url column exists in user_information table",
+        "API endpoint accepts image upload",
+        "Image is stored securely (S3 recommended)",
+        "URL is returned and stored in user record",
+        "GET /api/v1/auth/settings includes profile_image_url"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "API returns profile image URL",
+          "steps": [
+            "Upload profile image via API",
+            "GET /api/v1/auth/settings"
+          ],
+          "expectedResult": "Response includes profile_image_url field with valid URL"
+        }
+      ],
+      "status": "blocked",
+      "estimatedEffort": "medium",
+      "notes": {
+        "backendRequired": true
+      },
+      "blockedBy": "Backend task - requires DB migration"
+    },
+    {
+      "module": "11-settings-profile",
+      "taskId": "M55",
+      "priority": "medium",
+      "title": "Use i18n for Organization Type Labels",
+      "description": "SettingsPage has formatOrgType() function with hardcoded English labels: 'university' -> 'University', 'government' -> 'Government', etc. These should use i18n translation keys.",
+      "files": [
+        "src/pages/settings/SettingsPage.vue",
+        "src/i18n/en.json",
+        "src/i18n/hi.json"
+      ],
+      "changes": [
+        {
+          "file": "src/pages/settings/SettingsPage.vue",
+          "action": "modify",
+          "details": "Replace formatOrgType() switch statement with: return $t(`orgTypes.${type}`) || $t('orgTypes.other'). Remove hardcoded English labels."
+        },
+        {
+          "file": "src/i18n/en.json",
+          "action": "modify",
+          "details": "Add orgTypes section: { university: 'University', government: 'Government', ngo: 'NGO', private: 'Private Company', cooperative: 'Cooperative', research: 'Research Institution', other: 'Other' }"
+        },
+        {
+          "file": "src/i18n/hi.json",
+          "action": "modify",
+          "details": "Add orgTypes section with Hindi: { university: '\u0935\u093f\u0936\u094d\u0935\u0935\u093f\u0926\u094d\u092f\u093e\u0932\u092f', government: '\u0938\u0930\u0915\u093e\u0930\u0940', ngo: '\u090f\u0928\u091c\u0940\u0913', private: '\u0928\u093f\u091c\u0940 \u0915\u0902\u092a\u0928\u0940', cooperative: '\u0938\u0939\u0915\u093e\u0930\u0940', research: '\u0905\u0928\u0941\u0938\u0902\u0927\u093e\u0928 \u0938\u0902\u0938\u094d\u0925\u093e\u0928', other: '\u0905\u0928\u094d\u092f' }"
+        }
+      ],
+      "acceptanceCriteria": [
+        "Organization type labels use $t() translations",
+        "No hardcoded English in formatOrgType function",
+        "Organization types display in user's selected language"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Organization type in Hindi",
+          "steps": [
+            "Set language to Hindi",
+            "Navigate to Settings",
+            "View Organization field"
+          ],
+          "expectedResult": "Organization type shows in Hindi (e.g., '\u0938\u0930\u0915\u093e\u0930\u0940' for government)"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "small"
+    },
+    {
+      "module": "11-settings-profile",
+      "taskId": "M56",
+      "priority": "medium",
+      "title": "Allow Email/Phone Change with Re-verification",
+      "description": "Email and phone cannot be edited in ProfilePage, showing 'cannot be changed' / 'contact support'. This may frustrate users who entered wrong info. Consider allowing changes with re-verification flow.",
+      "files": [
+        "src/pages/settings/ProfilePage.vue",
+        "src/pages/settings/ChangeContactDialog.vue",
+        "src/stores/auth.ts"
+      ],
+      "changes": [
+        {
+          "file": "src/pages/settings/ChangeContactDialog.vue",
+          "action": "create",
+          "details": "Create dialog for changing email/phone: shows current value, input for new value, sends OTP to new email/phone, OTP verification step, confirmation. Include warning about account access."
+        },
+        {
+          "file": "src/pages/settings/ProfilePage.vue",
+          "action": "modify",
+          "details": "Replace 'cannot be changed' text with clickable 'Change' button that opens ChangeContactDialog. Keep visual indicator that it requires verification."
+        },
+        {
+          "file": "src/stores/auth.ts",
+          "action": "modify",
+          "details": "Add actions: requestEmailChange(newEmail), verifyEmailChange(otp), requestPhoneChange(newPhone), verifyPhoneChange(otp). Handle verification flow."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Users can initiate email change from profile",
+        "Users can initiate phone change from profile",
+        "OTP verification required for new email/phone",
+        "Old email/phone notified of change request",
+        "Clear warning about account access implications"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Change email with verification",
+          "steps": [
+            "Navigate to Profile",
+            "Click Change on email field",
+            "Enter new email",
+            "Receive OTP on new email",
+            "Enter OTP to verify"
+          ],
+          "expectedResult": "Email is updated after successful OTP verification"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "large",
+      "notes": {
+        "securityConsiderations": [
+          "Must verify ownership of new email/phone",
+          "Should notify old email/phone of change",
+          "Consider cooldown period between changes",
+          "May require admin approval for some roles"
+        ]
+      }
+    },
+    {
+      "module": "11-settings-profile",
+      "taskId": "L21",
+      "priority": "low",
+      "title": "Implement Help and Support Page",
+      "description": "SettingsPage has 'Help & Support' link in the About section but it likely doesn't have a proper destination page. Implement a help page with FAQs, contact information, and support request form.",
+      "files": [
+        "src/pages/settings/HelpSupportPage.vue",
+        "src/router/routes.ts"
+      ],
+      "changes": [
+        {
+          "file": "src/pages/settings/HelpSupportPage.vue",
+          "action": "create",
+          "details": "Create help page with: FAQ accordion with common questions, contact information section (email, phone, WhatsApp), support request form (category, description, screenshot upload), links to video tutorials if available."
+        },
+        {
+          "file": "src/router/routes.ts",
+          "action": "modify",
+          "details": "Add route: { path: '/settings/help', component: HelpSupportPage }"
+        }
+      ],
+      "acceptanceCriteria": [
+        "Help & Support link navigates to dedicated page",
+        "FAQ section with expandable answers",
+        "Contact information clearly displayed",
+        "Users can submit support requests",
+        "All text is internationalized"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Access help page",
+          "steps": [
+            "Navigate to Settings",
+            "Click 'Help & Support'",
+            "View help page content"
+          ],
+          "expectedResult": "Help page loads with FAQs, contact info, and support form"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "medium"
+    },
+    {
+      "module": "11-settings-profile",
+      "taskId": "L22",
+      "priority": "low",
+      "title": "Add Privacy Policy Page Content",
+      "description": "SettingsPage has 'Privacy Policy' link but likely leads to placeholder or external page. Create proper privacy policy page with app-specific content.",
+      "files": [
+        "src/pages/settings/PrivacyPolicyPage.vue",
+        "src/router/routes.ts"
+      ],
+      "changes": [
+        {
+          "file": "src/pages/settings/PrivacyPolicyPage.vue",
+          "action": "create",
+          "details": "Create privacy policy page with proper legal content: data collection practices, data usage, data sharing, user rights, data retention, cookies/local storage, contact for privacy concerns. Consider loading content from markdown/CMS."
+        },
+        {
+          "file": "src/router/routes.ts",
+          "action": "modify",
+          "details": "Add route: { path: '/settings/privacy', component: PrivacyPolicyPage }"
+        }
+      ],
+      "acceptanceCriteria": [
+        "Privacy Policy link navigates to dedicated page",
+        "Policy content is specific to RationSmart app",
+        "Content covers all required privacy topics",
+        "Last updated date is displayed",
+        "Content is readable and well-formatted"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "View privacy policy",
+          "steps": [
+            "Navigate to Settings",
+            "Click 'Privacy Policy'",
+            "Read policy content"
+          ],
+          "expectedResult": "Privacy policy page displays with comprehensive, readable content"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "small"
+    }
+  ]
+}

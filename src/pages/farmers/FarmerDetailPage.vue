@@ -9,10 +9,10 @@
       <!-- Farmer Not Found -->
       <template v-else-if="!farmer">
         <EmptyState
-          icon="person_off"
-          title="Farmer Not Found"
-          description="The farmer profile you're looking for doesn't exist or has been removed."
-          action-label="Back to Farmers"
+          icon="agriculture"
+          :title="$t('farmer.farmerNotFound')"
+          :description="$t('farmer.farmerNotFoundDescription')"
+          :action-label="$t('farmer.backToFarmers')"
           action-icon="arrow_back"
           @action="router.push('/farmers')"
         />
@@ -24,8 +24,11 @@
         <q-card class="q-mb-md">
           <q-card-section>
             <div class="row items-center q-gutter-md">
-              <q-avatar size="64px" color="teal" text-color="white">
-                <q-icon name="person" size="32px" />
+              <q-avatar v-if="farmer.image_url" size="64px">
+                <q-img :src="farmer.image_url" :ratio="1" />
+              </q-avatar>
+              <q-avatar v-else size="64px" color="teal" text-color="white">
+                <q-icon name="agriculture" size="32px" />
               </q-avatar>
               <div class="col">
                 <div class="text-h6">{{ farmer.name }}</div>
@@ -40,7 +43,7 @@
                   {{ farmer.phone }}
                 </div>
               </div>
-              <q-btn flat round icon="edit" @click="router.push(`/farmers/${farmerId}/edit`)" />
+              <q-btn flat round icon="edit" @click="router.push({ name: 'farmer-edit', params: { id: farmerId } })" />
             </div>
           </q-card-section>
         </q-card>
@@ -51,7 +54,7 @@
             <q-card>
               <q-card-section class="text-center">
                 <div class="text-h4 text-primary">{{ summary?.statistics.total_active_cows || farmer.total_cattle }}</div>
-                <div class="text-caption text-grey-6">Total Cattle</div>
+                <div class="text-caption text-grey-6">{{ $t('farmer.totalCattle') }}</div>
               </q-card-section>
             </q-card>
           </div>
@@ -59,7 +62,7 @@
             <q-card>
               <q-card-section class="text-center">
                 <div class="text-h4 text-positive">{{ summary?.statistics.lactating_cows || 0 }}</div>
-                <div class="text-caption text-grey-6">Lactating</div>
+                <div class="text-caption text-grey-6">{{ $t('farmer.lactating') }}</div>
               </q-card-section>
             </q-card>
           </div>
@@ -67,7 +70,7 @@
             <q-card>
               <q-card-section class="text-center">
                 <div class="text-h4 text-info">{{ summary?.statistics.total_daily_milk_production?.toFixed(1) || '0' }}</div>
-                <div class="text-caption text-grey-6">Daily Milk (L)</div>
+                <div class="text-caption text-grey-6">{{ $t('farmer.dailyMilk') }}</div>
               </q-card-section>
             </q-card>
           </div>
@@ -75,7 +78,7 @@
             <q-card>
               <q-card-section class="text-center">
                 <div class="text-h4 text-warning">{{ summary?.statistics.avg_milk_per_lactating_cow?.toFixed(1) || '0' }}</div>
-                <div class="text-caption text-grey-6">Avg/Cow (L)</div>
+                <div class="text-caption text-grey-6">{{ $t('farmer.avgPerCow') }}</div>
               </q-card-section>
             </q-card>
           </div>
@@ -84,15 +87,15 @@
         <!-- Farm Details Card -->
         <q-card class="q-mb-md">
           <q-card-section>
-            <div class="text-subtitle1 text-weight-medium q-mb-sm">Farm Details</div>
+            <div class="text-subtitle1 text-weight-medium q-mb-sm">{{ $t('farmer.farmDetails') }}</div>
             <q-list dense>
               <q-item v-if="farmer.farming_type">
                 <q-item-section avatar>
                   <q-icon name="agriculture" color="grey-6" />
                 </q-item-section>
                 <q-item-section>
-                  <q-item-label caption>Farming Type</q-item-label>
-                  <q-item-label class="text-capitalize">{{ farmer.farming_type }}</q-item-label>
+                  <q-item-label caption>{{ $t('farmer.farmingType') }}</q-item-label>
+                  <q-item-label class="text-capitalize">{{ $t(`farmer.farmingTypes.${farmer.farming_type}`) }}</q-item-label>
                 </q-item-section>
               </q-item>
               <q-item v-if="farmer.land_acres">
@@ -100,8 +103,8 @@
                   <q-icon name="landscape" color="grey-6" />
                 </q-item-section>
                 <q-item-section>
-                  <q-item-label caption>Land Area</q-item-label>
-                  <q-item-label>{{ farmer.land_acres }} acres</q-item-label>
+                  <q-item-label caption>{{ $t('farmer.landArea') }}</q-item-label>
+                  <q-item-label>{{ farmer.land_acres }} {{ $t('farmer.acres') }}</q-item-label>
                 </q-item-section>
               </q-item>
               <q-item>
@@ -109,7 +112,7 @@
                   <q-icon name="calendar_today" color="grey-6" />
                 </q-item-section>
                 <q-item-section>
-                  <q-item-label caption>Added On</q-item-label>
+                  <q-item-label caption>{{ $t('farmer.addedOn') }}</q-item-label>
                   <q-item-label>{{ formatDate(farmer.created_at) }}</q-item-label>
                 </q-item-section>
               </q-item>
@@ -121,12 +124,12 @@
         <q-card class="q-mb-md">
           <q-card-section>
             <div class="row items-center justify-between q-mb-sm">
-              <div class="text-subtitle1 text-weight-medium">Cattle</div>
+              <div class="text-subtitle1 text-weight-medium">{{ $t('farmer.totalCattle') }}</div>
               <q-btn
                 flat
                 dense
                 color="primary"
-                label="Add Cow"
+                :label="$t('farmer.addCow')"
                 icon="add"
                 @click="addCowForFarmer"
               />
@@ -134,8 +137,8 @@
 
             <template v-if="cows.length === 0">
               <div class="text-center q-pa-md text-grey-6">
-                <q-icon name="pets" size="32px" class="q-mb-sm" />
-                <div>No cattle registered yet</div>
+                <q-icon :name="COW_ICON" size="32px" class="q-mb-sm" />
+                <div>{{ $t('farmer.noCattleYet') }}</div>
               </div>
             </template>
 
@@ -149,14 +152,14 @@
               >
                 <q-item-section avatar>
                   <q-avatar color="primary" text-color="white" size="40px">
-                    <q-icon name="pets" size="20px" />
+                    <q-icon :name="COW_ICON" size="20px" />
                   </q-avatar>
                 </q-item-section>
                 <q-item-section>
                   <q-item-label>{{ cow.name }}</q-item-label>
                   <q-item-label caption>
-                    {{ cow.breed }} &middot; {{ cow.body_weight }}kg
-                    <span v-if="cow.lactating"> &middot; {{ cow.milk_production }}L/day</span>
+                    {{ cow.breed }} &middot; {{ cow.body_weight }}{{ $t('units.kg') }}
+                    <span v-if="cow.lactating"> &middot; {{ cow.milk_production }}{{ $t('units.l') }}{{ $t('units.perDay') }}</span>
                   </q-item-label>
                 </q-item-section>
                 <q-item-section side>
@@ -174,16 +177,16 @@
             outline
             color="primary"
             icon="add_chart"
-            label="Record Yield"
-            @click="router.push(`/yields/new?farmer=${farmerId}`)"
+            :label="$t('farmer.recordYield')"
+            @click="router.push({ name: 'yield-new', query: { farmer: farmerId } })"
           />
           <q-btn
             class="col"
             outline
             color="secondary"
             icon="history"
-            label="View History"
-            @click="router.push(`/yields?farmer=${farmerId}`)"
+            :label="$t('farmer.viewHistory')"
+            @click="router.push({ name: 'yields', query: { farmer: farmerId } })"
           />
         </div>
       </template>
@@ -194,10 +197,15 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import { useFarmersStore, FarmerSummary } from 'src/stores/farmers';
+import { useDateFormat } from 'src/composables/useDateFormat';
 import PullToRefresh from 'src/components/ui/PullToRefresh.vue';
 import SkeletonCard from 'src/components/ui/SkeletonCard.vue';
 import EmptyState from 'src/components/ui/EmptyState.vue';
+import { COW_ICON } from 'src/boot/icons';
+
+const { t } = useI18n();
 
 interface CowInfo {
   id: string;
@@ -213,6 +221,7 @@ interface CowInfo {
 const router = useRouter();
 const route = useRoute();
 const farmersStore = useFarmersStore();
+const { formatDate } = useDateFormat();
 
 const farmerId = computed(() => route.params.id as string);
 const farmer = computed(() =>
@@ -223,14 +232,6 @@ const summary = ref<FarmerSummary | null>(null);
 const cows = ref<CowInfo[]>([]);
 
 const loading = computed(() => farmersStore.loading);
-
-function formatDate(dateString: string): string {
-  return new Date(dateString).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  });
-}
 
 async function loadFarmerData() {
   if (!farmerId.value) return;

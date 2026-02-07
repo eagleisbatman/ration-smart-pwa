@@ -10,7 +10,7 @@
   >
     {{ syncStatusText }}
     <q-tooltip v-if="lastSyncTime">
-      Last synced: {{ formatLastSync }}
+      {{ $t('sync.lastSynced', { time: formatLastSync }) }}
     </q-tooltip>
   </q-chip>
 </template>
@@ -18,8 +18,10 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { formatDistanceToNow } from 'date-fns';
+import { useI18n } from 'vue-i18n';
 import { useOfflineSync } from 'src/composables/useOfflineSync';
 
+const { t } = useI18n();
 const {
   syncStatusText,
   syncStatusIcon,
@@ -29,7 +31,7 @@ const {
 } = useOfflineSync();
 
 const formatLastSync = computed(() => {
-  if (!lastSyncTime.value) return 'Never';
+  if (!lastSyncTime.value) return t('sync.never');
   return formatDistanceToNow(lastSyncTime.value, { addSuffix: true });
 });
 </script>

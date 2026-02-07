@@ -256,6 +256,29 @@ export const useDietsStore = defineStore('diets', () => {
     currentDiet.value = null;
   }
 
+  async function getInputDataForRegeneration(dietId: string): Promise<DietInput | null> {
+    const diet = await getDiet(dietId);
+    if (!diet?.input_data) return null;
+    const input = diet.input_data as unknown as DietInput;
+    return {
+      cow_id: input.cow_id || diet.cow_id,
+      cow_name: input.cow_name || diet.cow_name,
+      weight_kg: input.weight_kg ?? 400,
+      milk_yield_liters: input.milk_yield_liters ?? 10,
+      milk_fat_percentage: input.milk_fat_percentage ?? 4.0,
+      lactation_stage: input.lactation_stage ?? 'mid',
+      age_months: input.age_months,
+      body_condition_score: input.body_condition_score,
+      is_pregnant: input.is_pregnant ?? false,
+      pregnancy_month: input.pregnancy_month,
+      activity_level: input.activity_level ?? 'normal',
+      optimization_goal: input.optimization_goal ?? diet.optimization_goal as DietInput['optimization_goal'] ?? 'balanced',
+      available_feeds: input.available_feeds ?? [],
+      feed_constraints: input.feed_constraints,
+      budget_per_day: input.budget_per_day,
+    };
+  }
+
   return {
     // State
     diets,
@@ -274,6 +297,7 @@ export const useDietsStore = defineStore('diets', () => {
     deleteDiet,
     getDietsForCow,
     clearCurrentDiet,
+    getInputDataForRegeneration,
   };
 });
 

@@ -7,7 +7,7 @@ export default defineConfig((/* ctx */) => {
       errors: true,
     },
 
-    boot: ['axios', 'dexie', 'pwa', 'i18n'],
+    boot: ['axios', 'dexie', 'pwa', 'i18n', 'icons'],
 
     css: ['app.scss'],
 

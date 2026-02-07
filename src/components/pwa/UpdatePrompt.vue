@@ -3,17 +3,16 @@
     <q-card class="update-card">
       <q-card-section class="text-center">
         <q-icon name="system_update" size="56px" color="primary" class="q-mb-md" />
-        <div class="text-h6 q-mb-sm">Update Available</div>
+        <div class="text-h6 q-mb-sm">{{ $t('pwa.updateAvailable') }}</div>
         <p class="text-body2 text-grey-7">
-          A new version of RationSmart is available. Update now for the latest
-          features and improvements.
+          {{ $t('pwa.updatePrompt') }}
         </p>
       </q-card-section>
 
       <q-card-actions align="center" class="q-pb-md">
-        <q-btn label="Later" flat color="grey" @click="postpone" />
+        <q-btn :label="$t('pwa.later')" flat color="grey" @click="postpone" />
         <q-btn
-          label="Update Now"
+          :label="$t('pwa.updateNow')"
           color="primary"
           unelevated
           :loading="updating"
@@ -27,7 +26,7 @@
   <transition name="slide-down">
     <div v-if="showBanner" class="update-banner" @click="showDialog = true">
       <q-icon name="update" class="q-mr-sm" />
-      <span>Update available</span>
+      <span>{{ $t('pwa.updateBanner') }}</span>
       <q-btn
         icon="refresh"
         flat

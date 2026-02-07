@@ -57,16 +57,18 @@
   },
   "roles": {
     "farmer": "Magsasaka",
-    "student": "Estudyante",
+    "extension_worker": "Extension Worker",
     "nutritionist": "Nutritionist",
-    "extensionWorker": "Extension Worker",
     "researcher": "Mananaliksik",
+    "feed_supplier": "Tagapagtustos ng Pagkain",
+    "other": "Iba pa",
     "admin": "Administrator",
     "farmerDesc": "Pinamamahalaan ko ang sarili kong mga hayop",
-    "studentDesc": "Nag-aaral ako tungkol sa nutrisyon ng hayop",
+    "extension_workerDesc": "Sinusuportahan ko ang mga magsasaka sa aking komunidad",
     "nutritionistDesc": "Nagpapayo ako sa mga magsasaka tungkol sa formulasyon ng pagkain",
-    "extensionWorkerDesc": "Sinusuportahan ko ang mga magsasaka sa aking komunidad",
     "researcherDesc": "Pinag-aaralan ko ang nutrisyon ng baka at mga kasanayan sa pagsasaka",
+    "feed_supplierDesc": "Nagbibigay ako ng mga produktong pagkain sa hayop",
+    "otherDesc": "Ibang tungkulin na hindi nakalista sa itaas",
     "adminDesc": "Pinamamahalaan ko ang sistema"
   },
   "auth": {
@@ -106,7 +108,9 @@
     "step1of4": "Hakbang 1 ng 4",
     "step2of4": "Hakbang 2 ng 4",
     "step3of4": "Hakbang 3 ng 4",
-    "step4of4": "Hakbang 4 ng 4"
+    "step4of4": "Hakbang 4 ng 4",
+    "recommendedLanguages": "Inirerekomenda",
+    "otherLanguages": "Iba pang mga Wika"
   },
   "profile": {
     "myProfile": "Aking Profile",
@@ -245,7 +249,27 @@
     "thisWeek": "Ngayong Linggo",
     "thisMonth": "Ngayong Buwan",
     "average": "Average",
-    "total": "Kabuuan"
+    "total": "Kabuuan",
+    "quickLog": {
+      "button": "Quick Log All",
+      "title": "Quick Log - All Cows",
+      "date": "Date",
+      "cowName": "Cow",
+      "morning": "Morning (L)",
+      "evening": "Evening (L)",
+      "total": "Total",
+      "saveAll": "Save All",
+      "saveRow": "Save",
+      "saved": "Saved",
+      "noCows": "No active cows found. Add a cow first.",
+      "allSaved": "All milk logs saved successfully!",
+      "rowSaved": "Milk log saved for {cowName}",
+      "noEntries": "Please enter at least one milk reading",
+      "close": "Close",
+      "savingAll": "Saving all entries...",
+      "duplicateFound": "Log already exists for {cowName} on this date - updated",
+      "entriesSaved": "{count} log saved | {count} logs saved"
+    }
   },
   "reports": {
     "reports": "Mga Ulat",
@@ -309,7 +333,14 @@
     "logout": "Mag-logout",
     "logoutConfirm": "Sigurado ka bang gusto mong mag-logout?",
     "deleteAccount": "Tanggalin ang Account",
-    "deleteAccountWarning": "Hindi na maibabalik ang aksyong ito. Permanenteng matatanggal ang lahat ng iyong data."
+    "deleteAccountWarning": "Hindi na maibabalik ang aksyong ito. Permanenteng matatanggal ang lahat ng iyong data.",
+    "orgTypes": {
+      "university": "Unibersidad",
+      "government": "Pamahalaan",
+      "ngo": "NGO",
+      "cooperative": "Kooperatiba",
+      "research": "Instituto ng Pananaliksik"
+    }
   },
   "farmer": {
     "farmers": "Mga Magsasaka",
@@ -324,7 +355,17 @@
     "addFirstFarmer": "Magdagdag ng magsasakang sinusuportahan mo para pamahalaan ang kanilang mga baka",
     "farmerAdded": "Matagumpay na naidagdag ang magsasaka",
     "farmerUpdated": "Matagumpay na na-update ang magsasaka",
-    "farmerDeleted": "Natanggal ang magsasaka"
+    "farmerDeleted": "Natanggal ang magsasaka",
+    "farmingTypes": {
+      "dairy": "Pagpapalakad ng Gatas",
+      "mixed": "Halo-halong Pagsasaka",
+      "crop": "Pagtatanim"
+    },
+    "filter": {
+      "all": "Lahat",
+      "dairy": "Gatas",
+      "mixed": "Halo-halo"
+    }
   },
   "errors": {
     "generic": "May nangyaring mali. Pakisubukan muli.",

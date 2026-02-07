@@ -3,14 +3,14 @@
     <div class="text-center q-pa-xl">
       <div class="text-h1 text-primary" style="font-size: 120px; line-height: 1">404</div>
 
-      <h1 class="text-h5 q-mb-sm">Page Not Found</h1>
+      <h1 class="text-h5 q-mb-sm">{{ $t('errors.pageNotFound') }}</h1>
 
       <p class="text-body1 text-grey-7 q-mb-lg" style="max-width: 300px">
-        Oops! The page you're looking for doesn't exist or has been moved.
+        {{ $t('errors.pageNotFoundDescription') }}
       </p>
 
       <q-btn
-        label="Go Home"
+        :label="$t('errors.goHome')"
         color="primary"
         unelevated
         size="lg"

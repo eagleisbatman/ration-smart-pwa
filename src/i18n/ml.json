@@ -57,16 +57,18 @@
   },
   "roles": {
     "farmer": "കർഷകൻ",
-    "student": "വിദ്യാർത്ഥി",
+    "extension_worker": "എക്സ്റ്റെൻഷൻ വർക്കർ",
     "nutritionist": "പോഷക വിദഗ്ധൻ",
-    "extensionWorker": "എക്സ്റ്റെൻഷൻ വർക്കർ",
     "researcher": "ഗവേഷകൻ",
+    "feed_supplier": "തീറ്റ വിതരണക്കാരൻ",
+    "other": "മറ്റുള്ളവ",
     "admin": "അഡ്മിൻ",
     "farmerDesc": "ഞാൻ എൻ്റെ സ്വന്തം കന്നുകാലികളെ നോക്കുന്നു",
-    "studentDesc": "ഞാൻ മൃഗ പോഷകാഹാരത്തെക്കുറിച്ച് പഠിക്കുന്നു",
+    "extension_workerDesc": "എൻ്റെ സമൂഹത്തിലെ കർഷകരെ ഞാൻ പിന്തുണയ്ക്കുന്നു",
     "nutritionistDesc": "തീറ്റ നിർമ്മാണത്തിൽ കർഷകർക്ക് ഞാൻ ഉപദേശം നൽകുന്നു",
-    "extensionWorkerDesc": "എൻ്റെ സമൂഹത്തിലെ കർഷകരെ ഞാൻ പിന്തുണയ്ക്കുന്നു",
     "researcherDesc": "കന്നുകാലി പോഷണവും കൃഷി രീതികളും ഞാൻ പഠിക്കുന്നു",
+    "feed_supplierDesc": "ഞാൻ മൃഗ തീറ്റ ഉൽപ്പന്നങ്ങൾ വിതരണം ചെയ്യുന്നു",
+    "otherDesc": "മുകളിൽ ലിസ്റ്റ് ചെയ്യാത്ത മറ്റ് റോൾ",
     "adminDesc": "ഞാൻ സിസ്റ്റം നിയന്ത്രിക്കുന്നു"
   },
   "auth": {
@@ -106,7 +108,9 @@
     "step1of4": "ഘട്ടം 1/4",
     "step2of4": "ഘട്ടം 2/4",
     "step3of4": "ഘട്ടം 3/4",
-    "step4of4": "ഘട്ടം 4/4"
+    "step4of4": "ഘട്ടം 4/4",
+    "recommendedLanguages": "ശുപാർശ ചെയ്തവ",
+    "otherLanguages": "മറ്റ് ഭാഷകൾ"
   },
   "profile": {
     "myProfile": "എൻ്റെ പ്രൊഫൈൽ",
@@ -245,7 +249,27 @@
     "thisWeek": "ഈ ആഴ്ച",
     "thisMonth": "ഈ മാസം",
     "average": "ശരാശരി",
-    "total": "മൊത്തം"
+    "total": "മൊത്തം",
+    "quickLog": {
+      "button": "Quick Log All",
+      "title": "Quick Log - All Cows",
+      "date": "Date",
+      "cowName": "Cow",
+      "morning": "Morning (L)",
+      "evening": "Evening (L)",
+      "total": "Total",
+      "saveAll": "Save All",
+      "saveRow": "Save",
+      "saved": "Saved",
+      "noCows": "No active cows found. Add a cow first.",
+      "allSaved": "All milk logs saved successfully!",
+      "rowSaved": "Milk log saved for {cowName}",
+      "noEntries": "Please enter at least one milk reading",
+      "close": "Close",
+      "savingAll": "Saving all entries...",
+      "duplicateFound": "Log already exists for {cowName} on this date - updated",
+      "entriesSaved": "{count} log saved | {count} logs saved"
+    }
   },
   "reports": {
     "reports": "റിപ്പോർട്ടുകൾ",
@@ -309,7 +333,14 @@
     "logout": "ലോഗൗട്ട്",
     "logoutConfirm": "ലോഗൗട്ട് ചെയ്യണോ?",
     "deleteAccount": "അക്കൗണ്ട് ഇല്ലാതാക്കുക",
-    "deleteAccountWarning": "ഈ പ്രവർത്തനം പഴയപടിയാക്കാൻ കഴിയില്ല. നിങ്ങളുടെ എല്ലാ ഡാറ്റയും ശാശ്വതമായി ഇല്ലാതാകും."
+    "deleteAccountWarning": "ഈ പ്രവർത്തനം പഴയപടിയാക്കാൻ കഴിയില്ല. നിങ്ങളുടെ എല്ലാ ഡാറ്റയും ശാശ്വതമായി ഇല്ലാതാകും.",
+    "orgTypes": {
+      "university": "സര്‍വകലാശാല",
+      "government": "സര്‍ക്കാര്‍",
+      "ngo": "എന്‍ജിഒ",
+      "cooperative": "സഹകരണ സംഘം",
+      "research": "ഗവേഷണ സ്ഥാപനം"
+    }
   },
   "farmer": {
     "farmers": "കർഷകർ",
@@ -324,7 +355,17 @@
     "addFirstFarmer": "അവരുടെ പശുക്കളെ നിയന്ത്രിക്കാൻ നിങ്ങൾ പിന്തുണയ്ക്കുന്ന കർഷകനെ ചേർക്കുക",
     "farmerAdded": "കർഷകനെ വിജയകരമായി ചേർത്തു",
     "farmerUpdated": "കർഷകനെ വിജയകരമായി അപ്ഡേറ്റ് ചെയ്തു",
-    "farmerDeleted": "കർഷകനെ നീക്കം ചെയ്തു"
+    "farmerDeleted": "കർഷകനെ നീക്കം ചെയ്തു",
+    "farmingTypes": {
+      "dairy": "ക്ഷീര കൃഷി",
+      "mixed": "സമ്മിശ്ര കൃഷി",
+      "crop": "വിള കൃഷി"
+    },
+    "filter": {
+      "all": "എല്ലാം",
+      "dairy": "ക്ഷീരം",
+      "mixed": "സമ്മിശ്ര"
+    }
   },
   "errors": {
     "generic": "എന്തോ തെറ്റ് സംഭവിച്ചു. ദയവായി വീണ്ടും ശ്രമിക്കുക.",

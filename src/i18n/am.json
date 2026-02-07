@@ -57,16 +57,18 @@
   },
   "roles": {
     "farmer": "ገበሬ",
-    "student": "ተማሪ",
+    "extension_worker": "የግብርና አስፋፊ",
     "nutritionist": "የአመጋገብ ባለሙያ",
-    "extensionWorker": "የግብርና አስፋፊ",
     "researcher": "ተመራማሪ",
+    "feed_supplier": "የእንስሳት መኖ አቅራቢ",
+    "other": "ሌላ",
     "admin": "አስተዳዳሪ",
     "farmerDesc": "የራሴን ከብቶች አስተዳድራለሁ",
-    "studentDesc": "ስለ እንስሳት አመጋገብ እማራለሁ",
+    "extension_workerDesc": "በማህበረሰቤ ውስጥ ገበሬዎችን እረዳለሁ",
     "nutritionistDesc": "ገበሬዎችን በመኖ ቀመር እመክራለሁ",
-    "extensionWorkerDesc": "በማህበረሰቤ ውስጥ ገበሬዎችን እረዳለሁ",
     "researcherDesc": "የከብት አመጋገብ እና ግብርናን አጠናለሁ",
+    "feed_supplierDesc": "የእንስሳት መኖ ምርቶችን አቀርባለሁ",
+    "otherDesc": "ከላይ ያልተዘረዘረ ሌላ ሚና",
     "adminDesc": "ስርዓቱን አስተዳድራለሁ"
   },
   "auth": {
@@ -106,7 +108,9 @@
     "step1of4": "ደረጃ 1 ከ 4",
     "step2of4": "ደረጃ 2 ከ 4",
     "step3of4": "ደረጃ 3 ከ 4",
-    "step4of4": "ደረጃ 4 ከ 4"
+    "step4of4": "ደረጃ 4 ከ 4",
+    "recommendedLanguages": "የሚመከሩ",
+    "otherLanguages": "ሌሎች ቋንቋዎች"
   },
   "profile": {
     "myProfile": "የኔ መገለጫ",
@@ -245,7 +249,27 @@
     "thisWeek": "ይህ ሳምንት",
     "thisMonth": "ይህ ወር",
     "average": "አማካይ",
-    "total": "ጠቅላላ"
+    "total": "ጠቅላላ",
+    "quickLog": {
+      "button": "Quick Log All",
+      "title": "Quick Log - All Cows",
+      "date": "Date",
+      "cowName": "Cow",
+      "morning": "Morning (L)",
+      "evening": "Evening (L)",
+      "total": "Total",
+      "saveAll": "Save All",
+      "saveRow": "Save",
+      "saved": "Saved",
+      "noCows": "No active cows found. Add a cow first.",
+      "allSaved": "All milk logs saved successfully!",
+      "rowSaved": "Milk log saved for {cowName}",
+      "noEntries": "Please enter at least one milk reading",
+      "close": "Close",
+      "savingAll": "Saving all entries...",
+      "duplicateFound": "Log already exists for {cowName} on this date - updated",
+      "entriesSaved": "{count} log saved | {count} logs saved"
+    }
   },
   "reports": {
     "reports": "ሪፖርቶች",
@@ -309,7 +333,14 @@
     "logout": "ውጣ",
     "logoutConfirm": "መውጣት እርግጠኛ ነዎት?",
     "deleteAccount": "መለያ ሰርዝ",
-    "deleteAccountWarning": "ይህ እርምጃ ሊቀለበስ አይችልም። ሁሉም ውሂብዎ በቋሚነት ይሰረዛል።"
+    "deleteAccountWarning": "ይህ እርምጃ ሊቀለበስ አይችልም። ሁሉም ውሂብዎ በቋሚነት ይሰረዛል።",
+    "orgTypes": {
+      "university": "ዩኒቨርሲቲ",
+      "government": "መንግስት",
+      "ngo": "መንግስታዊ ያልሆነ ድርጅት",
+      "cooperative": "ህብረት ስራ",
+      "research": "የምርምር ተቋም"
+    }
   },
   "farmer": {
     "farmers": "ገበሬዎች",
@@ -324,7 +355,17 @@
     "addFirstFarmer": "ላሞቻቸውን ለማስተዳደር የሚረዱትን ገበሬ ይጨምሩ",
     "farmerAdded": "ገበሬ በተሳካ ሁኔታ ተጨመረ",
     "farmerUpdated": "ገበሬ በተሳካ ሁኔታ ተዘምኗል",
-    "farmerDeleted": "ገበሬ ተወግዷል"
+    "farmerDeleted": "ገበሬ ተወግዷል",
+    "farmingTypes": {
+      "dairy": "የወተት እርባታ",
+      "mixed": "ድብልቅ ግብርና",
+      "crop": "የሰብል ግብርና"
+    },
+    "filter": {
+      "all": "ሁሉም",
+      "dairy": "ወተት",
+      "mixed": "ድብልቅ"
+    }
   },
   "errors": {
     "generic": "የሆነ ችግር ተፈጥሯል። እባክዎ እንደገና ይሞክሩ።",

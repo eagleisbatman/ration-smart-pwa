@@ -57,16 +57,18 @@
   },
   "roles": {
     "farmer": "Nông dân",
-    "student": "Sinh viên",
+    "extension_worker": "Cán bộ khuyến nông",
     "nutritionist": "Chuyên gia dinh dưỡng",
-    "extensionWorker": "Cán bộ khuyến nông",
     "researcher": "Nhà nghiên cứu",
+    "feed_supplier": "Nhà cung cấp thức ăn",
+    "other": "Khác",
     "admin": "Quản trị viên",
     "farmerDesc": "Tôi quản lý đàn gia súc của mình",
-    "studentDesc": "Tôi đang học về dinh dưỡng vật nuôi",
+    "extension_workerDesc": "Tôi hỗ trợ nông dân trong cộng đồng",
     "nutritionistDesc": "Tôi tư vấn về công thức thức ăn cho nông dân",
-    "extensionWorkerDesc": "Tôi hỗ trợ nông dân trong cộng đồng",
     "researcherDesc": "Tôi nghiên cứu về dinh dưỡng và chăn nuôi gia súc",
+    "feed_supplierDesc": "Tôi cung cấp sản phẩm thức ăn chăn nuôi",
+    "otherDesc": "Vai trò khác không có trong danh sách trên",
     "adminDesc": "Tôi quản lý hệ thống"
   },
   "auth": {
@@ -106,7 +108,9 @@
     "step1of4": "Bước 1/4",
     "step2of4": "Bước 2/4",
     "step3of4": "Bước 3/4",
-    "step4of4": "Bước 4/4"
+    "step4of4": "Bước 4/4",
+    "recommendedLanguages": "Đề xuất",
+    "otherLanguages": "Ngôn ngữ khác"
   },
   "profile": {
     "myProfile": "Hồ sơ của tôi",
@@ -245,7 +249,27 @@
     "thisWeek": "Tuần này",
     "thisMonth": "Tháng này",
     "average": "Trung bình",
-    "total": "Tổng"
+    "total": "Tổng",
+    "quickLog": {
+      "button": "Quick Log All",
+      "title": "Quick Log - All Cows",
+      "date": "Date",
+      "cowName": "Cow",
+      "morning": "Morning (L)",
+      "evening": "Evening (L)",
+      "total": "Total",
+      "saveAll": "Save All",
+      "saveRow": "Save",
+      "saved": "Saved",
+      "noCows": "No active cows found. Add a cow first.",
+      "allSaved": "All milk logs saved successfully!",
+      "rowSaved": "Milk log saved for {cowName}",
+      "noEntries": "Please enter at least one milk reading",
+      "close": "Close",
+      "savingAll": "Saving all entries...",
+      "duplicateFound": "Log already exists for {cowName} on this date - updated",
+      "entriesSaved": "{count} log saved | {count} logs saved"
+    }
   },
   "reports": {
     "reports": "Báo cáo",
@@ -309,7 +333,14 @@
     "logout": "Đăng xuất",
     "logoutConfirm": "Bạn có chắc chắn muốn đăng xuất?",
     "deleteAccount": "Xóa tài khoản",
-    "deleteAccountWarning": "Hành động này không thể hoàn tác. Tất cả dữ liệu của bạn sẽ bị xóa vĩnh viễn."
+    "deleteAccountWarning": "Hành động này không thể hoàn tác. Tất cả dữ liệu của bạn sẽ bị xóa vĩnh viễn.",
+    "orgTypes": {
+      "university": "Trường đại học",
+      "government": "Chính phủ",
+      "ngo": "Tổ chức phi chính phủ",
+      "cooperative": "Hợp tác xã",
+      "research": "Viện nghiên cứu"
+    }
   },
   "farmer": {
     "farmers": "Nông dân",
@@ -324,7 +355,17 @@
     "addFirstFarmer": "Thêm nông dân bạn hỗ trợ để quản lý bò của họ",
     "farmerAdded": "Đã thêm nông dân thành công",
     "farmerUpdated": "Đã cập nhật nông dân thành công",
-    "farmerDeleted": "Đã xóa nông dân"
+    "farmerDeleted": "Đã xóa nông dân",
+    "farmingTypes": {
+      "dairy": "Chăn nuôi bò sữa",
+      "mixed": "Nông nghiệp hỗn hợp",
+      "crop": "Trồng trọt"
+    },
+    "filter": {
+      "all": "Tất cả",
+      "dairy": "Bò sữa",
+      "mixed": "Hỗn hợp"
+    }
   },
   "errors": {
     "generic": "Đã xảy ra lỗi. Vui lòng thử lại.",

@@ -57,16 +57,18 @@
   },
   "roles": {
     "farmer": "Qonnaan Buulee",
-    "student": "Barataa",
+    "extension_worker": "Hojjetaa Ekisteenshiinii",
     "nutritionist": "Ogeessa Nyaataa",
-    "extensionWorker": "Hojjetaa Ekisteenshiinii",
     "researcher": "Qorataa",
+    "feed_supplier": "Dhiyeessaa Nyaataa",
+    "other": "Kan biraa",
     "admin": "Bulchaa",
     "farmerDesc": "Horii koo nan bulcha",
-    "studentDesc": "Waa'ee nyaata horsiisaa nan baradha",
+    "extension_workerDesc": "Hawaasa koo keessatti qonnaan bultoota nan gargaara",
     "nutritionistDesc": "Qonnaan bultoota waa'ee foormulaa nyaataa nan gorsa",
-    "extensionWorkerDesc": "Hawaasa koo keessatti qonnaan bultoota nan gargaara",
     "researcherDesc": "Nyaata horii fi qonnaa nan qoradha",
+    "feed_supplierDesc": "Oomisha nyaata horii nan dhiyeessa",
+    "otherDesc": "Gahee biraa kan armaan olitti hin tarreeffamne",
     "adminDesc": "Sirnicha nan bulcha"
   },
   "auth": {
@@ -106,7 +108,9 @@
     "step1of4": "Sadarkaa 1 kan 4",
     "step2of4": "Sadarkaa 2 kan 4",
     "step3of4": "Sadarkaa 3 kan 4",
-    "step4of4": "Sadarkaa 4 kan 4"
+    "step4of4": "Sadarkaa 4 kan 4",
+    "recommendedLanguages": "Gorsamame",
+    "otherLanguages": "Afaanota biroo"
   },
   "profile": {
     "myProfile": "Profaayilii Koo",
@@ -245,7 +249,27 @@
     "thisWeek": "Torbee Kana",
     "thisMonth": "Ji'a Kana",
     "average": "Giddugaleessa",
-    "total": "Waliin"
+    "total": "Waliin",
+    "quickLog": {
+      "button": "Quick Log All",
+      "title": "Quick Log - All Cows",
+      "date": "Date",
+      "cowName": "Cow",
+      "morning": "Morning (L)",
+      "evening": "Evening (L)",
+      "total": "Total",
+      "saveAll": "Save All",
+      "saveRow": "Save",
+      "saved": "Saved",
+      "noCows": "No active cows found. Add a cow first.",
+      "allSaved": "All milk logs saved successfully!",
+      "rowSaved": "Milk log saved for {cowName}",
+      "noEntries": "Please enter at least one milk reading",
+      "close": "Close",
+      "savingAll": "Saving all entries...",
+      "duplicateFound": "Log already exists for {cowName} on this date - updated",
+      "entriesSaved": "{count} log saved | {count} logs saved"
+    }
   },
   "reports": {
     "reports": "Gabaasaalee",
@@ -309,7 +333,14 @@
     "logout": "Ba'i",
     "logoutConfirm": "Ba'uuf mirkaneeffamtee?",
     "deleteAccount": "Herrega Haqi",
-    "deleteAccountWarning": "Tarkaanfiin kun duubatti deebi'uu hin danda'u. Deetaan kee hundi itti fufinsaan ni haqa."
+    "deleteAccountWarning": "Tarkaanfiin kun duubatti deebi'uu hin danda'u. Deetaan kee hundi itti fufinsaan ni haqa.",
+    "orgTypes": {
+      "university": "Yuunivarsiitii",
+      "government": "Mootummaa",
+      "ngo": "NGO",
+      "cooperative": "Kooperaatiivii",
+      "research": "Inistiitiyuutii Qorannoo"
+    }
   },
   "farmer": {
     "farmers": "Qonnaan Bultoota",
@@ -324,7 +355,17 @@
     "addFirstFarmer": "Sa'oota isaanii bulchuuf qonnaan buulaa deeggartus dabali",
     "farmerAdded": "Qonnaan buuleen milkaa'inaan dabalame",
     "farmerUpdated": "Qonnaan buuleen milkaa'inaan haaromfame",
-    "farmerDeleted": "Qonnaan buuleen haqame"
+    "farmerDeleted": "Qonnaan buuleen haqame",
+    "farmingTypes": {
+      "dairy": "Horsiisa Aannanii",
+      "mixed": "Qonna Walmakaa",
+      "crop": "Qonna Midhaanii"
+    },
+    "filter": {
+      "all": "Hunda",
+      "dairy": "Aannanii",
+      "mixed": "Walmakaa"
+    }
   },
   "errors": {
     "generic": "Wanti tokko dogoggore. Maaloo irra deebi'i yaali.",

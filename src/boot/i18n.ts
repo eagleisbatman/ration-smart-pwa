@@ -61,6 +61,10 @@ export const i18n = createI18n<[MessageSchema], SupportedLocale>({
 
 export default boot(({ app }) => {
   app.use(i18n);
+
+  // Sync HTML lang attribute with stored locale on boot
+  const storedLocale = localStorage.getItem('locale') || 'en';
+  document.documentElement.setAttribute('lang', storedLocale);
 });
 
 /**

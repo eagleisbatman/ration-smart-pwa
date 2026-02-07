@@ -2,6 +2,14 @@ import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import { api } from 'src/boot/axios';
 import { db, User } from 'src/lib/offline/db';
+import { fetchAndCacheCountries, setCountryCache } from 'src/services/api-adapter';
+
+export interface Country {
+  id: string;
+  country_code: string;
+  name?: string;
+  code?: string; // alias added by api-adapter response transform
+}
 
 export interface AuthState {
   user: User | null;
@@ -14,13 +22,27 @@ export interface AuthState {
   needsOnboarding: boolean;
 }
 
+// Helper: determine which storage backend holds the session.
+// When "Remember me" was checked we persist in localStorage; otherwise sessionStorage.
+function getStorage(): Storage {
+  return localStorage.getItem('remember_me') === '1' ? localStorage : sessionStorage;
+}
+
 export const useAuthStore = defineStore('auth', () => {
-  // State
+  // State – try both storages so a returning session is found regardless
   const user = ref<User | null>(null);
-  const token = ref<string | null>(localStorage.getItem('auth_token'));
-  const userId = ref<string | null>(localStorage.getItem('user_id'));
+  const token = ref<string | null>(
+    localStorage.getItem('auth_token') || sessionStorage.getItem('auth_token'),
+  );
+  const userId = ref<string | null>(
+    localStorage.getItem('user_id') || sessionStorage.getItem('user_id'),
+  );
   const loading = ref(false);
   const error = ref<string | null>(null);
+
+  // Countries state
+  const countries = ref<Country[]>([]);
+  const countriesLoading = ref(false);
 
   // Extended state for generic user system
   const userRole = ref<string>(localStorage.getItem('user_role') || 'farmer');
@@ -33,7 +55,75 @@ export const useAuthStore = defineStore('auth', () => {
   const userLanguage = computed(() => user.value?.language_code || preferredLanguage.value || 'en');
   const needsOnboarding = computed(() => isAuthenticated.value && !selfFarmerProfileId.value);
 
+  // Role-based computed properties
+  const isExtensionWorker = computed(() => {
+    const role = userRole.value?.toLowerCase();
+    return role === 'extension_worker' || role === 'nutritionist';
+  });
+
+  const isResearcher = computed(() => {
+    return userRole.value?.toLowerCase() === 'researcher';
+  });
+
+  const isFarmerRole = computed(() => {
+    const role = userRole.value?.toLowerCase();
+    return role === 'farmer' || role === 'feed_supplier' || role === 'other';
+  });
+
   // Actions
+
+  /**
+   * Fetch countries from the API for dropdown population.
+   * Caches the result in localStorage for offline fallback.
+   */
+  async function fetchCountries(): Promise<void> {
+    // If already loaded, skip
+    if (countries.value.length > 0) return;
+
+    countriesLoading.value = true;
+    try {
+      const response = await api.get('/api/v1/countries');
+      const data = response.data as Country[];
+      countries.value = data;
+      // Cache in localStorage for offline fallback
+      localStorage.setItem('cached_countries', JSON.stringify(data));
+      // Also seed the api-adapter cache for country_code -> UUID lookup
+      setCountryCache(data as Array<{ id: string; country_code: string }>);
+    } catch (err) {
+      console.warn('[Auth] Failed to fetch countries from API, trying localStorage cache:', err);
+      // Fall back to localStorage cache
+      const cached = localStorage.getItem('cached_countries');
+      if (cached) {
+        try {
+          countries.value = JSON.parse(cached) as Country[];
+          setCountryCache(countries.value as Array<{ id: string; country_code: string }>);
+        } catch {
+          console.warn('[Auth] Failed to parse cached countries');
+        }
+      }
+    } finally {
+      countriesLoading.value = false;
+    }
+  }
+
+  /**
+   * Fetch and cache countries for country_code to country_id UUID lookup
+   * This must be called before registration to ensure proper mapping
+   */
+  async function ensureCountriesLoaded(): Promise<void> {
+    try {
+      // Fetch countries from backend
+      const response = await api.get('/api/v1/countries');
+      const countries = response.data as Array<{ id: string; country_code: string }>;
+      // Cache them in the api-adapter for use during registration
+      setCountryCache(countries);
+    } catch (err) {
+      console.warn('[Auth] Failed to pre-load countries, will attempt during registration:', err);
+      // Try the async fallback
+      await fetchAndCacheCountries();
+    }
+  }
+
   async function register(data: {
     email?: string;
     phone?: string;
@@ -46,20 +136,44 @@ export const useAuthStore = defineStore('auth', () => {
     error.value = null;
 
     try {
-      const response = await api.post('/api/v1/users/register', data);
-      const { user: userData, token: authToken, user_id } = response.data;
+      // Ensure countries are loaded for country_code -> country_id mapping
+      await ensureCountriesLoaded();
+
+      // Determine the correct endpoint based on registration method
+      const isPhoneRegistration = data.phone && !data.email;
+      const endpoint = isPhoneRegistration
+        ? '/api/v1/users/register-phone'
+        : '/api/v1/users/register';
+
+      // The api-adapter will transform the request data automatically:
+      // - Convert phone to E.164 format (e.g., "9876543210" -> "+919876543210")
+      // - Convert country_code to country_id UUID
+      // - Map field names (email -> email_id, phone -> phone_number)
+      const response = await api.post(endpoint, data);
+
+      // Handle response - backend returns different field names
+      const responseData = response.data;
+      const userData = responseData.user;
+      const authToken = responseData.access_token || responseData.token;
+      const responseUserId = userData?.id || responseData.user_id;
 
       // Save to local state
       user.value = userData;
       token.value = authToken;
-      userId.value = user_id;
+      userId.value = responseUserId;
 
       // Persist to localStorage
-      localStorage.setItem('auth_token', authToken);
-      localStorage.setItem('user_id', user_id);
+      if (authToken) {
+        localStorage.setItem('auth_token', authToken);
+      }
+      if (responseUserId) {
+        localStorage.setItem('user_id', responseUserId);
+      }
 
       // Save user to IndexedDB
-      await db.users.put(userData);
+      if (userData) {
+        await db.users.put(userData);
+      }
 
       return true;
     } catch (err) {
@@ -74,25 +188,58 @@ export const useAuthStore = defineStore('auth', () => {
     email?: string;
     phone?: string;
     pin: string;
+    country_code?: string; // Needed for phone login to format E.164
+    rememberMe?: boolean;
   }): Promise<boolean> {
     loading.value = true;
     error.value = null;
 
     try {
-      const response = await api.post('/api/v1/users/login', data);
-      const { user: userData, token: authToken, user_id } = response.data;
+      // Determine the correct endpoint based on login method
+      const isPhoneLogin = data.phone && !data.email;
+      const endpoint = isPhoneLogin
+        ? '/api/v1/users/login-phone'
+        : '/api/v1/users/login';
+
+      // Strip rememberMe before sending to the API
+      const { rememberMe, ...apiData } = data;
+
+      // The api-adapter will transform the request data automatically:
+      // - Convert phone to E.164 format
+      // - Map field names (email -> email_id, phone -> phone_number)
+      const response = await api.post(endpoint, apiData);
+
+      // Handle response - backend returns different field names
+      const responseData = response.data;
+      const userData = responseData.user;
+      const authToken = responseData.access_token || responseData.token;
+      const responseUserId = userData?.id || responseData.user_id;
 
       // Save to local state
       user.value = userData;
       token.value = authToken;
-      userId.value = user_id;
+      userId.value = responseUserId;
 
-      // Persist to localStorage
-      localStorage.setItem('auth_token', authToken);
-      localStorage.setItem('user_id', user_id);
+      // Choose storage backend based on "Remember me" preference
+      if (rememberMe) {
+        localStorage.setItem('remember_me', '1');
+      } else {
+        localStorage.removeItem('remember_me');
+      }
+      const storage = getStorage();
+
+      // Persist auth tokens to the chosen storage
+      if (authToken) {
+        storage.setItem('auth_token', authToken);
+      }
+      if (responseUserId) {
+        storage.setItem('user_id', responseUserId);
+      }
 
       // Save user to IndexedDB
-      await db.users.put(userData);
+      if (userData) {
+        await db.users.put(userData);
+      }
 
       return true;
     } catch (err) {
@@ -119,7 +266,7 @@ export const useAuthStore = defineStore('auth', () => {
       });
 
       token.value = response.data.token;
-      localStorage.setItem('auth_token', response.data.token);
+      getStorage().setItem('auth_token', response.data.token);
 
       return true;
     } catch (err) {
@@ -216,7 +363,14 @@ export const useAuthStore = defineStore('auth', () => {
     error.value = null;
 
     try {
-      const response = await api.put(`/api/v1/users/${userId.value}/settings`, settings);
+      // Backend expects settings as query parameters, not request body
+      const params = new URLSearchParams();
+      if (settings.user_role) params.append('user_role', settings.user_role);
+      if (settings.language_code) params.append('language_code', settings.language_code);
+      if (settings.organization_id) params.append('organization_id', settings.organization_id);
+      const queryString = params.toString();
+      const settingsUrl = `/api/v1/users/${userId.value}/settings${queryString ? '?' + queryString : ''}`;
+      const response = await api.put(settingsUrl);
 
       // Update local state
       if (settings.user_role) {
@@ -288,6 +442,46 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
+  async function requestContactChange(type: 'email' | 'phone', newValue: string): Promise<boolean> {
+    loading.value = true;
+    error.value = null;
+    try {
+      await api.post('/api/v1/auth/change-contact/request', {
+        type,
+        new_value: newValue,
+      });
+      return true;
+    } catch (err) {
+      error.value = extractErrorMessage(err);
+      return false;
+    } finally {
+      loading.value = false;
+    }
+  }
+
+  async function verifyContactChange(type: 'email' | 'phone', newValue: string, code: string): Promise<boolean> {
+    loading.value = true;
+    error.value = null;
+    try {
+      await api.post('/api/v1/auth/change-contact/verify', {
+        type,
+        new_value: newValue,
+        verification_code: code,
+      });
+      // Update local user data
+      if (user.value) {
+        if (type === 'email') user.value.email = newValue;
+        else user.value.phone = newValue;
+      }
+      return true;
+    } catch (err) {
+      error.value = extractErrorMessage(err);
+      return false;
+    } finally {
+      loading.value = false;
+    }
+  }
+
   function clearAuth(): void {
     user.value = null;
     token.value = null;
@@ -295,8 +489,13 @@ export const useAuthStore = defineStore('auth', () => {
     userRole.value = 'farmer';
     preferredLanguage.value = 'en';
     selfFarmerProfileId.value = null;
-    localStorage.removeItem('auth_token');
-    localStorage.removeItem('user_id');
+
+    // Clear auth data from both storages
+    for (const storage of [localStorage, sessionStorage]) {
+      storage.removeItem('auth_token');
+      storage.removeItem('user_id');
+    }
+    localStorage.removeItem('remember_me');
     localStorage.removeItem('user_role');
     localStorage.removeItem('preferred_language');
     localStorage.removeItem('self_farmer_profile_id');
@@ -322,6 +521,8 @@ export const useAuthStore = defineStore('auth', () => {
     userId,
     loading,
     error,
+    countries,
+    countriesLoading,
     userRole,
     preferredLanguage,
     selfFarmerProfileId,
@@ -330,7 +531,12 @@ export const useAuthStore = defineStore('auth', () => {
     userCountry,
     userLanguage,
     needsOnboarding,
+    isExtensionWorker,
+    isResearcher,
+    isFarmerRole,
     // Actions
+    fetchCountries,
+    ensureCountriesLoaded,
     register,
     login,
     verifyPin,
@@ -340,6 +546,8 @@ export const useAuthStore = defineStore('auth', () => {
     createSelfProfile,
     getSelfProfile,
     changePin,
+    requestContactChange,
+    verifyContactChange,
     clearAuth,
     logout,
     initialize,

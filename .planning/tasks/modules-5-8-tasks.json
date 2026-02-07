@@ -1,0 +1,1765 @@
+{
+  "metadata": {
+    "createdAt": "2026-02-06",
+    "source": "MODULE_REVIEW.md",
+    "modules": [
+      "5-diet",
+      "6-milk-logging",
+      "7-feed-management",
+      "8-farmer-management"
+    ],
+    "totalTasks": 32
+  },
+  "tasks": [
+    {
+      "module": "5-diet",
+      "taskId": "H14",
+      "priority": "high",
+      "title": "Implement dynamic currency formatting in diet module",
+      "description": "Currency is hardcoded as Indian Rupee (\u20b9) throughout the diet module. This causes incorrect currency display for users in Kenya (KES), Ethiopia (ETB), Vietnam (VND), and other countries. The backend sends numeric amounts but the frontend hardcodes the \u20b9 symbol. Currency should be dynamically determined based on the user's country setting.",
+      "files": [
+        "src/pages/diet/DietListPage.vue",
+        "src/pages/diet/DietDetailPage.vue",
+        "src/pages/diet/DietWizardPage.vue",
+        "src/composables/useCurrency.ts",
+        "src/stores/auth.ts"
+      ],
+      "changes": [
+        {
+          "file": "src/composables/useCurrency.ts",
+          "action": "create",
+          "details": "Create a new composable that provides: 1) formatCurrency(amount, countryCode) function that uses Intl.NumberFormat with currency from country mapping 2) getCurrencySymbol(countryCode) function 3) Country-to-currency mapping object (IN->INR, KE->KES, ET->ETB, VN->VND, etc.) 4) Reactive userCurrency computed from auth store's user country"
+        },
+        {
+          "file": "src/pages/diet/DietListPage.vue",
+          "action": "modify",
+          "details": "Replace all instances of '\u20b9{{ diet.total_cost.toFixed(2) }}' with '{{ formatCurrency(diet.total_cost) }}'. Import and use the useCurrency composable."
+        },
+        {
+          "file": "src/pages/diet/DietDetailPage.vue",
+          "action": "modify",
+          "details": "Replace hardcoded \u20b9 symbols with formatCurrency() calls. Update total cost display, feed costs, and any other monetary values."
+        },
+        {
+          "file": "src/pages/diet/DietWizardPage.vue",
+          "action": "modify",
+          "details": "Replace hardcoded \u20b9 symbols in review step with formatCurrency() calls. Update budget input prefix to use dynamic currency symbol."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Indian users see \u20b9 symbol with proper formatting (e.g., \u20b91,234.56)",
+        "Kenyan users see KES symbol with proper formatting",
+        "Ethiopian users see ETB symbol with proper formatting",
+        "Vietnamese users see \u20ab symbol with proper formatting",
+        "Currency formatting respects locale conventions (decimal separator, grouping)",
+        "All diet pages use the shared useCurrency composable"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Currency displays correctly for Indian user",
+          "steps": [
+            "Login as user with India country",
+            "Navigate to diet list page",
+            "View a completed diet"
+          ],
+          "expectedResult": "Cost displays as \u20b91,234.56 format with Indian number formatting"
+        },
+        {
+          "scenario": "Currency displays correctly for Kenyan user",
+          "steps": [
+            "Login as user with Kenya country",
+            "Navigate to diet detail page"
+          ],
+          "expectedResult": "Cost displays as KES 1,234.56 format"
+        },
+        {
+          "scenario": "Currency persists through diet wizard flow",
+          "steps": [
+            "Start diet wizard as Ethiopian user",
+            "Complete all steps to review",
+            "Check cost display"
+          ],
+          "expectedResult": "Budget and cost displays show ETB currency throughout"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "medium"
+    },
+    {
+      "module": "5-diet",
+      "taskId": "H15",
+      "priority": "high",
+      "title": "Internationalize all diet module text",
+      "description": "All text in the diet module is hardcoded in English including wizard step titles, form labels, goal descriptions, status labels, recommendations, and warnings. Non-English users cannot use the app effectively. The app has i18n infrastructure (vue-i18n with 22 locale files) but the diet module doesn't use $t() calls.",
+      "files": [
+        "src/pages/diet/DietListPage.vue",
+        "src/pages/diet/DietDetailPage.vue",
+        "src/pages/diet/DietWizardPage.vue",
+        "src/i18n/en.json",
+        "src/i18n/hi.json",
+        "src/i18n/te.json",
+        "src/i18n/kn.json",
+        "src/i18n/vi.json",
+        "src/i18n/am.json"
+      ],
+      "changes": [
+        {
+          "file": "src/i18n/en.json",
+          "action": "modify",
+          "details": "Add diet module translation keys: diet.wizard.title, diet.wizard.steps.selectCow, diet.wizard.steps.animalDetails, diet.wizard.steps.selectFeeds, diet.wizard.steps.optimizationGoal, diet.wizard.steps.review, diet.goals.minimizeCost.title/description, diet.goals.maximizeMilk.title/description, diet.goals.balanced.title/description, diet.status.pending/processing/completed/failed, diet.labels.dmIntake/cpPercentage/tdnPercentage/totalCost/feedCount, diet.empty.title/message/action, diet.recommendations.title, diet.warnings.title"
+        },
+        {
+          "file": "src/pages/diet/DietListPage.vue",
+          "action": "modify",
+          "details": "Replace all hardcoded English strings with $t() calls. Include: page title, status labels, stats labels, empty state text, date formatting using i18n.d()"
+        },
+        {
+          "file": "src/pages/diet/DietWizardPage.vue",
+          "action": "modify",
+          "details": "Replace wizard step titles, goal titles and descriptions, form labels, hints, validation messages, button text, and offline warning with $t() calls"
+        },
+        {
+          "file": "src/pages/diet/DietDetailPage.vue",
+          "action": "modify",
+          "details": "Replace section headers, stat labels, feed list headers, recommendation/warning titles, and action button text with $t() calls"
+        },
+        {
+          "file": "src/i18n/hi.json",
+          "action": "modify",
+          "details": "Add Hindi translations for all diet module keys"
+        },
+        {
+          "file": "src/i18n/am.json",
+          "action": "modify",
+          "details": "Add Amharic translations for all diet module keys (Ethiopia is a focus country)"
+        }
+      ],
+      "acceptanceCriteria": [
+        "No hardcoded English strings in any diet module Vue files",
+        "All 22 locale files have diet module translations",
+        "Switching language in settings immediately updates diet module UI",
+        "Date formatting uses locale-appropriate format",
+        "Form validation messages are translated",
+        "Empty states and error messages are translated"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Diet module displays in Hindi",
+          "steps": [
+            "Set preferred language to Hindi in settings",
+            "Navigate to diet list page",
+            "Open diet wizard"
+          ],
+          "expectedResult": "All text including wizard steps, labels, and buttons display in Hindi"
+        },
+        {
+          "scenario": "Language switch updates diet module",
+          "steps": [
+            "Open diet detail page in English",
+            "Change language to Telugu in settings",
+            "Return to diet detail page"
+          ],
+          "expectedResult": "Page displays in Telugu without requiring reload"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "large"
+    },
+    {
+      "module": "5-diet",
+      "taskId": "M28",
+      "priority": "medium",
+      "title": "Add diet export and share functionality",
+      "description": "There is no way to save or share diet plans. Farmers often need to share diets with family members, farm workers, or print them for reference. Common sharing methods in target countries include WhatsApp (India, Kenya) and PDF download for printing. The diet detail page should have export options.",
+      "files": [
+        "src/pages/diet/DietDetailPage.vue",
+        "src/composables/useExport.ts",
+        "src/lib/pdfGenerator.ts"
+      ],
+      "changes": [
+        {
+          "file": "src/composables/useExport.ts",
+          "action": "create",
+          "details": "Create composable with: 1) generateDietPDF(diet) - creates PDF with diet summary, feed table, and nutrient balance 2) shareViaWhatsApp(text, url) - opens WhatsApp with formatted diet summary 3) printDiet(diet) - opens print dialog with formatted view 4) copyToClipboard(text) - copies diet summary as text"
+        },
+        {
+          "file": "src/lib/pdfGenerator.ts",
+          "action": "create",
+          "details": "Create PDF generation utility using jspdf or pdfmake library. Include: diet header with cow name and date, feed table with amounts and costs, nutrient balance summary, recommendations and warnings"
+        },
+        {
+          "file": "src/pages/diet/DietDetailPage.vue",
+          "action": "modify",
+          "details": "Add share button in header that opens action sheet with options: Share on WhatsApp, Download PDF, Print, Copy Summary. Only show for completed diets."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Share button visible on completed diet detail page",
+        "WhatsApp share opens app with formatted diet text",
+        "PDF download creates readable document with all diet info",
+        "Print opens browser print dialog with clean layout",
+        "Copy puts diet summary text on clipboard",
+        "Share options work on both mobile and desktop"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Share diet via WhatsApp",
+          "steps": [
+            "Open completed diet detail",
+            "Tap share button",
+            "Select WhatsApp option"
+          ],
+          "expectedResult": "WhatsApp opens with pre-filled message containing diet summary"
+        },
+        {
+          "scenario": "Download diet as PDF",
+          "steps": [
+            "Open completed diet detail",
+            "Tap share button",
+            "Select Download PDF"
+          ],
+          "expectedResult": "PDF file downloads with diet name in filename, contains full diet details"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "medium"
+    },
+    {
+      "module": "5-diet",
+      "taskId": "M29",
+      "priority": "medium",
+      "title": "Add diet regenerate functionality",
+      "description": "When a diet optimization fails or produces suboptimal results, users must restart the entire wizard from step 1. There should be a 'Try Again' or 'Regenerate' option that allows users to tweak parameters (different feeds, different goal) and re-run optimization without starting over.",
+      "files": [
+        "src/pages/diet/DietDetailPage.vue",
+        "src/stores/diets.ts"
+      ],
+      "changes": [
+        {
+          "file": "src/pages/diet/DietDetailPage.vue",
+          "action": "modify",
+          "details": "Add 'Regenerate Diet' button for failed diets and 'Optimize Again' button for completed diets. Button navigates to DietWizardPage with query params containing diet.id for pre-filling. Show warning that new optimization will be created (original preserved)."
+        },
+        {
+          "file": "src/stores/diets.ts",
+          "action": "modify",
+          "details": "Add getInputDataForRegeneration(dietId) action that extracts and returns the original input_data from a diet record for pre-filling the wizard form."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Failed diets show 'Try Again' button prominently",
+        "Completed diets show 'Optimize Again' option in action menu",
+        "Clicking regenerate pre-fills wizard with original cow, feeds, and settings",
+        "User can modify any parameter before re-running",
+        "Original diet is preserved (regeneration creates new record)",
+        "Works offline (navigates to wizard but shows offline warning)"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Regenerate failed diet",
+          "steps": [
+            "Open a diet with failed status",
+            "Click 'Try Again' button",
+            "Verify wizard is pre-filled"
+          ],
+          "expectedResult": "Wizard opens at step 1 with cow pre-selected and original parameters filled"
+        },
+        {
+          "scenario": "Regenerate completed diet with modifications",
+          "steps": [
+            "Open completed diet",
+            "Click 'Optimize Again'",
+            "Change optimization goal",
+            "Complete wizard"
+          ],
+          "expectedResult": "New diet created with different goal, original diet unchanged"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "small"
+    },
+    {
+      "module": "5-diet",
+      "taskId": "M30",
+      "priority": "medium",
+      "title": "Add body condition score and age inputs to diet wizard",
+      "description": "The DietWizard doesn't ask for body condition score (1-5 scale) or cow age, even though both affect nutritional requirements and are captured in CowFormPage. When a cow is selected, these should auto-fill from cow data. When entering manually, fields should be available. Backend optimization API would benefit from these inputs.",
+      "files": [
+        "src/pages/diet/DietWizardPage.vue",
+        "src/stores/diets.ts"
+      ],
+      "changes": [
+        {
+          "file": "src/pages/diet/DietWizardPage.vue",
+          "action": "modify",
+          "details": "In Step 2 (Animal Details): 1) Add body_condition_score select with options 1 (Very Thin) to 5 (Obese) 2) Add age_months numeric input with hint showing years/months conversion 3) Auto-fill these fields when cow is selected in Step 1 4) Include fields in optimization request payload"
+        },
+        {
+          "file": "src/stores/diets.ts",
+          "action": "modify",
+          "details": "Update optimizeDiet action to include body_condition_score and age_months in the optimization request payload to backend"
+        }
+      ],
+      "acceptanceCriteria": [
+        "Body condition score field with 1-5 options appears in animal details step",
+        "Age field in months appears in animal details step",
+        "When cow is selected, BCS and age auto-fill from cow profile",
+        "Fields are optional when entering manually",
+        "Values are sent to optimization API",
+        "Fields have proper validation and helpful labels"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "BCS auto-fills from selected cow",
+          "steps": [
+            "Start diet wizard",
+            "Select a cow with BCS 3",
+            "Move to animal details step"
+          ],
+          "expectedResult": "Body condition score shows 3 pre-selected"
+        },
+        {
+          "scenario": "Manual entry includes BCS and age",
+          "steps": [
+            "Start diet wizard",
+            "Choose manual entry",
+            "Fill animal details step"
+          ],
+          "expectedResult": "Can enter BCS and age along with other details"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "small"
+    },
+    {
+      "module": "5-diet",
+      "taskId": "M31",
+      "priority": "medium",
+      "title": "Add diet comparison view",
+      "description": "Users cannot compare two diet plans side by side to see trade-offs between cost, nutrition, and feed composition. This would help farmers make informed decisions when choosing between minimize cost vs maximize milk goals.",
+      "files": [
+        "src/pages/diet/DietComparePage.vue",
+        "src/router/routes.ts",
+        "src/pages/diet/DietDetailPage.vue"
+      ],
+      "changes": [
+        {
+          "file": "src/pages/diet/DietComparePage.vue",
+          "action": "create",
+          "details": "Create new comparison page with: 1) Two column layout showing diets side by side 2) Selectors to choose which diets to compare (from same cow's history) 3) Comparison sections: cost difference, nutrient balance bars, feed list with differences highlighted 4) Clear visual indicators (green/red) for better/worse values"
+        },
+        {
+          "file": "src/router/routes.ts",
+          "action": "modify",
+          "details": "Add route /diet/compare with optional query params diet1 and diet2 for pre-selecting diets"
+        },
+        {
+          "file": "src/pages/diet/DietDetailPage.vue",
+          "action": "modify",
+          "details": "Add 'Compare' button that navigates to DietComparePage with current diet pre-selected as diet1"
+        }
+      ],
+      "acceptanceCriteria": [
+        "Compare page shows two diets side by side",
+        "Can select any two completed diets for comparison",
+        "Cost difference clearly shown with percentage",
+        "Nutrient values compared with visual bars",
+        "Feed differences highlighted (unique feeds, quantity differences)",
+        "Accessible from diet detail page and diet list"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Compare cost vs milk diets",
+          "steps": [
+            "Navigate to diet compare page",
+            "Select minimize_cost diet for column 1",
+            "Select maximize_milk diet for column 2"
+          ],
+          "expectedResult": "Shows cost difference, nutrient differences, and feed variations clearly"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "medium"
+    },
+    {
+      "module": "5-diet",
+      "taskId": "M32",
+      "priority": "medium",
+      "title": "Show feed availability and stock status in diet wizard",
+      "description": "The diet wizard shows all feeds without indicating whether the farmer currently has them available. Users may select feeds they don't have in stock, leading to impractical diet recommendations. The wizard should show stock/availability status from the feeds module.",
+      "files": [
+        "src/pages/diet/DietWizardPage.vue",
+        "src/stores/feeds.ts"
+      ],
+      "changes": [
+        {
+          "file": "src/pages/diet/DietWizardPage.vue",
+          "action": "modify",
+          "details": "In Step 3 (Select Feeds): 1) Add visual indicator for feed availability (green dot for in-stock, grey for unavailable) 2) Allow filtering by 'Available only' toggle 3) Show 'Not in stock' caption on unavailable feeds 4) Optionally sort available feeds first"
+        },
+        {
+          "file": "src/stores/feeds.ts",
+          "action": "modify",
+          "details": "Note: This depends on M39 (inventory tracking) being implemented first. Add computed for availableFeeds that filters custom feeds with stock_quantity > 0 or availability status."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Feeds show visual stock indicator (available/unavailable)",
+        "Toggle to filter and show only available feeds",
+        "Unavailable feeds can still be selected but show warning",
+        "Feed search results respect availability filter",
+        "Works with both master and custom feeds"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Filter by available feeds only",
+          "steps": [
+            "Start diet wizard",
+            "Navigate to feed selection step",
+            "Enable 'Available only' filter"
+          ],
+          "expectedResult": "Only feeds marked as in-stock are shown"
+        }
+      ],
+      "status": "blocked",
+      "estimatedEffort": "small",
+      "dependencies": [
+        "M39"
+      ],
+      "blockedBy": "Requires backend inventory/stock tracking API"
+    },
+    {
+      "module": "5-diet",
+      "taskId": "L9",
+      "priority": "low",
+      "title": "Add historical diet cost comparison chart",
+      "description": "Users cannot visualize how diet costs have changed over time for a specific cow. A chart showing historical diet costs would help farmers understand cost trends and the impact of feed price changes.",
+      "files": [
+        "src/pages/diet/DietListPage.vue",
+        "src/pages/cows/CowDetailPage.vue",
+        "src/components/charts/DietCostChart.vue"
+      ],
+      "changes": [
+        {
+          "file": "src/components/charts/DietCostChart.vue",
+          "action": "create",
+          "details": "Create line chart component using Chart.js or ApexCharts showing diet costs over time. X-axis: date, Y-axis: cost. Support filtering by cow. Show average line and trend indicator."
+        },
+        {
+          "file": "src/pages/diet/DietListPage.vue",
+          "action": "modify",
+          "details": "Add expandable chart section at top of page showing cost trends for selected cow or all cows"
+        },
+        {
+          "file": "src/pages/cows/CowDetailPage.vue",
+          "action": "modify",
+          "details": "Add diet cost chart in cow detail page showing that cow's diet cost history"
+        }
+      ],
+      "acceptanceCriteria": [
+        "Line chart shows diet costs over time",
+        "Can filter by specific cow or view all",
+        "Chart is responsive and touch-friendly",
+        "Shows average cost line",
+        "Works with cached data offline"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "View diet cost trends",
+          "steps": [
+            "Navigate to diet list page",
+            "Expand cost chart section",
+            "Select specific cow filter"
+          ],
+          "expectedResult": "Chart shows historical diet costs for selected cow with trend line"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "medium",
+      "completedAt": "2026-02-07",
+      "notes": "Implemented in session 3"
+    },
+    {
+      "module": "5-diet",
+      "taskId": "L10",
+      "priority": "low",
+      "title": "Add diet reminder and notification integration",
+      "description": "There is no way to set reminders for feeding times based on diet plans. Users may forget to follow the recommended feeding schedule. Integration with device notifications would improve adherence to diet plans.",
+      "files": [
+        "src/pages/diet/DietDetailPage.vue",
+        "src/composables/useNotifications.ts",
+        "src-pwa/custom-service-worker.ts"
+      ],
+      "changes": [
+        {
+          "file": "src/composables/useNotifications.ts",
+          "action": "create",
+          "details": "Create composable for: 1) Requesting notification permission 2) Scheduling local notifications for feeding times 3) Managing notification preferences 4) Integration with service worker for background notifications"
+        },
+        {
+          "file": "src/pages/diet/DietDetailPage.vue",
+          "action": "modify",
+          "details": "Add 'Set Reminder' button that opens dialog to configure feeding time reminders (morning/evening times). Save preferences and schedule notifications."
+        },
+        {
+          "file": "src-pwa/custom-service-worker.ts",
+          "action": "modify",
+          "details": "Add notification scheduling and display logic for diet reminders"
+        }
+      ],
+      "acceptanceCriteria": [
+        "Can set feeding time reminders from diet detail page",
+        "Notification permission requested when setting first reminder",
+        "Reminders work even when app is closed (PWA)",
+        "Can configure morning and evening reminder times",
+        "Reminders reference specific cow and diet"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Set morning feeding reminder",
+          "steps": [
+            "Open completed diet detail",
+            "Click 'Set Reminder'",
+            "Enable morning reminder at 6:00 AM"
+          ],
+          "expectedResult": "Reminder scheduled, notification appears at 6:00 AM next day"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "large",
+      "completedAt": "2026-02-07",
+      "notes": "Implemented in session 3"
+    },
+    {
+      "module": "6-milk-logging",
+      "taskId": "H16",
+      "priority": "high",
+      "title": "Internationalize all milk logging text",
+      "description": "All text in the milk logging module is hardcoded in English including labels, summary stats, date headers, validation messages, and empty states. Non-English users cannot effectively use the app. The milk logging module should use $t() calls for all user-visible text.",
+      "files": [
+        "src/pages/logs/LogListPage.vue",
+        "src/pages/logs/LogFormPage.vue",
+        "src/i18n/en.json",
+        "src/i18n/hi.json",
+        "src/i18n/te.json",
+        "src/i18n/am.json"
+      ],
+      "changes": [
+        {
+          "file": "src/i18n/en.json",
+          "action": "modify",
+          "details": "Add milk logging translation keys: logs.title, logs.summary.today, logs.summary.thisWeek, logs.filter.allCows, logs.filter.selectCow, logs.filter.dateRange, logs.dateHeaders.today/yesterday, logs.labels.morning/evening/total/fatPercent, logs.empty.title/message/action, logs.form.title.new/edit, logs.form.fields.cow/date/morning/evening/fat/notes, logs.form.validation.cowRequired/amountRequired, logs.actions.save/delete/confirm"
+        },
+        {
+          "file": "src/pages/logs/LogListPage.vue",
+          "action": "modify",
+          "details": "Replace all hardcoded strings with $t() calls. Use i18n.d() for date formatting. Include: summary labels, filter placeholders, date group headers (Today, Yesterday), M:/E: abbreviations, empty state text"
+        },
+        {
+          "file": "src/pages/logs/LogFormPage.vue",
+          "action": "modify",
+          "details": "Replace form labels, placeholders, validation messages, button text, and delete confirmation with $t() calls"
+        },
+        {
+          "file": "src/i18n/hi.json",
+          "action": "modify",
+          "details": "Add Hindi translations for all milk logging keys"
+        },
+        {
+          "file": "src/i18n/am.json",
+          "action": "modify",
+          "details": "Add Amharic translations for all milk logging keys"
+        }
+      ],
+      "acceptanceCriteria": [
+        "No hardcoded English strings in milk logging Vue files",
+        "All 22 locale files have milk logging translations",
+        "Morning/Evening abbreviations translated appropriately",
+        "Date headers (Today, Yesterday) are localized",
+        "Relative date formatting works for all locales",
+        "Validation messages are translated"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Milk logging in Hindi",
+          "steps": [
+            "Set language to Hindi",
+            "Navigate to milk log list",
+            "View summary and date headers"
+          ],
+          "expectedResult": "All text including Today, This Week, Morning, Evening displays in Hindi"
+        },
+        {
+          "scenario": "Form validation in Telugu",
+          "steps": [
+            "Set language to Telugu",
+            "Open new milk log form",
+            "Try to submit without selecting cow"
+          ],
+          "expectedResult": "Validation error message appears in Telugu"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "medium"
+    },
+    {
+      "module": "6-milk-logging",
+      "taskId": "M33",
+      "priority": "medium",
+      "title": "Replace generic pets icon with cow-specific icon in milk logging",
+      "description": "The milk logging module uses the generic Material Design 'pets' icon for cow avatars throughout the list and form. This is not intuitive for a dairy farming app. Should use a cow-specific icon for better user experience.",
+      "files": [
+        "src/pages/logs/LogListPage.vue",
+        "src/pages/logs/LogFormPage.vue",
+        "src/assets/icons/cow.svg"
+      ],
+      "changes": [
+        {
+          "file": "src/assets/icons/cow.svg",
+          "action": "create",
+          "details": "Create or source a simple cow SVG icon that works at small sizes (24x24). Should be a clear cow silhouette or head, works well in outlined style to match Material icons."
+        },
+        {
+          "file": "src/pages/logs/LogListPage.vue",
+          "action": "modify",
+          "details": "Replace <q-icon name='pets'> in log list items with custom cow icon. Can use q-icon with svg slot or img tag. Ensure icon maintains consistent sizing with other Material icons."
+        },
+        {
+          "file": "src/pages/logs/LogFormPage.vue",
+          "action": "modify",
+          "details": "Replace pets icon in cow selector dropdown with cow icon"
+        }
+      ],
+      "acceptanceCriteria": [
+        "All cow avatars in milk log list show cow icon",
+        "Cow selector in form shows cow icon",
+        "Icon is clear and recognizable at 24x24 size",
+        "Icon color matches other Material icons (inherits color)",
+        "Icon works in dark mode if supported"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Cow icon displays in milk log list",
+          "steps": [
+            "Navigate to milk log list",
+            "View log entries"
+          ],
+          "expectedResult": "Each log entry shows cow icon instead of generic pets icon"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "small"
+    },
+    {
+      "module": "6-milk-logging",
+      "taskId": "M34",
+      "priority": "medium",
+      "title": "Add duplicate milk log detection and warning",
+      "description": "Users can accidentally create duplicate milk logs for the same cow on the same date without any warning. The store already has a getLogByDate(cowId, date) function but LogFormPage doesn't use it. Should warn users when a log already exists.",
+      "files": [
+        "src/pages/logs/LogFormPage.vue",
+        "src/stores/milkLogs.ts"
+      ],
+      "changes": [
+        {
+          "file": "src/pages/logs/LogFormPage.vue",
+          "action": "modify",
+          "details": "When cow or date changes in form: 1) Call milkLogsStore.getLogByDate(cowId, date) 2) If log exists, show warning banner with link to existing log 3) Provide option to 'Edit existing log' which navigates to edit mode 4) Still allow creating duplicate if user dismisses warning (their choice)"
+        },
+        {
+          "file": "src/stores/milkLogs.ts",
+          "action": "modify",
+          "details": "Ensure getLogByDate returns full log object or null. May need to add getLogByCowAndDate as alias if function signature differs."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Warning appears when log already exists for cow+date combo",
+        "Warning shows date and existing log totals",
+        "Can click to edit existing log instead of creating duplicate",
+        "Can dismiss warning and create duplicate if intended",
+        "Works with offline cached data"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Duplicate log warning appears",
+          "steps": [
+            "Create milk log for Lakshmi on today's date",
+            "Start new milk log form",
+            "Select Lakshmi and today's date"
+          ],
+          "expectedResult": "Warning shows 'Log already exists for this date' with option to edit"
+        },
+        {
+          "scenario": "Edit existing log from warning",
+          "steps": [
+            "Trigger duplicate warning as above",
+            "Click 'Edit existing log' button"
+          ],
+          "expectedResult": "Navigates to edit mode for the existing log"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "small"
+    },
+    {
+      "module": "6-milk-logging",
+      "taskId": "M35",
+      "priority": "medium",
+      "title": "Add quick entry mode for logging multiple cows",
+      "description": "Farmers with large herds must repeatedly select cow, enter values, save, and start over. This is tedious for daily milk logging of 10+ cows. A quick entry mode would allow logging multiple cows in succession without returning to the list.",
+      "files": [
+        "src/pages/logs/LogFormPage.vue",
+        "src/pages/logs/QuickLogPage.vue"
+      ],
+      "changes": [
+        {
+          "file": "src/pages/logs/QuickLogPage.vue",
+          "action": "create",
+          "details": "Create new quick log page with: 1) Date selector at top (defaults to today) 2) List of all active cows with inline morning/evening/fat inputs 3) Visual indicator for cows already logged today (greyed out or checkmarked) 4) 'Save All' button at bottom 5) Progress indicator (5/12 cows logged) 6) Swipe to skip a cow"
+        },
+        {
+          "file": "src/pages/logs/LogFormPage.vue",
+          "action": "modify",
+          "details": "Add 'Next Cow' button that saves current log and loads form for next cow (alphabetically or by last milk order). Show 'Last: 3 more cows' indicator."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Quick log page shows all cows with inline inputs",
+        "Can log multiple cows without navigating away",
+        "Already-logged cows are visually distinct",
+        "Can skip cows that weren't milked",
+        "Save All creates individual log entries for each cow",
+        "Works offline with sync queue"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Quick log 5 cows",
+          "steps": [
+            "Navigate to quick log page",
+            "Enter morning values for 5 cows",
+            "Click Save All"
+          ],
+          "expectedResult": "5 individual milk log entries created, page shows success state"
+        },
+        {
+          "scenario": "Skip cow in quick log",
+          "steps": [
+            "Open quick log page",
+            "Swipe left on a cow to skip",
+            "Save All"
+          ],
+          "expectedResult": "Skipped cow not included in saved logs"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "medium"
+    },
+    {
+      "module": "6-milk-logging",
+      "taskId": "M36",
+      "priority": "medium",
+      "title": "Add optional milk quality metrics (SNF, temperature)",
+      "description": "The milk logging form only captures fat percentage for quality tracking. SNF (solids-not-fat) percentage is commonly measured in Indian dairy cooperatives, and milk temperature is important for freshness assessment. These should be optional fields.",
+      "files": [
+        "src/pages/logs/LogFormPage.vue",
+        "src/stores/milkLogs.ts",
+        "src/pages/logs/LogListPage.vue"
+      ],
+      "changes": [
+        {
+          "file": "src/pages/logs/LogFormPage.vue",
+          "action": "modify",
+          "details": "Add optional fields section: 1) SNF percentage input (0-15% range) 2) Temperature input in Celsius (20-40 range) 3) Collapsible 'Quality Details' section to avoid cluttering form 4) Both fields optional"
+        },
+        {
+          "file": "src/stores/milkLogs.ts",
+          "action": "modify",
+          "details": "Update log creation and update to include snf_percentage and temperature fields. Update type definitions."
+        },
+        {
+          "file": "src/pages/logs/LogListPage.vue",
+          "action": "modify",
+          "details": "Show SNF percentage alongside fat in log list items when available (e.g., 'Fat: 4.2% \u00b7 SNF: 8.5%')"
+        }
+      ],
+      "acceptanceCriteria": [
+        "SNF percentage field available in milk log form",
+        "Temperature field available in milk log form",
+        "Fields are optional and don't block submission",
+        "Quality values shown in log list when present",
+        "Backend accepts and stores new fields",
+        "Works offline with sync queue"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Log milk with SNF",
+          "steps": [
+            "Open new milk log form",
+            "Fill required fields",
+            "Expand quality section and enter SNF 8.5%",
+            "Save log"
+          ],
+          "expectedResult": "Log saved with SNF value, visible in list view"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "small"
+    },
+    {
+      "module": "6-milk-logging",
+      "taskId": "L11",
+      "priority": "low",
+      "title": "Add milk price tracking for revenue calculation",
+      "description": "Users cannot track milk prices or calculate revenue from milk sales. A price per liter field and revenue calculation would help farmers understand their income from dairy farming.",
+      "files": [
+        "src/pages/logs/LogFormPage.vue",
+        "src/pages/logs/LogListPage.vue",
+        "src/stores/milkLogs.ts",
+        "src/composables/useCurrency.ts"
+      ],
+      "changes": [
+        {
+          "file": "src/pages/logs/LogFormPage.vue",
+          "action": "modify",
+          "details": "Add optional 'Price per liter' field with currency prefix. Calculate and display estimated revenue (total_liters * price). Remember last used price as default."
+        },
+        {
+          "file": "src/stores/milkLogs.ts",
+          "action": "modify",
+          "details": "Add price_per_liter and revenue computed fields. Add computed for daily/weekly/monthly revenue totals."
+        },
+        {
+          "file": "src/pages/logs/LogListPage.vue",
+          "action": "modify",
+          "details": "Add optional revenue summary card showing This Week Revenue using currency formatting"
+        }
+      ],
+      "acceptanceCriteria": [
+        "Can enter price per liter when logging milk",
+        "Revenue calculated and displayed per log entry",
+        "Summary shows weekly/monthly revenue totals",
+        "Currency formatting uses user's country currency",
+        "Last used price remembered for convenience"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Track milk revenue",
+          "steps": [
+            "Create milk log with 10L total",
+            "Enter price of Rs 50/liter",
+            "Save and view list"
+          ],
+          "expectedResult": "Log shows \u20b9500 revenue, weekly summary includes amount"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "small",
+      "dependencies": [
+        "H14"
+      ],
+      "completedAt": "2026-02-07",
+      "notes": "Implemented in session 3"
+    },
+    {
+      "module": "6-milk-logging",
+      "taskId": "L12",
+      "priority": "low",
+      "title": "Add milk trend mini-chart to list page",
+      "description": "The milk log list page only shows numbers without visualization. A mini chart showing milk production trends over the past week/month would help farmers quickly identify patterns and issues.",
+      "files": [
+        "src/pages/logs/LogListPage.vue",
+        "src/components/charts/MilkTrendChart.vue"
+      ],
+      "changes": [
+        {
+          "file": "src/components/charts/MilkTrendChart.vue",
+          "action": "create",
+          "details": "Create sparkline or small bar chart component showing daily milk totals for last 7 or 14 days. Touch-friendly, shows exact value on tap. Uses computed data from milkLogs store."
+        },
+        {
+          "file": "src/pages/logs/LogListPage.vue",
+          "action": "modify",
+          "details": "Add collapsible trend chart section between summary cards and log list. Show for selected cow or all cows."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Mini chart shows last 7-14 days of milk production",
+        "Chart updates when cow filter changes",
+        "Tap on bar/point shows exact date and value",
+        "Works with offline cached data",
+        "Chart is performant with many data points"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "View milk trend chart",
+          "steps": [
+            "Navigate to milk log list",
+            "Expand trend chart section"
+          ],
+          "expectedResult": "Chart shows daily totals for past week with trend visible"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "medium",
+      "completedAt": "2026-02-07",
+      "notes": "Implemented in session 3"
+    },
+    {
+      "module": "7-feed-management",
+      "taskId": "H17",
+      "priority": "high",
+      "title": "Implement dynamic currency formatting in feed module",
+      "description": "Currency is hardcoded as Indian Rupee (\u20b9) throughout the feed module including feed prices in list, detail, and form pages. This causes incorrect currency display for users in other countries. Should use the shared useCurrency composable.",
+      "files": [
+        "src/pages/feeds/FeedListPage.vue",
+        "src/pages/feeds/FeedDetailPage.vue",
+        "src/pages/feeds/FeedFormPage.vue",
+        "src/composables/useCurrency.ts"
+      ],
+      "changes": [
+        {
+          "file": "src/pages/feeds/FeedListPage.vue",
+          "action": "modify",
+          "details": "Replace '\u20b9{{ feed.price_per_kg }}' with '{{ formatCurrency(feed.price_per_kg) }}' and import useCurrency composable"
+        },
+        {
+          "file": "src/pages/feeds/FeedDetailPage.vue",
+          "action": "modify",
+          "details": "Replace hardcoded \u20b9 symbol in price display with formatCurrency() call"
+        },
+        {
+          "file": "src/pages/feeds/FeedFormPage.vue",
+          "action": "modify",
+          "details": "Replace prefix='\u20b9' on price input with dynamic currency symbol from getCurrencySymbol(). Use useCurrency composable."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Feed prices display with correct currency for user's country",
+        "Form input shows appropriate currency symbol prefix",
+        "Kenyan users see KES, Ethiopian users see ETB, etc.",
+        "Currency formatting is consistent with diet module"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Feed prices in Kenyan Shillings",
+          "steps": [
+            "Login as Kenyan user",
+            "Navigate to feeds page",
+            "View feed detail"
+          ],
+          "expectedResult": "Prices display as KES format instead of \u20b9"
+        },
+        {
+          "scenario": "Add custom feed with local currency",
+          "steps": [
+            "Login as Ethiopian user",
+            "Navigate to My Feeds",
+            "Add new custom feed with price"
+          ],
+          "expectedResult": "Price input shows ETB prefix, saved price displays correctly"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "small",
+      "dependencies": [
+        "H14"
+      ]
+    },
+    {
+      "module": "7-feed-management",
+      "taskId": "H18",
+      "priority": "high",
+      "title": "Internationalize all feed module text",
+      "description": "All text in the feed module is hardcoded in English including tab labels, category names, form labels, nutritional field names, and empty states. The feed categories (Concentrate, Roughage, etc.) are particularly important to translate for local farmers.",
+      "files": [
+        "src/pages/feeds/FeedListPage.vue",
+        "src/pages/feeds/FeedDetailPage.vue",
+        "src/pages/feeds/FeedFormPage.vue",
+        "src/i18n/en.json",
+        "src/i18n/hi.json",
+        "src/i18n/am.json"
+      ],
+      "changes": [
+        {
+          "file": "src/i18n/en.json",
+          "action": "modify",
+          "details": "Add feed module translation keys: feeds.tabs.master/custom, feeds.search.placeholder, feeds.categories.concentrate/roughage/greenFodder/dryFodder/silage/byproduct/mineralMix/other, feeds.labels.dmPercent/cpPercent/tdnPercent/ndfPercent/caPercent/pPercent/pricePerKg, feeds.detail.nutritionalComposition, feeds.badges.custom/master, feeds.form.title.new/edit, feeds.empty.title/message/action"
+        },
+        {
+          "file": "src/pages/feeds/FeedListPage.vue",
+          "action": "modify",
+          "details": "Replace tab labels, search placeholder, category headers, and empty state with $t() calls. Category headers should use $t('feeds.categories.' + category.toLowerCase())"
+        },
+        {
+          "file": "src/pages/feeds/FeedDetailPage.vue",
+          "action": "modify",
+          "details": "Replace section headers, nutritional field labels, and button text with $t() calls"
+        },
+        {
+          "file": "src/pages/feeds/FeedFormPage.vue",
+          "action": "modify",
+          "details": "Replace form labels, category options, hints, validation messages, and button text with $t() calls. Category select options should be translated."
+        }
+      ],
+      "acceptanceCriteria": [
+        "No hardcoded English strings in feed module Vue files",
+        "All 22 locale files have feed module translations",
+        "Category names are properly translated",
+        "Nutritional field labels (DM%, CP%, TDN%) are translated",
+        "Form validation messages are translated"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Feed module in Hindi",
+          "steps": [
+            "Set language to Hindi",
+            "Navigate to feeds page",
+            "View category headers"
+          ],
+          "expectedResult": "Concentrate, Roughage, etc. display in Hindi"
+        },
+        {
+          "scenario": "Add custom feed in Amharic",
+          "steps": [
+            "Set language to Amharic",
+            "Navigate to My Feeds",
+            "Click add button"
+          ],
+          "expectedResult": "Form labels and category dropdown options display in Amharic"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "medium"
+    },
+    {
+      "module": "7-feed-management",
+      "taskId": "M37",
+      "priority": "medium",
+      "title": "Make feed category options i18n translated",
+      "description": "Feed categories (Concentrate, Roughage, Green Fodder, etc.) are hardcoded in FeedFormPage and not localized. These should come from i18n and display in the user's language. The category values stored in DB should remain English for API consistency.",
+      "files": [
+        "src/pages/feeds/FeedFormPage.vue",
+        "src/i18n/en.json"
+      ],
+      "changes": [
+        {
+          "file": "src/pages/feeds/FeedFormPage.vue",
+          "action": "modify",
+          "details": "Change category options from hardcoded array to computed that maps category keys to translated labels: categoryOptions = categories.map(cat => ({ value: cat, label: $t('feeds.categories.' + cat) })). Keep category value as English (Concentrate, Roughage) for DB storage."
+        },
+        {
+          "file": "src/i18n/en.json",
+          "action": "modify",
+          "details": "Ensure all category translation keys exist: feeds.categories.Concentrate, feeds.categories.Roughage, feeds.categories.GreenFodder, feeds.categories.DryFodder, feeds.categories.Silage, feeds.categories.Byproduct, feeds.categories.MineralMix, feeds.categories.Other"
+        }
+      ],
+      "acceptanceCriteria": [
+        "Category dropdown shows translated labels",
+        "Stored category value remains English",
+        "Category headers in list page are also translated",
+        "Works with new value mode (custom categories)"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Category dropdown in Telugu",
+          "steps": [
+            "Set language to Telugu",
+            "Open new custom feed form",
+            "Open category dropdown"
+          ],
+          "expectedResult": "Category options display in Telugu"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "small"
+    },
+    {
+      "module": "7-feed-management",
+      "taskId": "M38",
+      "priority": "medium",
+      "title": "Add feed image and photo support",
+      "description": "All feeds use the same grass icon regardless of type. Users cannot visually distinguish between feeds in the list. Custom feeds should support photo upload for visual identification.",
+      "files": [
+        "src/pages/feeds/FeedFormPage.vue",
+        "src/pages/feeds/FeedListPage.vue",
+        "src/pages/feeds/FeedDetailPage.vue",
+        "src/stores/feeds.ts",
+        "src/composables/useImageUpload.ts"
+      ],
+      "changes": [
+        {
+          "file": "src/composables/useImageUpload.ts",
+          "action": "create",
+          "details": "Create composable for: 1) selectImage() - opens camera/gallery picker 2) compressImage(file, maxSize) - reduces image for upload 3) uploadImage(file) - uploads to backend and returns URL 4) Works offline by storing image in IndexedDB and queuing upload"
+        },
+        {
+          "file": "src/pages/feeds/FeedFormPage.vue",
+          "action": "modify",
+          "details": "Add image upload section at top of form for custom feeds. Show circular image preview or placeholder. Camera and gallery buttons."
+        },
+        {
+          "file": "src/pages/feeds/FeedListPage.vue",
+          "action": "modify",
+          "details": "If feed has image_url, show image in avatar instead of grass icon. Fallback to grass icon for feeds without images."
+        },
+        {
+          "file": "src/pages/feeds/FeedDetailPage.vue",
+          "action": "modify",
+          "details": "Show larger feed image in header if available"
+        }
+      ],
+      "acceptanceCriteria": [
+        "Can upload photo for custom feeds",
+        "Photo visible in feed list, detail, and form",
+        "Works offline (stores locally, syncs when online)",
+        "Image compression to reasonable size",
+        "Master feeds use default icon (no upload)"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Add photo to custom feed",
+          "steps": [
+            "Create new custom feed",
+            "Tap add photo",
+            "Take or select photo",
+            "Save feed"
+          ],
+          "expectedResult": "Feed saved with photo, visible in all feed views"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "medium"
+    },
+    {
+      "module": "7-feed-management",
+      "taskId": "M39",
+      "priority": "medium",
+      "title": "Add stock and inventory tracking for custom feeds",
+      "description": "There is no way to track feed inventory or mark feeds as in-stock/out-of-stock. This information would be valuable for diet optimization (avoid suggesting unavailable feeds) and farm management.",
+      "files": [
+        "src/pages/feeds/FeedFormPage.vue",
+        "src/pages/feeds/FeedListPage.vue",
+        "src/pages/feeds/FeedDetailPage.vue",
+        "src/stores/feeds.ts"
+      ],
+      "changes": [
+        {
+          "file": "src/pages/feeds/FeedFormPage.vue",
+          "action": "modify",
+          "details": "Add inventory section for custom feeds: 1) Stock quantity input (kg) 2) Availability toggle (in-stock/out-of-stock) 3) Low stock threshold setting"
+        },
+        {
+          "file": "src/stores/feeds.ts",
+          "action": "modify",
+          "details": "Add stock_quantity, is_available, and low_stock_threshold fields to custom feed type. Add computed for lowStockFeeds and availableFeeds."
+        },
+        {
+          "file": "src/pages/feeds/FeedListPage.vue",
+          "action": "modify",
+          "details": "Show stock status indicator on custom feeds (green dot for available, grey for out-of-stock). Show low stock warning chip when quantity below threshold."
+        },
+        {
+          "file": "src/pages/feeds/FeedDetailPage.vue",
+          "action": "modify",
+          "details": "Show stock quantity and availability status for custom feeds"
+        }
+      ],
+      "acceptanceCriteria": [
+        "Can set stock quantity for custom feeds",
+        "Can toggle availability status",
+        "Stock status visible in feed list",
+        "Low stock warning when below threshold",
+        "Data syncs with backend"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Track feed inventory",
+          "steps": [
+            "Edit custom feed",
+            "Set stock quantity to 50kg",
+            "Save and view list"
+          ],
+          "expectedResult": "Feed shows 50kg stock, green availability indicator"
+        },
+        {
+          "scenario": "Low stock warning",
+          "steps": [
+            "Set feed stock to 5kg with 10kg threshold",
+            "View feed list"
+          ],
+          "expectedResult": "Feed shows low stock warning chip"
+        }
+      ],
+      "status": "blocked",
+      "estimatedEffort": "medium",
+      "blockedBy": "Requires backend inventory/stock tracking API"
+    },
+    {
+      "module": "7-feed-management",
+      "taskId": "M40",
+      "priority": "medium",
+      "title": "Add seasonal availability indicator for feeds",
+      "description": "Green fodders and some feeds are only available seasonally. There is no way to indicate this, leading to diet recommendations for feeds that may not be available during certain months.",
+      "files": [
+        "src/pages/feeds/FeedFormPage.vue",
+        "src/pages/feeds/FeedListPage.vue",
+        "src/stores/feeds.ts"
+      ],
+      "changes": [
+        {
+          "file": "src/pages/feeds/FeedFormPage.vue",
+          "action": "modify",
+          "details": "Add seasonal availability section for custom feeds: 1) Toggle for 'Seasonal availability' 2) Month range picker (available from-to months) 3) Or checkbox list of months when available"
+        },
+        {
+          "file": "src/stores/feeds.ts",
+          "action": "modify",
+          "details": "Add is_seasonal and available_months (array of month numbers 1-12) fields. Add computed isCurrentlyAvailable that checks if current month is in range."
+        },
+        {
+          "file": "src/pages/feeds/FeedListPage.vue",
+          "action": "modify",
+          "details": "Show seasonal indicator and current availability status. Example: 'Seasonal (Mar-Aug)' chip with green/grey based on current month."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Can mark custom feeds as seasonal",
+        "Can specify available months",
+        "Seasonal status visible in feed list",
+        "Current availability calculated from months",
+        "Helps diet wizard filter to currently available feeds"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Mark feed as seasonal",
+          "steps": [
+            "Edit green fodder feed",
+            "Enable seasonal availability",
+            "Select June-October as available months",
+            "Save and view list"
+          ],
+          "expectedResult": "Feed shows 'Seasonal (Jun-Oct)' with appropriate current availability"
+        }
+      ],
+      "status": "blocked",
+      "estimatedEffort": "small",
+      "blockedBy": "Requires backend inventory/stock tracking API"
+    },
+    {
+      "module": "7-feed-management",
+      "taskId": "L13",
+      "priority": "low",
+      "title": "Add feed price history tracking",
+      "description": "Feed prices fluctuate but there's no way to track changes over time. Price history would help farmers understand cost trends and plan purchases.",
+      "files": [
+        "src/pages/feeds/FeedDetailPage.vue",
+        "src/stores/feeds.ts",
+        "src/components/charts/PriceHistoryChart.vue"
+      ],
+      "changes": [
+        {
+          "file": "src/stores/feeds.ts",
+          "action": "modify",
+          "details": "Track price history array [{price, date}] for custom feeds. When price changes on update, add new entry to history."
+        },
+        {
+          "file": "src/components/charts/PriceHistoryChart.vue",
+          "action": "create",
+          "details": "Create line chart showing price changes over time with dates on X-axis"
+        },
+        {
+          "file": "src/pages/feeds/FeedDetailPage.vue",
+          "action": "modify",
+          "details": "Add price history section with chart for custom feeds with history data"
+        }
+      ],
+      "acceptanceCriteria": [
+        "Price changes are recorded with date",
+        "Price history chart shows on feed detail",
+        "Can see trend of price changes",
+        "Works with locally cached data"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "View price history",
+          "steps": [
+            "Update feed price multiple times over days",
+            "View feed detail page"
+          ],
+          "expectedResult": "Price history chart shows changes with dates"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "medium",
+      "completedAt": "2026-02-07",
+      "notes": "Implemented in session 3"
+    },
+    {
+      "module": "7-feed-management",
+      "taskId": "L14",
+      "priority": "low",
+      "title": "Add feed comparison view",
+      "description": "Users cannot compare nutritional values of different feeds side by side. This would help in making informed decisions about feed selection and diet composition.",
+      "files": [
+        "src/pages/feeds/FeedComparePage.vue",
+        "src/router/routes.ts"
+      ],
+      "changes": [
+        {
+          "file": "src/pages/feeds/FeedComparePage.vue",
+          "action": "create",
+          "details": "Create comparison page with: 1) Up to 3 feed selectors 2) Table comparing all nutritional values 3) Visual bars showing relative values 4) Price per kg comparison 5) Highlight best value for each nutrient"
+        },
+        {
+          "file": "src/router/routes.ts",
+          "action": "modify",
+          "details": "Add route /feeds/compare with optional query params for pre-selecting feeds"
+        }
+      ],
+      "acceptanceCriteria": [
+        "Can select up to 3 feeds for comparison",
+        "All nutritional values compared in table",
+        "Best values highlighted",
+        "Price comparison included",
+        "Accessible from feed list"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Compare protein content",
+          "steps": [
+            "Open feed compare page",
+            "Select Soybean Meal and Cotton Seed Cake",
+            "View comparison"
+          ],
+          "expectedResult": "Table shows all nutrients with Soybean Meal's higher CP% highlighted"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "medium"
+    },
+    {
+      "module": "8-farmer-management",
+      "taskId": "H19",
+      "priority": "high",
+      "title": "Internationalize all farmer module text",
+      "description": "All text in the farmer management module is hardcoded in English including search placeholder, filter chips, form labels, section headers, validation messages, and quick action labels. Extension workers in non-English speaking regions cannot effectively use the app.",
+      "files": [
+        "src/pages/farmers/FarmerListPage.vue",
+        "src/pages/farmers/FarmerFormPage.vue",
+        "src/pages/farmers/FarmerDetailPage.vue",
+        "src/i18n/en.json",
+        "src/i18n/hi.json",
+        "src/i18n/am.json"
+      ],
+      "changes": [
+        {
+          "file": "src/i18n/en.json",
+          "action": "modify",
+          "details": "Add farmer module translation keys: farmers.title, farmers.search.placeholder, farmers.filters.all/dairy/mixed, farmers.labels.cattle/landAcres/farmingType, farmers.farmingTypes.dairy/mixed/crop, farmers.form.title.new/edit, farmers.form.sections.basicInfo/location/farmDetails, farmers.form.fields.name/phone/village/district/state/totalCattle/landAcres/farmingType, farmers.detail.stats.activeCows/lactating/dryPeriod/dailyMilk, farmers.detail.quickActions.recordYield/viewHistory, farmers.empty.title/message/action, farmers.validation.nameRequired"
+        },
+        {
+          "file": "src/pages/farmers/FarmerListPage.vue",
+          "action": "modify",
+          "details": "Replace search placeholder, filter chip labels, cattle count label, and empty state with $t() calls"
+        },
+        {
+          "file": "src/pages/farmers/FarmerFormPage.vue",
+          "action": "modify",
+          "details": "Replace section headers, form field labels, farming type options, validation messages, and button text with $t() calls"
+        },
+        {
+          "file": "src/pages/farmers/FarmerDetailPage.vue",
+          "action": "modify",
+          "details": "Replace stat labels, section headers, quick action labels, and button text with $t() calls"
+        }
+      ],
+      "acceptanceCriteria": [
+        "No hardcoded English strings in farmer module Vue files",
+        "All 22 locale files have farmer module translations",
+        "Filter chips translated (All, Dairy, Mixed)",
+        "Farming type options translated",
+        "Form validation messages translated",
+        "Quick action labels translated"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Farmer module in Hindi",
+          "steps": [
+            "Set language to Hindi",
+            "Navigate to farmers page",
+            "View filter chips and farmer list"
+          ],
+          "expectedResult": "All text including filters, labels, and counts display in Hindi"
+        },
+        {
+          "scenario": "Add farmer form in Amharic",
+          "steps": [
+            "Set language to Amharic",
+            "Navigate to add farmer",
+            "View form fields"
+          ],
+          "expectedResult": "All form labels, sections, and buttons display in Amharic"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "medium"
+    },
+    {
+      "module": "8-farmer-management",
+      "taskId": "H20",
+      "priority": "high",
+      "title": "Use i18n date formatting instead of hardcoded locale",
+      "description": "Date formatting in FarmerDetailPage uses hardcoded 'en-US' locale which displays dates in American format (MM/DD/YYYY) regardless of user's preference. Should use vue-i18n date formatting or user's locale.",
+      "files": [
+        "src/pages/farmers/FarmerDetailPage.vue",
+        "src/composables/useLocale.ts"
+      ],
+      "changes": [
+        {
+          "file": "src/composables/useLocale.ts",
+          "action": "create",
+          "details": "Create composable that provides: 1) formatDate(date, format) using Intl.DateTimeFormat with user's locale 2) formatRelativeDate(date) for 'Today', 'Yesterday', etc. 3) getUserLocale() that maps language code to locale (hi -> hi-IN, am -> am-ET)"
+        },
+        {
+          "file": "src/pages/farmers/FarmerDetailPage.vue",
+          "action": "modify",
+          "details": "Replace new Date(dateString).toLocaleDateString('en-US', {...}) with formatDate() from useLocale composable. Apply to all date displays including farmer join date and activity dates."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Dates format according to user's locale",
+        "Indian users see DD/MM/YYYY format",
+        "American users see MM/DD/YYYY format",
+        "Ethiopian users see appropriate format",
+        "Date composable reusable across all modules"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Date format for Indian user",
+          "steps": [
+            "Set language to Hindi",
+            "Navigate to farmer detail page",
+            "View dates"
+          ],
+          "expectedResult": "Dates display in DD/MM/YYYY format (e.g., 06/02/2026)"
+        },
+        {
+          "scenario": "Date format respects locale change",
+          "steps": [
+            "View farmer detail in English",
+            "Switch to Vietnamese",
+            "Return to farmer detail"
+          ],
+          "expectedResult": "Dates display in Vietnamese locale format"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "small"
+    },
+    {
+      "module": "8-farmer-management",
+      "taskId": "M41",
+      "priority": "medium",
+      "title": "Use farmer-specific icon instead of generic person icon",
+      "description": "The farmer list uses generic Material Design 'person' icon for all farmer avatars. A more farmer-specific icon like 'agriculture' or a custom farmer illustration would be more appropriate and intuitive.",
+      "files": [
+        "src/pages/farmers/FarmerListPage.vue",
+        "src/pages/farmers/FarmerDetailPage.vue",
+        "src/assets/icons/farmer.svg"
+      ],
+      "changes": [
+        {
+          "file": "src/assets/icons/farmer.svg",
+          "action": "create",
+          "details": "Create or source a farmer-specific SVG icon. Options: farmer with hat silhouette, person with agricultural elements, or stylized farmer portrait. Should work at 24x24 and 48x48 sizes."
+        },
+        {
+          "file": "src/pages/farmers/FarmerListPage.vue",
+          "action": "modify",
+          "details": "Replace <q-icon name='person'> with farmer icon or use 'agriculture' Material icon. Consider using farmer photo if available (future M43)."
+        },
+        {
+          "file": "src/pages/farmers/FarmerDetailPage.vue",
+          "action": "modify",
+          "details": "Replace person icon in header with farmer icon"
+        }
+      ],
+      "acceptanceCriteria": [
+        "Farmer list shows farmer-specific icon instead of generic person",
+        "Farmer detail header shows appropriate icon",
+        "Icon is clear and recognizable",
+        "Falls back gracefully if custom icon fails to load"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Farmer icon in list",
+          "steps": [
+            "Navigate to farmer list page",
+            "View farmer entries"
+          ],
+          "expectedResult": "Each farmer shows farmer-specific icon instead of generic person"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "small"
+    },
+    {
+      "module": "8-farmer-management",
+      "taskId": "M42",
+      "priority": "medium",
+      "title": "Make farming type options i18n translated",
+      "description": "Farming type options (Dairy Farming, Mixed Farming, Crop Farming) are hardcoded in FarmerFormPage and not localized. These should display in the user's language while storing English values in the database.",
+      "files": [
+        "src/pages/farmers/FarmerFormPage.vue",
+        "src/pages/farmers/FarmerListPage.vue",
+        "src/i18n/en.json"
+      ],
+      "changes": [
+        {
+          "file": "src/pages/farmers/FarmerFormPage.vue",
+          "action": "modify",
+          "details": "Change farming type options from hardcoded array to computed that maps type values to translated labels: farmingTypeOptions = types.map(type => ({ value: type, label: $t('farmers.farmingTypes.' + type) }))"
+        },
+        {
+          "file": "src/pages/farmers/FarmerListPage.vue",
+          "action": "modify",
+          "details": "Translate filter chip labels using $t() calls for Dairy, Mixed filter options"
+        },
+        {
+          "file": "src/i18n/en.json",
+          "action": "modify",
+          "details": "Ensure translation keys exist: farmers.farmingTypes.dairy, farmers.farmingTypes.mixed, farmers.farmingTypes.crop"
+        }
+      ],
+      "acceptanceCriteria": [
+        "Farming type dropdown shows translated labels",
+        "Filter chips show translated labels",
+        "Stored value remains English (dairy, mixed, crop)",
+        "Works consistently across list and form"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Farming type in Kannada",
+          "steps": [
+            "Set language to Kannada",
+            "Open add farmer form",
+            "Open farming type dropdown"
+          ],
+          "expectedResult": "Options display as Kannada translations"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "small"
+    },
+    {
+      "module": "8-farmer-management",
+      "taskId": "M43",
+      "priority": "medium",
+      "title": "Add farmer profile photo support",
+      "description": "There is no way to add or view farmer profile photos. Extension workers managing many farmers would benefit from visual identification. Photos would also personalize the farmer profiles.",
+      "files": [
+        "src/pages/farmers/FarmerFormPage.vue",
+        "src/pages/farmers/FarmerListPage.vue",
+        "src/pages/farmers/FarmerDetailPage.vue",
+        "src/stores/farmers.ts",
+        "src/composables/useImageUpload.ts"
+      ],
+      "changes": [
+        {
+          "file": "src/pages/farmers/FarmerFormPage.vue",
+          "action": "modify",
+          "details": "Add profile photo section at top of form. Circular image preview with placeholder. Camera and gallery buttons. Use useImageUpload composable."
+        },
+        {
+          "file": "src/stores/farmers.ts",
+          "action": "modify",
+          "details": "Add profile_image_url field to farmer type. Handle image upload on create/update."
+        },
+        {
+          "file": "src/pages/farmers/FarmerListPage.vue",
+          "action": "modify",
+          "details": "If farmer has profile_image_url, show photo in avatar instead of icon. Circular crop, fallback to farmer icon."
+        },
+        {
+          "file": "src/pages/farmers/FarmerDetailPage.vue",
+          "action": "modify",
+          "details": "Show larger farmer photo in header if available"
+        }
+      ],
+      "acceptanceCriteria": [
+        "Can upload profile photo for farmers",
+        "Photo visible in list, detail, and form",
+        "Works offline (stores locally, syncs when online)",
+        "Appropriate image compression",
+        "Fallback to icon when no photo"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Add farmer photo",
+          "steps": [
+            "Create or edit farmer",
+            "Tap add photo",
+            "Take or select photo",
+            "Save farmer"
+          ],
+          "expectedResult": "Farmer saved with photo, visible in list and detail views"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "medium",
+      "dependencies": [
+        "M38"
+      ]
+    },
+    {
+      "module": "8-farmer-management",
+      "taskId": "M44",
+      "priority": "medium",
+      "title": "Replace generic pets icon with cow icon for cattle count",
+      "description": "The farmer detail page uses generic 'pets' icon when showing cattle count. This should be a cow-specific icon consistent with the rest of the app.",
+      "files": [
+        "src/pages/farmers/FarmerDetailPage.vue",
+        "src/pages/farmers/FarmerListPage.vue"
+      ],
+      "changes": [
+        {
+          "file": "src/pages/farmers/FarmerDetailPage.vue",
+          "action": "modify",
+          "details": "Replace <q-icon name='pets'> in cattle stats section with cow icon (same icon used in M33)"
+        },
+        {
+          "file": "src/pages/farmers/FarmerListPage.vue",
+          "action": "modify",
+          "details": "If cattle count shown in list items, replace pets icon with cow icon"
+        }
+      ],
+      "acceptanceCriteria": [
+        "Cattle count in farmer detail shows cow icon",
+        "Icon consistent with cow icons used elsewhere",
+        "Works in both list and detail views"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Cow icon in farmer detail",
+          "steps": [
+            "Navigate to farmer detail page",
+            "View cattle statistics section"
+          ],
+          "expectedResult": "Cattle count shows cow icon instead of generic pets icon"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "small",
+      "dependencies": [
+        "M33"
+      ]
+    },
+    {
+      "module": "8-farmer-management",
+      "taskId": "L15",
+      "priority": "low",
+      "title": "Verify and fix yield routes in farmer quick actions",
+      "description": "Quick actions in FarmerDetailPage link to /yields routes (Record Yield, View History) which may not exist or may have different paths. These need to be verified and corrected.",
+      "files": [
+        "src/pages/farmers/FarmerDetailPage.vue",
+        "src/router/routes.ts"
+      ],
+      "changes": [
+        {
+          "file": "src/router/routes.ts",
+          "action": "modify",
+          "details": "Verify that routes exist: /yields/new (with farmer query param), /yields (with farmer filter). Add routes if missing."
+        },
+        {
+          "file": "src/pages/farmers/FarmerDetailPage.vue",
+          "action": "modify",
+          "details": "Update quick action links to correct route paths. Ensure farmer ID is passed correctly (query param or route param)."
+        }
+      ],
+      "acceptanceCriteria": [
+        "Record Yield quick action navigates to yield form with farmer pre-selected",
+        "View History quick action navigates to yield list filtered by farmer",
+        "No 404 errors when clicking quick actions"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Record yield for farmer",
+          "steps": [
+            "Open farmer detail page",
+            "Click 'Record Yield' quick action"
+          ],
+          "expectedResult": "Navigates to yield form with farmer pre-selected"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "small"
+    },
+    {
+      "module": "8-farmer-management",
+      "taskId": "L16",
+      "priority": "low",
+      "title": "Add bulk import for farmers from CSV/Excel",
+      "description": "Extension workers often need to onboard many farmers at once. Currently they must add each farmer individually which is tedious. A bulk import feature from CSV or Excel would significantly speed up initial farmer registration.",
+      "files": [
+        "src/pages/farmers/FarmerImportPage.vue",
+        "src/router/routes.ts",
+        "src/pages/farmers/FarmerListPage.vue",
+        "src/composables/useCsvImport.ts"
+      ],
+      "changes": [
+        {
+          "file": "src/composables/useCsvImport.ts",
+          "action": "create",
+          "details": "Create composable for: 1) parseCSV(file) - parse CSV with header row mapping 2) validateFarmers(rows) - validate required fields, return errors 3) previewImport(rows) - show preview of data to import 4) Template CSV download with example data"
+        },
+        {
+          "file": "src/pages/farmers/FarmerImportPage.vue",
+          "action": "create",
+          "details": "Create import page with: 1) File picker for CSV/Excel 2) Column mapping step 3) Preview table with validation errors highlighted 4) Import progress indicator 5) Success/failure summary"
+        },
+        {
+          "file": "src/router/routes.ts",
+          "action": "modify",
+          "details": "Add route /farmers/import"
+        },
+        {
+          "file": "src/pages/farmers/FarmerListPage.vue",
+          "action": "modify",
+          "details": "Add 'Import' button near FAB or in header menu that navigates to import page"
+        }
+      ],
+      "acceptanceCriteria": [
+        "Can upload CSV or Excel file with farmer data",
+        "Column mapping handles different header names",
+        "Preview shows data before importing",
+        "Validation errors highlighted",
+        "Can download template CSV",
+        "Progress indicator during import"
+      ],
+      "testScenarios": [
+        {
+          "scenario": "Import 10 farmers from CSV",
+          "steps": [
+            "Navigate to farmer import page",
+            "Upload CSV with 10 farmer records",
+            "Map columns",
+            "Preview and confirm import"
+          ],
+          "expectedResult": "All 10 farmers created, shown in farmer list"
+        },
+        {
+          "scenario": "Handle validation errors",
+          "steps": [
+            "Upload CSV with some missing required fields",
+            "View preview"
+          ],
+          "expectedResult": "Invalid rows highlighted with error messages, can fix or skip"
+        }
+      ],
+      "status": "completed",
+      "estimatedEffort": "large",
+      "completedAt": "2026-02-07",
+      "notes": "Implemented in session 3"
+    }
+  ]
+}

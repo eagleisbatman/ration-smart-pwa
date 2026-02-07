@@ -86,7 +86,7 @@
             <q-item-section avatar>
               <q-icon name="logout" />
             </q-item-section>
-            <q-item-section>Logout</q-item-section>
+            <q-item-section>{{ $t('nav.logout') }}</q-item-section>
           </q-item>
         </q-list>
       </q-scroll-area>
@@ -123,6 +123,9 @@
     <!-- Add to Home Screen -->
     <AddToHomeScreen ref="a2hsRef" />
 
+    <!-- Sync Conflict Dialog (global) -->
+    <SyncConflictDialog v-if="isAuthenticated" />
+
     <!-- FAB for quick actions -->
     <q-page-sticky v-if="showFab" position="bottom-right" :offset="[18, 90]">
       <q-fab
@@ -130,24 +133,25 @@
         direction="up"
         color="primary"
         padding="md"
+        @click="medium()"
       >
         <q-fab-action
           color="secondary"
-          icon="pets"
-          label="Add Cow"
-          @click="router.push('/cows/new')"
+          :icon="COW_ICON"
+          :label="$t('nav.addCow')"
+          @click="onFabAction('/cows/new')"
         />
         <q-fab-action
           color="accent"
           icon="water_drop"
-          label="Log Milk"
-          @click="router.push('/logs/new')"
+          :label="$t('nav.logMilk')"
+          @click="onFabAction('/logs/new')"
         />
         <q-fab-action
           color="info"
           icon="restaurant"
-          label="Get Diet"
-          @click="router.push('/diet/new')"
+          :label="$t('nav.getDiet')"
+          @click="onFabAction('/diet/new')"
         />
       </q-fab>
     </q-page-sticky>
@@ -158,18 +162,24 @@
 import { ref, computed, watch } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useQuasar } from 'quasar';
+import { useI18n } from 'vue-i18n';
 import { useAuthStore } from 'src/stores/auth';
 import { useOfflineSync } from 'src/composables/useOfflineSync';
+import { useHapticFeedback } from 'src/composables/useHapticFeedback';
 import OfflineIndicator from 'src/components/pwa/OfflineIndicator.vue';
 import UpdatePrompt from 'src/components/pwa/UpdatePrompt.vue';
 import AddToHomeScreen from 'src/components/pwa/AddToHomeScreen.vue';
 import SyncStatusChip from 'src/components/ui/SyncStatusChip.vue';
+import SyncConflictDialog from 'src/components/pwa/SyncConflictDialog.vue';
+import { COW_ICON } from 'src/boot/icons';
 
 const $q = useQuasar();
 const router = useRouter();
 const route = useRoute();
+const { t } = useI18n();
 const authStore = useAuthStore();
 const { pendingCount } = useOfflineSync();
+const { light, medium } = useHapticFeedback();
 
 const leftDrawerOpen = ref(false);
 const activeTab = ref('/');
@@ -180,8 +190,12 @@ const isAuthenticated = computed(() => authStore.isAuthenticated);
 const userName = computed(() => authStore.user?.name || 'User');
 const userEmail = computed(() => authStore.user?.email || authStore.user?.phone || '');
 
-// Page title from route meta
-const pageTitle = computed(() => (route.meta?.title as string) || '');
+// Page title from route meta (supports i18n titleKey or plain title)
+const pageTitle = computed(() => {
+  const titleKey = route.meta?.titleKey as string | undefined;
+  if (titleKey) return t(titleKey);
+  return (route.meta?.title as string) || '';
+});
 
 // Navigation configuration
 const showBackButton = computed(() => !!route.meta?.showBack);
@@ -191,34 +205,41 @@ const showBottomNav = computed(() => $q.screen.lt.md && !route.meta?.hideBottomN
 const showFab = computed(() => !route.meta?.hideFab && isAuthenticated.value);
 
 const navItems = computed(() => [
-  { to: '/', icon: 'home', label: 'Home' },
-  { to: '/farmers', icon: 'people', label: 'Farmers' },
-  { to: '/cows', icon: 'pets', label: 'My Cows' },
-  { to: '/diet', icon: 'restaurant', label: 'Diet Plans' },
-  { to: '/feeds', icon: 'grass', label: 'Feeds' },
-  { to: '/logs', icon: 'water_drop', label: 'Milk Logs', badge: pendingCount.value > 0 ? pendingCount.value : undefined },
-  { to: '/yields', icon: 'analytics', label: 'Yield History' },
-  { to: '/reports', icon: 'assessment', label: 'Reports' },
-  { to: '/settings', icon: 'settings', label: 'Settings' },
+  { to: '/', icon: 'home', label: t('nav.home') },
+  { to: '/farmers', icon: 'people', label: t('nav.farmers') },
+  { to: '/cows', icon: COW_ICON, label: t('nav.myCows') },
+  { to: '/diet', icon: 'restaurant', label: t('nav.diet') },
+  { to: '/feeds', icon: 'grass', label: t('nav.feeds') },
+  { to: '/logs', icon: 'water_drop', label: t('nav.milkLogs'), badge: pendingCount.value > 0 ? pendingCount.value : undefined },
+  { to: '/yields', icon: 'analytics', label: t('nav.yieldHistory') },
+  { to: '/reports', icon: 'assessment', label: t('nav.reports') },
+  { to: '/settings', icon: 'settings', label: t('nav.settings') },
 ]);
 
-const bottomNavItems = [
-  { to: '/', icon: 'home', label: 'Home' },
-  { to: '/farmers', icon: 'people', label: 'Farmers' },
-  { to: '/cows', icon: 'pets', label: 'Cows' },
-  { to: '/diet', icon: 'restaurant', label: 'Diet' },
-  { to: '/settings', icon: 'settings', label: 'More' },
-];
+const bottomNavItems = computed(() => [
+  { to: '/', icon: 'home', label: t('nav.home') },
+  { to: '/farmers', icon: 'people', label: t('nav.farmers') },
+  { to: '/cows', icon: COW_ICON, label: t('nav.cows') },
+  { to: '/diet', icon: 'restaurant', label: t('nav.diet') },
+  { to: '/settings', icon: 'settings', label: t('nav.more') },
+]);
 
 function isActive(path: string): boolean {
   return route.path === path || route.path.startsWith(path + '/');
 }
 
 function goBack() {
+  light(); // Haptic feedback on back navigation
   router.back();
 }
 
+function onFabAction(path: string) {
+  medium(); // Haptic feedback on FAB action
+  router.push(path);
+}
+
 async function logout() {
+  medium(); // Haptic feedback on logout action
   await authStore.logout();
   router.push('/auth/login');
 }
@@ -227,7 +248,7 @@ async function logout() {
 watch(
   () => route.path,
   (path) => {
-    const matchingTab = bottomNavItems.find(
+    const matchingTab = bottomNavItems.value.find(
       (item) => path === item.to || path.startsWith(item.to + '/')
     );
     if (matchingTab) {

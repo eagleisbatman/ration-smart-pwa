@@ -57,16 +57,18 @@
   },
   "roles": {
     "farmer": "Peternak",
-    "student": "Mahasiswa",
+    "extension_worker": "Penyuluh",
     "nutritionist": "Ahli Nutrisi",
-    "extensionWorker": "Penyuluh",
     "researcher": "Peneliti",
+    "feed_supplier": "Pemasok Pakan",
+    "other": "Lainnya",
     "admin": "Administrator",
     "farmerDesc": "Saya mengelola ternak sendiri",
-    "studentDesc": "Saya belajar tentang nutrisi ternak",
+    "extension_workerDesc": "Saya mendukung peternak di komunitas saya",
     "nutritionistDesc": "Saya memberikan saran formulasi pakan kepada peternak",
-    "extensionWorkerDesc": "Saya mendukung peternak di komunitas saya",
     "researcherDesc": "Saya meneliti nutrisi ternak dan praktik peternakan",
+    "feed_supplierDesc": "Saya memasok produk pakan ternak",
+    "otherDesc": "Peran lain yang tidak tercantum di atas",
     "adminDesc": "Saya mengelola sistem"
   },
   "auth": {
@@ -106,7 +108,9 @@
     "step1of4": "Langkah 1 dari 4",
     "step2of4": "Langkah 2 dari 4",
     "step3of4": "Langkah 3 dari 4",
-    "step4of4": "Langkah 4 dari 4"
+    "step4of4": "Langkah 4 dari 4",
+    "recommendedLanguages": "Direkomendasikan",
+    "otherLanguages": "Bahasa Lainnya"
   },
   "profile": {
     "myProfile": "Profil Saya",
@@ -245,7 +249,27 @@
     "thisWeek": "Minggu Ini",
     "thisMonth": "Bulan Ini",
     "average": "Rata-rata",
-    "total": "Total"
+    "total": "Total",
+    "quickLog": {
+      "button": "Quick Log All",
+      "title": "Quick Log - All Cows",
+      "date": "Date",
+      "cowName": "Cow",
+      "morning": "Morning (L)",
+      "evening": "Evening (L)",
+      "total": "Total",
+      "saveAll": "Save All",
+      "saveRow": "Save",
+      "saved": "Saved",
+      "noCows": "No active cows found. Add a cow first.",
+      "allSaved": "All milk logs saved successfully!",
+      "rowSaved": "Milk log saved for {cowName}",
+      "noEntries": "Please enter at least one milk reading",
+      "close": "Close",
+      "savingAll": "Saving all entries...",
+      "duplicateFound": "Log already exists for {cowName} on this date - updated",
+      "entriesSaved": "{count} log saved | {count} logs saved"
+    }
   },
   "reports": {
     "reports": "Laporan",
@@ -309,7 +333,14 @@
     "logout": "Keluar",
     "logoutConfirm": "Apakah Anda yakin ingin keluar?",
     "deleteAccount": "Hapus Akun",
-    "deleteAccountWarning": "Tindakan ini tidak dapat dibatalkan. Semua data Anda akan dihapus secara permanen."
+    "deleteAccountWarning": "Tindakan ini tidak dapat dibatalkan. Semua data Anda akan dihapus secara permanen.",
+    "orgTypes": {
+      "university": "Universitas",
+      "government": "Pemerintah",
+      "ngo": "LSM",
+      "cooperative": "Koperasi",
+      "research": "Lembaga Penelitian"
+    }
   },
   "farmer": {
     "farmers": "Peternak",
@@ -324,7 +355,17 @@
     "addFirstFarmer": "Tambahkan peternak yang Anda dukung untuk mengelola sapi mereka",
     "farmerAdded": "Peternak berhasil ditambahkan",
     "farmerUpdated": "Peternak berhasil diperbarui",
-    "farmerDeleted": "Peternak dihapus"
+    "farmerDeleted": "Peternak dihapus",
+    "farmingTypes": {
+      "dairy": "Peternakan Susu",
+      "mixed": "Pertanian Campuran",
+      "crop": "Pertanian Tanaman"
+    },
+    "filter": {
+      "all": "Semua",
+      "dairy": "Susu",
+      "mixed": "Campuran"
+    }
   },
   "errors": {
     "generic": "Terjadi kesalahan. Silakan coba lagi.",

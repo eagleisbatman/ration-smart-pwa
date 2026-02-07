@@ -1,114 +1,182 @@
 <template>
   <q-page class="q-pa-md">
     <q-form class="q-gutter-md" @submit="onSubmit">
+      <!-- Photo Section -->
+      <div class="text-center q-mb-lg">
+        <div class="photo-container q-mx-auto" @click="showPhotoOptions = true">
+          <q-img
+            v-if="form.image_url"
+            :src="form.image_url"
+            :ratio="1"
+            class="rounded-borders"
+            style="width: 120px; height: 120px; border-radius: 50%"
+          />
+          <q-avatar v-else size="120px" color="grey-3">
+            <q-icon name="photo_camera" size="40px" color="grey-5" />
+          </q-avatar>
+          <q-btn
+            v-if="form.image_url"
+            round
+            flat
+            dense
+            size="sm"
+            icon="close"
+            class="photo-remove-btn"
+            @click.stop="removePhoto"
+          />
+        </div>
+        <div class="text-caption text-grey-6 q-mt-xs">{{ $t('cow.tapToAddPhoto') }}</div>
+      </div>
+
+      <!-- Photo Options Dialog -->
+      <q-dialog v-model="showPhotoOptions" position="bottom">
+        <q-card style="width: 100%; max-width: 400px">
+          <q-list>
+            <q-item clickable v-close-popup @click="takePhoto">
+              <q-item-section avatar><q-icon name="photo_camera" /></q-item-section>
+              <q-item-section>{{ $t('cow.takePhoto') }}</q-item-section>
+            </q-item>
+            <q-item clickable v-close-popup @click="chooseFromGallery">
+              <q-item-section avatar><q-icon name="photo_library" /></q-item-section>
+              <q-item-section>{{ $t('cow.chooseFromGallery') }}</q-item-section>
+            </q-item>
+            <q-item v-if="form.image_url" clickable v-close-popup @click="removePhoto">
+              <q-item-section avatar><q-icon name="delete" color="negative" /></q-item-section>
+              <q-item-section class="text-negative">{{ $t('cow.removePhoto') }}</q-item-section>
+            </q-item>
+          </q-list>
+        </q-card>
+      </q-dialog>
+
       <!-- Basic Info Section -->
-      <div class="text-subtitle1 text-weight-medium q-mb-sm">Basic Information</div>
+      <div class="text-subtitle1 text-weight-medium q-mb-sm">{{ $t('cow.basicInfo') }}</div>
 
       <q-input
         v-model="form.name"
-        label="Cow Name *"
+        :label="$t('cow.nameRequired')"
         outlined
-        :rules="[(val) => !!val || 'Name is required']"
+        :rules="[(val: string) => !!val || $t('cow.validation.nameRequired')]"
+      />
+
+      <q-input
+        v-model="form.tag_number"
+        :label="$t('cow.tagNumber')"
+        outlined
+        :hint="$t('common.optional')"
+      />
+
+      <q-select
+        v-model="form.coat_color"
+        :label="$t('cow.coatColor')"
+        outlined
+        :options="coatColorOptions"
+        emit-value
+        map-options
+        use-input
+        new-value-mode="add-unique"
+        :hint="$t('common.optional')"
+        clearable
       />
 
       <q-select
         v-model="form.breed"
-        label="Breed *"
+        :label="$t('cow.breedRequired')"
         outlined
         :options="breedOptions"
         emit-value
         map-options
-        :rules="[(val) => !!val || 'Breed is required']"
+        :loading="cowsStore.breedsLoading"
+        :rules="[(val: string) => !!val || $t('cow.validation.breedRequired')]"
       />
 
       <q-input
         v-model.number="form.weight_kg"
-        label="Weight (kg) *"
+        :label="$t('cow.weight')"
         type="number"
         outlined
         :rules="[
-          (val) => val > 0 || 'Weight must be greater than 0',
-          (val) => val <= 1500 || 'Weight seems too high',
+          (val: number) => val > 0 || $t('cow.validation.weightPositive'),
+          (val: number) => val <= 1500 || $t('cow.validation.weightTooHigh'),
         ]"
       />
 
       <q-input
         v-model.number="form.age_months"
-        label="Age (months)"
+        :label="$t('cow.ageMonths')"
         type="number"
         outlined
-        hint="Optional"
+        :hint="$t('common.optional')"
       />
 
       <!-- Milk Production Section -->
       <q-separator class="q-my-md" />
-      <div class="text-subtitle1 text-weight-medium q-mb-sm">Milk Production</div>
+      <div class="text-subtitle1 text-weight-medium q-mb-sm">{{ $t('cow.milkProductionSection') }}</div>
 
       <q-input
         v-model.number="form.milk_yield_liters"
-        label="Average Daily Yield (liters) *"
+        :label="$t('cow.averageDailyYield')"
         type="number"
         step="0.1"
         outlined
-        :rules="[(val) => val >= 0 || 'Yield cannot be negative']"
+        :rules="[(val: number) => val >= 0 || $t('cow.validation.yieldNonNegative')]"
       />
 
       <q-input
         v-model.number="form.milk_fat_percentage"
-        label="Milk Fat % *"
+        :label="$t('cow.milkFatRequired')"
         type="number"
         step="0.1"
         outlined
         :rules="[
-          (val) => val >= 0 || 'Fat % cannot be negative',
-          (val) => val <= 10 || 'Fat % seems too high',
+          (val: number) => val >= 0 || $t('cow.validation.fatNonNegative'),
+          (val: number) => val <= 10 || $t('cow.validation.fatTooHigh'),
         ]"
       />
 
       <q-select
         v-model="form.lactation_stage"
-        label="Lactation Stage *"
+        :label="$t('cow.lactationStageRequired')"
         outlined
         :options="lactationOptions"
         emit-value
         map-options
-        :rules="[(val) => !!val || 'Lactation stage is required']"
+        :rules="[(val: string) => !!val || $t('cow.validation.lactationRequired')]"
       />
 
       <!-- Health & Status Section -->
       <q-separator class="q-my-md" />
-      <div class="text-subtitle1 text-weight-medium q-mb-sm">Health & Status</div>
+      <div class="text-subtitle1 text-weight-medium q-mb-sm">{{ $t('cow.healthStatus') }}</div>
 
       <q-select
         v-model.number="form.body_condition_score"
-        label="Body Condition Score"
+        :label="$t('cow.bodyConditionScore')"
         outlined
         :options="bcsOptions"
         emit-value
         map-options
-        hint="1 (very thin) to 5 (very fat)"
+        :hint="$t('cow.bcsHint')"
       />
 
       <q-select
         v-model="form.activity_level"
-        label="Activity Level"
+        :label="$t('cow.activityLevel')"
         outlined
         :options="activityOptions"
         emit-value
         map-options
       />
 
-      <q-toggle v-model="form.is_pregnant" label="Pregnant" />
+      <q-toggle v-model="form.is_pregnant" :label="$t('cow.pregnant')" />
 
       <q-input
         v-if="form.is_pregnant"
         v-model.number="form.pregnancy_month"
-        label="Pregnancy Month"
+        :label="$t('cow.pregnancyMonth')"
         type="number"
         outlined
         :rules="[
-          (val) => !val || val >= 1 || 'Must be at least 1',
-          (val) => !val || val <= 9 || 'Max 9 months',
+          (val: number) => !val || val >= 1 || $t('cow.validation.pregnancyMonthMin'),
+          (val: number) => !val || val <= 9 || $t('cow.validation.pregnancyMonthMax'),
         ]"
       />
 
@@ -116,11 +184,11 @@
       <q-separator class="q-my-md" />
       <q-input
         v-model="form.notes"
-        label="Notes"
+        :label="$t('cow.notes')"
         type="textarea"
         outlined
         rows="3"
-        hint="Any additional information"
+        :hint="$t('cow.notesHint')"
       />
 
       <!-- Error Message -->
@@ -130,7 +198,7 @@
 
       <!-- Submit Button -->
       <q-btn
-        :label="isEditing ? 'Update Cow' : 'Add Cow'"
+        :label="isEditing ? $t('cow.updateCow') : $t('cow.addCow')"
         type="submit"
         color="primary"
         class="full-width"
@@ -142,7 +210,7 @@
       <!-- Delete Button (Edit mode only) -->
       <q-btn
         v-if="isEditing"
-        label="Delete Cow"
+        :label="$t('cow.deleteCow')"
         color="negative"
         flat
         class="full-width q-mt-sm"
@@ -153,21 +221,33 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, computed, onMounted } from 'vue';
+import { ref, reactive, computed, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useQuasar } from 'quasar';
+import { useI18n } from 'vue-i18n';
 import { useCowsStore, CowInput } from 'src/stores/cows';
+import { useAuthStore } from 'src/stores/auth';
+import { useHapticFeedback } from 'src/composables/useHapticFeedback';
+import { useImageUpload } from 'src/composables/useImageUpload';
 
 const router = useRouter();
 const route = useRoute();
 const $q = useQuasar();
+const { t } = useI18n();
 const cowsStore = useCowsStore();
+const authStore = useAuthStore();
+const { success, error: hapticError, warning, medium } = useHapticFeedback();
+const { captureFromCamera, selectFromGallery, clearImage } = useImageUpload();
+
+const showPhotoOptions = ref(false);
 
 const cowId = computed(() => route.params.id as string | undefined);
 const isEditing = computed(() => !!cowId.value);
 
 const form = reactive<CowInput>({
   name: '',
+  tag_number: '',
+  coat_color: '',
   breed: '',
   weight_kg: 400,
   milk_yield_liters: 10,
@@ -178,80 +258,140 @@ const form = reactive<CowInput>({
   is_pregnant: false,
   pregnancy_month: undefined,
   activity_level: 'normal',
+  image_url: undefined,
   notes: '',
 });
 
 const loading = computed(() => cowsStore.loading);
 const error = computed(() => cowsStore.error);
 
-const breedOptions = [
-  { label: 'Holstein Friesian', value: 'Holstein Friesian' },
-  { label: 'Jersey', value: 'Jersey' },
-  { label: 'Sahiwal', value: 'Sahiwal' },
-  { label: 'Gir', value: 'Gir' },
-  { label: 'Red Sindhi', value: 'Red Sindhi' },
-  { label: 'Crossbreed', value: 'Crossbreed' },
-  { label: 'Other', value: 'Other' },
+const fallbackBreedOptions = [
+  { label: t('cow.breeds.holsteinFriesian'), value: 'Holstein Friesian' },
+  { label: t('cow.breeds.jersey'), value: 'Jersey' },
+  { label: t('cow.breeds.sahiwal'), value: 'Sahiwal' },
+  { label: t('cow.breeds.gir'), value: 'Gir' },
+  { label: t('cow.breeds.redSindhi'), value: 'Red Sindhi' },
+  { label: t('cow.breeds.crossbreed'), value: 'Crossbreed' },
+  { label: t('cow.breeds.other'), value: 'Other' },
 ];
 
-const lactationOptions = [
-  { label: 'Early (0-100 days)', value: 'early' },
-  { label: 'Mid (100-200 days)', value: 'mid' },
-  { label: 'Late (200+ days)', value: 'late' },
-  { label: 'Dry', value: 'dry' },
-];
+const breedOptions = computed(() => {
+  if (cowsStore.breeds.length > 0) {
+    return cowsStore.breeds.map((b) => ({ label: b.name, value: b.name }));
+  }
+  return fallbackBreedOptions;
+});
 
-const bcsOptions = [
-  { label: '1 - Very Thin', value: 1 },
-  { label: '2 - Thin', value: 2 },
-  { label: '3 - Normal', value: 3 },
-  { label: '4 - Fat', value: 4 },
-  { label: '5 - Very Fat', value: 5 },
-];
+const lactationOptions = computed(() => [
+  { label: t('cow.lactationEarly'), value: 'early' },
+  { label: t('cow.lactationMid'), value: 'mid' },
+  { label: t('cow.lactationLate'), value: 'late' },
+  { label: t('cow.dry'), value: 'dry' },
+]);
 
-const activityOptions = [
-  { label: 'Low (stall-fed)', value: 'low' },
-  { label: 'Normal', value: 'normal' },
-  { label: 'High (grazing)', value: 'high' },
-];
+const bcsOptions = computed(() => [
+  { label: t('cow.bcs1'), value: 1 },
+  { label: t('cow.bcs2'), value: 2 },
+  { label: t('cow.bcs3'), value: 3 },
+  { label: t('cow.bcs4'), value: 4 },
+  { label: t('cow.bcs5'), value: 5 },
+]);
+
+const activityOptions = computed(() => [
+  { label: t('cow.activityLow'), value: 'low' },
+  { label: t('cow.activityNormal'), value: 'normal' },
+  { label: t('cow.activityHigh'), value: 'high' },
+]);
+
+const coatColorOptions = computed(() => [
+  { label: t('cow.coatColors.black'), value: 'Black' },
+  { label: t('cow.coatColors.brown'), value: 'Brown' },
+  { label: t('cow.coatColors.white'), value: 'White' },
+  { label: t('cow.coatColors.spotted'), value: 'Spotted' },
+  { label: t('cow.coatColors.red'), value: 'Red' },
+  { label: t('cow.coatColors.grey'), value: 'Grey' },
+  { label: t('cow.coatColors.mixed'), value: 'Mixed' },
+]);
+
+async function takePhoto() {
+  const result = await captureFromCamera();
+  if (result) {
+    form.image_url = result;
+  }
+}
+
+async function chooseFromGallery() {
+  const result = await selectFromGallery();
+  if (result) {
+    form.image_url = result;
+  }
+}
+
+function removePhoto() {
+  form.image_url = undefined;
+  clearImage();
+}
 
 async function onSubmit() {
+  medium(); // Haptic feedback on form submit
   if (isEditing.value) {
-    const success = await cowsStore.updateCow(cowId.value!, form);
-    if (success) {
-      $q.notify({ type: 'positive', message: 'Cow updated successfully' });
+    const updateSuccess = await cowsStore.updateCow(cowId.value!, form);
+    if (updateSuccess) {
+      success(); // Haptic feedback on successful operation
+      $q.notify({ type: 'positive', message: t('cow.cowUpdated') });
       router.back();
+    } else {
+      hapticError(); // Haptic feedback on error
     }
   } else {
     const cow = await cowsStore.createCow(form);
     if (cow) {
-      $q.notify({ type: 'positive', message: 'Cow added successfully' });
+      success(); // Haptic feedback on successful operation
+      $q.notify({ type: 'positive', message: t('cow.cowAdded') });
       router.back();
+    } else {
+      hapticError(); // Haptic feedback on error
     }
   }
 }
 
 function confirmDelete() {
+  warning(); // Haptic feedback on warning action
   $q.dialog({
-    title: 'Delete Cow',
-    message: `Are you sure you want to delete ${form.name}? This action cannot be undone.`,
+    title: t('cow.deleteCow'),
+    message: t('cow.confirmDeleteWithName', { name: form.name }),
     cancel: true,
     persistent: true,
   }).onOk(async () => {
-    const success = await cowsStore.deleteCow(cowId.value!);
-    if (success) {
-      $q.notify({ type: 'positive', message: 'Cow deleted' });
+    const deleteSuccess = await cowsStore.deleteCow(cowId.value!);
+    if (deleteSuccess) {
+      success(); // Haptic feedback on successful operation
+      $q.notify({ type: 'positive', message: t('cow.cowDeleted') });
       router.push('/cows');
+    } else {
+      hapticError(); // Haptic feedback on error
     }
   });
 }
 
 onMounted(async () => {
+  // Fetch breeds based on user's country
+  await authStore.fetchCountries();
+  const userCountryCode = authStore.userCountry;
+  const country = authStore.countries.find(
+    (c) => c.country_code === userCountryCode
+  );
+  if (country) {
+    cowsStore.fetchBreeds(country.id);
+  }
+
   if (isEditing.value) {
     const cow = await cowsStore.getCow(cowId.value!);
     if (cow) {
       Object.assign(form, {
         name: cow.name,
+        tag_number: cow.tag_number || '',
+        coat_color: cow.coat_color || '',
         breed: cow.breed,
         weight_kg: cow.weight_kg,
         milk_yield_liters: cow.milk_yield_liters,
@@ -262,12 +402,29 @@ onMounted(async () => {
         is_pregnant: cow.is_pregnant,
         pregnancy_month: cow.pregnancy_month,
         activity_level: cow.activity_level,
+        image_url: cow.image_url,
         notes: cow.notes,
       });
     } else {
-      $q.notify({ type: 'negative', message: 'Cow not found' });
+      $q.notify({ type: 'negative', message: t('cow.cowNotFound') });
       router.back();
     }
   }
 });
 </script>
+
+<style lang="scss" scoped>
+.photo-container {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.photo-remove-btn {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: rgba(255, 255, 255, 0.9);
+  z-index: 1;
+}
+</style>

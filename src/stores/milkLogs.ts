@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import { v4 as uuidv4 } from 'uuid';
-import { format, startOfWeek, startOfMonth, parseISO } from 'date-fns';
+import { format, subDays, startOfWeek, endOfWeek, startOfMonth, parseISO } from 'date-fns';
 import { api } from 'src/boot/axios';
 import { db, MilkLog } from 'src/lib/offline/db';
 import { queueCreate, queueUpdate, queueDelete } from 'src/lib/offline/sync-manager';
@@ -15,6 +15,8 @@ export interface MilkLogInput {
   morning_liters?: number;
   evening_liters?: number;
   fat_percentage?: number;
+  snf_percentage?: number;
+  temperature?: number;
   notes?: string;
 }
 
@@ -46,6 +48,26 @@ export const useMilkLogsStore = defineStore('milkLogs', () => {
   const todayTotal = computed(() =>
     todayLogs.value.reduce((sum, log) => sum + log.total_liters, 0)
   );
+
+  const yesterdayLogs = computed(() => {
+    const yesterday = format(subDays(new Date(), 1), 'yyyy-MM-dd');
+    return logs.value.filter((log) => log.log_date === yesterday);
+  });
+
+  const yesterdayTotal = computed(() =>
+    yesterdayLogs.value.reduce((sum, log) => sum + log.total_liters, 0)
+  );
+
+  const lastWeekSummary = computed((): MilkLogSummary => {
+    const now = new Date();
+    const lastWeekStart = startOfWeek(subDays(now, 7), { weekStartsOn: 1 });
+    const lastWeekEnd = endOfWeek(subDays(now, 7), { weekStartsOn: 1 });
+    const lastWeekLogs = logs.value.filter((log) => {
+      const d = parseISO(log.log_date);
+      return d >= lastWeekStart && d <= lastWeekEnd;
+    });
+    return calculateSummary(lastWeekLogs);
+  });
 
   const thisWeekSummary = computed((): MilkLogSummary => {
     const weekStart = startOfWeek(new Date(), { weekStartsOn: 1 });
@@ -356,7 +378,10 @@ export const useMilkLogsStore = defineStore('milkLogs', () => {
     recentLogs,
     todayLogs,
     todayTotal,
+    yesterdayLogs,
+    yesterdayTotal,
     thisWeekSummary,
+    lastWeekSummary,
     thisMonthSummary,
     // Actions
     fetchLogs,

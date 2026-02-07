@@ -9,6 +9,8 @@ import { isOnline } from 'src/boot/pwa';
 
 export interface CowInput {
   name: string;
+  tag_number?: string;
+  coat_color?: string;
   breed: string;
   weight_kg: number;
   milk_yield_liters: number;
@@ -19,7 +21,13 @@ export interface CowInput {
   is_pregnant?: boolean;
   pregnancy_month?: number;
   activity_level?: string;
+  image_url?: string;
   notes?: string;
+}
+
+export interface Breed {
+  id: string;
+  name: string;
 }
 
 export const useCowsStore = defineStore('cows', () => {
@@ -27,6 +35,8 @@ export const useCowsStore = defineStore('cows', () => {
   const cows = ref<Cow[]>([]);
   const loading = ref(false);
   const error = ref<string | null>(null);
+  const breeds = ref<Breed[]>([]);
+  const breedsLoading = ref(false);
 
   // Computed
   const activeCows = computed(() =>
@@ -35,8 +45,15 @@ export const useCowsStore = defineStore('cows', () => {
 
   const cowCount = computed(() => activeCows.value.length);
 
+  // Getters
+  function getCowsForFarmer(farmerProfileId: string): Cow[] {
+    return cows.value.filter(
+      (cow) => cow.farmer_profile_id === farmerProfileId && !cow._deleted
+    );
+  }
+
   // Actions
-  async function fetchCows(): Promise<void> {
+  async function fetchCows(farmerProfileId?: string): Promise<void> {
     const authStore = useAuthStore();
     if (!authStore.userId) return;
 
@@ -46,7 +63,11 @@ export const useCowsStore = defineStore('cows', () => {
     try {
       if (isOnline.value) {
         // Fetch from server
-        const response = await api.get('/api/v1/cows');
+        const params: Record<string, string> = {};
+        if (farmerProfileId) {
+          params.farmer_profile_id = farmerProfileId;
+        }
+        const response = await api.get('/api/v1/cows', { params });
         const serverCows = response.data.map((cow: Cow) => ({
           ...cow,
           _synced: true,
@@ -58,16 +79,32 @@ export const useCowsStore = defineStore('cows', () => {
       }
 
       // Load from local database
-      cows.value = await db.cows
-        .where({ user_id: authStore.userId })
-        .filter((cow) => !cow._deleted)
-        .toArray();
+      if (farmerProfileId) {
+        cows.value = await db.cows
+          .where('farmer_profile_id')
+          .equals(farmerProfileId)
+          .filter((cow) => !cow._deleted)
+          .toArray();
+      } else {
+        cows.value = await db.cows
+          .where({ user_id: authStore.userId })
+          .filter((cow) => !cow._deleted)
+          .toArray();
+      }
     } catch (err) {
       // Fallback to local data
-      cows.value = await db.cows
-        .where({ user_id: authStore.userId })
-        .filter((cow) => !cow._deleted)
-        .toArray();
+      if (farmerProfileId) {
+        cows.value = await db.cows
+          .where('farmer_profile_id')
+          .equals(farmerProfileId)
+          .filter((cow) => !cow._deleted)
+          .toArray();
+      } else {
+        cows.value = await db.cows
+          .where({ user_id: authStore.userId })
+          .filter((cow) => !cow._deleted)
+          .toArray();
+      }
 
       if (cows.value.length === 0) {
         error.value = extractErrorMessage(err);
@@ -255,14 +292,74 @@ export const useCowsStore = defineStore('cows', () => {
     return updateCow(id, { is_active: !cow.is_active } as Partial<CowInput>);
   }
 
+  async function bulkDeleteCows(ids: string[]): Promise<number> {
+    let successCount = 0;
+
+    for (const id of ids) {
+      const result = await deleteCow(id);
+      if (result) successCount++;
+    }
+
+    return successCount;
+  }
+
+  async function bulkArchiveCows(ids: string[]): Promise<number> {
+    let successCount = 0;
+
+    for (const id of ids) {
+      const result = await updateCow(id, { is_active: false } as Partial<CowInput>);
+      if (result) successCount++;
+    }
+
+    return successCount;
+  }
+
+  async function fetchBreeds(countryId: string): Promise<void> {
+    if (!countryId) return;
+
+    breedsLoading.value = true;
+    try {
+      if (isOnline.value) {
+        const response = await api.get(`/api/v1/auth/breeds/${countryId}`);
+        const data = response.data as Breed[];
+        breeds.value = data;
+        // Cache in localStorage keyed by country
+        localStorage.setItem(`cached_breeds_${countryId}`, JSON.stringify(data));
+      } else {
+        // Offline: load from localStorage cache
+        const cached = localStorage.getItem(`cached_breeds_${countryId}`);
+        if (cached) {
+          breeds.value = JSON.parse(cached) as Breed[];
+        }
+      }
+    } catch (err) {
+      console.warn('[Cows] Failed to fetch breeds from API, trying localStorage cache:', err);
+      // Fall back to localStorage cache
+      const cached = localStorage.getItem(`cached_breeds_${countryId}`);
+      if (cached) {
+        try {
+          breeds.value = JSON.parse(cached) as Breed[];
+        } catch {
+          console.warn('[Cows] Failed to parse cached breeds');
+        }
+      }
+    } finally {
+      breedsLoading.value = false;
+    }
+  }
+
   return {
     // State
     cows,
     loading,
     error,
+    breeds,
+    breedsLoading,
     // Computed
     activeCows,
     cowCount,
+    // Getters
+    getCowsForFarmer,
     // Actions
     fetchCows,
     getCow,
@@ -270,6 +367,9 @@ export const useCowsStore = defineStore('cows', () => {
     updateCow,
     deleteCow,
     toggleCowActive,
+    bulkDeleteCows,
+    bulkArchiveCows,
+    fetchBreeds,
   };
 });
 
