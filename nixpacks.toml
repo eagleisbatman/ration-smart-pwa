@@ -5,11 +5,11 @@
 nixPkgs = ["nodejs_20"]
 
 [phases.install]
-cmds = ["npm install -g bun", "bun install"]
+cmds = ["npm install"]
 
 [phases.build]
-cmds = ["bun run build"]
+cmds = ["npm run build"]
 
 [start]
-# Serve static files from dist/spa using a simple static server
-cmd = "npx serve dist/spa -l ${PORT:-3000} -s"
+# Serve static PWA files with SPA fallback for Vue Router history mode
+cmd = "npx serve dist/pwa -l ${PORT:-3000} -s"
