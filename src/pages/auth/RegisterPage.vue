@@ -20,17 +20,6 @@
           <template #prepend>
             <q-icon name="public" />
           </template>
-          <template #option="scope">
-            <q-item v-bind="scope.itemProps">
-              <q-item-section avatar class="min-w-0" style="min-width: 0; padding-right: 8px">
-                <span class="text-h6">{{ scope.opt.flag }}</span>
-              </q-item-section>
-              <q-item-section>{{ scope.opt.label }}</q-item-section>
-            </q-item>
-          </template>
-          <template #selected-item="scope">
-            <span>{{ scope.opt.flag }} {{ scope.opt.label }}</span>
-          </template>
         </q-select>
       </div>
 
@@ -89,7 +78,7 @@
             </template>
           </q-input>
 
-          <!-- Phone Input -->
+          <!-- Phone Input with dial code -->
           <q-input
             v-else
             v-model="form.phone"
@@ -100,7 +89,7 @@
             :rules="[(val) => !!val || $t('validation.required')]"
           >
             <template #prepend>
-              <q-icon name="phone" />
+              <span class="text-body2 text-weight-medium text-grey-8 q-mr-xs">{{ selectedDialCode }}</span>
             </template>
           </q-input>
         </div>
@@ -234,6 +223,7 @@ import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useAuthStore } from 'src/stores/auth';
 import { setOnboardingItem } from 'src/lib/onboarding-storage';
+import { COUNTRY_DIAL_CODES } from 'src/services/api-adapter';
 
 const { t } = useI18n();
 const router = useRouter();
@@ -251,20 +241,31 @@ const form = reactive({
   confirmPin: '',
 });
 
-/** Convert a 2-letter ISO country code to its flag emoji (regional indicator symbols). */
-function countryCodeToFlag(code: string): string {
-  return [...code.toUpperCase()]
-    .map((ch) => String.fromCodePoint(0x1f1e6 + ch.charCodeAt(0) - 65))
-    .join('');
-}
+// Hardcoded fallback in case API is unreachable
+const FALLBACK_COUNTRIES = [
+  { country_code: 'IN', name: 'India' },
+  { country_code: 'KE', name: 'Kenya' },
+  { country_code: 'ET', name: 'Ethiopia' },
+  { country_code: 'NP', name: 'Nepal' },
+  { country_code: 'BD', name: 'Bangladesh' },
+  { country_code: 'VN', name: 'Vietnam' },
+];
 
-const countryOptions = computed(() =>
-  authStore.countries.map((c) => ({
-    label: t(`countries.${c.country_code}`, c.name || c.country_code),
-    value: c.country_code,
-    flag: countryCodeToFlag(c.country_code),
-  }))
-);
+const countryOptions = computed(() => {
+  const source = authStore.countries.length > 0 ? authStore.countries : FALLBACK_COUNTRIES;
+  return source.map((c) => {
+    const dialCode = COUNTRY_DIAL_CODES[c.country_code] || '';
+    const name = t(`countries.${c.country_code}`, c.name || c.country_code);
+    return {
+      label: dialCode ? `${name} (${dialCode})` : name,
+      value: c.country_code,
+    };
+  });
+});
+
+const selectedDialCode = computed(() => {
+  return COUNTRY_DIAL_CODES[form.country_code] || '';
+});
 
 onMounted(() => {
   authStore.fetchCountries();
