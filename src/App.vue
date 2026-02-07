@@ -3,5 +3,5 @@
 </template>
 
 <script setup lang="ts">
-// Main App component - router-view handles all routing
+import 'flag-icons/css/flag-icons.min.css';
 </script>
