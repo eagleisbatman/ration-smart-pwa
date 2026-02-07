@@ -1,0 +1,205 @@
+<template>
+  <q-card flat bordered class="milk-price-card">
+    <q-card-section class="q-py-sm q-px-md">
+      <div class="row items-center no-wrap">
+        <!-- Price Display / Edit -->
+        <div class="col">
+          <div class="row items-center q-gutter-x-sm">
+            <q-icon name="payments" size="sm" color="green-7" />
+            <div v-if="!editing" class="row items-center q-gutter-x-xs">
+              <span class="text-caption text-grey-7">{{ $t('logs.price.milkPrice') }}:</span>
+              <span v-if="milkPrice !== null" class="text-body2 text-weight-medium">
+                {{ formatCurrency(milkPrice) }}/{{ $t('units.l') }}
+              </span>
+              <span v-else class="text-caption text-grey-5 text-italic">
+                {{ $t('logs.price.notSet') }}
+              </span>
+            </div>
+            <div v-else class="row items-center q-gutter-x-xs" style="flex: 1">
+              <q-input
+                ref="priceInputRef"
+                v-model.number="editPriceValue"
+                type="number"
+                :label="$t('logs.price.milkPrice')"
+                :suffix="'/' + $t('units.l')"
+                :prefix="getCurrencySymbol()"
+                dense
+                outlined
+                input-class="text-right"
+                style="max-width: 180px"
+                @keyup.enter="savePrice"
+                @keyup.escape="cancelEdit"
+              />
+              <q-btn
+                icon="check"
+                flat
+                round
+                dense
+                size="sm"
+                color="positive"
+                @click="savePrice"
+              />
+              <q-btn
+                icon="close"
+                flat
+                round
+                dense
+                size="sm"
+                color="grey"
+                @click="cancelEdit"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Edit Button -->
+        <div v-if="!editing" class="col-auto">
+          <q-btn
+            :icon="milkPrice !== null ? 'edit' : 'add'"
+            flat
+            round
+            dense
+            size="sm"
+            color="grey-7"
+            @click="startEdit"
+          >
+            <q-tooltip>
+              {{ milkPrice !== null ? $t('logs.price.editPrice') : $t('logs.price.setPrice') }}
+            </q-tooltip>
+          </q-btn>
+        </div>
+      </div>
+
+      <!-- Revenue Summary -->
+      <div v-if="milkPrice !== null" class="row q-mt-xs q-gutter-x-md">
+        <div class="text-caption">
+          <span class="text-grey-6">{{ $t('logs.summary.today') }}:</span>
+          <span class="text-green-7 text-weight-medium q-ml-xs">
+            {{ formatCurrency(todayRevenue) }}
+          </span>
+        </div>
+        <div class="text-caption">
+          <span class="text-grey-6">{{ $t('logs.price.weeklyRevenue') }}:</span>
+          <span class="text-green-7 text-weight-medium q-ml-xs">
+            {{ formatCurrency(weeklyRevenue) }}
+          </span>
+        </div>
+      </div>
+    </q-card-section>
+  </q-card>
+</template>
+
+<script setup lang="ts">
+import { ref, computed, onMounted, nextTick } from 'vue';
+import { useQuasar, QInput } from 'quasar';
+import { useI18n } from 'vue-i18n';
+import { useCurrency } from 'src/composables/useCurrency';
+
+interface MilkPriceHistory {
+  price: number;
+  date: string;
+}
+
+const props = defineProps<{
+  todayLiters: number;
+  weekLiters: number;
+}>();
+
+const $q = useQuasar();
+const { t } = useI18n();
+const { formatCurrency, getCurrencySymbol } = useCurrency();
+
+const PRICE_KEY = 'milk_price_per_liter';
+const HISTORY_KEY = 'milk_price_history';
+
+const milkPrice = ref<number | null>(null);
+const editing = ref(false);
+const editPriceValue = ref<number | null>(null);
+const priceInputRef = ref<InstanceType<typeof QInput> | null>(null);
+
+const todayRevenue = computed(() => {
+  if (milkPrice.value === null) return 0;
+  return props.todayLiters * milkPrice.value;
+});
+
+const weeklyRevenue = computed(() => {
+  if (milkPrice.value === null) return 0;
+  return props.weekLiters * milkPrice.value;
+});
+
+function loadPrice(): void {
+  const stored = localStorage.getItem(PRICE_KEY);
+  if (stored !== null) {
+    const parsed = parseFloat(stored);
+    milkPrice.value = isNaN(parsed) ? null : parsed;
+  }
+}
+
+function startEdit(): void {
+  editPriceValue.value = milkPrice.value;
+  editing.value = true;
+  nextTick(() => {
+    priceInputRef.value?.focus();
+  });
+}
+
+function cancelEdit(): void {
+  editing.value = false;
+  editPriceValue.value = null;
+}
+
+function savePrice(): void {
+  if (editPriceValue.value === null || editPriceValue.value <= 0) {
+    return;
+  }
+
+  milkPrice.value = editPriceValue.value;
+  localStorage.setItem(PRICE_KEY, String(milkPrice.value));
+
+  // Update price history
+  const historyRaw = localStorage.getItem(HISTORY_KEY);
+  let history: MilkPriceHistory[] = [];
+  if (historyRaw) {
+    try {
+      history = JSON.parse(historyRaw) as MilkPriceHistory[];
+    } catch {
+      history = [];
+    }
+  }
+  history.push({
+    price: milkPrice.value,
+    date: new Date().toISOString(),
+  });
+
+  // Keep last 100 entries
+  if (history.length > 100) {
+    history = history.slice(-100);
+  }
+
+  localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+
+  editing.value = false;
+  editPriceValue.value = null;
+
+  $q.notify({
+    message: t('logs.price.priceUpdated'),
+    color: 'positive',
+    icon: 'check_circle',
+    timeout: 1500,
+  });
+}
+
+// Expose milkPrice so parent can use it for per-log revenue
+defineExpose({ milkPrice });
+
+onMounted(() => {
+  loadPrice();
+});
+</script>
+
+<style lang="scss" scoped>
+.milk-price-card {
+  border-radius: 12px;
+  background: linear-gradient(135deg, #f0fdf4 0%, #fff 100%);
+}
+</style>
