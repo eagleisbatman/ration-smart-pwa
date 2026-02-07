@@ -8,8 +8,8 @@
   "scripts": {
     "dev": "quasar dev",
     "build": "quasar build",
-    "start": "npx serve dist/pwa --single --listen ${PORT:-3000}",
-    "preview": "quasar serve dist/pwa --port 9000",
+    "start": "npx serve dist/spa --single --listen ${PORT:-3000}",
+    "preview": "quasar serve dist/spa --port 9000",
     "lint": "eslint --ext .js,.ts,.vue ./src",
     "format": "prettier --write \"**/*.{js,ts,vue,scss,html,md,json}\"",
     "test": "echo \"No tests yet\"",
