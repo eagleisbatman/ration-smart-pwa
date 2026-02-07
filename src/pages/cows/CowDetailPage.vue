@@ -7,16 +7,65 @@
 
     <!-- Cow Details -->
     <template v-else-if="cow">
-      <!-- Header Card -->
-      <q-card flat bordered class="q-mb-md">
+      <!-- Hero Photo -->
+      <q-card v-if="cow.image_url" flat bordered class="q-mb-md cow-hero-card">
+        <q-img
+          :src="cow.image_url"
+          :ratio="16/9"
+          class="cow-hero-image"
+        />
+        <q-card-section>
+          <div class="text-h5">{{ cow.name }}</div>
+          <div class="text-body2 text-grey-7">
+            {{ cow.breed }}
+            <template v-if="cow.tag_number"> · #{{ cow.tag_number }}</template>
+          </div>
+          <q-chip
+            v-if="cow.coat_color"
+            size="sm"
+            color="grey-3"
+            text-color="grey-8"
+            icon="palette"
+            class="q-mt-xs"
+          >
+            {{ cow.coat_color }}
+          </q-chip>
+          <q-chip
+            v-if="!cow._synced"
+            size="sm"
+            color="warning"
+            text-color="white"
+            icon="sync"
+            class="q-mt-xs"
+          >
+            {{ $t('cow.pendingSync') }}
+          </q-chip>
+        </q-card-section>
+      </q-card>
+
+      <!-- Header Card (no photo) -->
+      <q-card v-else flat bordered class="q-mb-md">
         <q-card-section>
           <div class="row items-center">
             <q-avatar size="64px" color="primary" text-color="white">
-              <q-icon name="pets" size="36px" />
+              <q-icon :name="COW_ICON" size="36px" />
             </q-avatar>
             <div class="q-ml-md">
               <div class="text-h5">{{ cow.name }}</div>
-              <div class="text-body2 text-grey-7">{{ cow.breed }}</div>
+              <div class="text-body2 text-grey-7">
+                {{ cow.breed }}
+                <template v-if="cow.tag_number"> · #{{ cow.tag_number }}</template>
+              </div>
+              <q-chip
+                v-if="cow.coat_color"
+                size="sm"
+                color="grey-3"
+                text-color="grey-8"
+                icon="palette"
+                class="q-mt-xs"
+              >
+                {{ cow.coat_color }}
+              </q-chip>
               <q-chip
                 v-if="!cow._synced"
                 size="sm"
@@ -25,7 +74,7 @@
                 icon="sync"
                 class="q-mt-xs"
               >
-                Pending sync
+                {{ $t('cow.pendingSync') }}
               </q-chip>
             </div>
           </div>
@@ -37,19 +86,32 @@
         <div class="col-4">
           <q-card flat bordered class="text-center q-pa-sm">
             <div class="text-h6 text-primary">{{ cow.weight_kg }}</div>
-            <div class="text-caption text-grey-7">kg</div>
+            <div class="text-caption text-grey-7">{{ $t('cow.weightKg') }}</div>
           </q-card>
         </div>
         <div class="col-4">
           <q-card flat bordered class="text-center q-pa-sm">
             <div class="text-h6 text-secondary">{{ cow.milk_yield_liters }}</div>
-            <div class="text-caption text-grey-7">L/day</div>
+            <div class="text-caption text-grey-7">{{ $t('cow.milkYield') }}</div>
+            <div v-if="yieldTrend" class="trend-indicator q-mt-xs">
+              <q-icon
+                :name="yieldTrend.icon"
+                :color="yieldTrend.color"
+                size="12px"
+              />
+              <span
+                class="text-caption q-ml-xs"
+                :class="`text-${yieldTrend.color}`"
+                style="font-size: 0.65rem"
+              >{{ yieldTrend.percentText }}</span>
+              <span class="text-caption text-grey-6 q-ml-xs" style="font-size: 0.6rem">{{ $t('dashboard.trend.vsLastWeek') }}</span>
+            </div>
           </q-card>
         </div>
         <div class="col-4">
           <q-card flat bordered class="text-center q-pa-sm">
-            <div class="text-h6 text-accent">{{ cow.milk_fat_percentage }}%</div>
-            <div class="text-caption text-grey-7">Fat</div>
+            <div class="text-h6 text-accent">{{ cow.milk_fat_percentage }}{{ $t('units.percent') }}</div>
+            <div class="text-caption text-grey-7">{{ $t('cow.fat') }}</div>
           </q-card>
         </div>
       </div>
@@ -57,57 +119,75 @@
       <!-- Details List -->
       <q-card flat bordered class="q-mb-md">
         <q-list separator>
+          <q-item v-if="cow.tag_number">
+            <q-item-section>
+              <q-item-label caption>{{ $t('cow.tagNumber') }}</q-item-label>
+              <q-item-label>{{ cow.tag_number }}</q-item-label>
+            </q-item-section>
+          </q-item>
+
+          <q-item v-if="cow.coat_color">
+            <q-item-section>
+              <q-item-label caption>{{ $t('cow.coatColor') }}</q-item-label>
+              <q-item-label>{{ cow.coat_color }}</q-item-label>
+            </q-item-section>
+          </q-item>
+
           <q-item>
             <q-item-section>
-              <q-item-label caption>Lactation Stage</q-item-label>
+              <q-item-label caption>{{ $t('cow.lactationStage') }}</q-item-label>
               <q-item-label>{{ formatLactationStage(cow.lactation_stage) }}</q-item-label>
             </q-item-section>
           </q-item>
 
           <q-item v-if="cow.age_months">
             <q-item-section>
-              <q-item-label caption>Age</q-item-label>
+              <q-item-label caption>{{ $t('cow.age') }}</q-item-label>
               <q-item-label>{{ formatAge(cow.age_months) }}</q-item-label>
             </q-item-section>
           </q-item>
 
           <q-item v-if="cow.body_condition_score">
             <q-item-section>
-              <q-item-label caption>Body Condition Score</q-item-label>
-              <q-item-label>{{ cow.body_condition_score }} / 5</q-item-label>
+              <q-item-label caption>{{ $t('cow.bodyConditionScore') }}</q-item-label>
+              <q-item-label>{{ $t('cow.bcsValue', { score: cow.body_condition_score }) }}</q-item-label>
             </q-item-section>
           </q-item>
 
           <q-item>
             <q-item-section>
-              <q-item-label caption>Activity Level</q-item-label>
-              <q-item-label class="text-capitalize">{{ cow.activity_level }}</q-item-label>
+              <q-item-label caption>{{ $t('cow.activityLevel') }}</q-item-label>
+              <q-item-label>{{ formatActivityLevel(cow.activity_level) }}</q-item-label>
             </q-item-section>
           </q-item>
 
           <q-item>
             <q-item-section>
-              <q-item-label caption>Pregnancy Status</q-item-label>
+              <q-item-label caption>{{ $t('cow.pregnancyStatus') }}</q-item-label>
               <q-item-label>
-                {{ cow.is_pregnant ? `Pregnant (Month ${cow.pregnancy_month || 'N/A'})` : 'Not pregnant' }}
+                {{ cow.is_pregnant ? `${$t('cow.pregnant')} (${$t('cow.pregnancyMonth')} ${cow.pregnancy_month || $t('common.notAvailable')})` : $t('cow.notPregnant') }}
               </q-item-label>
             </q-item-section>
           </q-item>
 
           <q-item v-if="cow.notes">
             <q-item-section>
-              <q-item-label caption>Notes</q-item-label>
+              <q-item-label caption>{{ $t('cow.notes') }}</q-item-label>
               <q-item-label>{{ cow.notes }}</q-item-label>
             </q-item-section>
           </q-item>
         </q-list>
       </q-card>
 
+      <!-- Milk Production Trend -->
+      <div class="text-subtitle1 q-mt-md q-mb-sm">{{ $t('cow.milkTrend') }}</div>
+      <MilkProductionChart :cow-id="cow.id" :height="200" />
+
       <!-- Quick Actions -->
       <div class="row q-col-gutter-sm q-mb-md">
         <div class="col-6">
           <q-btn
-            label="Log Milk"
+            :label="$t('cow.logMilk')"
             icon="water_drop"
             color="primary"
             class="full-width"
@@ -117,7 +197,7 @@
         </div>
         <div class="col-6">
           <q-btn
-            label="Get Diet"
+            :label="$t('cow.getDiet')"
             icon="restaurant"
             color="secondary"
             class="full-width"
@@ -127,11 +207,16 @@
         </div>
       </div>
 
+      <!-- Health History -->
+      <div class="q-mt-md q-mb-md">
+        <HealthEventTimeline ref="healthTimeline" :cow-id="cow.id" />
+      </div>
+
       <!-- Recent Milk Logs -->
-      <div class="text-subtitle1 q-mb-sm">Recent Milk Logs</div>
+      <div class="text-subtitle1 q-mb-sm">{{ $t('cow.recentMilkLogs') }}</div>
       <template v-if="recentLogs.length === 0">
         <q-card flat bordered class="text-center q-pa-md">
-          <div class="text-body2 text-grey-7">No logs yet</div>
+          <div class="text-body2 text-grey-7">{{ $t('cow.noLogsYet') }}</div>
         </q-card>
       </template>
       <template v-else>
@@ -140,11 +225,11 @@
             <q-item-section>
               <q-item-label>{{ formatDate(log.log_date) }}</q-item-label>
               <q-item-label caption>
-                M: {{ log.morning_liters || 0 }}L · E: {{ log.evening_liters || 0 }}L
+                {{ $t('cow.morning') }}: {{ log.morning_liters || 0 }}{{ $t('units.l') }} · {{ $t('cow.evening') }}: {{ log.evening_liters || 0 }}{{ $t('units.l') }}
               </q-item-label>
             </q-item-section>
             <q-item-section side>
-              <q-item-label class="text-h6 text-primary">{{ log.total_liters }}L</q-item-label>
+              <q-item-label class="text-h6 text-primary">{{ log.total_liters }}{{ $t('units.l') }}</q-item-label>
             </q-item-section>
           </q-item>
         </q-list>
@@ -166,9 +251,9 @@
       <EmptyState
         icon="error_outline"
         icon-color="negative"
-        title="Cow Not Found"
-        description="The cow you're looking for doesn't exist or has been removed."
-        action-label="Go Back"
+        :title="$t('cow.cowNotFound')"
+        :description="$t('cow.cowNotFoundDescription')"
+        :action-label="$t('cow.goBack')"
         @action="router.back()"
       />
     </template>
@@ -178,14 +263,19 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 
 const router = useRouter();
-import { format } from 'date-fns';
+const { t } = useI18n();
+import { format, subDays, startOfWeek, endOfWeek, parseISO } from 'date-fns';
 import { useCowsStore } from 'src/stores/cows';
 import { useMilkLogsStore } from 'src/stores/milkLogs';
 import { Cow } from 'src/lib/offline/db';
 import SkeletonCard from 'src/components/ui/SkeletonCard.vue';
 import EmptyState from 'src/components/ui/EmptyState.vue';
+import MilkProductionChart from 'src/components/dashboard/MilkProductionChart.vue';
+import HealthEventTimeline from 'src/components/cow/HealthEventTimeline.vue';
+import { COW_ICON } from 'src/boot/icons';
 
 const route = useRoute();
 const cowsStore = useCowsStore();
@@ -195,23 +285,78 @@ const cowId = computed(() => route.params.id as string);
 const cow = ref<Cow | null>(null);
 const recentLogs = ref<typeof milkLogsStore.logs>([]);
 const loading = ref(true);
+const healthTimeline = ref<InstanceType<typeof HealthEventTimeline> | null>(null);
+
+const yieldTrend = computed(() => {
+  if (recentLogs.value.length === 0) return null;
+
+  const now = new Date();
+  const thisWeekStart = startOfWeek(now, { weekStartsOn: 1 });
+  const lastWeekStart = startOfWeek(subDays(now, 7), { weekStartsOn: 1 });
+  const lastWeekEnd = endOfWeek(subDays(now, 7), { weekStartsOn: 1 });
+
+  const thisWeekLogs = recentLogs.value.filter((log) => {
+    const d = parseISO(log.log_date);
+    return d >= thisWeekStart;
+  });
+  const lastWeekLogs = recentLogs.value.filter((log) => {
+    const d = parseISO(log.log_date);
+    return d >= lastWeekStart && d <= lastWeekEnd;
+  });
+
+  if (lastWeekLogs.length === 0) return null;
+
+  const thisWeekAvg =
+    thisWeekLogs.length > 0
+      ? thisWeekLogs.reduce((s, l) => s + l.total_liters, 0) / thisWeekLogs.length
+      : 0;
+  const lastWeekAvg =
+    lastWeekLogs.reduce((s, l) => s + l.total_liters, 0) / lastWeekLogs.length;
+
+  if (lastWeekAvg === 0) return null;
+
+  const diff = thisWeekAvg - lastWeekAvg;
+  const pct = Math.round((diff / lastWeekAvg) * 100);
+
+  if (pct > 0) {
+    return { icon: 'trending_up', color: 'positive', percentText: `+${pct}%` };
+  } else if (pct < 0) {
+    return { icon: 'trending_down', color: 'negative', percentText: `${pct}%` };
+  }
+  return { icon: 'trending_flat', color: 'grey', percentText: '0%' };
+});
 
 function formatLactationStage(stage: string): string {
   const stages: Record<string, string> = {
-    early: 'Early (0-100 days)',
-    mid: 'Mid (100-200 days)',
-    late: 'Late (200+ days)',
-    dry: 'Dry',
+    early: t('cow.lactationEarly'),
+    mid: t('cow.lactationMid'),
+    late: t('cow.lactationLate'),
+    dry: t('cow.dry'),
   };
   return stages[stage] || stage;
 }
 
+function formatActivityLevel(level: string): string {
+  const levels: Record<string, string> = {
+    low: t('cow.activityLow'),
+    normal: t('cow.activityNormal'),
+    high: t('cow.activityHigh'),
+  };
+  return levels[level] || level;
+}
+
 function formatAge(months: number): string {
-  if (months < 12) return `${months} months`;
+  if (months < 12) return t('cow.ageFormatMonthPlural', { count: months });
   const years = Math.floor(months / 12);
   const remainingMonths = months % 12;
-  if (remainingMonths === 0) return `${years} year${years > 1 ? 's' : ''}`;
-  return `${years} year${years > 1 ? 's' : ''} ${remainingMonths} month${remainingMonths > 1 ? 's' : ''}`;
+  const yearStr = years > 1
+    ? t('cow.ageFormatYearsPlural', { count: years })
+    : t('cow.ageFormatYears', { count: years });
+  if (remainingMonths === 0) return yearStr;
+  const monthStr = remainingMonths > 1
+    ? t('cow.ageFormatMonthPlural', { count: remainingMonths })
+    : t('cow.ageFormatMonth', { count: remainingMonths });
+  return t('cow.ageFormatYearsAndMonths', { years: yearStr, months: monthStr });
 }
 
 function formatDate(dateStr: string): string {
@@ -234,5 +379,21 @@ onMounted(async () => {
 .rounded-borders {
   border-radius: 12px;
   overflow: hidden;
+}
+
+.cow-hero-card {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.cow-hero-image {
+  max-height: 220px;
+}
+
+.trend-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
 }
 </style>

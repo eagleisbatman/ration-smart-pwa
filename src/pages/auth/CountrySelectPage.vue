@@ -1,6 +1,6 @@
 <template>
   <div class="country-select-page">
-    <div class="text-h6 text-center q-mb-lg">Select Your Country</div>
+    <div class="text-h6 text-center q-mb-lg">{{ $t('onboarding.chooseCountry') }}</div>
 
     <q-list separator>
       <q-item
@@ -27,6 +27,7 @@
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
+import { setOnboardingItem } from 'src/lib/onboarding-storage';
 
 const router = useRouter();
 
@@ -40,13 +41,11 @@ const countries = [
 
 function selectCountry(code: string) {
   // Store selected country and proceed to registration
-  sessionStorage.setItem('selected_country', code);
+  setOnboardingItem('selected_country', code);
   router.push('/auth/register');
 }
 </script>
 
 <style lang="scss" scoped>
-.country-select-page {
-  padding: 0 8px;
-}
+/* Styling handled by AuthLayout container */
 </style>

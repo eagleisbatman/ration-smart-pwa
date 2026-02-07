@@ -1,21 +1,32 @@
 <template>
   <q-page class="q-pa-md">
     <PullToRefresh @refresh="onRefresh">
-      <!-- Search Bar -->
-      <q-input
-        v-model="searchQuery"
-        outlined
-        dense
-        placeholder="Search farmers..."
-        class="q-mb-md"
-      >
-        <template #prepend>
-          <q-icon name="search" />
-        </template>
-        <template v-if="searchQuery" #append>
-          <q-icon name="close" class="cursor-pointer" @click="searchQuery = ''" />
-        </template>
-      </q-input>
+      <!-- Search Bar & Import Button -->
+      <div class="row items-center q-mb-md q-gutter-sm">
+        <q-input
+          v-model="searchQuery"
+          outlined
+          dense
+          :placeholder="$t('farmer.searchFarmers')"
+          class="col"
+        >
+          <template #prepend>
+            <q-icon name="search" />
+          </template>
+          <template v-if="searchQuery" #append>
+            <q-icon name="close" class="cursor-pointer" @click="searchQuery = ''" />
+          </template>
+        </q-input>
+        <q-btn
+          outline
+          color="primary"
+          icon="upload_file"
+          :label="$t('farmers.import.importBtn')"
+          dense
+          no-caps
+          @click="router.push({ name: 'farmer-import' })"
+        />
+      </div>
 
       <!-- Filter Chips -->
       <div class="row q-gutter-sm q-mb-md">
@@ -25,7 +36,7 @@
           clickable
           @click="filterType = 'all'"
         >
-          All ({{ farmerCount }})
+          {{ $t('farmer.filter.all') }} ({{ farmerCount }})
         </q-chip>
         <q-chip
           :outline="filterType !== 'dairy'"
@@ -33,7 +44,7 @@
           clickable
           @click="filterType = 'dairy'"
         >
-          Dairy
+          {{ $t('farmer.filter.dairy') }}
         </q-chip>
         <q-chip
           :outline="filterType !== 'mixed'"
@@ -41,7 +52,7 @@
           clickable
           @click="filterType = 'mixed'"
         >
-          Mixed
+          {{ $t('farmer.filter.mixed') }}
         </q-chip>
       </div>
 
@@ -53,10 +64,10 @@
       <!-- Empty State -->
       <template v-else-if="farmers.length === 0">
         <EmptyState
-          icon="people"
-          title="No Farmers Yet"
-          description="Add farmer profiles to manage their cattle and track milk production data."
-          action-label="Add Farmer"
+          icon="agriculture"
+          :title="$t('farmer.noFarmersYet')"
+          :description="$t('farmer.noFarmersDescription')"
+          :action-label="$t('farmer.addFarmer')"
           action-icon="person_add"
           @action="router.push('/farmers/new')"
         />
@@ -73,8 +84,11 @@
             @click="router.push(`/farmers/${farmer.id}`)"
           >
             <q-item-section avatar>
-              <q-avatar :color="farmer.is_active ? 'teal' : 'grey'" text-color="white">
-                <q-icon name="person" />
+              <q-avatar v-if="farmer.image_url" size="40px">
+                <q-img :src="farmer.image_url" :ratio="1" />
+              </q-avatar>
+              <q-avatar v-else :color="farmer.is_active ? 'teal' : 'grey'" text-color="white">
+                <q-icon name="agriculture" />
               </q-avatar>
             </q-item-section>
 
@@ -86,8 +100,8 @@
                 <span v-if="farmer.district">{{ farmer.district }}</span>
               </q-item-label>
               <q-item-label caption class="text-grey-6">
-                {{ farmer.total_cattle }} cattle
-                <span v-if="farmer.farming_type"> &middot; {{ farmer.farming_type }}</span>
+                {{ farmer.total_cattle }} {{ $t('farmer.cattle') }}
+                <span v-if="farmer.farming_type"> &middot; {{ $t(`farmer.farmingTypes.${farmer.farming_type}`) }}</span>
               </q-item-label>
             </q-item-section>
 
@@ -101,7 +115,7 @@
                   icon="sync"
                   dense
                 >
-                  Pending
+                  {{ $t('farmer.pending') }}
                 </q-chip>
                 <q-icon name="chevron_right" color="grey" />
               </div>
@@ -113,7 +127,7 @@
         <div v-if="filteredFarmers.length === 0" class="text-center q-pa-xl">
           <q-icon name="search_off" size="48px" color="grey-4" />
           <div class="text-body2 text-grey-7 q-mt-sm">
-            No farmers found matching "{{ searchQuery }}"
+            {{ $t('farmer.noSearchResults', { query: searchQuery }) }}
           </div>
         </div>
       </template>
@@ -129,12 +143,14 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import { useFarmersStore } from 'src/stores/farmers';
 import PullToRefresh from 'src/components/ui/PullToRefresh.vue';
 import SkeletonList from 'src/components/ui/SkeletonList.vue';
 import EmptyState from 'src/components/ui/EmptyState.vue';
 
 const router = useRouter();
+const { t } = useI18n();
 const farmersStore = useFarmersStore();
 
 const searchQuery = ref('');

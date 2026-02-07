@@ -57,16 +57,18 @@
   },
   "roles": {
     "farmer": "ರೈತ",
-    "student": "ವಿದ್ಯಾರ್ಥಿ",
+    "extension_worker": "ವಿಸ್ತರಣಾ ಕಾರ್ಯಕರ್ತ",
     "nutritionist": "ಪೋಷಣೆ ತಜ್ಞ",
-    "extensionWorker": "ವಿಸ್ತರಣಾ ಕಾರ್ಯಕರ್ತ",
     "researcher": "ಸಂಶೋಧಕ",
+    "feed_supplier": "ಮೇವು ಪೂರೈಕೆದಾರ",
+    "other": "ಇತರೆ",
     "admin": "ನಿರ್ವಾಹಕ",
     "farmerDesc": "ನಾನು ನನ್ನ ಜಾನುವಾರುಗಳನ್ನು ನಿರ್ವಹಿಸುತ್ತೇನೆ",
-    "studentDesc": "ನಾನು ಪ್ರಾಣಿ ಪೋಷಣೆಯ ಬಗ್ಗೆ ಕಲಿಯುತ್ತಿದ್ದೇನೆ",
+    "extension_workerDesc": "ನಾನು ನನ್ನ ಸಮುದಾಯದ ರೈತರಿಗೆ ಬೆಂಬಲ ನೀಡುತ್ತೇನೆ",
     "nutritionistDesc": "ನಾನು ರೈತರಿಗೆ ಮೇವು ಸೂತ್ರೀಕರಣದ ಬಗ್ಗೆ ಸಲಹೆ ನೀಡುತ್ತೇನೆ",
-    "extensionWorkerDesc": "ನಾನು ನನ್ನ ಸಮುದಾಯದ ರೈತರಿಗೆ ಬೆಂಬಲ ನೀಡುತ್ತೇನೆ",
     "researcherDesc": "ನಾನು ಜಾನುವಾರು ಪೋಷಣೆ ಮತ್ತು ಕೃಷಿ ಅಭ್ಯಾಸಗಳನ್ನು ಅಧ್ಯಯನ ಮಾಡುತ್ತೇನೆ",
+    "feed_supplierDesc": "ನಾನು ಪಶು ಮೇವು ಉತ್ಪನ್ನಗಳನ್ನು ಪೂರೈಸುತ್ತೇನೆ",
+    "otherDesc": "ಮೇಲೆ ಪಟ್ಟಿ ಮಾಡದ ಇತರ ಪಾತ್ರ",
     "adminDesc": "ನಾನು ವ್ಯವಸ್ಥೆಯನ್ನು ನಿರ್ವಹಿಸುತ್ತೇನೆ"
   },
   "auth": {
@@ -106,7 +108,9 @@
     "step1of4": "ಹಂತ 1/4",
     "step2of4": "ಹಂತ 2/4",
     "step3of4": "ಹಂತ 3/4",
-    "step4of4": "ಹಂತ 4/4"
+    "step4of4": "ಹಂತ 4/4",
+    "recommendedLanguages": "ಶಿಫಾರಸು ಮಾಡಲಾಗಿದೆ",
+    "otherLanguages": "ಇತರ ಭಾಷೆಗಳು"
   },
   "profile": {
     "myProfile": "ನನ್ನ ಪ್ರೊಫೈಲ್",
@@ -245,7 +249,27 @@
     "thisWeek": "ಈ ವಾರ",
     "thisMonth": "ಈ ತಿಂಗಳು",
     "average": "ಸರಾಸರಿ",
-    "total": "ಒಟ್ಟು"
+    "total": "ಒಟ್ಟು",
+    "quickLog": {
+      "button": "Quick Log All",
+      "title": "Quick Log - All Cows",
+      "date": "Date",
+      "cowName": "Cow",
+      "morning": "Morning (L)",
+      "evening": "Evening (L)",
+      "total": "Total",
+      "saveAll": "Save All",
+      "saveRow": "Save",
+      "saved": "Saved",
+      "noCows": "No active cows found. Add a cow first.",
+      "allSaved": "All milk logs saved successfully!",
+      "rowSaved": "Milk log saved for {cowName}",
+      "noEntries": "Please enter at least one milk reading",
+      "close": "Close",
+      "savingAll": "Saving all entries...",
+      "duplicateFound": "Log already exists for {cowName} on this date - updated",
+      "entriesSaved": "{count} log saved | {count} logs saved"
+    }
   },
   "reports": {
     "reports": "ವರದಿಗಳು",
@@ -309,7 +333,14 @@
     "logout": "ಲಾಗ್ಔಟ್",
     "logoutConfirm": "ನೀವು ಖಚಿತವಾಗಿ ಲಾಗ್ಔಟ್ ಮಾಡಲು ಬಯಸುವಿರಾ?",
     "deleteAccount": "ಖಾತೆ ಅಳಿಸಿ",
-    "deleteAccountWarning": "ಈ ಕ್ರಿಯೆಯನ್ನು ರದ್ದುಗೊಳಿಸಲಾಗುವುದಿಲ್ಲ. ನಿಮ್ಮ ಎಲ್ಲಾ ಡೇಟಾ ಶಾಶ್ವತವಾಗಿ ಅಳಿಸಲಾಗುತ್ತದೆ."
+    "deleteAccountWarning": "ಈ ಕ್ರಿಯೆಯನ್ನು ರದ್ದುಗೊಳಿಸಲಾಗುವುದಿಲ್ಲ. ನಿಮ್ಮ ಎಲ್ಲಾ ಡೇಟಾ ಶಾಶ್ವತವಾಗಿ ಅಳಿಸಲಾಗುತ್ತದೆ.",
+    "orgTypes": {
+      "university": "ವಿಶ್ವವಿದ್ಯಾಲಯ",
+      "government": "ಸರ್ಕಾರ",
+      "ngo": "ಎನ್‌ಜಿಒ",
+      "cooperative": "ಸಹಕಾರ ಸಂಘ",
+      "research": "ಸಂಶೋಧನಾ ಸಂಸ್ಥೆ"
+    }
   },
   "farmer": {
     "farmers": "ರೈತರು",
@@ -324,7 +355,17 @@
     "addFirstFarmer": "ಅವರ ಹಸುಗಳನ್ನು ನಿರ್ವಹಿಸಲು ನೀವು ಬೆಂಬಲಿಸುವ ರೈತನನ್ನು ಸೇರಿಸಿ",
     "farmerAdded": "ರೈತ ಯಶಸ್ವಿಯಾಗಿ ಸೇರಿಸಲಾಗಿದೆ",
     "farmerUpdated": "ರೈತ ಯಶಸ್ವಿಯಾಗಿ ನವೀಕರಿಸಲಾಗಿದೆ",
-    "farmerDeleted": "ರೈತ ತೆಗೆದುಹಾಕಲಾಗಿದೆ"
+    "farmerDeleted": "ರೈತ ತೆಗೆದುಹಾಕಲಾಗಿದೆ",
+    "farmingTypes": {
+      "dairy": "ಹೈನುಗಾರಿಕೆ",
+      "mixed": "ಮಿಶ್ರ ಕೃಷಿ",
+      "crop": "ಬೆಳೆ ಕೃಷಿ"
+    },
+    "filter": {
+      "all": "ಎಲ್ಲಾ",
+      "dairy": "ಹೈನು",
+      "mixed": "ಮಿಶ್ರ"
+    }
   },
   "errors": {
     "generic": "ಏನೋ ತಪ್ಪಾಗಿದೆ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.",

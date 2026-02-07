@@ -17,6 +17,7 @@ export interface FeedInput {
   p_percentage?: number;
   ndf_percentage?: number;
   price_per_kg?: number;
+  image_url?: string;
 }
 
 export const useFeedsStore = defineStore('feeds', () => {

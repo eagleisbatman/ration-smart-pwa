@@ -2,20 +2,20 @@
   <q-page class="q-pa-md">
     <q-form class="q-gutter-md" @submit="onSubmit">
       <!-- Farmer Selection -->
-      <div class="text-subtitle1 text-weight-medium q-mb-sm">Farmer</div>
+      <div class="text-subtitle1 text-weight-medium q-mb-sm">{{ $t('logs.yield.farmer') }}</div>
 
       <q-select
         v-model="form.farmer_profile_id"
         :options="farmerOptions"
-        label="Select Farmer *"
+        :label="$t('logs.yield.selectFarmer')"
         outlined
         emit-value
         map-options
-        :rules="[(val) => !!val || 'Farmer is required']"
+        :rules="[(val) => !!val || $t('logs.yield.farmerRequired')]"
         @update:model-value="onFarmerChange"
       >
         <template #prepend>
-          <q-icon name="person" />
+          <q-icon name="agriculture" />
         </template>
       </q-select>
 
@@ -23,29 +23,29 @@
       <q-select
         v-model="form.cow_profile_id"
         :options="cowOptions"
-        label="Select Cow (Optional)"
+        :label="$t('logs.yield.selectCow')"
         outlined
         emit-value
         map-options
         clearable
         :disable="!form.farmer_profile_id"
-        hint="Leave empty for farm-level yield"
+        :hint="$t('logs.yield.farmLevelHint')"
       >
         <template #prepend>
-          <q-icon name="pets" />
+          <q-icon :name="COW_ICON" />
         </template>
       </q-select>
 
       <!-- Collection Date -->
       <q-separator class="q-my-md" />
-      <div class="text-subtitle1 text-weight-medium q-mb-sm">Collection Details</div>
+      <div class="text-subtitle1 text-weight-medium q-mb-sm">{{ $t('logs.yield.collectionDetails') }}</div>
 
       <q-input
         v-model="form.collection_date"
-        label="Collection Date *"
+        :label="$t('logs.yield.collectionDate')"
         type="date"
         outlined
-        :rules="[(val) => !!val || 'Date is required']"
+        :rules="[(val) => !!val || $t('logs.yield.dateRequired')]"
       >
         <template #prepend>
           <q-icon name="calendar_today" />
@@ -54,61 +54,61 @@
 
       <!-- Yield Data -->
       <q-separator class="q-my-md" />
-      <div class="text-subtitle1 text-weight-medium q-mb-sm">Yield Data</div>
+      <div class="text-subtitle1 text-weight-medium q-mb-sm">{{ $t('logs.yield.yieldData') }}</div>
 
       <q-input
         v-model.number="form.milk_yield_liters"
-        label="Milk Yield (Liters) *"
+        :label="$t('logs.yield.milkYieldLiters')"
         type="number"
         step="0.1"
         outlined
         :rules="[
-          (val) => val !== null && val !== '' || 'Yield is required',
-          (val) => val >= 0 || 'Cannot be negative',
+          (val) => val !== null && val !== '' || $t('logs.yield.yieldRequired'),
+          (val) => val >= 0 || $t('logs.yield.cannotBeNegative'),
         ]"
       >
         <template #prepend>
           <q-icon name="water_drop" />
         </template>
         <template #append>
-          <span class="text-grey-6">L</span>
+          <span class="text-grey-6">{{ $t('units.l') }}</span>
         </template>
       </q-input>
 
       <div class="row q-gutter-md">
         <q-input
           v-model.number="form.fat_percentage"
-          label="Fat %"
+          :label="$t('logs.yield.fatPercent')"
           type="number"
           step="0.1"
           outlined
           class="col"
           :rules="[
-            (val) => val === null || val === '' || val >= 0 || 'Cannot be negative',
-            (val) => val === null || val === '' || val <= 15 || 'Max 15%',
+            (val) => val === null || val === '' || val >= 0 || $t('logs.yield.cannotBeNegative'),
+            (val) => val === null || val === '' || val <= 15 || $t('logs.yield.maxPercent'),
           ]"
-          hint="Optional"
+          :hint="$t('common.optional')"
         >
           <template #append>
-            <span class="text-grey-6">%</span>
+            <span class="text-grey-6">{{ $t('units.percent') }}</span>
           </template>
         </q-input>
 
         <q-input
           v-model.number="form.snf_percentage"
-          label="SNF %"
+          :label="$t('logs.yield.snfPercent')"
           type="number"
           step="0.1"
           outlined
           class="col"
           :rules="[
-            (val) => val === null || val === '' || val >= 0 || 'Cannot be negative',
-            (val) => val === null || val === '' || val <= 15 || 'Max 15%',
+            (val) => val === null || val === '' || val >= 0 || $t('logs.yield.cannotBeNegative'),
+            (val) => val === null || val === '' || val <= 15 || $t('logs.yield.maxPercent'),
           ]"
-          hint="Optional"
+          :hint="$t('common.optional')"
         >
           <template #append>
-            <span class="text-grey-6">%</span>
+            <span class="text-grey-6">{{ $t('units.percent') }}</span>
           </template>
         </q-input>
       </div>
@@ -116,11 +116,11 @@
       <!-- Notes -->
       <q-input
         v-model="form.notes"
-        label="Notes"
+        :label="$t('logs.yield.notesLabel')"
         type="textarea"
         outlined
         rows="2"
-        hint="Optional - any observations"
+        :hint="$t('logs.yield.notesHint')"
       />
 
       <!-- Error Message -->
@@ -130,7 +130,7 @@
 
       <!-- Submit Button -->
       <q-btn
-        label="Record Yield"
+        :label="isEditing ? $t('logs.yield.updateYield') : $t('logs.yield.recordYield')"
         type="submit"
         color="primary"
         class="full-width"
@@ -145,9 +145,14 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, reactive } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import { useYieldsStore, YieldInput } from 'src/stores/yields';
 import { useFarmersStore } from 'src/stores/farmers';
 import { useQuasar } from 'quasar';
+import { COW_ICON } from 'src/boot/icons';
+import { useHapticFeedback } from 'src/composables/useHapticFeedback';
+
+const { t } = useI18n();
 
 interface CowOption {
   label: string;
@@ -159,6 +164,10 @@ const route = useRoute();
 const $q = useQuasar();
 const yieldsStore = useYieldsStore();
 const farmersStore = useFarmersStore();
+const { success, error: hapticError, medium } = useHapticFeedback();
+
+const yieldId = computed(() => route.params.id as string | undefined);
+const isEditing = computed(() => !!yieldId.value);
 
 const cows = ref<CowOption[]>([]);
 
@@ -200,16 +209,35 @@ async function onFarmerChange(farmerId: string) {
 }
 
 async function onSubmit() {
+  medium(); // Haptic feedback on form submit
   yieldsStore.clearError();
 
-  const record = await yieldsStore.recordYield(form);
-  if (record) {
-    $q.notify({
-      type: 'positive',
-      message: 'Yield recorded successfully',
-      position: 'bottom',
-    });
-    router.back();
+  if (isEditing.value) {
+    const ok = await yieldsStore.updateYield(yieldId.value!, form);
+    if (ok) {
+      success();
+      $q.notify({
+        type: 'positive',
+        message: t('logs.yield.yieldUpdatedSuccess'),
+        position: 'bottom',
+      });
+      router.back();
+    } else {
+      hapticError();
+    }
+  } else {
+    const record = await yieldsStore.recordYield(form);
+    if (record) {
+      success();
+      $q.notify({
+        type: 'positive',
+        message: t('logs.yield.yieldRecordedSuccess'),
+        position: 'bottom',
+      });
+      router.back();
+    } else {
+      hapticError();
+    }
   }
 }
 
@@ -217,15 +245,35 @@ onMounted(async () => {
   // Load farmers
   await farmersStore.fetchFarmers();
 
-  // Check for pre-selected farmer from query params
-  if (route.query.farmer) {
-    form.farmer_profile_id = route.query.farmer as string;
-    await onFarmerChange(form.farmer_profile_id);
-  }
+  if (isEditing.value) {
+    const record = await yieldsStore.getYield(yieldId.value!);
+    if (record) {
+      Object.assign(form, {
+        farmer_profile_id: record.farmer_profile_id,
+        cow_profile_id: record.cow_profile_id,
+        collection_date: record.collection_date,
+        milk_yield_liters: record.milk_yield_liters,
+        fat_percentage: record.fat_percentage,
+        snf_percentage: record.snf_percentage,
+        notes: record.notes,
+      });
+      // Load cows for the selected farmer
+      await onFarmerChange(record.farmer_profile_id);
+    } else {
+      $q.notify({ type: 'negative', message: t('logs.yield.yieldNotFound') });
+      router.back();
+    }
+  } else {
+    // Check for pre-selected farmer from query params
+    if (route.query.farmer) {
+      form.farmer_profile_id = route.query.farmer as string;
+      await onFarmerChange(form.farmer_profile_id);
+    }
 
-  // Check for pre-selected cow from query params
-  if (route.query.cow) {
-    form.cow_profile_id = route.query.cow as string;
+    // Check for pre-selected cow from query params
+    if (route.query.cow) {
+      form.cow_profile_id = route.query.cow as string;
+    }
   }
 });
 </script>

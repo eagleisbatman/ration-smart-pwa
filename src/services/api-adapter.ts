@@ -8,6 +8,90 @@
 import type { AxiosRequestConfig, AxiosResponse } from 'axios';
 
 // ============================================================================
+// PHONE NUMBER & COUNTRY UTILITIES
+// ============================================================================
+
+// Country dial codes for E.164 phone format conversion
+const COUNTRY_DIAL_CODES: Record<string, string> = {
+  IN: '+91', // India
+  KE: '+254', // Kenya
+  ET: '+251', // Ethiopia
+  NP: '+977', // Nepal
+  BD: '+880', // Bangladesh
+  VN: '+84', // Vietnam
+  OTHER: '+1', // Default fallback
+};
+
+// Cache for country code to UUID mapping
+let countryCache: Record<string, string> | null = null;
+
+/**
+ * Fetch countries from backend and cache them
+ */
+export async function fetchAndCacheCountries(): Promise<Record<string, string>> {
+  if (countryCache) {
+    return countryCache;
+  }
+
+  try {
+    // Import api dynamically to avoid circular dependency
+    const { api } = await import('src/boot/axios');
+    const response = await api.get('/auth/countries');
+    const countries = response.data as Array<{ id: string; country_code: string }>;
+
+    countryCache = {};
+    for (const country of countries) {
+      countryCache[country.country_code] = country.id;
+    }
+    return countryCache;
+  } catch (error) {
+    console.error('[API Adapter] Failed to fetch countries:', error);
+    return {};
+  }
+}
+
+/**
+ * Get country UUID from country code (synchronous - uses cache)
+ */
+export function getCountryId(countryCode: string): string | undefined {
+  return countryCache?.[countryCode];
+}
+
+/**
+ * Set country cache directly (for when countries are fetched elsewhere)
+ */
+export function setCountryCache(countries: Array<{ id: string; country_code: string }>): void {
+  countryCache = {};
+  for (const country of countries) {
+    countryCache[country.country_code] = country.id;
+  }
+}
+
+/**
+ * Convert phone number to E.164 format
+ * @param phone - Raw phone number (e.g., "9876543210")
+ * @param countryCode - Country code (e.g., "IN")
+ * @returns E.164 formatted phone (e.g., "+919876543210")
+ */
+export function formatPhoneE164(phone: string, countryCode: string): string {
+  // Remove any existing formatting (spaces, dashes, parentheses, etc.)
+  const cleaned = phone.replace(/[\s\-()]/g, '');
+
+  // If already in E.164 format, return as-is
+  if (cleaned.startsWith('+')) {
+    return cleaned;
+  }
+
+  // Get dial code for country
+  const dialCode = COUNTRY_DIAL_CODES[countryCode] || COUNTRY_DIAL_CODES['OTHER'];
+
+  // Remove leading zero if present (common in some countries)
+  const phoneWithoutLeadingZero = cleaned.startsWith('0') ? cleaned.slice(1) : cleaned;
+
+  return `${dialCode}${phoneWithoutLeadingZero}`;
+}
+
+// ============================================================================
 // ENDPOINT MAPPING
 // ============================================================================
 
@@ -31,10 +115,120 @@ const ENDPOINT_MAP: Record<string, EndpointMapping> = {
   // AUTH ENDPOINTS
   // ============================================================================
   '/api/v1/users/register': {
-    path: '/auth/register',
+    path: '/auth/register', // Will be overridden to /auth/register-phone if phone registration
+    transform: {
+      request: (data: unknown) => {
+        const reqData = data as {
+          email?: string;
+          phone?: string;
+          pin: string;
+          country_code?: string;
+          name?: string;
+          language?: string;
+        };
+
+        const countryCode = reqData.country_code || 'IN';
+        const countryId = getCountryId(countryCode);
+
+        // Log warning if country lookup failed
+        if (!countryId) {
+          console.warn(`[API Adapter] Country UUID not found for code: ${countryCode}. Make sure to call fetchAndCacheCountries() first.`);
+        }
+
+        // Phone registration
+        if (reqData.phone && !reqData.email) {
+          return {
+            name: reqData.name,
+            phone_number: formatPhoneE164(reqData.phone, countryCode),
+            pin: reqData.pin,
+            country_id: countryId,
+            language_code: reqData.language,
+          };
+        }
+
+        // Email registration
+        return {
+          name: reqData.name,
+          email_id: reqData.email,
+          pin: reqData.pin,
+          country_id: countryId,
+          language_code: reqData.language,
+        };
+      },
+    },
+  },
+  // Phone-specific registration endpoint
+  '/api/v1/users/register-phone': {
+    path: '/auth/register-phone',
+    transform: {
+      request: (data: unknown) => {
+        const reqData = data as {
+          phone: string;
+          pin: string;
+          country_code?: string;
+          name?: string;
+          language?: string;
+        };
+
+        const countryCode = reqData.country_code || 'IN';
+        const countryId = getCountryId(countryCode);
+
+        return {
+          name: reqData.name,
+          phone_number: formatPhoneE164(reqData.phone, countryCode),
+          pin: reqData.pin,
+          country_id: countryId,
+          language_code: reqData.language,
+        };
+      },
+    },
   },
   '/api/v1/users/login': {
     path: '/auth/login',
+    transform: {
+      request: (data: unknown) => {
+        const reqData = data as {
+          email?: string;
+          phone?: string;
+          pin: string;
+          country_code?: string;
+        };
+
+        // Phone login
+        if (reqData.phone && !reqData.email) {
+          const countryCode = reqData.country_code || 'IN';
+          return {
+            phone_number: formatPhoneE164(reqData.phone, countryCode),
+            pin: reqData.pin,
+          };
+        }
+
+        // Email login
+        return {
+          email_id: reqData.email,
+          pin: reqData.pin,
+        };
+      },
+    },
+  },
+  // Phone-specific login endpoint
+  '/api/v1/users/login-phone': {
+    path: '/auth/login-phone',
+    transform: {
+      request: (data: unknown) => {
+        const reqData = data as {
+          phone: string;
+          pin: string;
+          country_code?: string;
+        };
+
+        const countryCode = reqData.country_code || 'IN';
+        return {
+          phone_number: formatPhoneE164(reqData.phone, countryCode),
+          pin: reqData.pin,
+        };
+      },
+    },
   },
   '/api/v1/users/verify-pin': {
     path: '/auth/verify-pin',
@@ -48,6 +242,9 @@ const ENDPOINT_MAP: Record<string, EndpointMapping> = {
       // Backend uses query param, not path param
       params: (params) => ({ ...params }),
     },
+  },
+  '/api/v1/users/:id/settings': {
+    path: '/auth/users/:id/settings',
   },
 
   // ============================================================================
@@ -144,6 +341,9 @@ const ENDPOINT_MAP: Record<string, EndpointMapping> = {
   '/api/v1/diet/:id': {
     path: '/bot-diet-history/:id',
   },
+  '/api/v1/diet/history/:id': {
+    path: '/bot-diet-history/:id',
+  },
   '/api/v1/diet/:id/evaluate': {
     path: '/bot-diet-history/:id/evaluate',
   },
@@ -165,6 +365,25 @@ const ENDPOINT_MAP: Record<string, EndpointMapping> = {
   },
   '/api/v1/milk-logs/:id': {
     path: '/bot-daily-logs/:id',
+  },
+
+  // ============================================================================
+  // COUNTRIES ENDPOINT (for onboarding)
+  // ============================================================================
+  '/api/v1/countries': {
+    path: '/auth/countries',
+    transform: {
+      response: (data: unknown) => {
+        // Transform backend country_code to code for frontend compatibility
+        if (Array.isArray(data)) {
+          return data.map((country: { country_code?: string; [key: string]: unknown }) => ({
+            ...country,
+            code: country.country_code, // Add 'code' alias for 'country_code'
+          }));
+        }
+        return data;
+      },
+    },
   },
 
   // ============================================================================
@@ -415,6 +634,11 @@ export const apiAdapter = {
   transformParams,
   handleRequestInterceptor,
   handleResponseInterceptor,
+  // Phone & Country utilities
+  formatPhoneE164,
+  fetchAndCacheCountries,
+  getCountryId,
+  setCountryCache,
 };
 
 export default apiAdapter;

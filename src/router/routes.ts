@@ -19,6 +19,12 @@ const routes: RouteRecordRaw[] = [
         meta: { requiresGuest: true },
       },
       {
+        path: 'forgot-pin',
+        name: 'forgot-pin',
+        component: () => import('pages/auth/ForgotPinPage.vue'),
+        meta: { requiresGuest: true },
+      },
+      {
         path: 'country',
         name: 'country-select',
         component: () => import('pages/auth/CountrySelectPage.vue'),
@@ -105,6 +111,12 @@ const routes: RouteRecordRaw[] = [
         meta: { title: 'New Diet Plan', showBack: true, hideBottomNav: true, hideFab: true },
       },
       {
+        path: 'diet/compare',
+        name: 'diet-compare',
+        component: () => import('pages/diet/DietComparePage.vue'),
+        meta: { titleKey: 'diet.compare', showBack: true },
+      },
+      {
         path: 'diet/:id',
         name: 'diet-detail',
         component: () => import('pages/diet/DietDetailPage.vue'),
@@ -142,19 +154,19 @@ const routes: RouteRecordRaw[] = [
         path: 'logs',
         name: 'logs',
         component: () => import('pages/logs/LogListPage.vue'),
-        meta: { title: 'Milk Logs' },
+        meta: { titleKey: 'nav.milkLogs' },
       },
       {
         path: 'logs/new',
         name: 'log-new',
         component: () => import('pages/logs/LogFormPage.vue'),
-        meta: { title: 'Log Milk', showBack: true, hideBottomNav: true },
+        meta: { titleKey: 'logs.form.title.new', showBack: true, hideBottomNav: true },
       },
       {
         path: 'logs/:id/edit',
         name: 'log-edit',
         component: () => import('pages/logs/LogFormPage.vue'),
-        meta: { title: 'Edit Log', showBack: true, hideBottomNav: true },
+        meta: { titleKey: 'logs.form.title.edit', showBack: true, hideBottomNav: true },
       },
 
       // Farmers
@@ -162,25 +174,31 @@ const routes: RouteRecordRaw[] = [
         path: 'farmers',
         name: 'farmers',
         component: () => import('pages/farmers/FarmerListPage.vue'),
-        meta: { title: 'Farmers' },
+        meta: { titleKey: 'farmer.farmers' },
       },
       {
         path: 'farmers/new',
         name: 'farmer-new',
         component: () => import('pages/farmers/FarmerFormPage.vue'),
-        meta: { title: 'Add Farmer', showBack: true, hideBottomNav: true },
+        meta: { titleKey: 'farmer.addFarmer', showBack: true, hideBottomNav: true },
+      },
+      {
+        path: 'farmers/import',
+        name: 'farmer-import',
+        component: () => import('pages/farmers/FarmerImportPage.vue'),
+        meta: { titleKey: 'farmers.import.title', showBack: true, hideBottomNav: true },
       },
       {
         path: 'farmers/:id',
         name: 'farmer-detail',
         component: () => import('pages/farmers/FarmerDetailPage.vue'),
-        meta: { title: 'Farmer Details', showBack: true },
+        meta: { titleKey: 'farmer.farmerDetails', showBack: true },
       },
       {
         path: 'farmers/:id/edit',
         name: 'farmer-edit',
         component: () => import('pages/farmers/FarmerFormPage.vue'),
-        meta: { title: 'Edit Farmer', showBack: true, hideBottomNav: true },
+        meta: { titleKey: 'farmer.editFarmer', showBack: true, hideBottomNav: true },
       },
 
       // Yields
@@ -188,13 +206,25 @@ const routes: RouteRecordRaw[] = [
         path: 'yields',
         name: 'yields',
         component: () => import('pages/yields/YieldHistoryPage.vue'),
-        meta: { title: 'Yield History' },
+        meta: { titleKey: 'nav.yieldHistory' },
       },
       {
         path: 'yields/new',
         name: 'yield-new',
         component: () => import('pages/yields/YieldFormPage.vue'),
-        meta: { title: 'Record Yield', showBack: true, hideBottomNav: true },
+        meta: { titleKey: 'logs.yield.recordYield', showBack: true, hideBottomNav: true },
+      },
+      {
+        path: 'yields/compare-farmers',
+        name: 'yield-farmer-compare',
+        component: () => import('pages/yields/FarmerYieldComparePage.vue'),
+        meta: { titleKey: 'yields.compare.title', showBack: true },
+      },
+      {
+        path: 'yields/:id/edit',
+        name: 'yield-edit',
+        component: () => import('pages/yields/YieldFormPage.vue'),
+        meta: { titleKey: 'logs.yield.editYield', showBack: true, hideBottomNav: true },
       },
 
       // Reports
@@ -223,6 +253,18 @@ const routes: RouteRecordRaw[] = [
         name: 'profile',
         component: () => import('pages/settings/ProfilePage.vue'),
         meta: { title: 'Profile', showBack: true },
+      },
+      {
+        path: 'settings/help',
+        name: 'help',
+        component: () => import('pages/settings/HelpPage.vue'),
+        meta: { titleKey: 'help.title', showBack: true },
+      },
+      {
+        path: 'settings/privacy',
+        name: 'privacy',
+        component: () => import('pages/settings/PrivacyPolicyPage.vue'),
+        meta: { titleKey: 'privacy.title', showBack: true },
       },
     ],
   },

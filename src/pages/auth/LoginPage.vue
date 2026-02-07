@@ -1,92 +1,173 @@
 <template>
   <div class="login-page">
-    <q-form class="q-gutter-md" @submit="onSubmit">
-      <!-- Login Method Toggle -->
-      <q-btn-toggle
-        v-model="loginMethod"
-        spread
-        no-caps
-        rounded
-        unelevated
-        toggle-color="primary"
-        color="grey-3"
-        text-color="grey-8"
-        :options="[
-          { label: $t('auth.email'), value: 'email' },
-          { label: $t('auth.phone'), value: 'phone' },
-        ]"
-        class="q-mb-md"
-      />
-
-      <!-- Email Input -->
-      <q-input
-        v-if="loginMethod === 'email'"
-        v-model="form.email"
-        :label="$t('auth.email')"
-        type="email"
-        outlined
-        :rules="[
-          (val) => !!val || $t('validation.required'),
-          (val) => /.+@.+\..+/.test(val) || $t('validation.invalidEmail'),
-        ]"
-      >
-        <template #prepend>
-          <q-icon name="email" />
-        </template>
-      </q-input>
-
-      <!-- Phone Input -->
-      <q-input
-        v-else
-        v-model="form.phone"
-        :label="$t('auth.phone')"
-        type="tel"
-        outlined
-        mask="##########"
-        :rules="[(val) => !!val || $t('validation.required')]"
-      >
-        <template #prepend>
-          <q-icon name="phone" />
-        </template>
-      </q-input>
-
-      <!-- PIN Input -->
-      <q-input
-        v-model="form.pin"
-        :label="$t('auth.pin')"
-        :type="showPin ? 'text' : 'password'"
-        outlined
-        mask="####"
-        :rules="[
-          (val) => !!val || $t('validation.required'),
-          (val) => val.length === 4 || $t('validation.pinLength'),
-        ]"
-      >
-        <template #prepend>
-          <q-icon name="lock" />
-        </template>
-        <template #append>
-          <q-icon
-            :name="showPin ? 'visibility_off' : 'visibility'"
-            class="cursor-pointer"
-            @click="showPin = !showPin"
+    <q-form @submit="onSubmit">
+      <!-- Section: Credentials -->
+      <div class="form-section">
+        <div class="text-caption text-grey-7 text-uppercase text-weight-medium q-mb-sm q-px-xs">
+          {{ $t('auth.sectionCredentials') }}
+        </div>
+        <div class="q-gutter-sm">
+          <!-- Login Method Toggle -->
+          <q-btn-toggle
+            v-model="loginMethod"
+            spread
+            no-caps
+            rounded
+            unelevated
+            toggle-color="primary"
+            toggle-text-color="white"
+            color="white"
+            text-color="grey-8"
+            :options="[
+              { label: $t('auth.email'), value: 'email', icon: 'email' },
+              { label: $t('auth.phone'), value: 'phone', icon: 'phone' },
+            ]"
+            class="login-method-toggle"
           />
-        </template>
-      </q-input>
+
+          <!-- Email Input -->
+          <q-input
+            v-if="loginMethod === 'email'"
+            v-model="form.email"
+            :label="$t('auth.email')"
+            type="email"
+            outlined
+            :rules="[
+              (val) => !!val || $t('validation.required'),
+              (val) => /.+@.+\..+/.test(val) || $t('validation.invalidEmail'),
+            ]"
+          >
+            <template #prepend>
+              <q-icon name="email" />
+            </template>
+          </q-input>
+
+          <!-- Phone Input with Country Code -->
+          <template v-else>
+            <!-- Country Selection for Phone -->
+            <q-select
+              v-model="form.country_code"
+              :label="$t('profile.country')"
+              outlined
+              :options="countryOptions"
+              emit-value
+              map-options
+              dense
+              class="q-mb-sm"
+            >
+              <template #prepend>
+                <q-icon name="public" />
+              </template>
+            </q-select>
+
+            <q-input
+              v-model="form.phone"
+              :label="$t('auth.phone')"
+              type="tel"
+              outlined
+              mask="##########"
+              :rules="[(val) => !!val || $t('validation.required')]"
+            >
+              <template #prepend>
+                <q-icon name="phone" />
+              </template>
+            </q-input>
+          </template>
+        </div>
+      </div>
+
+      <q-separator class="q-my-md" color="grey-3" />
+
+      <!-- Section: Security -->
+      <div class="form-section">
+        <div class="text-caption text-grey-7 text-uppercase text-weight-medium q-mb-sm q-px-xs">
+          {{ $t('auth.sectionSecurity') }}
+        </div>
+        <div class="q-gutter-sm">
+          <!-- PIN Input -->
+          <q-input
+            v-model="form.pin"
+            :label="$t('auth.pin')"
+            :type="showPin ? 'text' : 'password'"
+            outlined
+            mask="####"
+            :rules="[
+              (val) => !!val || $t('validation.required'),
+              (val) => val.length === 4 || $t('validation.pinLength'),
+            ]"
+          >
+            <template #prepend>
+              <q-icon name="lock" />
+            </template>
+            <template #append>
+              <q-icon
+                :name="showPin ? 'visibility_off' : 'visibility'"
+                class="cursor-pointer"
+                @click="showPin = !showPin"
+              />
+            </template>
+          </q-input>
+
+          <!-- Remember Me + Forgot PIN -->
+          <div class="row items-center justify-between q-mt-xs">
+            <q-checkbox
+              v-model="rememberMe"
+              :label="$t('auth.rememberMe')"
+              dense
+              color="primary"
+              class="text-body2"
+            />
+            <q-btn
+              flat
+              dense
+              no-caps
+              color="primary"
+              :label="$t('auth.forgotPin')"
+              @click="router.push('/auth/forgot-pin')"
+              class="text-body2"
+            />
+          </div>
+        </div>
+      </div>
 
       <!-- Error Message -->
-      <q-banner v-if="error" dense class="bg-negative text-white q-mb-md" rounded>
-        {{ error }}
-      </q-banner>
+      <transition
+        enter-active-class="animated fadeIn"
+        leave-active-class="animated fadeOut"
+      >
+        <q-banner
+          v-if="error"
+          dense
+          rounded
+          class="bg-red-1 text-negative rounded-borders q-my-md"
+        >
+          <template #avatar>
+            <q-icon name="error_outline" color="negative" />
+          </template>
+          {{ error }}
+          <template #action>
+            <q-btn
+              flat
+              dense
+              round
+              icon="close"
+              color="negative"
+              size="sm"
+              @click="authStore.error = null"
+            />
+          </template>
+        </q-banner>
+      </transition>
 
       <!-- Submit Button -->
       <q-btn
         :label="$t('auth.login')"
         type="submit"
         color="primary"
-        class="full-width"
-        size="lg"
+        class="full-width q-mt-lg submit-btn"
+        size="xl"
         unelevated
+        no-caps
         :loading="loading"
       />
 
@@ -109,19 +190,33 @@
 <script setup lang="ts">
 import { ref, reactive, computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import { useAuthStore } from 'src/stores/auth';
+
+const { t } = useI18n();
 const router = useRouter();
 const route = useRoute();
 const authStore = useAuthStore();
 
 const loginMethod = ref<'email' | 'phone'>('email');
 const showPin = ref(false);
+const rememberMe = ref(false);
 
 const form = reactive({
   email: '',
   phone: '',
   pin: '',
+  country_code: 'IN', // Default to India for phone login E.164 formatting
 });
+
+const countryOptions = computed(() => [
+  { label: t('countries.withCode.IN'), value: 'IN' },
+  { label: t('countries.withCode.KE'), value: 'KE' },
+  { label: t('countries.withCode.ET'), value: 'ET' },
+  { label: t('countries.withCode.NP'), value: 'NP' },
+  { label: t('countries.withCode.BD'), value: 'BD' },
+  { label: t('countries.withCode.VN'), value: 'VN' },
+]);
 
 const loading = computed(() => authStore.loading);
 const error = computed(() => authStore.error);
@@ -129,7 +224,10 @@ const error = computed(() => authStore.error);
 async function onSubmit() {
   const credentials = {
     pin: form.pin,
-    ...(loginMethod.value === 'email' ? { email: form.email } : { phone: form.phone }),
+    rememberMe: rememberMe.value,
+    ...(loginMethod.value === 'email'
+      ? { email: form.email }
+      : { phone: form.phone, country_code: form.country_code }),
   };
 
   const success = await authStore.login(credentials);
@@ -151,7 +249,20 @@ async function onSubmit() {
 </script>
 
 <style lang="scss" scoped>
-.login-page {
-  padding: 0 8px;
+.login-method-toggle :deep(.q-btn) {
+  border: 1.5px solid $grey-4;
+  transition: all 0.2s ease;
+}
+
+.login-method-toggle :deep(.q-btn.bg-primary) {
+  border-color: var(--q-primary);
+}
+
+.submit-btn {
+  font-size: 1.05rem;
+  letter-spacing: 0.025em;
+  padding-top: 14px;
+  padding-bottom: 14px;
+  border-radius: 12px;
 }
 </style>

@@ -57,16 +57,18 @@
   },
   "roles": {
     "farmer": "ખેડૂત",
-    "student": "વિદ્યાર્થી",
+    "extension_worker": "વિસ્તરણ કાર્યકર",
     "nutritionist": "પોષણ નિષ્ણાત",
-    "extensionWorker": "વિસ્તરણ કાર્યકર",
     "researcher": "સંશોધક",
+    "feed_supplier": "ચારા પૂરવઠાકાર",
+    "other": "અન્ય",
     "admin": "વ્યવસ્થાપક",
     "farmerDesc": "હું મારા પોતાના પશુઓ સંભાળું છું",
-    "studentDesc": "હું પશુ પોષણ વિશે શીખી રહ્યો છું",
+    "extension_workerDesc": "હું મારા સમુદાયના ખેડૂતોને ટેકો આપું છું",
     "nutritionistDesc": "હું ખેડૂતોને ખોરાક બનાવવા અંગે સલાહ આપું છું",
-    "extensionWorkerDesc": "હું મારા સમુદાયના ખેડૂતોને ટેકો આપું છું",
     "researcherDesc": "હું પશુ પોષણ અને ખેતી પ્રથાઓનો અભ્યાસ કરું છું",
+    "feed_supplierDesc": "હું પશુ ખોરાક ઉત્પાદનો પૂરા પાડું છું",
+    "otherDesc": "ઉપર સૂચિબદ્ધ ન હોય તેવી અન્ય ભૂમિકા",
     "adminDesc": "હું સિસ્ટમ સંચાલન કરું છું"
   },
   "auth": {
@@ -106,7 +108,9 @@
     "step1of4": "પગલું 1/4",
     "step2of4": "પગલું 2/4",
     "step3of4": "પગલું 3/4",
-    "step4of4": "પગલું 4/4"
+    "step4of4": "પગલું 4/4",
+    "recommendedLanguages": "ભલામણ કરેલ",
+    "otherLanguages": "અન્ય ભાષાઓ"
   },
   "profile": {
     "myProfile": "મારી પ્રોફાઇલ",
@@ -245,7 +249,27 @@
     "thisWeek": "આ અઠવાડિયે",
     "thisMonth": "આ મહિને",
     "average": "સરેરાશ",
-    "total": "કુલ"
+    "total": "કુલ",
+    "quickLog": {
+      "button": "Quick Log All",
+      "title": "Quick Log - All Cows",
+      "date": "Date",
+      "cowName": "Cow",
+      "morning": "Morning (L)",
+      "evening": "Evening (L)",
+      "total": "Total",
+      "saveAll": "Save All",
+      "saveRow": "Save",
+      "saved": "Saved",
+      "noCows": "No active cows found. Add a cow first.",
+      "allSaved": "All milk logs saved successfully!",
+      "rowSaved": "Milk log saved for {cowName}",
+      "noEntries": "Please enter at least one milk reading",
+      "close": "Close",
+      "savingAll": "Saving all entries...",
+      "duplicateFound": "Log already exists for {cowName} on this date - updated",
+      "entriesSaved": "{count} log saved | {count} logs saved"
+    }
   },
   "reports": {
     "reports": "અહેવાલો",
@@ -309,7 +333,14 @@
     "logout": "લૉગઆઉટ",
     "logoutConfirm": "શું તમે લૉગઆઉટ કરવા માંગો છો?",
     "deleteAccount": "એકાઉન્ટ કાઢી નાખો",
-    "deleteAccountWarning": "આ ક્રિયા પૂર્વવત્ કરી શકાતી નથી. તમારો બધો ડેટા કાયમ માટે કાઢી નાખવામાં આવશે."
+    "deleteAccountWarning": "આ ક્રિયા પૂર્વવત્ કરી શકાતી નથી. તમારો બધો ડેટા કાયમ માટે કાઢી નાખવામાં આવશે.",
+    "orgTypes": {
+      "university": "યુનિવર્સિટી",
+      "government": "સરકાર",
+      "ngo": "એનજીઓ",
+      "cooperative": "સહકારી",
+      "research": "સંશોધન સંસ્થા"
+    }
   },
   "farmer": {
     "farmers": "ખેડૂતો",
@@ -324,7 +355,17 @@
     "addFirstFarmer": "તેમની ગાયોનું સંચાલન કરવા માટે તમે ટેકો આપો છો તે ખેડૂત ઉમેરો",
     "farmerAdded": "ખેડૂત સફળતાપૂર્વક ઉમેરાયા",
     "farmerUpdated": "ખેડૂત સફળતાપૂર્વક અપડેટ થયા",
-    "farmerDeleted": "ખેડૂત દૂર કરવામાં આવ્યા"
+    "farmerDeleted": "ખેડૂત દૂર કરવામાં આવ્યા",
+    "farmingTypes": {
+      "dairy": "ડેરી ખેતી",
+      "mixed": "મિશ્ર ખેતી",
+      "crop": "પાક ખેતી"
+    },
+    "filter": {
+      "all": "બધા",
+      "dairy": "ડેરી",
+      "mixed": "મિશ્ર"
+    }
   },
   "errors": {
     "generic": "કંઈક ખોટું થયું. કૃપા કરી ફરી પ્રયાસ કરો.",

@@ -1,8 +1,9 @@
 <template>
   <div class="org-select-page">
+    <OnboardingProgress :current-step="3" />
+
     <div class="text-center q-mb-xl">
       <div class="text-h5 text-weight-medium q-mb-sm">{{ $t('onboarding.chooseOrganization') }}</div>
-      <div class="text-body2 text-grey-7">{{ $t('onboarding.step3of4') }}</div>
     </div>
 
     <!-- Search -->
@@ -64,9 +65,7 @@
         @click="selectOrganization(org.id)"
       >
         <q-item-section avatar>
-          <q-avatar :color="getOrgTypeColor(org.type)" text-color="white">
-            {{ org.name.charAt(0).toUpperCase() }}
-          </q-avatar>
+          <q-avatar :color="getOrgTypeColor(org.type)" text-color="white" :icon="getOrgTypeIcon(org.type)" />
         </q-item-section>
         <q-item-section>
           <q-item-label class="text-weight-medium">{{ org.name }}</q-item-label>
@@ -115,7 +114,10 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import { api } from 'src/boot/axios';
+import { getOnboardingItem, setOnboardingItem, removeOnboardingItem } from 'src/lib/onboarding-storage';
+import OnboardingProgress from 'src/components/ui/OnboardingProgress.vue';
 
 interface Organization {
   id: string;
@@ -125,6 +127,7 @@ interface Organization {
 }
 
 const router = useRouter();
+const { t } = useI18n();
 
 const loading = ref(false);
 const organizations = ref<Organization[]>([]);
@@ -132,7 +135,7 @@ const selectedOrgId = ref<string | null>(null);
 const searchQuery = ref('');
 
 // Get country from session or default to India
-const countryCode = sessionStorage.getItem('selected_country') || 'IN';
+const countryCode = getOnboardingItem('selected_country') || 'IN';
 
 const filteredOrganizations = computed(() => {
   if (!searchQuery.value) {
@@ -161,15 +164,21 @@ function getOrgTypeColor(type: string): string {
   return colors[type] || 'grey-7';
 }
 
-function formatOrgType(type: string): string {
-  const labels: Record<string, string> = {
-    university: 'University',
-    government: 'Government',
-    ngo: 'NGO',
-    cooperative: 'Cooperative',
-    research: 'Research Institute',
+function getOrgTypeIcon(type: string): string {
+  const icons: Record<string, string> = {
+    university: 'school',
+    government: 'account_balance',
+    ngo: 'volunteer_activism',
+    cooperative: 'groups',
+    research: 'biotech',
   };
-  return labels[type] || type;
+  return icons[type] || 'business';
+}
+
+function formatOrgType(type: string): string {
+  const key = `settings.orgTypes.${type}`;
+  const translated = t(key);
+  return translated === key ? type : translated;
 }
 
 async function fetchOrganizations() {
@@ -177,7 +186,7 @@ async function fetchOrganizations() {
   try {
     // Get country ID from country code
     const countriesRes = await api.get('/api/v1/countries');
-    const country = countriesRes.data.find((c: { code: string }) => c.code === countryCode);
+    const country = countriesRes.data.find((c: { country_code: string }) => c.country_code === countryCode);
 
     if (country) {
       const orgsRes = await api.get(`/api/v1/organizations?country_id=${country.id}`);
@@ -194,9 +203,9 @@ async function fetchOrganizations() {
 function proceed() {
   // Store the selected organization
   if (selectedOrgId.value) {
-    sessionStorage.setItem('onboarding_org_id', selectedOrgId.value);
+    setOnboardingItem('onboarding_org_id', selectedOrgId.value);
   } else {
-    sessionStorage.removeItem('onboarding_org_id');
+    removeOnboardingItem('onboarding_org_id');
   }
   router.push('/auth/profile-setup');
 }
@@ -207,12 +216,6 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-.org-select-page {
-  padding: 16px;
-  max-width: 500px;
-  margin: 0 auto;
-}
-
 .bg-primary-1 {
   background-color: rgba(46, 125, 50, 0.08);
 }

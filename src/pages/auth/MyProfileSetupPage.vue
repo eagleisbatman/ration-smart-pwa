@@ -1,8 +1,9 @@
 <template>
   <div class="profile-setup-page">
+    <OnboardingProgress :current-step="4" />
+
     <div class="text-center q-mb-xl">
       <div class="text-h5 text-weight-medium q-mb-sm">{{ $t('onboarding.createProfile') }}</div>
-      <div class="text-body2 text-grey-7">{{ $t('onboarding.step4of4') }}</div>
     </div>
 
     <q-form class="q-gutter-md" @submit="onSubmit">
@@ -21,7 +22,8 @@
       <!-- Phone -->
       <q-input
         v-model="form.phone"
-        :label="$t('profile.phone')"
+        :label="`${$t('profile.phoneNumber')} ${$t('common.optionalSuffix')}`"
+        :hint="$t('profile.phoneHintSetup')"
         type="tel"
         outlined
         mask="##########"
@@ -33,19 +35,74 @@
 
       <!-- Location Section -->
       <div class="location-section q-mt-md">
-        <div class="text-subtitle2 q-mb-sm">{{ $t('profile.location') }}</div>
+        <div class="text-subtitle2 q-mb-sm">{{ $t('profile.location') }} <span class="text-grey-6 text-weight-regular">{{ $t('common.optionalSuffix') }}</span></div>
 
-        <!-- Get Location Button -->
-        <q-btn
-          v-if="!locationFetched"
-          :label="locationLoading ? $t('profile.gettingLocation') : $t('profile.shareLocation')"
-          :loading="locationLoading"
-          color="primary"
-          outline
-          class="full-width q-mb-md"
-          icon="my_location"
-          @click="getLocation"
-        />
+        <!-- Location prompt: shown when location not yet fetched and not entering manually -->
+        <div v-if="!locationFetched && !showManualEntry" class="location-prompt q-mb-md">
+          <div class="text-body2 text-grey-7 q-mb-md">
+            {{ $t('profile.locationHelperText') }}
+          </div>
+
+          <!-- Share My Location Button -->
+          <q-btn
+            :label="locationLoading ? $t('profile.gettingLocation') : $t('profile.shareLocation')"
+            :loading="locationLoading"
+            color="primary"
+            outline
+            class="full-width q-mb-sm"
+            icon="my_location"
+            @click="getLocation"
+          />
+
+          <!-- Enter Manually link -->
+          <div class="text-center q-mt-sm">
+            <q-btn
+              flat
+              dense
+              no-caps
+              color="grey-7"
+              :label="$t('profile.enterManually')"
+              icon="edit_location_alt"
+              @click="showManualEntry = true"
+            />
+          </div>
+        </div>
+
+        <!-- Manual entry fields -->
+        <div v-if="showManualEntry && !locationFetched" class="manual-entry q-mb-md">
+          <q-input
+            v-model="form.level_6"
+            :label="$t('profile.village')"
+            outlined
+            dense
+            class="q-mb-sm"
+          />
+          <q-input
+            v-model="form.level_3"
+            :label="$t('profile.district')"
+            outlined
+            dense
+            class="q-mb-sm"
+          />
+          <q-input
+            v-model="form.level_2"
+            :label="$t('profile.state')"
+            outlined
+            dense
+            class="q-mb-sm"
+          />
+          <div class="text-center q-mt-xs">
+            <q-btn
+              flat
+              dense
+              no-caps
+              color="primary"
+              :label="$t('profile.shareLocation')"
+              icon="my_location"
+              @click="showManualEntry = false"
+            />
+          </div>
+        </div>
 
         <!-- Location Display -->
         <div v-if="locationFetched" class="location-display q-pa-md bg-grey-2 rounded-borders q-mb-md">
@@ -93,19 +150,6 @@
           </template>
         </q-banner>
 
-        <!-- Manual Location Toggle (fallback) -->
-        <q-expansion-item
-          v-if="locationError || !locationFetched"
-          icon="edit_location"
-          :label="$t('profile.enterManually')"
-          header-class="text-primary"
-        >
-          <div class="q-pa-md q-gutter-sm">
-            <q-input v-model="form.level_6" :label="$t('profile.village')" outlined dense />
-            <q-input v-model="form.level_3" :label="$t('profile.district')" outlined dense />
-            <q-input v-model="form.level_2" :label="$t('profile.state')" outlined dense />
-          </div>
-        </q-expansion-item>
       </div>
 
       <!-- Error Message -->
@@ -147,6 +191,8 @@ import { useQuasar } from 'quasar';
 import { useAuthStore } from 'src/stores/auth';
 import { api } from 'src/boot/axios';
 import { useI18n } from 'vue-i18n';
+import { getOnboardingItem, clearOnboardingData } from 'src/lib/onboarding-storage';
+import OnboardingProgress from 'src/components/ui/OnboardingProgress.vue';
 
 const router = useRouter();
 const $q = useQuasar();
@@ -156,6 +202,7 @@ const { t } = useI18n();
 const loading = ref(false);
 const locationLoading = ref(false);
 const locationFetched = ref(false);
+const showManualEntry = ref(false);
 const locationError = ref<string | null>(null);
 const formattedAddress = ref<string | null>(null);
 const error = ref<string | null>(null);
@@ -192,10 +239,10 @@ const adminLevelDisplay = computed(() => {
 // Gather all onboarding data from session
 function getOnboardingData() {
   return {
-    language: sessionStorage.getItem('onboarding_language') || 'en',
-    role: sessionStorage.getItem('onboarding_role') || 'farmer',
-    organizationId: sessionStorage.getItem('onboarding_org_id') || null,
-    countryCode: sessionStorage.getItem('selected_country') || 'IN',
+    language: getOnboardingItem('onboarding_language') || 'en',
+    role: getOnboardingItem('onboarding_role') || 'farmer',
+    organizationId: getOnboardingItem('onboarding_org_id') || null,
+    countryCode: getOnboardingItem('selected_country') || 'IN',
   };
 }
 
@@ -311,16 +358,18 @@ async function onSubmit() {
     const userId = authStore.userId;
 
     if (!userId) {
-      error.value = 'User session not found. Please login again.';
+      error.value = t('onboarding.userSessionNotFound');
       return;
     }
 
     // 1. Update user settings (role, language, organization)
-    await api.put(`/api/v1/users/${userId}/settings`, {
-      user_role: onboardingData.role,
-      language_code: onboardingData.language,
-      organization_id: onboardingData.organizationId,
-    });
+    // Backend expects settings as query parameters, not request body
+    const settingsParams = new URLSearchParams();
+    if (onboardingData.role) settingsParams.append('user_role', onboardingData.role);
+    if (onboardingData.language) settingsParams.append('language_code', onboardingData.language);
+    if (onboardingData.organizationId) settingsParams.append('organization_id', onboardingData.organizationId);
+    const settingsQuery = settingsParams.toString();
+    await api.put(`/api/v1/users/${userId}/settings${settingsQuery ? '?' + settingsQuery : ''}`);
 
     // 2. Create self-profile with new location fields
     await api.post(`/api/v1/users/${userId}/self-profile`, {
@@ -343,11 +392,8 @@ async function onSubmit() {
     // 3. Reload user profile to get updated data
     await authStore.loadUserProfile();
 
-    // 4. Clear onboarding session data
-    sessionStorage.removeItem('onboarding_language');
-    sessionStorage.removeItem('onboarding_role');
-    sessionStorage.removeItem('onboarding_org_id');
-    sessionStorage.removeItem('selected_country');
+    // 4. Clear onboarding data from localStorage
+    clearOnboardingData();
 
     // Show success message
     $q.notify({
@@ -360,7 +406,7 @@ async function onSubmit() {
     router.replace('/');
   } catch (err) {
     console.error('Failed to complete profile setup:', err);
-    error.value = 'Failed to create profile. Please try again.';
+    error.value = t('onboarding.profileCreationFailed');
   } finally {
     loading.value = false;
   }
@@ -371,17 +417,12 @@ onMounted(() => {
   if (authStore.user?.name) {
     form.name = authStore.user.name;
   }
-
-  // Automatically try to get location on mount
-  getLocation();
 });
 </script>
 
 <style lang="scss" scoped>
 .profile-setup-page {
-  padding: 16px;
-  max-width: 500px;
-  margin: 0 auto;
+  /* Layout container handles max-width and centering */
 }
 
 .location-section {

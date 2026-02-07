@@ -2,30 +2,30 @@
   <q-dialog v-model="showPrompt" persistent>
     <q-card class="a2hs-card">
       <q-card-section class="row items-center q-pb-none">
-        <div class="text-h6">Install RationSmart</div>
+        <div class="text-h6">{{ $t('pwa.installApp') }}</div>
         <q-space />
         <q-btn v-close-popup icon="close" flat round dense @click="dismiss" />
       </q-card-section>
 
       <q-card-section class="text-center q-pt-md">
         <q-avatar size="72px" class="q-mb-md">
-          <img src="/icons/icon-192x192.png" alt="RationSmart" />
+          <img src="/icons/icon-192x192.png" :alt="$t('pwa.appName')" />
         </q-avatar>
 
         <p class="text-body1 q-mb-md">
-          Install RationSmart on your device for quick access and offline use.
+          {{ $t('pwa.installPrompt') }}
         </p>
 
         <!-- iOS Instructions -->
         <div v-if="isIOS" class="ios-instructions">
-          <p class="text-body2 text-grey-7 q-mb-sm">To install on iOS:</p>
+          <p class="text-body2 text-grey-7 q-mb-sm">{{ $t('pwa.iosInstructions') }}</p>
           <ol class="text-left text-body2">
             <li>
-              Tap the Share button
+              {{ $t('pwa.iosTapShare') }}
               <q-icon name="ios_share" size="18px" class="q-ml-xs" />
             </li>
-            <li>Scroll down and tap "Add to Home Screen"</li>
-            <li>Tap "Add" to confirm</li>
+            <li>{{ $t('pwa.iosAddToHomeScreen') }}</li>
+            <li>{{ $t('pwa.iosTapAdd') }}</li>
           </ol>
         </div>
       </q-card-section>
@@ -34,13 +34,13 @@
         <template v-if="!isIOS">
           <q-btn
             v-close-popup
-            label="Not Now"
+            :label="$t('pwa.notNow')"
             flat
             color="grey"
             @click="dismiss"
           />
           <q-btn
-            label="Install"
+            :label="$t('pwa.install')"
             color="primary"
             unelevated
             :loading="installing"
@@ -48,7 +48,7 @@
           />
         </template>
         <template v-else>
-          <q-btn v-close-popup label="Got it" color="primary" unelevated @click="dismiss" />
+          <q-btn v-close-popup :label="$t('pwa.gotIt')" color="primary" unelevated @click="dismiss" />
         </template>
       </q-card-actions>
     </q-card>
@@ -62,7 +62,7 @@
       @click="showPrompt = true"
     >
       <q-icon name="download" class="q-mr-sm" />
-      <span>Install app for better experience</span>
+      <span>{{ $t('pwa.installBanner') }}</span>
       <q-btn
         icon="close"
         flat

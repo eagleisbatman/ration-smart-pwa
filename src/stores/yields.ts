@@ -2,8 +2,10 @@ import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import { api } from 'src/boot/axios';
 import { db, YieldData } from 'src/lib/offline/db';
+import { isOnline } from 'src/boot/pwa';
 import { useAuthStore } from './auth';
 import { v4 as uuidv4 } from 'uuid';
+import { i18n } from 'src/boot/i18n';
 
 export interface YieldInput {
   farmer_profile_id: string;
@@ -33,6 +35,9 @@ export const useYieldsStore = defineStore('yields', () => {
   const loading = ref(false);
   const error = ref<string | null>(null);
 
+  // Helper to get translated text
+  const t = i18n.global.t;
+
   // Computed
   const yieldCount = computed(() => yieldRecords.value.length);
   const recentYields = computed(() =>
@@ -51,12 +56,12 @@ export const useYieldsStore = defineStore('yields', () => {
   function extractErrorMessage(err: unknown): string {
     if (err && typeof err === 'object' && 'response' in err) {
       const axiosError = err as { response?: { data?: { detail?: string } } };
-      return axiosError.response?.data?.detail || 'An error occurred';
+      return axiosError.response?.data?.detail || t('errors.generic');
     }
     if (err instanceof Error) {
       return err.message;
     }
-    return 'An unexpected error occurred';
+    return t('errors.unexpectedError');
   }
 
   // Actions
@@ -197,6 +202,24 @@ export const useYieldsStore = defineStore('yields', () => {
     }
   }
 
+  async function getYield(id: string): Promise<YieldData | null> {
+    // Try local first
+    const record = await db.yieldData.get(id);
+
+    if (!record && isOnline.value) {
+      try {
+        const response = await api.get(`/api/v1/yield-data/${id}`);
+        const serverRecord: YieldData = { ...response.data, _synced: true, _deleted: false };
+        await db.yieldData.put(serverRecord);
+        return serverRecord;
+      } catch {
+        return null;
+      }
+    }
+
+    return record ?? null;
+  }
+
   async function recordYield(input: YieldInput): Promise<YieldData | null> {
     loading.value = true;
     error.value = null;
@@ -256,7 +279,7 @@ export const useYieldsStore = defineStore('yields', () => {
     // Find current record for optimistic update
     const record = yieldRecords.value.find((y) => y.id === id);
     if (!record) {
-      error.value = 'Yield record not found';
+      error.value = t('logs.yield.yieldRecordNotFound');
       loading.value = false;
       return false;
     }
@@ -392,6 +415,7 @@ export const useYieldsStore = defineStore('yields', () => {
     fetchYieldHistory,
     fetchFarmerYieldHistory,
     fetchCowYieldHistory,
+    getYield,
     recordYield,
     updateYield,
     deleteYield,

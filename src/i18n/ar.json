@@ -57,16 +57,18 @@
   },
   "roles": {
     "farmer": "مزارع",
-    "student": "طالب",
+    "extension_worker": "مرشد زراعي",
     "nutritionist": "أخصائي تغذية",
-    "extensionWorker": "مرشد زراعي",
     "researcher": "باحث",
+    "feed_supplier": "مورد أعلاف",
+    "other": "أخرى",
     "admin": "مدير النظام",
     "farmerDesc": "أدير ماشيتي الخاصة",
-    "studentDesc": "أتعلم عن تغذية الحيوان",
+    "extension_workerDesc": "أدعم المزارعين في مجتمعي",
     "nutritionistDesc": "أقدم المشورة للمزارعين حول تركيب العلف",
-    "extensionWorkerDesc": "أدعم المزارعين في مجتمعي",
     "researcherDesc": "أدرس تغذية الماشية وممارسات الزراعة",
+    "feed_supplierDesc": "أقوم بتوريد منتجات الأعلاف الحيوانية",
+    "otherDesc": "دور آخر غير مدرج أعلاه",
     "adminDesc": "أدير النظام"
   },
   "auth": {
@@ -106,7 +108,9 @@
     "step1of4": "الخطوة 1 من 4",
     "step2of4": "الخطوة 2 من 4",
     "step3of4": "الخطوة 3 من 4",
-    "step4of4": "الخطوة 4 من 4"
+    "step4of4": "الخطوة 4 من 4",
+    "recommendedLanguages": "موصى بها",
+    "otherLanguages": "لغات أخرى"
   },
   "profile": {
     "myProfile": "ملفي الشخصي",
@@ -245,7 +249,27 @@
     "thisWeek": "هذا الأسبوع",
     "thisMonth": "هذا الشهر",
     "average": "المتوسط",
-    "total": "الإجمالي"
+    "total": "الإجمالي",
+    "quickLog": {
+      "button": "Quick Log All",
+      "title": "Quick Log - All Cows",
+      "date": "Date",
+      "cowName": "Cow",
+      "morning": "Morning (L)",
+      "evening": "Evening (L)",
+      "total": "Total",
+      "saveAll": "Save All",
+      "saveRow": "Save",
+      "saved": "Saved",
+      "noCows": "No active cows found. Add a cow first.",
+      "allSaved": "All milk logs saved successfully!",
+      "rowSaved": "Milk log saved for {cowName}",
+      "noEntries": "Please enter at least one milk reading",
+      "close": "Close",
+      "savingAll": "Saving all entries...",
+      "duplicateFound": "Log already exists for {cowName} on this date - updated",
+      "entriesSaved": "{count} log saved | {count} logs saved"
+    }
   },
   "reports": {
     "reports": "التقارير",
@@ -309,7 +333,14 @@
     "logout": "تسجيل الخروج",
     "logoutConfirm": "هل أنت متأكد أنك تريد تسجيل الخروج؟",
     "deleteAccount": "حذف الحساب",
-    "deleteAccountWarning": "لا يمكن التراجع عن هذا الإجراء. سيتم حذف جميع بياناتك نهائياً."
+    "deleteAccountWarning": "لا يمكن التراجع عن هذا الإجراء. سيتم حذف جميع بياناتك نهائياً.",
+    "orgTypes": {
+      "university": "جامعة",
+      "government": "حكومة",
+      "ngo": "منظمة غير حكومية",
+      "cooperative": "تعاونية",
+      "research": "معهد أبحاث"
+    }
   },
   "farmer": {
     "farmers": "المزارعون",
@@ -324,7 +355,17 @@
     "addFirstFarmer": "أضف مزارعاً تدعمه لإدارة أبقاره",
     "farmerAdded": "تمت إضافة المزارع بنجاح",
     "farmerUpdated": "تم تحديث المزارع بنجاح",
-    "farmerDeleted": "تم حذف المزارع"
+    "farmerDeleted": "تم حذف المزارع",
+    "farmingTypes": {
+      "dairy": "تربية الألبان",
+      "mixed": "زراعة مختلطة",
+      "crop": "زراعة المحاصيل"
+    },
+    "filter": {
+      "all": "الكل",
+      "dairy": "ألبان",
+      "mixed": "مختلط"
+    }
   },
   "errors": {
     "generic": "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
