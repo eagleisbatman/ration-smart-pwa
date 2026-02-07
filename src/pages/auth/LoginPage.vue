@@ -57,12 +57,12 @@
               class="q-mb-sm"
             >
               <template #prepend>
-                <span class="fi fis" :class="`fi-${(form.country_code || '').toLowerCase()}`" style="font-size: 0.9em; border-radius: 2px;" />
+                <img :src="flagUrl(form.country_code)" width="20" height="15" style="border-radius: 2px; object-fit: cover;" />
               </template>
               <template v-slot:option="{ itemProps, opt }">
                 <q-item v-bind="itemProps">
                   <q-item-section side style="min-width: 28px; padding-right: 8px;">
-                    <span class="fi fis" :class="`fi-${(opt.value || '').toLowerCase()}`" style="font-size: 0.9em; border-radius: 2px;" />
+                    <img :src="flagUrl(opt.value)" width="20" height="15" style="border-radius: 2px; object-fit: cover;" />
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>{{ opt.label }}</q-item-label>
@@ -80,7 +80,7 @@
               :rules="[(val) => !!val || $t('validation.required')]"
             >
               <template #prepend>
-                <span class="fi fis q-mr-xs" :class="`fi-${(form.country_code || '').toLowerCase()}`" style="font-size: 0.9em; border-radius: 2px;" />
+                <img :src="flagUrl(form.country_code)" width="20" height="15" class="q-mr-xs" style="border-radius: 2px; object-fit: cover;" />
                 <span class="text-body2 text-weight-medium text-grey-8 q-mr-xs">{{ selectedDialCode }}</span>
               </template>
             </q-input>
@@ -205,6 +205,8 @@ import { useRouter, useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useAuthStore } from 'src/stores/auth';
 import { getDialCode, getPhoneMask, FALLBACK_COUNTRIES } from 'src/services/api-adapter';
+
+const flagUrl = (code: string) => `/flags/${(code || 'xx').toLowerCase()}.svg`;
 
 const { t } = useI18n();
 const router = useRouter();
