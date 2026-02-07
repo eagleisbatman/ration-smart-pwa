@@ -193,7 +193,7 @@ import { ref, reactive, computed, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useAuthStore } from 'src/stores/auth';
-import { COUNTRY_DIAL_CODES, COUNTRY_PHONE_MASKS, FALLBACK_COUNTRIES } from 'src/services/api-adapter';
+import { getDialCode, getPhoneMask, FALLBACK_COUNTRIES } from 'src/services/api-adapter';
 
 const { t } = useI18n();
 const router = useRouter();
@@ -214,7 +214,7 @@ const form = reactive({
 const countryOptions = computed(() => {
   const source = authStore.countries.length > 0 ? authStore.countries : FALLBACK_COUNTRIES;
   return source.map((c) => {
-    const dialCode = COUNTRY_DIAL_CODES[c.country_code] || '';
+    const dialCode = getDialCode(c.country_code);
     const name = t(`countries.${c.country_code}`, c.name || c.country_code);
     return {
       label: dialCode ? `${name} (${dialCode})` : name,
@@ -223,13 +223,8 @@ const countryOptions = computed(() => {
   });
 });
 
-const selectedDialCode = computed(() => {
-  return COUNTRY_DIAL_CODES[form.country_code] || '';
-});
-
-const selectedPhoneMask = computed(() => {
-  return COUNTRY_PHONE_MASKS[form.country_code] || COUNTRY_PHONE_MASKS['OTHER'];
-});
+const selectedDialCode = computed(() => getDialCode(form.country_code));
+const selectedPhoneMask = computed(() => getPhoneMask(form.country_code));
 
 onMounted(() => {
   authStore.fetchCountries();
