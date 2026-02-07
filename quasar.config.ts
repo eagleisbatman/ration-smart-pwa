@@ -23,8 +23,8 @@ export default defineConfig((/* ctx */) => {
       },
       vueRouterMode: 'history',
       env: {
-        API_BASE_URL: process.env.VITE_API_BASE_URL || 'http://localhost:8000',
-        APP_API_KEY: process.env.VITE_APP_API_KEY || '',
+        API_BASE_URL: (process.env.VITE_API_BASE_URL || 'http://localhost:8000').trim(),
+        APP_API_KEY: (process.env.VITE_APP_API_KEY || '').trim(),
       },
     },
 

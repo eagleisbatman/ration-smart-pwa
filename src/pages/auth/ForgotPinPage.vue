@@ -17,8 +17,27 @@
       </q-banner>
 
       <template v-if="!success">
+        <!-- Method Toggle -->
+        <q-btn-toggle
+          v-model="method"
+          spread
+          no-caps
+          rounded
+          unelevated
+          toggle-color="primary"
+          toggle-text-color="white"
+          color="white"
+          text-color="grey-8"
+          :options="[
+            { label: $t('auth.email'), value: 'email', icon: 'email' },
+            { label: $t('auth.phone'), value: 'phone', icon: 'phone' },
+          ]"
+          class="method-toggle"
+        />
+
         <!-- Email Input -->
         <q-input
+          v-if="method === 'email'"
           v-model="form.email"
           :label="$t('auth.email')"
           type="email"
@@ -32,6 +51,49 @@
             <q-icon name="email" />
           </template>
         </q-input>
+
+        <!-- Phone Input with Country -->
+        <template v-else>
+          <q-select
+            v-model="form.country_code"
+            :label="$t('profile.country')"
+            outlined
+            :options="countryOptions"
+            emit-value
+            map-options
+            dense
+            :loading="authStore.countriesLoading"
+            class="q-mb-sm"
+          >
+            <template #prepend>
+              <q-icon name="public" />
+            </template>
+            <template #option="scope">
+              <q-item v-bind="scope.itemProps">
+                <q-item-section avatar class="min-w-0" style="min-width: 0; padding-right: 8px">
+                  <span class="text-h6">{{ scope.opt.flag }}</span>
+                </q-item-section>
+                <q-item-section>{{ scope.opt.label }}</q-item-section>
+              </q-item>
+            </template>
+            <template #selected-item="scope">
+              <span>{{ scope.opt.flag }} {{ scope.opt.label }}</span>
+            </template>
+          </q-select>
+
+          <q-input
+            v-model="form.phone"
+            :label="$t('auth.phone')"
+            type="tel"
+            outlined
+            mask="##########"
+            :rules="[(val) => !!val || $t('validation.required')]"
+          >
+            <template #prepend>
+              <q-icon name="phone" />
+            </template>
+          </q-input>
+        </template>
 
         <!-- Submit Button -->
         <q-btn
@@ -62,16 +124,52 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue';
+import { ref, reactive, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { api } from 'src/boot/axios';
+import { useAuthStore } from 'src/stores/auth';
+import { formatPhoneE164 } from 'src/services/api-adapter';
 
 const { t } = useI18n();
 const router = useRouter();
+const authStore = useAuthStore();
+
+const method = ref<'email' | 'phone'>('email');
 
 const form = reactive({
   email: '',
+  phone: '',
+  country_code: 'IN',
+});
+
+/** Convert a 2-letter ISO country code to its flag emoji. */
+function countryCodeToFlag(code: string): string {
+  return [...code.toUpperCase()]
+    .map((ch) => String.fromCodePoint(0x1f1e6 + ch.charCodeAt(0) - 65))
+    .join('');
+}
+
+const FALLBACK_COUNTRIES = [
+  { country_code: 'IN', name: 'India' },
+  { country_code: 'KE', name: 'Kenya' },
+  { country_code: 'ET', name: 'Ethiopia' },
+  { country_code: 'NP', name: 'Nepal' },
+  { country_code: 'BD', name: 'Bangladesh' },
+  { country_code: 'VN', name: 'Vietnam' },
+];
+
+const countryOptions = computed(() => {
+  const source = authStore.countries.length > 0 ? authStore.countries : FALLBACK_COUNTRIES;
+  return source.map((c) => ({
+    label: t(`countries.${c.country_code}`, c.name || c.country_code),
+    value: c.country_code,
+    flag: countryCodeToFlag(c.country_code),
+  }));
+});
+
+onMounted(() => {
+  authStore.fetchCountries();
 });
 
 const loading = ref(false);
@@ -84,9 +182,11 @@ async function onSubmit() {
   success.value = false;
 
   try {
-    await api.post('/api/v1/auth/forgot-pin', {
-      email: form.email,
-    });
+    const payload = method.value === 'email'
+      ? { email: form.email }
+      : { phone_number: formatPhoneE164(form.phone, form.country_code) };
+
+    await api.post('/api/v1/auth/forgot-pin', payload);
     success.value = true;
   } catch (err: unknown) {
     if (err && typeof err === 'object' && 'response' in err) {
@@ -109,5 +209,12 @@ async function onSubmit() {
 </script>
 
 <style lang="scss" scoped>
-/* Styling handled by AuthLayout container */
+.method-toggle :deep(.q-btn) {
+  border: 1.5px solid $grey-4;
+  transition: all 0.2s ease;
+}
+
+.method-toggle :deep(.q-btn.bg-primary) {
+  border-color: var(--q-primary);
+}
 </style>

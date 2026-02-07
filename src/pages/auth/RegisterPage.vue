@@ -1,7 +1,42 @@
 <template>
   <div class="register-page">
     <q-form @submit="onSubmit">
-      <!-- Section 1: Account -->
+      <!-- Section 1: Country -->
+      <div class="form-section">
+        <div class="text-caption text-grey-7 text-uppercase text-weight-medium q-mb-sm q-px-xs">
+          {{ $t('auth.sectionLocation') }}
+        </div>
+        <q-select
+          v-model="form.country_code"
+          :label="$t('profile.country')"
+          outlined
+          :options="countryOptions"
+          emit-value
+          map-options
+          :loading="authStore.countriesLoading"
+          :disable="authStore.countriesLoading"
+          :rules="[(val) => !!val || $t('validation.required')]"
+        >
+          <template #prepend>
+            <q-icon name="public" />
+          </template>
+          <template #option="scope">
+            <q-item v-bind="scope.itemProps">
+              <q-item-section avatar class="min-w-0" style="min-width: 0; padding-right: 8px">
+                <span class="text-h6">{{ scope.opt.flag }}</span>
+              </q-item-section>
+              <q-item-section>{{ scope.opt.label }}</q-item-section>
+            </q-item>
+          </template>
+          <template #selected-item="scope">
+            <span>{{ scope.opt.flag }} {{ scope.opt.label }}</span>
+          </template>
+        </q-select>
+      </div>
+
+      <q-separator class="q-my-md" color="grey-3" />
+
+      <!-- Section 2: Account -->
       <div class="form-section">
         <div class="text-caption text-grey-7 text-uppercase text-weight-medium q-mb-sm q-px-xs">
           {{ $t('auth.sectionAccount') }}
@@ -69,41 +104,6 @@
             </template>
           </q-input>
         </div>
-      </div>
-
-      <q-separator class="q-my-md" color="grey-3" />
-
-      <!-- Section 2: Location -->
-      <div class="form-section">
-        <div class="text-caption text-grey-7 text-uppercase text-weight-medium q-mb-sm q-px-xs">
-          {{ $t('auth.sectionLocation') }}
-        </div>
-        <q-select
-          v-model="form.country_code"
-          :label="$t('profile.country')"
-          outlined
-          :options="countryOptions"
-          emit-value
-          map-options
-          :loading="authStore.countriesLoading"
-          :disable="authStore.countriesLoading"
-          :rules="[(val) => !!val || $t('validation.required')]"
-        >
-          <template #prepend>
-            <q-icon name="public" />
-          </template>
-          <template #option="scope">
-            <q-item v-bind="scope.itemProps">
-              <q-item-section avatar class="min-w-0" style="min-width: 0; padding-right: 8px">
-                <span class="text-h6">{{ scope.opt.flag }}</span>
-              </q-item-section>
-              <q-item-section>{{ scope.opt.label }}</q-item-section>
-            </q-item>
-          </template>
-          <template #selected-item="scope">
-            <span>{{ scope.opt.flag }} {{ scope.opt.label }}</span>
-          </template>
-        </q-select>
       </div>
 
       <q-separator class="q-my-md" color="grey-3" />
