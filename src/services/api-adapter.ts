@@ -96,6 +96,50 @@ export function getPhoneMask(countryCode: string): string {
   return COUNTRY_PHONE_MASKS[countryCode?.toUpperCase()] || COUNTRY_PHONE_MASKS['OTHER'];
 }
 
+// ISO 3166-1 alpha-3 → alpha-2 mapping.
+// Backend stores alpha-3 codes; frontend (flags, dial codes, masks) uses alpha-2.
+const ALPHA3_TO_ALPHA2: Record<string, string> = {
+  AFG:'AF', ALB:'AL', DZA:'DZ', AND:'AD', AGO:'AO', ARG:'AR', ARM:'AM', AUS:'AU', AUT:'AT', AZE:'AZ',
+  BHS:'BS', BHR:'BH', BGD:'BD', BRB:'BB', BLR:'BY', BEL:'BE', BLZ:'BZ', BEN:'BJ', BTN:'BT', BOL:'BO',
+  BIH:'BA', BWA:'BW', BRA:'BR', BRN:'BN', BGR:'BG', BFA:'BF', BDI:'BI',
+  KHM:'KH', CMR:'CM', CAN:'CA', CPV:'CV', CAF:'CF', TCD:'TD', CHL:'CL', CHN:'CN', COL:'CO', COM:'KM',
+  COG:'CG', CRI:'CR', HRV:'HR', CUB:'CU', CYP:'CY', CZE:'CZ',
+  COD:'CD', DNK:'DK', DJI:'DJ', DMA:'DM', DOM:'DO',
+  ECU:'EC', EGY:'EG', SLV:'SV', GNQ:'GQ', ERI:'ER', EST:'EE', SWZ:'SZ', ETH:'ET',
+  FJI:'FJ', FIN:'FI', FRA:'FR',
+  GAB:'GA', GMB:'GM', GEO:'GE', DEU:'DE', GHA:'GH', GRC:'GR', GRD:'GD', GTM:'GT', GIN:'GN', GNB:'GW', GUY:'GY',
+  HTI:'HT', HND:'HN', HUN:'HU',
+  ISL:'IS', IND:'IN', IDN:'ID', IRN:'IR', IRQ:'IQ', IRL:'IE', ISR:'IL', ITA:'IT', CIV:'CI',
+  JAM:'JM', JPN:'JP', JOR:'JO',
+  KAZ:'KZ', KEN:'KE', KIR:'KI', KWT:'KW', KGZ:'KG',
+  LAO:'LA', LVA:'LV', LBN:'LB', LSO:'LS', LBR:'LR', LBY:'LY', LIE:'LI', LTU:'LT', LUX:'LU',
+  MDG:'MG', MWI:'MW', MYS:'MY', MDV:'MV', MLI:'ML', MLT:'MT', MHL:'MH', MRT:'MR', MUS:'MU', MEX:'MX',
+  FSM:'FM', MDA:'MD', MCO:'MC', MNG:'MN', MNE:'ME', MAR:'MA', MOZ:'MZ', MMR:'MM',
+  NAM:'NA', NRU:'NR', NPL:'NP', NLD:'NL', NZL:'NZ', NIC:'NI', NER:'NE', NGA:'NG', PRK:'KP', MKD:'MK', NOR:'NO',
+  OMN:'OM',
+  PAK:'PK', PLW:'PW', PAN:'PA', PNG:'PG', PRY:'PY', PER:'PE', PHL:'PH', POL:'PL', PRT:'PT',
+  QAT:'QA',
+  ROU:'RO', RUS:'RU', RWA:'RW',
+  KNA:'KN', LCA:'LC', VCT:'VC', WSM:'WS', SMR:'SM', STP:'ST', SAU:'SA', SEN:'SN', SRB:'RS', SYC:'SC',
+  SLE:'SL', SGP:'SG', SVK:'SK', SVN:'SI', SLB:'SB', SOM:'SO', ZAF:'ZA', KOR:'KR', SSD:'SS', ESP:'ES',
+  LKA:'LK', SDN:'SD', SUR:'SR', SWE:'SE', CHE:'CH', SYR:'SY',
+  TWN:'TW', TJK:'TJ', TZA:'TZ', THA:'TH', TLS:'TL', TGO:'TG', TON:'TO', TTO:'TT', TUN:'TN', TUR:'TR', TKM:'TM', TUV:'TV',
+  UGA:'UG', UKR:'UA', ARE:'AE', GBR:'GB', USA:'US', URY:'UY', UZB:'UZ',
+  VUT:'VU', VAT:'VA', VEN:'VE', VNM:'VN',
+  YEM:'YE',
+  ZMB:'ZM', ZWE:'ZW',
+};
+
+/**
+ * Convert an alpha-3 country code to alpha-2.
+ * If already alpha-2 or unknown, returns the input uppercased.
+ */
+export function toAlpha2(code: string): string {
+  if (!code) return code;
+  const upper = code.toUpperCase();
+  return ALPHA3_TO_ALPHA2[upper] || upper;
+}
+
 // Fallback country list when API is unreachable
 export const FALLBACK_COUNTRIES = [
   { country_code: 'IN', name: 'India' },
@@ -461,12 +505,18 @@ const ENDPOINT_MAP: Record<string, EndpointMapping> = {
     path: '/auth/countries',
     transform: {
       response: (data: unknown) => {
-        // Transform backend country_code to code for frontend compatibility
+        // Backend returns alpha-3 country codes (IND, KEN, BGD …).
+        // Frontend flags, dial codes, and phone masks all use alpha-2 (IN, KE, BD …).
+        // Convert here so every downstream consumer gets alpha-2.
         if (Array.isArray(data)) {
-          return data.map((country: { country_code?: string; [key: string]: unknown }) => ({
-            ...country,
-            code: country.country_code, // Add 'code' alias for 'country_code'
-          }));
+          return data.map((country: { country_code?: string; [key: string]: unknown }) => {
+            const alpha2 = toAlpha2(country.country_code || '');
+            return {
+              ...country,
+              country_code: alpha2,
+              code: alpha2,
+            };
+          });
         }
         return data;
       },
