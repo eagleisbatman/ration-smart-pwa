@@ -12,7 +12,7 @@ import type { AxiosRequestConfig, AxiosResponse } from 'axios';
 // ============================================================================
 
 // Country dial codes for E.164 phone format conversion
-const COUNTRY_DIAL_CODES: Record<string, string> = {
+export const COUNTRY_DIAL_CODES: Record<string, string> = {
   IN: '+91', // India
   KE: '+254', // Kenya
   ET: '+251', // Ethiopia
