@@ -359,35 +359,72 @@
       "module": "1-auth",
       "taskId": "M2",
       "priority": "medium",
-      "title": "Add country flags to registration dropdown",
-      "description": "Country dropdown shows plain text labels only. Flags would make selection more intuitive and visually appealing.",
+      "title": "Add country flags and dial codes to auth dropdowns",
+      "description": "Country dropdowns across Login, Register, and ForgotPin pages now show SVG flag icons (from public/flags/*.svg), country name, and dial code (e.g., 'India (+91)'). Phone input fields show the flag icon and dial code as a prefix, with a country-specific phone mask. Backend returns alpha-3 codes (IND, KEN) which are converted to alpha-2 (IN, KE) by the API adapter response transform. Unicode flag emoji were avoided because they render as broken boxes on Windows.",
       "files": [
-        "src/pages/auth/RegisterPage.vue"
+        "src/pages/auth/RegisterPage.vue",
+        "src/pages/auth/LoginPage.vue",
+        "src/pages/auth/ForgotPinPage.vue",
+        "src/services/api-adapter.ts",
+        "public/flags/*.svg"
       ],
       "changes": [
         {
+          "file": "src/services/api-adapter.ts",
+          "action": "modify",
+          "details": "Added ALPHA3_TO_ALPHA2 mapping (195 countries), toAlpha2() function, COUNTRY_DIAL_CODES, COUNTRY_PHONE_MASKS, FALLBACK_COUNTRIES. Response transform for /api/v1/countries converts alpha-3 to alpha-2."
+        },
+        {
           "file": "src/pages/auth/RegisterPage.vue",
           "action": "modify",
-          "details": "Create custom option template for q-select showing flag emoji + country name. Map country codes to flags: IN -> India, KE -> Kenya, ET -> Ethiopia, VN -> Vietnam. Use country.country_code from API to determine flag."
+          "details": "Country dropdown uses custom option slot with <img> flag SVGs. Phone input shows flag + dial code prefix. Phone mask varies by country."
+        },
+        {
+          "file": "src/pages/auth/LoginPage.vue",
+          "action": "modify",
+          "details": "Same country dropdown and phone input pattern as RegisterPage."
+        },
+        {
+          "file": "src/pages/auth/ForgotPinPage.vue",
+          "action": "modify",
+          "details": "Same country dropdown and phone input pattern as RegisterPage."
         }
       ],
       "acceptanceCriteria": [
-        "Each country shows flag emoji before name",
-        "Flags display correctly on all devices",
-        "Selected value shows flag in input"
+        "Each country shows SVG flag icon before name in dropdown",
+        "Dial code shown in parentheses after country name (e.g., 'India (+91)')",
+        "Phone input has flag icon and dial code prefix",
+        "Phone mask changes when country is switched (e.g., 10 digits for India, 9 for Kenya)",
+        "Flags display correctly on all platforms including Windows (no broken emoji boxes)",
+        "Works on Login, Register, and ForgotPin pages"
       ],
       "testScenarios": [
         {
-          "scenario": "Country flags visible",
+          "scenario": "Country flags and dial codes visible",
           "steps": [
             "Go to registration page",
-            "Click country dropdown"
+            "Click country dropdown",
+            "Verify each country shows a flag icon, name, and dial code",
+            "Select Kenya",
+            "Switch to phone method",
+            "Verify phone input shows Kenya flag + +254 prefix",
+            "Verify phone mask allows 9 digits"
           ],
-          "expectedResult": "Each country shows appropriate flag emoji"
+          "expectedResult": "Flag icons, dial codes, and phone masks all display correctly per country"
+        },
+        {
+          "scenario": "Same behavior on Login and ForgotPin",
+          "steps": [
+            "Go to login page, switch to phone method",
+            "Verify country dropdown has flags and dial codes",
+            "Go to forgot-pin page, switch to phone method",
+            "Verify same behavior"
+          ],
+          "expectedResult": "All three auth pages show consistent flag + dial code UI"
         }
       ],
       "status": "completed",
-      "estimatedEffort": "small"
+      "estimatedEffort": "medium"
     },
     {
       "module": "1-auth",
