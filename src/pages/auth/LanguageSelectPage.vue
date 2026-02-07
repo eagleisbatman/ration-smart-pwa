@@ -151,37 +151,10 @@ const countryLanguageMap: Record<string, string[]> = {
   MA: ['ar', 'fr', 'en'],
 };
 
-// Language code to short label mapping (replaces Unicode flag emoji that renders
-// as broken boxes on Windows and some Android devices)
-const langLabelMap: Record<string, string> = {
-  en: 'EN',
-  hi: 'HI',
-  te: 'TE',
-  kn: 'KN',
-  mr: 'MR',
-  ta: 'TA',
-  bn: 'BN',
-  ml: 'ML',
-  gu: 'GU',
-  pa: 'PA',
-  or: 'OR',
-  as: 'AS',
-  ur: 'UR',
-  ne: 'NE',
-  vi: 'VI',
-  am: 'AM',
-  om: 'OM',
-  id: 'ID',
-  fil: 'FIL',
-  th: 'TH',
-  ar: 'AR',
-  fr: 'FR',
-};
-
 // Build the full list of languages from availableLocales
 const allLanguages = availableLocales.map(locale => ({
   ...locale,
-  flag: langLabelMap[locale.value] || locale.value.toUpperCase(),
+  flag: locale.value.toUpperCase(),
 }));
 
 // Get the user's selected country
