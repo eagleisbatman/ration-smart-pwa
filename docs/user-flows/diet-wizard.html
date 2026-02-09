@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RationSmart - Diet Optimization &amp; Active Diet Lifecycle</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <link rel="stylesheet" href="../shared.css">
+</head>
+<body>
+    <nav class="sidebar">
+        <div class="sidebar-brand"><i data-lucide="beef" class="icon"></i> RationSmart</div>
+        <div class="sidebar-subtitle">User Flows &middot; 9 Pages</div>
+        <h3>Authentication</h3>
+        <a href="index.html"><span class="nav-num">00</span> Overview</a>
+        <a href="registration.html"><span class="nav-num">01</span> Registration</a>
+        <a href="login.html"><span class="nav-num">02</span> Login</a>
+        <a href="forgot-pin.html"><span class="nav-num">03</span> Forgot PIN</a>
+        <h3>Onboarding</h3>
+        <a href="onboarding.html"><span class="nav-num">04</span> Onboarding (4 Steps)</a>
+        <h3>Core App</h3>
+        <a href="dashboard.html"><span class="nav-num">05</span> Home Dashboard</a>
+        <a href="cow-management.html"><span class="nav-num">06</span> Cow Management</a>
+        <a href="diet-wizard.html" class="active"><span class="nav-num">07</span> Diet Optimization</a>
+        <a href="settings.html"><span class="nav-num">08</span> Settings</a>
+        <h3>Active Diet Lifecycle</h3>
+        <a href="#diet-detail-active"><span class="nav-num">07a</span> Diet Detail &mdash; Active</a>
+        <a href="#cow-detail-active-diet"><span class="nav-num">07b</span> Cow Detail &mdash; Active Diet</a>
+        <a href="#milk-log-diet-adherence"><span class="nav-num">07c</span> Milk Log &mdash; Diet Adherence</a>
+        <a href="#diet-followup-checkin"><span class="nav-num">07d</span> Diet Follow-Up Check-In</a>
+    </nav>
+
+    <main class="main">
+        <div class="page-title">07 &mdash; Diet Optimization</div>
+        <div class="page-route">Routes: /diet, /diet/new, /diet/:id, /diet/compare, /diet/:id/checkin, /cow/:id, /milk-log/new</div>
+
+        <p>The Diet Optimization module is the core value proposition of RationSmart. It walks the user through a 5-step wizard to collect animal data, available feeds, and an optimization goal, then calls the backend optimization engine to generate a balanced, cost-effective feed ration.</p>
+
+        <p style="margin-top:12px;">
+            <strong>Flow:</strong> Diet List &rarr; New Diet Wizard (5 steps) &rarr; Results &rarr; Compare
+        </p>
+        <p style="margin-top:8px;">
+            <strong>Active Diet Lifecycle:</strong> Results &rarr; Follow Diet &rarr; Active Diet Card (on Cow Detail) &rarr; Diet Adherence (in Milk Logs) &rarr; 7-Day Follow-Up Check-In
+        </p>
+
+        <!-- ──────────────────────────────────────────────────── -->
+        <!-- Flow Diagram                                         -->
+        <!-- ──────────────────────────────────────────────────── -->
+        <h2>Diet Wizard &mdash; 5 Step Process</h2>
+
+        <div style="overflow-x:auto; padding:16px 0;">
+            <div style="display:flex; align-items:center; flex-wrap:wrap; gap:4px;">
+                <span class="flow-box filled">Step 1: Select Cow</span>
+                <span class="flow-arrow">&rarr;</span>
+                <span class="flow-box">Step 2: Animal Details</span>
+                <span class="flow-arrow">&rarr;</span>
+                <span class="flow-box">Step 3: Select Feeds</span>
+                <span class="flow-arrow">&rarr;</span>
+                <span class="flow-box">Step 4: Goal</span>
+                <span class="flow-arrow">&rarr;</span>
+                <span class="flow-box">Step 5: Review</span>
+                <span class="flow-arrow">&rarr;</span>
+                <span class="flow-box filled">Generate</span>
+                <span class="flow-arrow">&rarr;</span>
+                <span class="flow-box filled">Results</span>
+            </div>
+        </div>
+
+        <!-- ──────────────────────────────────────────────────── -->
+        <!-- Wireframe 1 — Step 1: Select Cow                     -->
+        <!-- ──────────────────────────────────────────────────── -->
+        <h2>Step 1: Select Cow</h2>
+
+        <div class="phone-frame">
+            <div class="phone-header">
+                <i data-lucide="arrow-left" class="icon"></i>
+                <span style="flex:1;">New Diet Plan</span>
+            </div>
+            <div class="phone-body">
+
+                <!-- Stepper -->
+                <div style="display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:18px;">
+                    <span style="width:28px; height:28px; border-radius:50%; background:var(--black); color:var(--white); display:flex; align-items:center; justify-content:center; font-family:'JetBrains Mono',monospace; font-size:12px; font-weight:700;">1</span>
+                    <span style="font-size:11px; color:var(--light-gray);">&middot;</span>
+                    <span style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--light-gray);">2</span>
+                    <span style="font-size:11px; color:var(--light-gray);">&middot;</span>
+                    <span style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--light-gray);">3</span>
+                    <span style="font-size:11px; color:var(--light-gray);">&middot;</span>
+                    <span style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--light-gray);">4</span>
+                    <span style="font-size:11px; color:var(--light-gray);">&middot;</span>
+                    <span style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--light-gray);">5</span>
+                </div>
+
+                <!-- Heading -->
+                <div style="font-size:16px; font-weight:600; margin-bottom:14px;">Select Cow</div>
+
+                <!-- Radio Options -->
+                <div class="ui-card selected" style="display:flex; align-items:center; gap:10px;">
+                    <span style="width:18px; height:18px; border-radius:50%; border:2px solid var(--black); display:flex; align-items:center; justify-content:center;">
+                        <span style="width:10px; height:10px; border-radius:50%; background:var(--black);"></span>
+                    </span>
+                    <span style="font-size:13px; font-weight:500;">Select from my cows</span>
+                </div>
+                <div class="ui-card" style="display:flex; align-items:center; gap:10px;">
+                    <span style="width:18px; height:18px; border-radius:50%; border:2px solid var(--border-gray); display:flex; align-items:center; justify-content:center;"></span>
+                    <span style="font-size:13px; font-weight:500;">Enter manually</span>
+                </div>
+
+                <!-- Dropdown -->
+                <div class="ui-input" style="margin-top:10px; justify-content:space-between;">
+                    <div>
+                        <div class="label">Select Cow</div>
+                        <div class="value" style="font-weight:500;">Lakshmi</div>
+                    </div>
+                    <i data-lucide="chevron-down" class="icon" style="width:14px; height:14px; color:var(--light-gray);"></i>
+                </div>
+
+                <!-- Continue Button -->
+                <div class="ui-btn">Continue</div>
+
+            </div>
+        </div>
+
+        <!-- Annotation: Step 1 -->
+        <div class="annotation">
+            <div class="annotation-title">Step 1 &mdash; Cow Selection</div>
+            <ul>
+                <li>Two modes: select existing cow or enter details manually</li>
+                <li>If cow selected, auto-fills all fields in Step 2</li>
+                <li>Can be pre-filled via query param: <code>/diet/new?cow_id={id}</code></li>
+                <li>For regeneration: <code>/diet/new?regenerateFrom={dietId}</code> pre-fills ALL steps</li>
+            </ul>
+        </div>
+
+        <!-- ──────────────────────────────────────────────────── -->
+        <!-- Wireframe 2 — Step 2: Animal Details                  -->
+        <!-- ──────────────────────────────────────────────────── -->
+        <h2>Step 2: Animal Details</h2>
+
+        <div class="phone-frame">
+            <div class="phone-header">
+                <i data-lucide="arrow-left" class="icon"></i>
+                <span style="flex:1;">New Diet Plan</span>
+            </div>
+            <div class="phone-body">
+
+                <!-- Stepper -->
+                <div style="display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:18px;">
+                    <span style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--light-gray);">1</span>
+                    <span style="font-size:11px; color:var(--light-gray);">&middot;</span>
+                    <span style="width:28px; height:28px; border-radius:50%; background:var(--black); color:var(--white); display:flex; align-items:center; justify-content:center; font-family:'JetBrains Mono',monospace; font-size:12px; font-weight:700;">2</span>
+                    <span style="font-size:11px; color:var(--light-gray);">&middot;</span>
+                    <span style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--light-gray);">3</span>
+                    <span style="font-size:11px; color:var(--light-gray);">&middot;</span>
+                    <span style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--light-gray);">4</span>
+                    <span style="font-size:11px; color:var(--light-gray);">&middot;</span>
+                    <span style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--light-gray);">5</span>
+                </div>
+
+                <!-- Heading -->
+                <div style="font-size:16px; font-weight:600; margin-bottom:14px;">Animal Details</div>
+
+                <!-- Weight + Milk Yield Row -->
+                <div class="ui-row">
+                    <div class="ui-input" style="flex-direction:column; align-items:flex-start; gap:2px;">
+                        <div class="label">Weight (kg)</div>
+                        <div class="value" style="font-weight:500;">450</div>
+                    </div>
+                    <div class="ui-input" style="flex-direction:column; align-items:flex-start; gap:2px;">
+                        <div class="label">Milk Yield (L/day)</div>
+                        <div class="value" style="font-weight:500;">12.5</div>
+                    </div>
+                </div>
+
+                <!-- Fat % + Lactation Row -->
+                <div class="ui-row">
+                    <div class="ui-input" style="flex-direction:column; align-items:flex-start; gap:2px;">
+                        <div class="label">Milk Fat %</div>
+                        <div class="value" style="font-weight:500;">4.0</div>
+                    </div>
+                    <div class="ui-input" style="flex-direction:column; align-items:flex-start; gap:2px;">
+                        <div class="label">Lactation Stage</div>
+                        <div class="value" style="font-weight:500;">Mid</div>
+                    </div>
+                </div>
+
+                <!-- Pregnant Toggle -->
+                <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--border-gray); margin-bottom:10px;">
+                    <span style="font-size:13px; font-weight:500;">Pregnant</span>
+                    <div style="width:40px; height:22px; border-radius:11px; background:var(--black); position:relative;">
+                        <div style="width:16px; height:16px; border-radius:50%; background:var(--white); position:absolute; right:3px; top:3px;"></div>
+                    </div>
+                </div>
+
+                <!-- Pregnancy Month (shown when pregnant) -->
+                <div class="ui-input" style="flex-direction:column; align-items:flex-start; gap:2px;">
+                    <div class="label">Pregnancy Month</div>
+                    <div class="value" style="font-weight:500;">7</div>
+                </div>
+
+                <!-- Body Condition Score -->
+                <div class="ui-input" style="flex-direction:column; align-items:flex-start; gap:2px;">
+                    <div class="label">Body Condition Score</div>
+                    <div class="value" style="font-weight:500;">3 - Moderate</div>
+                </div>
+
+                <!-- Age -->
+                <div class="ui-input" style="flex-direction:column; align-items:flex-start; gap:2px;">
+                    <div class="label">Age (months)</div>
+                    <div class="value" style="font-weight:500;">36</div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="ui-row" style="margin-top:14px;">
+                    <div class="ui-btn ui-btn-outline">Back</div>
+                    <div class="ui-btn">Continue</div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Annotation: Step 2 -->
+        <div class="annotation">
+            <div class="annotation-title">Step 2 &mdash; Animal Details</div>
+            <ul>
+                <li>Weight is required (must be &gt; 0)</li>
+                <li>Lactation stages: <code>early</code>, <code>mid</code>, <code>late</code>, <code>dry</code></li>
+                <li><strong>BCS:</strong> Dropdown with values 1&ndash;5 (1=Emaciated, 2=Thin, 3=Moderate, 4=Heavy, 5=Obese)</li>
+                <li>If cow was selected in Step 1, all fields are pre-filled from cow data</li>
+                <li>Pregnancy month only shown when pregnant toggle is ON</li>
+            </ul>
+        </div>
+
+        <!-- ──────────────────────────────────────────────────── -->
+        <!-- Wireframe 3 — Step 3: Select Feeds                   -->
+        <!-- ──────────────────────────────────────────────────── -->
+        <h2>Step 3: Select Feeds</h2>
+
+        <div class="phone-frame">
+            <div class="phone-header">
+                <i data-lucide="arrow-left" class="icon"></i>
+                <span style="flex:1;">New Diet Plan</span>
+            </div>
+            <div class="phone-body">
+
+                <!-- Stepper -->
+                <div style="display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:18px;">
+                    <span style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--light-gray);">1</span>
+                    <span style="font-size:11px; color:var(--light-gray);">&middot;</span>
+                    <span style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--light-gray);">2</span>
+                    <span style="font-size:11px; color:var(--light-gray);">&middot;</span>
+                    <span style="width:28px; height:28px; border-radius:50%; background:var(--black); color:var(--white); display:flex; align-items:center; justify-content:center; font-family:'JetBrains Mono',monospace; font-size:12px; font-weight:700;">3</span>
+                    <span style="font-size:11px; color:var(--light-gray);">&middot;</span>
+                    <span style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--light-gray);">4</span>
+                    <span style="font-size:11px; color:var(--light-gray);">&middot;</span>
+                    <span style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--light-gray);">5</span>
+                </div>
+
+                <!-- Heading -->
+                <div style="font-size:16px; font-weight:600; margin-bottom:4px;">Select Available Feeds</div>
+                <div style="font-size:12px; color:var(--mid-gray); margin-bottom:12px;">4 selected</div>
+
+                <!-- Search -->
+                <div class="ui-input">
+                    <i data-lucide="search" class="icon" style="width:14px; height:14px; color:var(--light-gray);"></i>
+                    <span>Search feeds...</span>
+                </div>
+
+                <!-- Feed List -->
+                <div style="max-height:260px; overflow-y:auto;">
+
+                    <!-- Feed Item: Green Fodder (checked) -->
+                    <div class="ui-card selected" style="display:flex; gap:10px; align-items:flex-start;">
+                        <span style="width:18px; height:18px; border:2px solid var(--black); border-radius:3px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; background:var(--black);">
+                            <i data-lucide="check" class="icon" style="width:12px; height:12px; color:var(--white);"></i>
+                        </span>
+                        <div style="flex:1;">
+                            <div style="font-size:13px; font-weight:600;">Green Fodder</div>
+                            <div style="font-size:11px; color:var(--mid-gray);">Roughage &middot; CP: 8% &middot; TDN: 55%</div>
+                        </div>
+                    </div>
+
+                    <!-- Feed Item: Wheat Bran (checked) -->
+                    <div class="ui-card selected" style="display:flex; gap:10px; align-items:flex-start;">
+                        <span style="width:18px; height:18px; border:2px solid var(--black); border-radius:3px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; background:var(--black);">
+                            <i data-lucide="check" class="icon" style="width:12px; height:12px; color:var(--white);"></i>
+                        </span>
+                        <div style="flex:1;">
+                            <div style="font-size:13px; font-weight:600;">Wheat Bran</div>
+                            <div style="font-size:11px; color:var(--mid-gray);">Concentrate &middot; CP: 16% &middot; TDN: 67% &middot; Rs 18/kg</div>
+                        </div>
+                    </div>
+
+                    <!-- Feed Item: Cotton Seed Cake (checked) -->
+                    <div class="ui-card selected" style="display:flex; gap:10px; align-items:flex-start;">
+                        <span style="width:18px; height:18px; border:2px solid var(--black); border-radius:3px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; background:var(--black);">
+                            <i data-lucide="check" class="icon" style="width:12px; height:12px; color:var(--white);"></i>
+                        </span>
+                        <div style="flex:1;">
+                            <div style="font-size:13px; font-weight:600;">Cotton Seed Cake</div>
+                            <div style="font-size:11px; color:var(--mid-gray);">Concentrate &middot; CP: 24% &middot; TDN: 72% &middot; Rs 32/kg</div>
+                        </div>
+                    </div>
+
+                    <!-- Feed Item: Rice Straw (checked) -->
+                    <div class="ui-card selected" style="display:flex; gap:10px; align-items:flex-start;">
+                        <span style="width:18px; height:18px; border:2px solid var(--black); border-radius:3px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; background:var(--black);">
+                            <i data-lucide="check" class="icon" style="width:12px; height:12px; color:var(--white);"></i>
+                        </span>
+                        <div style="flex:1;">
+                            <div style="font-size:13px; font-weight:600;">Rice Straw</div>
+                            <div style="font-size:11px; color:var(--mid-gray);">Roughage &middot; CP: 4% &middot; TDN: 45%</div>
+                        </div>
+                    </div>
+
+                    <!-- Feed Item: Maize Grain (unchecked) -->
+                    <div class="ui-card" style="display:flex; gap:10px; align-items:flex-start;">
+                        <span style="width:18px; height:18px; border:2px solid var(--border-gray); border-radius:3px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px;"></span>
+                        <div style="flex:1;">
+                            <div style="font-size:13px; font-weight:600;">Maize Grain</div>
+                            <div style="font-size:11px; color:var(--mid-gray);">Concentrate &middot; CP: 9% &middot; TDN: 80% &middot; Rs 22/kg</div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Warning Banner -->
+                <div style="background:#fff7ed; border:2px solid var(--warn); border-radius:6px; padding:10px 12px; margin-top:10px; display:flex; align-items:center; gap:8px;">
+                    <i data-lucide="alert-triangle" class="icon" style="width:16px; height:16px; color:var(--warn); flex-shrink:0;"></i>
+                    <span style="font-size:12px; color:#92400e;">Select at least 3 feeds for better optimization</span>
+                </div>
+
+                <!-- Buttons -->
+                <div class="ui-row" style="margin-top:14px;">
+                    <div class="ui-btn ui-btn-outline">Back</div>
+                    <div class="ui-btn">Continue</div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Annotation: Step 3 -->
+        <div class="annotation">
+            <div class="annotation-title">Step 3 &mdash; Feed Selection</div>
+            <ul>
+                <li>Feeds fetched from API (master feeds + user's custom feeds)</li>
+                <li>Shows: name, category (roughage/concentrate), crude protein %, TDN %, price per kg</li>
+                <li>Search filters by name or category</li>
+                <li>Minimum 2 feeds required to proceed (button disabled if &lt; 2)</li>
+                <li>Warning banner shown if &lt; 3 feeds selected (optimization works better with more options)</li>
+                <li>Feed prices shown in user's local currency</li>
+            </ul>
+        </div>
+
+        <!-- ──────────────────────────────────────────────────── -->
+        <!-- Wireframe 4 — Step 4: Optimization Goal               -->
+        <!-- ──────────────────────────────────────────────────── -->
+        <h2>Step 4: Optimization Goal</h2>
+
+        <div class="phone-frame">
+            <div class="phone-header">
+                <i data-lucide="arrow-left" class="icon"></i>
+                <span style="flex:1;">New Diet Plan</span>
+            </div>
+            <div class="phone-body">
+
+                <!-- Stepper -->
+                <div style="display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:18px;">
+                    <span style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--light-gray);">1</span>
+                    <span style="font-size:11px; color:var(--light-gray);">&middot;</span>
+                    <span style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--light-gray);">2</span>
+                    <span style="font-size:11px; color:var(--light-gray);">&middot;</span>
+                    <span style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--light-gray);">3</span>
+                    <span style="font-size:11px; color:var(--light-gray);">&middot;</span>
+                    <span style="width:28px; height:28px; border-radius:50%; background:var(--black); color:var(--white); display:flex; align-items:center; justify-content:center; font-family:'JetBrains Mono',monospace; font-size:12px; font-weight:700;">4</span>
+                    <span style="font-size:11px; color:var(--light-gray);">&middot;</span>
+                    <span style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--light-gray);">5</span>
+                </div>
+
+                <!-- Heading -->
+                <div style="font-size:16px; font-weight:600; margin-bottom:14px;">Optimization Goal</div>
+
+                <!-- Radio: Minimize Cost (selected) -->
+                <div class="ui-card selected" style="display:flex; gap:12px; align-items:flex-start;">
+                    <span style="width:18px; height:18px; border-radius:50%; border:2px solid var(--black); display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:2px;">
+                        <span style="width:10px; height:10px; border-radius:50%; background:var(--black);"></span>
+                    </span>
+                    <div style="flex:1;">
+                        <div style="display:flex; align-items:center; gap:6px;">
+                            <i data-lucide="piggy-bank" class="icon" style="width:16px; height:16px;"></i>
+                            <span style="font-size:13px; font-weight:600;">Minimize Cost</span>
+                        </div>
+                        <div style="font-size:11px; color:var(--mid-gray); margin-top:3px;">Find the cheapest feed mix that meets nutritional needs</div>
+                    </div>
+                </div>
+
+                <!-- Radio: Maximize Milk -->
+                <div class="ui-card" style="display:flex; gap:12px; align-items:flex-start;">
+                    <span style="width:18px; height:18px; border-radius:50%; border:2px solid var(--border-gray); display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:2px;"></span>
+                    <div style="flex:1;">
+                        <div style="display:flex; align-items:center; gap:6px;">
+                            <i data-lucide="droplet" class="icon" style="width:16px; height:16px;"></i>
+                            <span style="font-size:13px; font-weight:600;">Maximize Milk</span>
+                        </div>
+                        <div style="font-size:11px; color:var(--mid-gray); margin-top:3px;">Optimize for highest milk production potential</div>
+                    </div>
+                </div>
+
+                <!-- Radio: Balanced -->
+                <div class="ui-card" style="display:flex; gap:12px; align-items:flex-start;">
+                    <span style="width:18px; height:18px; border-radius:50%; border:2px solid var(--border-gray); display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:2px;"></span>
+                    <div style="flex:1;">
+                        <div style="display:flex; align-items:center; gap:6px;">
+                            <i data-lucide="scale" class="icon" style="width:16px; height:16px;"></i>
+                            <span style="font-size:13px; font-weight:600;">Balanced</span>
+                        </div>
+                        <div style="font-size:11px; color:var(--mid-gray); margin-top:3px;">Balance between cost efficiency and milk yield</div>
+                    </div>
+                </div>
+
+                <!-- Daily Budget -->
+                <div class="ui-input" style="margin-top:14px;">
+                    <span style="font-family:'JetBrains Mono',monospace; font-size:13px; font-weight:600; color:var(--black);">Rs</span>
+                    <span>Daily budget (optional)</span>
+                </div>
+                <div style="font-size:11px; color:var(--light-gray); margin-top:-6px; margin-bottom:10px;">Leave empty for no budget limit</div>
+
+                <!-- Buttons -->
+                <div class="ui-row" style="margin-top:14px;">
+                    <div class="ui-btn ui-btn-outline">Back</div>
+                    <div class="ui-btn">Continue</div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Annotation: Step 4 -->
+        <div class="annotation">
+            <div class="annotation-title">Step 4 &mdash; Optimization Goal</div>
+            <ul>
+                <li>Three goals: <code>minimize_cost</code>, <code>maximize_milk</code>, <code>balanced</code></li>
+                <li>Budget is optional &mdash; if set, optimization respects the daily spending limit</li>
+                <li>Currency symbol shown based on user's country</li>
+            </ul>
+        </div>
+
+        <!-- ──────────────────────────────────────────────────── -->
+        <!-- Wireframe 5 — Step 5: Review & Submit                 -->
+        <!-- ──────────────────────────────────────────────────── -->
+        <h2>Step 5: Review &amp; Submit</h2>
+
+        <div class="phone-frame">
+            <div class="phone-header">
+                <i data-lucide="arrow-left" class="icon"></i>
+                <span style="flex:1;">New Diet Plan</span>
+            </div>
+            <div class="phone-body">
+
+                <!-- Stepper -->
+                <div style="display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:18px;">
+                    <span style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--light-gray);">1</span>
+                    <span style="font-size:11px; color:var(--light-gray);">&middot;</span>
+                    <span style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--light-gray);">2</span>
+                    <span style="font-size:11px; color:var(--light-gray);">&middot;</span>
+                    <span style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--light-gray);">3</span>
+                    <span style="font-size:11px; color:var(--light-gray);">&middot;</span>
+                    <span style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--light-gray);">4</span>
+                    <span style="font-size:11px; color:var(--light-gray);">&middot;</span>
+                    <span style="width:28px; height:28px; border-radius:50%; background:var(--black); color:var(--white); display:flex; align-items:center; justify-content:center; font-family:'JetBrains Mono',monospace; font-size:12px; font-weight:700;">5</span>
+                </div>
+
+                <!-- Heading -->
+                <div style="font-size:16px; font-weight:600; margin-bottom:14px;">Review &amp; Generate</div>
+
+                <!-- Summary Card -->
+                <div class="ui-card" style="border-color:var(--black);">
+                    <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                        <div style="font-size:11px; color:var(--light-gray); text-transform:uppercase; letter-spacing:0.5px;">Cow</div>
+                        <div style="font-size:13px; font-weight:600;">Lakshmi</div>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                        <div style="font-size:11px; color:var(--light-gray); text-transform:uppercase; letter-spacing:0.5px;">Weight / Milk Yield</div>
+                        <div style="font-size:13px; font-weight:500;">450 kg / 12.5 L/day</div>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                        <div style="font-size:11px; color:var(--light-gray); text-transform:uppercase; letter-spacing:0.5px;">BCS &amp; Age</div>
+                        <div style="font-size:13px; font-weight:500;">3.0 &middot; 36 months</div>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                        <div style="font-size:11px; color:var(--light-gray); text-transform:uppercase; letter-spacing:0.5px;">Selected Feeds</div>
+                        <div style="font-size:13px; font-weight:500;">4 feeds</div>
+                    </div>
+                    <div style="display:flex; justify-content:space-between;">
+                        <div style="font-size:11px; color:var(--light-gray); text-transform:uppercase; letter-spacing:0.5px;">Goal</div>
+                        <div style="font-size:13px; font-weight:600;">Minimize Cost</div>
+                    </div>
+                </div>
+
+                <!-- Offline Warning -->
+                <div style="background:#fff7ed; border:2px solid var(--warn); border-radius:6px; padding:10px 12px; margin-top:12px; display:flex; align-items:center; gap:8px;">
+                    <i data-lucide="wifi-off" class="icon" style="width:16px; height:16px; color:var(--warn); flex-shrink:0;"></i>
+                    <span style="font-size:12px; color:#92400e;">You are offline. Diet optimization requires an internet connection.</span>
+                </div>
+
+                <!-- Buttons -->
+                <div class="ui-row" style="margin-top:14px;">
+                    <div class="ui-btn ui-btn-outline">Back</div>
+                    <div class="ui-btn" style="opacity:0.4;">Generate Diet</div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Annotation: Step 5 -->
+        <div class="annotation">
+            <div class="annotation-title">Step 5 &mdash; Review</div>
+            <ul>
+                <li>Shows summary of all inputs from previous steps</li>
+                <li>Diet generation requires online connection (API call to optimization engine)</li>
+                <li>Generate button disabled when offline (checks <code>isOnline</code> reactive state)</li>
+                <li>On success: navigates to <code>/diet/:id</code> (results page)</li>
+                <li>On failure: shows error toast</li>
+            </ul>
+        </div>
+
+        <!-- ──────────────────────────────────────────────────── -->
+        <!-- Wireframe 6 — Diet Results Page                       -->
+        <!-- ──────────────────────────────────────────────────── -->
+        <h2>Diet Results Page</h2>
+
+        <div class="phone-frame">
+            <div class="phone-header">
+                <i data-lucide="arrow-left" class="icon"></i>
+                <span style="flex:1;">Diet Details</span>
+                <i data-lucide="more-vertical" class="icon"></i>
+            </div>
+            <div class="phone-body">
+
+                <!-- Status Banner (shown for non-completed diets) -->
+                <div style="background:#fff7ed; border:2px solid var(--warn); border-radius:6px; padding:10px 12px; margin-bottom:12px; display:flex; align-items:center; gap:8px;">
+                    <i data-lucide="loader" class="icon" style="width:16px; height:16px; color:var(--warn); flex-shrink:0;"></i>
+                    <span style="font-size:12px; color:#92400e;">Processing diet... This may take a moment.</span>
+                </div>
+
+                <!-- Header Card -->
+                <div class="ui-card" style="border-color:var(--black); margin-bottom:16px;">
+                    <div style="font-size:15px; font-weight:600;">Lakshmi &middot; Balanced Diet</div>
+                    <div style="font-size:11px; color:var(--light-gray); margin-top:2px;">Feb 7, 2025</div>
+                </div>
+
+                <!-- Daily Ration Section -->
+                <div class="section-label">DAILY RATION</div>
+
+                <!-- Ingredient Table -->
+                <div style="border:2px solid var(--black); border-radius:6px; overflow:hidden; margin-bottom:14px;">
+                    <!-- Header Row -->
+                    <div style="display:flex; background:var(--black); color:var(--white); font-family:'JetBrains Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:0.5px;">
+                        <div style="flex:2; padding:8px 10px;">Feed</div>
+                        <div style="flex:1; padding:8px 10px; text-align:right;">Qty</div>
+                        <div style="flex:1; padding:8px 10px; text-align:right;">Cost</div>
+                    </div>
+                    <!-- Row 1 -->
+                    <div style="display:flex; border-bottom:1px solid var(--border-gray); font-size:12px;">
+                        <div style="flex:2; padding:8px 10px;">Green Fodder</div>
+                        <div style="flex:1; padding:8px 10px; text-align:right; font-family:'JetBrains Mono',monospace;">15 kg</div>
+                        <div style="flex:1; padding:8px 10px; text-align:right; font-family:'JetBrains Mono',monospace; color:var(--mid-gray);">Rs 0</div>
+                    </div>
+                    <!-- Row 2 -->
+                    <div style="display:flex; border-bottom:1px solid var(--border-gray); font-size:12px; background:var(--bg-gray);">
+                        <div style="flex:2; padding:8px 10px;">Wheat Bran</div>
+                        <div style="flex:1; padding:8px 10px; text-align:right; font-family:'JetBrains Mono',monospace;">3.2 kg</div>
+                        <div style="flex:1; padding:8px 10px; text-align:right; font-family:'JetBrains Mono',monospace;">Rs 57.60</div>
+                    </div>
+                    <!-- Row 3 -->
+                    <div style="display:flex; border-bottom:1px solid var(--border-gray); font-size:12px;">
+                        <div style="flex:2; padding:8px 10px;">Cotton Seed Cake</div>
+                        <div style="flex:1; padding:8px 10px; text-align:right; font-family:'JetBrains Mono',monospace;">1.5 kg</div>
+                        <div style="flex:1; padding:8px 10px; text-align:right; font-family:'JetBrains Mono',monospace;">Rs 48.00</div>
+                    </div>
+                    <!-- Row 4 -->
+                    <div style="display:flex; border-bottom:1px solid var(--border-gray); font-size:12px; background:var(--bg-gray);">
+                        <div style="flex:2; padding:8px 10px;">Rice Straw</div>
+                        <div style="flex:1; padding:8px 10px; text-align:right; font-family:'JetBrains Mono',monospace;">8 kg</div>
+                        <div style="flex:1; padding:8px 10px; text-align:right; font-family:'JetBrains Mono',monospace; color:var(--mid-gray);">Rs 0</div>
+                    </div>
+                    <!-- Total Row -->
+                    <div style="display:flex; font-size:12px; font-weight:700; background:var(--bg-gray); border-top:2px solid var(--black);">
+                        <div style="flex:2; padding:8px 10px;">Total</div>
+                        <div style="flex:1; padding:8px 10px; text-align:right; font-family:'JetBrains Mono',monospace;">27.7 kg</div>
+                        <div style="flex:1; padding:8px 10px; text-align:right; font-family:'JetBrains Mono',monospace;">Rs 105.60</div>
+                    </div>
+                </div>
+
+                <!-- Nutrient Balance -->
+                <div class="section-label">NUTRIENT BALANCE</div>
+                <!-- CP Progress -->
+                <div style="margin-bottom:10px;">
+                    <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:4px;">
+                        <span style="font-weight:600;">Crude Protein (CP)</span>
+                        <span style="font-family:'JetBrains Mono',monospace;">12.8% / 12% req</span>
+                    </div>
+                    <div style="height:8px; background:var(--border-gray); border-radius:4px; overflow:hidden;">
+                        <div style="width:100%; height:100%; background:var(--pass); border-radius:4px;"></div>
+                    </div>
+                </div>
+                <!-- TDN Progress -->
+                <div style="margin-bottom:10px;">
+                    <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:4px;">
+                        <span style="font-weight:600;">TDN</span>
+                        <span style="font-family:'JetBrains Mono',monospace;">58% / 60% req</span>
+                    </div>
+                    <div style="height:8px; background:var(--border-gray); border-radius:4px; overflow:hidden;">
+                        <div style="width:96%; height:100%; background:var(--warn); border-radius:4px;"></div>
+                    </div>
+                </div>
+                <!-- DM Intake Progress -->
+                <div style="margin-bottom:10px;">
+                    <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:4px;">
+                        <span style="font-weight:600;">Dry Matter Intake</span>
+                        <span style="font-family:'JetBrains Mono',monospace;">11.2 kg / 11.5 kg req</span>
+                    </div>
+                    <div style="height:8px; background:var(--border-gray); border-radius:4px; overflow:hidden;">
+                        <div style="width:97%; height:100%; background:var(--pass); border-radius:4px;"></div>
+                    </div>
+                </div>
+
+                <!-- Recommendations -->
+                <div class="section-label">RECOMMENDATIONS</div>
+                <div class="ui-card" style="font-size:12px; line-height:1.8;">
+                    <div style="display:flex; gap:8px; margin-bottom:6px;">
+                        <i data-lucide="lightbulb" class="icon" style="width:14px; height:14px; color:var(--warn); flex-shrink:0; margin-top:2px;"></i>
+                        <span>Consider adding mineral mixture (50g/day) for calcium balance</span>
+                    </div>
+                    <div style="display:flex; gap:8px;">
+                        <i data-lucide="lightbulb" class="icon" style="width:14px; height:14px; color:var(--warn); flex-shrink:0; margin-top:2px;"></i>
+                        <span>Increase green fodder during mid-lactation for better milk yield</span>
+                    </div>
+                </div>
+
+                <!-- Warnings -->
+                <div class="section-label">WARNINGS</div>
+                <div style="background:#fef2f2; border:2px solid var(--fail); border-radius:6px; padding:10px 12px; font-size:12px; display:flex; gap:8px; align-items:flex-start;">
+                    <i data-lucide="alert-triangle" class="icon" style="width:14px; height:14px; color:var(--fail); flex-shrink:0; margin-top:2px;"></i>
+                    <span>TDN is slightly below recommended level. Consider adding energy-rich concentrates.</span>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="ui-row" style="margin-top:14px;">
+                    <div class="ui-btn ui-btn-outline" style="display:flex; align-items:center; justify-content:center; gap:6px; font-size:11px;">
+                        <i data-lucide="refresh-cw" class="icon" style="width:14px; height:14px;"></i> Optimize Again
+                    </div>
+                    <div class="ui-btn ui-btn-outline" style="display:flex; align-items:center; justify-content:center; gap:6px; font-size:11px;">
+                        <i data-lucide="git-compare" class="icon" style="width:14px; height:14px;"></i> Compare
+                    </div>
+                </div>
+
+                <!-- Diet Reminder Button -->
+                <div class="ui-btn ui-btn-outline" style="display:flex; align-items:center; justify-content:center; gap:6px; margin-top:8px;">
+                    <i data-lucide="bell" class="icon" style="width:14px; height:14px;"></i> Set Diet Reminder
+                </div>
+
+                <!-- Share FAB -->
+                <div style="position:absolute; bottom:70px; right:18px;">
+                    <div style="width:48px; height:48px; background:var(--black); color:var(--white); border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:3px 3px 0 var(--mid-gray);">
+                        <i data-lucide="share-2" class="icon" style="width:20px; height:20px;"></i>
+                    </div>
+                </div>
+
+                <!-- Bottom Nav -->
+                <div class="ui-nav">
+                    <div><i data-lucide="home" class="icon" style="width:14px;height:14px;"></i><br>Home</div>
+                    <div><i data-lucide="users" class="icon" style="width:14px;height:14px;"></i><br>Farmers</div>
+                    <div><i data-lucide="bug" class="icon" style="width:14px;height:14px;"></i><br>Cows</div>
+                    <div class="on"><i data-lucide="utensils" class="icon" style="width:14px;height:14px;"></i><br>Diet</div>
+                    <div><i data-lucide="more-horizontal" class="icon" style="width:14px;height:14px;"></i><br>More</div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Annotation: Diet Results -->
+        <div class="annotation">
+            <div class="annotation-title">Diet Results</div>
+            <ul>
+                <li>Shows ingredient amounts in kg/day and cost per day</li>
+                <li>Nutrient progress bars show actual vs required values with color coding (green = meets requirement, orange = slightly below, red = deficient)</li>
+                <li>Recommendations and warnings generated by the optimization engine</li>
+                <li><strong>Status banners:</strong> processing (spinner), failed (red + Try Again), pending (waiting)</li>
+                <li><strong>Share FAB</strong> opens menu with 4 options: Share (native share), WhatsApp, Print, Copy to clipboard</li>
+                <li><strong>Diet Reminder:</strong> opens dialog to set a notification reminder for this diet plan</li>
+                <li><strong>Compare:</strong> navigates to <code>/diet/compare?diet1={id}</code> for side-by-side comparison</li>
+                <li><strong>Optimize Again:</strong> navigates to <code>/diet/new?regenerateFrom={id}</code>, pre-filling all wizard inputs</li>
+                <li>Results stored locally for offline viewing</li>
+            </ul>
+        </div>
+
+        <!-- ──────────────────────────────────────────────────── -->
+        <!-- Diet List & Compare                                   -->
+        <!-- ──────────────────────────────────────────────────── -->
+        <h2>Diet List &amp; Compare</h2>
+
+        <div class="annotation">
+            <div class="annotation-title">Diet List &mdash; /diet</div>
+            <ul>
+                <li>Shows all generated diet plans as cards</li>
+                <li>Each card displays: cow name, date generated, optimization goal, total daily cost</li>
+                <li>Cards sorted by most recent first</li>
+                <li>Tapping a card navigates to <code>/diet/:id</code> (detail view)</li>
+                <li>FAB button for "New Diet" &rarr; <code>/diet/new</code></li>
+                <li>Swipe-to-delete or long-press for delete confirmation</li>
+            </ul>
+        </div>
+
+        <div class="annotation">
+            <div class="annotation-title">Diet Compare &mdash; /diet/compare</div>
+            <ul>
+                <li>Side-by-side comparison of 2 or more diets for the same cow</li>
+                <li>Accessed via overflow menu on diet detail page or by selecting multiple diets from list</li>
+                <li>Compares: total cost, individual feed quantities, CP%, TDN%, DM intake</li>
+                <li>Highlights differences with color coding (green = better, red = worse)</li>
+                <li>Useful for comparing results across different optimization goals or feed sets</li>
+            </ul>
+        </div>
+
+        <!-- ══════════════════════════════════════════════════════ -->
+        <!--  ACTIVE DIET LIFECYCLE                                 -->
+        <!-- ══════════════════════════════════════════════════════ -->
+
+        <h2 style="margin-top:48px; padding-top:24px; border-top:4px solid var(--black);">Active Diet Lifecycle</h2>
+
+        <p>Once a diet is generated and completed, the user can <strong>follow</strong> that diet, making it the active diet for the cow. This triggers a lifecycle of adherence tracking and follow-up check-ins designed to close the feedback loop between diet optimization and real-world outcomes.</p>
+
+        <div style="overflow-x:auto; padding:16px 0;">
+            <div style="display:flex; align-items:center; flex-wrap:wrap; gap:4px;">
+                <span class="flow-box filled">Diet Generated</span>
+                <span class="flow-arrow">&rarr;</span>
+                <span class="flow-box">Follow Diet</span>
+                <span class="flow-arrow">&rarr;</span>
+                <span class="flow-box">Active on Cow Detail</span>
+                <span class="flow-arrow">&rarr;</span>
+                <span class="flow-box">Daily Adherence Tracking</span>
+                <span class="flow-arrow">&rarr;</span>
+                <span class="flow-box filled">7-Day Check-In</span>
+            </div>
+        </div>
+
+        <!-- ──────────────────────────────────────────────────── -->
+        <!-- Wireframe 07a — Diet Detail - Active                  -->
+        <!-- ──────────────────────────────────────────────────── -->
+        <h2 id="diet-detail-active">Diet Detail &mdash; Active (Follow / Stop Following)</h2>
+
+        <div class="phone-frame">
+            <div class="phone-header">
+                <i data-lucide="arrow-left" class="icon"></i>
+                <span style="flex:1;">Diet Details</span>
+                <i data-lucide="more-vertical" class="icon"></i>
+            </div>
+            <div class="phone-body">
+
+                <!-- Following Status Badge -->
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:14px;">
+                    <span style="display:inline-flex; align-items:center; gap:5px; background:var(--black); color:var(--white); padding:4px 12px; border-radius:20px; font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:600;">
+                        <i data-lucide="heart" class="icon" style="width:12px; height:12px;"></i>
+                        Following
+                    </span>
+                    <span style="font-size:11px; color:var(--light-gray);">Since Feb 7, 2025</span>
+                </div>
+
+                <!-- Header Card -->
+                <div class="ui-card" style="border-color:var(--black); margin-bottom:16px;">
+                    <div style="font-size:15px; font-weight:600;">Lakshmi &middot; Balanced Diet</div>
+                    <div style="font-size:11px; color:var(--light-gray); margin-top:2px;">Feb 7, 2025</div>
+                    <div style="display:flex; gap:12px; margin-top:10px;">
+                        <div style="font-size:12px;">
+                            <span style="color:var(--light-gray);">Goal:</span>
+                            <span style="font-weight:600;">Minimize Cost</span>
+                        </div>
+                        <div style="font-size:12px;">
+                            <span style="color:var(--light-gray);">Cost/day:</span>
+                            <span style="font-family:'JetBrains Mono',monospace; font-weight:600;">Rs 105.60</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Daily Ration (condensed) -->
+                <div class="section-label">DAILY RATION</div>
+                <div style="border:2px solid var(--black); border-radius:6px; overflow:hidden; margin-bottom:14px;">
+                    <div style="display:flex; background:var(--black); color:var(--white); font-family:'JetBrains Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:0.5px;">
+                        <div style="flex:2; padding:8px 10px;">Feed</div>
+                        <div style="flex:1; padding:8px 10px; text-align:right;">Qty</div>
+                        <div style="flex:1; padding:8px 10px; text-align:right;">Cost</div>
+                    </div>
+                    <div style="display:flex; border-bottom:1px solid var(--border-gray); font-size:12px;">
+                        <div style="flex:2; padding:8px 10px;">Green Fodder</div>
+                        <div style="flex:1; padding:8px 10px; text-align:right; font-family:'JetBrains Mono',monospace;">15 kg</div>
+                        <div style="flex:1; padding:8px 10px; text-align:right; font-family:'JetBrains Mono',monospace; color:var(--mid-gray);">Rs 0</div>
+                    </div>
+                    <div style="display:flex; border-bottom:1px solid var(--border-gray); font-size:12px; background:var(--bg-gray);">
+                        <div style="flex:2; padding:8px 10px;">Wheat Bran</div>
+                        <div style="flex:1; padding:8px 10px; text-align:right; font-family:'JetBrains Mono',monospace;">3.2 kg</div>
+                        <div style="flex:1; padding:8px 10px; text-align:right; font-family:'JetBrains Mono',monospace;">Rs 57.60</div>
+                    </div>
+                    <div style="display:flex; font-size:12px; font-weight:700; background:var(--bg-gray); border-top:2px solid var(--black);">
+                        <div style="flex:2; padding:8px 10px;">Total</div>
+                        <div style="flex:1; padding:8px 10px; text-align:right; font-family:'JetBrains Mono',monospace;">27.7 kg</div>
+                        <div style="flex:1; padding:8px 10px; text-align:right; font-family:'JetBrains Mono',monospace;">Rs 105.60</div>
+                    </div>
+                </div>
+
+                <!-- Adherence Stats -->
+                <div class="section-label">ADHERENCE (7 DAYS)</div>
+                <div class="ui-row" style="margin-bottom:14px;">
+                    <div class="ui-stat">
+                        <div class="num">5/7</div>
+                        <div class="lbl">Days Fed</div>
+                    </div>
+                    <div class="ui-stat">
+                        <div class="num">71%</div>
+                        <div class="lbl">Adherence</div>
+                    </div>
+                </div>
+
+                <!-- Stop Following Button -->
+                <div class="ui-btn" style="background:var(--white); color:var(--fail); border:2px solid var(--fail); display:flex; align-items:center; justify-content:center; gap:6px;">
+                    <i data-lucide="heart-off" class="icon" style="width:14px; height:14px;"></i> Stop Following
+                </div>
+
+                <!-- Bottom Nav -->
+                <div class="ui-nav">
+                    <div><i data-lucide="home" class="icon" style="width:14px;height:14px;"></i><br>Home</div>
+                    <div><i data-lucide="users" class="icon" style="width:14px;height:14px;"></i><br>Farmers</div>
+                    <div><i data-lucide="bug" class="icon" style="width:14px;height:14px;"></i><br>Cows</div>
+                    <div class="on"><i data-lucide="utensils" class="icon" style="width:14px;height:14px;"></i><br>Diet</div>
+                    <div><i data-lucide="more-horizontal" class="icon" style="width:14px;height:14px;"></i><br>More</div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Annotation: Diet Detail - Active -->
+        <div class="annotation">
+            <div class="annotation-title">Diet Detail &mdash; Active (Follow / Stop Following)</div>
+            <ul>
+                <li><strong>Follow button</strong> appears on completed diets that are not currently followed. Clicking sets <code>status: "following"</code> and <code>is_active: true</code> on the diet record</li>
+                <li>Only <strong>one diet per cow</strong> can be active at a time. Following a new diet automatically archives the previously active diet for that cow</li>
+                <li><strong>Following badge</strong> (heart icon + "Following") shown at the top of the diet detail when <code>is_active === true</code></li>
+                <li>Badge also shows the date following started (<code>followed_at</code> timestamp)</li>
+                <li><strong>Stop Following</strong> button sets <code>status: "archived"</code> and <code>is_active: false</code>. Requires confirmation dialog: "Stop following this diet for Lakshmi?"</li>
+                <li><strong>Adherence stats</strong> section appears only when diet is actively followed. Shows count of days the diet was fed (from milk log <code>fed_diet</code> field) and percentage adherence</li>
+                <li>API: <code>PATCH /api/diets/:id</code> with body <code>{ status: "following", is_active: true }</code></li>
+                <li>API: <code>PATCH /api/diets/:id</code> with body <code>{ status: "archived", is_active: false }</code> for stop following</li>
+            </ul>
+        </div>
+
+        <!-- ──────────────────────────────────────────────────── -->
+        <!-- Wireframe — Diet List with Following Badge             -->
+        <!-- ──────────────────────────────────────────────────── -->
+
+        <div class="annotation">
+            <div class="annotation-title">Diet List &mdash; Active Badge &amp; Sorting</div>
+            <ul>
+                <li>In the diet list (<code>/diet</code>), actively followed diets display a <strong>"Following" badge</strong> with a heart icon (<code>&lt;i data-lucide="heart"&gt;</code>) next to the diet card title</li>
+                <li>Badge uses filled dark style: <code>background: var(--black); color: var(--white); border-radius: 20px;</code></li>
+                <li>Actively followed diets are <strong>sorted to the top</strong> of the list, above all other diets</li>
+                <li>Remaining diets sorted by most recent first (existing behavior)</li>
+                <li>Swipe-to-delete is <strong>disabled</strong> for actively followed diets &mdash; user must stop following first</li>
+            </ul>
+        </div>
+
+        <!-- ──────────────────────────────────────────────────── -->
+        <!-- Wireframe 07b — Cow Detail - Active Diet Card          -->
+        <!-- ──────────────────────────────────────────────────── -->
+        <h2 id="cow-detail-active-diet">Cow Detail &mdash; Active Diet Card</h2>
+
+        <div class="phone-frame">
+            <div class="phone-header">
+                <i data-lucide="arrow-left" class="icon"></i>
+                <span style="flex:1;">Lakshmi</span>
+                <i data-lucide="more-vertical" class="icon"></i>
+            </div>
+            <div class="phone-body">
+
+                <!-- Cow Info Summary -->
+                <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
+                    <div style="width:52px; height:52px; border-radius:50%; background:var(--bg-gray); border:2px solid var(--black); display:flex; align-items:center; justify-content:center;">
+                        <i data-lucide="bug" class="icon" style="width:24px; height:24px;"></i>
+                    </div>
+                    <div>
+                        <div style="font-size:16px; font-weight:600;">Lakshmi</div>
+                        <div style="font-size:12px; color:var(--mid-gray);">HF Cross &middot; 450 kg &middot; Mid Lactation</div>
+                    </div>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="ui-row" style="margin-bottom:14px;">
+                    <div class="ui-stat">
+                        <div class="num">12.5</div>
+                        <div class="lbl">L/day Milk</div>
+                    </div>
+                    <div class="ui-stat">
+                        <div class="num">4.0%</div>
+                        <div class="lbl">Fat</div>
+                    </div>
+                    <div class="ui-stat">
+                        <div class="num">36</div>
+                        <div class="lbl">Months</div>
+                    </div>
+                </div>
+
+                <!-- Active Diet Card -->
+                <div class="section-label">ACTIVE DIET</div>
+                <div class="ui-card" style="border-color:var(--black); cursor:pointer;">
+                    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <i data-lucide="utensils" class="icon" style="width:16px; height:16px;"></i>
+                            <span style="font-size:14px; font-weight:600;">Balanced Diet</span>
+                        </div>
+                        <span style="display:inline-flex; align-items:center; gap:4px; background:var(--black); color:var(--white); padding:3px 10px; border-radius:20px; font-family:'JetBrains Mono',monospace; font-size:10px; font-weight:600;">
+                            <i data-lucide="heart" class="icon" style="width:10px; height:10px;"></i>
+                            Following
+                        </span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <div style="font-size:12px; color:var(--mid-gray);">
+                            <span>Goal: <strong style="color:var(--black);">Minimize Cost</strong></span>
+                        </div>
+                        <div style="font-family:'JetBrains Mono',monospace; font-size:13px; font-weight:700;">Rs 105.60<span style="font-size:10px; font-weight:400; color:var(--light-gray);">/day</span></div>
+                    </div>
+                    <div style="display:flex; align-items:center; justify-content:space-between; margin-top:8px; padding-top:8px; border-top:1px solid var(--border-gray);">
+                        <div style="font-size:11px; color:var(--light-gray);">Following since Feb 7 &middot; 71% adherence</div>
+                        <i data-lucide="chevron-right" class="icon" style="width:14px; height:14px; color:var(--light-gray);"></i>
+                    </div>
+                </div>
+
+                <!-- Other sections placeholder -->
+                <div class="section-label">RECENT MILK LOGS</div>
+                <div class="ui-card" style="display:flex; justify-content:space-between; align-items:center;">
+                    <div>
+                        <div style="font-size:13px; font-weight:500;">Today, 6:30 AM</div>
+                        <div style="font-size:11px; color:var(--mid-gray);">5.2 L morning &middot; Fed diet: Yes</div>
+                    </div>
+                    <i data-lucide="chevron-right" class="icon" style="width:14px; height:14px; color:var(--light-gray);"></i>
+                </div>
+                <div class="ui-card" style="display:flex; justify-content:space-between; align-items:center;">
+                    <div>
+                        <div style="font-size:13px; font-weight:500;">Yesterday, 5:45 PM</div>
+                        <div style="font-size:11px; color:var(--mid-gray);">4.8 L evening &middot; Fed diet: No</div>
+                    </div>
+                    <i data-lucide="chevron-right" class="icon" style="width:14px; height:14px; color:var(--light-gray);"></i>
+                </div>
+
+                <!-- Bottom Nav -->
+                <div class="ui-nav">
+                    <div><i data-lucide="home" class="icon" style="width:14px;height:14px;"></i><br>Home</div>
+                    <div><i data-lucide="users" class="icon" style="width:14px;height:14px;"></i><br>Farmers</div>
+                    <div class="on"><i data-lucide="bug" class="icon" style="width:14px;height:14px;"></i><br>Cows</div>
+                    <div><i data-lucide="utensils" class="icon" style="width:14px;height:14px;"></i><br>Diet</div>
+                    <div><i data-lucide="more-horizontal" class="icon" style="width:14px;height:14px;"></i><br>More</div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Annotation: Cow Detail Active Diet Card -->
+        <div class="annotation">
+            <div class="annotation-title">Cow Detail &mdash; Active Diet Card</div>
+            <ul>
+                <li>The <strong>Active Diet card</strong> appears on the cow detail page (<code>/cow/:id</code>) when the cow has an actively followed diet (<code>is_active === true</code>)</li>
+                <li>Card displays: diet name, optimization goal, cost per day, following duration, and adherence percentage</li>
+                <li>Clicking the card navigates to <code>/diet/:id</code> (diet detail page)</li>
+                <li>If no diet is active, this section is <strong>hidden entirely</strong> (no empty state)</li>
+                <li>The "Following" badge on the card uses the same pill style as the diet list badge</li>
+                <li>Recent milk logs below the active diet card now show <strong>"Fed diet: Yes/No"</strong> indicator when the cow has an active diet</li>
+                <li>API: Active diet fetched via <code>GET /api/cows/:id/active-diet</code> or included in cow detail response</li>
+            </ul>
+        </div>
+
+        <!-- ──────────────────────────────────────────────────── -->
+        <!-- Wireframe 07c — Milk Log - Diet Adherence              -->
+        <!-- ──────────────────────────────────────────────────── -->
+        <h2 id="milk-log-diet-adherence">Milk Log &mdash; Diet Adherence</h2>
+
+        <div class="phone-frame">
+            <div class="phone-header">
+                <i data-lucide="arrow-left" class="icon"></i>
+                <span style="flex:1;">New Milk Log</span>
+            </div>
+            <div class="phone-body">
+
+                <!-- Cow Selector -->
+                <div class="ui-input" style="justify-content:space-between;">
+                    <div>
+                        <div class="label">Cow</div>
+                        <div class="value" style="font-weight:500;">Lakshmi</div>
+                    </div>
+                    <i data-lucide="chevron-down" class="icon" style="width:14px; height:14px; color:var(--light-gray);"></i>
+                </div>
+
+                <!-- Date & Time -->
+                <div class="ui-row">
+                    <div class="ui-input" style="flex-direction:column; align-items:flex-start; gap:2px;">
+                        <div class="label">Date</div>
+                        <div class="value" style="font-weight:500;">Feb 14, 2025</div>
+                    </div>
+                    <div class="ui-input" style="flex-direction:column; align-items:flex-start; gap:2px;">
+                        <div class="label">Session</div>
+                        <div class="value" style="font-weight:500;">Morning</div>
+                    </div>
+                </div>
+
+                <!-- Milk Yield -->
+                <div class="ui-input" style="flex-direction:column; align-items:flex-start; gap:2px;">
+                    <div class="label">Milk Yield (litres)</div>
+                    <div class="value" style="font-weight:500;">5.2</div>
+                </div>
+
+                <!-- Fat % -->
+                <div class="ui-input" style="flex-direction:column; align-items:flex-start; gap:2px;">
+                    <div class="label">Fat % (optional)</div>
+                    <div class="value" style="font-weight:500; color:var(--light-gray);">Enter fat %</div>
+                </div>
+
+                <!-- Diet Adherence Section -->
+                <div style="border:2px solid var(--black); border-radius:8px; padding:14px; margin-top:6px; margin-bottom:10px;">
+                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
+                        <i data-lucide="utensils" class="icon" style="width:16px; height:16px;"></i>
+                        <span style="font-size:13px; font-weight:600;">Fed diet today?</span>
+                    </div>
+                    <div style="font-size:11px; color:var(--mid-gray); margin-bottom:10px;">
+                        Active diet: <strong style="color:var(--black);">Balanced Diet</strong> &middot; Rs 105.60/day
+                    </div>
+                    <!-- Yes / No Toggle -->
+                    <div class="ui-toggle">
+                        <span class="on">Yes</span>
+                        <span>No</span>
+                    </div>
+                    <!-- Partial note (shown when No is selected) -->
+                    <!--
+                    <div class="ui-input" style="flex-direction:column; align-items:flex-start; gap:2px;">
+                        <div class="label">Reason (optional)</div>
+                        <div class="value" style="color:var(--light-gray);">e.g., feed not available</div>
+                    </div>
+                    -->
+                </div>
+
+                <!-- Notes -->
+                <div class="ui-input" style="flex-direction:column; align-items:flex-start; gap:2px; min-height:60px;">
+                    <div class="label">Notes (optional)</div>
+                    <div class="value" style="color:var(--light-gray);">Any observations...</div>
+                </div>
+
+                <!-- Save Button -->
+                <div class="ui-btn">Save Milk Log</div>
+
+            </div>
+        </div>
+
+        <!-- Annotation: Milk Log Diet Adherence -->
+        <div class="annotation">
+            <div class="annotation-title">Milk Log &mdash; Diet Adherence</div>
+            <ul>
+                <li>The <strong>"Fed diet today?"</strong> section only appears when the selected cow has an actively followed diet (<code>is_active === true</code>)</li>
+                <li>Displays the active diet name and daily cost for context</li>
+                <li>Toggle is a binary <strong>Yes / No</strong> choice using the <code>ui-toggle</code> component</li>
+                <li>Default selection: <strong>Yes</strong> (optimistic default, encourages positive behavior)</li>
+                <li>When "No" is selected, an optional free-text <strong>reason field</strong> appears (e.g., "feed not available", "tried different feed")</li>
+                <li>Value stored as <code>fed_diet: true | false</code> on the milk log record, with optional <code>fed_diet_note</code></li>
+                <li>This data feeds into the <strong>adherence percentage</strong> shown on the diet detail page and cow detail active diet card</li>
+                <li>If cow has no active diet, this section is <strong>hidden entirely</strong> and the milk log form looks exactly as before</li>
+                <li>API: <code>POST /api/milk-logs</code> includes <code>{ fed_diet: boolean, fed_diet_note?: string }</code> when active diet exists</li>
+                <li>One adherence record per day (not per milking session). If multiple logs exist for the same day, the first entry sets <code>fed_diet</code> and subsequent logs inherit it</li>
+            </ul>
+        </div>
+
+        <!-- ──────────────────────────────────────────────────── -->
+        <!-- Wireframe 07d — Diet Follow-Up Check-In                -->
+        <!-- ──────────────────────────────────────────────────── -->
+        <h2 id="diet-followup-checkin">Diet Follow-Up Check-In</h2>
+
+        <div class="phone-frame">
+            <div class="phone-header">
+                <i data-lucide="arrow-left" class="icon"></i>
+                <span style="flex:1;">Diet Details</span>
+                <i data-lucide="more-vertical" class="icon"></i>
+            </div>
+            <div class="phone-body">
+
+                <!-- Following Badge -->
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:14px;">
+                    <span style="display:inline-flex; align-items:center; gap:5px; background:var(--black); color:var(--white); padding:4px 12px; border-radius:20px; font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:600;">
+                        <i data-lucide="heart" class="icon" style="width:12px; height:12px;"></i>
+                        Following
+                    </span>
+                    <span style="font-size:11px; color:var(--light-gray);">7 days</span>
+                </div>
+
+                <!-- Check-In Card -->
+                <div style="border:2px solid var(--black); border-radius:8px; padding:16px; margin-bottom:14px; background:var(--bg-gray);">
+                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
+                        <i data-lucide="calendar-check" class="icon" style="width:18px; height:18px;"></i>
+                        <span style="font-size:14px; font-weight:700;">7-Day Check-In</span>
+                    </div>
+                    <div style="font-size:13px; color:var(--mid-gray); margin-bottom:14px;">
+                        You've been following this diet for 7 days. How has milk production changed?
+                    </div>
+
+                    <!-- Milk Change Options -->
+                    <div class="ui-card selected" style="display:flex; align-items:center; gap:10px; padding:10px 12px;">
+                        <span style="width:18px; height:18px; border-radius:50%; border:2px solid var(--black); display:flex; align-items:center; justify-content:center;">
+                            <span style="width:10px; height:10px; border-radius:50%; background:var(--black);"></span>
+                        </span>
+                        <div style="display:flex; align-items:center; gap:6px;">
+                            <i data-lucide="trending-up" class="icon" style="width:14px; height:14px; color:var(--pass);"></i>
+                            <span style="font-size:13px; font-weight:500;">Increased</span>
+                        </div>
+                    </div>
+                    <div class="ui-card" style="display:flex; align-items:center; gap:10px; padding:10px 12px;">
+                        <span style="width:18px; height:18px; border-radius:50%; border:2px solid var(--border-gray); display:flex; align-items:center; justify-content:center;"></span>
+                        <div style="display:flex; align-items:center; gap:6px;">
+                            <i data-lucide="minus" class="icon" style="width:14px; height:14px; color:var(--mid-gray);"></i>
+                            <span style="font-size:13px; font-weight:500;">Same</span>
+                        </div>
+                    </div>
+                    <div class="ui-card" style="display:flex; align-items:center; gap:10px; padding:10px 12px;">
+                        <span style="width:18px; height:18px; border-radius:50%; border:2px solid var(--border-gray); display:flex; align-items:center; justify-content:center;"></span>
+                        <div style="display:flex; align-items:center; gap:6px;">
+                            <i data-lucide="trending-down" class="icon" style="width:14px; height:14px; color:var(--fail);"></i>
+                            <span style="font-size:13px; font-weight:500;">Decreased</span>
+                        </div>
+                    </div>
+
+                    <!-- Current Milk Yield (optional) -->
+                    <div class="ui-input" style="flex-direction:column; align-items:flex-start; gap:2px; margin-top:10px;">
+                        <div class="label">Current Milk Yield, L/day (optional)</div>
+                        <div class="value" style="font-weight:500;">14.0</div>
+                    </div>
+                    <div style="font-size:11px; color:var(--light-gray); margin-top:-6px; margin-bottom:8px;">Was 12.5 L/day when diet was created</div>
+
+                    <!-- Notes -->
+                    <div class="ui-input" style="flex-direction:column; align-items:flex-start; gap:2px; min-height:50px;">
+                        <div class="label">Notes (optional)</div>
+                        <div class="value" style="color:var(--light-gray);">Any observations about the diet...</div>
+                    </div>
+
+                    <!-- Submit Check-In -->
+                    <div class="ui-btn" style="margin-bottom:0;">Submit Check-In</div>
+                </div>
+
+                <!-- After submission: summary would replace the card -->
+                <!-- Adherence Stats -->
+                <div class="section-label">ADHERENCE (7 DAYS)</div>
+                <div class="ui-row" style="margin-bottom:14px;">
+                    <div class="ui-stat">
+                        <div class="num">5/7</div>
+                        <div class="lbl">Days Fed</div>
+                    </div>
+                    <div class="ui-stat">
+                        <div class="num">71%</div>
+                        <div class="lbl">Adherence</div>
+                    </div>
+                </div>
+
+                <!-- Bottom Nav -->
+                <div class="ui-nav">
+                    <div><i data-lucide="home" class="icon" style="width:14px;height:14px;"></i><br>Home</div>
+                    <div><i data-lucide="users" class="icon" style="width:14px;height:14px;"></i><br>Farmers</div>
+                    <div><i data-lucide="bug" class="icon" style="width:14px;height:14px;"></i><br>Cows</div>
+                    <div class="on"><i data-lucide="utensils" class="icon" style="width:14px;height:14px;"></i><br>Diet</div>
+                    <div><i data-lucide="more-horizontal" class="icon" style="width:14px;height:14px;"></i><br>More</div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Annotation: Diet Follow-Up Check-In -->
+        <div class="annotation">
+            <div class="annotation-title">Diet Follow-Up Check-In</div>
+            <ul>
+                <li>Check-in card automatically appears on the diet detail page after <strong>7 days</strong> of following the diet (based on <code>followed_at</code> timestamp)</li>
+                <li>Triggered when <code>Date.now() - followed_at >= 7 days</code> AND no check-in has been submitted yet for this period</li>
+                <li>Question: <strong>"How has milk production changed?"</strong> with three radio options:
+                    <ul>
+                        <li><code>increased</code> &mdash; trending-up icon, green</li>
+                        <li><code>same</code> &mdash; minus icon, gray</li>
+                        <li><code>decreased</code> &mdash; trending-down icon, red</li>
+                    </ul>
+                </li>
+                <li><strong>Current milk yield</strong> (optional) &mdash; numeric input showing the baseline milk yield from when the diet was created for comparison</li>
+                <li><strong>Notes</strong> (optional) &mdash; free-text field for any observations</li>
+                <li>After submission, the check-in card is replaced with a <strong>summary card</strong> showing the submitted response. A new check-in card will appear after another 7 days</li>
+                <li>Check-ins repeat every 7 days for as long as the diet is actively followed</li>
+                <li>API: <code>POST /api/diets/:id/checkins</code> with body <code>{ milk_change: "increased"|"same"|"decreased", current_milk_yield?: number, notes?: string }</code></li>
+                <li>Check-in data is used to evaluate diet effectiveness and may inform future optimization suggestions</li>
+                <li>A push notification / in-app reminder is sent on day 7 if check-in has not been completed: "How is Lakshmi's new diet working? Tap to check in."</li>
+            </ul>
+        </div>
+
+    </main>
+
+    <script>lucide.createIcons();</script>
+</body>
+</html>

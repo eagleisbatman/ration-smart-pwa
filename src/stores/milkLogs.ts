@@ -18,6 +18,10 @@ export interface MilkLogInput {
   snf_percentage?: number;
   temperature?: number;
   notes?: string;
+  /** Whether the farmer followed the active diet today */
+  fed_diet?: boolean;
+  /** ID of the active diet being followed */
+  diet_history_id?: string;
 }
 
 export interface MilkLogSummary {

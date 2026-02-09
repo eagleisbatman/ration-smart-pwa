@@ -87,6 +87,7 @@
   },
   "roles": {
     "farmer": "Farmer",
+    "student": "Student",
     "extension_worker": "Extension Worker",
     "nutritionist": "Nutritionist",
     "researcher": "Researcher",
@@ -94,6 +95,7 @@
     "other": "Other",
     "admin": "Administrator",
     "farmerDesc": "I manage my own cattle",
+    "studentDesc": "I am studying animal nutrition",
     "extension_workerDesc": "I support farmers in my community",
     "nutritionistDesc": "I advise farmers on feed formulation",
     "researcherDesc": "I study cattle nutrition and farming practices",
@@ -407,6 +409,8 @@
     "pending": "Pending",
     "startFollowing": "Start Following",
     "stopFollowing": "Stop Following",
+    "stopFollowingConfirm": "Are you sure you want to stop following this diet? You can always start following it again later.",
+    "followSuccess": "You are now following this diet",
     "fedToday": "Fed diet today?",
     "fedYes": "Yes, fed as recommended",
     "fedNo": "No, did not feed",
@@ -561,6 +565,20 @@
       "bcsAndAge": "BCS / Age",
       "notSpecified": "Not specified"
     }
+  },
+  "followUp": {
+    "title": "Diet Check-In",
+    "question": "You've been following this diet for a week. How has milk production changed?",
+    "increased": "Increased",
+    "same": "Same",
+    "decreased": "Decreased",
+    "currentYield": "Current milk yield",
+    "yieldHint": "Optional - helps track progress",
+    "day": "day",
+    "feedback": "Any additional notes?",
+    "submit": "Submit Check-In",
+    "later": "Remind Me Later",
+    "thankYou": "Thanks for the check-in!"
   },
   "diets": {
     "costTrend": "Cost Trend",

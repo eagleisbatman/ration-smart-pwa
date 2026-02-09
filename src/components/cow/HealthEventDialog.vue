@@ -96,6 +96,10 @@ import { useQuasar } from 'quasar';
 import { v4 as uuidv4 } from 'uuid';
 import { format } from 'date-fns';
 import { db, HealthEvent } from 'src/lib/offline/db';
+import { api } from 'src/boot/axios';
+import { isOnline } from 'src/boot/pwa';
+import { queueCreate, queueUpdate } from 'src/lib/offline/sync-manager';
+import { useAuthStore } from 'src/stores/auth';
 import { useCurrency } from 'src/composables/useCurrency';
 
 const props = defineProps<{
@@ -185,11 +189,12 @@ async function onSave() {
   if (!isValid.value) return;
 
   const now = new Date().toISOString();
+  const authStore = useAuthStore();
 
   try {
     if (props.editEvent?.id) {
       // Update existing event
-      await db.healthEvents.update(props.editEvent.id, {
+      const updateData = {
         event_type: form.value.event_type,
         title: form.value.title,
         event_date: form.value.event_date,
@@ -199,7 +204,29 @@ async function onSave() {
         cost: form.value.cost ?? undefined,
         updated_at: now,
         _synced: false,
-      });
+      };
+
+      await db.healthEvents.update(props.editEvent.id, updateData);
+
+      if (isOnline.value) {
+        try {
+          await api.put(`/api/v1/health-events/${props.editEvent.id}`, {
+            event_type: form.value.event_type,
+            title: form.value.title,
+            event_date: form.value.event_date,
+            description: form.value.description || null,
+            next_due_date: form.value.next_due_date || null,
+            veterinarian: form.value.veterinarian || null,
+            cost: form.value.cost ?? null,
+          });
+          await db.healthEvents.update(props.editEvent.id, { _synced: true });
+        } catch (err) {
+          console.warn('[HealthEventDialog] Server update failed, queued for sync:', err);
+          await queueUpdate('health_event', props.editEvent.id, updateData);
+        }
+      } else {
+        await queueUpdate('health_event', props.editEvent.id, updateData);
+      }
 
       $q.notify({
         type: 'positive',
@@ -208,8 +235,9 @@ async function onSave() {
       });
     } else {
       // Create new event
+      const localId = uuidv4();
       const healthEvent: HealthEvent = {
-        id: uuidv4(),
+        id: localId,
         cow_id: props.cowId,
         event_type: form.value.event_type,
         title: form.value.title,
@@ -224,7 +252,40 @@ async function onSave() {
         _deleted: false,
       };
 
+      // Save locally first (optimistic)
       await db.healthEvents.put(healthEvent);
+
+      const serverPayload = {
+        cow_profile_id: props.cowId,
+        app_user_id: authStore.userId || undefined,
+        event_type: form.value.event_type,
+        title: form.value.title,
+        event_date: form.value.event_date,
+        description: form.value.description || null,
+        next_due_date: form.value.next_due_date || null,
+        veterinarian: form.value.veterinarian || null,
+        cost: form.value.cost ?? null,
+      };
+
+      if (isOnline.value) {
+        try {
+          const response = await api.post('/api/v1/health-events', serverPayload);
+          const serverEvent = response.data;
+          // Replace local entry with server-returned entry
+          await db.healthEvents.delete(localId);
+          await db.healthEvents.put({
+            ...serverEvent,
+            cow_id: serverEvent.cow_profile_id || props.cowId,
+            _synced: true,
+            _deleted: false,
+          });
+        } catch (err) {
+          console.warn('[HealthEventDialog] Server create failed, queued for sync:', err);
+          await queueCreate('health_event', localId, serverPayload);
+        }
+      } else {
+        await queueCreate('health_event', localId, serverPayload);
+      }
 
       $q.notify({
         type: 'positive',

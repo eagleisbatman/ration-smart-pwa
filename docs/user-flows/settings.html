@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RationSmart - Settings</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <link rel="stylesheet" href="../shared.css">
+</head>
+<body>
+    <nav class="sidebar">
+        <div class="sidebar-brand"><i data-lucide="beef" class="icon"></i> RationSmart</div>
+        <div class="sidebar-subtitle">User Flows &middot; 9 Pages</div>
+        <h3>Authentication</h3>
+        <a href="index.html"><span class="nav-num">00</span> Overview</a>
+        <a href="registration.html"><span class="nav-num">01</span> Registration</a>
+        <a href="login.html"><span class="nav-num">02</span> Login</a>
+        <a href="forgot-pin.html"><span class="nav-num">03</span> Forgot PIN</a>
+        <h3>Onboarding</h3>
+        <a href="onboarding.html"><span class="nav-num">04</span> Onboarding (4 Steps)</a>
+        <h3>Core App</h3>
+        <a href="dashboard.html"><span class="nav-num">05</span> Home Dashboard</a>
+        <a href="cow-management.html"><span class="nav-num">06</span> Cow Management</a>
+        <a href="diet-wizard.html"><span class="nav-num">07</span> Diet Optimization</a>
+        <a href="settings.html" class="active"><span class="nav-num">08</span> Settings</a>
+    </nav>
+
+    <main class="main">
+        <div class="page-title">08 &mdash; Settings</div>
+        <div class="page-route">Routes: /settings, /settings/profile, /settings/help, /settings/privacy</div>
+
+        <!-- ──────────────────────────────────────────────────── -->
+        <!-- Wireframe 1 — Settings Main Page                     -->
+        <!-- ──────────────────────────────────────────────────── -->
+        <h2>Settings Page</h2>
+
+        <div class="phone-frame">
+            <div class="phone-header">
+                <i data-lucide="arrow-left" class="icon"></i>
+                Settings
+            </div>
+            <div class="phone-body">
+
+                <!-- Profile Section -->
+                <div class="section-label">PROFILE</div>
+                <div class="ui-card" style="display:flex; align-items:center; gap:12px;">
+                    <div style="width:44px; height:44px; border-radius:50%; border:2px solid var(--black); display:flex; align-items:center; justify-content:center; font-family:'JetBrains Mono',monospace; font-size:16px; font-weight:700; background:var(--bg-gray);">RK</div>
+                    <div style="flex:1;">
+                        <div style="font-size:14px; font-weight:600;">Rajesh Kumar</div>
+                        <div style="font-size:12px; color:var(--mid-gray);">rajesh@email.com</div>
+                    </div>
+                    <i data-lucide="chevron-right" class="icon" style="width:16px; height:16px; color:var(--light-gray);"></i>
+                </div>
+
+                <!-- Preferences Section -->
+                <div class="section-label">PREFERENCES</div>
+                <div class="ui-card" style="padding:0;">
+                    <!-- Language -->
+                    <div style="display:flex; align-items:center; gap:10px; padding:11px 12px; border-bottom:1px solid var(--border-gray);">
+                        <i data-lucide="languages" class="icon" style="width:16px; height:16px; color:var(--mid-gray);"></i>
+                        <div style="flex:1;">
+                            <div style="font-size:13px; font-weight:500;">Language</div>
+                            <div style="font-size:11px; color:var(--light-gray);">Hindi (&nbsp;&#2361;&#2367;&#2344;&#2381;&#2342;&#2368;&nbsp;)</div>
+                        </div>
+                        <i data-lucide="chevron-right" class="icon" style="width:14px; height:14px; color:var(--light-gray);"></i>
+                    </div>
+                    <!-- Role -->
+                    <div style="display:flex; align-items:center; gap:10px; padding:11px 12px; border-bottom:1px solid var(--border-gray);">
+                        <i data-lucide="badge" class="icon" style="width:16px; height:16px; color:var(--mid-gray);"></i>
+                        <div style="flex:1;">
+                            <div style="font-size:13px; font-weight:500;">Role</div>
+                            <div style="font-size:11px; color:var(--light-gray);">Farmer</div>
+                        </div>
+                        <i data-lucide="chevron-right" class="icon" style="width:14px; height:14px; color:var(--light-gray);"></i>
+                    </div>
+                    <!-- Organization -->
+                    <div style="display:flex; align-items:center; gap:10px; padding:11px 12px;">
+                        <i data-lucide="building" class="icon" style="width:16px; height:16px; color:var(--mid-gray);"></i>
+                        <div style="flex:1;">
+                            <div style="font-size:13px; font-weight:500;">Organization</div>
+                            <div style="font-size:11px; color:var(--light-gray);">Digital Green</div>
+                        </div>
+                        <i data-lucide="chevron-right" class="icon" style="width:14px; height:14px; color:var(--light-gray);"></i>
+                    </div>
+                </div>
+
+                <!-- App Settings Section -->
+                <div class="section-label">APP SETTINGS</div>
+                <div class="ui-card" style="padding:0;">
+                    <!-- Push Notifications -->
+                    <div style="display:flex; align-items:center; gap:10px; padding:11px 12px; border-bottom:1px solid var(--border-gray);">
+                        <i data-lucide="bell" class="icon" style="width:16px; height:16px; color:var(--mid-gray);"></i>
+                        <div style="flex:1;">
+                            <div style="font-size:13px; font-weight:500;">Push Notifications</div>
+                            <div style="font-size:11px; color:var(--light-gray);">Get reminders</div>
+                        </div>
+                        <!-- Toggle Switch ON -->
+                        <div style="width:36px; height:20px; border-radius:10px; background:var(--black); position:relative;">
+                            <div style="width:16px; height:16px; border-radius:50%; background:var(--white); position:absolute; top:2px; right:2px;"></div>
+                        </div>
+                    </div>
+                    <!-- Install App -->
+                    <div style="display:flex; align-items:center; gap:10px; padding:11px 12px;">
+                        <i data-lucide="smartphone" class="icon" style="width:16px; height:16px; color:var(--mid-gray);"></i>
+                        <div style="flex:1;">
+                            <div style="font-size:13px; font-weight:500;">Install App</div>
+                            <div style="font-size:11px; color:var(--light-gray);">Add to home screen</div>
+                        </div>
+                        <i data-lucide="chevron-right" class="icon" style="width:14px; height:14px; color:var(--light-gray);"></i>
+                    </div>
+                </div>
+
+                <!-- Data & Sync Section -->
+                <div class="section-label">DATA &amp; SYNC</div>
+                <div class="ui-card" style="padding:0;">
+                    <!-- Sync Status -->
+                    <div style="display:flex; align-items:center; gap:10px; padding:11px 12px; border-bottom:1px solid var(--border-gray);">
+                        <i data-lucide="check-circle" class="icon" style="width:16px; height:16px; color:var(--pass);"></i>
+                        <div style="flex:1;">
+                            <div style="font-size:13px; font-weight:500;">Sync Status</div>
+                            <div style="font-size:11px; color:var(--pass);">All data synced</div>
+                        </div>
+                        <div style="width:28px; height:28px; border:2px solid var(--border-gray); border-radius:6px; display:flex; align-items:center; justify-content:center;">
+                            <i data-lucide="refresh-cw" class="icon" style="width:14px; height:14px; color:var(--mid-gray);"></i>
+                        </div>
+                    </div>
+                    <!-- Sync History -->
+                    <div style="display:flex; align-items:center; gap:10px; padding:11px 12px; border-bottom:1px solid var(--border-gray);">
+                        <i data-lucide="history" class="icon" style="width:16px; height:16px; color:var(--mid-gray);"></i>
+                        <div style="flex:1;">
+                            <div style="font-size:13px; font-weight:500;">Sync History</div>
+                            <div style="font-size:11px; color:var(--light-gray);">View sync log</div>
+                        </div>
+                        <i data-lucide="chevron-right" class="icon" style="width:14px; height:14px; color:var(--light-gray);"></i>
+                    </div>
+                    <!-- Clear Data -->
+                    <div style="display:flex; align-items:center; gap:10px; padding:11px 12px;">
+                        <i data-lucide="trash" class="icon" style="width:16px; height:16px; color:var(--fail);"></i>
+                        <div style="flex:1;">
+                            <div style="font-size:13px; font-weight:500; color:var(--fail);">Clear Data</div>
+                            <div style="font-size:11px; color:var(--light-gray);">Clear local cache</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- About Section -->
+                <div class="section-label">ABOUT</div>
+                <div class="ui-card" style="padding:0;">
+                    <!-- Version -->
+                    <div style="display:flex; align-items:center; gap:10px; padding:11px 12px; border-bottom:1px solid var(--border-gray);">
+                        <i data-lucide="info" class="icon" style="width:16px; height:16px; color:var(--mid-gray);"></i>
+                        <div style="flex:1;">
+                            <div style="font-size:13px; font-weight:500;">Version</div>
+                        </div>
+                        <span style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--light-gray);">1.0.0</span>
+                    </div>
+                    <!-- Help & Support -->
+                    <div style="display:flex; align-items:center; gap:10px; padding:11px 12px; border-bottom:1px solid var(--border-gray);">
+                        <i data-lucide="help-circle" class="icon" style="width:16px; height:16px; color:var(--mid-gray);"></i>
+                        <div style="flex:1;">
+                            <div style="font-size:13px; font-weight:500;">Help &amp; Support</div>
+                        </div>
+                        <i data-lucide="chevron-right" class="icon" style="width:14px; height:14px; color:var(--light-gray);"></i>
+                    </div>
+                    <!-- Privacy Policy -->
+                    <div style="display:flex; align-items:center; gap:10px; padding:11px 12px;">
+                        <i data-lucide="shield" class="icon" style="width:16px; height:16px; color:var(--mid-gray);"></i>
+                        <div style="flex:1;">
+                            <div style="font-size:13px; font-weight:500;">Privacy Policy</div>
+                        </div>
+                        <i data-lucide="chevron-right" class="icon" style="width:14px; height:14px; color:var(--light-gray);"></i>
+                    </div>
+                </div>
+
+                <!-- Logout Button -->
+                <div class="ui-btn ui-btn-outline" style="color:var(--fail); border-color:var(--fail); margin-top:20px;">
+                    <i data-lucide="log-out" class="icon" style="width:14px; height:14px; vertical-align:middle; margin-right:6px;"></i>Logout
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ──────────────────────────────────────────────────── -->
+        <!-- Wireframe 2 — Language Dialog                        -->
+        <!-- ──────────────────────────────────────────────────── -->
+        <h2>Language Change Dialog</h2>
+
+        <div class="phone-frame">
+            <div class="phone-header">
+                <i data-lucide="arrow-left" class="icon"></i>
+                Settings
+            </div>
+            <div class="phone-body" style="background:rgba(0,0,0,0.3); padding:40px 18px;">
+
+                <!-- Dialog Card -->
+                <div style="background:var(--white); border:2px solid var(--black); border-radius:12px; padding:18px; box-shadow:6px 6px 0 var(--black);">
+                    <div style="font-family:'JetBrains Mono',monospace; font-size:15px; font-weight:700; margin-bottom:14px;">Select Language</div>
+
+                    <!-- Scrollable Language List -->
+                    <div style="max-height:300px; overflow-y:auto; border:1px solid var(--border-gray); border-radius:6px;">
+                        <!-- English (selected) -->
+                        <div style="display:flex; align-items:center; gap:10px; padding:10px 12px; background:var(--bg-gray); border-bottom:1px solid var(--border-gray);">
+                            <div style="flex:1;">
+                                <div style="font-size:13px; font-weight:600;">English</div>
+                            </div>
+                            <i data-lucide="check" class="icon" style="width:16px; height:16px; color:var(--pass);"></i>
+                        </div>
+                        <!-- Hindi -->
+                        <div style="display:flex; align-items:center; gap:10px; padding:10px 12px; border-bottom:1px solid var(--border-gray);">
+                            <div style="flex:1;">
+                                <div style="font-size:13px; font-weight:600;">हिन्दी</div>
+                                <div style="font-size:11px; color:var(--light-gray);">Hindi</div>
+                            </div>
+                        </div>
+                        <!-- Bengali -->
+                        <div style="display:flex; align-items:center; gap:10px; padding:10px 12px; border-bottom:1px solid var(--border-gray);">
+                            <div style="flex:1;">
+                                <div style="font-size:13px; font-weight:600;">বাংলা</div>
+                                <div style="font-size:11px; color:var(--light-gray);">Bengali</div>
+                            </div>
+                        </div>
+                        <!-- Telugu -->
+                        <div style="display:flex; align-items:center; gap:10px; padding:10px 12px; border-bottom:1px solid var(--border-gray);">
+                            <div style="flex:1;">
+                                <div style="font-size:13px; font-weight:600;">తెలుగు</div>
+                                <div style="font-size:11px; color:var(--light-gray);">Telugu</div>
+                            </div>
+                        </div>
+                        <!-- Marathi -->
+                        <div style="display:flex; align-items:center; gap:10px; padding:10px 12px; border-bottom:1px solid var(--border-gray);">
+                            <div style="flex:1;">
+                                <div style="font-size:13px; font-weight:600;">मराठी</div>
+                                <div style="font-size:11px; color:var(--light-gray);">Marathi</div>
+                            </div>
+                        </div>
+                        <!-- Tamil -->
+                        <div style="display:flex; align-items:center; gap:10px; padding:10px 12px; border-bottom:1px solid var(--border-gray);">
+                            <div style="flex:1;">
+                                <div style="font-size:13px; font-weight:600;">தமிழ்</div>
+                                <div style="font-size:11px; color:var(--light-gray);">Tamil</div>
+                            </div>
+                        </div>
+                        <!-- Gujarati -->
+                        <div style="display:flex; align-items:center; gap:10px; padding:10px 12px; border-bottom:1px solid var(--border-gray);">
+                            <div style="flex:1;">
+                                <div style="font-size:13px; font-weight:600;">ગુજરાતી</div>
+                                <div style="font-size:11px; color:var(--light-gray);">Gujarati</div>
+                            </div>
+                        </div>
+                        <!-- Kannada -->
+                        <div style="display:flex; align-items:center; gap:10px; padding:10px 12px; border-bottom:1px solid var(--border-gray);">
+                            <div style="flex:1;">
+                                <div style="font-size:13px; font-weight:600;">ಕನ್ನಡ</div>
+                                <div style="font-size:11px; color:var(--light-gray);">Kannada</div>
+                            </div>
+                        </div>
+                        <!-- Malayalam -->
+                        <div style="display:flex; align-items:center; gap:10px; padding:10px 12px; border-bottom:1px solid var(--border-gray);">
+                            <div style="flex:1;">
+                                <div style="font-size:13px; font-weight:600;">മലയാളം</div>
+                                <div style="font-size:11px; color:var(--light-gray);">Malayalam</div>
+                            </div>
+                        </div>
+                        <!-- Odia -->
+                        <div style="display:flex; align-items:center; gap:10px; padding:10px 12px; border-bottom:1px solid var(--border-gray);">
+                            <div style="flex:1;">
+                                <div style="font-size:13px; font-weight:600;">ଓଡ଼ିଆ</div>
+                                <div style="font-size:11px; color:var(--light-gray);">Odia</div>
+                            </div>
+                        </div>
+                        <!-- Punjabi -->
+                        <div style="display:flex; align-items:center; gap:10px; padding:10px 12px; border-bottom:1px solid var(--border-gray);">
+                            <div style="flex:1;">
+                                <div style="font-size:13px; font-weight:600;">ਪੰਜਾਬੀ</div>
+                                <div style="font-size:11px; color:var(--light-gray);">Punjabi</div>
+                            </div>
+                        </div>
+                        <!-- Assamese -->
+                        <div style="display:flex; align-items:center; gap:10px; padding:10px 12px; border-bottom:1px solid var(--border-gray);">
+                            <div style="flex:1;">
+                                <div style="font-size:13px; font-weight:600;">অসমীয়া</div>
+                                <div style="font-size:11px; color:var(--light-gray);">Assamese</div>
+                            </div>
+                        </div>
+                        <!-- Urdu -->
+                        <div style="display:flex; align-items:center; gap:10px; padding:10px 12px; border-bottom:1px solid var(--border-gray);">
+                            <div style="flex:1;">
+                                <div style="font-size:13px; font-weight:600;">اردو</div>
+                                <div style="font-size:11px; color:var(--light-gray);">Urdu</div>
+                            </div>
+                        </div>
+                        <!-- Nepali -->
+                        <div style="display:flex; align-items:center; gap:10px; padding:10px 12px; border-bottom:1px solid var(--border-gray);">
+                            <div style="flex:1;">
+                                <div style="font-size:13px; font-weight:600;">नेपाली</div>
+                                <div style="font-size:11px; color:var(--light-gray);">Nepali</div>
+                            </div>
+                        </div>
+                        <!-- Vietnamese -->
+                        <div style="display:flex; align-items:center; gap:10px; padding:10px 12px; border-bottom:1px solid var(--border-gray);">
+                            <div style="flex:1;">
+                                <div style="font-size:13px; font-weight:600;">Tiếng Việt</div>
+                                <div style="font-size:11px; color:var(--light-gray);">Vietnamese</div>
+                            </div>
+                        </div>
+                        <!-- Amharic -->
+                        <div style="display:flex; align-items:center; gap:10px; padding:10px 12px; border-bottom:1px solid var(--border-gray);">
+                            <div style="flex:1;">
+                                <div style="font-size:13px; font-weight:600;">አማርኛ</div>
+                                <div style="font-size:11px; color:var(--light-gray);">Amharic</div>
+                            </div>
+                        </div>
+                        <!-- Oromo -->
+                        <div style="display:flex; align-items:center; gap:10px; padding:10px 12px; border-bottom:1px solid var(--border-gray);">
+                            <div style="flex:1;">
+                                <div style="font-size:13px; font-weight:600;">Oromoo</div>
+                                <div style="font-size:11px; color:var(--light-gray);">Oromo</div>
+                            </div>
+                        </div>
+                        <!-- Indonesian -->
+                        <div style="display:flex; align-items:center; gap:10px; padding:10px 12px; border-bottom:1px solid var(--border-gray);">
+                            <div style="flex:1;">
+                                <div style="font-size:13px; font-weight:600;">Bahasa Indonesia</div>
+                                <div style="font-size:11px; color:var(--light-gray);">Indonesian</div>
+                            </div>
+                        </div>
+                        <!-- Filipino -->
+                        <div style="display:flex; align-items:center; gap:10px; padding:10px 12px; border-bottom:1px solid var(--border-gray);">
+                            <div style="flex:1;">
+                                <div style="font-size:13px; font-weight:600;">Filipino</div>
+                                <div style="font-size:11px; color:var(--light-gray);">Filipino</div>
+                            </div>
+                        </div>
+                        <!-- Thai -->
+                        <div style="display:flex; align-items:center; gap:10px; padding:10px 12px; border-bottom:1px solid var(--border-gray);">
+                            <div style="flex:1;">
+                                <div style="font-size:13px; font-weight:600;">ไทย</div>
+                                <div style="font-size:11px; color:var(--light-gray);">Thai</div>
+                            </div>
+                        </div>
+                        <!-- Arabic -->
+                        <div style="display:flex; align-items:center; gap:10px; padding:10px 12px; border-bottom:1px solid var(--border-gray);">
+                            <div style="flex:1;">
+                                <div style="font-size:13px; font-weight:600;">العربية</div>
+                                <div style="font-size:11px; color:var(--light-gray);">Arabic</div>
+                            </div>
+                        </div>
+                        <!-- French -->
+                        <div style="display:flex; align-items:center; gap:10px; padding:10px 12px;">
+                            <div style="flex:1;">
+                                <div style="font-size:13px; font-weight:600;">Français</div>
+                                <div style="font-size:11px; color:var(--light-gray);">French</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Annotation: Language Dialog -->
+        <div class="annotation">
+            <div class="annotation-title">Language Dialog</div>
+            <ul>
+                <li>Shows all 22 supported languages across India, Nepal, Vietnam, Ethiopia, Indonesia, Philippines, Thailand, Morocco</li>
+                <li>Each item shows native script name + English name below</li>
+                <li>Checkmark icon on currently selected language</li>
+                <li>Selection immediately switches UI language (calls <code>setLocale()</code>)</li>
+                <li>Preference saved to backend via <code>updateUserSettings</code> API</li>
+                <li>Dialog closes automatically after selection</li>
+            </ul>
+        </div>
+
+        <!-- ──────────────────────────────────────────────────── -->
+        <!-- Wireframe 3 — Role Dialog                            -->
+        <!-- ──────────────────────────────────────────────────── -->
+        <h2>Role Change Dialog</h2>
+
+        <div class="phone-frame">
+            <div class="phone-header">
+                <i data-lucide="arrow-left" class="icon"></i>
+                Settings
+            </div>
+            <div class="phone-body" style="background:rgba(0,0,0,0.3); padding:40px 18px;">
+
+                <!-- Dialog Card -->
+                <div style="background:var(--white); border:2px solid var(--black); border-radius:12px; padding:18px; box-shadow:6px 6px 0 var(--black);">
+                    <div style="font-family:'JetBrains Mono',monospace; font-size:15px; font-weight:700; margin-bottom:14px;">Select Role</div>
+
+                    <div style="border:1px solid var(--border-gray); border-radius:6px;">
+                        <!-- Farmer (selected) -->
+                        <div style="display:flex; align-items:center; gap:10px; padding:10px 12px; background:var(--bg-gray); border-bottom:1px solid var(--border-gray);">
+                            <i data-lucide="wheat" class="icon" style="width:18px; height:18px; color:var(--mid-gray);"></i>
+                            <div style="flex:1;">
+                                <div style="font-size:13px; font-weight:600;">Farmer</div>
+                                <div style="font-size:11px; color:var(--light-gray);">I manage my cattle</div>
+                            </div>
+                            <i data-lucide="check" class="icon" style="width:16px; height:16px; color:var(--pass);"></i>
+                        </div>
+                        <!-- Extension Worker -->
+                        <div style="display:flex; align-items:center; gap:10px; padding:10px 12px; border-bottom:1px solid var(--border-gray);">
+                            <i data-lucide="users" class="icon" style="width:18px; height:18px; color:var(--mid-gray);"></i>
+                            <div style="flex:1;">
+                                <div style="font-size:13px; font-weight:600;">Extension Worker</div>
+                                <div style="font-size:11px; color:var(--light-gray);">I support farmers in the field</div>
+                            </div>
+                        </div>
+                        <!-- Nutritionist -->
+                        <div style="display:flex; align-items:center; gap:10px; padding:10px 12px; border-bottom:1px solid var(--border-gray);">
+                            <i data-lucide="flask-conical" class="icon" style="width:18px; height:18px; color:var(--mid-gray);"></i>
+                            <div style="flex:1;">
+                                <div style="font-size:13px; font-weight:600;">Nutritionist</div>
+                                <div style="font-size:11px; color:var(--light-gray);">I advise farmers on nutrition</div>
+                            </div>
+                        </div>
+                        <!-- Researcher -->
+                        <div style="display:flex; align-items:center; gap:10px; padding:10px 12px; border-bottom:1px solid var(--border-gray);">
+                            <i data-lucide="microscope" class="icon" style="width:18px; height:18px; color:var(--mid-gray);"></i>
+                            <div style="flex:1;">
+                                <div style="font-size:13px; font-weight:600;">Researcher</div>
+                                <div style="font-size:11px; color:var(--light-gray);">I study animal nutrition</div>
+                            </div>
+                        </div>
+                        <!-- Feed Supplier -->
+                        <div style="display:flex; align-items:center; gap:10px; padding:10px 12px; border-bottom:1px solid var(--border-gray);">
+                            <i data-lucide="store" class="icon" style="width:18px; height:18px; color:var(--mid-gray);"></i>
+                            <div style="flex:1;">
+                                <div style="font-size:13px; font-weight:600;">Feed Supplier</div>
+                                <div style="font-size:11px; color:var(--light-gray);">I supply animal feed</div>
+                            </div>
+                        </div>
+                        <!-- Other -->
+                        <div style="display:flex; align-items:center; gap:10px; padding:10px 12px;">
+                            <i data-lucide="more-horizontal" class="icon" style="width:18px; height:18px; color:var(--mid-gray);"></i>
+                            <div style="flex:1;">
+                                <div style="font-size:13px; font-weight:600;">Other</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cancel Button -->
+                    <div class="ui-btn ui-btn-outline" style="margin-top:14px; margin-bottom:0;">Cancel</div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Annotation: Role Dialog -->
+        <div class="annotation">
+            <div class="annotation-title">Role Dialog</div>
+            <ul>
+                <li>6 roles available: <code>farmer</code>, <code>extension_worker</code>, <code>nutritionist</code>, <code>researcher</code>, <code>feed_supplier</code>, <code>other</code></li>
+                <li>Changing role updates dashboard view (e.g., <code>extension_worker</code> shows farmer management)</li>
+                <li>Saved to backend via <code>updateUserSettings({ user_role })</code></li>
+                <li>Success toast: "Role updated"</li>
+                <li>Role can be changed anytime</li>
+            </ul>
+        </div>
+
+        <!-- ──────────────────────────────────────────────────── -->
+        <!-- Wireframe 4 — Organization Dialog                    -->
+        <!-- ──────────────────────────────────────────────────── -->
+        <h2>Organization Change Dialog</h2>
+
+        <div class="phone-frame">
+            <div class="phone-header">
+                <i data-lucide="arrow-left" class="icon"></i>
+                Settings
+            </div>
+            <div class="phone-body" style="background:rgba(0,0,0,0.3); padding:40px 18px;">
+
+                <!-- Dialog Card -->
+                <div style="background:var(--white); border:2px solid var(--black); border-radius:12px; padding:18px; box-shadow:6px 6px 0 var(--black);">
+                    <div style="font-family:'JetBrains Mono',monospace; font-size:15px; font-weight:700; margin-bottom:14px;">Select Organization</div>
+
+                    <!-- Search Input -->
+                    <div class="ui-input" style="margin-bottom:14px;">
+                        <i data-lucide="search" class="icon" style="width:14px; height:14px;"></i>
+                        <span>Search...</span>
+                    </div>
+
+                    <div style="border:1px solid var(--border-gray); border-radius:6px;">
+                        <!-- Not Affiliated (selected) -->
+                        <div style="display:flex; align-items:center; gap:10px; padding:10px 12px; background:var(--bg-gray); border-bottom:2px solid var(--border-gray);">
+                            <div style="width:32px; height:32px; border-radius:50%; border:2px solid var(--border-gray); display:flex; align-items:center; justify-content:center;">
+                                <i data-lucide="user" class="icon" style="width:14px; height:14px; color:var(--mid-gray);"></i>
+                            </div>
+                            <div style="flex:1;">
+                                <div style="font-size:13px; font-weight:600;">Not Affiliated</div>
+                                <div style="font-size:11px; color:var(--light-gray);">I work independently</div>
+                            </div>
+                            <i data-lucide="check" class="icon" style="width:16px; height:16px; color:var(--pass);"></i>
+                        </div>
+                        <!-- Digital Green -->
+                        <div style="display:flex; align-items:center; gap:10px; padding:10px 12px; border-bottom:1px solid var(--border-gray);">
+                            <div style="width:32px; height:32px; border-radius:50%; background:var(--warn); display:flex; align-items:center; justify-content:center; font-family:'JetBrains Mono',monospace; font-size:13px; font-weight:700; color:var(--white);">D</div>
+                            <div style="flex:1;">
+                                <div style="font-size:13px; font-weight:600;">Digital Green</div>
+                                <div style="font-size:11px; color:var(--light-gray);">NGO</div>
+                            </div>
+                        </div>
+                        <!-- NDDB -->
+                        <div style="display:flex; align-items:center; gap:10px; padding:10px 12px; border-bottom:1px solid var(--border-gray);">
+                            <div style="width:32px; height:32px; border-radius:50%; background:var(--pass); display:flex; align-items:center; justify-content:center; font-family:'JetBrains Mono',monospace; font-size:13px; font-weight:700; color:var(--white);">N</div>
+                            <div style="flex:1;">
+                                <div style="font-size:13px; font-weight:600;">NDDB</div>
+                                <div style="font-size:11px; color:var(--light-gray);">Government</div>
+                            </div>
+                        </div>
+                        <!-- ILRI -->
+                        <div style="display:flex; align-items:center; gap:10px; padding:10px 12px;">
+                            <div style="width:32px; height:32px; border-radius:50%; background:#0088aa; display:flex; align-items:center; justify-content:center; font-family:'JetBrains Mono',monospace; font-size:13px; font-weight:700; color:var(--white);">I</div>
+                            <div style="flex:1;">
+                                <div style="font-size:13px; font-weight:600;">ILRI</div>
+                                <div style="font-size:11px; color:var(--light-gray);">Research</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cancel Button -->
+                    <div class="ui-btn ui-btn-outline" style="margin-top:14px; margin-bottom:0;">Cancel</div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Annotation: Organization Dialog -->
+        <div class="annotation">
+            <div class="annotation-title">Organization Dialog</div>
+            <ul>
+                <li>Organizations fetched from API filtered by user's country</li>
+                <li>"Not Affiliated" sends <code>null</code> <code>organization_id</code></li>
+                <li>Org type colors: university = blue, government = green, ngo = orange, cooperative = purple, research = teal</li>
+                <li>Saved to backend via <code>updateUserSettings({ organization_id })</code></li>
+                <li>Success toast: "Organization updated"</li>
+            </ul>
+        </div>
+
+        <!-- ──────────────────────────────────────────────────── -->
+        <!-- Annotation: Data & Sync                              -->
+        <!-- ──────────────────────────────────────────────────── -->
+        <div class="annotation">
+            <div class="annotation-title">Data &amp; Sync</div>
+            <ul>
+                <li>Sync Status shows: "All data synced" (green), "X items pending" (orange), "Sync error" (red)</li>
+                <li>Manual sync button triggers sync of all pending offline changes</li>
+                <li>Sync History opens a drawer showing log of all sync operations with timestamps</li>
+                <li>Clear Data: confirmation dialog &rarr; clears all local IndexedDB data &rarr; keeps auth tokens</li>
+                <li>Disabled when offline (manual sync button)</li>
+            </ul>
+        </div>
+
+        <!-- ──────────────────────────────────────────────────── -->
+        <!-- Annotation: Logout Flow                              -->
+        <!-- ──────────────────────────────────────────────────── -->
+        <div class="annotation">
+            <div class="annotation-title">Logout Flow</div>
+            <ul>
+                <li>Logout button shows confirmation dialog: "Are you sure you want to log out?"</li>
+                <li>On confirm: clears auth tokens (both <code>localStorage</code> and <code>sessionStorage</code>)</li>
+                <li>Clears user data from Pinia stores</li>
+                <li>Redirects to <code>/auth/login</code></li>
+            </ul>
+        </div>
+
+        <!-- ──────────────────────────────────────────────────── -->
+        <!-- Annotation: Other Settings Pages                     -->
+        <!-- ──────────────────────────────────────────────────── -->
+        <div class="annotation">
+            <div class="annotation-title">Other Settings Pages</div>
+            <ul>
+                <li><strong>Profile</strong> (<code>/settings/profile</code>): Edit name, contact info, view profile details</li>
+                <li><strong>Help</strong> (<code>/settings/help</code>): FAQ, contact support, report issue</li>
+                <li><strong>Privacy Policy</strong> (<code>/settings/privacy</code>): App privacy policy text</li>
+            </ul>
+        </div>
+
+    </main>
+
+    <script>lucide.createIcons();</script>
+</body>
+</html>

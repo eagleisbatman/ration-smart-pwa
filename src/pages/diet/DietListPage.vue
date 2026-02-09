@@ -66,6 +66,17 @@
 
               <div class="text-right">
                 <q-chip
+                  v-if="diet.is_active"
+                  color="positive"
+                  text-color="white"
+                  size="sm"
+                  dense
+                  icon="favorite"
+                >
+                  {{ $t('diet.following') }}
+                </q-chip>
+                <q-chip
+                  v-else
                   :color="getStatusColor(diet.status)"
                   text-color="white"
                   size="sm"
@@ -148,6 +159,9 @@ function getStatusLabel(status: string): string {
     completed: t('diet.statusLabel.completed'),
     processing: t('diet.statusLabel.processing'),
     failed: t('diet.statusLabel.failed'),
+    following: t('diet.following'),
+    archived: t('diet.stopped'),
+    saved: t('diet.statusLabel.completed'),
   };
   return labels[status] || t('diet.statusLabel.pending');
 }
@@ -155,7 +169,12 @@ function getStatusLabel(status: string): string {
 function getStatusColor(status: string): string {
   switch (status) {
     case 'completed':
+    case 'saved':
       return 'positive';
+    case 'following':
+      return 'positive';
+    case 'archived':
+      return 'grey-6';
     case 'processing':
       return 'info';
     case 'failed':
@@ -168,7 +187,12 @@ function getStatusColor(status: string): string {
 function getStatusIcon(status: string): string {
   switch (status) {
     case 'completed':
+    case 'saved':
       return 'check';
+    case 'following':
+      return 'favorite';
+    case 'archived':
+      return 'archive';
     case 'processing':
       return 'hourglass_empty';
     case 'failed':

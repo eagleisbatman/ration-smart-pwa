@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RationSmart Tests - Feeds</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <link rel="stylesheet" href="../shared.css">
+</head>
+<body>
+    <nav class="sidebar">
+        <div class="sidebar-brand"><i data-lucide="beef" class="icon"></i> RationSmart</div>
+        <div class="sidebar-subtitle">Test Cases &middot; 14 Pages</div>
+        <h3>Overview</h3>
+        <a href="index.html"><span class="nav-num">00</span> Overview &amp; Glossary</a>
+        <h3>Authentication</h3>
+        <a href="registration.html"><span class="nav-num">01</span> Registration (8)</a>
+        <a href="login.html"><span class="nav-num">02</span> Login (10)</a>
+        <a href="forgot-pin.html"><span class="nav-num">03</span> Forgot PIN (5)</a>
+        <a href="onboarding.html"><span class="nav-num">04</span> Onboarding (12)</a>
+        <h3>Core Features</h3>
+        <a href="dashboard.html"><span class="nav-num">05</span> Dashboard (8)</a>
+        <a href="cow-management.html"><span class="nav-num">06</span> Cow Management (13)</a>
+        <a href="diet-optimization.html"><span class="nav-num">07</span> Diet Optimization (17)</a>
+        <a href="feeds.html" class="active"><span class="nav-num">08</span> Feeds (7)</a>
+        <a href="milk-logging.html"><span class="nav-num">09</span> Milk Logging (8)</a>
+        <a href="farmer-management.html"><span class="nav-num">10</span> Farmer Mgmt (10)</a>
+        <a href="yield-reporting.html"><span class="nav-num">11</span> Yield Reporting (7)</a>
+        <h3>Settings &amp; Platform</h3>
+        <a href="settings.html"><span class="nav-num">12</span> Settings (10)</a>
+        <a href="navigation-pwa.html"><span class="nav-num">13</span> Navigation &amp; PWA (12)</a>
+    </nav>
+    <main class="main">
+
+        <div class="page-title">08 &mdash; Feeds Test Cases</div>
+        <div class="page-route">Module: Feeds &middot; Route: /feeds &middot; 7 Test Cases</div>
+
+        <!-- ════════════════════════════════════════════════════ -->
+        <!-- TC-FEED-01 -->
+        <!-- ════════════════════════════════════════════════════ -->
+        <div class="tc high">
+            <div class="tc-header">
+                <span class="tc-id">TC-FEED-01</span>
+                <span class="tc-title">View Feed Catalog (Master + Custom Feeds)</span>
+                <span class="tc-priority">High</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">
+                    User is logged in and the device is online. The system has pre-loaded master feeds and the user may or may not have added custom feeds.
+                </div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>Navigate to the <strong>Feeds</strong> page via the side drawer menu or through <strong>Settings</strong>.</li>
+                    <li>Observe the feed list that loads on the page. Verify that both <strong>master feeds</strong> (provided by the system, read-only) and <strong>custom feeds</strong> (added by the user, editable) are displayed.</li>
+                    <li>For each feed card in the list, verify that the following information is visible: the feed <strong>name</strong>, its <strong>category</strong> (e.g., Roughage, Concentrate, Supplement), and <strong>key nutritional values</strong>.</li>
+                    <li>Verify that master feeds are visually distinguished from custom feeds (e.g., a "Master" or "Custom" badge on each card).</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">
+                    The feed list displays both master feeds (provided by the system, read-only) and custom feeds (added by the user, editable). Each feed card shows: the feed name, its category (e.g., Roughage, Concentrate, Supplement), and key nutritional values. Feeds are the different food items given to cattle. Master feeds are pre-loaded by the system (e.g., rice straw, corn silage). Custom feeds are added by the user for local or specialty feeds.
+                </div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>Feed list loads and displays both master and custom feeds</li>
+                    <li>Each feed card shows name, category, and key nutritional values</li>
+                    <li>Master feeds are visually identified (e.g., "Master Feed" badge)</li>
+                    <li>Custom feeds are visually identified (e.g., "Custom" badge)</li>
+                    <li>Master feeds are read-only (no edit/delete controls visible)</li>
+                    <li>Custom feeds show edit/delete controls</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════ -->
+        <!-- TC-FEED-02 -->
+        <!-- ════════════════════════════════════════════════════ -->
+        <div class="tc high">
+            <div class="tc-header">
+                <span class="tc-id">TC-FEED-02</span>
+                <span class="tc-title">Add Custom Feed with Nutritional Values</span>
+                <span class="tc-priority">High</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">
+                    User is on the Feeds page. The device is online.
+                </div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>Tap the <strong>(+)</strong> button (floating action button or add button) on the Feeds page to start creating a new custom feed.</li>
+                    <li>Optionally upload a <strong>Photo</strong> by tapping the photo upload area. The system should offer a choice between <strong>Camera</strong> (take a new photo) and <strong>Gallery</strong> (choose an existing image). This field is optional.</li>
+                    <li>Enter a <strong>Name</strong> for the feed (e.g., <code>Local Hay Mix</code>). This field is required.</li>
+                    <li>Select a <strong>Category</strong> from the dropdown. The available options are: <strong>Roughage</strong>, <strong>Concentrate</strong>, <strong>Mineral</strong>, <strong>Supplement</strong>, <strong>Silage</strong>, <strong>Hay</strong>, <strong>Green Fodder</strong>, and <strong>Other</strong>. This field is required.</li>
+                    <li>Enter the <strong>DM % (Dry Matter)</strong> value (e.g., <code>88.0</code>). This is the percentage of dry matter in the feed. The value must be greater than 0 and less than or equal to 100. This field is required.</li>
+                    <li>Enter the <strong>CP % (Crude Protein)</strong> value (e.g., <code>8.5</code>). CP is the percentage of protein in the feed, typically found on feed packaging or in agricultural reference tables. This field is required.</li>
+                    <li>Enter the <strong>TDN % (Total Digestible Nutrients)</strong> value (e.g., <code>55.0</code>). TDN is a measure of feed energy &mdash; higher values indicate more nutritious feed. This field is required.</li>
+                    <li>Optionally enter the <strong>NDF % (Neutral Detergent Fiber)</strong> value (e.g., <code>65.0</code>). NDF measures the total fiber content of the feed.</li>
+                    <li>Optionally enter the <strong>Ca % (Calcium)</strong> value (e.g., <code>0.30</code>).</li>
+                    <li>Optionally enter the <strong>P % (Phosphorus)</strong> value (e.g., <code>0.15</code>).</li>
+                    <li>Optionally enter the <strong>Price per kg</strong> value (e.g., <code>12.50</code>). The field displays a currency prefix (e.g., INR or the user's configured currency).</li>
+                    <li>Tap the <strong>Save</strong> button to create the custom feed.</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">
+                    The custom feed is created successfully and appears in the feed list with a "Custom" badge. All required fields (Name, Category, DM %, CP %, TDN %) are validated before saving. Optional fields (Photo, NDF %, Ca %, P %, Price per kg) are saved when provided. The feed card displays the feed name, category, and key nutritional values. DM (Dry Matter) is the percentage of the feed that is not water. CP (Crude Protein) is the percentage of protein in the feed. TDN (Total Digestible Nutrients) is a measure of feed energy. NDF (Neutral Detergent Fiber) measures total fiber content. Ca (Calcium) and P (Phosphorus) are essential minerals. These values are typically found on feed packaging or in agricultural reference tables.
+                </div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>Feed creation form opens when (+) button is tapped</li>
+                    <li>Photo upload is optional and offers Camera or Gallery options</li>
+                    <li>Name field is required and validated</li>
+                    <li>Category dropdown offers 8 options: Roughage, Concentrate, Mineral, Supplement, Silage, Hay, Green Fodder, Other</li>
+                    <li>DM % is required and must be &gt;0 and &le;100</li>
+                    <li>CP % is required and accepts decimal values</li>
+                    <li>TDN % is required and accepts decimal values</li>
+                    <li>NDF % is optional and accepts decimal values</li>
+                    <li>Ca % is optional and accepts decimal values</li>
+                    <li>P % is optional and accepts decimal values</li>
+                    <li>Price per kg is optional and displays a currency prefix</li>
+                    <li>Form cannot be submitted if required fields are missing</li>
+                    <li>Custom feed appears in the feed list after saving</li>
+                    <li>Feed card displays "Custom" badge</li>
+                    <li>All saved values match what was entered</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════ -->
+        <!-- TC-FEED-03 -->
+        <!-- ════════════════════════════════════════════════════ -->
+        <div class="tc medium">
+            <div class="tc-header">
+                <span class="tc-id">TC-FEED-03</span>
+                <span class="tc-title">Edit Custom Feed</span>
+                <span class="tc-priority">Medium</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">
+                    At least one custom feed exists in the feed catalog. The user is on the Feeds page.
+                </div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>From the feed list, tap on a <strong>custom feed</strong> to open its detail view.</li>
+                    <li>Tap the <strong>Edit</strong> button to enter edit mode for the feed.</li>
+                    <li>Change the <strong>Price per kg</strong> value to a new amount (e.g., change from <code>12.50</code> to <code>15.00</code>).</li>
+                    <li>Tap the <strong>Save</strong> button to apply the changes.</li>
+                    <li>Verify the updated price is displayed on the feed detail page.</li>
+                    <li>Navigate back to the feed list and verify the updated price is reflected on the feed card as well.</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">
+                    The custom feed is updated with the new price per kg value. The change is reflected both in the feed detail view and in the feed list card. No other feed values are altered.
+                </div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>Edit button is available on custom feed detail view</li>
+                    <li>Price per kg field is editable and accepts the new value</li>
+                    <li>Updated value persists after saving</li>
+                    <li>Feed detail page shows the updated price</li>
+                    <li>Feed list card reflects the updated price</li>
+                    <li>Other nutritional values remain unchanged</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════ -->
+        <!-- TC-FEED-04 -->
+        <!-- ════════════════════════════════════════════════════ -->
+        <div class="tc medium">
+            <div class="tc-header">
+                <span class="tc-id">TC-FEED-04</span>
+                <span class="tc-title">View Feed Detail (Full Nutritional Profile)</span>
+                <span class="tc-priority">Medium</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">
+                    At least one feed (master or custom) exists in the feed catalog. The user is on the Feeds page.
+                </div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>From the feed list, tap on any feed to open its <strong>detail page</strong>.</li>
+                    <li>Verify the detail page displays the <strong>feed name</strong> prominently at the top.</li>
+                    <li>Verify the <strong>category</strong> is shown (e.g., Roughage, Concentrate, Mineral, Supplement, Silage, Hay, Green Fodder, Other).</li>
+                    <li>If a <strong>photo</strong> was uploaded for the feed, verify it is displayed on the detail page.</li>
+                    <li>Verify the following nutritional and cost values are displayed: <strong>DM % (Dry Matter)</strong>, <strong>CP % (Crude Protein)</strong>, <strong>TDN % (Total Digestible Nutrients)</strong>, <strong>NDF % (Neutral Detergent Fiber)</strong>, <strong>Ca % (Calcium)</strong>, <strong>P % (Phosphorus)</strong>, and <strong>Price per kg</strong> (with currency prefix).</li>
+                    <li>Verify whether the feed is labelled as a <strong>Master Feed</strong> or a <strong>Custom Feed</strong>.</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">
+                    The feed detail page shows all relevant information: feed name, category, photo (if uploaded), DM %, CP %, TDN %, NDF %, Ca %, P %, price per kg with currency prefix, and whether it is a master or custom feed. Optional fields (NDF %, Ca %, P %, Price per kg) that were not provided during creation may appear blank or as a dash.
+                </div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>Feed name is displayed at the top of the detail page</li>
+                    <li>Category label is visible (one of the 8 categories)</li>
+                    <li>Photo is displayed if one was uploaded</li>
+                    <li>DM % (Dry Matter) value is displayed</li>
+                    <li>CP % (Crude Protein) value is displayed</li>
+                    <li>TDN % (Total Digestible Nutrients) value is displayed</li>
+                    <li>NDF % (Neutral Detergent Fiber) value is displayed (or dash if not set)</li>
+                    <li>Ca % (Calcium) value is displayed (or dash if not set)</li>
+                    <li>P % (Phosphorus) value is displayed (or dash if not set)</li>
+                    <li>Price per kg is displayed with currency prefix (or dash if not set)</li>
+                    <li>Master or Custom feed badge is visible</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════ -->
+        <!-- TC-FEED-05 -->
+        <!-- ════════════════════════════════════════════════════ -->
+        <div class="tc medium">
+            <div class="tc-header">
+                <span class="tc-id">TC-FEED-05</span>
+                <span class="tc-title">Cannot Edit Master Feeds</span>
+                <span class="tc-priority">Medium</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">
+                    Master feeds exist in the feed catalog (these are pre-loaded by the system). The user is on the Feeds page.
+                </div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>From the feed list, identify a feed with the <strong>Master Feed</strong> badge (e.g., "Rice Straw" or "Corn Silage").</li>
+                    <li>Tap on the master feed to open its <strong>detail page</strong>.</li>
+                    <li>Observe the detail page and look for an <strong>Edit</strong> button or <strong>Delete</strong> option.</li>
+                    <li>Verify that a <strong>"Master Feed"</strong> badge or label is displayed on the detail page, indicating this feed is system-provided and cannot be modified.</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">
+                    No Edit button or Delete option is visible on the master feed detail page. The page displays a "Master Feed" badge confirming it is a system-provided feed. Only custom feeds show Edit and Delete options.
+                </div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>Master feed detail page does not show an Edit button</li>
+                    <li>Master feed detail page does not show a Delete option</li>
+                    <li>"Master Feed" badge is visible on the detail page</li>
+                    <li>All nutritional values are displayed in read-only format</li>
+                    <li>Custom feeds (for comparison) do show Edit and Delete options</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════ -->
+        <!-- TC-FEED-06 -->
+        <!-- ════════════════════════════════════════════════════ -->
+        <div class="tc medium">
+            <div class="tc-header">
+                <span class="tc-id">TC-FEED-06</span>
+                <span class="tc-title">Feed Search by Name or Category</span>
+                <span class="tc-priority">Medium</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">
+                    Multiple feeds exist in the catalog across different categories (e.g., Roughage, Concentrate, Supplement). The user is on the Feeds page.
+                </div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>Locate the <strong>search box</strong> at the top of the Feeds page.</li>
+                    <li>Type a partial feed name (e.g., <code>rice</code>) in the search box. Observe the feed list filtering in real time as you type.</li>
+                    <li>Verify that only feeds whose names contain "rice" are displayed (e.g., "Rice Straw", "Rice Bran").</li>
+                    <li>Clear the search box and verify that the full feed list is restored.</li>
+                    <li>Locate the <strong>category filter</strong> (e.g., a dropdown or tab bar with Roughage, Concentrate, Supplement options).</li>
+                    <li>Select a specific category (e.g., <strong>Roughage</strong>). Verify that only feeds belonging to the Roughage category are displayed.</li>
+                    <li>Remove the category filter and verify the full feed list is restored.</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">
+                    The search box filters feeds by name match in real time as the user types. The category filter shows only feeds belonging to the selected category. Clearing the search or removing the category filter restores the full feed list.
+                </div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>Search filters the feed list by name match as the user types</li>
+                    <li>Search is case-insensitive (typing "rice" matches "Rice Straw")</li>
+                    <li>Clearing the search box restores the full feed list</li>
+                    <li>Category filter shows only feeds in the selected category</li>
+                    <li>Removing the category filter restores the full feed list</li>
+                    <li>Search and category filter can work together (combined filtering)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════ -->
+        <!-- TC-FEED-07 -->
+        <!-- ════════════════════════════════════════════════════ -->
+        <div class="tc high">
+            <div class="tc-header">
+                <span class="tc-id">TC-FEED-07</span>
+                <span class="tc-title">Edit Feed Price per kg</span>
+                <span class="tc-priority">High</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">
+                    A custom feed exists in the feed catalog with a price per kg value already set. The user is on the Feeds page.
+                </div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>Navigate to the <strong>Feed list</strong> on the Feeds page.</li>
+                    <li>Tap on a <strong>custom feed</strong> that has a price per kg value set to open its detail view.</li>
+                    <li>Tap the <strong>Edit</strong> button to enter edit mode for the feed.</li>
+                    <li>Change the <strong>Price per kg</strong> value to a new amount (e.g., change from <code>12.50</code> to <code>18.00</code>).</li>
+                    <li>Tap the <strong>Save</strong> button to apply the changes.</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">
+                    The price field shows the current value with a currency prefix (e.g., INR or the user's configured currency) when entering edit mode. The new price saves successfully and is reflected on the feed detail page. The system automatically logs the price change in a price history record, tracking price changes over time.
+                </div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>Price per kg field is editable on custom feeds</li>
+                    <li>Price field displays the current value with currency prefix when editing</li>
+                    <li>New price value saves correctly after tapping Save</li>
+                    <li>Updated price is reflected on the feed detail page</li>
+                    <li>Price change is automatically logged in the price history</li>
+                    <li>System tracks price changes over time (price history log)</li>
+                    <li>Master feeds do not allow price editing</li>
+                </ul>
+            </div>
+        </div>
+
+    </main>
+    <script>lucide.createIcons();</script>
+</body>
+</html>

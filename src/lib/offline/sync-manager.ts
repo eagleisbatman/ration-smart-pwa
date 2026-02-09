@@ -27,6 +27,7 @@ const API_ENDPOINTS: Record<SyncQueueItem['entity_type'], string> = {
   milk_log: '/api/v1/milk-logs',
   farmer: '/api/v1/farmer-profiles',
   yield: '/api/v1/yield-data',
+  health_event: '/api/v1/health-events',
 };
 
 // Update pending count
@@ -280,6 +281,8 @@ function getTableForEntityType(entityType: SyncQueueItem['entity_type']) {
       return db.farmerProfiles;
     case 'yield':
       return db.yieldData;
+    case 'health_event':
+      return db.healthEvents;
     default:
       return undefined;
   }
@@ -428,6 +431,14 @@ export async function forcePullFromServer(
       await db.yieldData.clear();
       if (Array.isArray(serverData)) {
         await db.yieldData.bulkPut(
+          serverData.map((item) => ({ ...item, _synced: true, _deleted: false }))
+        );
+      }
+      break;
+    case 'health_event':
+      await db.healthEvents.clear();
+      if (Array.isArray(serverData)) {
+        await db.healthEvents.bulkPut(
           serverData.map((item) => ({ ...item, _synced: true, _deleted: false }))
         );
       }

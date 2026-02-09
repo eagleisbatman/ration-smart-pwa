@@ -116,6 +116,29 @@
         </div>
       </div>
 
+      <!-- Active Diet Card -->
+      <q-card
+        v-if="activeDiet"
+        flat
+        bordered
+        class="q-mb-md active-diet-card"
+        clickable
+        @click="router.push(`/diet/${activeDiet.id}`)"
+      >
+        <q-card-section class="row items-center no-wrap">
+          <q-avatar color="positive" text-color="white" size="40px">
+            <q-icon name="favorite" />
+          </q-avatar>
+          <div class="q-ml-md col">
+            <div class="text-subtitle2">{{ $t('diet.currentDiet') }}</div>
+            <div class="text-caption text-grey-7">
+              {{ activeDiet.optimization_goal }} · {{ formatCurrency(activeDiet.total_cost ?? 0) }}{{ $t('diet.perDay') }}
+            </div>
+          </div>
+          <q-icon name="chevron_right" color="grey-6" />
+        </q-card-section>
+      </q-card>
+
       <!-- Details List -->
       <q-card flat bordered class="q-mb-md">
         <q-list separator>
@@ -270,7 +293,9 @@ const { t } = useI18n();
 import { format, subDays, startOfWeek, endOfWeek, parseISO } from 'date-fns';
 import { useCowsStore } from 'src/stores/cows';
 import { useMilkLogsStore } from 'src/stores/milkLogs';
-import { Cow } from 'src/lib/offline/db';
+import { useDietsStore } from 'src/stores/diets';
+import { Cow, Diet } from 'src/lib/offline/db';
+import { useCurrency } from 'src/composables/useCurrency';
 import SkeletonCard from 'src/components/ui/SkeletonCard.vue';
 import EmptyState from 'src/components/ui/EmptyState.vue';
 import MilkProductionChart from 'src/components/dashboard/MilkProductionChart.vue';
@@ -278,12 +303,15 @@ import HealthEventTimeline from 'src/components/cow/HealthEventTimeline.vue';
 import { COW_ICON } from 'src/boot/icons';
 
 const route = useRoute();
+const { formatCurrency } = useCurrency();
 const cowsStore = useCowsStore();
 const milkLogsStore = useMilkLogsStore();
+const dietsStore = useDietsStore();
 
 const cowId = computed(() => route.params.id as string);
 const cow = ref<Cow | null>(null);
 const recentLogs = ref<typeof milkLogsStore.logs>([]);
+const activeDiet = ref<Diet | null>(null);
 const loading = ref(true);
 const healthTimeline = ref<InstanceType<typeof HealthEventTimeline> | null>(null);
 
@@ -369,6 +397,7 @@ onMounted(async () => {
 
   if (cow.value) {
     recentLogs.value = await milkLogsStore.getLogsForCow(cowId.value);
+    activeDiet.value = await dietsStore.getActiveDietForCow(cowId.value);
   }
 
   loading.value = false;
@@ -395,5 +424,10 @@ onMounted(async () => {
   align-items: center;
   justify-content: center;
   line-height: 1;
+}
+
+.active-diet-card {
+  border-radius: 12px;
+  border-left: 4px solid var(--q-positive);
 }
 </style>

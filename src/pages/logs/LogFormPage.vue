@@ -83,6 +83,25 @@
         </div>
       </q-card>
 
+      <!-- Diet Adherence (only when cow has active diet) -->
+      <q-card v-if="activeDiet" flat bordered class="q-pa-md diet-adherence-card">
+        <div class="text-subtitle2 q-mb-sm">{{ $t('diet.fedToday') }}</div>
+        <div class="text-caption text-grey-7 q-mb-md">
+          {{ activeDiet.cow_name || $t('diet.dietPlan') }} · {{ formatCurrency(activeDiet.total_cost ?? 0) }}{{ $t('diet.perDay') }}
+        </div>
+        <q-btn-toggle
+          v-model="form.fed_diet"
+          spread
+          no-caps
+          unelevated
+          toggle-color="primary"
+          :options="[
+            { label: $t('diet.fedYes'), value: true },
+            { label: $t('diet.fedNo'), value: false },
+          ]"
+        />
+      </q-card>
+
       <!-- Optional Quality Metrics -->
       <q-card flat bordered class="q-pa-md">
         <div class="text-subtitle2 q-mb-md">{{ $t('logs.form.qualityMetrics') }}</div>
@@ -169,27 +188,34 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, computed, onMounted } from 'vue';
+import { ref, reactive, computed, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useQuasar } from 'quasar';
 import { useI18n } from 'vue-i18n';
 import { format } from 'date-fns';
 import { useMilkLogsStore, MilkLogInput } from 'src/stores/milkLogs';
 import { useCowsStore } from 'src/stores/cows';
+import { useDietsStore } from 'src/stores/diets';
+import { Diet } from 'src/lib/offline/db';
+import { useCurrency } from 'src/composables/useCurrency';
 import { COW_ICON } from 'src/boot/icons';
 
 const { t } = useI18n();
 const router = useRouter();
 const route = useRoute();
 const $q = useQuasar();
+const { formatCurrency } = useCurrency();
 const milkLogsStore = useMilkLogsStore();
 const cowsStore = useCowsStore();
+const dietsStore = useDietsStore();
 
 const logId = computed(() => route.params.id as string | undefined);
 const isEditing = computed(() => !!logId.value);
 
 // Pre-fill cow_id from query params
 const queryCowId = route.query.cow_id as string | undefined;
+
+const activeDiet = ref<Diet | null>(null);
 
 const form = reactive<MilkLogInput>({
   cow_id: queryCowId || '',
@@ -201,6 +227,8 @@ const form = reactive<MilkLogInput>({
   snf_percentage: undefined,
   temperature: undefined,
   notes: '',
+  fed_diet: undefined,
+  diet_history_id: undefined,
 });
 
 const loading = computed(() => milkLogsStore.loading);
@@ -215,10 +243,21 @@ const cowOptions = computed(() =>
   }))
 );
 
-function onCowSelected(cowId: string) {
+async function onCowSelected(cowId: string) {
   const cow = cowsStore.activeCows.find((c) => c.id === cowId);
   if (cow) {
     form.cow_name = cow.name;
+  }
+
+  // Fetch active diet for this cow to show adherence toggle
+  activeDiet.value = await dietsStore.getActiveDietForCow(cowId);
+  if (activeDiet.value) {
+    form.diet_history_id = activeDiet.value.id;
+    // Default to undefined (user must choose)
+    form.fed_diet = undefined;
+  } else {
+    form.diet_history_id = undefined;
+    form.fed_diet = undefined;
   }
 }
 
@@ -286,9 +325,9 @@ function confirmDelete() {
 onMounted(async () => {
   await cowsStore.fetchCows();
 
-  // Pre-fill cow name if cow_id from query
+  // Pre-fill cow name and fetch active diet if cow_id from query
   if (queryCowId) {
-    onCowSelected(queryCowId);
+    await onCowSelected(queryCowId);
   }
 
   if (isEditing.value) {

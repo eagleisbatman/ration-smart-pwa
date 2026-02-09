@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>05 — Dashboard Test Cases</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <link rel="stylesheet" href="../shared.css">
+</head>
+<body>
+    <nav class="sidebar">
+        <div class="sidebar-brand"><i data-lucide="beef" class="icon"></i> RationSmart</div>
+        <div class="sidebar-subtitle">Test Cases &middot; 14 Pages</div>
+        <h3>Overview</h3>
+        <a href="index.html"><span class="nav-num">00</span> Overview &amp; Glossary</a>
+        <h3>Authentication</h3>
+        <a href="registration.html"><span class="nav-num">01</span> Registration (8)</a>
+        <a href="login.html"><span class="nav-num">02</span> Login (10)</a>
+        <a href="forgot-pin.html"><span class="nav-num">03</span> Forgot PIN (5)</a>
+        <a href="onboarding.html"><span class="nav-num">04</span> Onboarding (12)</a>
+        <h3>Core Features</h3>
+        <a href="dashboard.html" class="active"><span class="nav-num">05</span> Dashboard (8)</a>
+        <a href="cow-management.html"><span class="nav-num">06</span> Cow Management (13)</a>
+        <a href="diet-optimization.html"><span class="nav-num">07</span> Diet Optimization (17)</a>
+        <a href="feeds.html"><span class="nav-num">08</span> Feeds (7)</a>
+        <a href="milk-logging.html"><span class="nav-num">09</span> Milk Logging (8)</a>
+        <a href="farmer-management.html"><span class="nav-num">10</span> Farmer Mgmt (10)</a>
+        <a href="yield-reporting.html"><span class="nav-num">11</span> Yield Reporting (7)</a>
+        <h3>Settings &amp; Platform</h3>
+        <a href="settings.html"><span class="nav-num">12</span> Settings (10)</a>
+        <a href="navigation-pwa.html"><span class="nav-num">13</span> Navigation &amp; PWA (12)</a>
+    </nav>
+    <main class="main">
+
+        <div class="page-title">05 &mdash; Dashboard Test Cases</div>
+        <div class="page-route">Module: Dashboard &middot; Route: / &middot; 8 Test Cases</div>
+
+        <p class="small muted mb-sm">The Home Dashboard shows different views based on the user's role. Regular users (farmer, student) see the Farmer Dashboard with their own stats. Extension workers see an expanded dashboard with farmer management features.</p>
+
+        <!-- ── TC-DASH-01 ── -->
+        <div class="tc high">
+            <div class="tc-header">
+                <span class="tc-id">TC-DASH-01</span>
+                <span class="tc-title">Farmer Dashboard Shows Greeting and Stats</span>
+                <span class="tc-priority">High</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">Logged in as a user with the <strong>farmer</strong> role. Onboarding is complete. The account has 3 cows registered with milk data logged for today.</div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>Navigate to the Home page at <code>/</code>.</li>
+                    <li>Observe the greeting text displayed near the top of the dashboard.</li>
+                    <li>Observe the stats cards below the greeting (cow count card and today's milk total card).</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">The greeting reads <strong>"Good [morning/afternoon/evening], [Name]!"</strong> where the time-of-day word matches the current time and <strong>[Name]</strong> is the logged-in user's display name. The stats cards show the correct cow count and today's total milk production.</div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>Greeting includes the user's name</li>
+                    <li>Greeting uses a time-appropriate word (morning, afternoon, or evening) based on the current time of day</li>
+                    <li>Cow count stat matches the actual number of cows registered to the user (3 in this scenario)</li>
+                    <li>Milk total is the sum of all milk logs recorded for today across all cows</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ── TC-DASH-02 ── -->
+        <div class="tc high">
+            <div class="tc-header">
+                <span class="tc-id">TC-DASH-02</span>
+                <span class="tc-title">Quick Action Buttons Navigate Correctly</span>
+                <span class="tc-priority">High</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">Logged in and viewing the Home Dashboard at <code>/</code>.</div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>Tap the <strong>"Log Milk"</strong> quick action button and verify the app navigates to <code>/logs/new</code>.</li>
+                    <li>Navigate back to the Home Dashboard.</li>
+                    <li>Tap the <strong>"Get Diet"</strong> quick action button and verify the app navigates to <code>/diet/new</code>.</li>
+                    <li>Navigate back to the Home Dashboard.</li>
+                    <li>Tap the <strong>"Add Cow"</strong> quick action button and verify the app navigates to <code>/cows/new</code>.</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">Each quick action button navigates to the correct page. Tapping "Log Milk" goes to <code>/logs/new</code>, "Get Diet" goes to <code>/diet/new</code>, and "Add Cow" goes to <code>/cows/new</code>.</div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>Log Milk button navigates to <code>/logs/new</code></li>
+                    <li>Get Diet button navigates to <code>/diet/new</code></li>
+                    <li>Add Cow button navigates to <code>/cows/new</code></li>
+                    <li>Back navigation from each page returns to the dashboard</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ── TC-DASH-03 ── -->
+        <div class="tc high">
+            <div class="tc-header">
+                <span class="tc-id">TC-DASH-03</span>
+                <span class="tc-title">Extension Worker Sees Dual-View Toggle</span>
+                <span class="tc-priority">High</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">Logged in as a user with the <strong>extension_worker</strong> role.</div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>Navigate to the Home page at <code>/</code>.</li>
+                    <li>Observe the toggle control displayed at the top of the dashboard area.</li>
+                    <li>Verify the toggle has two options: <strong>"My Farmers"</strong> and <strong>"Personal"</strong>.</li>
+                    <li>Verify that <strong>"My Farmers"</strong> is the active/selected option by default.</li>
+                    <li>Observe the content below the toggle &mdash; it should display a list of farmer cards.</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">A toggle with two options &mdash; "My Farmers" and "Personal" &mdash; is visible at the top of the dashboard. The "My Farmers" view is selected by default and a list of farmer cards is displayed below the toggle.</div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>Toggle control is visible at the top of the dashboard</li>
+                    <li>"My Farmers" is the active/selected option by default</li>
+                    <li>Farmer list is visible below the toggle</li>
+                    <li>Farmer cards show name and basic stats for each farmer</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ── TC-DASH-04 ── -->
+        <div class="tc high">
+            <div class="tc-header">
+                <span class="tc-id">TC-DASH-04</span>
+                <span class="tc-title">Extension Worker My Farmers View</span>
+                <span class="tc-priority">High</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">Logged in as an <strong>extension_worker</strong> who has previously created farmer profiles. The dashboard is open with the <strong>"My Farmers"</strong> toggle active.</div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>On the dashboard with the "My Farmers" toggle active, observe the farmer cards displayed in the list.</li>
+                    <li>For each farmer card, verify it shows the farmer's name, cow count, today's milk total, and village.</li>
+                    <li>Tap on one of the farmer cards.</li>
+                    <li>Verify the app navigates to the farmer detail page at <code>/farmers/:id</code>.</li>
+                    <li>Navigate back to the dashboard and observe the action buttons (Add Farmer, Record Yield, Import CSV).</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">Farmer cards display name, cow count, today's milk, and village for each farmer. Tapping a card navigates to <code>/farmers/:id</code>. Action buttons for Add Farmer, Record Yield, and Import CSV are visible and accessible.</div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>Farmer cards are visible in the list</li>
+                    <li>Each card shows name, village, cow count, and today's milk stats</li>
+                    <li>Tapping a farmer card navigates to <code>/farmers/:id</code></li>
+                    <li>Action buttons visible: Add Farmer, Record Yield, Import CSV</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ── TC-DASH-05 ── -->
+        <div class="tc medium">
+            <div class="tc-header">
+                <span class="tc-id">TC-DASH-05</span>
+                <span class="tc-title">Extension Worker Personal View</span>
+                <span class="tc-priority">Medium</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">Logged in as an <strong>extension_worker</strong>. The dashboard is currently showing the "My Farmers" view.</div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>Tap the <strong>"Personal"</strong> option in the toggle at the top of the dashboard.</li>
+                    <li>Observe the dashboard content change below the toggle.</li>
+                    <li>Verify the view now shows the extension worker's own personal stats (own cows, own milk production).</li>
+                    <li>Verify that personal quick action buttons are visible.</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">The view switches to a personal farmer dashboard showing the extension worker's own cows, own milk stats, and own quick actions &mdash; identical in layout to a regular farmer's dashboard.</div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>Toggle switches to "Personal" as the active selection</li>
+                    <li>Personal stats are shown (own cow count, own milk production)</li>
+                    <li>Quick action buttons are visible (Log Milk, Get Diet, Add Cow)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ── TC-DASH-06 ── -->
+        <div class="tc medium">
+            <div class="tc-header">
+                <span class="tc-id">TC-DASH-06</span>
+                <span class="tc-title">Pull-to-Refresh Updates Data</span>
+                <span class="tc-priority">Medium</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">Logged in and viewing the Home Dashboard at <code>/</code>.</div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>Place your finger (or cursor on desktop) on the page content and pull/swipe downward.</li>
+                    <li>Observe the refresh animation or loading indicator that appears.</li>
+                    <li>Wait for the data to reload and the loading indicator to disappear.</li>
+                    <li>Verify the dashboard data has been refreshed (check that stats reflect the latest data).</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">A pull-to-refresh animation or loading indicator appears when the user swipes down. Data refreshes from the server (or from cache if offline). The indicator disappears once the refresh is complete.</div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>Pull gesture triggers a visible loading indicator</li>
+                    <li>Data updates after the refresh completes</li>
+                    <li>No errors are displayed during or after the refresh</li>
+                    <li>Works both online (fetches from server) and offline (loads from cache)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ── TC-DASH-07 ── -->
+        <div class="tc medium">
+            <div class="tc-header">
+                <span class="tc-id">TC-DASH-07</span>
+                <span class="tc-title">FAB Shows Quick Actions</span>
+                <span class="tc-priority">Medium</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">Logged in and on any page where the FAB (Floating Action Button) is visible, such as the Home Dashboard or the Cow List page.</div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>Locate the floating <strong>"+"</strong> button at the bottom-right corner of the screen.</li>
+                    <li>Tap the FAB button.</li>
+                    <li>Observe the 3 action buttons that fan out (expand upward) from the FAB.</li>
+                    <li>Verify each option has an icon and a label: <strong>Add Cow</strong> (cow icon), <strong>Log Milk</strong> (water drop icon), <strong>Get Diet</strong> (utensils icon).</li>
+                    <li>Tap each expanded option one at a time and verify it navigates to the correct page.</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">The FAB expands to show 3 quick action options: Add Cow (with a cow icon), Log Milk (with a water drop icon), and Get Diet (with a utensils icon). Each option navigates to its respective page when tapped.</div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>FAB is visible at the bottom-right of the screen</li>
+                    <li>Tapping the FAB expands 3 options upward</li>
+                    <li>Each option displays both an icon and a text label</li>
+                    <li>Add Cow navigates to <code>/cows/new</code></li>
+                    <li>Log Milk navigates to <code>/logs/new</code></li>
+                    <li>Get Diet navigates to <code>/diet/new</code></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ── TC-DASH-08 ── -->
+        <div class="tc high">
+            <div class="tc-header">
+                <span class="tc-id">TC-DASH-08</span>
+                <span class="tc-title">Offline Indicator Shows When Disconnected</span>
+                <span class="tc-priority">High</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">Logged in with the app open. Browser DevTools are accessible.</div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>Open browser DevTools and navigate to the <strong>Network</strong> tab.</li>
+                    <li>Toggle <strong>"Offline"</strong> mode ON to simulate a network disconnection.</li>
+                    <li>Observe the app for an offline indicator or banner appearing at the top of the page.</li>
+                    <li>Verify the indicator communicates that there is no internet connection (e.g., text like "Offline" or "No connection").</li>
+                    <li>Toggle <strong>"Offline"</strong> mode OFF in DevTools to restore the connection.</li>
+                    <li>Verify the offline indicator disappears once the connection is restored.</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">An offline indicator or banner appears at the top of the page when the network connection is lost. It clearly indicates the app is offline. The indicator disappears when the connection is restored. The app remains functional and can display cached data while offline.</div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>Offline banner or indicator is visible when the device is disconnected</li>
+                    <li>Indicator text communicates "offline" or "no connection" status</li>
+                    <li>Indicator disappears when the connection is restored (toggle offline OFF)</li>
+                    <li>App remains functional while offline (cached data is viewable)</li>
+                </ul>
+            </div>
+        </div>
+
+    </main>
+    <script>lucide.createIcons();</script>
+</body>
+</html>

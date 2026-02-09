@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RationSmart - User Flows</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <link rel="stylesheet" href="../shared.css">
+</head>
+<body>
+    <nav class="sidebar">
+        <div class="sidebar-brand"><i data-lucide="beef" class="icon"></i> RationSmart</div>
+        <div class="sidebar-subtitle">User Flows &middot; 9 Pages</div>
+        <h3>Authentication</h3>
+        <a href="index.html" class="active"><span class="nav-num">00</span> Overview</a>
+        <a href="registration.html"><span class="nav-num">01</span> Registration</a>
+        <a href="login.html"><span class="nav-num">02</span> Login</a>
+        <a href="forgot-pin.html"><span class="nav-num">03</span> Forgot PIN</a>
+        <h3>Onboarding</h3>
+        <a href="onboarding.html"><span class="nav-num">04</span> Onboarding (4 Steps)</a>
+        <h3>Core App</h3>
+        <a href="dashboard.html"><span class="nav-num">05</span> Home Dashboard</a>
+        <a href="cow-management.html"><span class="nav-num">06</span> Cow Management</a>
+        <a href="diet-wizard.html"><span class="nav-num">07</span> Diet Optimization</a>
+        <a href="settings.html"><span class="nav-num">08</span> Settings</a>
+    </nav>
+
+    <main class="main">
+        <div class="page-title">RationSmart PWA - User Flows</div>
+        <div class="page-route">App URL: https://ration-smart-pwa-production.up.railway.app/</div>
+
+        <p>RationSmart is a Progressive Web App for cattle nutrition optimization. It supports multiple user roles and works offline.</p>
+
+        <!-- Overall Flow -->
+        <h2>Overall App Flow</h2>
+        <div style="overflow-x:auto; padding: 20px 0;">
+            <div class="flow-box filled">START</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box">Register</div>
+            <span class="small muted" style="margin:0 4px">or</span>
+            <div class="flow-box">Login</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-group">
+                <div class="flow-box">Language</div>
+                <span class="flow-arrow">&rarr;</span>
+                <div class="flow-box">Role</div>
+                <span class="flow-arrow">&rarr;</span>
+                <div class="flow-box">Org</div>
+                <span class="flow-arrow">&rarr;</span>
+                <div class="flow-box">Profile</div>
+            </div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box filled">Home Dashboard</div>
+        </div>
+
+        <!-- Roles -->
+        <h2>User Roles &amp; Access</h2>
+        <table>
+            <tr>
+                <th>Feature</th><th>Farmer</th><th>Student</th><th>Nutritionist</th><th>Ext. Worker</th><th>Researcher</th>
+            </tr>
+            <tr><td>Own Cow Management</td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+            <tr><td>Milk Logging</td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+            <tr><td>Diet Recommendations</td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+            <tr><td>Farmer Profile CRUD</td><td>-</td><td>-</td><td>View</td><td>Create/Edit</td><td>View</td></tr>
+            <tr><td>Yield Data Collection</td><td>-</td><td>-</td><td>View</td><td>Collect</td><td>Yes</td></tr>
+            <tr><td>Org Analytics</td><td>-</td><td>-</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+            <tr><td>Export Data</td><td>-</td><td>-</td><td>-</td><td>Yes</td><td>Yes</td></tr>
+        </table>
+
+        <!-- Navigation -->
+        <h2>Navigation Structure</h2>
+        <h3>Bottom Navigation (Mobile - 5 tabs)</h3>
+        <table>
+            <tr><th>Tab</th><th>Route</th><th>Purpose</th></tr>
+            <tr><td>Home</td><td><code>/</code></td><td>Dashboard, quick stats, shortcuts</td></tr>
+            <tr><td>Farmers</td><td><code>/farmers</code></td><td>Farmer management (Ext. Worker)</td></tr>
+            <tr><td>Cows</td><td><code>/cows</code></td><td>Cattle profiles</td></tr>
+            <tr><td>Diet</td><td><code>/diet</code></td><td>Diet recommendations</td></tr>
+            <tr><td>More</td><td><code>/settings</code></td><td>Settings, profile, logout</td></tr>
+        </table>
+
+        <h3>Side Drawer (Tablet/Desktop)</h3>
+        <p class="small muted">Additional items: Feeds (/feeds), Milk Logs (/logs), Yield History (/yields), Reports (/reports)</p>
+
+        <!-- Route Reference -->
+        <h2>All Routes</h2>
+        <table>
+            <tr><th>Route</th><th>Page</th><th>Auth?</th></tr>
+            <tr><td><code>/auth/login</code></td><td>Login</td><td>Public</td></tr>
+            <tr><td><code>/auth/register</code></td><td>Registration</td><td>Public</td></tr>
+            <tr><td><code>/auth/forgot-pin</code></td><td>PIN Recovery</td><td>Public</td></tr>
+            <tr><td><code>/auth/language</code></td><td>Language Select</td><td>Onboarding</td></tr>
+            <tr><td><code>/auth/role</code></td><td>Role Select</td><td>Onboarding</td></tr>
+            <tr><td><code>/auth/organization</code></td><td>Org Select</td><td>Onboarding</td></tr>
+            <tr><td><code>/auth/profile-setup</code></td><td>Profile Setup</td><td>Onboarding</td></tr>
+            <tr><td><code>/</code></td><td>Home Dashboard</td><td>Yes</td></tr>
+            <tr><td><code>/cows</code>, <code>/cows/new</code>, <code>/cows/:id</code></td><td>Cow CRUD</td><td>Yes</td></tr>
+            <tr><td><code>/diet</code>, <code>/diet/new</code>, <code>/diet/:id</code></td><td>Diet CRUD</td><td>Yes</td></tr>
+            <tr><td><code>/logs</code>, <code>/logs/new</code></td><td>Milk Logs</td><td>Yes</td></tr>
+            <tr><td><code>/feeds</code>, <code>/feeds/new</code></td><td>Feed Catalog</td><td>Yes</td></tr>
+            <tr><td><code>/farmers</code>, <code>/farmers/new</code>, <code>/farmers/:id</code></td><td>Farmer CRUD</td><td>Yes</td></tr>
+            <tr><td><code>/settings</code></td><td>Settings</td><td>Yes</td></tr>
+        </table>
+
+        <!-- Languages -->
+        <h2>Supported Languages (22)</h2>
+        <table>
+            <tr><th>Region</th><th>Languages</th></tr>
+            <tr><td>Global</td><td>English</td></tr>
+            <tr><td>India</td><td>Hindi, Bengali, Telugu, Marathi, Tamil, Gujarati, Kannada, Malayalam, Odia, Punjabi, Assamese, Urdu</td></tr>
+            <tr><td>Nepal</td><td>Nepali</td></tr>
+            <tr><td>Vietnam</td><td>Vietnamese</td></tr>
+            <tr><td>Ethiopia</td><td>Amharic, Oromo</td></tr>
+            <tr><td>Indonesia</td><td>Indonesian</td></tr>
+            <tr><td>Philippines</td><td>Filipino</td></tr>
+            <tr><td>Thailand</td><td>Thai</td></tr>
+            <tr><td>Morocco</td><td>Arabic, French</td></tr>
+        </table>
+    </main>
+    <script>lucide.createIcons();</script>
+</body>
+</html>

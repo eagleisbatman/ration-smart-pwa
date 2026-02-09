@@ -54,6 +54,15 @@ export interface DietResult {
   warnings?: string[];
 }
 
+/** Sort diets so actively followed ones appear first, then by created_at desc. */
+function sortWithActiveFirst(list: Diet[]): Diet[] {
+  return [...list].sort((a, b) => {
+    if (a.is_active && !b.is_active) return -1;
+    if (!a.is_active && b.is_active) return 1;
+    return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+  });
+}
+
 export const useDietsStore = defineStore('diets', () => {
   // State
   const diets = ref<Diet[]>([]);
@@ -61,6 +70,8 @@ export const useDietsStore = defineStore('diets', () => {
   const loading = ref(false);
   const optimizing = ref(false);
   const error = ref<string | null>(null);
+  /** Map of cow_id → active (followed) diet */
+  const activeDiets = ref<Record<string, Diet>>({});
 
   // Computed
   const completedDiets = computed(() =>
@@ -71,6 +82,11 @@ export const useDietsStore = defineStore('diets', () => {
     [...diets.value]
       .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
       .slice(0, 10)
+  );
+
+  /** Diets currently being followed (is_active === true) */
+  const followedDiets = computed(() =>
+    diets.value.filter((d) => d.is_active)
   );
 
   // Actions
@@ -93,17 +109,26 @@ export const useDietsStore = defineStore('diets', () => {
         await db.diets.bulkPut(serverDiets);
       }
 
-      // Load from local database
-      diets.value = await db.diets
+      // Load from local database — active (followed) diets first
+      const allDiets = await db.diets
         .where({ user_id: authStore.userId })
         .reverse()
         .sortBy('created_at');
+      diets.value = sortWithActiveFirst(allDiets);
+
+      // Populate activeDiets cache
+      for (const d of allDiets) {
+        if (d.is_active && d.cow_id) {
+          activeDiets.value[d.cow_id] = d;
+        }
+      }
     } catch (err) {
       // Fallback to local data
-      diets.value = await db.diets
+      const allDiets = await db.diets
         .where({ user_id: authStore.userId })
         .reverse()
         .sortBy('created_at');
+      diets.value = sortWithActiveFirst(allDiets);
 
       if (diets.value.length === 0) {
         error.value = extractErrorMessage(err);
@@ -252,6 +277,128 @@ export const useDietsStore = defineStore('diets', () => {
       .sortBy('created_at');
   }
 
+  /**
+   * Follow a diet — sets status to "following" and is_active to true.
+   * Backend: PUT /bot-diet-history/:id with { status: "following", is_active: true }
+   */
+  async function followDiet(dietId: string): Promise<boolean> {
+    if (!isOnline.value) {
+      error.value = 'Following a diet requires an internet connection';
+      return false;
+    }
+
+    loading.value = true;
+    error.value = null;
+
+    try {
+      await api.put(`/api/v1/diet/${dietId}`, {
+        status: 'following',
+        is_active: true,
+      });
+
+      // Update local state
+      const diet = diets.value.find((d) => d.id === dietId);
+      if (diet) {
+        diet.status = 'following';
+        diet.is_active = true;
+        await db.diets.put({ ...diet });
+
+        // Cache as active diet for this cow
+        if (diet.cow_id) {
+          activeDiets.value[diet.cow_id] = diet;
+        }
+      }
+      if (currentDiet.value?.id === dietId) {
+        currentDiet.value = { ...currentDiet.value, status: 'following', is_active: true };
+      }
+
+      return true;
+    } catch (err) {
+      error.value = extractErrorMessage(err);
+      return false;
+    } finally {
+      loading.value = false;
+    }
+  }
+
+  /**
+   * Stop following a diet — archives it.
+   * Backend: POST /bot-diet-history/:id/archive
+   */
+  async function stopFollowingDiet(dietId: string): Promise<boolean> {
+    if (!isOnline.value) {
+      error.value = 'This action requires an internet connection';
+      return false;
+    }
+
+    loading.value = true;
+    error.value = null;
+
+    try {
+      await api.post(`/api/v1/diet/${dietId}/archive`);
+
+      // Update local state
+      const diet = diets.value.find((d) => d.id === dietId);
+      if (diet) {
+        diet.status = 'archived';
+        diet.is_active = false;
+        await db.diets.put({ ...diet });
+
+        // Remove from active diets cache
+        if (diet.cow_id && activeDiets.value[diet.cow_id]?.id === dietId) {
+          delete activeDiets.value[diet.cow_id];
+        }
+      }
+      if (currentDiet.value?.id === dietId) {
+        currentDiet.value = { ...currentDiet.value, status: 'archived', is_active: false };
+      }
+
+      return true;
+    } catch (err) {
+      error.value = extractErrorMessage(err);
+      return false;
+    } finally {
+      loading.value = false;
+    }
+  }
+
+  /**
+   * Get the currently active (followed) diet for a cow.
+   * Backend: GET /bot-diet-history/active/:cowId
+   */
+  async function getActiveDietForCow(cowId: string): Promise<Diet | null> {
+    // Check cache first
+    if (activeDiets.value[cowId]) {
+      return activeDiets.value[cowId];
+    }
+
+    if (!isOnline.value) {
+      // Fallback: search local DB for a following diet for this cow
+      const localDiets = await db.diets
+        .where({ cow_id: cowId })
+        .filter((d) => d.is_active === true)
+        .toArray();
+      if (localDiets.length > 0) {
+        activeDiets.value[cowId] = localDiets[0];
+        return localDiets[0];
+      }
+      return null;
+    }
+
+    try {
+      const response = await api.get(`/api/v1/diet/active/${cowId}`);
+      if (response.data) {
+        const activeDiet: Diet = { ...response.data, _synced: true };
+        await db.diets.put(activeDiet);
+        activeDiets.value[cowId] = activeDiet;
+        return activeDiet;
+      }
+      return null;
+    } catch {
+      return null;
+    }
+  }
+
   function clearCurrentDiet(): void {
     currentDiet.value = null;
   }
@@ -286,9 +433,11 @@ export const useDietsStore = defineStore('diets', () => {
     loading,
     optimizing,
     error,
+    activeDiets,
     // Computed
     completedDiets,
     recentDiets,
+    followedDiets,
     // Actions
     fetchDiets,
     getDiet,
@@ -296,6 +445,9 @@ export const useDietsStore = defineStore('diets', () => {
     evaluateDiet,
     deleteDiet,
     getDietsForCow,
+    followDiet,
+    stopFollowingDiet,
+    getActiveDietForCow,
     clearCurrentDiet,
     getInputDataForRegeneration,
   };

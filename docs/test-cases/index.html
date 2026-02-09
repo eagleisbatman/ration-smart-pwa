@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RationSmart - Test Cases</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <link rel="stylesheet" href="../shared.css">
+</head>
+<body>
+    <nav class="sidebar">
+        <div class="sidebar-brand"><i data-lucide="beef" class="icon"></i> RationSmart</div>
+        <div class="sidebar-subtitle">Test Cases &middot; 14 Pages</div>
+        <h3>Overview</h3>
+        <a href="index.html" class="active"><span class="nav-num">00</span> Overview &amp; Glossary</a>
+        <h3>Authentication</h3>
+        <a href="registration.html"><span class="nav-num">01</span> Registration (8)</a>
+        <a href="login.html"><span class="nav-num">02</span> Login (10)</a>
+        <a href="forgot-pin.html"><span class="nav-num">03</span> Forgot PIN (5)</a>
+        <a href="onboarding.html"><span class="nav-num">04</span> Onboarding (12)</a>
+        <h3>Core Features</h3>
+        <a href="dashboard.html"><span class="nav-num">05</span> Dashboard (8)</a>
+        <a href="cow-management.html"><span class="nav-num">06</span> Cow Management (13)</a>
+        <a href="diet-optimization.html"><span class="nav-num">07</span> Diet Optimization (17)</a>
+        <a href="feeds.html"><span class="nav-num">08</span> Feeds (7)</a>
+        <a href="milk-logging.html"><span class="nav-num">09</span> Milk Logging (8)</a>
+        <a href="farmer-management.html"><span class="nav-num">10</span> Farmer Mgmt (10)</a>
+        <a href="yield-reporting.html"><span class="nav-num">11</span> Yield Reporting (7)</a>
+        <h3>Settings &amp; Platform</h3>
+        <a href="settings.html"><span class="nav-num">12</span> Settings (10)</a>
+        <a href="navigation-pwa.html"><span class="nav-num">13</span> Navigation &amp; PWA (12)</a>
+    </nav>
+    <main class="main">
+        <div class="page-title">RationSmart PWA — Test Cases</div>
+        <div class="page-route">App URL: https://ration-smart-pwa-production.up.railway.app/</div>
+
+        <div class="section-label">About This Document</div>
+        <p>This document contains <strong>127 test cases</strong> covering all modules of the RationSmart PWA. Written for QA testers who may not be familiar with livestock/cattle terminology. See the <a href="#glossary">Glossary</a> below for domain term definitions.</p>
+
+        <!-- ── Test Environment ── -->
+        <h2>Test Environment</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>App URL</td>
+                    <td><a href="https://ration-smart-pwa-production.up.railway.app/" target="_blank">https://ration-smart-pwa-production.up.railway.app/</a></td>
+                </tr>
+                <tr>
+                    <td>Supported Browsers</td>
+                    <td>Chrome 90+, Safari 14+, Firefox 90+, Edge 90+</td>
+                </tr>
+                <tr>
+                    <td>Mobile Testing</td>
+                    <td>Chrome Android, Safari iOS (iPhone/iPad)</td>
+                </tr>
+                <tr>
+                    <td>Screen Sizes</td>
+                    <td>Mobile (375px), Tablet (768px), Desktop (1024px+)</td>
+                </tr>
+                <tr>
+                    <td>Offline Testing</td>
+                    <td>Use browser DevTools &rarr; Network &rarr; Offline toggle</td>
+                </tr>
+                <tr>
+                    <td>PWA Install</td>
+                    <td>Chrome: address bar install prompt; Safari: Share &rarr; Add to Home Screen</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- ── Glossary ── -->
+        <h2 id="glossary">Glossary of Domain Terms</h2>
+        <div class="annotation">
+            <div class="annotation-title">Domain Terminology Reference</div>
+            <p class="small muted mb-sm">This section helps testers who are <strong>not</strong> familiar with livestock/cattle farming. Refer to these definitions when encountering unfamiliar terms in the test cases.</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Term</th>
+                        <th>Definition</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Cow / Cattle</td>
+                        <td>Farm animal raised for milk production. In this app, each cow has a profile with health details.</td>
+                    </tr>
+                    <tr>
+                        <td>Lactation Stage</td>
+                        <td>The period when a cow produces milk. Stages: Early (0-100 days after calving), Mid (100-200 days), Late (200+ days), Dry (not producing milk).</td>
+                    </tr>
+                    <tr>
+                        <td>Body Condition Score (BCS)</td>
+                        <td>A 1-5 scale rating a cow's physical condition. 1 = very thin/emaciated, 3 = moderate/healthy, 5 = obese. Scored in 0.5 increments.</td>
+                    </tr>
+                    <tr>
+                        <td>Milk Yield</td>
+                        <td>Amount of milk a cow produces per day, measured in liters (L/day).</td>
+                    </tr>
+                    <tr>
+                        <td>Milk Fat %</td>
+                        <td>Percentage of fat in the milk. Typically 3.0-6.0%. Higher fat = more valuable milk.</td>
+                    </tr>
+                    <tr>
+                        <td>Breed</td>
+                        <td>The genetic variety of cattle. Examples: Holstein Friesian (high milk yield), Gir (heat tolerant), Sahiwal (indigenous Indian).</td>
+                    </tr>
+                    <tr>
+                        <td>Crude Protein (CP%)</td>
+                        <td>The percentage of protein in animal feed. Higher CP feeds like cotton seed cake (~24%) cost more.</td>
+                    </tr>
+                    <tr>
+                        <td>TDN (Total Digestible Nutrients)</td>
+                        <td>A measure of feed energy/nutrition value, expressed as percentage. Higher TDN = more nutritious feed.</td>
+                    </tr>
+                    <tr>
+                        <td>Roughage</td>
+                        <td>Bulky, high-fiber feed like grass, hay, straw. Low cost but fills the cow's stomach.</td>
+                    </tr>
+                    <tr>
+                        <td>Concentrate</td>
+                        <td>Nutrient-dense feed like grain, bran, oil cakes. Higher cost but more protein/energy per kg.</td>
+                    </tr>
+                    <tr>
+                        <td>Diet Optimization</td>
+                        <td>Using algorithms to calculate the ideal mix of available feeds that meets a cow's nutritional needs at minimum cost (or maximum milk production).</td>
+                    </tr>
+                    <tr>
+                        <td>Extension Worker</td>
+                        <td>A field agent employed by an organization who visits and supports multiple farmers. They can create farmer profiles, record yield data, and generate reports.</td>
+                    </tr>
+                    <tr>
+                        <td>Farmer Profile</td>
+                        <td>A record in the system representing a cattle farmer. Farmers managed by extension workers have profiles created on their behalf.</td>
+                    </tr>
+                    <tr>
+                        <td>Yield Data</td>
+                        <td>Daily milk production records for a farmer's cows, typically collected by extension workers.</td>
+                    </tr>
+                    <tr>
+                        <td>Organization</td>
+                        <td>An entity (NGO, government body, university, cooperative, research institute) that employs extension workers and manages farmer networks.</td>
+                    </tr>
+                    <tr>
+                        <td>Onboarding</td>
+                        <td>The one-time setup process after registration: selecting language, role, organization, and creating a profile.</td>
+                    </tr>
+                    <tr>
+                        <td>PIN</td>
+                        <td>A 4-digit Personal Identification Number used instead of a password for authentication.</td>
+                    </tr>
+                    <tr>
+                        <td>PWA (Progressive Web App)</td>
+                        <td>A web application that can be installed on a device's home screen and works offline, similar to a native app.</td>
+                    </tr>
+                    <tr>
+                        <td>Offline Sync</td>
+                        <td>Data created while offline is stored locally and automatically uploaded to the server when internet connection is restored.</td>
+                    </tr>
+                    <tr>
+                        <td>E.164 Format</td>
+                        <td>International phone number format: +[country code][number]. Example: +919876543210 for India.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ── Test Case Summary ── -->
+        <h2>Test Case Summary</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Module</th>
+                    <th>Page</th>
+                    <th>Critical</th>
+                    <th>High</th>
+                    <th>Medium</th>
+                    <th>Low</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>01</td>
+                    <td>Registration</td>
+                    <td><a href="registration.html">registration.html</a></td>
+                    <td>3</td>
+                    <td>3</td>
+                    <td>2</td>
+                    <td>0</td>
+                    <td><strong>8</strong></td>
+                </tr>
+                <tr>
+                    <td>02</td>
+                    <td>Login</td>
+                    <td><a href="login.html">login.html</a></td>
+                    <td>4</td>
+                    <td>4</td>
+                    <td>2</td>
+                    <td>0</td>
+                    <td><strong>10</strong></td>
+                </tr>
+                <tr>
+                    <td>03</td>
+                    <td>Forgot PIN</td>
+                    <td><a href="forgot-pin.html">forgot-pin.html</a></td>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td><strong>5</strong></td>
+                </tr>
+                <tr>
+                    <td>04</td>
+                    <td>Onboarding</td>
+                    <td><a href="onboarding.html">onboarding.html</a></td>
+                    <td>4</td>
+                    <td>5</td>
+                    <td>3</td>
+                    <td>0</td>
+                    <td><strong>12</strong></td>
+                </tr>
+                <tr>
+                    <td>05</td>
+                    <td>Dashboard</td>
+                    <td><a href="dashboard.html">dashboard.html</a></td>
+                    <td>0</td>
+                    <td>5</td>
+                    <td>3</td>
+                    <td>0</td>
+                    <td><strong>8</strong></td>
+                </tr>
+                <tr>
+                    <td>06</td>
+                    <td>Cow Management</td>
+                    <td><a href="cow-management.html">cow-management.html</a></td>
+                    <td>1</td>
+                    <td>6</td>
+                    <td>6</td>
+                    <td>0</td>
+                    <td><strong>13</strong></td>
+                </tr>
+                <tr>
+                    <td>07</td>
+                    <td>Diet Optimization</td>
+                    <td><a href="diet-optimization.html">diet-optimization.html</a></td>
+                    <td>2</td>
+                    <td>8</td>
+                    <td>6</td>
+                    <td>1</td>
+                    <td><strong>17</strong></td>
+                </tr>
+                <tr>
+                    <td>08</td>
+                    <td>Feeds</td>
+                    <td><a href="feeds.html">feeds.html</a></td>
+                    <td>0</td>
+                    <td>3</td>
+                    <td>4</td>
+                    <td>0</td>
+                    <td><strong>7</strong></td>
+                </tr>
+                <tr>
+                    <td>09</td>
+                    <td>Milk Logging</td>
+                    <td><a href="milk-logging.html">milk-logging.html</a></td>
+                    <td>1</td>
+                    <td>4</td>
+                    <td>3</td>
+                    <td>0</td>
+                    <td><strong>8</strong></td>
+                </tr>
+                <tr>
+                    <td>10</td>
+                    <td>Farmer Management</td>
+                    <td><a href="farmer-management.html">farmer-management.html</a></td>
+                    <td>1</td>
+                    <td>6</td>
+                    <td>3</td>
+                    <td>0</td>
+                    <td><strong>10</strong></td>
+                </tr>
+                <tr>
+                    <td>11</td>
+                    <td>Yield Reporting</td>
+                    <td><a href="yield-reporting.html">yield-reporting.html</a></td>
+                    <td>1</td>
+                    <td>3</td>
+                    <td>3</td>
+                    <td>0</td>
+                    <td><strong>7</strong></td>
+                </tr>
+                <tr>
+                    <td>12</td>
+                    <td>Settings</td>
+                    <td><a href="settings.html">settings.html</a></td>
+                    <td>1</td>
+                    <td>5</td>
+                    <td>4</td>
+                    <td>0</td>
+                    <td><strong>10</strong></td>
+                </tr>
+                <tr>
+                    <td>13</td>
+                    <td>Navigation &amp; PWA</td>
+                    <td><a href="navigation-pwa.html">navigation-pwa.html</a></td>
+                    <td>2</td>
+                    <td>4</td>
+                    <td>4</td>
+                    <td>2</td>
+                    <td><strong>12</strong></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><strong>TOTAL</strong></td>
+                    <td></td>
+                    <td><strong>21</strong></td>
+                    <td><strong>58</strong></td>
+                    <td><strong>44</strong></td>
+                    <td><strong>4</strong></td>
+                    <td><strong>127</strong></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- ── Priority Definitions ── -->
+        <h2>Priority Definitions</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Priority</th>
+                    <th>Description</th>
+                    <th>Color</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Critical</strong></td>
+                    <td>Core functionality — app is unusable if this fails. Must pass before release.</td>
+                    <td><span style="display:inline-block;width:16px;height:16px;border-left:5px solid var(--fail);background:var(--bg-gray);vertical-align:middle;margin-right:6px;"></span> Red border</td>
+                </tr>
+                <tr>
+                    <td><strong>High</strong></td>
+                    <td>Important functionality — significant user impact. Should pass before release.</td>
+                    <td><span style="display:inline-block;width:16px;height:16px;border-left:5px solid var(--warn);background:var(--bg-gray);vertical-align:middle;margin-right:6px;"></span> Orange border</td>
+                </tr>
+                <tr>
+                    <td><strong>Medium</strong></td>
+                    <td>Secondary functionality — minor user impact. Can be deferred.</td>
+                    <td><span style="display:inline-block;width:16px;height:16px;border-left:5px solid var(--mid-gray);background:var(--bg-gray);vertical-align:middle;margin-right:6px;"></span> Gray border</td>
+                </tr>
+                <tr>
+                    <td><strong>Low</strong></td>
+                    <td>Cosmetic or edge case — minimal user impact. Nice-to-have.</td>
+                    <td><span style="display:inline-block;width:16px;height:16px;border-left:5px solid var(--border-gray);background:var(--bg-gray);vertical-align:middle;margin-right:6px;"></span> Light gray border</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- ── Test Case Format ── -->
+        <h2>Test Case Format</h2>
+        <p class="small muted mb-sm">Every test case in this document follows the card format shown below. Use this as a reference for reading and executing tests.</p>
+
+        <div class="tc critical">
+            <div class="tc-header">
+                <span class="tc-id">TC-EXAMPLE-01</span>
+                <span class="tc-title">Example Test Case Title</span>
+                <span class="tc-priority">Critical</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">User is logged in and has completed onboarding.</div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>Navigate to the Home page</li>
+                    <li>Tap the "Add Cow" button</li>
+                    <li>Fill in the cow name field</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">The cow form page loads with empty fields ready for input.</div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>Form page loads within 2 seconds</li>
+                    <li>All required fields are marked</li>
+                    <li>Name field accepts text input</li>
+                </ul>
+            </div>
+        </div>
+
+    </main>
+    <script>lucide.createIcons();</script>
+</body>
+</html>

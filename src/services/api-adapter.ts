@@ -475,6 +475,34 @@ const ENDPOINT_MAP: Record<string, EndpointMapping> = {
   '/api/v1/diet/:id/evaluate': {
     path: '/bot-diet-history/:id/evaluate',
   },
+  '/api/v1/diet/:id/archive': {
+    path: '/bot-diet-history/:id/archive',
+  },
+  '/api/v1/diet/active/:cowId': {
+    path: '/bot-diet-history/active/:cowId',
+  },
+
+  // ============================================================================
+  // HEALTH EVENT ENDPOINTS
+  // ============================================================================
+  '/api/v1/health-events': {
+    path: '/health-events/',
+  },
+  '/api/v1/health-events/cow/:cowId': {
+    path: '/health-events/cow/:cowId',
+    transform: {
+      response: (data: unknown) => {
+        const response = data as { events?: unknown[] };
+        if (response.events) {
+          return response.events;
+        }
+        return data;
+      },
+    },
+  },
+  '/api/v1/health-events/:id': {
+    path: '/health-events/:id',
+  },
 
   // ============================================================================
   // MILK LOG ENDPOINTS (using bot daily logs)
