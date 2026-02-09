@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RationSmart - Cow Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <link rel="stylesheet" href="../shared.css">
+</head>
+<body>
+    <nav class="sidebar">
+        <div class="sidebar-brand"><i data-lucide="beef" class="icon"></i> RationSmart</div>
+        <div class="sidebar-subtitle">User Flows &middot; 9 Pages</div>
+        <h3>Authentication</h3>
+        <a href="index.html"><span class="nav-num">00</span> Overview</a>
+        <a href="registration.html"><span class="nav-num">01</span> Registration</a>
+        <a href="login.html"><span class="nav-num">02</span> Login</a>
+        <a href="forgot-pin.html"><span class="nav-num">03</span> Forgot PIN</a>
+        <h3>Onboarding</h3>
+        <a href="onboarding.html"><span class="nav-num">04</span> Onboarding (4 Steps)</a>
+        <h3>Core App</h3>
+        <a href="dashboard.html"><span class="nav-num">05</span> Home Dashboard</a>
+        <a href="cow-management.html" class="active"><span class="nav-num">06</span> Cow Management</a>
+        <a href="diet-wizard.html"><span class="nav-num">07</span> Diet Optimization</a>
+        <a href="settings.html"><span class="nav-num">08</span> Settings</a>
+    </nav>
+
+    <main class="main">
+        <div class="page-title">06 &mdash; Cow Management</div>
+        <div class="page-route">Routes: /cows, /cows/new, /cows/:id, /cows/:id/edit</div>
+
+        <p>Cow Management is the central CRUD module for managing cattle profiles. Users can list, search, filter, add, view, edit, and delete cows. All operations support offline mode with IndexedDB caching and background sync.</p>
+
+        <!-- Flow Diagram -->
+        <h2>Cow Management Flow</h2>
+        <div style="overflow-x:auto; padding: 20px 0;">
+            <div class="flow-box filled">Cow List</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-group">
+                <div class="flow-box">Add New</div>
+                <span class="small muted" style="margin:0 4px">/</span>
+                <div class="flow-box">View Detail</div>
+            </div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box">Edit</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box filled">Save</div>
+        </div>
+
+        <!-- ──────────────────────────────────────────────────── -->
+        <!-- Wireframe 1 — Cow List Page                         -->
+        <!-- ──────────────────────────────────────────────────── -->
+        <h2>Cow List Page (/cows)</h2>
+
+        <div class="phone-frame">
+            <div class="phone-header">
+                <i data-lucide="arrow-left" class="icon" style="width:16px;height:16px;"></i>
+                My Cows
+                <span style="margin-left:auto; font-size:10px; border:1px solid rgba(255,255,255,0.4); padding:2px 8px; border-radius:10px;">
+                    <i data-lucide="refresh-cw" class="icon" style="width:10px;height:10px;"></i> Synced
+                </span>
+            </div>
+            <div class="phone-body">
+
+                <!-- Search -->
+                <div class="ui-input">
+                    <i data-lucide="search" class="icon"></i>
+                    <span class="label">Search cows...</span>
+                </div>
+
+                <!-- Cow Card 1 — Lakshmi -->
+                <div class="ui-card">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                        <strong style="font-family:'JetBrains Mono',monospace; font-size:13px;">Lakshmi</strong>
+                        <span style="font-family:'JetBrains Mono',monospace; font-size:10px; padding:2px 8px; border:2px solid var(--black); border-radius:10px;">Lactating</span>
+                    </div>
+                    <div style="font-size:12px; color:var(--mid-gray);">Holstein Friesian &middot; 450 kg</div>
+                    <div style="font-size:12px; color:var(--mid-gray);">12.5 L/day &middot; Mid Lactation</div>
+                </div>
+
+                <!-- Cow Card 2 — Ganga -->
+                <div class="ui-card">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                        <strong style="font-family:'JetBrains Mono',monospace; font-size:13px;">Ganga</strong>
+                        <span style="font-family:'JetBrains Mono',monospace; font-size:10px; padding:2px 8px; border:2px solid var(--warn); border-radius:10px; color:var(--warn);">Pregnant (7 mo)</span>
+                    </div>
+                    <div style="font-size:12px; color:var(--mid-gray);">Gir &middot; 380 kg</div>
+                    <div style="font-size:12px; color:var(--mid-gray);">8.0 L/day &middot; Late Lactation</div>
+                </div>
+
+                <!-- Cow Card 3 — Saraswati -->
+                <div class="ui-card">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                        <strong style="font-family:'JetBrains Mono',monospace; font-size:13px;">Saraswati</strong>
+                        <span style="font-family:'JetBrains Mono',monospace; font-size:10px; padding:2px 8px; border:2px solid var(--light-gray); border-radius:10px; color:var(--light-gray);">Dry</span>
+                    </div>
+                    <div style="font-size:12px; color:var(--mid-gray);">Sahiwal &middot; 320 kg</div>
+                    <div style="font-size:12px; color:var(--mid-gray);">0 L/day &middot; Dry</div>
+                </div>
+
+                <!-- FAB -->
+                <div style="display:flex; justify-content:flex-end; margin-top:10px;">
+                    <div style="width:48px; height:48px; background:var(--black); color:var(--white); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:24px; font-weight:700; box-shadow:3px 3px 0 var(--mid-gray);">+</div>
+                </div>
+
+                <!-- Bottom Nav -->
+                <div class="ui-nav">
+                    <div><i data-lucide="home" class="icon" style="width:14px;height:14px;"></i><br>Home</div>
+                    <div><i data-lucide="users" class="icon" style="width:14px;height:14px;"></i><br>Farmers</div>
+                    <div class="on"><i data-lucide="beef" class="icon" style="width:14px;height:14px;"></i><br>Cows</div>
+                    <div><i data-lucide="utensils" class="icon" style="width:14px;height:14px;"></i><br>Diet</div>
+                    <div><i data-lucide="menu" class="icon" style="width:14px;height:14px;"></i><br>More</div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Annotation — Cow List -->
+        <div class="annotation">
+            <div class="annotation-title">Cow List</div>
+            <ul>
+                <li>Fetches cows from API on mount, also loads from local IndexedDB cache</li>
+                <li>Search filters by name, breed, tag number, or coat color</li>
+                <li>Cards are clickable &mdash; navigate to <code>/cows/:id</code></li>
+                <li>FAB (+) navigates to <code>/cows/new</code></li>
+                <li>Empty state shows illustration + "Add your first cow" prompt</li>
+                <li>Selection mode button in toolbar toggles checkboxes for bulk actions</li>
+                <li>Bulk actions: Archive selected, Delete selected (with confirmation)</li>
+            </ul>
+        </div>
+
+        <!-- ──────────────────────────────────────────────────── -->
+        <!-- Wireframe 2 — Add / Edit Cow Form                   -->
+        <!-- ──────────────────────────────────────────────────── -->
+        <h2>Add / Edit Cow (/cows/new or /cows/:id/edit)</h2>
+
+        <div class="phone-frame">
+            <div class="phone-header">
+                <i data-lucide="arrow-left" class="icon" style="width:16px;height:16px;"></i>
+                Add Cow
+            </div>
+            <div class="phone-body">
+
+                <!-- Photo Upload -->
+                <div style="border:2px dashed var(--border-gray); border-radius:8px; padding:20px; margin-bottom:14px; text-align:center; color:var(--light-gray);">
+                    <i data-lucide="camera" class="icon" style="width:28px; height:28px; margin-bottom:6px;"></i>
+                    <div style="font-family:'JetBrains Mono',monospace; font-size:12px; font-weight:600;">Add Photo</div>
+                    <div style="font-size:10px; margin-top:2px;">Tap to take photo or choose from gallery</div>
+                </div>
+
+                <!-- Name -->
+                <div class="ui-input">
+                    <i data-lucide="tag" class="icon"></i>
+                    <span class="label">Cow Name *</span>
+                </div>
+
+                <!-- Tag Number -->
+                <div class="ui-input">
+                    <i data-lucide="hash" class="icon"></i>
+                    <span class="label">Tag Number (optional)</span>
+                </div>
+
+                <!-- Breed Dropdown -->
+                <div class="ui-input">
+                    <i data-lucide="list" class="icon"></i>
+                    <span class="label" style="flex:1;">Select Breed</span>
+                    <i data-lucide="chevron-down" class="icon"></i>
+                </div>
+
+                <!-- Coat Color Dropdown -->
+                <div class="ui-input">
+                    <i data-lucide="palette" class="icon"></i>
+                    <span class="label" style="flex:1;">Coat Color (optional)</span>
+                    <i data-lucide="chevron-down" class="icon"></i>
+                </div>
+
+                <!-- Weight + Milk Yield Row -->
+                <div class="ui-row">
+                    <div class="ui-input">
+                        <span class="label">Weight (kg)</span>
+                        <span class="value" style="margin-left:auto;">400</span>
+                    </div>
+                    <div class="ui-input">
+                        <span class="label">Milk (L/day)</span>
+                        <span class="value" style="margin-left:auto;">10</span>
+                    </div>
+                </div>
+
+                <!-- Milk Fat % + Lactation Stage Row -->
+                <div class="ui-row">
+                    <div class="ui-input">
+                        <span class="label">Milk Fat %</span>
+                        <span class="value" style="margin-left:auto;">4.0</span>
+                    </div>
+                    <div class="ui-input">
+                        <span class="label" style="flex:1;">Lactation Stage</span>
+                        <i data-lucide="chevron-down" class="icon"></i>
+                    </div>
+                </div>
+
+                <!-- Pregnancy Toggle -->
+                <div style="display:flex; align-items:center; gap:10px; margin:10px 0;">
+                    <div style="width:36px; height:20px; border:2px solid var(--border-gray); border-radius:10px; position:relative;">
+                        <div style="width:14px; height:14px; background:var(--border-gray); border-radius:50%; position:absolute; top:1px; left:1px;"></div>
+                    </div>
+                    <span style="font-family:'JetBrains Mono',monospace; font-size:12px;">Pregnant</span>
+                </div>
+
+                <!-- Pregnancy Month (conditional, shown dimmed) -->
+                <div class="ui-input" style="opacity:0.4;">
+                    <span class="label">Pregnancy Month (1-9)</span>
+                </div>
+
+                <!-- Body Condition Score (Dropdown) -->
+                <div class="ui-input">
+                    <span class="label" style="flex:1;">Body Condition Score</span>
+                    <span class="value">3 - Moderate</span>
+                    <i data-lucide="chevron-down" class="icon"></i>
+                </div>
+
+                <!-- Age + Activity Level Row -->
+                <div class="ui-row">
+                    <div class="ui-input">
+                        <span class="label">Age (months)</span>
+                        <span class="value" style="margin-left:auto;">36</span>
+                    </div>
+                    <div class="ui-input">
+                        <span class="label" style="flex:1;">Activity Level</span>
+                        <i data-lucide="chevron-down" class="icon"></i>
+                    </div>
+                </div>
+
+                <!-- Notes -->
+                <div class="ui-input" style="min-height:60px; align-items:flex-start;">
+                    <i data-lucide="file-text" class="icon" style="margin-top:2px;"></i>
+                    <span class="label">Optional notes...</span>
+                </div>
+
+                <!-- Save Button -->
+                <div class="ui-btn">Save</div>
+
+            </div>
+        </div>
+
+        <!-- Annotation — Form Fields -->
+        <div class="annotation">
+            <div class="annotation-title">Form Fields</div>
+            <ul>
+                <li><strong>Photo:</strong> Optional. Camera or gallery upload.</li>
+                <li><strong>Name:</strong> required, minimum 1 character</li>
+                <li><strong>Tag Number:</strong> Optional identifier (ear tag, RFID, etc.)</li>
+                <li><strong>Breed:</strong> fetched from <code>GET /api/v1/breeds</code>, dropdown list</li>
+                <li><strong>Coat Color:</strong> Optional. 7 color options: black, white, brown, red, spotted, mixed, other.</li>
+                <li><strong>Weight:</strong> required, must be &gt; 0, in kilograms</li>
+                <li><strong>Milk Yield:</strong> liters per day, optional (0 for dry cows)</li>
+                <li><strong>Milk Fat %:</strong> typically 3.0&ndash;6.0%, optional</li>
+                <li><strong>Lactation Stage:</strong> early (0&ndash;100 days), mid (100&ndash;200 days), late (200+ days), dry (not producing)</li>
+                <li><strong>Pregnancy:</strong> toggle + month field (1&ndash;9 months)</li>
+                <li><strong>Body Condition Score:</strong> Dropdown with values 1&ndash;5 (1=Emaciated, 2=Thin, 3=Moderate, 4=Heavy, 5=Obese). Helps assess cow's nutritional status.</li>
+                <li><strong>Age:</strong> in months, optional</li>
+                <li><strong>Activity Level:</strong> low, normal (default), high</li>
+                <li>Same form component used for both add and edit (route determines mode)</li>
+            </ul>
+        </div>
+
+        <!-- Annotation — Offline Support -->
+        <div class="annotation">
+            <div class="annotation-title">Offline Support</div>
+            <ul>
+                <li>When offline, cow is saved to local IndexedDB</li>
+                <li>Queued for sync when connection restores</li>
+                <li>SyncStatusChip shows pending count</li>
+                <li>On sync: <code>POST /api/v1/cows</code> (new) or <code>PUT /api/v1/cows/:id</code> (edit)</li>
+            </ul>
+        </div>
+
+        <!-- ──────────────────────────────────────────────────── -->
+        <!-- Wireframe 3 — Cow Detail Page                       -->
+        <!-- ──────────────────────────────────────────────────── -->
+        <h2>Cow Detail (/cows/:id)</h2>
+
+        <div class="phone-frame">
+            <div class="phone-header">
+                <i data-lucide="arrow-left" class="icon" style="width:16px;height:16px;"></i>
+                Lakshmi
+                <span style="margin-left:auto;">
+                    <i data-lucide="more-vertical" class="icon" style="width:16px;height:16px;"></i>
+                </span>
+            </div>
+            <div class="phone-body">
+
+                <!-- Hero Photo / Avatar -->
+                <div style="text-align:center; margin-bottom:16px;">
+                    <div style="width:80px; height:80px; border-radius:50%; border:3px solid var(--black); background:var(--bg-gray); display:inline-flex; align-items:center; justify-content:center; margin-bottom:6px;">
+                        <span style="font-family:'JetBrains Mono',monospace; font-size:28px; font-weight:700; color:var(--mid-gray);">L</span>
+                    </div>
+                    <div style="font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--light-gray);">Holstein Friesian</div>
+                </div>
+
+                <!-- Stats Row -->
+                <div class="ui-row" style="margin-bottom:16px;">
+                    <div class="ui-stat">
+                        <div class="num">12.5 L</div>
+                        <div class="lbl">Daily Milk</div>
+                        <div style="font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--pass); font-weight:600; margin-top:2px;">&#8593; 8%</div>
+                    </div>
+                    <div class="ui-stat">
+                        <div class="num">450 kg</div>
+                        <div class="lbl">Weight</div>
+                    </div>
+                    <div class="ui-stat">
+                        <div class="num">3.0</div>
+                        <div class="lbl">BCS</div>
+                    </div>
+                </div>
+
+                <!-- Details Section -->
+                <div class="section-label">Details</div>
+                <div class="ui-card">
+                    <div style="font-size:13px; line-height:2;">
+                        <div style="display:flex; justify-content:space-between;">
+                            <span style="color:var(--mid-gray);">Breed</span>
+                            <span style="font-weight:600;">Holstein Friesian</span>
+                        </div>
+                        <div style="display:flex; justify-content:space-between;">
+                            <span style="color:var(--mid-gray);">Tag Number</span>
+                            <span style="font-weight:600;">IN-2847</span>
+                        </div>
+                        <div style="display:flex; justify-content:space-between;">
+                            <span style="color:var(--mid-gray);">Coat Color</span>
+                            <span style="font-weight:600;">Brown</span>
+                        </div>
+                        <div style="display:flex; justify-content:space-between;">
+                            <span style="color:var(--mid-gray);">Lactation Stage</span>
+                            <span style="font-weight:600;">Mid (Day 120)</span>
+                        </div>
+                        <div style="display:flex; justify-content:space-between;">
+                            <span style="color:var(--mid-gray);">Age</span>
+                            <span style="font-weight:600;">36 months (3 years)</span>
+                        </div>
+                        <div style="display:flex; justify-content:space-between;">
+                            <span style="color:var(--mid-gray);">Pregnancy</span>
+                            <span style="font-weight:600;">Not pregnant</span>
+                        </div>
+                        <div style="display:flex; justify-content:space-between;">
+                            <span style="color:var(--mid-gray);">Activity</span>
+                            <span style="font-weight:600;">Normal</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actions Section -->
+                <div class="section-label">Actions</div>
+                <div class="ui-row">
+                    <div class="ui-btn" style="display:flex; align-items:center; justify-content:center; gap:6px;">
+                        <i data-lucide="utensils" class="icon" style="width:14px;height:14px;"></i> Get Diet
+                    </div>
+                    <div class="ui-btn ui-btn-outline" style="display:flex; align-items:center; justify-content:center; gap:6px;">
+                        <i data-lucide="droplet" class="icon" style="width:14px;height:14px;"></i> Log Milk
+                    </div>
+                </div>
+
+                <!-- Milk History Section -->
+                <div class="section-label">Milk History</div>
+                <div style="border:2px solid var(--border-gray); border-radius:8px; padding:12px; margin-bottom:10px;">
+                    <div style="display:flex; align-items:flex-end; gap:6px; height:80px;">
+                        <div style="flex:1; background:var(--bg-gray); border-radius:3px 3px 0 0; height:60%;"></div>
+                        <div style="flex:1; background:var(--bg-gray); border-radius:3px 3px 0 0; height:75%;"></div>
+                        <div style="flex:1; background:var(--bg-gray); border-radius:3px 3px 0 0; height:50%;"></div>
+                        <div style="flex:1; background:var(--bg-gray); border-radius:3px 3px 0 0; height:85%;"></div>
+                        <div style="flex:1; background:var(--bg-gray); border-radius:3px 3px 0 0; height:70%;"></div>
+                        <div style="flex:1; background:var(--bg-gray); border-radius:3px 3px 0 0; height:90%;"></div>
+                        <div style="flex:1; background:var(--black); border-radius:3px 3px 0 0; height:80%;"></div>
+                    </div>
+                    <div style="display:flex; gap:6px; margin-top:4px;">
+                        <span style="flex:1; text-align:center; font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--light-gray);">Mon</span>
+                        <span style="flex:1; text-align:center; font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--light-gray);">Tue</span>
+                        <span style="flex:1; text-align:center; font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--light-gray);">Wed</span>
+                        <span style="flex:1; text-align:center; font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--light-gray);">Thu</span>
+                        <span style="flex:1; text-align:center; font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--light-gray);">Fri</span>
+                        <span style="flex:1; text-align:center; font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--light-gray);">Sat</span>
+                        <span style="flex:1; text-align:center; font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--black); font-weight:600;">Sun</span>
+                    </div>
+                </div>
+
+                <!-- Health Events Timeline Section -->
+                <div class="section-label">Health Events</div>
+                <div style="border:2px solid var(--border-gray); border-radius:8px; padding:12px; margin-bottom:10px;">
+                    <div style="display:flex; gap:10px; align-items:flex-start; margin-bottom:10px;">
+                        <div style="width:8px; height:8px; border-radius:50%; background:var(--black); margin-top:5px; flex-shrink:0;"></div>
+                        <div>
+                            <div style="font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--light-gray);">2026-02-05</div>
+                            <div style="font-size:12px;">Vaccination &mdash; FMD booster administered</div>
+                        </div>
+                    </div>
+                    <div style="display:flex; gap:10px; align-items:flex-start; margin-bottom:10px;">
+                        <div style="width:8px; height:8px; border-radius:50%; background:var(--warn); margin-top:5px; flex-shrink:0;"></div>
+                        <div>
+                            <div style="font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--light-gray);">2026-01-20</div>
+                            <div style="font-size:12px;">Deworming &mdash; Albendazole treatment</div>
+                        </div>
+                    </div>
+                    <div style="display:flex; gap:10px; align-items:flex-start;">
+                        <div style="width:8px; height:8px; border-radius:50%; background:var(--mid-gray); margin-top:5px; flex-shrink:0;"></div>
+                        <div>
+                            <div style="font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--light-gray);">2026-01-02</div>
+                            <div style="font-size:12px;">Checkup &mdash; Routine veterinary visit</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Milk Logs Section -->
+                <div class="section-label">Recent Milk Logs</div>
+                <div style="border:2px solid var(--border-gray); border-radius:8px; overflow:hidden; margin-bottom:10px;">
+                    <table style="width:100%; border-collapse:collapse; margin:0; font-size:12px;">
+                        <thead>
+                            <tr>
+                                <th style="padding:6px 8px; font-size:10px; text-align:left;">Date</th>
+                                <th style="padding:6px 8px; font-size:10px; text-align:center;">Morning</th>
+                                <th style="padding:6px 8px; font-size:10px; text-align:center;">Evening</th>
+                                <th style="padding:6px 8px; font-size:10px; text-align:center;">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="padding:6px 8px; border:1px solid var(--border-gray); font-family:'JetBrains Mono',monospace; font-size:11px;">Feb 09</td>
+                                <td style="padding:6px 8px; border:1px solid var(--border-gray); text-align:center;">6.5 L</td>
+                                <td style="padding:6px 8px; border:1px solid var(--border-gray); text-align:center;">6.0 L</td>
+                                <td style="padding:6px 8px; border:1px solid var(--border-gray); text-align:center; font-weight:600;">12.5 L</td>
+                            </tr>
+                            <tr>
+                                <td style="padding:6px 8px; border:1px solid var(--border-gray); font-family:'JetBrains Mono',monospace; font-size:11px;">Feb 08</td>
+                                <td style="padding:6px 8px; border:1px solid var(--border-gray); text-align:center;">6.2 L</td>
+                                <td style="padding:6px 8px; border:1px solid var(--border-gray); text-align:center;">5.8 L</td>
+                                <td style="padding:6px 8px; border:1px solid var(--border-gray); text-align:center; font-weight:600;">12.0 L</td>
+                            </tr>
+                            <tr>
+                                <td style="padding:6px 8px; border:1px solid var(--border-gray); font-family:'JetBrains Mono',monospace; font-size:11px;">Feb 07</td>
+                                <td style="padding:6px 8px; border:1px solid var(--border-gray); text-align:center;">6.0 L</td>
+                                <td style="padding:6px 8px; border:1px solid var(--border-gray); text-align:center;">5.5 L</td>
+                                <td style="padding:6px 8px; border:1px solid var(--border-gray); text-align:center; font-weight:600;">11.5 L</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Delete Button -->
+                <div style="text-align:center; margin-top:16px; margin-bottom:8px;">
+                    <span style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--fail); cursor:pointer;">
+                        <i data-lucide="trash-2" class="icon" style="width:13px;height:13px;color:var(--fail);"></i> Delete Cow
+                    </span>
+                </div>
+
+                <!-- Edit FAB (bottom-right) -->
+                <div style="display:flex; justify-content:flex-end; margin-top:10px;">
+                    <div style="width:48px; height:48px; background:var(--black); color:var(--white); border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:3px 3px 0 var(--mid-gray);">
+                        <i data-lucide="pencil" class="icon" style="width:18px;height:18px;color:var(--white);"></i>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Annotation — Cow Detail -->
+        <div class="annotation">
+            <div class="annotation-title">Cow Detail</div>
+            <ul>
+                <li>Overflow menu: Edit, Delete, Share</li>
+                <li>"Get Diet" navigates to <code>/diet/new?cow_id={id}</code> (pre-fills wizard step 1)</li>
+                <li>"Log Milk" navigates to <code>/logs/new?cow_id={id}</code></li>
+                <li>Delete requires confirmation dialog</li>
+                <li>Milk history shows visual chart of daily yields</li>
+                <li>Edit button is a floating action button (FAB) in bottom-right</li>
+                <li>Yield trend shows percentage change vs last week</li>
+                <li>HealthEventTimeline component shows chronological health events</li>
+                <li>Recent Milk Logs table shows last few days of morning/evening milk data</li>
+            </ul>
+        </div>
+
+        <!-- Annotation — Data Relationships -->
+        <div class="annotation">
+            <div class="annotation-title">Data Relationships</div>
+            <ul>
+                <li>Each cow belongs to a farmer profile (<code>farmer_id</code>)</li>
+                <li>Cow can have many milk logs</li>
+                <li>Cow can have many diet plans</li>
+                <li>Breed comes from master breed list</li>
+                <li>When editing, form pre-fills all fields from cow data</li>
+            </ul>
+        </div>
+
+    </main>
+    <script>lucide.createIcons();</script>
+</body>
+</html>

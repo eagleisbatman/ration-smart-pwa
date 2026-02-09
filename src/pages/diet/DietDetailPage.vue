@@ -45,17 +45,25 @@
               <div class="text-caption text-grey-7">{{ formatDate(diet.created_at) }}</div>
             </div>
             <q-chip
-              :color="getStatusColor(diet.status)"
+              :color="diet.is_active ? 'positive' : getStatusColor(diet.status)"
               text-color="white"
             >
-              {{ getStatusLabel(diet.status) }}
+              <q-icon v-if="diet.is_active" name="favorite" size="14px" class="q-mr-xs" />
+              {{ diet.is_active ? $t('diet.following') : getStatusLabel(diet.status) }}
             </q-chip>
           </div>
         </q-card-section>
       </q-card>
 
-      <!-- Results (for completed diets) -->
-      <template v-if="diet.status === 'completed' && diet.result_data">
+      <!-- Follow-Up Check-In (shown when diet is active and due) -->
+      <FollowUpCard
+        v-if="diet.is_active && hasPendingFollowUp"
+        :diet-id="dietId"
+        @responded="hasPendingFollowUp = false"
+      />
+
+      <!-- Results (for completed/following/saved diets) -->
+      <template v-if="['completed', 'following', 'saved'].includes(diet.status) && diet.result_data">
         <!-- Summary Stats -->
         <div class="row q-col-gutter-sm q-mb-md">
           <div class="col-4">
@@ -175,7 +183,7 @@
       <div class="row q-col-gutter-sm q-mt-md">
         <div class="col-6">
           <q-btn
-            v-if="diet.status === 'completed'"
+            v-if="['completed', 'following', 'saved'].includes(diet.status)"
             :label="$t('diet.optimizeAgain')"
             icon="refresh"
             color="secondary"
@@ -205,8 +213,32 @@
         </div>
       </div>
 
-      <!-- Reminder Button -->
-      <div class="q-mt-sm">
+      <!-- Follow / Stop Following Button -->
+      <div v-if="diet.status === 'completed' || diet.status === 'following' || diet.status === 'saved'" class="q-mt-md">
+        <q-btn
+          v-if="!diet.is_active"
+          :label="$t('diet.startFollowing')"
+          icon="favorite_border"
+          color="positive"
+          class="full-width"
+          unelevated
+          :loading="dietsStore.loading"
+          @click="handleFollowDiet"
+        />
+        <q-btn
+          v-else
+          :label="$t('diet.stopFollowing')"
+          icon="favorite"
+          color="negative"
+          flat
+          class="full-width"
+          :loading="dietsStore.loading"
+          @click="handleStopFollowing"
+        />
+      </div>
+
+      <!-- Reminder Button (only for followed diets) -->
+      <div v-if="diet.is_active" class="q-mt-sm">
         <q-btn
           flat
           icon="alarm"
@@ -224,8 +256,8 @@
         </div>
       </div>
 
-      <!-- Compare Button (completed diets only) -->
-      <div v-if="diet.status === 'completed'" class="q-mt-sm">
+      <!-- Compare Button -->
+      <div v-if="['completed', 'following', 'saved'].includes(diet.status)" class="q-mt-sm">
         <q-btn
           flat
           icon="compare_arrows"
@@ -249,9 +281,9 @@
       />
     </template>
 
-    <!-- Share FAB - only visible for completed diets -->
+    <!-- Share FAB - visible for completed/following/saved diets -->
     <q-page-sticky
-      v-if="diet && diet.status === 'completed' && diet.result_data"
+      v-if="diet && ['completed', 'following', 'saved'].includes(diet.status) && diet.result_data"
       position="bottom-right"
       :offset="[18, 18]"
     >
@@ -335,6 +367,8 @@ import { Diet } from 'src/lib/offline/db';
 import SkeletonCard from 'src/components/ui/SkeletonCard.vue';
 import EmptyState from 'src/components/ui/EmptyState.vue';
 import DietReminderDialog from 'src/components/diet/DietReminderDialog.vue';
+import FollowUpCard from 'src/components/diet/FollowUpCard.vue';
+import { useFollowUpsStore } from 'src/stores/followUps';
 import { useCurrency } from 'src/composables/useCurrency';
 import { useExport, DietExportData } from 'src/composables/useExport';
 import { hasActiveReminder } from 'src/lib/diet-reminders';
@@ -373,8 +407,10 @@ const router = useRouter();
 const route = useRoute();
 const $q = useQuasar();
 const dietsStore = useDietsStore();
+const followUpsStore = useFollowUpsStore();
 
 const dietId = computed(() => route.params.id as string);
+const hasPendingFollowUp = ref(false);
 const diet = ref<Diet | null>(null);
 const loading = ref(true);
 
@@ -407,6 +443,9 @@ function getStatusLabel(status: string): string {
     completed: t('diet.statusLabel.completed'),
     processing: t('diet.statusLabel.processing'),
     failed: t('diet.statusLabel.failed'),
+    following: t('diet.following'),
+    archived: t('diet.stopped'),
+    saved: t('diet.statusLabel.completed'),
   };
   return labels[status] || t('diet.statusLabel.pending');
 }
@@ -414,7 +453,12 @@ function getStatusLabel(status: string): string {
 function getStatusColor(status: string): string {
   switch (status) {
     case 'completed':
+    case 'saved':
       return 'positive';
+    case 'following':
+      return 'positive';
+    case 'archived':
+      return 'grey-6';
     case 'processing':
       return 'info';
     case 'failed':
@@ -427,7 +471,12 @@ function getStatusColor(status: string): string {
 function getStatusIcon(status: string): string {
   switch (status) {
     case 'completed':
+    case 'saved':
       return 'check_circle';
+    case 'following':
+      return 'favorite';
+    case 'archived':
+      return 'archive';
     case 'processing':
       return 'hourglass_empty';
     case 'failed':
@@ -501,6 +550,29 @@ async function handleCopy() {
   }
 }
 
+async function handleFollowDiet() {
+  const success = await dietsStore.followDiet(dietId.value);
+  if (success) {
+    diet.value = await dietsStore.getDiet(dietId.value);
+    $q.notify({ type: 'positive', message: t('diet.followSuccess') });
+  }
+}
+
+async function handleStopFollowing() {
+  $q.dialog({
+    title: t('diet.stopFollowing'),
+    message: t('diet.stopFollowingConfirm'),
+    cancel: true,
+    persistent: true,
+  }).onOk(async () => {
+    const success = await dietsStore.stopFollowingDiet(dietId.value);
+    if (success) {
+      diet.value = await dietsStore.getDiet(dietId.value);
+      $q.notify({ type: 'info', message: t('diet.stopped') });
+    }
+  });
+}
+
 function regenerateDiet() {
   router.push({ path: '/diet/new', query: { regenerateFrom: dietId.value } });
 }
@@ -525,6 +597,10 @@ onMounted(async () => {
   diet.value = await dietsStore.getDiet(dietId.value);
   loading.value = false;
   refreshReminderStatus();
+
+  // Check for pending follow-ups
+  await followUpsStore.checkPendingFollowUps();
+  hasPendingFollowUp.value = !!followUpsStore.getPendingForDiet(dietId.value);
 });
 </script>
 

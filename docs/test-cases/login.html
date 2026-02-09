@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RationSmart Tests - Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <link rel="stylesheet" href="../shared.css">
+</head>
+<body>
+    <nav class="sidebar">
+        <div class="sidebar-brand"><i data-lucide="beef" class="icon"></i> RationSmart</div>
+        <div class="sidebar-subtitle">Test Cases &middot; 14 Pages</div>
+        <h3>Overview</h3>
+        <a href="index.html"><span class="nav-num">00</span> Overview &amp; Glossary</a>
+        <h3>Authentication</h3>
+        <a href="registration.html"><span class="nav-num">01</span> Registration (8)</a>
+        <a href="login.html" class="active"><span class="nav-num">02</span> Login (10)</a>
+        <a href="forgot-pin.html"><span class="nav-num">03</span> Forgot PIN (5)</a>
+        <a href="onboarding.html"><span class="nav-num">04</span> Onboarding (12)</a>
+        <h3>Core Features</h3>
+        <a href="dashboard.html"><span class="nav-num">05</span> Dashboard (8)</a>
+        <a href="cow-management.html"><span class="nav-num">06</span> Cow Management (13)</a>
+        <a href="diet-optimization.html"><span class="nav-num">07</span> Diet Optimization (17)</a>
+        <a href="feeds.html"><span class="nav-num">08</span> Feeds (7)</a>
+        <a href="milk-logging.html"><span class="nav-num">09</span> Milk Logging (8)</a>
+        <a href="farmer-management.html"><span class="nav-num">10</span> Farmer Mgmt (10)</a>
+        <a href="yield-reporting.html"><span class="nav-num">11</span> Yield Reporting (7)</a>
+        <h3>Settings &amp; Platform</h3>
+        <a href="settings.html"><span class="nav-num">12</span> Settings (10)</a>
+        <a href="navigation-pwa.html"><span class="nav-num">13</span> Navigation &amp; PWA (12)</a>
+    </nav>
+    <main class="main">
+        <div class="page-title">02 &mdash; Login Test Cases</div>
+        <div class="page-route">Module: Login &middot; Route: /auth/login &middot; 10 Test Cases</div>
+
+        <!-- ══════════════════════════════════════════════════ -->
+        <!-- TC-LOG-01 -->
+        <!-- ══════════════════════════════════════════════════ -->
+        <div class="tc critical">
+            <div class="tc-header">
+                <span class="tc-id">TC-LOG-01</span>
+                <span class="tc-title">Login with Email + Correct PIN</span>
+                <span class="tc-priority">Critical</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">A registered account exists with email "test@example.com" and PIN "1234". The account has completed all onboarding steps (language, role, organization, and profile creation).</div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>Open the browser and navigate to <strong>/auth/login</strong>.</li>
+                    <li>Verify that the login page loads with two toggle options at the top: <strong>Email</strong> and <strong>Phone</strong>.</li>
+                    <li>Ensure the <strong>Email</strong> toggle is active (highlighted/selected). If not, tap the "Email" toggle to switch to email mode.</li>
+                    <li>Tap the email input field and type <strong>test@example.com</strong>.</li>
+                    <li>Tap the PIN input field (a 4-digit numeric field) and enter <strong>1234</strong>.</li>
+                    <li>Tap the <strong>"Login"</strong> button.</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">The user is authenticated successfully and redirected to the Home Dashboard at route <strong>/</strong>. The dashboard displays the user's greeting and summary data.</div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>Browser URL changes to <strong>/</strong> (root/home)</li>
+                    <li>Dashboard page loads with the user's greeting (e.g., "Hello, [Name]")</li>
+                    <li>No error messages or toasts are displayed</li>
+                    <li>The bottom navigation bar is visible with Home highlighted</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ══════════════════════════════════════════════════ -->
+        <!-- TC-LOG-02 -->
+        <!-- ══════════════════════════════════════════════════ -->
+        <div class="tc critical">
+            <div class="tc-header">
+                <span class="tc-id">TC-LOG-02</span>
+                <span class="tc-title">Login with Phone + Correct PIN</span>
+                <span class="tc-priority">Critical</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">A registered account exists with a phone number (e.g., +919876543210 for India) and a valid PIN. The account has completed all onboarding steps.</div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>Open the browser and navigate to <strong>/auth/login</strong>.</li>
+                    <li>Tap the <strong>"Phone"</strong> toggle to switch the form to phone number mode.</li>
+                    <li>Observe that a country selector dropdown appears next to or above the phone input field.</li>
+                    <li>Tap the country selector and choose <strong>India</strong> from the list. Verify that the Indian flag image appears and the dial code prefix shows <strong>+91</strong>.</li>
+                    <li>Tap the phone number input field and enter the 10-digit phone number (e.g., <strong>9876543210</strong>). Do not include the country code &mdash; it is automatically prefixed.</li>
+                    <li>Tap the PIN input field and enter the correct 4-digit PIN.</li>
+                    <li>Tap the <strong>"Login"</strong> button.</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">The user is authenticated successfully and redirected to the Home Dashboard at route <strong>/</strong>.</div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>Country flag image for India is displayed (not a broken image icon)</li>
+                    <li>Dial code prefix <strong>+91</strong> is shown next to the phone input</li>
+                    <li>After tapping Login, the browser URL changes to <strong>/</strong></li>
+                    <li>Dashboard loads successfully with user data</li>
+                    <li>No error messages are shown</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ══════════════════════════════════════════════════ -->
+        <!-- TC-LOG-03 -->
+        <!-- ══════════════════════════════════════════════════ -->
+        <div class="tc high">
+            <div class="tc-header">
+                <span class="tc-id">TC-LOG-03</span>
+                <span class="tc-title">Incorrect PIN Shows Error</span>
+                <span class="tc-priority">High</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">A registered account exists with email "test@example.com" and a known PIN (e.g., "1234").</div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>Open the browser and navigate to <strong>/auth/login</strong>.</li>
+                    <li>Ensure the <strong>Email</strong> toggle is active.</li>
+                    <li>Enter the correct email address: <strong>test@example.com</strong>.</li>
+                    <li>In the PIN field, enter an <strong>incorrect</strong> PIN (e.g., <strong>9999</strong> instead of <strong>1234</strong>).</li>
+                    <li>Tap the <strong>"Login"</strong> button.</li>
+                    <li>Observe the response on the page.</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">An error message reading <strong>"Invalid credentials"</strong> (or similar) is displayed on the login page. The user is <strong>not</strong> redirected away from the login page. The form fields remain populated so the user can correct their PIN and retry.</div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>An error banner or toast with "Invalid credentials" text is visible on screen</li>
+                    <li>The email field still contains "test@example.com" (form is not cleared)</li>
+                    <li>The browser URL remains <strong>/auth/login</strong> (no redirect occurred)</li>
+                    <li>The user can clear the PIN field and enter a new PIN to retry login</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ══════════════════════════════════════════════════ -->
+        <!-- TC-LOG-04 -->
+        <!-- ══════════════════════════════════════════════════ -->
+        <div class="tc high">
+            <div class="tc-header">
+                <span class="tc-id">TC-LOG-04</span>
+                <span class="tc-title">Remember Me Persists Session</span>
+                <span class="tc-priority">High</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">A registered account exists with valid credentials. The user is currently logged out.</div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>Open the browser and navigate to <strong>/auth/login</strong>.</li>
+                    <li>Enter valid email and PIN credentials.</li>
+                    <li>Locate the <strong>"Remember Me"</strong> checkbox on the login form and <strong>check it</strong> (ensure the checkbox is ticked/enabled).</li>
+                    <li>Tap the <strong>"Login"</strong> button. Verify you are redirected to the dashboard.</li>
+                    <li><strong>Close the browser completely</strong> (not just the tab &mdash; quit/force-close the entire browser application).</li>
+                    <li>Reopen the browser.</li>
+                    <li>Navigate to the app URL (e.g., the root URL <strong>/</strong> or the production URL).</li>
+                    <li>Observe whether you are taken to the dashboard or the login page.</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">The user is <strong>still logged in</strong> after reopening the browser. They are taken directly to the Home Dashboard without needing to enter credentials again. The session was persisted via localStorage (not sessionStorage).</div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>No login page is shown after reopening the browser</li>
+                    <li>The dashboard loads directly with the user's data</li>
+                    <li>Opening browser DevTools &rarr; Application &rarr; Local Storage shows a stored auth token</li>
+                    <li>The session persists across browser restarts</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ══════════════════════════════════════════════════ -->
+        <!-- TC-LOG-05 -->
+        <!-- ══════════════════════════════════════════════════ -->
+        <div class="tc high">
+            <div class="tc-header">
+                <span class="tc-id">TC-LOG-05</span>
+                <span class="tc-title">Without Remember Me Session Clears on Close</span>
+                <span class="tc-priority">High</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">A registered account exists with valid credentials. The user is currently logged out.</div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>Open the browser and navigate to <strong>/auth/login</strong>.</li>
+                    <li>Enter valid email and PIN credentials.</li>
+                    <li>Locate the <strong>"Remember Me"</strong> checkbox and ensure it is <strong>NOT checked</strong> (unchecked/disabled).</li>
+                    <li>Tap the <strong>"Login"</strong> button. Verify you are redirected to the dashboard.</li>
+                    <li><strong>Close the browser completely</strong> (not just the tab &mdash; quit/force-close the entire browser application).</li>
+                    <li>Reopen the browser.</li>
+                    <li>Navigate to the app URL (e.g., the root URL <strong>/</strong> or the production URL).</li>
+                    <li>Observe whether you are taken to the dashboard or the login page.</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">The user is <strong>not</strong> logged in after reopening the browser. They are redirected to the <strong>/auth/login</strong> page and must enter their credentials again to access the app.</div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>The login page is shown after reopening the browser and navigating to the app</li>
+                    <li>No stored session token exists in localStorage or sessionStorage (check via DevTools &rarr; Application)</li>
+                    <li>The user must re-authenticate by entering email/phone and PIN</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ══════════════════════════════════════════════════ -->
+        <!-- TC-LOG-06 -->
+        <!-- ══════════════════════════════════════════════════ -->
+        <div class="tc critical">
+            <div class="tc-header">
+                <span class="tc-id">TC-LOG-06</span>
+                <span class="tc-title">Login Redirects to Home if Onboarding Complete</span>
+                <span class="tc-priority">Critical</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">A registered account exists that has <strong>completed all onboarding steps</strong>: language selection, role selection, organization selection, and profile creation (name, location, etc.). The user is currently logged out.</div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>Open the browser and navigate to <strong>/auth/login</strong>.</li>
+                    <li>Enter the account's valid email (or phone) and correct PIN.</li>
+                    <li>Tap the <strong>"Login"</strong> button.</li>
+                    <li>Observe where the app redirects after successful authentication.</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">The user is redirected to the <strong>Home Dashboard</strong> at route <strong>/</strong> (root). The onboarding flow is <strong>not</strong> shown because the user already completed it during their initial setup.</div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>Browser URL is <strong>/</strong> after login (not /auth/language or any onboarding route)</li>
+                    <li>Dashboard content is visible (greeting, stats, navigation)</li>
+                    <li>No onboarding screens or "Step X of Y" indicators appear</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ══════════════════════════════════════════════════ -->
+        <!-- TC-LOG-07 -->
+        <!-- ══════════════════════════════════════════════════ -->
+        <div class="tc critical">
+            <div class="tc-header">
+                <span class="tc-id">TC-LOG-07</span>
+                <span class="tc-title">Login Redirects to Onboarding if Incomplete</span>
+                <span class="tc-priority">Critical</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">A registered account exists that was created (registered with email/phone and PIN) but <strong>did NOT complete the onboarding flow</strong>. The user has no profile record &mdash; they registered and then closed the app before finishing setup. The user is currently logged out.</div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>Open the browser and navigate to <strong>/auth/login</strong>.</li>
+                    <li>Enter the account's valid email (or phone) and correct PIN.</li>
+                    <li>Tap the <strong>"Login"</strong> button.</li>
+                    <li>Observe where the app redirects after successful authentication.</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">The user is redirected to <strong>/auth/language</strong>, which is the first step of the onboarding flow (language selection). The dashboard is <strong>not</strong> shown because the user's profile is incomplete.</div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>Browser URL is <strong>/auth/language</strong> after login</li>
+                    <li>The language selection page is displayed</li>
+                    <li>A step indicator shows <strong>"Step 1 of 4"</strong> (or equivalent progress)</li>
+                    <li>The dashboard is not accessible until onboarding is finished</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ══════════════════════════════════════════════════ -->
+        <!-- TC-LOG-08 -->
+        <!-- ══════════════════════════════════════════════════ -->
+        <div class="tc medium">
+            <div class="tc-header">
+                <span class="tc-id">TC-LOG-08</span>
+                <span class="tc-title">Phone Mode Shows Country Flag and Dial Code</span>
+                <span class="tc-priority">Medium</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">The app is loaded at <strong>/auth/login</strong>. No login is required for this UI verification test.</div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>Open the browser and navigate to <strong>/auth/login</strong>.</li>
+                    <li>Tap the <strong>"Phone"</strong> toggle to switch the form to phone number mode.</li>
+                    <li>Observe the country selector dropdown. It should display a default country (typically India) with its flag image and dial code.</li>
+                    <li>Tap the country selector to open the dropdown list of countries.</li>
+                    <li>Scroll through the list and verify that each country entry shows: (a) a <strong>flag image</strong> (not an emoji character), (b) the <strong>country name</strong>, and (c) the <strong>dial code</strong> (e.g., +1, +44, +91).</li>
+                    <li>Select <strong>United States</strong> from the list. Verify the flag updates to the US flag and the dial code prefix changes to <strong>+1</strong>.</li>
+                    <li>Select <strong>United Kingdom</strong>. Verify the flag updates and dial code changes to <strong>+44</strong>.</li>
+                    <li>Select <strong>India</strong> again. Verify the flag updates and dial code changes back to <strong>+91</strong>.</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">Each country selection correctly displays its flag image (loaded from an image file, not an emoji) and the corresponding dial code prefix in the phone number input field.</div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>Flag images load correctly for all selected countries (no broken image icons)</li>
+                    <li>Flags are rendered as <strong>images</strong> (&lt;img&gt; tags), not emoji/unicode characters</li>
+                    <li>Dial code is visible as a prefix in or next to the phone number input field</li>
+                    <li>Switching countries instantly updates both the flag and the dial code</li>
+                    <li>The phone number input field is cleared or preserved (depending on design) when switching countries</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ══════════════════════════════════════════════════ -->
+        <!-- TC-LOG-09 -->
+        <!-- ══════════════════════════════════════════════════ -->
+        <div class="tc medium">
+            <div class="tc-header">
+                <span class="tc-id">TC-LOG-09</span>
+                <span class="tc-title">Forgot PIN Link Navigates Correctly</span>
+                <span class="tc-priority">Medium</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">The app is loaded at <strong>/auth/login</strong>. No login is required for this navigation test.</div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>Open the browser and navigate to <strong>/auth/login</strong>.</li>
+                    <li>Look for a <strong>"Forgot PIN?"</strong> link on the login page. It should be located below or near the PIN input field.</li>
+                    <li>Tap the <strong>"Forgot PIN?"</strong> link text.</li>
+                    <li>Observe the page navigation.</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">The browser navigates to the <strong>/auth/forgot-pin</strong> page. The Forgot PIN form loads with its own email/phone toggle and input fields for resetting the PIN.</div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>The browser URL changes to <strong>/auth/forgot-pin</strong></li>
+                    <li>The Forgot PIN page loads completely (no blank screen or error)</li>
+                    <li>The Forgot PIN form includes an email/phone toggle similar to the login form</li>
+                    <li>A "Back to Login" or similar navigation option is available on the Forgot PIN page</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ══════════════════════════════════════════════════ -->
+        <!-- TC-LOG-10 -->
+        <!-- ══════════════════════════════════════════════════ -->
+        <div class="tc high">
+            <div class="tc-header">
+                <span class="tc-id">TC-LOG-10</span>
+                <span class="tc-title">Session Expired (401) Shows Toast and Redirects</span>
+                <span class="tc-priority">High</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">The user is currently logged in and on any page within the app (e.g., the Home Dashboard, Cow Management, Settings, etc.).</div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>Log in to the app with valid credentials and confirm you are on the dashboard or any authenticated page.</li>
+                    <li>Open the browser's <strong>Developer Tools</strong> (press F12 or right-click &rarr; "Inspect").</li>
+                    <li>Navigate to the <strong>Application</strong> tab in DevTools.</li>
+                    <li>In the left sidebar of the Application tab, expand <strong>Local Storage</strong> (or <strong>Session Storage</strong>, depending on how the token is stored).</li>
+                    <li>Find the entry for the <strong>access_token</strong> (or auth token key) and <strong>delete it</strong> by right-clicking and selecting "Delete" or selecting it and pressing the Delete key.</li>
+                    <li>Return to the app and perform any action that triggers an API call to the server. Examples: pull-to-refresh the page, navigate to a different tab (e.g., Cow Management), or tap any button that loads data.</li>
+                    <li>Observe the app's response.</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">A toast notification briefly appears on screen with a message like <strong>"Session expired"</strong> or <strong>"Please log in again"</strong>. The user is then automatically redirected to the <strong>/auth/login</strong> page. The user must re-enter their credentials to continue using the app.</div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>A toast/snackbar notification appears with a session-expired message</li>
+                    <li>The toast auto-dismisses after a few seconds (does not block the UI permanently)</li>
+                    <li>The browser URL changes to <strong>/auth/login</strong></li>
+                    <li>The login form is displayed and ready for credential entry</li>
+                    <li>The user must re-authenticate &mdash; they cannot navigate back to protected pages without logging in</li>
+                </ul>
+            </div>
+        </div>
+
+    </main>
+    <script>lucide.createIcons();</script>
+</body>
+</html>

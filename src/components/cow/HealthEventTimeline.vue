@@ -160,6 +160,9 @@ import { useI18n } from 'vue-i18n';
 import { useQuasar } from 'quasar';
 import { format, parseISO, isFuture } from 'date-fns';
 import { db, HealthEvent } from 'src/lib/offline/db';
+import { api } from 'src/boot/axios';
+import { isOnline } from 'src/boot/pwa';
+import { queueDelete } from 'src/lib/offline/sync-manager';
 import { useCurrency } from 'src/composables/useCurrency';
 import HealthEventDialog from './HealthEventDialog.vue';
 
@@ -237,7 +240,21 @@ function onDelete(event: HealthEvent) {
   }).onOk(async () => {
     try {
       if (event.id) {
-        await db.healthEvents.delete(event.id);
+        // Mark as deleted locally
+        await db.healthEvents.update(event.id, { _deleted: true });
+
+        if (isOnline.value) {
+          // Soft-delete on server
+          try {
+            await api.delete(`/api/v1/health-events/${event.id}`);
+            await db.healthEvents.delete(event.id);
+          } catch (err) {
+            console.warn('[HealthEventTimeline] Server delete failed, queued for sync:', err);
+            await queueDelete('health_event', event.id);
+          }
+        } else {
+          await queueDelete('health_event', event.id);
+        }
       }
       $q.notify({
         type: 'positive',
@@ -259,6 +276,28 @@ async function loadEvents() {
   loading.value = true;
   editingEvent.value = null;
   try {
+    // Fetch from backend when online and cache locally
+    if (isOnline.value) {
+      try {
+        const response = await api.get(`/api/v1/health-events/cow/${props.cowId}`);
+        const serverEvents = (Array.isArray(response.data) ? response.data : []) as HealthEvent[];
+
+        // Cache in IndexedDB (backend uses cow_profile_id, frontend uses cow_id)
+        for (const evt of serverEvents) {
+          const mapped = evt as HealthEvent & { cow_profile_id?: string };
+          await db.healthEvents.put({
+            ...mapped,
+            cow_id: mapped.cow_id || mapped.cow_profile_id || props.cowId,
+            _synced: true,
+            _deleted: false,
+          });
+        }
+      } catch (err) {
+        console.warn('[HealthEventTimeline] Failed to fetch from server, using local cache:', err);
+      }
+    }
+
+    // Load from local database
     events.value = await db.healthEvents
       .where('cow_id')
       .equals(props.cowId)

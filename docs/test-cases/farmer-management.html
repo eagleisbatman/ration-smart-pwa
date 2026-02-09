@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RationSmart Tests - Farmer Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <link rel="stylesheet" href="../shared.css">
+</head>
+<body>
+    <nav class="sidebar">
+        <div class="sidebar-brand"><i data-lucide="beef" class="icon"></i> RationSmart</div>
+        <div class="sidebar-subtitle">Test Cases &middot; 14 Pages</div>
+        <h3>Overview</h3>
+        <a href="index.html"><span class="nav-num">00</span> Overview &amp; Glossary</a>
+        <h3>Authentication</h3>
+        <a href="registration.html"><span class="nav-num">01</span> Registration (8)</a>
+        <a href="login.html"><span class="nav-num">02</span> Login (10)</a>
+        <a href="forgot-pin.html"><span class="nav-num">03</span> Forgot PIN (5)</a>
+        <a href="onboarding.html"><span class="nav-num">04</span> Onboarding (12)</a>
+        <h3>Core Features</h3>
+        <a href="dashboard.html"><span class="nav-num">05</span> Dashboard (8)</a>
+        <a href="cow-management.html"><span class="nav-num">06</span> Cow Management (13)</a>
+        <a href="diet-optimization.html"><span class="nav-num">07</span> Diet Optimization (17)</a>
+        <a href="feeds.html"><span class="nav-num">08</span> Feeds (7)</a>
+        <a href="milk-logging.html"><span class="nav-num">09</span> Milk Logging (8)</a>
+        <a href="farmer-management.html" class="active"><span class="nav-num">10</span> Farmer Mgmt (10)</a>
+        <a href="yield-reporting.html"><span class="nav-num">11</span> Yield Reporting (7)</a>
+        <h3>Settings &amp; Platform</h3>
+        <a href="settings.html"><span class="nav-num">12</span> Settings (10)</a>
+        <a href="navigation-pwa.html"><span class="nav-num">13</span> Navigation &amp; PWA (12)</a>
+    </nav>
+    <main class="main">
+
+        <div class="page-title">10 &mdash; Farmer Management Test Cases</div>
+        <div class="page-route">Module: Farmer Management &middot; Route: /farmers &middot; 10 Test Cases</div>
+
+        <!-- ════════════════════════════════════════════════════ -->
+        <!-- TC-FAR-01 -->
+        <!-- ════════════════════════════════════════════════════ -->
+        <div class="tc high">
+            <div class="tc-header">
+                <span class="tc-id">TC-FAR-01</span>
+                <span class="tc-title">View Farmer List</span>
+                <span class="tc-priority">High</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">
+                    Logged in as an Extension Worker. At least 1 farmer exists in the user's organization. An Extension Worker is a field agent employed by an organization (NGO, government, university) to support multiple farmers with technical advice and data collection.
+                </div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>Navigate to the <strong>Farmers</strong> tab using the bottom navigation bar or side menu.</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">
+                    The farmer list page loads and displays farmer cards. Each card shows the farmer's <strong>name</strong>, <strong>phone number</strong>, <strong>village</strong>, and <strong>district</strong>. A search box is visible at the top of the list for filtering farmers. A count badge in the header indicates the total number of farmers.
+                </div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>Farmer list displays at least 1 farmer card</li>
+                    <li>Each card shows name, phone, village, and district</li>
+                    <li>Search box is visible and accessible at the top of the list</li>
+                    <li>Count badge in header reflects the total number of farmers in the organization</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════ -->
+        <!-- TC-FAR-02 -->
+        <!-- ════════════════════════════════════════════════════ -->
+        <div class="tc critical">
+            <div class="tc-header">
+                <span class="tc-id">TC-FAR-02</span>
+                <span class="tc-title">Add New Farmer</span>
+                <span class="tc-priority">Critical</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">
+                    Logged in as an Extension Worker. The user is on the Farmers list page or can navigate to it.
+                </div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>Navigate to the <strong>Farmers</strong> tab.</li>
+                    <li>Tap the <strong>(+)</strong> button (floating action button or header button) to open the Add Farmer form.</li>
+                    <li>Enter a <strong>Name</strong> in the required name field (e.g., <code>Ramesh Kumar</code>).</li>
+                    <li>Enter a <strong>Phone Number</strong> (e.g., <code>9876543210</code>).</li>
+                    <li>Enter a <strong>Village</strong> (e.g., <code>Sundarpur</code>).</li>
+                    <li>Enter a <strong>District</strong> (e.g., <code>Varanasi</code>).</li>
+                    <li>Enter a <strong>State</strong> (e.g., <code>Uttar Pradesh</code>).</li>
+                    <li>Tap the <strong>Save</strong> button to submit the form.</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">
+                    The farmer profile is created successfully and associated with the current user's organization. The app redirects back to the farmer list. The newly added farmer appears in the list with the details that were entered.
+                </div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>Farmer profile is created and persisted in the database</li>
+                    <li>New farmer is associated with the Extension Worker's organization</li>
+                    <li>App redirects to the farmer list after saving</li>
+                    <li>Newly created farmer appears in the list with correct name, phone, village, and district</li>
+                    <li>Name field is required &mdash; form does not submit if name is empty</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════ -->
+        <!-- TC-FAR-03 -->
+        <!-- ════════════════════════════════════════════════════ -->
+        <div class="tc high">
+            <div class="tc-header">
+                <span class="tc-id">TC-FAR-03</span>
+                <span class="tc-title">Edit Farmer Profile</span>
+                <span class="tc-priority">High</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">
+                    Logged in as an Extension Worker. At least 1 farmer exists in the organization.
+                </div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>From the farmer list, tap on a farmer card to open the farmer detail page.</li>
+                    <li>Tap the <strong>Edit</strong> button to enter edit mode.</li>
+                    <li>Change the <strong>Village</strong> field to a new value (e.g., change from <code>Sundarpur</code> to <code>Rampur</code>).</li>
+                    <li>Tap the <strong>Save</strong> button to persist the changes.</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">
+                    The farmer profile is updated successfully. The detail page reflects the changes immediately, showing the new village name. No data is lost in other fields.
+                </div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>Edit form pre-fills with the farmer's existing data</li>
+                    <li>Village field updates to the new value after saving</li>
+                    <li>Detail page reflects the updated village immediately</li>
+                    <li>Other fields (name, phone, district, state) remain unchanged</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════ -->
+        <!-- TC-FAR-04 -->
+        <!-- ════════════════════════════════════════════════════ -->
+        <div class="tc high">
+            <div class="tc-header">
+                <span class="tc-id">TC-FAR-04</span>
+                <span class="tc-title">View Farmer Detail + Their Cows</span>
+                <span class="tc-priority">High</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">
+                    Logged in as an Extension Worker. A farmer exists in the organization with at least 1 cow registered under their profile.
+                </div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>Navigate to the <strong>Farmers</strong> tab.</li>
+                    <li>Tap on a farmer card from the list to open the farmer detail page.</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">
+                    The farmer detail page displays the farmer's <strong>name</strong>, <strong>phone number</strong>, and <strong>location</strong> (village, district, state). Below the profile information, a list of the farmer's cows is shown with basic stats for each cow. Action buttons are visible: <strong>Edit</strong> (to edit the farmer profile), <strong>Add Cow for this farmer</strong>, and <strong>Record Yield</strong>.
+                </div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>Farmer name, phone, village, district, and state are displayed correctly</li>
+                    <li>List of the farmer's cows is shown with basic stats (e.g., breed, lactation stage, milk yield)</li>
+                    <li>Edit button is present and navigates to the edit form</li>
+                    <li>Add Cow button is present and allows adding a cow under this specific farmer</li>
+                    <li>Record Yield button is present and links to yield entry for this farmer</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════ -->
+        <!-- TC-FAR-05 -->
+        <!-- ════════════════════════════════════════════════════ -->
+        <div class="tc high">
+            <div class="tc-header">
+                <span class="tc-id">TC-FAR-05</span>
+                <span class="tc-title">CSV Import &mdash; Step 1: Upload File</span>
+                <span class="tc-priority">High</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">
+                    Logged in as an Extension Worker. On the farmer list page. A valid CSV file with farmer data is available on the device.
+                </div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>On the farmer list page, tap the <strong>Import</strong> button to open the CSV import flow.</li>
+                    <li>In the file upload zone, either tap to select a file or drag-and-drop a <code>.csv</code> file from the device.</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">
+                    The file upload zone accepts <code>.csv</code> files. After a file is selected, the file name is displayed in the upload zone. The <strong>Next</strong> button becomes enabled, allowing the user to proceed to column mapping.
+                </div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>File upload zone is visible and accepts <code>.csv</code> files</li>
+                    <li>Non-CSV file types are rejected or filtered out</li>
+                    <li>Selected file name is displayed after upload</li>
+                    <li>Next button is disabled before file selection and enabled after a valid file is chosen</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════ -->
+        <!-- TC-FAR-06 -->
+        <!-- ════════════════════════════════════════════════════ -->
+        <div class="tc high">
+            <div class="tc-header">
+                <span class="tc-id">TC-FAR-06</span>
+                <span class="tc-title">CSV Import &mdash; Step 2: Column Mapping + Validation Preview</span>
+                <span class="tc-priority">High</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">
+                    A CSV file has been uploaded in Step 1 (TC-FAR-05). The user is on the column mapping screen of the import flow.
+                </div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>View the column mapping interface. Observe whether the system has auto-detected columns from the CSV headers.</li>
+                    <li>Verify that the expected columns are mapped: <strong>name</strong>, <strong>phone</strong>, <strong>village</strong>, <strong>district</strong>, <strong>state</strong>.</li>
+                    <li>If any columns are mismatched (e.g., the CSV header says "farmer_name" but the system mapped it to "phone"), use the dropdown to correct the mapping.</li>
+                    <li>View the validation preview table showing the first 5 rows of the CSV data with the applied column mapping.</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">
+                    The system auto-detects columns (name, phone, village, district, state) from the CSV headers. A preview table displays the first 5 rows of data. Any validation errors are highlighted (e.g., rows with a missing required name field are flagged). A summary count is shown: <strong>"X valid, Y invalid rows."</strong>
+                </div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>System auto-detects and maps CSV columns to the expected fields</li>
+                    <li>Column mapping dropdowns allow manual correction of mismatched columns</li>
+                    <li>Preview table shows the first 5 rows of parsed data</li>
+                    <li>Rows with validation errors (e.g., missing name) are highlighted</li>
+                    <li>Summary count displays the number of valid and invalid rows</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════ -->
+        <!-- TC-FAR-07 -->
+        <!-- ════════════════════════════════════════════════════ -->
+        <div class="tc high">
+            <div class="tc-header">
+                <span class="tc-id">TC-FAR-07</span>
+                <span class="tc-title">CSV Import &mdash; Step 3: Import with Progress</span>
+                <span class="tc-priority">High</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">
+                    Column mapping is complete (TC-FAR-06). At least some valid rows exist in the uploaded CSV. The user is on the final step of the import flow.
+                </div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>Tap the <strong>Import</strong> button to begin importing the valid rows.</li>
+                    <li>Observe the progress bar as the import processes the rows.</li>
+                    <li>Wait for the import to complete.</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">
+                    A progress bar is displayed showing the import progress as rows are processed. Upon completion, a success message is shown: <strong>"X farmers imported successfully."</strong> If any rows failed during import, a count of skipped rows is displayed alongside the success message.
+                </div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>Progress bar is visible and updates as rows are imported</li>
+                    <li>Success message displays the count of successfully imported farmers</li>
+                    <li>If rows were skipped, the skipped count is shown</li>
+                    <li>Newly imported farmers appear in the farmer list after returning to it</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════ -->
+        <!-- TC-FAR-08 -->
+        <!-- ════════════════════════════════════════════════════ -->
+        <div class="tc medium">
+            <div class="tc-header">
+                <span class="tc-id">TC-FAR-08</span>
+                <span class="tc-title">CSV Import &mdash; Download Template</span>
+                <span class="tc-priority">Medium</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">
+                    Logged in as an Extension Worker. The user is on the CSV import page (accessed via the Import button on the farmer list).
+                </div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>On the import page, locate and tap the <strong>Download Template</strong> link.</li>
+                    <li>Verify that a CSV file is downloaded to the device.</li>
+                    <li>Open the downloaded file in a spreadsheet application (e.g., Excel, Google Sheets) and inspect its contents.</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">
+                    A CSV template file is downloaded with the following column headers: <strong>name</strong>, <strong>phone</strong>, <strong>village</strong>, <strong>district</strong>, <strong>state</strong>. The file opens correctly in spreadsheet applications and contains no data rows &mdash; only the header row.
+                </div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>Download Template link is visible and clickable on the import page</li>
+                    <li>Downloaded file has a <code>.csv</code> extension</li>
+                    <li>CSV contains headers: name, phone, village, district, state</li>
+                    <li>File opens correctly in spreadsheet applications without encoding issues</li>
+                    <li>No data rows are present &mdash; only the header row</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════ -->
+        <!-- TC-FAR-09 -->
+        <!-- ════════════════════════════════════════════════════ -->
+        <div class="tc medium">
+            <div class="tc-header">
+                <span class="tc-id">TC-FAR-09</span>
+                <span class="tc-title">CSV Import &mdash; Invalid Rows Skipped</span>
+                <span class="tc-priority">Medium</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">
+                    A CSV file is prepared with some rows that are missing the required <strong>name</strong> field (the name column is blank for those rows). Other rows in the file have all required fields filled in correctly.
+                </div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>Navigate to the farmer list and tap <strong>Import</strong>.</li>
+                    <li>Upload the CSV file that contains a mix of valid and invalid rows.</li>
+                    <li>Complete the column mapping step and verify that the preview highlights rows with missing names.</li>
+                    <li>Tap <strong>Import</strong> to begin the import.</li>
+                    <li>Review the import summary after completion.</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">
+                    Valid rows (those with a name) are imported successfully as new farmer profiles. Invalid rows (those missing the required name field) are skipped and not imported. The import summary clearly shows: <strong>"X imported, Y skipped due to errors."</strong>
+                </div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>Valid rows are imported successfully and appear in the farmer list</li>
+                    <li>Invalid rows (missing name) are skipped and not created as farmer profiles</li>
+                    <li>Import summary shows the count of imported and skipped rows</li>
+                    <li>No partial or corrupted farmer profiles are created from invalid rows</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════ -->
+        <!-- TC-FAR-10 -->
+        <!-- ════════════════════════════════════════════════════ -->
+        <div class="tc high">
+            <div class="tc-header">
+                <span class="tc-id">TC-FAR-10</span>
+                <span class="tc-title">Farmer Management Restricted by Role</span>
+                <span class="tc-priority">High</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">
+                    Multiple user accounts exist with different roles: Farmer, Student, Extension Worker, Nutritionist, and Researcher. At least 1 farmer profile exists in the organization.
+                </div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>Log in as a <strong>Farmer</strong> (or Student). Navigate to the app and check whether the <strong>Farmers</strong> tab is visible in the navigation.</li>
+                    <li>Log out. Log in as an <strong>Extension Worker</strong>. Navigate to the <strong>Farmers</strong> tab. Verify that the farmer list is visible and that Add (+), Edit, and Delete actions are available.</li>
+                    <li>Log out. Log in as a <strong>Nutritionist</strong>. Navigate to the <strong>Farmers</strong> tab. Verify that the farmer list is visible but check whether Add and Edit buttons are present or hidden.</li>
+                    <li>Log out. Log in as a <strong>Researcher</strong>. Navigate to the <strong>Farmers</strong> tab. Verify the same view-only behavior as the Nutritionist role.</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">
+                    <strong>Farmer / Student:</strong> The Farmers tab is not visible in the navigation, or tapping it shows a "No access" message. <strong>Extension Worker:</strong> Full CRUD access &mdash; can create, read, update, and delete farmer profiles. <strong>Nutritionist:</strong> View-only access &mdash; can see the farmer list and farmer details, but no Add or Edit buttons are displayed. <strong>Researcher:</strong> View-only access &mdash; same as Nutritionist.
+                </div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>Farmer and Student roles cannot access the Farmers tab or see a "No access" message</li>
+                    <li>Extension Worker has full CRUD: can add, view, edit, and delete farmers</li>
+                    <li>Nutritionist can view the farmer list and details but cannot add or edit</li>
+                    <li>Researcher can view the farmer list and details but cannot add or edit</li>
+                    <li>Role-based restrictions are enforced on both the UI and API level</li>
+                </ul>
+            </div>
+        </div>
+
+    </main>
+    <script>lucide.createIcons();</script>
+</body>
+</html>

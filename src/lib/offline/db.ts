@@ -71,7 +71,10 @@ export interface Diet {
   cow_id?: string;
   cow_name?: string;
   optimization_goal: string;
+  /** PWA statuses: pending | processing | completed | failed
+   *  Backend lifecycle: draft | saved | following | archived */
   status: string;
+  is_active?: boolean;
   input_data: Record<string, unknown>;
   result_data?: Record<string, unknown>;
   total_cost?: number;
@@ -95,6 +98,10 @@ export interface MilkLog {
   snf_percentage?: number;
   temperature?: number;
   notes?: string;
+  /** Whether the farmer followed the active diet today */
+  fed_diet?: boolean;
+  /** ID of the active diet being followed (from bot-diet-history) */
+  diet_history_id?: string;
   created_at: string;
   updated_at: string;
   // Local sync status
@@ -183,7 +190,7 @@ export interface ReportQueueItem {
 
 export interface SyncQueueItem {
   id?: number;
-  entity_type: 'cow' | 'feed' | 'diet' | 'milk_log' | 'farmer' | 'yield';
+  entity_type: 'cow' | 'feed' | 'diet' | 'milk_log' | 'farmer' | 'yield' | 'health_event';
   entity_id: string;
   operation: 'create' | 'update' | 'delete';
   data: Record<string, unknown>;

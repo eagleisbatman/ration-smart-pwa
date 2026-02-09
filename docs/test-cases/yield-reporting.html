@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RationSmart Tests - Yield Reporting</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <link rel="stylesheet" href="../shared.css">
+</head>
+<body>
+    <nav class="sidebar">
+        <div class="sidebar-brand"><i data-lucide="beef" class="icon"></i> RationSmart</div>
+        <div class="sidebar-subtitle">Test Cases &middot; 14 Pages</div>
+        <h3>Overview</h3>
+        <a href="index.html"><span class="nav-num">00</span> Overview &amp; Glossary</a>
+        <h3>Authentication</h3>
+        <a href="registration.html"><span class="nav-num">01</span> Registration (8)</a>
+        <a href="login.html"><span class="nav-num">02</span> Login (10)</a>
+        <a href="forgot-pin.html"><span class="nav-num">03</span> Forgot PIN (5)</a>
+        <a href="onboarding.html"><span class="nav-num">04</span> Onboarding (12)</a>
+        <h3>Core Features</h3>
+        <a href="dashboard.html"><span class="nav-num">05</span> Dashboard (8)</a>
+        <a href="cow-management.html"><span class="nav-num">06</span> Cow Management (13)</a>
+        <a href="diet-optimization.html"><span class="nav-num">07</span> Diet Optimization (17)</a>
+        <a href="feeds.html"><span class="nav-num">08</span> Feeds (7)</a>
+        <a href="milk-logging.html"><span class="nav-num">09</span> Milk Logging (8)</a>
+        <a href="farmer-management.html"><span class="nav-num">10</span> Farmer Mgmt (10)</a>
+        <a href="yield-reporting.html" class="active"><span class="nav-num">11</span> Yield Reporting (7)</a>
+        <h3>Settings &amp; Platform</h3>
+        <a href="settings.html"><span class="nav-num">12</span> Settings (10)</a>
+        <a href="navigation-pwa.html"><span class="nav-num">13</span> Navigation &amp; PWA (12)</a>
+    </nav>
+    <main class="main">
+
+        <div class="page-title">11 &mdash; Yield Reporting Test Cases</div>
+        <div class="page-route">Module: Yield Reporting &middot; Route: /yields &middot; 7 Test Cases</div>
+
+        <!-- ════════════════════════════════════════════════════ -->
+        <!-- TC-YLD-01 -->
+        <!-- ════════════════════════════════════════════════════ -->
+        <div class="tc critical">
+            <div class="tc-header">
+                <span class="tc-id">TC-YLD-01</span>
+                <span class="tc-title">Record Yield &mdash; Select Farmer &rarr; Select Cow &rarr; Enter Data</span>
+                <span class="tc-priority">Critical</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">
+                    Logged in as <strong>Extension Worker</strong> or <strong>Researcher</strong>. At least 1 farmer with at least 1 cow exists in the system. The app is open at <strong>/yields</strong>.
+                </div>
+
+                <h4>Glossary</h4>
+                <div class="tc-expected">
+                    <strong>Yield data</strong> = milk production records collected by extension workers during field visits to farmers. Unlike personal milk logs (which farmers enter themselves), yield data is collected by field agents for organizational reporting and analysis.
+                </div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>Navigate to the <strong>Yields</strong> section from the main navigation or dashboard.</li>
+                    <li>Tap the <strong>(+)</strong> button or <strong>"Record Yield"</strong> action to begin creating a new yield entry.</li>
+                    <li>Select a <strong>farmer</strong> from the farmer dropdown. The dropdown should list all farmers assigned to the logged-in extension worker or all farmers visible to the researcher.</li>
+                    <li>Select a <strong>cow</strong> belonging to that farmer from the cow dropdown. Only cows registered under the selected farmer should appear.</li>
+                    <li>Enter the <strong>morning milk</strong> amount in liters (e.g., <code>4.5</code>).</li>
+                    <li>Enter the <strong>evening milk</strong> amount in liters (e.g., <code>3.2</code>).</li>
+                    <li>Select the <strong>date</strong> for this yield record (defaults to today).</li>
+                    <li>Tap the <strong>Save</strong> button to submit the yield record.</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">
+                    The yield record is created successfully for the selected farmer's cow. The app redirects to the yield history page. The new entry appears in the list showing the farmer name, cow name, morning/evening amounts, calculated total, and date.
+                </div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>Farmer dropdown lists available farmers for the logged-in user</li>
+                    <li>Cow dropdown filters to show only cows belonging to the selected farmer</li>
+                    <li>Morning and evening milk fields accept decimal values in liters</li>
+                    <li>Date picker defaults to today and allows selecting past dates</li>
+                    <li>After saving, the new yield entry appears in the yield history list</li>
+                    <li>Total is automatically calculated as morning + evening amounts</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════ -->
+        <!-- TC-YLD-02 -->
+        <!-- ════════════════════════════════════════════════════ -->
+        <div class="tc high">
+            <div class="tc-header">
+                <span class="tc-id">TC-YLD-02</span>
+                <span class="tc-title">Edit Yield Record</span>
+                <span class="tc-priority">High</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">
+                    Logged in as <strong>Extension Worker</strong> or <strong>Researcher</strong>. At least 1 yield record already exists in the system.
+                </div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>Navigate to the <strong>Yield History</strong> page and locate an existing yield entry.</li>
+                    <li>Tap the existing yield entry to open its detail view.</li>
+                    <li>Tap the <strong>Edit</strong> button to enter edit mode.</li>
+                    <li>Change the <strong>evening milk</strong> amount to a new value (e.g., change from <code>3.2</code> to <code>4.0</code>).</li>
+                    <li>Tap <strong>Save</strong> to confirm the changes.</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">
+                    The yield record is updated with the new evening milk amount. The history list reflects the changes immediately. The total (morning + evening) is recalculated to reflect the updated evening value.
+                </div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>Edit mode pre-fills the form with the existing yield data</li>
+                    <li>Only the changed field is updated; other fields retain their original values</li>
+                    <li>Total is recalculated after saving (morning + new evening amount)</li>
+                    <li>History list updates to show the corrected values</li>
+                    <li>A success confirmation is shown after saving</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════ -->
+        <!-- TC-YLD-03 -->
+        <!-- ════════════════════════════════════════════════════ -->
+        <div class="tc high">
+            <div class="tc-header">
+                <span class="tc-id">TC-YLD-03</span>
+                <span class="tc-title">View Yield History List</span>
+                <span class="tc-priority">High</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">
+                    Logged in as <strong>Extension Worker</strong> or <strong>Researcher</strong>. Multiple yield records exist across different farmers, cows, and dates.
+                </div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>Navigate to the <strong>Yield History</strong> page from the Yields section.</li>
+                    <li>Observe the list of yield records displayed on the page.</li>
+                    <li>Scroll through the history to verify all records are accessible.</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">
+                    Records are listed by date with the most recent entries appearing first. Each entry displays: farmer name, cow name, morning milk amount, evening milk amount, total yield, and date. The user can scroll through the full history.
+                </div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>Records are sorted by date in descending order (most recent first)</li>
+                    <li>Each entry shows farmer name, cow name, morning amount, evening amount, total, and date</li>
+                    <li>The list is scrollable and all records are accessible</li>
+                    <li>Tapping an entry opens its detail view</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════ -->
+        <!-- TC-YLD-04 -->
+        <!-- ════════════════════════════════════════════════════ -->
+        <div class="tc medium">
+            <div class="tc-header">
+                <span class="tc-id">TC-YLD-04</span>
+                <span class="tc-title">Farmer Yield Comparison Page</span>
+                <span class="tc-priority">Medium</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">
+                    Logged in as <strong>Extension Worker</strong> or <strong>Researcher</strong>. Yield data exists for at least 2 different farmers over a comparable time period.
+                </div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>Navigate to the <strong>Yields</strong> section from the main navigation.</li>
+                    <li>Tap the <strong>"Compare Farmers"</strong> option or navigate to the farmer comparison view.</li>
+                    <li>Observe the side-by-side comparison data displayed for each farmer.</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">
+                    A side-by-side comparison view is displayed showing, for each farmer: farmer name, average daily yield, total yield over the selected period, number of cows, and trend indicator (increasing or decreasing). This view is useful for organization-level performance tracking across multiple farmers.
+                </div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>Comparison view shows data for at least 2 farmers side-by-side</li>
+                    <li>Each farmer entry displays: name, average daily yield, total yield, number of cows</li>
+                    <li>Trend indicator shows whether yield is increasing or decreasing over the period</li>
+                    <li>Data is accurate and matches individual farmer yield records</li>
+                    <li>The comparison is useful for organizational performance tracking</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════ -->
+        <!-- TC-YLD-05 -->
+        <!-- ════════════════════════════════════════════════════ -->
+        <div class="tc medium">
+            <div class="tc-header">
+                <span class="tc-id">TC-YLD-05</span>
+                <span class="tc-title">Filter Yields by Date Range</span>
+                <span class="tc-priority">Medium</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">
+                    Logged in as <strong>Extension Worker</strong> or <strong>Researcher</strong>. Yield records exist across multiple dates spanning at least 30 days.
+                </div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>Navigate to the <strong>Yield History</strong> page.</li>
+                    <li>Locate the date range filter controls (e.g., preset buttons or date pickers).</li>
+                    <li>Select the <strong>"Last 7 days"</strong> preset and observe the filtered results.</li>
+                    <li>Switch to the <strong>"Last 30 days"</strong> preset and observe the updated results.</li>
+                    <li>Switch to a <strong>custom date range</strong> by selecting a specific start date and end date, then apply the filter.</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">
+                    The yield list filters to show only records within the selected date range. Totals and summary statistics update to reflect the filtered data. Switching between presets and custom ranges works seamlessly without page reloads.
+                </div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>"Last 7 days" filter shows only records from the past week</li>
+                    <li>"Last 30 days" filter shows only records from the past month</li>
+                    <li>Custom date range correctly filters records between the selected start and end dates</li>
+                    <li>Totals and summary statistics recalculate based on the filtered data</li>
+                    <li>Clearing the filter restores the full unfiltered list</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════ -->
+        <!-- TC-YLD-06 -->
+        <!-- ════════════════════════════════════════════════════ -->
+        <div class="tc medium">
+            <div class="tc-header">
+                <span class="tc-id">TC-YLD-06</span>
+                <span class="tc-title">Yield Data Available Offline</span>
+                <span class="tc-priority">Medium</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">
+                    Logged in as <strong>Extension Worker</strong> or <strong>Researcher</strong>. Previously viewed yield data while connected to the internet. The device is capable of being put into airplane mode or having its network connection disabled.
+                </div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>While online, navigate to the <strong>Yield History</strong> page and view several yield records to ensure they are cached locally.</li>
+                    <li>Disconnect the device from the internet (enable airplane mode or disable Wi-Fi/mobile data).</li>
+                    <li>Navigate to the <strong>Yield History</strong> page again.</li>
+                    <li>Verify that previously loaded yield data is still visible from the local cache.</li>
+                    <li>Attempt to create a <strong>new yield record</strong> while still offline. Fill in all required fields and tap <strong>Save</strong>.</li>
+                    <li>Reconnect to the internet and observe the sync behavior.</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">
+                    Previously loaded yield data is still visible from the local cache when offline. New yield records can be created while offline and are queued for sync. When the device reconnects to the internet, the queued records sync automatically and appear in the server-side yield history.
+                </div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>Previously cached yield data is displayed when offline (no blank screen or error)</li>
+                    <li>New yield records can be created offline without errors</li>
+                    <li>Offline-created records are visually indicated as pending sync (e.g., a sync icon or badge)</li>
+                    <li>Records sync automatically when the device reconnects to the internet</li>
+                    <li>After sync, records appear correctly in the yield history on both the device and server</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════ -->
+        <!-- TC-YLD-07 -->
+        <!-- ════════════════════════════════════════════════════ -->
+        <div class="tc high">
+            <div class="tc-header">
+                <span class="tc-id">TC-YLD-07</span>
+                <span class="tc-title">Only Extension Workers / Researchers Can Record Yields</span>
+                <span class="tc-priority">High</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">
+                    Multiple user accounts exist with different roles: <strong>Farmer</strong>, <strong>Student</strong>, <strong>Extension Worker</strong>, <strong>Nutritionist</strong>, and <strong>Researcher</strong>. Each account has valid login credentials.
+                </div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>Log in as a <strong>Farmer</strong>. Navigate to the main menu and check whether the <strong>Yield</strong> section is visible or accessible.</li>
+                    <li>Log out and log in as a <strong>Student</strong>. Check whether the <strong>Yield</strong> section is visible or accessible.</li>
+                    <li>Log out and log in as an <strong>Extension Worker</strong>. Navigate to the <strong>Yield</strong> section and verify full access: ability to record new yields, view yield history, and edit existing yield records.</li>
+                    <li>Log out and log in as a <strong>Nutritionist</strong>. Navigate to the <strong>Yield</strong> section and verify the level of access (view-only expected).</li>
+                    <li>Log out and log in as a <strong>Researcher</strong>. Navigate to the <strong>Yield</strong> section and verify full access: ability to record new yields, view yield history, edit existing records, and export yield data.</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">
+                    <strong>Farmer / Student:</strong> The Yield section is not accessible or is hidden from the navigation entirely. <strong>Extension Worker:</strong> Full access to record, view, and edit yields. <strong>Nutritionist:</strong> View-only access (can see yield data but cannot create or edit records). <strong>Researcher:</strong> Full access to record, view, edit, and export yield data.
+                </div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>Farmer role: Yield section is hidden or returns an access-denied message</li>
+                    <li>Student role: Yield section is hidden or returns an access-denied message</li>
+                    <li>Extension Worker role: Can record, view, and edit yield data</li>
+                    <li>Nutritionist role: Can view yield data but cannot create or edit records</li>
+                    <li>Researcher role: Can record, view, edit, and export yield data</li>
+                    <li>Direct URL access (e.g., typing <code>/yields</code>) is also blocked for unauthorized roles</li>
+                </ul>
+            </div>
+        </div>
+
+    </main>
+    <script>lucide.createIcons();</script>
+</body>
+</html>

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RationSmart - Login Flow</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <link rel="stylesheet" href="../shared.css">
+</head>
+<body>
+    <nav class="sidebar">
+        <div class="sidebar-brand"><i data-lucide="beef" class="icon"></i> RationSmart</div>
+        <div class="sidebar-subtitle">User Flows &middot; 9 Pages</div>
+        <h3>Authentication</h3>
+        <a href="index.html"><span class="nav-num">00</span> Overview</a>
+        <a href="registration.html"><span class="nav-num">01</span> Registration</a>
+        <a href="login.html" class="active"><span class="nav-num">02</span> Login</a>
+        <a href="forgot-pin.html"><span class="nav-num">03</span> Forgot PIN</a>
+        <h3>Onboarding</h3>
+        <a href="onboarding.html"><span class="nav-num">04</span> Onboarding (4 Steps)</a>
+        <h3>Core App</h3>
+        <a href="dashboard.html"><span class="nav-num">05</span> Home Dashboard</a>
+        <a href="cow-management.html"><span class="nav-num">06</span> Cow Management</a>
+        <a href="diet-wizard.html"><span class="nav-num">07</span> Diet Optimization</a>
+        <a href="settings.html"><span class="nav-num">08</span> Settings</a>
+    </nav>
+
+    <main class="main">
+        <div class="page-title">02 &mdash; Login</div>
+        <div class="page-route">Route: /auth/login</div>
+
+        <!-- Flow Diagram -->
+        <h2>Post-Login Routing Flow</h2>
+        <div style="overflow-x:auto; padding: 20px 0;">
+            <div class="flow-box filled">Login Page</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box">onboarding complete?</div>
+            <span class="flow-arrow">&rarr;</span>
+            <span class="small mono muted">YES</span>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box filled">Home Dashboard (/)</div>
+        </div>
+        <div style="overflow-x:auto; padding: 0 0 20px;">
+            <div class="flow-box filled">Login Page</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box">onboarding complete?</div>
+            <span class="flow-arrow">&rarr;</span>
+            <span class="small mono muted">NO</span>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box filled">Language Select (/auth/language)</div>
+        </div>
+
+        <!-- Wireframe 1: Email Login Mode -->
+        <h2>Wireframe 1 &mdash; Email Login Mode</h2>
+        <div class="phone-frame">
+            <div class="phone-header">
+                <i data-lucide="log-in" class="icon"></i>
+                Login
+            </div>
+            <div class="phone-body">
+                <!-- Branding -->
+                <div class="ui-branding">
+                    <div class="name"><i data-lucide="beef" class="icon"></i> RationSmart</div>
+                    <div class="tag">Optimize your cattle nutrition</div>
+                </div>
+
+                <!-- Credentials Section -->
+                <div class="section-label">Credentials</div>
+
+                <!-- Email / Phone Toggle -->
+                <div class="ui-toggle">
+                    <span class="on"><i data-lucide="mail" class="icon"></i> Email</span>
+                    <span><i data-lucide="phone" class="icon"></i> Phone</span>
+                </div>
+
+                <!-- Email Input -->
+                <div class="ui-input">
+                    <i data-lucide="mail" class="icon"></i>
+                    <span class="value">ramesh@gmail.com</span>
+                </div>
+
+                <!-- Security Section -->
+                <div class="section-label">Security</div>
+
+                <!-- PIN Input -->
+                <div class="ui-input">
+                    <i data-lucide="lock" class="icon"></i>
+                    <span class="value">* * * *</span>
+                    <span style="margin-left:auto"><i data-lucide="eye" class="icon"></i></span>
+                </div>
+
+                <!-- Remember me + Forgot PIN row -->
+                <div style="display:flex; justify-content:space-between; align-items:center; margin:8px 0 4px;">
+                    <div style="display:flex; align-items:center; gap:6px; font-size:12px; font-family:'JetBrains Mono',monospace; color:var(--mid-gray);">
+                        <span style="display:inline-block; width:14px; height:14px; border:2px solid var(--black); border-radius:2px;"></span>
+                        Remember me
+                    </div>
+                    <span class="ui-link" style="margin:0; text-align:right;">Forgot PIN?</span>
+                </div>
+
+                <!-- Login Button -->
+                <div class="ui-btn">Login</div>
+
+                <!-- Register Link -->
+                <div class="ui-link">Don't have an account? <strong>Register</strong></div>
+            </div>
+        </div>
+
+        <!-- Wireframe 2: Phone Login Mode -->
+        <h2>Wireframe 2 &mdash; Phone Login Mode</h2>
+        <div class="phone-frame">
+            <div class="phone-header">
+                <i data-lucide="log-in" class="icon"></i>
+                Login
+            </div>
+            <div class="phone-body">
+                <!-- Branding -->
+                <div class="ui-branding">
+                    <div class="name"><i data-lucide="beef" class="icon"></i> RationSmart</div>
+                    <div class="tag">Optimize your cattle nutrition</div>
+                </div>
+
+                <!-- Credentials Section -->
+                <div class="section-label">Credentials</div>
+
+                <!-- Email / Phone Toggle (Phone is ON) -->
+                <div class="ui-toggle">
+                    <span><i data-lucide="mail" class="icon"></i> Email</span>
+                    <span class="on"><i data-lucide="phone" class="icon"></i> Phone</span>
+                </div>
+
+                <!-- Country Dropdown -->
+                <div class="ui-input">
+                    <i data-lucide="chevron-down" class="icon"></i>
+                    <span class="value">India (+91)</span>
+                </div>
+
+                <!-- Phone Input -->
+                <div class="ui-input">
+                    <i data-lucide="flag" class="icon"></i>
+                    <span class="label">+91</span>
+                    <span class="value">98765 43210</span>
+                </div>
+
+                <!-- Security Section -->
+                <div class="section-label">Security</div>
+
+                <!-- PIN Input -->
+                <div class="ui-input">
+                    <i data-lucide="lock" class="icon"></i>
+                    <span class="value">* * * *</span>
+                    <span style="margin-left:auto"><i data-lucide="eye" class="icon"></i></span>
+                </div>
+
+                <!-- Remember me + Forgot PIN row -->
+                <div style="display:flex; justify-content:space-between; align-items:center; margin:8px 0 4px;">
+                    <div style="display:flex; align-items:center; gap:6px; font-size:12px; font-family:'JetBrains Mono',monospace; color:var(--mid-gray);">
+                        <span style="display:inline-block; width:14px; height:14px; border:2px solid var(--black); border-radius:2px;"></span>
+                        Remember me
+                    </div>
+                    <span class="ui-link" style="margin:0; text-align:right;">Forgot PIN?</span>
+                </div>
+
+                <!-- Login Button -->
+                <div class="ui-btn">Login</div>
+
+                <!-- Register Link -->
+                <div class="ui-link">Don't have an account? <strong>Register</strong></div>
+            </div>
+        </div>
+
+        <!-- Annotation 1: Authentication -->
+        <div class="annotation">
+            <div class="annotation-title">Authentication</div>
+            <ul>
+                <li><code>POST /api/v1/auth/login</code> with <code>{email, pin}</code> or <code>{phone_number, pin}</code></li>
+                <li>Phone sent in E.164 format (e.g., <code>+919876543210</code>)</li>
+                <li>Returns <code>access_token</code> + <code>refresh_token</code></li>
+                <li>If "Remember Me" checked: tokens stored in <code>localStorage</code> (persist across browser restarts)</li>
+                <li>If not checked: tokens stored in <code>sessionStorage</code> (cleared when browser closes)</li>
+            </ul>
+        </div>
+
+        <!-- Annotation 2: Post-Login Routing -->
+        <div class="annotation">
+            <div class="annotation-title">Post-Login Routing</div>
+            <ul>
+                <li>After successful login, app checks <code>needsOnboarding</code></li>
+                <li><code>needsOnboarding = isAuthenticated &amp;&amp; !selfFarmerProfileId</code></li>
+                <li>If onboarding needed &rarr; redirect to <code>/auth/language</code></li>
+                <li>If onboarding complete &rarr; redirect to <code>/</code> (Home Dashboard)</li>
+                <li>Pre-fill email from query param: if URL has <code>?email=user@test.com</code>, auto-fill email field</li>
+            </ul>
+        </div>
+
+        <!-- Annotation 3: Error States -->
+        <div class="annotation">
+            <div class="annotation-title">Error States</div>
+            <ul>
+                <li>Wrong PIN: "Invalid credentials" error message displayed</li>
+                <li>Account not found: "Invalid credentials" (same message for security)</li>
+                <li>Network error: "Unable to connect. Please check your internet connection."</li>
+                <li>Session expired (401 on any API call): Toast notification "Session expired" + auto-redirect to login page</li>
+            </ul>
+            <div class="note">Error messages are intentionally vague to prevent user enumeration attacks.</div>
+        </div>
+
+        <!-- Annotation 4: Remember Me Behavior -->
+        <div class="annotation">
+            <div class="annotation-title">Remember Me Behavior</div>
+            <ul>
+                <li>Checked (default: unchecked): tokens in <code>localStorage</code>, session persists across browser restarts</li>
+                <li>Unchecked: tokens in <code>sessionStorage</code>, session cleared on browser close</li>
+                <li>New registrations always use <code>localStorage</code> (onboarding requires persistence)</li>
+            </ul>
+        </div>
+    </main>
+
+    <script>lucide.createIcons();</script>
+</body>
+</html>

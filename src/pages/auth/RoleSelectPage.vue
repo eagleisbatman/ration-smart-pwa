@@ -79,6 +79,7 @@ const router = useRouter();
 
 const roles = [
   { value: 'farmer', icon: 'agriculture' },
+  { value: 'student', icon: 'school' },
   { value: 'extension_worker', icon: 'groups' },
   { value: 'nutritionist', icon: 'science' },
   { value: 'researcher', icon: 'biotech' },

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RationSmart - Forgot PIN Flow</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <link rel="stylesheet" href="../shared.css">
+</head>
+<body>
+    <nav class="sidebar">
+        <div class="sidebar-brand"><i data-lucide="beef" class="icon"></i> RationSmart</div>
+        <div class="sidebar-subtitle">User Flows &middot; 9 Pages</div>
+        <h3>Authentication</h3>
+        <a href="index.html"><span class="nav-num">00</span> Overview</a>
+        <a href="registration.html"><span class="nav-num">01</span> Registration</a>
+        <a href="login.html"><span class="nav-num">02</span> Login</a>
+        <a href="forgot-pin.html" class="active"><span class="nav-num">03</span> Forgot PIN</a>
+        <h3>Onboarding</h3>
+        <a href="onboarding.html"><span class="nav-num">04</span> Onboarding (4 Steps)</a>
+        <h3>Core App</h3>
+        <a href="dashboard.html"><span class="nav-num">05</span> Home Dashboard</a>
+        <a href="cow-management.html"><span class="nav-num">06</span> Cow Management</a>
+        <a href="diet-wizard.html"><span class="nav-num">07</span> Diet Optimization</a>
+        <a href="settings.html"><span class="nav-num">08</span> Settings</a>
+    </nav>
+
+    <main class="main">
+        <div class="page-title">03 &mdash; Forgot PIN</div>
+        <div class="page-route">Route: /auth/forgot-pin</div>
+
+        <!-- Flow Diagram -->
+        <h2>User Flow</h2>
+        <div style="overflow-x:auto; padding: 20px 0;">
+            <div class="flow-box">Login Page</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box">"Forgot PIN?" link</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box filled">Forgot PIN Page</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box">Submit</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box">Success Banner</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box">Auto-redirect (3s)</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box filled">Login Page</div>
+        </div>
+
+        <!-- Wireframe 1: Email Mode -->
+        <h2>Wireframe 1 &mdash; Email Mode (Initial State)</h2>
+        <div class="phone-frame">
+            <div class="phone-header">
+                <i data-lucide="arrow-left" class="icon"></i>
+                Forgot PIN
+            </div>
+            <div class="phone-body">
+                <p class="small muted mb-sm">Enter your email or phone number and we'll send you instructions to reset your PIN.</p>
+
+                <div class="ui-toggle" style="margin-top: 14px;">
+                    <span class="on">Email</span>
+                    <span>Phone</span>
+                </div>
+
+                <div class="ui-input">
+                    <i data-lucide="mail" class="icon"></i>
+                    <span class="label">Email address</span>
+                </div>
+
+                <div class="ui-btn">Send Reset Link</div>
+
+                <div class="ui-link">
+                    <i data-lucide="arrow-left" class="icon" style="width:14px;height:14px;"></i>
+                    Back to Login
+                </div>
+            </div>
+        </div>
+
+        <!-- Wireframe 2: Phone Mode -->
+        <h2>Wireframe 2 &mdash; Phone Mode</h2>
+        <div class="phone-frame">
+            <div class="phone-header">
+                <i data-lucide="arrow-left" class="icon"></i>
+                Forgot PIN
+            </div>
+            <div class="phone-body">
+                <p class="small muted mb-sm">Enter your email or phone number and we'll send you instructions to reset your PIN.</p>
+
+                <div class="ui-toggle" style="margin-top: 14px;">
+                    <span>Email</span>
+                    <span class="on">Phone</span>
+                </div>
+
+                <div class="ui-input">
+                    <i data-lucide="flag" class="icon"></i>
+                    <span class="value">India (+91)</span>
+                    <i data-lucide="chevron-down" class="icon" style="width:14px;height:14px;margin-left:auto;"></i>
+                </div>
+
+                <div class="ui-input">
+                    <span class="value" style="font-weight:600;">+91</span>
+                    <span class="label">Phone number</span>
+                </div>
+
+                <div class="ui-btn">Send Reset Link</div>
+
+                <div class="ui-link">
+                    <i data-lucide="arrow-left" class="icon" style="width:14px;height:14px;"></i>
+                    Back to Login
+                </div>
+            </div>
+        </div>
+
+        <!-- Wireframe 3: Success State -->
+        <h2>Wireframe 3 &mdash; Success State</h2>
+        <div class="phone-frame">
+            <div class="phone-header">
+                <i data-lucide="arrow-left" class="icon"></i>
+                Forgot PIN
+            </div>
+            <div class="phone-body">
+                <div style="background:#e6f9e6; border:2px solid var(--pass); border-radius:8px; padding:12px 14px; margin-bottom:16px; display:flex; align-items:flex-start; gap:10px;">
+                    <i data-lucide="check-circle" class="icon" style="color:var(--pass); flex-shrink:0; margin-top:2px;"></i>
+                    <span class="small" style="color:var(--pass); font-weight:500;">PIN reset instructions have been sent. Check your email/phone.</span>
+                </div>
+
+                <p class="mono small" style="text-align:center; color:var(--mid-gray); margin-bottom:16px;">Redirecting to login in 3...</p>
+
+                <div class="ui-link">
+                    <i data-lucide="arrow-left" class="icon" style="width:14px;height:14px;"></i>
+                    Back to Login
+                </div>
+            </div>
+        </div>
+
+        <!-- Annotation 1: API Call -->
+        <div class="annotation">
+            <div class="annotation-title"><i data-lucide="send" class="icon"></i> API Call</div>
+            <ul>
+                <li><strong>POST</strong> <code>/api/v1/auth/forgot-pin</code></li>
+                <li>Email mode payload: <code>{ "email": "user@example.com" }</code></li>
+                <li>Phone mode payload: <code>{ "phone_number": "+919876543210" }</code> (E.164 format)</li>
+                <li>Success: <strong>200 OK</strong></li>
+                <li>Not found: <strong>404</strong> &rarr; shows error "No account found with this email/phone"</li>
+                <li>Invalid input: <strong>422</strong> &rarr; shows validation error</li>
+            </ul>
+        </div>
+
+        <!-- Annotation 2: Auto-Redirect -->
+        <div class="annotation">
+            <div class="annotation-title"><i data-lucide="timer" class="icon"></i> Auto-Redirect</div>
+            <ul>
+                <li>After success, starts a 3-second countdown</li>
+                <li>Countdown visible to user: "Redirecting to login in 3... 2... 1..."</li>
+                <li>Timer uses <code>setInterval</code> (1000ms)</li>
+                <li>At 0, redirects to <code>/auth/login</code></li>
+                <li>Timer cleared on component unmount (cleanup)</li>
+            </ul>
+            <div class="note">Ensures no memory leaks if user navigates away before countdown completes.</div>
+        </div>
+
+        <!-- Annotation 3: Entry Points -->
+        <div class="annotation">
+            <div class="annotation-title"><i data-lucide="log-in" class="icon"></i> Entry Points</div>
+            <ul>
+                <li>From Login page &rarr; "Forgot PIN?" link</li>
+                <li>Direct URL: <code>/auth/forgot-pin</code></li>
+                <li>Only accessible to unauthenticated users (<code>requiresGuest</code> route meta)</li>
+            </ul>
+            <div class="note">Authenticated users attempting to visit this route will be redirected to the home dashboard.</div>
+        </div>
+    </main>
+
+    <script>lucide.createIcons();</script>
+</body>
+</html>

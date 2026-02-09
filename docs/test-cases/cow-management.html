@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RationSmart Tests - Cow Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <link rel="stylesheet" href="../shared.css">
+</head>
+<body>
+    <nav class="sidebar">
+        <div class="sidebar-brand"><i data-lucide="beef" class="icon"></i> RationSmart</div>
+        <div class="sidebar-subtitle">Test Cases &middot; 14 Pages</div>
+        <h3>Overview</h3>
+        <a href="index.html"><span class="nav-num">00</span> Overview &amp; Glossary</a>
+        <h3>Authentication</h3>
+        <a href="registration.html"><span class="nav-num">01</span> Registration (8)</a>
+        <a href="login.html"><span class="nav-num">02</span> Login (10)</a>
+        <a href="forgot-pin.html"><span class="nav-num">03</span> Forgot PIN (5)</a>
+        <a href="onboarding.html"><span class="nav-num">04</span> Onboarding (12)</a>
+        <h3>Core Features</h3>
+        <a href="dashboard.html"><span class="nav-num">05</span> Dashboard (8)</a>
+        <a href="cow-management.html" class="active"><span class="nav-num">06</span> Cow Management (21)</a>
+        <a href="diet-optimization.html"><span class="nav-num">07</span> Diet Optimization (17)</a>
+        <a href="feeds.html"><span class="nav-num">08</span> Feeds (7)</a>
+        <a href="milk-logging.html"><span class="nav-num">09</span> Milk Logging (8)</a>
+        <a href="farmer-management.html"><span class="nav-num">10</span> Farmer Mgmt (10)</a>
+        <a href="yield-reporting.html"><span class="nav-num">11</span> Yield Reporting (7)</a>
+        <h3>Settings &amp; Platform</h3>
+        <a href="settings.html"><span class="nav-num">12</span> Settings (10)</a>
+        <a href="navigation-pwa.html"><span class="nav-num">13</span> Navigation &amp; PWA (12)</a>
+    </nav>
+    <main class="main">
+
+        <div class="page-title">06 &mdash; Cow Management Test Cases</div>
+        <div class="page-route">Module: Cow Management &middot; Route: /cows &middot; 21 Test Cases</div>
+
+        <!-- ════════════════════════════════════════════════════ -->
+        <!-- TC-COW-01 -->
+        <!-- ════════════════════════════════════════════════════ -->
+        <div class="tc high">
+            <div class="tc-header">
+                <span class="tc-id">TC-COW-01</span>
+                <span class="tc-title">View Cow List</span>
+                <span class="tc-priority">High</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">
+                    User is logged in and at least 1 cow exists in the system. The app is open and the user has access to the <strong>/cows</strong> page.
+                </div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>Navigate to the <strong>Cows</strong> tab from the bottom navigation bar or sidebar menu.</li>
+                    <li>Observe the cow list page. Verify that cow cards are displayed in a scrollable list.</li>
+                    <li>Inspect each cow card and confirm it shows the cow's <strong>name</strong>, <strong>breed</strong>, <strong>milk yield</strong> (liters/day), and <strong>lactation stage</strong> (e.g., Early, Mid, Late, Dry).</li>
+                    <li>Verify that <strong>search</strong> and <strong>filter</strong> options are visible at the top of the list page.</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">
+                    The cow list page displays all registered cows as individual cards. Each card shows the cow's name, breed, current milk yield, and lactation stage. Search and filter controls are visible and accessible at the top of the page.
+                </div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>Cow cards display name, breed, milk yield, and lactation stage</li>
+                    <li>Search input field is visible at the top of the list</li>
+                    <li>Filter options (breed, lactation stage) are visible and accessible</li>
+                    <li>List is scrollable when more cows exist than fit on screen</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════ -->
+        <!-- TC-COW-02 -->
+        <!-- ════════════════════════════════════════════════════ -->
+        <div class="tc critical">
+            <div class="tc-header">
+                <span class="tc-id">TC-COW-02</span>
+                <span class="tc-title">Add New Cow with All Required Fields</span>
+                <span class="tc-priority">Critical</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">
+                    User is logged in and on the <strong>/cows</strong> page. The device is online so the breed dropdown can fetch data from the API.
+                </div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>Tap the <strong>(+)</strong> floating action button to open the "Add New Cow" form.</li>
+                    <li>Optionally tap the <strong>Photo</strong> upload area at the top to add a cow photo. The app offers a choice between <strong>Camera</strong> (take a new photo) and <strong>Gallery</strong> (choose an existing image). This field is optional.</li>
+                    <li>Enter a name for the cow in the <strong>Name</strong> text field (required, e.g., <code>Lakshmi</code>).</li>
+                    <li>Optionally enter a <strong>Tag Number</strong> (ear tag, RFID, or other identifier, e.g., <code>IN-MH-0042</code>).</li>
+                    <li>Tap the <strong>Breed</strong> dropdown and select a breed from the list populated by the backend API (e.g., <code>Holstein Friesian</code>).</li>
+                    <li>Optionally select a <strong>Coat Color</strong> from the dropdown. Seven options are available: <strong>Black</strong>, <strong>White</strong>, <strong>Brown</strong>, <strong>Red</strong>, <strong>Spotted</strong>, <strong>Mixed</strong>, <strong>Other</strong>.</li>
+                    <li>Enter the cow's weight in the <strong>Weight (kg)</strong> numeric input field (required, must be greater than 0 and no more than 1500, e.g., <code>450</code>).</li>
+                    <li>Optionally enter the current milk production in the <strong>Milk Yield (L/day)</strong> field (e.g., <code>12</code>).</li>
+                    <li>Optionally enter the milk fat percentage in the <strong>Milk Fat %</strong> field (valid range 0&ndash;10%, e.g., <code>3.5</code>).</li>
+                    <li>Select a <strong>Lactation Stage</strong> from the dropdown: <strong>Early</strong>, <strong>Mid</strong>, <strong>Late</strong>, or <strong>Dry</strong>.</li>
+                    <li>If the cow is pregnant, toggle the <strong>Pregnancy</strong> switch to ON and enter the <strong>Pregnancy Month</strong> (1&ndash;9). The month field appears only when the toggle is ON.</li>
+                    <li>Select a <strong>Body Condition Score (BCS)</strong> from the dropdown. Options: <strong>1 &ndash; Emaciated</strong>, <strong>2 &ndash; Thin</strong>, <strong>3 &ndash; Moderate</strong>, <strong>4 &ndash; Heavy</strong>, <strong>5 &ndash; Obese</strong>.</li>
+                    <li>Optionally enter the cow's <strong>Age in months</strong> (e.g., <code>36</code>).</li>
+                    <li>Select an <strong>Activity Level</strong> from the dropdown: <strong>Low</strong>, <strong>Normal</strong>, or <strong>High</strong>.</li>
+                    <li>Optionally enter any additional information in the <strong>Notes</strong> textarea.</li>
+                    <li>Tap the <strong>Save</strong> button to create the cow record.</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">
+                    The cow is created successfully in the system. The app redirects back to the cow list page at <code>/cows</code>. The newly created cow appears in the list with the correct name, breed, milk yield, and lactation stage displayed on its card. All optional fields that were filled in are persisted and visible on the cow detail page.
+                </div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>The "Add New Cow" form opens when the (+) button is tapped</li>
+                    <li>Photo upload is optional and offers Camera or Gallery as source</li>
+                    <li>Name is required; form cannot be submitted without it</li>
+                    <li>Tag Number is optional and accepts free text</li>
+                    <li>Breed dropdown is populated with breeds from the backend API</li>
+                    <li>Coat Color dropdown offers 7 options: Black, White, Brown, Red, Spotted, Mixed, Other</li>
+                    <li>Weight is required, must be &gt;0 and &le;1500 kg</li>
+                    <li>Milk Yield (L/day) is optional</li>
+                    <li>Milk Fat % is optional, valid range 0&ndash;10%</li>
+                    <li>Lactation Stage dropdown provides Early, Mid, Late, Dry</li>
+                    <li>Pregnancy toggle reveals month field (1&ndash;9) only when ON</li>
+                    <li>BCS is a dropdown with values 1&ndash;5 (1=Emaciated, 2=Thin, 3=Moderate, 4=Heavy, 5=Obese)</li>
+                    <li>Age in months is optional</li>
+                    <li>Activity Level dropdown provides Low, Normal, High</li>
+                    <li>Notes is an optional textarea</li>
+                    <li>After saving, the app redirects to the cow list at <code>/cows</code></li>
+                    <li>The new cow appears in the list with correct data on its card</li>
+                    <li>No error messages are displayed during or after creation</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════ -->
+        <!-- TC-COW-03 -->
+        <!-- ════════════════════════════════════════════════════ -->
+        <div class="tc high">
+            <div class="tc-header">
+                <span class="tc-id">TC-COW-03</span>
+                <span class="tc-title">Edit Existing Cow</span>
+                <span class="tc-priority">High</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">
+                    At least 1 cow exists in the system. The user is logged in and on the <strong>/cows</strong> page.
+                </div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>Tap on a cow card from the list to navigate to the cow's detail page.</li>
+                    <li>On the cow detail page, tap the <strong>Edit</strong> button to open the edit form.</li>
+                    <li>Change the <strong>Milk Yield</strong> value to a new number (e.g., change from <code>12</code> to <code>15</code> liters/day).</li>
+                    <li>Tap the <strong>Save</strong> button to persist the changes.</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">
+                    The updated data is saved successfully. The cow detail page refreshes and displays the new milk yield value. Navigating back to the cow list also reflects the updated milk yield on the cow's card.
+                </div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>Edit form pre-fills with the cow's current data</li>
+                    <li>Changes to milk yield are accepted and saved without errors</li>
+                    <li>The detail page shows the updated values after saving</li>
+                    <li>The cow list also reflects the updated data</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════ -->
+        <!-- TC-COW-04 -->
+        <!-- ════════════════════════════════════════════════════ -->
+        <div class="tc high">
+            <div class="tc-header">
+                <span class="tc-id">TC-COW-04</span>
+                <span class="tc-title">View Cow Detail Page</span>
+                <span class="tc-priority">High</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">
+                    At least 1 cow exists in the system with complete data including milk log history. The user is logged in and on the <strong>/cows</strong> page.
+                </div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>Tap on a cow card from the cow list to navigate to the cow's detail page.</li>
+                    <li>Verify the <strong>hero section</strong> at the top displays the cow's photo (if uploaded) or an <strong>initial avatar</strong> (first letter of the cow's name) as a fallback.</li>
+                    <li>Below the hero section, verify the <strong>quick stats</strong> row shows: <strong>Weight</strong> (kg), <strong>Milk Yield</strong> (L/day) with a <strong>yield trend</strong> indicator (percentage change compared to last week), and <strong>Fat %</strong>.</li>
+                    <li>Verify the <strong>details list</strong> section displays: <strong>Breed</strong>, <strong>Tag Number</strong>, <strong>Coat Color</strong>, <strong>Lactation Stage</strong>, <strong>Age</strong>, <strong>Body Condition Score (BCS)</strong>, <strong>Activity Level</strong>, <strong>Pregnancy Status</strong> (with month if pregnant), and <strong>Notes</strong>.</li>
+                    <li>Scroll down and verify a <strong>Milk Production Chart</strong> is displayed, visualizing the cow's milk yield over time.</li>
+                    <li>Verify the <strong>quick action buttons</strong> are visible: <strong>Log Milk</strong> and <strong>Get Diet</strong>.</li>
+                    <li>Scroll further and verify a <strong>Health Event Timeline</strong> section is present.</li>
+                    <li>Verify a <strong>Recent Milk Logs</strong> table is displayed with columns: <strong>Date</strong>, <strong>Morning</strong>, <strong>Evening</strong>, and <strong>Total</strong>.</li>
+                    <li>Verify that an <strong>Edit FAB</strong> (floating action button) is visible at the bottom-right corner of the screen for editing the cow.</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">
+                    The cow detail page is organized into distinct sections: a hero photo or initial avatar at the top, quick stats (weight, milk yield with trend, fat%), a details list with all cow attributes, a Milk Production Chart, quick action buttons (Log Milk, Get Diet), a Health Event Timeline, and a Recent Milk Logs table. An Edit FAB (floating action button) is anchored at the bottom-right of the screen.
+                </div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>Hero section shows uploaded photo or initial avatar fallback</li>
+                    <li>Quick stats display weight, milk yield with yield trend (% change vs last week), and fat%</li>
+                    <li>Details list shows breed, tag number, coat color, lactation stage, age, BCS, activity level, pregnancy status, and notes</li>
+                    <li>Milk Production Chart is rendered and shows yield over time</li>
+                    <li>Log Milk quick action button is visible and tappable</li>
+                    <li>Get Diet quick action button is visible and tappable</li>
+                    <li>Health Event Timeline section is present</li>
+                    <li>Recent Milk Logs table displays date, morning, evening, and total columns</li>
+                    <li>Edit FAB (floating action button) is visible at the bottom-right corner</li>
+                    <li>All data displayed matches the cow's stored record</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════ -->
+        <!-- TC-COW-05 -->
+        <!-- ════════════════════════════════════════════════════ -->
+        <div class="tc high">
+            <div class="tc-header">
+                <span class="tc-id">TC-COW-05</span>
+                <span class="tc-title">Delete Cow with Confirmation</span>
+                <span class="tc-priority">High</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">
+                    At least 1 cow exists in the system. The user is logged in and viewing a cow's detail page.
+                </div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>Tap on a cow card from the cow list to navigate to the cow's detail page.</li>
+                    <li>Tap the <strong>Delete</strong> button on the cow detail page.</li>
+                    <li>Observe that a <strong>confirmation dialog</strong> appears asking the user to confirm the deletion (e.g., "Are you sure you want to delete this cow?").</li>
+                    <li>Tap the <strong>Confirm</strong> button in the dialog to proceed with the deletion.</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">
+                    A confirmation dialog is displayed before the cow is deleted, preventing accidental deletions. After confirming, the cow is removed from the system. The app redirects back to the cow list at <code>/cows</code>, and the deleted cow no longer appears in the list.
+                </div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>A confirmation dialog appears before the cow is deleted (no immediate deletion on tap)</li>
+                    <li>The dialog includes both Confirm and Cancel options</li>
+                    <li>After confirming, the cow is removed from the cow list</li>
+                    <li>The app redirects to the cow list at <code>/cows</code> after deletion</li>
+                    <li>The deleted cow does not reappear on page refresh</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════ -->
+        <!-- TC-COW-06 -->
+        <!-- ════════════════════════════════════════════════════ -->
+        <div class="tc medium">
+            <div class="tc-header">
+                <span class="tc-id">TC-COW-06</span>
+                <span class="tc-title">Body Condition Score Dropdown (1&ndash;5)</span>
+                <span class="tc-priority">Medium</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">
+                    The user is on the <strong>Add New Cow</strong> or <strong>Edit Cow</strong> form. The BCS dropdown component is visible in the form.
+                </div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>Locate the <strong>Body Condition Score (BCS)</strong> dropdown on the add/edit cow form. BCS measures the cow's fat and muscle condition on a scale of 1 (emaciated) to 5 (obese). Most healthy dairy cows score between 2.5 and 3.5.</li>
+                    <li>Tap the BCS dropdown to open the list of options.</li>
+                    <li>Verify the dropdown displays five options: <strong>1 &ndash; Emaciated</strong>, <strong>2 &ndash; Thin</strong>, <strong>3 &ndash; Moderate</strong>, <strong>4 &ndash; Heavy</strong>, <strong>5 &ndash; Obese</strong>.</li>
+                    <li>Select BCS from dropdown (e.g., <strong>3 &ndash; Moderate</strong>) and verify the selected value is displayed in the dropdown field.</li>
+                    <li>Change the selection to another value (e.g., <strong>4 &ndash; Heavy</strong>) and verify the dropdown updates accordingly.</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">
+                    The BCS dropdown shows options: <strong>1 &ndash; Emaciated</strong>, <strong>2 &ndash; Thin</strong>, <strong>3 &ndash; Moderate</strong>, <strong>4 &ndash; Heavy</strong>, <strong>5 &ndash; Obese</strong>. Selecting a value updates the dropdown display. The selected BCS value is saved correctly with the cow record. Glossary note: "BCS measures the cow's fat/muscle condition on a scale of 1 (emaciated) to 5 (obese). Most healthy dairy cows score 2.5&ndash;3.5."
+                </div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>BCS is presented as a dropdown (not a slider)</li>
+                    <li>Dropdown shows 5 options with values 1 through 5</li>
+                    <li>Each option includes a descriptive label: 1=Emaciated, 2=Thin, 3=Moderate, 4=Heavy, 5=Obese</li>
+                    <li>Selecting an option updates the dropdown display to show the chosen value</li>
+                    <li>The selected BCS value is saved correctly with the cow record</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════ -->
+        <!-- TC-COW-07 -->
+        <!-- ════════════════════════════════════════════════════ -->
+        <div class="tc medium">
+            <div class="tc-header">
+                <span class="tc-id">TC-COW-07</span>
+                <span class="tc-title">Lactation Stage Selection</span>
+                <span class="tc-priority">Medium</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">
+                    The user is on the <strong>Add New Cow</strong> or <strong>Edit Cow</strong> form. The lactation stage selector is visible in the form.
+                </div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>Locate the <strong>Lactation Stage</strong> selector on the add/edit cow form. Lactation stage describes how long since the cow last gave birth (calved) and started producing milk.</li>
+                    <li>Tap the <strong>Early</strong> option and verify it is selected. Early lactation is 0&ndash;100 days after calving, when milk production is typically at its peak.</li>
+                    <li>Tap the <strong>Mid</strong> option and verify it becomes selected (and Early is deselected). Mid lactation is 100&ndash;200 days after calving.</li>
+                    <li>Tap the <strong>Late</strong> option and verify it becomes selected. Late lactation is 200+ days after calving, when milk production naturally declines.</li>
+                    <li>Tap the <strong>Dry</strong> option and verify it becomes selected. A dry cow is not currently producing milk, typically in the final 2 months before the next calving.</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">
+                    Four lactation stage options are available: <strong>Early</strong> (0&ndash;100 days after calving), <strong>Mid</strong> (100&ndash;200 days), <strong>Late</strong> (200+ days), and <strong>Dry</strong> (not currently producing milk). Only one option can be selected at a time. Glossary: "Lactation stage = how long since the cow last gave birth and started producing milk."
+                </div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>Exactly 4 lactation stage options are available: Early, Mid, Late, Dry</li>
+                    <li>Only one option can be selected at a time (single-select behavior)</li>
+                    <li>Selecting a new option automatically deselects the previous one</li>
+                    <li>The selected lactation stage is saved correctly with the cow record</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════ -->
+        <!-- TC-COW-08 -->
+        <!-- ════════════════════════════════════════════════════ -->
+        <div class="tc medium">
+            <div class="tc-header">
+                <span class="tc-id">TC-COW-08</span>
+                <span class="tc-title">Pregnancy Toggle Reveals Month Field</span>
+                <span class="tc-priority">Medium</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">
+                    The user is on the <strong>Add New Cow</strong> or <strong>Edit Cow</strong> form. The pregnancy toggle is visible in the form and is currently in the OFF position.
+                </div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>Locate the <strong>Pregnancy</strong> toggle switch on the add/edit cow form. Verify it is currently in the <strong>OFF</strong> position and that no pregnancy month field is visible.</li>
+                    <li>Toggle the pregnancy switch to <strong>ON</strong>. Observe that a new input field for <strong>Pregnancy Month</strong> appears below the toggle.</li>
+                    <li>Enter a valid pregnancy month in the input field (e.g., <code>5</code>). The field should accept values from <strong>1</strong> to <strong>9</strong>, representing the month of pregnancy. Cow pregnancies typically last about 9 months (approximately 283 days).</li>
+                    <li>Toggle the pregnancy switch back to <strong>OFF</strong>. Observe that the pregnancy month input field disappears (is hidden).</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">
+                    When the pregnancy toggle is switched ON, a pregnancy month input field appears, accepting values from 1 to 9. When the toggle is switched OFF, the month input field is hidden from view. The form dynamically shows or hides the month field based on the toggle state.
+                </div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>Pregnancy toggle defaults to OFF with no month field visible</li>
+                    <li>Toggling ON reveals the pregnancy month input field</li>
+                    <li>Pregnancy month field accepts values from 1 to 9</li>
+                    <li>Toggling OFF hides the pregnancy month field</li>
+                    <li>The pregnancy status and month are saved correctly with the cow record</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════ -->
+        <!-- TC-COW-09 -->
+        <!-- ════════════════════════════════════════════════════ -->
+        <div class="tc medium">
+            <div class="tc-header">
+                <span class="tc-id">TC-COW-09</span>
+                <span class="tc-title">Breed Dropdown Populated from API</span>
+                <span class="tc-priority">Medium</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">
+                    The user is on the <strong>Add New Cow</strong> or <strong>Edit Cow</strong> form. The device is <strong>online</strong> and connected to the backend API.
+                </div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>Locate the <strong>Breed</strong> dropdown on the add/edit cow form.</li>
+                    <li>Tap the breed dropdown to open the list of available breeds.</li>
+                    <li>Verify the dropdown is populated with breeds fetched from the backend API. Common breeds include: <strong>Holstein Friesian</strong>, <strong>Jersey</strong>, <strong>Sahiwal</strong>, <strong>Gir</strong>, <strong>Red Sindhi</strong>, <strong>Murrah</strong>, and others depending on the region configured.</li>
+                    <li>Select a breed from the list and confirm the selection is displayed in the dropdown field.</li>
+                    <li>Disconnect the device from the internet (enable airplane mode or disconnect WiFi). Open the breed dropdown again and verify that <strong>cached breeds</strong> are still available for selection.</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">
+                    The breed dropdown is populated with breed data fetched from the backend API when the device is online. Breeds include region-appropriate options such as Holstein Friesian, Jersey, Sahiwal, Gir, etc. When the device is offline, previously cached breeds remain available for selection in the dropdown.
+                </div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>Breed dropdown is populated from the backend API when online</li>
+                    <li>Dropdown contains region-appropriate breed options</li>
+                    <li>Selecting a breed correctly populates the dropdown field</li>
+                    <li>When offline, cached breeds are still shown in the dropdown</li>
+                    <li>No empty or broken dropdown state occurs</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════ -->
+        <!-- TC-COW-10 -->
+        <!-- ════════════════════════════════════════════════════ -->
+        <div class="tc high">
+            <div class="tc-header">
+                <span class="tc-id">TC-COW-10</span>
+                <span class="tc-title">Create Cow Offline &mdash; Syncs When Online</span>
+                <span class="tc-priority">High</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">
+                    The device is <strong>offline</strong> (airplane mode enabled or WiFi disconnected). The user is logged in and on the <strong>/cows</strong> page. The app has been previously used while online so that cached data (e.g., breeds) is available.
+                </div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>Confirm the device is offline (no internet connection). Check the browser or device status indicator.</li>
+                    <li>Tap the <strong>(+)</strong> button to open the "Add New Cow" form.</li>
+                    <li>Fill in the required fields: name (e.g., <code>Offline Cow</code>), breed (from cached list), weight (e.g., <code>400</code>), milk yield (e.g., <code>10</code>), fat% (e.g., <code>4.0</code>), and lactation stage (e.g., <strong>Mid</strong>).</li>
+                    <li>Tap <strong>Save</strong>. Verify the cow is saved locally and appears in the cow list, potentially with an <strong>offline indicator</strong> (e.g., a cloud icon with a line through it, or a "pending sync" badge).</li>
+                    <li>Reconnect the device to the internet (disable airplane mode or reconnect WiFi).</li>
+                    <li>Wait for the app to automatically sync the locally saved cow to the backend. Observe any sync indicator or notification.</li>
+                    <li>After sync completes, verify the cow now appears without the offline indicator, confirming it has been saved to the backend server.</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">
+                    The cow is saved locally when the device is offline, and an offline indicator is shown on the cow card. When the device reconnects to the internet, the app automatically syncs the cow to the backend. After syncing, the offline indicator is removed and the cow exists in both the local and remote databases.
+                </div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>Cow can be created and saved while the device is offline</li>
+                    <li>The cow appears in the local cow list with an offline/pending sync indicator</li>
+                    <li>When the device goes back online, the cow auto-syncs to the backend</li>
+                    <li>After sync, the offline indicator is removed from the cow card</li>
+                    <li>The cow record exists on the backend server after sync (verifiable via API or admin panel)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════ -->
+        <!-- TC-COW-11 -->
+        <!-- ════════════════════════════════════════════════════ -->
+        <div class="tc medium">
+            <div class="tc-header">
+                <span class="tc-id">TC-COW-11</span>
+                <span class="tc-title">Search and Filter Cow List</span>
+                <span class="tc-priority">Medium</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">
+                    Multiple cows exist in the system with <strong>different breeds</strong> and <strong>different lactation stages</strong>. The user is logged in and on the <strong>/cows</strong> page.
+                </div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>Locate the <strong>search box</strong> at the top of the cow list. Type part of a cow's name (e.g., <code>Lak</code>) and observe the list filtering in real time to show only cows whose names match the search text.</li>
+                    <li>Clear the search box. Locate the <strong>breed filter</strong> and select a specific breed (e.g., <code>Jersey</code>). Verify that only cows of the selected breed are displayed in the list.</li>
+                    <li>Clear the breed filter. Locate the <strong>lactation stage filter</strong> and select a specific stage (e.g., <code>Early</code>). Verify that only cows in the Early lactation stage are shown.</li>
+                    <li>Combine multiple filters: type a name in the search box and select a breed filter simultaneously. Verify that the results match both criteria.</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">
+                    Search filters by <strong>name</strong>, <strong>breed</strong>, <strong>tag number</strong>, or <strong>coat color</strong> in real time as the user types. The breed filter shows only cows of the selected breed. The lactation stage filter shows only cows in the selected stage. Filters can be used independently or combined for more specific results.
+                </div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>Search box filters the cow list by name, breed, tag number, or coat color in real time</li>
+                    <li>Breed filter shows only cows matching the selected breed</li>
+                    <li>Lactation stage filter shows only cows matching the selected stage</li>
+                    <li>Filters can be combined (e.g., name search + breed filter together)</li>
+                    <li>Clearing a filter restores the full unfiltered list</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════ -->
+        <!-- TC-COW-12 -->
+        <!-- ════════════════════════════════════════════════════ -->
+        <div class="tc high">
+            <div class="tc-header">
+                <span class="tc-id">TC-COW-12</span>
+                <span class="tc-title">Navigate from Cow Detail to Diet Wizard (Pre-fills Cow Data)</span>
+                <span class="tc-priority">High</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">
+                    At least 1 cow with <strong>complete data</strong> exists in the system (all fields filled: weight, milk yield, fat%, lactation stage, pregnancy status, BCS). The user is logged in and on the <strong>/cows</strong> page.
+                </div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>Tap on a cow card from the cow list to navigate to the cow's detail page.</li>
+                    <li>On the cow detail page, tap the <strong>Get Diet</strong> button.</li>
+                    <li>Verify the app navigates to <code>/diet/new</code> with the cow pre-selected in the diet wizard.</li>
+                    <li>Advance to <strong>Step 2 (Animal Details)</strong> of the diet wizard. Verify that the following fields are auto-filled with the cow's data: <strong>weight</strong>, <strong>milk yield</strong>, <strong>fat%</strong>, <strong>lactation stage</strong>, <strong>pregnancy status</strong>, and <strong>BCS</strong> (body condition score).</li>
+                    <li>Confirm the auto-filled values match the data displayed on the cow's detail page.</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">
+                    Tapping "Get Diet" on the cow detail page navigates to <code>/diet/new</code> with the cow pre-selected. The diet wizard's Step 2 (Animal Details) auto-fills weight, milk yield, fat%, lactation stage, pregnancy status, and BCS from the cow's stored data, saving the user from re-entering information.
+                </div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>Get Diet button navigates to <code>/diet/new</code></li>
+                    <li>The cow is pre-selected in the diet wizard</li>
+                    <li>Step 2 (Animal Details) auto-fills weight from cow data</li>
+                    <li>Step 2 auto-fills milk yield from cow data</li>
+                    <li>Step 2 auto-fills fat% from cow data</li>
+                    <li>Step 2 auto-fills lactation stage from cow data</li>
+                    <li>Step 2 auto-fills pregnancy status and BCS from cow data</li>
+                    <li>Auto-filled values match the cow's detail page exactly</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════ -->
+        <!-- TC-COW-13 -->
+        <!-- ════════════════════════════════════════════════════ -->
+        <div class="tc medium">
+            <div class="tc-header">
+                <span class="tc-id">TC-COW-13</span>
+                <span class="tc-title">Bulk Selection and Delete/Archive</span>
+                <span class="tc-priority">Medium</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">
+                    Multiple cows exist in the system. The user is logged in and on the <strong>/cows</strong> page with the cow list visible.
+                </div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>Tap the <strong>selection mode button</strong> in the toolbar to activate selection mode.</li>
+                    <li>Verify that selection mode activates: checkboxes appear on each cow card, and a bulk actions bar becomes visible at the top or bottom of the screen.</li>
+                    <li>Tap the checkboxes on additional cow cards to select multiple cows.</li>
+                    <li>Tap the <strong>Select All</strong> option in the bulk actions bar. Verify that all cow cards become selected (all checkboxes checked).</li>
+                    <li>Tap the <strong>Delete Selected</strong> button in the bulk actions bar.</li>
+                    <li>Verify that a <strong>confirmation dialog</strong> appears asking the user to confirm the bulk deletion (e.g., "Are you sure you want to delete 5 cows?"). Tap <strong>Confirm</strong> to proceed.</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">
+                    Tapping the selection mode button in the toolbar activates selection mode with checkboxes on every card. A bulk actions bar appears with <strong>Archive</strong> and <strong>Delete</strong> options. Selecting multiple cows (individually or via "Select All") enables bulk operations. A confirmation dialog is shown before bulk delete to prevent accidental data loss. After confirming, the selected cows are removed from the list.
+                </div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>Selection mode toggles on (via selection mode button in toolbar) and off correctly</li>
+                    <li>Checkboxes appear on all cow cards when selection mode is active</li>
+                    <li>Select All selects every cow; tapping again deselects all</li>
+                    <li>Bulk actions bar shows Archive and Delete options</li>
+                    <li>Delete Selected shows a confirmation dialog before proceeding</li>
+                    <li>After confirming deletion, selected cows are removed from the list</li>
+                    <li>Archive moves selected cows to an archived state instead of deleting them</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════ -->
+        <!-- HEALTH EVENTS SYNC                                  -->
+        <!-- ════════════════════════════════════════════════════ -->
+
+        <!-- ════════════════════════════════════════════════════ -->
+        <!-- TC-COW-14 -->
+        <!-- ════════════════════════════════════════════════════ -->
+        <div class="tc high">
+            <div class="tc-header">
+                <span class="tc-id">TC-COW-14</span>
+                <span class="tc-title">Health Event Create Syncs Online</span>
+                <span class="tc-priority">High</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">
+                    The device is <strong>online</strong> and connected to the backend API. At least 1 cow exists in the system. The user is logged in.
+                </div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>Navigate to a cow's <strong>Detail</strong> page by tapping on a cow card from the cow list.</li>
+                    <li>Scroll to the <strong>Health Events</strong> section and tap the <strong>Add Event</strong> button.</li>
+                    <li>Fill in the health event form with a title, date, and any additional details.</li>
+                    <li>Tap <strong>Save</strong> to create the health event.</li>
+                    <li>Verify the new health event appears in the Health Event Timeline on the cow detail page.</li>
+                    <li>Refresh the page (pull-to-refresh or browser reload) and verify the event is still displayed, confirming it persisted on the backend.</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">
+                    The health event is saved locally <strong>AND</strong> syncs to the backend in a single operation. After refreshing the page, the event is still present in the Health Event Timeline, confirming successful backend persistence.
+                </div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>Health event form opens from the cow detail page</li>
+                    <li>Event saves successfully with no error messages</li>
+                    <li>Event appears in the Health Event Timeline immediately after saving</li>
+                    <li>After page refresh, the event is still displayed (backend persistence confirmed)</li>
+                    <li>Event data (title, date, details) matches what was entered in the form</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════ -->
+        <!-- TC-COW-15 -->
+        <!-- ════════════════════════════════════════════════════ -->
+        <div class="tc high">
+            <div class="tc-header">
+                <span class="tc-id">TC-COW-15</span>
+                <span class="tc-title">Health Event Create Offline</span>
+                <span class="tc-priority">High</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">
+                    The device is <strong>offline</strong> (airplane mode enabled or WiFi disconnected). At least 1 cow exists in the system. The user is logged in and the app has been previously used while online.
+                </div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>Confirm the device is offline (no internet connection).</li>
+                    <li>Navigate to a cow's <strong>Detail</strong> page.</li>
+                    <li>Scroll to the <strong>Health Events</strong> section and tap the <strong>Add Event</strong> button.</li>
+                    <li>Fill in the health event form with a title, date, and any additional details.</li>
+                    <li>Tap <strong>Save</strong> to create the health event.</li>
+                    <li>Verify the event appears in the Health Event Timeline locally.</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">
+                    The health event is saved to <strong>IndexedDB</strong> with the <code>_synced=false</code> flag. The event is queued in the sync queue for later upload. The event appears in the Health Event Timeline on the cow detail page despite being offline.
+                </div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>Health event can be created while the device is offline</li>
+                    <li>Event is saved to IndexedDB with <code>_synced=false</code></li>
+                    <li>Event is queued in the sync queue for later backend upload</li>
+                    <li>Event appears in the Health Event Timeline locally</li>
+                    <li>No error messages are displayed during offline creation</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════ -->
+        <!-- TC-COW-16 -->
+        <!-- ════════════════════════════════════════════════════ -->
+        <div class="tc high">
+            <div class="tc-header">
+                <span class="tc-id">TC-COW-16</span>
+                <span class="tc-title">Health Event Offline Sync on Reconnect</span>
+                <span class="tc-priority">High</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">
+                    A health event was created while the device was <strong>offline</strong> (see TC-COW-15). The event exists in IndexedDB with <code>_synced=false</code> and is queued in the sync queue. The device is still offline.
+                </div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>Reconnect the device to the internet (disable airplane mode or reconnect WiFi).</li>
+                    <li>Wait for the app to detect the network change and trigger <strong>auto-sync</strong>.</li>
+                    <li>Observe any sync indicator or notification that the queued health event is being uploaded.</li>
+                    <li>After sync completes, navigate to the cow's detail page and verify the health event is still displayed in the Health Event Timeline.</li>
+                    <li>Refresh the page to confirm the event persisted on the backend.</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">
+                    When the device goes back online, the app automatically syncs the offline health event to the backend. The <code>_synced</code> flag on the event becomes <code>true</code>. The event persists on both the local device and the backend server after sync.
+                </div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>Auto-sync triggers when the device reconnects to the internet</li>
+                    <li>The offline health event is uploaded to the backend</li>
+                    <li>The <code>_synced</code> flag changes from <code>false</code> to <code>true</code></li>
+                    <li>The event remains visible in the Health Event Timeline after sync</li>
+                    <li>Page refresh confirms backend persistence (event is not lost)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════ -->
+        <!-- TC-COW-17 -->
+        <!-- ════════════════════════════════════════════════════ -->
+        <div class="tc medium">
+            <div class="tc-header">
+                <span class="tc-id">TC-COW-17</span>
+                <span class="tc-title">Health Event Update Syncs</span>
+                <span class="tc-priority">Medium</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">
+                    An existing health event is present on a cow's detail page. The device is <strong>online</strong> and connected to the backend API. The user is logged in.
+                </div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>Navigate to a cow's <strong>Detail</strong> page and scroll to the <strong>Health Events</strong> section.</li>
+                    <li>Tap on an existing health event to open it for editing.</li>
+                    <li>Change the event's <strong>title</strong> and/or <strong>date</strong> to new values.</li>
+                    <li>Tap <strong>Save</strong> to persist the changes.</li>
+                    <li>Verify the updated event data is displayed in the Health Event Timeline.</li>
+                    <li>Refresh the page to confirm the updates persisted on the backend.</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">
+                    The health event is updated locally <strong>AND</strong> on the backend. The Health Event Timeline reflects the new title and/or date immediately after saving. Refreshing the page confirms the backend received the update.
+                </div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>Existing health events can be opened for editing</li>
+                    <li>Changes to title and date are accepted and saved</li>
+                    <li>The Health Event Timeline shows the updated values immediately</li>
+                    <li>After page refresh, the updated values persist (backend sync confirmed)</li>
+                    <li>No error messages are displayed during the update</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════ -->
+        <!-- TC-COW-18 -->
+        <!-- ════════════════════════════════════════════════════ -->
+        <div class="tc medium">
+            <div class="tc-header">
+                <span class="tc-id">TC-COW-18</span>
+                <span class="tc-title">Health Event Delete Syncs</span>
+                <span class="tc-priority">Medium</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">
+                    An existing health event is present on a cow's detail page. The device is <strong>online</strong> and connected to the backend API. The user is logged in.
+                </div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>Navigate to a cow's <strong>Detail</strong> page and scroll to the <strong>Health Events</strong> section.</li>
+                    <li>Locate an existing health event in the timeline.</li>
+                    <li>Tap the <strong>Delete</strong> action on the health event.</li>
+                    <li>Confirm the deletion when the confirmation dialog appears.</li>
+                    <li>Verify the health event is removed from the Health Event Timeline display.</li>
+                    <li>Refresh the page to confirm the deletion persisted.</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">
+                    The health event is <strong>soft-deleted</strong> on the backend (<code>is_deleted=true</code>). The event is removed from the local Health Event Timeline display immediately. After page refresh, the deleted event does not reappear, confirming the backend received the delete operation.
+                </div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>A confirmation dialog is shown before deleting a health event</li>
+                    <li>After confirming, the event is removed from the Health Event Timeline</li>
+                    <li>The backend marks the event as soft-deleted (<code>is_deleted=true</code>)</li>
+                    <li>After page refresh, the deleted event does not reappear</li>
+                    <li>No error messages are displayed during the deletion</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════ -->
+        <!-- ACTIVE DIET CARD                                    -->
+        <!-- ════════════════════════════════════════════════════ -->
+
+        <!-- ════════════════════════════════════════════════════ -->
+        <!-- TC-COW-19 -->
+        <!-- ════════════════════════════════════════════════════ -->
+        <div class="tc high">
+            <div class="tc-header">
+                <span class="tc-id">TC-COW-19</span>
+                <span class="tc-title">Active Diet Card Shown</span>
+                <span class="tc-priority">High</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">
+                    A cow exists in the system that has an <strong>actively followed diet</strong> (a diet that was optimized and marked as the current diet for the cow). The user is logged in.
+                </div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>Navigate to the <strong>Cow Detail</strong> page for a cow that has an active diet by tapping on its card in the cow list.</li>
+                    <li>Observe the cow detail page and look for an <strong>Active Diet</strong> card.</li>
+                    <li>Verify the Active Diet card displays the <strong>optimization goal</strong> (e.g., "Minimize Cost" or "Maximize Production").</li>
+                    <li>Verify the Active Diet card displays the <strong>cost per day</strong> for the diet.</li>
+                    <li>Verify the Active Diet card has a <strong>green left border</strong> to visually distinguish it from other sections.</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">
+                    An "Active Diet" card is displayed on the cow detail page when the cow has an actively followed diet. The card shows the optimization goal and cost/day. The card has a green left border for visual emphasis and quick identification.
+                </div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>Active Diet card is visible on the cow detail page when the cow has an active diet</li>
+                    <li>Card displays the optimization goal (e.g., Minimize Cost, Maximize Production)</li>
+                    <li>Card displays the cost per day for the active diet</li>
+                    <li>Card has a green left border for visual distinction</li>
+                    <li>Card content matches the actual active diet data for the cow</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════ -->
+        <!-- TC-COW-20 -->
+        <!-- ════════════════════════════════════════════════════ -->
+        <div class="tc medium">
+            <div class="tc-header">
+                <span class="tc-id">TC-COW-20</span>
+                <span class="tc-title">Active Diet Card Hidden</span>
+                <span class="tc-priority">Medium</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">
+                    A cow exists in the system that does <strong>NOT</strong> have an active diet (no diet has been optimized or marked as current for the cow). The user is logged in.
+                </div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>Navigate to the <strong>Cow Detail</strong> page for a cow that has no active diet by tapping on its card in the cow list.</li>
+                    <li>Inspect the cow detail page and verify that no "Active Diet" card is displayed.</li>
+                    <li>Verify that the absence of the card does not leave any empty space, broken layout, or placeholder elements.</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">
+                    No Active Diet card is shown on the cow detail page when the cow does not have an active diet. The page layout remains clean and properly formatted without any empty gaps or placeholder elements where the card would otherwise appear.
+                </div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>Active Diet card is not displayed when the cow has no active diet</li>
+                    <li>No empty space or placeholder is left where the card would be</li>
+                    <li>Page layout is clean and properly formatted without the card</li>
+                    <li>Other sections on the cow detail page are unaffected</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════ -->
+        <!-- TC-COW-21 -->
+        <!-- ════════════════════════════════════════════════════ -->
+        <div class="tc medium">
+            <div class="tc-header">
+                <span class="tc-id">TC-COW-21</span>
+                <span class="tc-title">Active Diet Card Navigation</span>
+                <span class="tc-priority">Medium</span>
+            </div>
+            <div class="tc-body">
+                <h4>Preconditions</h4>
+                <div class="tc-pre">
+                    A cow exists in the system that has an <strong>actively followed diet</strong>. The Active Diet card is visible on the cow detail page. The user is logged in.
+                </div>
+
+                <h4>Steps</h4>
+                <ol class="tc-steps">
+                    <li>Navigate to the <strong>Cow Detail</strong> page for a cow that has an active diet.</li>
+                    <li>Verify the <strong>Active Diet</strong> card is visible on the page.</li>
+                    <li>Tap the Active Diet card.</li>
+                    <li>Verify the app navigates to the <strong>diet detail page</strong> for the active diet.</li>
+                    <li>Confirm the diet detail page shows the full details of the active diet (ingredients, quantities, cost breakdown, optimization goal).</li>
+                </ol>
+
+                <h4>Expected Result</h4>
+                <div class="tc-expected">
+                    Tapping the Active Diet card navigates the user to the diet detail page for that specific diet. The diet detail page displays the full information for the active diet, including ingredients, quantities, cost breakdown, and optimization goal.
+                </div>
+
+                <h4>Acceptance Criteria</h4>
+                <ul class="tc-checks">
+                    <li>Tapping the Active Diet card triggers navigation</li>
+                    <li>Navigation goes to the correct diet detail page for the active diet</li>
+                    <li>Diet detail page displays full diet information (ingredients, quantities, cost, goal)</li>
+                    <li>Back navigation returns to the cow detail page</li>
+                </ul>
+            </div>
+        </div>
+
+    </main>
+    <script>lucide.createIcons();</script>
+</body>
+</html>
