@@ -358,21 +358,21 @@ const ENDPOINT_MAP: Record<string, EndpointMapping> = {
       },
     },
   },
-  '/api/v1/users/verify-pin': {
-    path: '/auth/verify-pin',
-  },
+  // NOTE: verify-pin does not exist on the backend; login returns a token directly.
+  // Removed dead mapping: '/api/v1/users/verify-pin' → '/auth/verify-pin'
   '/api/v1/users/change-pin': {
     path: '/auth/change-pin',
   },
   '/api/v1/users/:id': {
-    path: '/auth/get-user-info',
-    transform: {
-      // Backend uses query param, not path param
-      params: (params) => ({ ...params }),
-    },
+    // Backend: GET/PUT /auth/user/id/{user_id}
+    path: '/auth/user/id/:id',
   },
   '/api/v1/users/:id/settings': {
     path: '/auth/users/:id/settings',
+  },
+  '/api/v1/users/:id/self-profile': {
+    // Backend: POST/GET/PUT /auth/users/{user_id}/self-profile
+    path: '/auth/users/:id/self-profile',
   },
 
   // ============================================================================
@@ -428,12 +428,8 @@ const ENDPOINT_MAP: Record<string, EndpointMapping> = {
       },
     },
   },
-  '/api/v1/feeds/custom': {
-    path: '/custom-feeds/',
-  },
-  '/api/v1/feeds/custom/:id': {
-    path: '/custom-feeds/:id',
-  },
+  // NOTE: custom-feeds endpoints do not exist on the backend yet.
+  // Removed dead mappings: '/api/v1/feeds/custom' and '/api/v1/feeds/custom/:id'
   '/api/v1/feeds/:id': {
     path: '/feeds/:id',
   },
@@ -472,9 +468,8 @@ const ENDPOINT_MAP: Record<string, EndpointMapping> = {
   '/api/v1/diet/history/:id': {
     path: '/bot-diet-history/:id',
   },
-  '/api/v1/diet/:id/evaluate': {
-    path: '/bot-diet-history/:id/evaluate',
-  },
+  // NOTE: diet evaluate endpoint does not exist on the backend.
+  // Removed dead mapping: '/api/v1/diet/:id/evaluate' → '/bot-diet-history/:id/evaluate'
   '/api/v1/diet/:id/archive': {
     path: '/bot-diet-history/:id/archive',
   },
