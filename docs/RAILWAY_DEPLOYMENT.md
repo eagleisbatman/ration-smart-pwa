@@ -39,10 +39,10 @@ VITE_APP_ENV=production
 ### 3. Deploy
 
 Railway will automatically:
-1. Detect the build configuration from `nixpacks.toml`
+1. Detect the build configuration from `railway.json` (Railpack builder)
 2. Run `bun install`
 3. Run `bun run build`
-4. Serve static files from `dist/spa`
+4. Serve static files from `dist/spa` via `bunx serve`
 
 ### 4. Configure Domain
 
@@ -55,8 +55,7 @@ In Railway dashboard:
 
 The PWA uses these config files:
 
-- `railway.toml` - Railway deployment settings
-- `nixpacks.toml` - Build commands
+- `railway.json` - Railway deployment settings (Railpack builder, build + start commands)
 - `.env.production` - Environment defaults (overridden by Railway vars)
 
 ## Troubleshooting

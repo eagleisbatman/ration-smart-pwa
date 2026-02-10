@@ -253,30 +253,12 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function verifyPin(pin: string): Promise<boolean> {
-    if (!userId.value) {
-      error.value = 'No user session found';
-      return false;
-    }
-
-    loading.value = true;
-    error.value = null;
-
-    try {
-      const response = await api.post('/api/v1/users/verify-pin', {
-        user_id: userId.value,
-        pin,
-      });
-
-      token.value = response.data.token;
-      getStorage().setItem('auth_token', response.data.token);
-
-      return true;
-    } catch (err) {
-      error.value = extractErrorMessage(err);
-      return false;
-    } finally {
-      loading.value = false;
-    }
+    // NOTE: Backend does not have a verify-pin endpoint.
+    // Login already returns a token directly. This function is a no-op stub
+    // until a dedicated verify-pin endpoint is added to the backend.
+    console.warn('[auth] verifyPin called but backend has no /auth/verify-pin endpoint');
+    error.value = 'PIN verification is not available';
+    return false;
   }
 
   async function loadUserProfile(): Promise<void> {
@@ -445,43 +427,19 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function requestContactChange(type: 'email' | 'phone', newValue: string): Promise<boolean> {
-    loading.value = true;
-    error.value = null;
-    try {
-      await api.post('/api/v1/auth/change-contact/request', {
-        type,
-        new_value: newValue,
-      });
-      return true;
-    } catch (err) {
-      error.value = extractErrorMessage(err);
-      return false;
-    } finally {
-      loading.value = false;
-    }
+    // NOTE: Backend does not have change-contact endpoints yet.
+    // This is a stub until the backend adds /auth/change-contact/request.
+    console.warn('[auth] requestContactChange called but backend has no /auth/change-contact/request endpoint');
+    error.value = 'Contact change is not yet available';
+    return false;
   }
 
   async function verifyContactChange(type: 'email' | 'phone', newValue: string, code: string): Promise<boolean> {
-    loading.value = true;
-    error.value = null;
-    try {
-      await api.post('/api/v1/auth/change-contact/verify', {
-        type,
-        new_value: newValue,
-        verification_code: code,
-      });
-      // Update local user data
-      if (user.value) {
-        if (type === 'email') user.value.email = newValue;
-        else user.value.phone = newValue;
-      }
-      return true;
-    } catch (err) {
-      error.value = extractErrorMessage(err);
-      return false;
-    } finally {
-      loading.value = false;
-    }
+    // NOTE: Backend does not have change-contact endpoints yet.
+    // This is a stub until the backend adds /auth/change-contact/verify.
+    console.warn('[auth] verifyContactChange called but backend has no /auth/change-contact/verify endpoint');
+    error.value = 'Contact change verification is not yet available';
+    return false;
   }
 
   function clearAuth(): void {
