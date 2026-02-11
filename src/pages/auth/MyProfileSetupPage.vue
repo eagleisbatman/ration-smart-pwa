@@ -265,11 +265,10 @@ async function getLocation() {
 
     form.latitude = position.coords.latitude;
     form.longitude = position.coords.longitude;
-
-    // Reverse geocode to get address
-    await reverseGeocode(position.coords.latitude, position.coords.longitude);
-
     locationFetched.value = true;
+
+    // Reverse geocode to get address (best-effort, don't block)
+    reverseGeocode(position.coords.latitude, position.coords.longitude);
   } catch (err) {
     console.error('Geolocation error:', err);
     if (err instanceof GeolocationPositionError) {
@@ -297,14 +296,18 @@ async function getLocation() {
 // Reverse geocode coordinates to address using OpenStreetMap Nominatim
 async function reverseGeocode(lat: number, lon: number) {
   try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000);
     const response = await fetch(
       `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&addressdetails=1&accept-language=en`,
       {
         headers: {
           'User-Agent': 'RationSmart/1.0',
         },
+        signal: controller.signal,
       }
     );
+    clearTimeout(timeoutId);
 
     if (!response.ok) {
       throw new Error('Geocoding failed');
