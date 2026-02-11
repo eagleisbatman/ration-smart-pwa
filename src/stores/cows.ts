@@ -62,14 +62,16 @@ export const useCowsStore = defineStore('cows', () => {
 
     try {
       if (isOnline.value) {
-        // Fetch from server
+        // Fetch from server — backend requires userId in path
         const params: Record<string, string> = {};
         if (farmerProfileId) {
           params.farmer_profile_id = farmerProfileId;
         }
-        const response = await api.get('/api/v1/cows', { params });
-        const serverCows = response.data.map((cow: Cow) => ({
+        const response = await api.get(`/api/v1/cows/user/${authStore.userId}`, { params });
+        // Adapter transforms backend fields → PWA fields and extracts array
+        const serverCows = (Array.isArray(response.data) ? response.data : []).map((cow: Cow) => ({
           ...cow,
+          user_id: cow.user_id || authStore.userId,
           _synced: true,
           _deleted: false,
         }));
@@ -158,9 +160,9 @@ export const useCowsStore = defineStore('cows', () => {
       cows.value.push(newCow);
 
       if (isOnline.value) {
-        // Sync with server
+        // Sync with server — adapter maps fields and backend resolves owner from token
         const response = await api.post('/api/v1/cows', input);
-        const serverCow = { ...response.data, _synced: true, _deleted: false };
+        const serverCow: Cow = { ...response.data, user_id: response.data.user_id || authStore.userId, _synced: true, _deleted: false };
 
         // Update with server response (may have different ID)
         await db.cows.delete(newCow.id);
@@ -222,8 +224,8 @@ export const useCowsStore = defineStore('cows', () => {
       }
 
       if (isOnline.value) {
-        // Sync with server
-        await api.put(`/api/v1/cows/${id}`, input);
+        // Sync with server — use update path so adapter maps to PUT /cow-profiles/:id
+        await api.put(`/api/v1/cows/update/${id}`, input);
         await db.cows.update(id, { _synced: true });
 
         if (index !== -1) {
@@ -259,8 +261,8 @@ export const useCowsStore = defineStore('cows', () => {
       cows.value = cows.value.filter((c) => c.id !== id);
 
       if (isOnline.value) {
-        // Delete on server
-        await api.delete(`/api/v1/cows/${id}`);
+        // Delete on server — adapter maps to DELETE /cow-profiles/:id
+        await api.delete(`/api/v1/cows/delete/${id}`);
         await db.cows.delete(id);
       } else {
         // Queue for later sync

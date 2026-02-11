@@ -99,9 +99,11 @@ export const useDietsStore = defineStore('diets', () => {
 
     try {
       if (isOnline.value) {
-        const response = await api.get('/api/v1/diet/history');
-        const serverDiets = response.data.map((diet: Diet) => ({
+        const response = await api.get(`/api/v1/diet/history/user/${authStore.userId}`);
+        // Adapter transforms backend fields → PWA fields and extracts array
+        const serverDiets = (Array.isArray(response.data) ? response.data : []).map((diet: Diet) => ({
           ...diet,
+          user_id: diet.user_id || authStore.userId,
           _synced: true,
         }));
 

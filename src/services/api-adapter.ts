@@ -220,6 +220,160 @@ export function formatPhoneE164(phone: string, countryCode: string): string {
 }
 
 // ============================================================================
+// FIELD MAPPING HELPERS: Backend ↔ PWA
+// ============================================================================
+
+/**
+ * Map a backend CowProfileResponse to the PWA Cow interface.
+ */
+function mapCowFromBackend(cow: Record<string, unknown>): Record<string, unknown> {
+  if (!cow) return cow;
+  const lactating = cow.lactating as boolean | undefined;
+  const daysInMilk = cow.days_in_milk as number | undefined;
+  let lactationStage = 'dry';
+  if (lactating) {
+    if (daysInMilk != null) {
+      if (daysInMilk <= 100) lactationStage = 'early';
+      else if (daysInMilk <= 200) lactationStage = 'mid';
+      else lactationStage = 'late';
+    } else {
+      lactationStage = 'mid';
+    }
+  }
+  const daysPreg = cow.days_of_pregnancy as number | undefined;
+  return {
+    id: cow.id,
+    user_id: cow.telegram_user_id,
+    name: cow.name,
+    breed: cow.breed || '',
+    weight_kg: cow.body_weight,
+    milk_yield_liters: cow.milk_production,
+    milk_fat_percentage: cow.milk_fat_percent,
+    lactation_stage: lactationStage,
+    is_pregnant: (daysPreg ?? 0) > 0,
+    pregnancy_month: daysPreg ? Math.round(daysPreg / 30) : undefined,
+    is_active: cow.is_active ?? true,
+    created_at: cow.created_at,
+    updated_at: cow.updated_at,
+    // Pass through extra backend fields for round-tripping
+    _backend_lactating: cow.lactating,
+    _backend_days_in_milk: cow.days_in_milk,
+    _backend_parity: cow.parity,
+    _backend_target_milk_yield: cow.target_milk_yield,
+    _backend_milk_protein_percent: cow.milk_protein_percent,
+  };
+}
+
+/**
+ * Map PWA CowInput fields to backend CowProfileCreate fields.
+ */
+function mapCowToBackend(input: Record<string, unknown>): Record<string, unknown> {
+  if (!input) return input;
+  const lactationStage = (input.lactation_stage as string) || 'mid';
+  const isPregnant = input.is_pregnant as boolean | undefined;
+  const pregnancyMonth = input.pregnancy_month as number | undefined;
+  return {
+    name: input.name,
+    breed: input.breed,
+    body_weight: input.weight_kg ?? input.body_weight,
+    lactating: lactationStage !== 'dry',
+    milk_production: input.milk_yield_liters ?? input.milk_production ?? 0,
+    milk_fat_percent: input.milk_fat_percentage ?? input.milk_fat_percent ?? 4.0,
+    milk_protein_percent: input._backend_milk_protein_percent ?? 3.3,
+    days_in_milk: input._backend_days_in_milk ?? (lactationStage === 'early' ? 50 : lactationStage === 'mid' ? 150 : lactationStage === 'late' ? 250 : 0),
+    parity: input._backend_parity ?? undefined,
+    target_milk_yield: input._backend_target_milk_yield ?? undefined,
+    days_of_pregnancy: isPregnant ? (pregnancyMonth ?? 0) * 30 : 0,
+    is_active: input.is_active,
+  };
+}
+
+/**
+ * Map a backend BotDietHistoryResponse to the PWA Diet interface.
+ */
+function mapDietFromBackend(diet: Record<string, unknown>): Record<string, unknown> {
+  if (!diet) return diet;
+  const dietSummary = diet.diet_summary as Record<string, unknown> | undefined;
+  return {
+    id: diet.id,
+    user_id: diet.telegram_user_id,
+    cow_id: diet.cow_profile_id,
+    cow_name: dietSummary?.cow_name,
+    optimization_goal: (dietSummary?.optimization_goal as string) || 'balanced',
+    status: diet.status,
+    is_active: diet.is_active,
+    input_data: dietSummary || {},
+    result_data: diet.full_result,
+    total_cost: diet.total_cost_per_day,
+    created_at: diet.created_at,
+    updated_at: diet.created_at, // backend doesn't have updated_at
+  };
+}
+
+/**
+ * Map PWA Diet fields to backend BotDietHistoryCreate/Update fields.
+ */
+function mapDietToBackend(input: Record<string, unknown>): Record<string, unknown> {
+  if (!input) return input;
+  return {
+    cow_profile_id: input.cow_id ?? input.cow_profile_id,
+    name: input.name,
+    status: input.status,
+    is_active: input.is_active,
+    diet_summary: input.input_data ?? input.diet_summary,
+    full_result: input.result_data ?? input.full_result,
+    total_cost_per_day: input.total_cost ?? input.total_cost_per_day,
+    currency: input.currency,
+    simulation_id: input.simulation_id,
+  };
+}
+
+/**
+ * Map a backend BotDailyLogResponse to the PWA MilkLog interface.
+ */
+function mapMilkLogFromBackend(log: Record<string, unknown>): Record<string, unknown> {
+  if (!log) return log;
+  const morning = log.milk_yield_morning as number | null | undefined;
+  const evening = log.milk_yield_evening as number | null | undefined;
+  const total = log.milk_yield_total as number | null | undefined;
+  return {
+    id: log.id,
+    user_id: log.telegram_user_id,
+    cow_id: log.cow_profile_id,
+    log_date: log.log_date,
+    morning_liters: morning,
+    evening_liters: evening,
+    total_liters: total ?? (morning ?? 0) + (evening ?? 0),
+    fed_diet: log.fed_diet,
+    diet_history_id: log.diet_history_id,
+    notes: log.notes,
+    status: log.status,
+    created_at: log.created_at,
+    updated_at: log.created_at,
+  };
+}
+
+/**
+ * Map PWA MilkLogInput fields to backend BotDailyLogCreate fields.
+ */
+function mapMilkLogToBackend(input: Record<string, unknown>): Record<string, unknown> {
+  if (!input) return input;
+  const morning = input.morning_liters as number | undefined;
+  const evening = input.evening_liters as number | undefined;
+  return {
+    cow_profile_id: input.cow_id ?? input.cow_profile_id,
+    diet_history_id: input.diet_history_id,
+    log_date: input.log_date,
+    fed_diet: input.fed_diet,
+    milk_yield_morning: morning,
+    milk_yield_evening: evening,
+    milk_yield_total: input.total_liters ?? (morning ?? 0) + (evening ?? 0),
+    notes: input.notes,
+    status: input.status ?? 'completed',
+  };
+}
+
+// ============================================================================
 // ENDPOINT MAPPING
 // ============================================================================
 
@@ -378,35 +532,52 @@ const ENDPOINT_MAP: Record<string, EndpointMapping> = {
   // ============================================================================
   // COW PROFILE ENDPOINTS
   // ============================================================================
+  // List cows — store passes userId in URL
+  '/api/v1/cows/user/:userId': {
+    path: '/cow-profiles/user/:userId',
+    transform: {
+      response: (data: unknown) => {
+        // Backend returns { success, count, cow_profiles: [...] }
+        // PWA stores expect a plain array with PWA field names
+        const resp = data as { cow_profiles?: Record<string, unknown>[] };
+        const profiles = resp.cow_profiles || (Array.isArray(data) ? data as Record<string, unknown>[] : []);
+        return profiles.map(mapCowFromBackend);
+      },
+    },
+  },
+  // Create cow — no userId needed (backend resolves from auth context)
   '/api/v1/cows': {
+    method: 'POST',
     path: '/cow-profiles/',
     transform: {
-      // GET: List cows for user (needs telegram_user_id or app_user_id query)
-      // POST: Create cow
-      request: (data) => {
-        // Ensure we're sending the right format
-        return data;
-      },
-      response: (data: unknown) => {
-        // Transform backend response to expected PWA format
-        const response = data as { cow_profiles?: unknown[]; success?: boolean; count?: number };
-        if (response.cow_profiles) {
-          return {
-            ...response,
-            cows: response.cow_profiles,
-          };
-        }
-        return data;
-      },
+      request: (data: unknown) => mapCowToBackend(data as Record<string, unknown>),
+      response: (data: unknown) => mapCowFromBackend(data as Record<string, unknown>),
     },
   },
   '/api/v1/cows/:id': {
     path: '/cow-profiles/detail/:id',
     transform: {
-      response: (data: unknown) => {
+      request: (data: unknown) => {
+        if (data && typeof data === 'object') return mapCowToBackend(data as Record<string, unknown>);
         return data;
       },
+      response: (data: unknown) => mapCowFromBackend(data as Record<string, unknown>),
     },
+  },
+  // Update cow by full UUID — PUT /cow-profiles/{id}
+  '/api/v1/cows/update/:id': {
+    path: '/cow-profiles/:id',
+    transform: {
+      request: (data: unknown) => {
+        if (data && typeof data === 'object') return mapCowToBackend(data as Record<string, unknown>);
+        return data;
+      },
+      response: (data: unknown) => mapCowFromBackend(data as Record<string, unknown>),
+    },
+  },
+  // Delete cow
+  '/api/v1/cows/delete/:id': {
+    path: '/cow-profiles/:id',
   },
 
   // ============================================================================
@@ -450,31 +621,57 @@ const ENDPOINT_MAP: Record<string, EndpointMapping> = {
       },
     },
   },
+  // Diet list — store passes userId in URL
+  '/api/v1/diet/history/user/:userId': {
+    path: '/bot-diet-history/user/:userId',
+    transform: {
+      response: (data: unknown) => {
+        // Backend returns { success, count, diets: [...] }
+        const resp = data as { diets?: Record<string, unknown>[] };
+        const diets = resp.diets || (Array.isArray(data) ? data as Record<string, unknown>[] : []);
+        return diets.map(mapDietFromBackend);
+      },
+    },
+  },
   '/api/v1/diet/history': {
     path: '/bot-diet-history/',
     transform: {
+      request: (data: unknown) => {
+        if (data && typeof data === 'object') return mapDietToBackend(data as Record<string, unknown>);
+        return data;
+      },
       response: (data: unknown) => {
-        const response = data as { diet_histories?: unknown[] };
-        if (response.diet_histories) {
-          return { diets: response.diet_histories, success: true };
-        }
+        // Could be a list response or single item
+        const resp = data as { diets?: Record<string, unknown>[] };
+        if (resp.diets) return resp.diets.map(mapDietFromBackend);
         return data;
       },
     },
   },
   '/api/v1/diet/:id': {
     path: '/bot-diet-history/:id',
+    transform: {
+      request: (data: unknown) => {
+        if (data && typeof data === 'object') return mapDietToBackend(data as Record<string, unknown>);
+        return data;
+      },
+      response: (data: unknown) => mapDietFromBackend(data as Record<string, unknown>),
+    },
   },
   '/api/v1/diet/history/:id': {
     path: '/bot-diet-history/:id',
+    transform: {
+      response: (data: unknown) => mapDietFromBackend(data as Record<string, unknown>),
+    },
   },
-  // NOTE: diet evaluate endpoint does not exist on the backend.
-  // Removed dead mapping: '/api/v1/diet/:id/evaluate' → '/bot-diet-history/:id/evaluate'
   '/api/v1/diet/:id/archive': {
     path: '/bot-diet-history/:id/archive',
   },
   '/api/v1/diet/active/:cowId': {
     path: '/bot-diet-history/active/:cowId',
+    transform: {
+      response: (data: unknown) => mapDietFromBackend(data as Record<string, unknown>),
+    },
   },
 
   // ============================================================================
@@ -502,20 +699,38 @@ const ENDPOINT_MAP: Record<string, EndpointMapping> = {
   // ============================================================================
   // MILK LOG ENDPOINTS (using bot daily logs)
   // ============================================================================
+  // List milk logs — store passes userId in URL
+  '/api/v1/milk-logs/user/:userId': {
+    path: '/bot-daily-logs/user/:userId',
+    transform: {
+      response: (data: unknown) => {
+        // Backend returns { success, count, logs: [...] }
+        const resp = data as { logs?: Record<string, unknown>[] };
+        const logs = resp.logs || (Array.isArray(data) ? data as Record<string, unknown>[] : []);
+        return logs.map(mapMilkLogFromBackend);
+      },
+    },
+  },
+  // Create milk log
   '/api/v1/milk-logs': {
     path: '/bot-daily-logs/',
     transform: {
-      response: (data: unknown) => {
-        const response = data as { logs?: unknown[] };
-        if (response.logs) {
-          return { milkLogs: response.logs, success: true };
-        }
+      request: (data: unknown) => {
+        if (data && typeof data === 'object') return mapMilkLogToBackend(data as Record<string, unknown>);
         return data;
       },
+      response: (data: unknown) => mapMilkLogFromBackend(data as Record<string, unknown>),
     },
   },
   '/api/v1/milk-logs/:id': {
     path: '/bot-daily-logs/:id',
+    transform: {
+      request: (data: unknown) => {
+        if (data && typeof data === 'object') return mapMilkLogToBackend(data as Record<string, unknown>);
+        return data;
+      },
+      response: (data: unknown) => mapMilkLogFromBackend(data as Record<string, unknown>),
+    },
   },
 
   // ============================================================================
