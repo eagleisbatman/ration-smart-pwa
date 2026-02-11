@@ -88,7 +88,7 @@
     <template v-if="viewMode === 'managed'">
       <!-- Quick Stats -->
       <div class="row q-col-gutter-md q-mb-lg">
-        <div class="col-4">
+        <div class="col-12 col-sm-4">
           <q-card flat bordered class="stat-card">
             <q-card-section class="q-pa-sm">
               <div class="text-h5 text-primary">{{ farmerCount }}</div>
@@ -96,7 +96,7 @@
             </q-card-section>
           </q-card>
         </div>
-        <div class="col-4">
+        <div class="col-12 col-sm-4">
           <q-card flat bordered class="stat-card">
             <q-card-section class="q-pa-sm">
               <div class="text-h5 text-secondary">{{ totalCows }}</div>
@@ -104,7 +104,7 @@
             </q-card-section>
           </q-card>
         </div>
-        <div class="col-4">
+        <div class="col-12 col-sm-4">
           <q-card flat bordered class="stat-card">
             <q-card-section class="q-pa-sm">
               <div class="text-h5 text-accent">{{ totalMilk.toFixed(1) }}{{ $t('units.l') }}</div>
@@ -117,7 +117,7 @@
       <!-- Quick Actions -->
       <div class="text-subtitle1 q-mb-sm">{{ $t('dashboard.quickActions') }}</div>
       <div class="row q-col-gutter-sm q-mb-lg">
-        <div class="col-6">
+        <div class="col-12 col-sm-6">
           <q-btn
             color="primary"
             class="full-width action-btn quick-action"
@@ -129,7 +129,7 @@
             <span class="text-caption">{{ $t('dashboard.viewFarmers') }}</span>
           </q-btn>
         </div>
-        <div class="col-6">
+        <div class="col-12 col-sm-6">
           <q-btn
             color="secondary"
             class="full-width action-btn quick-action"

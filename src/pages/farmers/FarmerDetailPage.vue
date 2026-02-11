@@ -50,7 +50,7 @@
 
         <!-- Statistics Cards -->
         <div class="row q-col-gutter-md q-mb-md">
-          <div class="col-6">
+          <div class="col-12 col-sm-6">
             <q-card>
               <q-card-section class="text-center">
                 <div class="text-h4 text-primary">{{ summary?.statistics.total_active_cows || farmer.total_cattle }}</div>
@@ -58,7 +58,7 @@
               </q-card-section>
             </q-card>
           </div>
-          <div class="col-6">
+          <div class="col-12 col-sm-6">
             <q-card>
               <q-card-section class="text-center">
                 <div class="text-h4 text-positive">{{ summary?.statistics.lactating_cows || 0 }}</div>
@@ -66,7 +66,7 @@
               </q-card-section>
             </q-card>
           </div>
-          <div class="col-6">
+          <div class="col-12 col-sm-6">
             <q-card>
               <q-card-section class="text-center">
                 <div class="text-h4 text-info">{{ summary?.statistics.total_daily_milk_production?.toFixed(1) || '0' }}</div>
@@ -74,7 +74,7 @@
               </q-card-section>
             </q-card>
           </div>
-          <div class="col-6">
+          <div class="col-12 col-sm-6">
             <q-card>
               <q-card-section class="text-center">
                 <div class="text-h4 text-warning">{{ summary?.statistics.avg_milk_per_lactating_cow?.toFixed(1) || '0' }}</div>
