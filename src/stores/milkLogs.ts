@@ -136,9 +136,11 @@ export const useMilkLogsStore = defineStore('milkLogs', () => {
 
     try {
       if (isOnline.value) {
-        const response = await api.get('/api/v1/milk-logs', { params });
-        const serverLogs = response.data.map((log: MilkLog) => ({
+        const response = await api.get(`/api/v1/milk-logs/user/${authStore.userId}`, { params });
+        // Adapter transforms backend fields → PWA fields and extracts array
+        const serverLogs = (Array.isArray(response.data) ? response.data : []).map((log: MilkLog) => ({
           ...log,
+          user_id: log.user_id || authStore.userId,
           _synced: true,
           _deleted: false,
         }));
