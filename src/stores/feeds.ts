@@ -57,15 +57,19 @@ export const useFeedsStore = defineStore('feeds', () => {
           params: { country_code: country },
         });
 
-        const feeds = response.data.map((feed: Feed) => ({
+        const rawFeeds = Array.isArray(response.data) ? response.data : [];
+        const feeds = rawFeeds.map((feed: Feed) => ({
           ...feed,
           is_custom: false,
+          country_code: country,
           _synced: true,
           _deleted: false,
         }));
 
         // Update local database
-        await db.feeds.bulkPut(feeds);
+        if (feeds.length > 0) {
+          await db.feeds.bulkPut(feeds);
+        }
       }
 
       // Load from local database
@@ -101,15 +105,19 @@ export const useFeedsStore = defineStore('feeds', () => {
       if (isOnline.value) {
         const response = await api.get('/api/v1/feeds/custom');
 
-        const feeds = response.data.map((feed: Feed) => ({
+        const rawFeeds = Array.isArray(response.data) ? response.data : [];
+        const feeds = rawFeeds.map((feed: Feed) => ({
           ...feed,
           is_custom: true,
+          user_id: authStore.userId,
           _synced: true,
           _deleted: false,
         }));
 
         // Update local database
-        await db.feeds.bulkPut(feeds);
+        if (feeds.length > 0) {
+          await db.feeds.bulkPut(feeds);
+        }
       }
 
       // Load from local database
