@@ -73,7 +73,7 @@
       <div class="text-subtitle1">{{ $t('feed.labels.nutritionalValues') }}</div>
 
       <div class="row q-col-gutter-sm">
-        <div class="col-6">
+        <div class="col-12 col-sm-6">
           <q-input
             v-model.number="form.dm_percentage"
             :label="$t('feed.labels.dmPercentInput')"
@@ -86,7 +86,7 @@
             ]"
           />
         </div>
-        <div class="col-6">
+        <div class="col-12 col-sm-6">
           <q-input
             v-model.number="form.cp_percentage"
             :label="$t('feed.labels.cpPercentInput')"
@@ -102,7 +102,7 @@
       </div>
 
       <div class="row q-col-gutter-sm">
-        <div class="col-6">
+        <div class="col-12 col-sm-6">
           <q-input
             v-model.number="form.tdn_percentage"
             :label="$t('feed.labels.tdnPercentInput')"
@@ -115,7 +115,7 @@
             ]"
           />
         </div>
-        <div class="col-6">
+        <div class="col-12 col-sm-6">
           <q-input
             v-model.number="form.ndf_percentage"
             :label="$t('feed.labels.ndfPercentInput')"
@@ -128,7 +128,7 @@
       </div>
 
       <div class="row q-col-gutter-sm">
-        <div class="col-6">
+        <div class="col-12 col-sm-6">
           <q-input
             v-model.number="form.ca_percentage"
             :label="$t('feed.labels.caPercentInput')"
@@ -138,7 +138,7 @@
             :hint="$t('feed.hints.optional')"
           />
         </div>
-        <div class="col-6">
+        <div class="col-12 col-sm-6">
           <q-input
             v-model.number="form.p_percentage"
             :label="$t('feed.labels.pPercentInput')"

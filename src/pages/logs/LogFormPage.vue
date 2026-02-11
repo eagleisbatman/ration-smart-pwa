@@ -46,7 +46,7 @@
         <div class="text-subtitle2 q-mb-md">{{ $t('logs.form.milkProduction') }}</div>
 
         <div class="row q-col-gutter-md">
-          <div class="col-6">
+          <div class="col-12 col-sm-6">
             <q-input
               v-model.number="form.morning_liters"
               :label="$t('logs.labels.morningFull')"
@@ -60,7 +60,7 @@
               </template>
             </q-input>
           </div>
-          <div class="col-6">
+          <div class="col-12 col-sm-6">
             <q-input
               v-model.number="form.evening_liters"
               :label="$t('logs.labels.eveningFull')"

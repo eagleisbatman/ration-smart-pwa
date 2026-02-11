@@ -7,11 +7,11 @@
         <q-skeleton type="text" width="80px" />
       </div>
       <div class="row items-center q-col-gutter-sm">
-        <div class="col-6">
+        <div class="col-12 col-sm-6">
           <q-skeleton type="text" width="60px" height="36px" />
           <q-skeleton type="text" width="100px" class="q-mt-xs" />
         </div>
-        <div class="col-6">
+        <div class="col-12 col-sm-6">
           <q-skeleton type="text" width="90px" />
           <q-skeleton type="text" width="80px" class="q-mt-xs" />
           <q-skeleton type="text" width="70px" class="q-mt-xs" />
@@ -64,7 +64,7 @@
 
       <div class="row items-start q-col-gutter-sm">
         <!-- Left: Temperature and condition -->
-        <div class="col-6">
+        <div class="col-12 col-sm-6">
           <div class="row items-center no-wrap">
             <q-icon
               :name="weatherIcon"
@@ -80,7 +80,7 @@
         </div>
 
         <!-- Right: Details -->
-        <div class="col-6">
+        <div class="col-12 col-sm-6">
           <div class="weather-detail">
             <q-icon name="water_drop" size="14px" color="blue-5" class="q-mr-xs" />
             <span class="text-caption">{{ $t('weather.humidity') }}: {{ weather.humidity }}%</span>

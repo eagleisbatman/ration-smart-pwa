@@ -28,7 +28,7 @@
     <!-- Report Types -->
     <div class="text-subtitle1 q-mb-sm">{{ $t('reports.generateReport') }}</div>
     <div class="row q-col-gutter-sm q-mb-lg">
-      <div v-for="type in reportTypes" :key="type.value" class="col-6">
+      <div v-for="type in reportTypes" :key="type.value" class="col-12 col-sm-6">
         <q-card
           flat
           bordered
@@ -140,7 +140,7 @@
           />
 
           <div class="row q-col-gutter-sm q-mt-sm">
-            <div class="col-6">
+            <div class="col-12 col-sm-6">
               <q-input
                 v-model="reportParams.start_date"
                 :label="$t('reports.startDate')"
@@ -156,7 +156,7 @@
                 </template>
               </q-input>
             </div>
-            <div class="col-6">
+            <div class="col-12 col-sm-6">
               <q-input
                 v-model="reportParams.end_date"
                 :label="$t('reports.endDate')"

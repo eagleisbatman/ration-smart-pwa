@@ -15,7 +15,7 @@
 
       <!-- Summary Cards -->
       <div class="row q-col-gutter-sm q-mb-md">
-        <div class="col-6">
+        <div class="col-12 col-sm-6">
           <q-card flat bordered class="summary-card">
             <q-card-section>
               <div class="text-caption text-grey-7">{{ $t('logs.summary.today') }}</div>
@@ -23,7 +23,7 @@
             </q-card-section>
           </q-card>
         </div>
-        <div class="col-6">
+        <div class="col-12 col-sm-6">
           <q-card flat bordered class="summary-card">
             <q-card-section>
               <div class="text-caption text-grey-7">{{ $t('logs.summary.thisWeek') }}</div>

@@ -92,15 +92,15 @@
 
             <!-- Summary for completed diets -->
             <div v-if="diet.status === 'completed' && diet.dm_intake" class="row q-mt-sm q-col-gutter-sm">
-              <div class="col-4 text-center">
+              <div class="col-12 col-sm-4 text-center">
                 <div class="text-caption text-grey-7">{{ $t('diet.dmIntake') }}</div>
                 <div class="text-body2">{{ diet.dm_intake.toFixed(1) }} {{ $t('diet.kg') }}</div>
               </div>
-              <div class="col-4 text-center">
+              <div class="col-12 col-sm-4 text-center">
                 <div class="text-caption text-grey-7">{{ $t('diet.goal') }}</div>
                 <div class="text-body2 text-capitalize">{{ formatGoal(diet.optimization_goal) }}</div>
               </div>
-              <div class="col-4 text-center">
+              <div class="col-12 col-sm-4 text-center">
                 <div class="text-caption text-grey-7">{{ $t('diet.cost') }}</div>
                 <div class="text-body2">{{ formatCurrency(diet.total_cost ?? 0) }}</div>
               </div>

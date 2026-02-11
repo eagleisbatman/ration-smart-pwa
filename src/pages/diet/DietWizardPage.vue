@@ -51,7 +51,7 @@
         <div class="text-subtitle1 q-mb-md">{{ $t('diet.wizard.animalInformation') }}</div>
 
         <div class="row q-col-gutter-sm">
-          <div class="col-6">
+          <div class="col-12 col-sm-6">
             <q-input
               v-model.number="form.weight_kg"
               :label="$t('diet.wizard.weightKg')"
@@ -60,7 +60,7 @@
               :rules="[(val) => val > 0 || $t('diet.wizard.required')]"
             />
           </div>
-          <div class="col-6">
+          <div class="col-12 col-sm-6">
             <q-input
               v-model.number="form.milk_yield_liters"
               :label="$t('diet.wizard.milkYieldPerDay')"
@@ -72,7 +72,7 @@
         </div>
 
         <div class="row q-col-gutter-sm q-mt-sm">
-          <div class="col-6">
+          <div class="col-12 col-sm-6">
             <q-input
               v-model.number="form.milk_fat_percentage"
               :label="$t('diet.wizard.milkFatPercent')"
@@ -81,7 +81,7 @@
               outlined
             />
           </div>
-          <div class="col-6">
+          <div class="col-12 col-sm-6">
             <q-select
               v-model="form.lactation_stage"
               :label="$t('diet.wizard.lactationStage')"
@@ -105,7 +105,7 @@
         />
 
         <div class="row q-col-gutter-sm q-mt-sm">
-          <div class="col-6">
+          <div class="col-12 col-sm-6">
             <div class="text-caption q-mb-xs">{{ $t('diet.wizard.bodyConditionScore') }}</div>
             <q-slider
               v-model="form.body_condition_score"
@@ -121,7 +121,7 @@
             />
             <div class="text-caption text-grey-6 text-center">{{ $t('cow.bcsHint') }}</div>
           </div>
-          <div class="col-6">
+          <div class="col-12 col-sm-6">
             <q-input
               v-model.number="form.age_months"
               :label="$t('diet.wizard.ageMonths')"

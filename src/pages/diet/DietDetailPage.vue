@@ -66,19 +66,19 @@
       <template v-if="['completed', 'following', 'saved'].includes(diet.status) && diet.result_data">
         <!-- Summary Stats -->
         <div class="row q-col-gutter-sm q-mb-md">
-          <div class="col-4">
+          <div class="col-12 col-sm-4">
             <q-card flat bordered class="text-center q-pa-sm">
               <div class="text-h5 text-primary">{{ formatCurrency(diet.total_cost ?? 0) }}</div>
               <div class="text-caption text-grey-7">{{ $t('diet.dailyCost') }}</div>
             </q-card>
           </div>
-          <div class="col-4">
+          <div class="col-12 col-sm-4">
             <q-card flat bordered class="text-center q-pa-sm">
               <div class="text-h5 text-secondary">{{ diet.dm_intake?.toFixed(1) }}</div>
               <div class="text-caption text-grey-7">{{ $t('diet.dmKg') }}</div>
             </q-card>
           </div>
-          <div class="col-4">
+          <div class="col-12 col-sm-4">
             <q-card flat bordered class="text-center q-pa-sm">
               <div class="text-h5 text-accent">{{ resultData.feeds?.length || 0 }}</div>
               <div class="text-caption text-grey-7">{{ $t('diet.feeds') }}</div>
@@ -181,7 +181,7 @@
 
       <!-- Actions -->
       <div class="row q-col-gutter-sm q-mt-md">
-        <div class="col-6">
+        <div class="col-12 col-sm-6">
           <q-btn
             v-if="['completed', 'following', 'saved'].includes(diet.status)"
             :label="$t('diet.optimizeAgain')"
@@ -201,7 +201,7 @@
             @click="router.push('/diet/new')"
           />
         </div>
-        <div class="col-6">
+        <div class="col-12 col-sm-6">
           <q-btn
             :label="$t('diet.delete')"
             icon="delete"

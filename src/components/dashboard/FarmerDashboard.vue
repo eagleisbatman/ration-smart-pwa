@@ -161,7 +161,7 @@
 
     <!-- Quick Stats -->
     <div class="row q-col-gutter-md q-mb-lg">
-      <div class="col-6">
+      <div class="col-12 col-sm-6">
         <q-card flat bordered class="stat-card">
           <q-card-section>
             <div class="text-h4 text-primary">{{ cowCount }}</div>
@@ -169,7 +169,7 @@
           </q-card-section>
         </q-card>
       </div>
-      <div class="col-6">
+      <div class="col-12 col-sm-6">
         <q-card flat bordered class="stat-card">
           <q-card-section>
             <div class="text-h4 text-secondary">{{ todayMilk.toFixed(1) }}{{ $t('units.l') }}</div>
@@ -219,7 +219,7 @@
     <!-- Quick Actions -->
     <div class="text-subtitle1 q-mb-sm">{{ $t('dashboard.quickActions') }}</div>
     <div class="row q-col-gutter-sm q-mb-lg">
-      <div class="col-4">
+      <div class="col-12 col-sm-4">
         <q-btn
           color="primary"
           class="full-width action-btn quick-action"
@@ -231,7 +231,7 @@
           <span class="text-caption">{{ $t('logs.logMilk') }}</span>
         </q-btn>
       </div>
-      <div class="col-4">
+      <div class="col-12 col-sm-4">
         <q-btn
           color="secondary"
           class="full-width action-btn quick-action"
@@ -243,7 +243,7 @@
           <span class="text-caption">{{ $t('diet.getDiet') }}</span>
         </q-btn>
       </div>
-      <div class="col-4">
+      <div class="col-12 col-sm-4">
         <q-btn
           color="accent"
           class="full-width action-btn quick-action"

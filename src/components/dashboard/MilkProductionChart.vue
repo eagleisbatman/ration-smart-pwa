@@ -38,19 +38,19 @@
 
       <!-- Summary Stats -->
       <div v-if="chartData.length > 0 && !loading" class="row q-col-gutter-sm q-mt-md">
-        <div class="col-4">
+        <div class="col-12 col-sm-4">
           <div class="stat-mini">
             <div class="text-h6 text-primary">{{ totalProduction.toFixed(1) }}L</div>
             <div class="text-caption text-grey-6">{{ $t('chart.total') }}</div>
           </div>
         </div>
-        <div class="col-4">
+        <div class="col-12 col-sm-4">
           <div class="stat-mini">
             <div class="text-h6 text-secondary">{{ averageDaily.toFixed(1) }}L</div>
             <div class="text-caption text-grey-6">{{ $t('chart.avgDaily') }}</div>
           </div>
         </div>
-        <div class="col-4">
+        <div class="col-12 col-sm-4">
           <div class="stat-mini">
             <div class="text-h6" :class="trendClass">
               <q-icon :name="trendIcon" size="16px" class="q-mr-xs" />
