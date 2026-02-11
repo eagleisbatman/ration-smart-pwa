@@ -4,7 +4,10 @@ import { v4 as uuidv4 } from 'uuid';
 import { api } from 'src/boot/axios';
 import { db, Diet } from 'src/lib/offline/db';
 import { useAuthStore } from './auth';
+import { useCowsStore } from './cows';
+import { useFeedsStore } from './feeds';
 import { isOnline } from 'src/boot/pwa';
+import { getCountryId } from 'src/services/api-adapter';
 
 export interface DietInput {
   cow_id?: string;
@@ -193,8 +196,51 @@ export const useDietsStore = defineStore('diets', () => {
       diets.value.unshift(placeholderDiet);
       currentDiet.value = placeholderDiet;
 
+      // Build full DietRecommendationRequest for backend
+      const cowsStore = useCowsStore();
+      const feedsStore = useFeedsStore();
+      const cow = input.cow_id
+        ? cowsStore.activeCows.find((c) => c.id === input.cow_id)
+        : null;
+
+      // Map lactation_stage → days_in_milk
+      const lactationStage = input.lactation_stage || 'mid';
+      const daysInMilkMap: Record<string, number> = { early: 60, mid: 150, late: 250, dry: 0 };
+
+      // Build feed_selection with prices from feeds store
+      const feedSelection = input.available_feeds.map((feedId) => {
+        const feed = feedsStore.allFeeds.find((f) => f.id === feedId);
+        return { feed_id: feedId, price_per_kg: feed?.price_per_kg ?? 1.0 };
+      });
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const cowAny = cow as any;
+      const backendRequest = {
+        simulation_id: localId,
+        user_id: authStore.userId,
+        country_id: getCountryId(authStore.userCountry) || undefined,
+        cattle_info: {
+          body_weight: input.weight_kg,
+          breed: cow?.breed || 'Local Breed',
+          lactating: lactationStage !== 'dry',
+          milk_production: input.milk_yield_liters,
+          days_in_milk: cowAny?._backend_days_in_milk ?? daysInMilkMap[lactationStage] ?? 150,
+          parity: cowAny?._backend_parity ?? 2,
+          days_of_pregnancy: input.is_pregnant ? (input.pregnancy_month ?? 0) * 30 : 0,
+          tp_milk: cowAny?._backend_milk_protein_percent ?? 3.2,
+          fat_milk: input.milk_fat_percentage ?? 4.0,
+          temperature: 25.0,
+          topography: 'Flat',
+          distance: 1.0,
+          calving_interval: 370,
+          bw_gain: 0.2,
+          bc_score: input.body_condition_score ?? 3.0,
+        },
+        feed_selection: feedSelection,
+      };
+
       // Call optimization API
-      const response = await api.post('/api/v1/diet/optimize', input);
+      const response = await api.post('/api/v1/diet/optimize', backendRequest);
       const serverDiet: Diet = {
         ...response.data,
         _synced: true,

@@ -23,6 +23,7 @@ export interface CowInput {
   activity_level?: string;
   image_url?: string;
   notes?: string;
+  farmer_profile_id?: string;
 }
 
 export interface Breed {

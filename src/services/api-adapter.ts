@@ -255,6 +255,7 @@ function mapCowFromBackend(cow: Record<string, unknown>): Record<string, unknown
     is_active: cow.is_active ?? true,
     created_at: cow.created_at,
     updated_at: cow.updated_at,
+    farmer_profile_id: cow.farmer_profile_id,
     // Pass through extra backend fields for round-tripping
     _backend_lactating: cow.lactating,
     _backend_days_in_milk: cow.days_in_milk,
@@ -285,6 +286,7 @@ function mapCowToBackend(input: Record<string, unknown>): Record<string, unknown
     target_milk_yield: input._backend_target_milk_yield ?? undefined,
     days_of_pregnancy: isPregnant ? (pregnancyMonth ?? 0) * 30 : 0,
     is_active: input.is_active,
+    farmer_profile_id: input.farmer_profile_id || undefined,
   };
 }
 
@@ -645,7 +647,7 @@ const ENDPOINT_MAP: Record<string, EndpointMapping> = {
   // FEED ENDPOINTS
   // ============================================================================
   '/api/v1/feeds/master': {
-    path: '/feeds/master-feeds/',
+    path: '/master-feeds/',
     transform: {
       params: (params: Record<string, unknown>) => {
         // Backend needs country_id (UUID), PWA passes country_code (alpha-2)
@@ -672,7 +674,7 @@ const ENDPOINT_MAP: Record<string, EndpointMapping> = {
   },
   // Custom feed CRUD
   '/api/v1/feeds/custom': {
-    path: '/feeds/custom/',
+    path: '/custom/',
     transform: {
       request: (data: unknown) => {
         if (data && typeof data === 'object') return mapFeedToBackend(data as Record<string, unknown>);
@@ -691,7 +693,7 @@ const ENDPOINT_MAP: Record<string, EndpointMapping> = {
     },
   },
   '/api/v1/feeds/custom/:id': {
-    path: '/feeds/custom/:id',
+    path: '/custom/:id',
     transform: {
       request: (data: unknown) => {
         if (data && typeof data === 'object') return mapFeedToBackend(data as Record<string, unknown>);
@@ -723,13 +725,19 @@ const ENDPOINT_MAP: Record<string, EndpointMapping> = {
   '/api/v1/diet/optimize': {
     path: '/diet-recommendation-working/',
     transform: {
-      request: (data) => {
-        // Transform PWA diet request to backend format if needed
-        return data;
-      },
-      response: (data) => {
-        // Transform backend response to PWA expected format
-        return data;
+      // Request is already built by the diets store — pass through
+      response: (data: unknown) => {
+        // Backend returns a complex diet result; map to PWA Diet shape
+        const resp = data as Record<string, unknown>;
+        const leastCostDiet = resp.least_cost_diet as Record<string, unknown> | undefined;
+        return {
+          id: resp.report_id ?? resp.simulation_id,
+          status: resp.diet_status === 'Feasible' ? 'completed' : 'failed',
+          total_cost: resp.total_diet_cost,
+          dm_intake: leastCostDiet?.total_dm_intake,
+          result_data: resp,
+          created_at: new Date().toISOString(),
+        };
       },
     },
   },
