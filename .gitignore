@@ -53,3 +53,5 @@ bun.lockb
 
 # Docs artifacts (generated HTML/ZIP wireframes, test cases)
 docs/*.zip
+docs/test-cases/
+docs/user-flows/
