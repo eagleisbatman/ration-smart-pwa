@@ -1,6 +1,6 @@
 <template>
   <q-dialog :model-value="modelValue" @update:model-value="$emit('update:modelValue', $event)">
-    <q-card style="min-width: 340px; max-width: 500px; width: 100%">
+    <q-card>
       <q-card-section class="row items-center">
         <div class="text-h6">{{ $t('feed.compareFeeds') }}</div>
         <q-space />

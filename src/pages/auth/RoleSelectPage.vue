@@ -51,7 +51,7 @@
           color="grey-7"
           class="full-width"
           size="lg"
-          @click="router.back()"
+          @click="router.push('/auth/language')"
         />
       </div>
       <div class="col-8">

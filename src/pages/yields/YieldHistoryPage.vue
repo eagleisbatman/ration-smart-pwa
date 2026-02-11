@@ -198,7 +198,7 @@
 
     <!-- Date Range Dialog -->
     <q-dialog v-model="showDateFilter">
-      <q-card style="min-width: 300px">
+      <q-card>
         <q-card-section>
           <div class="text-h6">{{ $t('logs.yield.filterByDate') }}</div>
         </q-card-section>

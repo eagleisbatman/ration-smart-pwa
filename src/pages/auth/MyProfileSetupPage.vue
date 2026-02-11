@@ -7,18 +7,6 @@
     </div>
 
     <q-form class="q-gutter-md" @submit="onSubmit">
-      <!-- Full Name -->
-      <q-input
-        v-model="form.name"
-        :label="$t('profile.fullName')"
-        outlined
-        :rules="[(val) => !!val || $t('validation.required')]"
-      >
-        <template #prepend>
-          <q-icon name="person" />
-        </template>
-      </q-input>
-
       <!-- Phone -->
       <q-input
         v-model="form.phone"
@@ -152,9 +140,13 @@
 
       </div>
 
-      <!-- Error Message -->
+      <!-- Error Message with recovery options -->
       <q-banner v-if="error" dense class="bg-negative text-white q-mb-md" rounded>
         {{ error }}
+        <template #action>
+          <q-btn flat dense color="white" :label="$t('onboarding.skipAndRetryLater')" @click="skipOnboarding" />
+          <q-btn flat dense color="white" icon="logout" @click="logoutFallback" />
+        </template>
       </q-banner>
 
       <div class="row q-mt-xl q-col-gutter-sm">
@@ -165,7 +157,7 @@
             color="grey-7"
             class="full-width"
             size="lg"
-            @click="router.back()"
+            @click="router.push('/auth/organization')"
           />
         </div>
         <div class="col-8">
@@ -213,7 +205,6 @@ const onboardingCountry = getOnboardingItem('selected_country') || 'IN';
 const phoneMask = getPhoneMask(onboardingCountry);
 
 const form = reactive({
-  name: '',
   phone: '',
   latitude: null as number | null,
   longitude: null as number | null,
@@ -377,8 +368,8 @@ async function onSubmit() {
     await api.put(`/api/v1/users/${userId}/settings${settingsQuery ? '?' + settingsQuery : ''}`);
 
     // 2. Create self-profile with new location fields
-    await api.post(`/api/v1/users/${userId}/self-profile`, {
-      name: form.name,
+    const profileResponse = await api.post(`/api/v1/users/${userId}/self-profile`, {
+      name: authStore.user?.name || 'User',
       phone: form.phone || null,
       latitude: form.latitude,
       longitude: form.longitude,
@@ -393,6 +384,12 @@ async function onSubmit() {
       district: form.level_3 || null,
       state: form.level_2 || null,
     });
+
+    // Set the self-profile ID immediately so needsOnboarding becomes false
+    if (profileResponse.data?.id) {
+      authStore.selfFarmerProfileId = profileResponse.data.id;
+      localStorage.setItem('self_farmer_profile_id', profileResponse.data.id);
+    }
 
     // 3. Reload user profile to get updated data
     await authStore.loadUserProfile();
@@ -417,12 +414,19 @@ async function onSubmit() {
   }
 }
 
-onMounted(() => {
-  // Pre-fill name if available from registration
-  if (authStore.user?.name) {
-    form.name = authStore.user.name;
-  }
-});
+function skipOnboarding() {
+  // Let user into the app without a profile — they can set it up from settings later
+  clearOnboardingData();
+  authStore.onboardingSkipped = true;
+  sessionStorage.setItem('onboarding_skipped', 'true');
+  router.replace('/');
+}
+
+async function logoutFallback() {
+  clearOnboardingData();
+  await authStore.logout();
+  router.replace('/auth/login');
+}
 </script>
 
 <style lang="scss" scoped>

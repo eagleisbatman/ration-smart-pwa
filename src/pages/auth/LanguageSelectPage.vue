@@ -125,6 +125,18 @@
         @click="proceed"
       />
     </div>
+
+    <div class="text-center q-mt-lg">
+      <q-btn
+        flat
+        dense
+        no-caps
+        color="grey-7"
+        :label="$t('auth.cancelRegistration')"
+        icon="logout"
+        @click="logoutAndExit"
+      />
+    </div>
   </div>
 </template>
 
@@ -132,10 +144,12 @@
 import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { setLocale, availableLocales } from 'src/boot/i18n';
-import { setOnboardingItem, getOnboardingItem } from 'src/lib/onboarding-storage';
+import { setOnboardingItem, getOnboardingItem, clearOnboardingData } from 'src/lib/onboarding-storage';
+import { useAuthStore } from 'src/stores/auth';
 import OnboardingProgress from 'src/components/ui/OnboardingProgress.vue';
 
 const router = useRouter();
+const authStore = useAuthStore();
 
 // Country code to recommended language codes mapping
 const countryLanguageMap: Record<string, string[]> = {
@@ -192,6 +206,12 @@ function proceed() {
   // Store the selected language preference
   setOnboardingItem('onboarding_language', selectedLanguage.value);
   router.push('/auth/role');
+}
+
+async function logoutAndExit() {
+  clearOnboardingData();
+  await authStore.logout();
+  router.replace('/auth/login');
 }
 </script>
 

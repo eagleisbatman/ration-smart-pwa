@@ -32,6 +32,38 @@ body {
 }
 
 // ============================================
+// Responsive Content Container
+// ============================================
+
+// Constrain main content width on desktop for readability
+.q-page > * {
+  max-width: 960px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+// Opt-out class for pages that need full width (compare pages, tables)
+.q-page--full-width > * {
+  max-width: none;
+}
+
+// Responsive horizontal padding scale
+.q-page {
+  padding-left: 16px;
+  padding-right: 16px;
+
+  @media screen and (min-width: 600px) {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  @media screen and (min-width: 1024px) {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+}
+
+// ============================================
 // Touch Optimizations
 // ============================================
 
@@ -142,6 +174,22 @@ button,
 
 .q-dialog__inner--minimized > div {
   border-radius: 16px;
+}
+
+// Responsive dialogs — prevent overflow on small screens
+@media screen and (max-width: 599px) {
+  .q-dialog__inner--minimized > div {
+    min-width: 0 !important;
+    width: calc(100vw - 32px);
+    max-width: calc(100vw - 32px);
+  }
+}
+
+@media screen and (min-width: 600px) {
+  .q-dialog__inner--minimized > div {
+    min-width: 340px;
+    max-width: 500px;
+  }
 }
 
 // ============================================

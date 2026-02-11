@@ -48,12 +48,13 @@ export const useAuthStore = defineStore('auth', () => {
   const userRole = ref<string>(localStorage.getItem('user_role') || 'farmer');
   const preferredLanguage = ref<string>(localStorage.getItem('preferred_language') || 'en');
   const selfFarmerProfileId = ref<string | null>(localStorage.getItem('self_farmer_profile_id'));
+  const onboardingSkipped = ref(sessionStorage.getItem('onboarding_skipped') === 'true');
 
   // Computed
   const isAuthenticated = computed(() => !!token.value && !!userId.value);
   const userCountry = computed(() => user.value?.country_code || 'IN');
   const userLanguage = computed(() => user.value?.language_code || preferredLanguage.value || 'en');
-  const needsOnboarding = computed(() => isAuthenticated.value && !selfFarmerProfileId.value);
+  const needsOnboarding = computed(() => isAuthenticated.value && !selfFarmerProfileId.value && !onboardingSkipped.value);
 
   // Role-based computed properties
   const isExtensionWorker = computed(() => {
@@ -243,6 +244,25 @@ export const useAuthStore = defineStore('auth', () => {
         await db.users.put(userData);
       }
 
+      // Restore onboarding-related fields from login response
+      if (userData?.self_farmer_profile_id) {
+        selfFarmerProfileId.value = userData.self_farmer_profile_id;
+        localStorage.setItem('self_farmer_profile_id', userData.self_farmer_profile_id);
+      }
+      if (userData?.user_role) {
+        userRole.value = userData.user_role;
+        localStorage.setItem('user_role', userData.user_role);
+      }
+      if (userData?.language_code) {
+        preferredLanguage.value = userData.language_code;
+        localStorage.setItem('preferred_language', userData.language_code);
+      }
+
+      // If self_farmer_profile_id wasn't in login response, fetch full profile
+      if (!selfFarmerProfileId.value && responseUserId) {
+        await loadUserProfile();
+      }
+
       return true;
     } catch (err) {
       error.value = extractErrorMessage(err);
@@ -284,6 +304,19 @@ export const useAuthStore = defineStore('auth', () => {
       if (response.data.self_farmer_profile_id) {
         selfFarmerProfileId.value = response.data.self_farmer_profile_id;
         localStorage.setItem('self_farmer_profile_id', response.data.self_farmer_profile_id);
+      }
+
+      // If self_farmer_profile_id still not set, check via self-profile endpoint
+      if (!selfFarmerProfileId.value) {
+        try {
+          const profileResp = await api.get(`/api/v1/users/${userId.value}/self-profile`);
+          if (profileResp.data?.id) {
+            selfFarmerProfileId.value = profileResp.data.id;
+            localStorage.setItem('self_farmer_profile_id', profileResp.data.id);
+          }
+        } catch {
+          // 404 means no self-profile yet — user needs onboarding
+        }
       }
     } catch {
       // Fallback to local cache
@@ -449,6 +482,7 @@ export const useAuthStore = defineStore('auth', () => {
     userRole.value = 'farmer';
     preferredLanguage.value = 'en';
     selfFarmerProfileId.value = null;
+    onboardingSkipped.value = false;
 
     // Clear auth data from both storages
     for (const storage of [localStorage, sessionStorage]) {
@@ -459,6 +493,7 @@ export const useAuthStore = defineStore('auth', () => {
     localStorage.removeItem('user_role');
     localStorage.removeItem('preferred_language');
     localStorage.removeItem('self_farmer_profile_id');
+    sessionStorage.removeItem('onboarding_skipped');
   }
 
   async function logout(): Promise<void> {
@@ -486,6 +521,7 @@ export const useAuthStore = defineStore('auth', () => {
     userRole,
     preferredLanguage,
     selfFarmerProfileId,
+    onboardingSkipped,
     // Computed
     isAuthenticated,
     userCountry,

@@ -1,6 +1,6 @@
 <template>
   <q-dialog v-model="showDialog" persistent>
-    <q-card style="min-width: 340px; max-width: 600px; width: 100%">
+    <q-card>
       <q-card-section class="row items-center q-pb-sm">
         <q-icon name="warning" color="warning" size="md" class="q-mr-sm" />
         <div class="text-h6">{{ $t('sync.conflict.title') }}</div>

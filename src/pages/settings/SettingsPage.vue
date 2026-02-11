@@ -211,7 +211,7 @@
 
     <!-- Language Dialog -->
     <q-dialog v-model="showLanguageDialog">
-      <q-card style="min-width: 300px">
+      <q-card>
         <q-card-section>
           <div class="text-h6">{{ $t('settings.selectLanguage') }}</div>
         </q-card-section>
@@ -238,7 +238,7 @@
 
     <!-- Role Dialog -->
     <q-dialog v-model="showRoleDialog">
-      <q-card style="min-width: 300px">
+      <q-card>
         <q-card-section>
           <div class="text-h6">{{ $t('settings.selectRole') }}</div>
         </q-card-section>
@@ -274,7 +274,7 @@
 
     <!-- Organization Dialog -->
     <q-dialog v-model="showOrgDialog">
-      <q-card style="min-width: 350px; max-height: 80vh">
+      <q-card style="max-height: 80vh">
         <q-card-section>
           <div class="text-h6">{{ $t('settings.selectOrganization') }}</div>
         </q-card-section>

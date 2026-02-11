@@ -123,7 +123,7 @@
 
     <!-- Generate Report Dialog -->
     <q-dialog v-model="showGenerateDialog" persistent>
-      <q-card style="min-width: 320px">
+      <q-card>
         <q-card-section>
           <div class="text-h6">{{ $t('reports.generate') }} {{ selectedReportType?.label }}</div>
         </q-card-section>

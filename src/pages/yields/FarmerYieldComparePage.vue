@@ -1,5 +1,5 @@
 <template>
-  <q-page class="q-pa-md">
+  <q-page class="q-pa-md q-page--full-width">
     <!-- Farmer Selector -->
     <q-card flat bordered class="q-mb-md">
       <q-card-section>

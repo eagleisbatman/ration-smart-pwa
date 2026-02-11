@@ -136,7 +136,7 @@
 
     <!-- Date Range Picker Dialog -->
     <q-dialog v-model="showDatePicker">
-      <q-card style="min-width: 300px">
+      <q-card>
         <q-card-section>
           <div class="text-h6">{{ $t('logs.dialog.selectDateRange') }}</div>
         </q-card-section>
