@@ -50,3 +50,6 @@ coverage
 
 # Bun
 bun.lockb
+
+# Docs artifacts (generated HTML/ZIP wireframes, test cases)
+docs/*.zip
