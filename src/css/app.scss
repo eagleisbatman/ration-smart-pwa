@@ -129,6 +129,70 @@ button,
 }
 
 // ============================================
+// Inline Stat (wireframe: ui-stat pattern)
+// ============================================
+// Compact number + label — no heavy card wrapping
+
+.stat-inline {
+  text-align: center;
+  padding: 12px 8px;
+  background: #f8f9fa;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+// ============================================
+// Section Label (wireframe: section-label pattern)
+// ============================================
+// Uppercase divider label between sections
+
+.section-label {
+  font-size: 0.6875rem; // 11px
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: rgba(0, 0, 0, 0.45);
+  margin-bottom: 8px;
+}
+
+// ============================================
+// Action Button Row (wireframe: outline buttons)
+// ============================================
+
+.action-row {
+  display: flex;
+  gap: 8px;
+
+  .action-row__btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px 8px;
+    border: 1.5px solid rgba(0, 0, 0, 0.12);
+    border-radius: 10px;
+    background: transparent;
+    font-size: 0.8125rem; // 13px
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.75);
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+    min-height: 44px;
+
+    &:active {
+      background: rgba(0, 0, 0, 0.04);
+      border-color: rgba(0, 0, 0, 0.2);
+    }
+
+    .q-icon {
+      font-size: 18px;
+    }
+  }
+}
+
+// ============================================
 // List Styles
 // ============================================
 

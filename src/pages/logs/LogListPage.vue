@@ -13,23 +13,19 @@
         class="q-mb-md"
       />
 
-      <!-- Summary Cards -->
+      <!-- Summary Stats -->
       <div class="row q-col-gutter-sm q-mb-md">
-        <div class="col-12 col-sm-6">
-          <q-card flat bordered class="summary-card">
-            <q-card-section>
-              <div class="text-caption text-grey-7">{{ $t('logs.summary.today') }}</div>
-              <div class="text-h5 text-primary">{{ todayTotal.toFixed(1) }}L</div>
-            </q-card-section>
-          </q-card>
+        <div class="col-6">
+          <div class="stat-inline">
+            <div class="text-h5 text-primary">{{ todayTotal.toFixed(1) }}L</div>
+            <div class="text-caption text-grey-7">{{ $t('logs.summary.today') }}</div>
+          </div>
         </div>
-        <div class="col-12 col-sm-6">
-          <q-card flat bordered class="summary-card">
-            <q-card-section>
-              <div class="text-caption text-grey-7">{{ $t('logs.summary.thisWeek') }}</div>
-              <div class="text-h5 text-secondary">{{ weekTotal.toFixed(1) }}L</div>
-            </q-card-section>
-          </q-card>
+        <div class="col-6">
+          <div class="stat-inline">
+            <div class="text-h5 text-secondary">{{ weekTotal.toFixed(1) }}L</div>
+            <div class="text-caption text-grey-7">{{ $t('logs.summary.thisWeek') }}</div>
+          </div>
         </div>
       </div>
 
@@ -290,10 +286,6 @@ onMounted(async () => {
 </script>
 
 <style lang="scss" scoped>
-.summary-card {
-  border-radius: 12px;
-}
-
 .rounded-borders {
   border-radius: 12px;
   overflow: hidden;

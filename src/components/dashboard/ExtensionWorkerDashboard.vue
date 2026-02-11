@@ -87,60 +87,38 @@
     <!-- Managed Farmers View -->
     <template v-if="viewMode === 'managed'">
       <!-- Quick Stats -->
-      <div class="row q-col-gutter-md q-mb-lg">
-        <div class="col-12 col-sm-4">
-          <q-card flat bordered class="stat-card">
-            <q-card-section class="q-pa-sm">
-              <div class="text-h5 text-primary">{{ farmerCount }}</div>
-              <div class="text-caption text-grey-7">{{ $t('dashboard.farmersManaged') }}</div>
-            </q-card-section>
-          </q-card>
+      <div class="row q-col-gutter-sm q-mb-md">
+        <div class="col-4">
+          <div class="stat-inline">
+            <div class="text-h6 text-primary">{{ farmerCount }}</div>
+            <div class="text-caption text-grey-7">{{ $t('dashboard.farmersManaged') }}</div>
+          </div>
         </div>
-        <div class="col-12 col-sm-4">
-          <q-card flat bordered class="stat-card">
-            <q-card-section class="q-pa-sm">
-              <div class="text-h5 text-secondary">{{ totalCows }}</div>
-              <div class="text-caption text-grey-7">{{ $t('dashboard.totalCows') }}</div>
-            </q-card-section>
-          </q-card>
+        <div class="col-4">
+          <div class="stat-inline">
+            <div class="text-h6 text-secondary">{{ totalCows }}</div>
+            <div class="text-caption text-grey-7">{{ $t('dashboard.totalCows') }}</div>
+          </div>
         </div>
-        <div class="col-12 col-sm-4">
-          <q-card flat bordered class="stat-card">
-            <q-card-section class="q-pa-sm">
-              <div class="text-h5 text-accent">{{ totalMilk.toFixed(1) }}{{ $t('units.l') }}</div>
-              <div class="text-caption text-grey-7">{{ $t('dashboard.todaysMilk') }}</div>
-            </q-card-section>
-          </q-card>
+        <div class="col-4">
+          <div class="stat-inline">
+            <div class="text-h6 text-accent">{{ totalMilk.toFixed(1) }}{{ $t('units.l') }}</div>
+            <div class="text-caption text-grey-7">{{ $t('dashboard.todaysMilk') }}</div>
+          </div>
         </div>
       </div>
 
       <!-- Quick Actions -->
-      <div class="text-subtitle1 q-mb-sm">{{ $t('dashboard.quickActions') }}</div>
-      <div class="row q-col-gutter-sm q-mb-lg">
-        <div class="col-12 col-sm-6">
-          <q-btn
-            color="primary"
-            class="full-width action-btn quick-action"
-            unelevated
-            stack
-            @click="router.push('/farmers')"
-          >
-            <q-icon name="groups" size="24px" class="q-mb-xs action-icon" />
-            <span class="text-caption">{{ $t('dashboard.viewFarmers') }}</span>
-          </q-btn>
-        </div>
-        <div class="col-12 col-sm-6">
-          <q-btn
-            color="secondary"
-            class="full-width action-btn quick-action"
-            unelevated
-            stack
-            @click="router.push('/farmers/new')"
-          >
-            <q-icon name="person_add" size="24px" class="q-mb-xs action-icon" />
-            <span class="text-caption">{{ $t('dashboard.addFarmer') }}</span>
-          </q-btn>
-        </div>
+      <div class="section-label">{{ $t('dashboard.quickActions') }}</div>
+      <div class="action-row q-mb-md">
+        <button class="action-row__btn" @click="router.push('/farmers')">
+          <q-icon name="groups" />
+          {{ $t('dashboard.viewFarmers') }}
+        </button>
+        <button class="action-row__btn" @click="router.push('/farmers/new')">
+          <q-icon name="person_add" />
+          {{ $t('dashboard.addFarmer') }}
+        </button>
       </div>
 
       <!-- Farmers List -->
@@ -222,41 +200,38 @@
       </div>
 
       <!-- Recent Activity Across All Farmers -->
-      <div class="text-subtitle1 q-mb-sm">{{ $t('dashboard.recentActivity') }}</div>
-      <q-card flat bordered>
-        <template v-if="activitiesLoading">
-          <q-card-section class="text-center q-py-md">
-            <q-spinner-dots size="32px" color="primary" />
-          </q-card-section>
-        </template>
-        <template v-else-if="recentActivities.length === 0">
-          <q-card-section class="text-center q-py-md text-grey-6">
-            <q-icon name="timeline" size="32px" />
-            <div class="text-caption q-mt-xs">{{ $t('dashboard.noRecentActivity') }}</div>
-            <div class="text-caption text-grey-5">{{ $t('dashboard.noRecentActivityHint') }}</div>
-          </q-card-section>
-        </template>
-        <template v-else>
-          <q-list separator>
-            <q-item v-for="activity in recentActivities" :key="activity.id" dense>
-              <q-item-section avatar>
-                <q-avatar
-                  :color="activity.color"
-                  text-color="white"
-                  size="32px"
-                >
-                  <q-icon v-if="activity.type !== 'cow'" :name="activity.icon" size="16px" />
-                  <q-img v-else :src="activity.icon" width="16px" height="16px" />
-                </q-avatar>
-              </q-item-section>
-              <q-item-section>
-                <q-item-label class="text-body2">{{ activity.description }}</q-item-label>
-                <q-item-label caption>{{ activity.relativeTime }}</q-item-label>
-              </q-item-section>
-            </q-item>
-          </q-list>
-        </template>
-      </q-card>
+      <div class="section-label">{{ $t('dashboard.recentActivity') }}</div>
+      <template v-if="activitiesLoading">
+        <div class="text-center q-py-md">
+          <q-spinner-dots size="32px" color="primary" />
+        </div>
+      </template>
+      <template v-else-if="recentActivities.length === 0">
+        <div class="text-center q-py-md text-grey-6">
+          <q-icon name="timeline" size="32px" />
+          <div class="text-caption q-mt-xs">{{ $t('dashboard.noRecentActivity') }}</div>
+        </div>
+      </template>
+      <template v-else>
+        <q-list bordered separator class="rounded-borders">
+          <q-item v-for="activity in recentActivities" :key="activity.id" dense>
+            <q-item-section avatar>
+              <q-avatar
+                :color="activity.color"
+                text-color="white"
+                size="32px"
+              >
+                <q-icon v-if="activity.type !== 'cow'" :name="activity.icon" size="16px" />
+                <q-img v-else :src="activity.icon" width="16px" height="16px" />
+              </q-avatar>
+            </q-item-section>
+            <q-item-section>
+              <q-item-label class="text-body2">{{ activity.description }}</q-item-label>
+              <q-item-label caption>{{ activity.relativeTime }}</q-item-label>
+            </q-item-section>
+          </q-item>
+        </q-list>
+      </template>
     </template>
 
     <!-- Personal Farm View (when toggled) -->
@@ -561,64 +536,6 @@ defineExpose({ viewMode, refresh });
     border: 1px solid $primary;
     border-radius: 8px;
     overflow: hidden;
-  }
-}
-
-.stat-card {
-  border-radius: 12px;
-  text-align: center;
-}
-
-.action-btn {
-  height: 72px;
-  border-radius: 12px;
-}
-
-/* L5: Quick action button animations */
-.quick-action {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  }
-
-  &:active {
-    transform: scale(0.96);
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-  }
-
-  .action-icon {
-    transition: transform 0.2s ease;
-  }
-
-  &:hover .action-icon {
-    transform: scale(1.18);
-  }
-}
-
-/* Respect prefers-reduced-motion */
-@media (prefers-reduced-motion: reduce) {
-  .quick-action {
-    transition: none;
-
-    &:hover {
-      transform: none;
-      box-shadow: none;
-    }
-
-    &:active {
-      transform: none;
-      box-shadow: none;
-    }
-
-    .action-icon {
-      transition: none;
-    }
-
-    &:hover .action-icon {
-      transform: none;
-    }
   }
 }
 

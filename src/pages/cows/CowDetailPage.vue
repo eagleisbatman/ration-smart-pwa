@@ -83,14 +83,14 @@
 
       <!-- Quick Stats -->
       <div class="row q-col-gutter-sm q-mb-md">
-        <div class="col-12 col-sm-4">
-          <q-card flat bordered class="text-center q-pa-sm">
+        <div class="col-4">
+          <div class="stat-inline">
             <div class="text-h6 text-primary">{{ cow.weight_kg }}</div>
             <div class="text-caption text-grey-7">{{ $t('cow.weightKg') }}</div>
-          </q-card>
+          </div>
         </div>
-        <div class="col-12 col-sm-4">
-          <q-card flat bordered class="text-center q-pa-sm">
+        <div class="col-4">
+          <div class="stat-inline">
             <div class="text-h6 text-secondary">{{ cow.milk_yield_liters }}</div>
             <div class="text-caption text-grey-7">{{ $t('cow.milkYield') }}</div>
             <div v-if="yieldTrend" class="trend-indicator q-mt-xs">
@@ -104,15 +104,14 @@
                 :class="`text-${yieldTrend.color}`"
                 style="font-size: 0.65rem"
               >{{ yieldTrend.percentText }}</span>
-              <span class="text-caption text-grey-6 q-ml-xs" style="font-size: 0.6rem">{{ $t('dashboard.trend.vsLastWeek') }}</span>
             </div>
-          </q-card>
+          </div>
         </div>
-        <div class="col-12 col-sm-4">
-          <q-card flat bordered class="text-center q-pa-sm">
+        <div class="col-4">
+          <div class="stat-inline">
             <div class="text-h6 text-accent">{{ cow.milk_fat_percentage }}{{ $t('units.percent') }}</div>
             <div class="text-caption text-grey-7">{{ $t('cow.fat') }}</div>
-          </q-card>
+          </div>
         </div>
       </div>
 

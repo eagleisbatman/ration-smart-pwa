@@ -115,9 +115,14 @@ body {
 // Native-like Card Styling
 // ========================================
 
-.q-card {
+// Only add shadow to elevated cards — flat cards stay flat
+.q-card:not(.q-card--flat) {
   border-radius: 12px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.q-card.q-card--flat {
+  box-shadow: none;
 }
 
 // ========================================

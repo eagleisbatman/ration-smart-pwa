@@ -20,8 +20,8 @@
 
       <!-- Farmer Details -->
       <template v-else>
-        <!-- Header Card -->
-        <q-card class="q-mb-md">
+        <!-- Header -->
+        <q-card flat bordered class="q-mb-md">
           <q-card-section>
             <div class="row items-center q-gutter-md">
               <q-avatar v-if="farmer.image_url" size="64px">
@@ -48,44 +48,36 @@
           </q-card-section>
         </q-card>
 
-        <!-- Statistics Cards -->
-        <div class="row q-col-gutter-md q-mb-md">
-          <div class="col-12 col-sm-6">
-            <q-card>
-              <q-card-section class="text-center">
-                <div class="text-h4 text-primary">{{ summary?.statistics.total_active_cows || farmer.total_cattle }}</div>
-                <div class="text-caption text-grey-6">{{ $t('farmer.totalCattle') }}</div>
-              </q-card-section>
-            </q-card>
+        <!-- Statistics -->
+        <div class="row q-col-gutter-sm q-mb-md">
+          <div class="col-6">
+            <div class="stat-inline">
+              <div class="text-h5 text-primary">{{ summary?.statistics.total_active_cows || farmer.total_cattle }}</div>
+              <div class="text-caption text-grey-6">{{ $t('farmer.totalCattle') }}</div>
+            </div>
           </div>
-          <div class="col-12 col-sm-6">
-            <q-card>
-              <q-card-section class="text-center">
-                <div class="text-h4 text-positive">{{ summary?.statistics.lactating_cows || 0 }}</div>
-                <div class="text-caption text-grey-6">{{ $t('farmer.lactating') }}</div>
-              </q-card-section>
-            </q-card>
+          <div class="col-6">
+            <div class="stat-inline">
+              <div class="text-h5 text-positive">{{ summary?.statistics.lactating_cows || 0 }}</div>
+              <div class="text-caption text-grey-6">{{ $t('farmer.lactating') }}</div>
+            </div>
           </div>
-          <div class="col-12 col-sm-6">
-            <q-card>
-              <q-card-section class="text-center">
-                <div class="text-h4 text-info">{{ summary?.statistics.total_daily_milk_production?.toFixed(1) || '0' }}</div>
-                <div class="text-caption text-grey-6">{{ $t('farmer.dailyMilk') }}</div>
-              </q-card-section>
-            </q-card>
+          <div class="col-6">
+            <div class="stat-inline">
+              <div class="text-h5 text-info">{{ summary?.statistics.total_daily_milk_production?.toFixed(1) || '0' }}</div>
+              <div class="text-caption text-grey-6">{{ $t('farmer.dailyMilk') }}</div>
+            </div>
           </div>
-          <div class="col-12 col-sm-6">
-            <q-card>
-              <q-card-section class="text-center">
-                <div class="text-h4 text-warning">{{ summary?.statistics.avg_milk_per_lactating_cow?.toFixed(1) || '0' }}</div>
-                <div class="text-caption text-grey-6">{{ $t('farmer.avgPerCow') }}</div>
-              </q-card-section>
-            </q-card>
+          <div class="col-6">
+            <div class="stat-inline">
+              <div class="text-h5 text-warning">{{ summary?.statistics.avg_milk_per_lactating_cow?.toFixed(1) || '0' }}</div>
+              <div class="text-caption text-grey-6">{{ $t('farmer.avgPerCow') }}</div>
+            </div>
           </div>
         </div>
 
-        <!-- Farm Details Card -->
-        <q-card class="q-mb-md">
+        <!-- Farm Details -->
+        <q-card flat bordered class="q-mb-md">
           <q-card-section>
             <div class="text-subtitle1 text-weight-medium q-mb-sm">{{ $t('farmer.farmDetails') }}</div>
             <q-list dense>

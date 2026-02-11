@@ -1,5 +1,5 @@
 <template>
-  <q-card flat bordered class="weather-widget q-mb-lg">
+  <q-card flat class="weather-widget q-mb-md">
     <!-- Loading State -->
     <q-card-section v-if="loading" class="q-pa-md">
       <div class="row items-center q-mb-sm">
