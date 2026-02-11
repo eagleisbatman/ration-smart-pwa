@@ -373,6 +373,67 @@ function mapMilkLogToBackend(input: Record<string, unknown>): Record<string, unk
   };
 }
 
+/**
+ * Map a backend MasterFeedResponse / CustomFeedResponse to the PWA Feed interface.
+ */
+function mapFeedFromBackend(feed: Record<string, unknown>): Record<string, unknown> {
+  if (!feed) return feed;
+  const adf = feed.fd_adf as number | null | undefined;
+  // Estimate TDN from ADF when available: TDN ≈ 87.84 − 0.70 × ADF
+  const tdn = (adf != null && adf > 0) ? Math.round((87.84 - 0.70 * adf) * 10) / 10 : undefined;
+  return {
+    id: feed.feed_id ?? feed.id,
+    name: feed.fd_name ?? feed.name,
+    category: feed.fd_category ?? feed.category,
+    fd_type: feed.fd_type,
+    fd_code: feed.fd_code,
+    local_name: feed.local_name,
+    dm_percentage: feed.fd_dm,
+    cp_percentage: feed.fd_cp,
+    ndf_percentage: feed.fd_ndf,
+    ca_percentage: feed.fd_ca,
+    p_percentage: feed.fd_p,
+    tdn_percentage: tdn,
+    price_per_kg: feed.baseline_price,
+    currency: feed.baseline_currency,
+    // Extra nutritional fields for round-tripping
+    _backend_fd_ee: feed.fd_ee,
+    _backend_fd_cf: feed.fd_cf,
+    _backend_fd_ash: feed.fd_ash,
+    _backend_fd_adf: feed.fd_adf,
+    _backend_fd_lg: feed.fd_lg,
+    _backend_fd_st: feed.fd_st,
+    // Timestamps (custom feeds)
+    created_at: feed.created_at,
+    updated_at: feed.updated_at,
+  };
+}
+
+/**
+ * Map PWA FeedInput fields to backend CustomFeedCreate fields.
+ */
+function mapFeedToBackend(input: Record<string, unknown>): Record<string, unknown> {
+  if (!input) return input;
+  return {
+    fd_name: input.name ?? input.fd_name,
+    fd_type: input.fd_type ?? 'Concentrate',
+    fd_category: input.category ?? input.fd_category ?? '',
+    fd_dm: input.dm_percentage ?? input.fd_dm,
+    fd_cp: input.cp_percentage ?? input.fd_cp,
+    fd_ndf: input.ndf_percentage ?? input.fd_ndf,
+    fd_ca: input.ca_percentage ?? input.fd_ca,
+    fd_p: input.p_percentage ?? input.fd_p,
+    fd_ee: input._backend_fd_ee,
+    fd_cf: input._backend_fd_cf,
+    fd_ash: input._backend_fd_ash,
+    fd_adf: input._backend_fd_adf,
+    fd_lg: input._backend_fd_lg,
+    fd_st: input._backend_fd_st,
+    baseline_price: input.price_per_kg ?? input.baseline_price,
+    baseline_currency: input.currency ?? input.baseline_currency,
+  };
+}
+
 // ============================================================================
 // ENDPOINT MAPPING
 // ============================================================================
@@ -584,25 +645,76 @@ const ENDPOINT_MAP: Record<string, EndpointMapping> = {
   // FEED ENDPOINTS
   // ============================================================================
   '/api/v1/feeds/master': {
-    path: '/feeds/',
+    path: '/feeds/master-feeds/',
     transform: {
-      response: (data: unknown) => {
-        // Backend returns feeds list, PWA expects { feeds: [], success: true }
-        const response = data as { feeds?: unknown[]; master_feeds?: unknown[] };
-        if (Array.isArray(data)) {
-          return { feeds: data, success: true };
+      params: (params: Record<string, unknown>) => {
+        // Backend needs country_id (UUID), PWA passes country_code (alpha-2)
+        const countryCode = params.country_code as string | undefined;
+        if (countryCode) {
+          const countryId = getCountryId(countryCode);
+          if (countryId) {
+            const { country_code: _, ...rest } = params;
+            return { ...rest, country_id: countryId };
+          }
+          console.warn(`[API Adapter] Country UUID not found for code: ${countryCode}`);
         }
-        if (response.master_feeds) {
-          return { feeds: response.master_feeds, success: true };
+        return params;
+      },
+      response: (data: unknown) => {
+        // Backend returns a flat array of MasterFeedResponse objects
+        // Map each to PWA Feed field names
+        if (Array.isArray(data)) {
+          return data.map((f: Record<string, unknown>) => mapFeedFromBackend(f));
         }
         return data;
       },
     },
   },
-  // NOTE: custom-feeds endpoints do not exist on the backend yet.
-  // Removed dead mappings: '/api/v1/feeds/custom' and '/api/v1/feeds/custom/:id'
+  // Custom feed CRUD
+  '/api/v1/feeds/custom': {
+    path: '/feeds/custom/',
+    transform: {
+      request: (data: unknown) => {
+        if (data && typeof data === 'object') return mapFeedToBackend(data as Record<string, unknown>);
+        return data;
+      },
+      response: (data: unknown) => {
+        // GET returns array, POST returns single object
+        if (Array.isArray(data)) {
+          return data.map((f: Record<string, unknown>) => mapFeedFromBackend(f));
+        }
+        if (data && typeof data === 'object') {
+          return mapFeedFromBackend(data as Record<string, unknown>);
+        }
+        return data;
+      },
+    },
+  },
+  '/api/v1/feeds/custom/:id': {
+    path: '/feeds/custom/:id',
+    transform: {
+      request: (data: unknown) => {
+        if (data && typeof data === 'object') return mapFeedToBackend(data as Record<string, unknown>);
+        return data;
+      },
+      response: (data: unknown) => {
+        if (data && typeof data === 'object') {
+          return mapFeedFromBackend(data as Record<string, unknown>);
+        }
+        return data;
+      },
+    },
+  },
   '/api/v1/feeds/:id': {
     path: '/feeds/:id',
+    transform: {
+      response: (data: unknown) => {
+        if (data && typeof data === 'object') {
+          return mapFeedFromBackend(data as Record<string, unknown>);
+        }
+        return data;
+      },
+    },
   },
 
   // ============================================================================
