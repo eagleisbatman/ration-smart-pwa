@@ -55,3 +55,8 @@ bun.lockb
 docs/*.zip
 docs/test-cases/
 docs/user-flows/
+
+# E2E test artifacts (videos, screenshots, reports)
+e2e/test-results/
+e2e/test-reports/
+e2e/node_modules/

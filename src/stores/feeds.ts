@@ -6,6 +6,7 @@ import { db, Feed } from 'src/lib/offline/db';
 import { queueCreate, queueUpdate, queueDelete } from 'src/lib/offline/sync-manager';
 import { useAuthStore } from './auth';
 import { isOnline } from 'src/boot/pwa';
+import { fetchAndCacheCountries } from 'src/services/api-adapter';
 
 export interface FeedInput {
   name: string;
@@ -53,6 +54,9 @@ export const useFeedsStore = defineStore('feeds', () => {
 
     try {
       if (isOnline.value) {
+        // Ensure country cache is populated so the API adapter can map country_code → country_id
+        await fetchAndCacheCountries();
+
         const response = await api.get('/api/v1/feeds/master', {
           params: { country_code: country },
         });
@@ -60,7 +64,7 @@ export const useFeedsStore = defineStore('feeds', () => {
         const rawFeeds = Array.isArray(response.data) ? response.data : [];
         const feeds = rawFeeds.map((feed: Feed) => ({
           ...feed,
-          is_custom: false,
+          is_custom: 0,
           country_code: country,
           _synced: true,
           _deleted: false,
@@ -108,7 +112,7 @@ export const useFeedsStore = defineStore('feeds', () => {
         const rawFeeds = Array.isArray(response.data) ? response.data : [];
         const feeds = rawFeeds.map((feed: Feed) => ({
           ...feed,
-          is_custom: true,
+          is_custom: 1,
           user_id: authStore.userId,
           _synced: true,
           _deleted: false,
@@ -174,7 +178,7 @@ export const useFeedsStore = defineStore('feeds', () => {
       id: uuidv4(),
       user_id: authStore.userId,
       ...input,
-      is_custom: true,
+      is_custom: 1,
       country_code: authStore.userCountry,
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
@@ -190,7 +194,14 @@ export const useFeedsStore = defineStore('feeds', () => {
       if (isOnline.value) {
         // Sync with server
         const response = await api.post('/api/v1/feeds/custom', input);
-        const serverFeed = { ...response.data, _synced: true, _deleted: false };
+        const serverFeed: Feed = {
+          ...response.data,
+          is_custom: 1,
+          user_id: authStore.userId,
+          country_code: authStore.userCountry,
+          _synced: true,
+          _deleted: false,
+        };
 
         // Update with server response
         await db.feeds.delete(newFeed.id);

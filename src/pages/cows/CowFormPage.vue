@@ -242,6 +242,7 @@ const { captureFromCamera, selectFromGallery, clearImage } = useImageUpload();
 const showPhotoOptions = ref(false);
 
 const cowId = computed(() => route.params.id as string | undefined);
+const farmerProfileId = computed(() => route.query.farmer_id as string | undefined);
 const isEditing = computed(() => !!cowId.value);
 
 const form = reactive<CowInput>({
@@ -344,7 +345,8 @@ async function onSubmit() {
       hapticError(); // Haptic feedback on error
     }
   } else {
-    const cow = await cowsStore.createCow(form);
+    const cowInput = { ...form, farmer_profile_id: farmerProfileId.value };
+    const cow = await cowsStore.createCow(cowInput);
     if (cow) {
       success(); // Haptic feedback on successful operation
       $q.notify({ type: 'positive', message: t('cow.cowAdded') });
