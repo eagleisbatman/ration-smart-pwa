@@ -52,7 +52,7 @@
     "workbox-strategies": "^7.0.0"
   },
   "engines": {
-    "node": "^18 || ^20",
+    "node": "^20",
     "npm": ">= 6.13.4",
     "yarn": ">= 1.21.1"
   }
