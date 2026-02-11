@@ -54,7 +54,7 @@
 
     <!-- Confirm Delete Dialog -->
     <q-dialog v-model="showDeleteDialog">
-      <q-card style="min-width: 280px;">
+      <q-card>
         <q-card-section>
           <div class="text-h6">{{ $t('reports.templates.deleteTemplate') }}</div>
         </q-card-section>

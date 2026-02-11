@@ -153,7 +153,7 @@
 
     <!-- Change PIN Dialog -->
     <q-dialog v-model="changePinDialog" persistent>
-      <q-card style="min-width: 300px">
+      <q-card>
         <q-card-section>
           <div class="text-h6">{{ $t('profile.changePin') }}</div>
         </q-card-section>

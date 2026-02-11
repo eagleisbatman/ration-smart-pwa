@@ -1,5 +1,5 @@
 <template>
-  <q-page class="q-pa-md">
+  <q-page class="q-pa-md q-page--full-width">
     <!-- Loading -->
     <template v-if="loading">
       <SkeletonCard />

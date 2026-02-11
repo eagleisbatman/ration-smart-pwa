@@ -1,6 +1,6 @@
 <template>
   <q-dialog :model-value="modelValue" persistent @update:model-value="emit('update:modelValue', $event)">
-    <q-card style="min-width: 320px; max-width: 450px; width: 100%">
+    <q-card>
       <!-- Header -->
       <q-card-section class="row items-center q-pb-sm">
         <div class="text-h6">

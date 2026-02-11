@@ -286,8 +286,24 @@ body {
 // Responsive Typography
 // ========================================
 
-// Slightly larger text on mobile for readability
+// Responsive typography for mobile readability
 @media screen and (max-width: 599px) {
+  .text-h4 {
+    font-size: 1.5rem; // 24px (down from 34px)
+  }
+
+  .text-h5 {
+    font-size: 1.25rem; // 20px (down from 24px)
+  }
+
+  .text-h6 {
+    font-size: 1.1rem; // ~18px (down from 20px)
+  }
+
+  .text-subtitle1 {
+    font-size: 0.9375rem; // 15px (down from 16px)
+  }
+
   .text-body2 {
     font-size: 0.9375rem; // 15px
   }

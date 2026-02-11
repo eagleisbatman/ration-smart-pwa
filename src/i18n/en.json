@@ -138,7 +138,8 @@
     "sectionLocation": "Location",
     "rememberMe": "Remember me",
     "sectionSecurity": "Security",
-    "sectionCredentials": "Credentials"
+    "sectionCredentials": "Credentials",
+    "cancelRegistration": "Not now? Log out"
   },
   "onboarding": {
     "welcome": "Welcome to RationSmart",
@@ -147,7 +148,7 @@
     "chooseCountry": "Select your country",
     "chooseOrganization": "Are you affiliated with an organization?",
     "chooseRole": "What best describes your role?",
-    "createProfile": "Create Your Profile",
+    "createProfile": "Complete Your Setup",
     "profileCreated": "Profile created successfully",
     "letsGetStarted": "Let's get started",
     "step1of4": "Step 1 of 4",
@@ -156,6 +157,8 @@
     "step4of4": "Step 4 of 4",
     "userSessionNotFound": "User session not found. Please login again.",
     "profileCreationFailed": "Failed to create profile. Please try again.",
+    "skipAndRetryLater": "Skip and try later",
+    "logoutAndTryAgain": "Profile creation failed. Please log out and try again.",
     "selectRoleRequired": "Please select a role before proceeding.",
     "recommendedLanguages": "Recommended",
     "otherLanguages": "Other Languages"
