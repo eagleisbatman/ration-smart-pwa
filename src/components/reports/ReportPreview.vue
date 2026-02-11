@@ -9,27 +9,27 @@
       <!-- Milk Production Report -->
       <template v-if="reportType === 'milk_production'">
         <div class="row q-col-gutter-sm q-mb-md">
-          <div class="col-12 col-sm-6">
-            <div class="metric-card bg-blue-1 rounded-borders q-pa-sm text-center">
-              <div class="text-h5 text-primary">{{ summaryData.totalLiters || '—' }}</div>
+          <div class="col-6">
+            <div class="stat-inline">
+              <div class="text-h6 text-primary">{{ summaryData.totalLiters || '—' }}</div>
               <div class="text-caption">{{ $t('reports.preview.totalMilk') }}</div>
             </div>
           </div>
-          <div class="col-12 col-sm-6">
-            <div class="metric-card bg-green-1 rounded-borders q-pa-sm text-center">
-              <div class="text-h5 text-positive">{{ summaryData.avgDaily || '—' }}</div>
+          <div class="col-6">
+            <div class="stat-inline">
+              <div class="text-h6 text-positive">{{ summaryData.avgDaily || '—' }}</div>
               <div class="text-caption">{{ $t('reports.preview.avgDaily') }}</div>
             </div>
           </div>
-          <div class="col-12 col-sm-6">
-            <div class="metric-card bg-orange-1 rounded-borders q-pa-sm text-center">
-              <div class="text-h5 text-warning">{{ summaryData.avgFat || '—' }}%</div>
+          <div class="col-6">
+            <div class="stat-inline">
+              <div class="text-h6 text-warning">{{ summaryData.avgFat || '—' }}%</div>
               <div class="text-caption">{{ $t('reports.preview.avgFat') }}</div>
             </div>
           </div>
-          <div class="col-12 col-sm-6">
-            <div class="metric-card bg-purple-1 rounded-borders q-pa-sm text-center">
-              <div class="text-h5 text-purple">{{ summaryData.cowCount || '—' }}</div>
+          <div class="col-6">
+            <div class="stat-inline">
+              <div class="text-h6 text-purple">{{ summaryData.cowCount || '—' }}</div>
               <div class="text-caption">{{ $t('reports.preview.cowCount') }}</div>
             </div>
           </div>
@@ -39,15 +39,15 @@
       <!-- Diet Report -->
       <template v-else-if="reportType === 'diet_analysis'">
         <div class="row q-col-gutter-sm q-mb-md">
-          <div class="col-12 col-sm-6">
-            <div class="metric-card bg-blue-1 rounded-borders q-pa-sm text-center">
-              <div class="text-h5 text-primary">{{ summaryData.dietCount || '—' }}</div>
+          <div class="col-6">
+            <div class="stat-inline">
+              <div class="text-h6 text-primary">{{ summaryData.dietCount || '—' }}</div>
               <div class="text-caption">{{ $t('reports.preview.dietsGenerated') }}</div>
             </div>
           </div>
-          <div class="col-12 col-sm-6">
-            <div class="metric-card bg-green-1 rounded-borders q-pa-sm text-center">
-              <div class="text-h5 text-positive">{{ summaryData.avgCost || '—' }}</div>
+          <div class="col-6">
+            <div class="stat-inline">
+              <div class="text-h6 text-positive">{{ summaryData.avgCost || '—' }}</div>
               <div class="text-caption">{{ $t('reports.preview.avgDailyCost') }}</div>
             </div>
           </div>
@@ -57,21 +57,21 @@
       <!-- Farmer Summary Report -->
       <template v-else-if="reportType === 'farmer_summary'">
         <div class="row q-col-gutter-sm q-mb-md">
-          <div class="col-12 col-sm-4">
-            <div class="metric-card bg-teal-1 rounded-borders q-pa-sm text-center">
-              <div class="text-h5 text-teal">{{ summaryData.farmerCount || '—' }}</div>
+          <div class="col-4">
+            <div class="stat-inline">
+              <div class="text-h6 text-teal">{{ summaryData.farmerCount || '—' }}</div>
               <div class="text-caption">{{ $t('reports.preview.farmers') }}</div>
             </div>
           </div>
-          <div class="col-12 col-sm-4">
-            <div class="metric-card bg-blue-1 rounded-borders q-pa-sm text-center">
-              <div class="text-h5 text-primary">{{ summaryData.totalCows || '—' }}</div>
+          <div class="col-4">
+            <div class="stat-inline">
+              <div class="text-h6 text-primary">{{ summaryData.totalCows || '—' }}</div>
               <div class="text-caption">{{ $t('reports.preview.totalCows') }}</div>
             </div>
           </div>
-          <div class="col-12 col-sm-4">
-            <div class="metric-card bg-green-1 rounded-borders q-pa-sm text-center">
-              <div class="text-h5 text-positive">{{ summaryData.totalMilk || '—' }}</div>
+          <div class="col-4">
+            <div class="stat-inline">
+              <div class="text-h6 text-positive">{{ summaryData.totalMilk || '—' }}</div>
               <div class="text-caption">{{ $t('reports.preview.totalMilk') }}</div>
             </div>
           </div>
@@ -134,7 +134,7 @@ const summaryData = computed(() => {
 </script>
 
 <style lang="scss" scoped>
-.metric-card {
-  border-radius: 8px;
+.report-preview {
+  border-radius: 12px;
 }
 </style>

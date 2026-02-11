@@ -160,56 +160,51 @@
     </div>
 
     <!-- Quick Stats -->
-    <div class="row q-col-gutter-md q-mb-lg">
-      <div class="col-12 col-sm-6">
-        <q-card flat bordered class="stat-card">
-          <q-card-section>
-            <div class="text-h4 text-primary">{{ cowCount }}</div>
-            <div class="text-caption text-grey-7">{{ $t('dashboard.activeCows') }}</div>
-          </q-card-section>
-        </q-card>
+    <div class="row q-col-gutter-sm q-mb-md">
+      <div class="col-6">
+        <div class="stat-inline">
+          <div class="text-h5 text-primary">{{ cowCount }}</div>
+          <div class="text-caption text-grey-7">{{ $t('dashboard.activeCows') }}</div>
+        </div>
       </div>
-      <div class="col-12 col-sm-6">
-        <q-card flat bordered class="stat-card">
-          <q-card-section>
-            <div class="text-h4 text-secondary">{{ todayMilk.toFixed(1) }}{{ $t('units.l') }}</div>
-            <div class="text-caption text-grey-7">{{ $t('dashboard.todaysMilk') }}</div>
-            <div v-if="milkTrend" class="trend-indicator q-mt-xs">
-              <q-icon
-                :name="milkTrend.icon"
-                :color="milkTrend.color"
-                size="14px"
-              />
-              <span
-                class="text-caption q-ml-xs"
-                :class="`text-${milkTrend.color}`"
-              >{{ milkTrend.percentText }}</span>
-              <span class="text-caption text-grey-6 q-ml-xs">{{ $t('dashboard.trend.vsYesterday') }}</span>
-            </div>
-          </q-card-section>
-        </q-card>
+      <div class="col-6">
+        <div class="stat-inline">
+          <div class="text-h5 text-secondary">{{ todayMilk.toFixed(1) }}{{ $t('units.l') }}</div>
+          <div class="text-caption text-grey-7">{{ $t('dashboard.todaysMilk') }}</div>
+          <div v-if="milkTrend" class="trend-indicator q-mt-xs">
+            <q-icon
+              :name="milkTrend.icon"
+              :color="milkTrend.color"
+              size="12px"
+            />
+            <span
+              class="text-caption q-ml-xs"
+              :class="`text-${milkTrend.color}`"
+              style="font-size: 0.7rem"
+            >{{ milkTrend.percentText }}</span>
+          </div>
+        </div>
       </div>
     </div>
 
     <!-- No Cows Empty State -->
-    <q-card v-if="cowCount === 0 && !cowsStore.loading" flat bordered class="q-mb-lg empty-state-card">
-      <q-card-section class="text-center q-py-lg empty-state-cow">
-        <q-avatar size="64px" color="orange-1" class="q-mb-sm">
-          <img :src="COW_ICON.replace('img:', '')" alt="" width="32" height="32" />
-        </q-avatar>
-        <div class="text-subtitle2 q-mt-sm">{{ $t('dashboard.noCowsYet') }}</div>
-        <div class="text-body2 text-grey-7 q-mt-xs">{{ $t('dashboard.noCowsYetEncouraging') }}</div>
-        <q-btn
-          :label="$t('dashboard.addCow')"
-          color="accent"
-          unelevated
-          rounded
-          class="q-mt-md"
-          icon="add"
-          @click="router.push({ name: 'cow-new' })"
-        />
-      </q-card-section>
-    </q-card>
+    <div v-if="cowCount === 0 && !cowsStore.loading" class="text-center q-py-lg q-mb-md">
+      <q-avatar size="56px" color="orange-1" class="q-mb-sm">
+        <img :src="COW_ICON.replace('img:', '')" alt="" width="28" height="28" />
+      </q-avatar>
+      <div class="text-subtitle2 q-mt-sm">{{ $t('dashboard.noCowsYet') }}</div>
+      <div class="text-body2 text-grey-7 q-mt-xs">{{ $t('dashboard.noCowsYetEncouraging') }}</div>
+      <q-btn
+        :label="$t('dashboard.addCow')"
+        color="accent"
+        flat
+        dense
+        no-caps
+        class="q-mt-sm"
+        icon="add"
+        @click="router.push({ name: 'cow-new' })"
+      />
+    </div>
 
     <!-- Milk Production Chart -->
     <div class="q-mb-lg">
@@ -217,70 +212,42 @@
     </div>
 
     <!-- Quick Actions -->
-    <div class="text-subtitle1 q-mb-sm">{{ $t('dashboard.quickActions') }}</div>
-    <div class="row q-col-gutter-sm q-mb-lg">
-      <div class="col-12 col-sm-4">
-        <q-btn
-          color="primary"
-          class="full-width action-btn quick-action"
-          unelevated
-          stack
-          @click="router.push({ name: 'log-new' })"
-        >
-          <q-icon name="water_drop" size="24px" class="q-mb-xs action-icon" />
-          <span class="text-caption">{{ $t('logs.logMilk') }}</span>
-        </q-btn>
-      </div>
-      <div class="col-12 col-sm-4">
-        <q-btn
-          color="secondary"
-          class="full-width action-btn quick-action"
-          unelevated
-          stack
-          @click="router.push({ name: 'diet-new' })"
-        >
-          <q-icon name="restaurant" size="24px" class="q-mb-xs action-icon" />
-          <span class="text-caption">{{ $t('diet.getDiet') }}</span>
-        </q-btn>
-      </div>
-      <div class="col-12 col-sm-4">
-        <q-btn
-          color="accent"
-          class="full-width action-btn quick-action"
-          unelevated
-          stack
-          @click="router.push({ name: 'cow-new' })"
-        >
-          <q-icon name="add" size="24px" class="q-mb-xs action-icon" />
-          <span class="text-caption">{{ $t('cow.addCow') }}</span>
-        </q-btn>
-      </div>
+    <div class="section-label">{{ $t('dashboard.quickActions') }}</div>
+    <div class="action-row q-mb-md">
+      <button class="action-row__btn" @click="router.push({ name: 'log-new' })">
+        <q-icon name="water_drop" />
+        {{ $t('logs.logMilk') }}
+      </button>
+      <button class="action-row__btn" @click="router.push({ name: 'diet-new' })">
+        <q-icon name="restaurant" />
+        {{ $t('diet.getDiet') }}
+      </button>
+      <button class="action-row__btn" @click="router.push({ name: 'cow-new' })">
+        <q-icon name="add" />
+        {{ $t('cow.addCow') }}
+      </button>
     </div>
 
     <!-- Today's Logs -->
-    <div class="text-subtitle1 q-mb-sm">{{ $t('dashboard.todaysLogs') }}</div>
+    <div class="section-label">{{ $t('dashboard.todaysLogs') }}</div>
     <template v-if="loadingLogs">
       <SkeletonList :count="3" />
     </template>
     <template v-else-if="todayLogs.length === 0">
-      <q-card flat bordered class="q-mb-lg empty-state-card">
-        <q-card-section class="text-center q-py-lg empty-state-milk">
-          <q-avatar size="64px" color="blue-1" class="q-mb-sm">
-            <q-icon name="water_drop" size="32px" color="blue-6" />
-          </q-avatar>
-          <div class="text-subtitle2 q-mt-sm">{{ $t('dashboard.noLogsToday') }}</div>
-          <div class="text-body2 text-grey-7 q-mt-xs">{{ $t('dashboard.noLogsTodayEncouraging') }}</div>
-          <q-btn
-            :label="$t('dashboard.logNow')"
-            color="primary"
-            unelevated
-            rounded
-            class="q-mt-md"
-            icon="water_drop"
-            @click="router.push({ name: 'log-new' })"
-          />
-        </q-card-section>
-      </q-card>
+      <div class="text-center q-py-lg q-mb-md">
+        <q-icon name="water_drop" size="36px" color="grey-4" />
+        <div class="text-body2 text-grey-7 q-mt-xs">{{ $t('dashboard.noLogsToday') }}</div>
+        <q-btn
+          :label="$t('dashboard.logNow')"
+          color="primary"
+          flat
+          dense
+          no-caps
+          class="q-mt-sm"
+          icon="water_drop"
+          @click="router.push({ name: 'log-new' })"
+        />
+      </div>
     </template>
     <template v-else>
       <q-list bordered separator class="rounded-borders q-mb-lg">
@@ -305,60 +272,54 @@
     </template>
 
     <!-- Recent Diet Plans -->
-    <div class="text-subtitle1 q-mb-sm">{{ $t('dashboard.recentDiets') }}</div>
+    <div class="section-label">{{ $t('dashboard.recentDiets') }}</div>
     <template v-if="loadingDiets">
       <SkeletonCard />
     </template>
     <template v-else-if="recentDiets.length === 0">
-      <q-card flat bordered class="empty-state-card">
-        <q-card-section class="text-center q-py-lg empty-state-diet">
-          <q-avatar size="64px" color="green-1" class="q-mb-sm">
-            <q-icon name="restaurant_menu" size="32px" color="green-7" />
-          </q-avatar>
-          <div class="text-subtitle2 q-mt-sm">{{ $t('dashboard.noDietsYet') }}</div>
-          <div class="text-body2 text-grey-7 q-mt-xs">{{ $t('dashboard.noDietsYetEncouraging') }}</div>
-          <q-btn
-            :label="$t('dashboard.createDiet')"
-            color="secondary"
-            unelevated
-            rounded
-            class="q-mt-md"
-            icon="restaurant_menu"
-            @click="router.push({ name: 'diet-new' })"
-          />
-        </q-card-section>
-      </q-card>
+      <div class="text-center q-py-lg q-mb-md">
+        <q-icon name="restaurant_menu" size="36px" color="grey-4" />
+        <div class="text-body2 text-grey-7 q-mt-xs">{{ $t('dashboard.noDietsYet') }}</div>
+        <q-btn
+          :label="$t('dashboard.createDiet')"
+          color="secondary"
+          flat
+          dense
+          no-caps
+          class="q-mt-sm"
+          icon="restaurant_menu"
+          @click="router.push({ name: 'diet-new' })"
+        />
+      </div>
     </template>
     <template v-else>
-      <q-card
-        v-for="diet in recentDiets.slice(0, 3)"
-        :key="diet.id"
-        flat
-        bordered
-        class="q-mb-sm"
-        clickable
-        @click="router.push({ name: 'diet-detail', params: { id: diet.id } })"
-      >
-        <q-card-section>
-          <div class="row items-center">
-            <div class="col">
-              <div class="text-subtitle2">{{ diet.cow_name || $t('diet.generalDiet') }}</div>
-              <div class="text-caption text-grey-7">
-                {{ formatDate(diet.created_at) }}
-              </div>
-            </div>
-            <div class="col-auto">
-              <q-chip
-                :color="diet.status === 'completed' ? 'positive' : 'warning'"
-                text-color="white"
-                size="sm"
-              >
-                {{ $t(`diet.statusLabel.${diet.status}`) }}
-              </q-chip>
-            </div>
-          </div>
-        </q-card-section>
-      </q-card>
+      <q-list bordered separator class="rounded-borders q-mb-md">
+        <q-item
+          v-for="diet in recentDiets.slice(0, 3)"
+          :key="diet.id"
+          v-ripple
+          clickable
+          @click="router.push({ name: 'diet-detail', params: { id: diet.id } })"
+        >
+          <q-item-section avatar>
+            <q-icon name="restaurant_menu" color="green-6" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>{{ diet.cow_name || $t('diet.generalDiet') }}</q-item-label>
+            <q-item-label caption>{{ formatDate(diet.created_at) }}</q-item-label>
+          </q-item-section>
+          <q-item-section side>
+            <q-chip
+              :color="diet.status === 'completed' ? 'positive' : 'warning'"
+              text-color="white"
+              size="sm"
+              dense
+            >
+              {{ $t(`diet.statusLabel.${diet.status}`) }}
+            </q-chip>
+          </q-item-section>
+        </q-item>
+      </q-list>
     </template>
   </div>
 </template>
@@ -561,11 +522,6 @@ defineExpose({ refresh });
   border-radius: 6px;
 }
 
-.stat-card {
-  border-radius: 12px;
-  text-align: center;
-}
-
 .trend-indicator {
   display: flex;
   align-items: center;
@@ -573,86 +529,13 @@ defineExpose({ refresh });
   line-height: 1;
 }
 
-.action-btn {
-  height: 80px;
-  border-radius: 12px;
-}
-
-/* L5: Quick action button animations */
-.quick-action {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  }
-
-  &:active {
-    transform: scale(0.96);
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-  }
-
-  .action-icon {
-    transition: transform 0.2s ease;
-  }
-
-  &:hover .action-icon {
-    transform: scale(1.18);
-  }
-}
-
-/* Respect prefers-reduced-motion */
-@media (prefers-reduced-motion: reduce) {
-  .quick-action {
-    transition: none;
-
-    &:hover {
-      transform: none;
-      box-shadow: none;
-    }
-
-    &:active {
-      transform: none;
-      box-shadow: none;
-    }
-
-    .action-icon {
-      transition: none;
-    }
-
-    &:hover .action-icon {
-      transform: none;
-    }
-  }
-}
-
 .rounded-borders {
   border-radius: 12px;
   overflow: hidden;
 }
 
-/* M18: Improved empty states */
-.empty-state-card {
-  border-radius: 12px;
-  border-style: dashed;
-  border-color: rgba(0, 0, 0, 0.08);
-}
-
-.empty-state-cow {
-  background: linear-gradient(135deg, rgba(255, 152, 0, 0.04) 0%, rgba(255, 183, 77, 0.08) 100%);
-}
-
-.empty-state-milk {
-  background: linear-gradient(135deg, rgba(33, 150, 243, 0.04) 0%, rgba(100, 181, 246, 0.08) 100%);
-}
-
-.empty-state-diet {
-  background: linear-gradient(135deg, rgba(76, 175, 80, 0.04) 0%, rgba(129, 199, 132, 0.08) 100%);
-}
-
 /* M19: Onboarding welcome card */
 .onboarding-card {
-  border-radius: 12px;
   border-color: $primary;
   background: linear-gradient(135deg, rgba(25, 118, 210, 0.04) 0%, rgba(100, 181, 246, 0.08) 100%);
 }

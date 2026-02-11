@@ -1,5 +1,5 @@
 <template>
-  <q-card flat bordered class="milk-production-chart">
+  <q-card flat class="milk-production-chart">
     <q-card-section>
       <div class="row items-center q-mb-sm">
         <div class="text-subtitle1">{{ $t('chart.milkProductionTrend') }}</div>
@@ -38,20 +38,20 @@
 
       <!-- Summary Stats -->
       <div v-if="chartData.length > 0 && !loading" class="row q-col-gutter-sm q-mt-md">
-        <div class="col-12 col-sm-4">
-          <div class="stat-mini">
+        <div class="col-4">
+          <div class="stat-inline">
             <div class="text-h6 text-primary">{{ totalProduction.toFixed(1) }}L</div>
             <div class="text-caption text-grey-6">{{ $t('chart.total') }}</div>
           </div>
         </div>
-        <div class="col-12 col-sm-4">
-          <div class="stat-mini">
+        <div class="col-4">
+          <div class="stat-inline">
             <div class="text-h6 text-secondary">{{ averageDaily.toFixed(1) }}L</div>
             <div class="text-caption text-grey-6">{{ $t('chart.avgDaily') }}</div>
           </div>
         </div>
-        <div class="col-12 col-sm-4">
-          <div class="stat-mini">
+        <div class="col-4">
+          <div class="stat-inline">
             <div class="text-h6" :class="trendClass">
               <q-icon :name="trendIcon" size="16px" class="q-mr-xs" />
               {{ trendPercent }}%
@@ -260,12 +260,5 @@ defineExpose({ refresh });
 
 .bg-primary-1 {
   background-color: rgba(25, 118, 210, 0.08);
-}
-
-.stat-mini {
-  text-align: center;
-  padding: 8px;
-  background: #f5f5f5;
-  border-radius: 8px;
 }
 </style>
