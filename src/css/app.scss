@@ -63,6 +63,17 @@ body {
   }
 }
 
+// Bottom breathing room on mobile: add invisible spacer after page content
+// so last items aren't flush against the bottom tab bar or FABs.
+// Uses ::after to avoid conflicting with per-page q-pa-md padding.
+@media screen and (max-width: 1023px) {
+  .q-page::after {
+    content: '';
+    display: block;
+    height: 64px; // clears bottom nav (~48px) + comfortable gap
+  }
+}
+
 // ============================================
 // Touch Optimizations
 // ============================================
