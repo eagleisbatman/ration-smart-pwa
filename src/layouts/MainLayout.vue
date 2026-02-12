@@ -127,30 +127,36 @@
     <SyncConflictDialog v-if="isAuthenticated" />
 
     <!-- FAB for quick actions -->
-    <q-page-sticky v-if="showFab" position="bottom-right" :offset="[18, 90]">
+    <q-page-sticky v-if="showFab" position="bottom-right" :offset="[16, 72]">
       <q-fab
         icon="add"
         direction="up"
         color="primary"
-        padding="md"
+        padding="sm"
         @click="medium()"
       >
         <q-fab-action
           color="secondary"
           :icon="COW_ICON"
-          :label="$t('nav.addCow')"
+          :label="$q.screen.gt.xs ? $t('nav.addCow') : undefined"
+          :title="$t('nav.addCow')"
+          padding="xs"
           @click="onFabAction('/cows/new')"
         />
         <q-fab-action
           color="accent"
           icon="water_drop"
-          :label="$t('nav.logMilk')"
+          :label="$q.screen.gt.xs ? $t('nav.logMilk') : undefined"
+          :title="$t('nav.logMilk')"
+          padding="xs"
           @click="onFabAction('/logs/new')"
         />
         <q-fab-action
           color="info"
           icon="restaurant"
-          :label="$t('nav.getDiet')"
+          :label="$q.screen.gt.xs ? $t('nav.getDiet') : undefined"
+          :title="$t('nav.getDiet')"
+          padding="xs"
           @click="onFabAction('/diet/new')"
         />
       </q-fab>

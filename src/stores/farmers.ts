@@ -41,8 +41,10 @@ export const useFarmersStore = defineStore('farmers', () => {
   // Computed
   const farmerCount = computed(() => farmers.value.length);
   const activeFarmers = computed(() => farmers.value.filter((f) => f.is_active));
-  const activeFarmerCount = computed(() => activeFarmers.value.length);
-  const isManagingFarmers = computed(() => activeFarmers.value.length > 0);
+  // Managed farmers = active farmers excluding the user's own self-profile
+  const managedFarmers = computed(() => activeFarmers.value.filter((f) => !f.is_self_profile));
+  const activeFarmerCount = computed(() => managedFarmers.value.length);
+  const isManagingFarmers = computed(() => managedFarmers.value.length > 0);
 
   // Helper to get translated text
   const t = i18n.global.t;
@@ -370,6 +372,7 @@ export const useFarmersStore = defineStore('farmers', () => {
     // Computed
     farmerCount,
     activeFarmers,
+    managedFarmers,
     activeFarmerCount,
     isManagingFarmers,
     // Actions
