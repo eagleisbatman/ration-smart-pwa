@@ -168,11 +168,26 @@
             <q-item-section>
               <q-item-label>{{ feed.name }}</q-item-label>
               <q-item-label caption>
-                {{ feed.category }} · {{ $t('diet.cpLabel') }}: {{ feed.cp_percentage }}% · {{ $t('diet.tdnLabel') }}: {{ feed.tdn_percentage }}%
+                {{ feed.category }} · {{ $t('diet.cpLabel') }}: {{ feed.cp_percentage != null ? feed.cp_percentage + '%' : '–' }} · {{ $t('diet.tdnLabel') }}: {{ feed.tdn_percentage != null ? feed.tdn_percentage + '%' : '–' }}
               </q-item-label>
             </q-item-section>
-            <q-item-section v-if="feed.price_per_kg" side>
-              <q-item-label caption>{{ formatCurrency(feed.price_per_kg) }}{{ $t('units.perKg') }}</q-item-label>
+            <q-item-section side style="min-width: 90px">
+              <q-input
+                v-if="form.available_feeds.includes(feed.id)"
+                :model-value="feedPriceOverrides[feed.id] ?? feed.price_per_kg ?? ''"
+                type="number"
+                dense
+                outlined
+                :prefix="currencySymbol"
+                :suffix="$t('units.perKg')"
+                input-style="text-align: right; width: 60px"
+                style="max-width: 130px"
+                @update:model-value="(v: string | number | null) => setFeedPrice(feed.id, v)"
+                @click.stop
+              />
+              <q-item-label v-else-if="feed.price_per_kg" caption>
+                {{ formatCurrency(feed.price_per_kg) }}{{ $t('units.perKg') }}
+              </q-item-label>
             </q-item-section>
           </q-item>
         </q-list>
@@ -344,6 +359,18 @@ const form = reactive<DietInput>({
   budget_per_day: undefined,
 });
 
+// Feed price overrides (user-editable prices per feed)
+const feedPriceOverrides = reactive<Record<string, number>>({});
+const currencySymbol = computed(() => getCurrencySymbol());
+
+function setFeedPrice(feedId: string, value: string | number | null) {
+  if (value === null || value === '') {
+    delete feedPriceOverrides[feedId];
+  } else {
+    feedPriceOverrides[feedId] = Number(value);
+  }
+}
+
 const optimizing = computed(() => dietsStore.optimizing);
 
 const cowOptions = computed(() =>
@@ -447,6 +474,10 @@ function onStepNext() {
 
 async function submitDiet() {
   medium(); // Haptic feedback on submit
+  // Attach any user price overrides to the form
+  if (Object.keys(feedPriceOverrides).length > 0) {
+    form.feed_price_overrides = { ...feedPriceOverrides };
+  }
   const diet = await dietsStore.optimizeDiet(form);
 
   if (diet) {

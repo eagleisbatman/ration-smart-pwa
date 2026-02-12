@@ -385,7 +385,7 @@ function mapFeedFromBackend(feed: Record<string, unknown>): Record<string, unkno
   const tdn = (adf != null && adf > 0) ? Math.round((87.84 - 0.70 * adf) * 10) / 10 : undefined;
   return {
     id: feed.feed_id ?? feed.id,
-    name: feed.fd_name ?? feed.name,
+    name: (feed.local_name as string) || (feed.fd_name as string) || (feed.name as string),
     category: feed.fd_category ?? feed.category,
     fd_type: feed.fd_type,
     fd_code: feed.fd_code,
