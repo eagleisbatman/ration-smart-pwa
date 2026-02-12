@@ -111,7 +111,7 @@
     </PullToRefresh>
 
     <!-- FAB for new diet -->
-    <q-page-sticky position="bottom-right" :offset="[18, 18]">
+    <q-page-sticky position="bottom-right" :offset="[16, 72]">
       <q-btn fab icon="add" color="primary" @click="router.push('/diet/new')" />
     </q-page-sticky>
   </q-page>
