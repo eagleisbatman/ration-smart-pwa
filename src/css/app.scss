@@ -235,6 +235,15 @@ button,
   border-radius: 16px;
 }
 
+// Compact FAB actions on short viewports to prevent overflow
+@media screen and (max-height: 600px) {
+  .q-fab__actions--up {
+    .q-btn--fab-mini {
+      margin-top: 4px;
+    }
+  }
+}
+
 // ============================================
 // Chip Styles
 // ============================================
@@ -284,7 +293,7 @@ button,
 }
 
 // ============================================
-// Tab Styles
+// Tab Styles (in-page pill-style tabs — NOT bottom nav)
 // ============================================
 
 .q-tabs {
@@ -314,8 +323,19 @@ button,
 // Bottom Navigation
 // ============================================
 
+// Ensure footer stays fixed even if other CSS interferes
+.q-footer {
+  position: fixed !important;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2000;
+}
+
+// Reset pill-tab styles for bottom nav tabs
 .q-footer .q-tabs {
   background: transparent;
+  border-radius: 0;
   padding: 0;
 
   .q-tab {

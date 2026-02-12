@@ -44,8 +44,8 @@
       </q-banner>
     </template>
 
-    <!-- L6: Weather Widget -->
-    <WeatherWidget />
+    <!-- L6: Weather Widget (hidden when embedded inside EW dashboard which has its own) -->
+    <WeatherWidget v-if="!hideWeather" />
 
     <!-- M19: Onboarding Welcome Card for first-time users -->
     <q-card
@@ -339,6 +339,11 @@ import SkeletonCard from 'src/components/ui/SkeletonCard.vue';
 import MilkProductionChart from 'src/components/dashboard/MilkProductionChart.vue';
 import WeatherWidget from 'src/components/dashboard/WeatherWidget.vue';
 import { COW_ICON } from 'src/boot/icons';
+
+defineProps<{
+  /** Skip weather widget when embedded inside ExtensionWorkerDashboard (which renders its own) */
+  hideWeather?: boolean;
+}>();
 
 const router = useRouter();
 const { t } = useI18n();

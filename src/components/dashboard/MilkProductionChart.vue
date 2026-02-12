@@ -153,7 +153,9 @@ function processLogs() {
     }
   }
 
-  chartData.value = Array.from(dailyMap.values());
+  const allData = Array.from(dailyMap.values());
+  // Only show the chart if there's at least one day with actual data
+  chartData.value = allData.some((d) => d.total > 0) ? allData : [];
 }
 
 // Summary statistics

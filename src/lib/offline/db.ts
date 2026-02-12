@@ -143,6 +143,8 @@ export interface FarmerProfile {
   id: string;
   organization_id?: string;
   managed_by_user_id: string;
+  is_self_profile?: boolean;
+  user_id?: string;
   name: string;
   phone?: string;
   village?: string;

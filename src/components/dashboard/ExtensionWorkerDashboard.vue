@@ -302,7 +302,7 @@ function handleNotificationClick(notif: AppNotification): void {
 const userName = computed(() => authStore.user?.name || t('roles.extension_worker'));
 const hasPersonalFarm = computed(() => !!authStore.selfFarmerProfileId);
 const loading = computed(() => farmersStore.loading);
-const farmers = computed(() => farmersStore.activeFarmers);
+const farmers = computed(() => farmersStore.managedFarmers);
 const farmerCount = computed(() => farmersStore.activeFarmerCount);
 
 // Calculate total cows across all managed farmers
