@@ -361,14 +361,28 @@ async function onSubmit() {
       return;
     }
 
-    // 1. Update user settings (role, language, organization)
-    // Backend expects settings as query parameters, not request body
-    const settingsParams = new URLSearchParams();
-    if (onboardingData.role) settingsParams.append('user_role', onboardingData.role);
-    if (onboardingData.language) settingsParams.append('language_code', onboardingData.language);
-    if (onboardingData.organizationId) settingsParams.append('organization_id', onboardingData.organizationId);
-    const settingsQuery = settingsParams.toString();
-    await api.put(`/api/v1/users/${userId}/settings${settingsQuery ? '?' + settingsQuery : ''}`);
+    // 1. Update user settings (role, language, organization) — best-effort
+    // If this fails (e.g. 403), continue with profile creation;
+    // settings can be updated later from the Settings page.
+    try {
+      const settingsParams = new URLSearchParams();
+      if (onboardingData.role) settingsParams.append('user_role', onboardingData.role);
+      if (onboardingData.language) settingsParams.append('language_code', onboardingData.language);
+      if (onboardingData.organizationId) settingsParams.append('organization_id', onboardingData.organizationId);
+      const settingsQuery = settingsParams.toString();
+      await api.put(`/api/v1/users/${userId}/settings${settingsQuery ? '?' + settingsQuery : ''}`);
+    } catch (settingsErr) {
+      console.warn('Settings update failed (non-blocking), continuing with profile creation:', settingsErr);
+      // Still save role/language locally so the UI reflects the choice
+      if (onboardingData.role) {
+        authStore.userRole = onboardingData.role;
+        localStorage.setItem('user_role', onboardingData.role);
+      }
+      if (onboardingData.language) {
+        authStore.preferredLanguage = onboardingData.language;
+        localStorage.setItem('preferred_language', onboardingData.language);
+      }
+    }
 
     // 2. Create self-profile with new location fields
     const profileResponse = await api.post(`/api/v1/users/${userId}/self-profile`, {
@@ -409,9 +423,11 @@ async function onSubmit() {
 
     // Navigate to home
     router.replace('/');
-  } catch (err) {
+  } catch (err: unknown) {
     console.error('Failed to complete profile setup:', err);
-    error.value = t('onboarding.profileCreationFailed');
+    // Surface the actual backend error detail when available
+    const detail = (err as { response?: { data?: { detail?: string } } })?.response?.data?.detail;
+    error.value = detail || t('onboarding.profileCreationFailed');
   } finally {
     loading.value = false;
   }
