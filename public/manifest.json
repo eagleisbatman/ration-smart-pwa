@@ -86,7 +86,7 @@
       "name": "Optimize Diet",
       "short_name": "Optimize",
       "description": "Create optimized diet for your cows",
-      "url": "/diet/wizard",
+      "url": "/diet/new",
       "icons": [{ "src": "icons/shortcut-diet.png", "sizes": "96x96" }]
     }
   ],

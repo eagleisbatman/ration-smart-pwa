@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
-import { api } from 'src/boot/axios';
+import { api } from 'src/lib/api';
 import { db, FarmerProfile } from 'src/lib/offline/db';
 import { useAuthStore } from './auth';
 import { v4 as uuidv4 } from 'uuid';

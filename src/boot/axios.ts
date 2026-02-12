@@ -1,29 +1,17 @@
 import { boot } from 'quasar/wrappers';
-import axios, { AxiosInstance, AxiosError, InternalAxiosRequestConfig } from 'axios';
+import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 import axiosRetry from 'axios-retry';
 import { Notify } from 'quasar';
 import type { Router } from 'vue-router';
 import { useAuthStore } from 'src/stores/auth';
-import { handleRequestInterceptor, handleResponseInterceptor } from 'src/services/api-adapter';
+import { handleRequestInterceptor, handleResponseInterceptor, setApiRef } from 'src/services/api-adapter';
+import { api } from 'src/lib/api';
 
 // Router instance set during boot, used by the 401 interceptor to redirect
 let appRouter: Router | null = null;
 
-declare module '@vue/runtime-core' {
-  interface ComponentCustomProperties {
-    $axios: AxiosInstance;
-    $api: AxiosInstance;
-  }
-}
-
-// Create axios instance
-const api = axios.create({
-  baseURL: (process.env.API_BASE_URL || 'http://localhost:8000').trim(),
-  timeout: 30000,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
+// Provide the api reference to the adapter (breaks the circular import)
+setApiRef(api);
 
 // Configure retry logic for failed requests
 axiosRetry(api, {
@@ -114,4 +102,5 @@ export default boot(({ app, router }) => {
   app.config.globalProperties.$api = api;
 });
 
+// Re-export for backward compatibility (prefer importing from 'src/lib/api')
 export { api };

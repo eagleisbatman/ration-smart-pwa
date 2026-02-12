@@ -327,6 +327,8 @@ async function onSubmit() {
       }
       $q.notify({ type: 'positive', message: t('feed.notifications.feedAdded') });
       router.back();
+    } else if (feedsStore.error) {
+      $q.notify({ type: 'negative', message: feedsStore.error, timeout: 5000 });
     }
   }
 }

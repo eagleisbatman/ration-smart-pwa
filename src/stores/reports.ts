@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import { api } from 'src/boot/axios';
+import { api } from 'src/lib/api';
 import { db, Report, ReportQueueItem } from 'src/lib/offline/db';
 import { isOnline } from 'src/boot/pwa';
 

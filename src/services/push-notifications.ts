@@ -7,7 +7,7 @@
  * - Registering/unregistering the subscription with the backend
  */
 
-import { api } from 'src/boot/axios';
+import { api } from 'src/lib/api';
 import { ref } from 'vue';
 
 export const pushPermission = ref<NotificationPermission>(

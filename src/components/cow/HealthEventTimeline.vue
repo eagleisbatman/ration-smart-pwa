@@ -160,7 +160,7 @@ import { useI18n } from 'vue-i18n';
 import { useQuasar } from 'quasar';
 import { format, parseISO, isFuture } from 'date-fns';
 import { db, HealthEvent } from 'src/lib/offline/db';
-import { api } from 'src/boot/axios';
+import { api } from 'src/lib/api';
 import { isOnline } from 'src/boot/pwa';
 import { queueDelete } from 'src/lib/offline/sync-manager';
 import { useCurrency } from 'src/composables/useCurrency';

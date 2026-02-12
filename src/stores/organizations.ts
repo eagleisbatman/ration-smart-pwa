@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
-import { api } from 'src/boot/axios';
+import { api } from 'src/lib/api';
 import { db, Organization } from 'src/lib/offline/db';
 import { useAuthStore } from './auth';
 

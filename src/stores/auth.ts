@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
-import { api } from 'src/boot/axios';
+import { api } from 'src/lib/api';
 import { db, User } from 'src/lib/offline/db';
 import { fetchAndCacheCountries, setCountryCache } from 'src/services/api-adapter';
 

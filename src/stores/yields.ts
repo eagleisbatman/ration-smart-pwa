@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
-import { api } from 'src/boot/axios';
+import { api } from 'src/lib/api';
 import { db, YieldData } from 'src/lib/offline/db';
 import { isOnline } from 'src/boot/pwa';
 import { useAuthStore } from './auth';
