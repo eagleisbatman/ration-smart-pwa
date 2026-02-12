@@ -258,7 +258,7 @@
       </template>
 
       <!-- Edit FAB -->
-      <q-page-sticky position="bottom-right" :offset="[18, 18]">
+      <q-page-sticky position="bottom-right" :offset="[16, 72]">
         <q-btn
           fab
           icon="edit"

@@ -191,7 +191,7 @@
     </q-page-sticky>
 
     <!-- FAB for adding new cow (hidden during selection) -->
-    <q-page-sticky v-if="!selectionMode" position="bottom-right" :offset="[18, 18]">
+    <q-page-sticky v-if="!selectionMode" position="bottom-right" :offset="[16, 72]">
       <q-btn fab icon="add" color="primary" @click="router.push('/cows/new')" />
     </q-page-sticky>
   </q-page>

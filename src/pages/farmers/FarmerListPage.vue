@@ -144,7 +144,7 @@
     </PullToRefresh>
 
     <!-- FAB for adding new farmer -->
-    <q-page-sticky position="bottom-right" :offset="[18, 18]">
+    <q-page-sticky position="bottom-right" :offset="[16, 72]">
       <q-btn fab icon="person_add" color="primary" @click="router.push('/farmers/new')" />
     </q-page-sticky>
   </q-page>

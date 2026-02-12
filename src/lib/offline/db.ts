@@ -46,6 +46,10 @@ export interface Cow {
 export interface Feed {
   id: string;
   name: string;
+  local_name?: string;
+  fd_name?: string; // English name from backend
+  fd_type?: string;
+  fd_code?: string;
   category: string;
   dm_percentage: number;
   cp_percentage: number;
@@ -54,6 +58,7 @@ export interface Feed {
   p_percentage?: number;
   ndf_percentage?: number;
   price_per_kg?: number;
+  currency?: string;
   image_url?: string;
   season?: string;
   is_custom: boolean;

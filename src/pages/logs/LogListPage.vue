@@ -188,7 +188,7 @@
     <QuickLogDialog v-model="showQuickLog" @saved="onQuickLogSaved" />
 
     <!-- FAB Speed Dial -->
-    <q-page-sticky position="bottom-right" :offset="[18, 18]">
+    <q-page-sticky position="bottom-right" :offset="[16, 72]">
       <q-fab icon="add" direction="up" color="primary" vertical-actions-align="right">
         <q-fab-action
           color="secondary"

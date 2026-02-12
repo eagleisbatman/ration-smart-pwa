@@ -136,29 +136,33 @@
         direction="up"
         color="primary"
         padding="sm"
+        vertical-actions-align="right"
         @click="medium()"
       >
         <q-fab-action
           color="secondary"
           :icon="COW_ICON"
-          :label="$q.screen.gt.xs ? $t('nav.addCow') : undefined"
-          :title="$t('nav.addCow')"
+          :label="$t('nav.addCow')"
+          label-position="left"
+          external-label
           padding="xs"
           @click="onFabAction('/cows/new')"
         />
         <q-fab-action
           color="accent"
           icon="water_drop"
-          :label="$q.screen.gt.xs ? $t('nav.logMilk') : undefined"
-          :title="$t('nav.logMilk')"
+          :label="$t('nav.logMilk')"
+          label-position="left"
+          external-label
           padding="xs"
           @click="onFabAction('/logs/new')"
         />
         <q-fab-action
           color="info"
           icon="restaurant"
-          :label="$q.screen.gt.xs ? $t('nav.getDiet') : undefined"
-          :title="$t('nav.getDiet')"
+          :label="$t('nav.getDiet')"
+          label-position="left"
+          external-label
           padding="xs"
           @click="onFabAction('/diet/new')"
         />
@@ -213,18 +217,24 @@ const showMenu = computed(() => !!route.meta?.showMenu);
 const showBottomNav = computed(() => $q.screen.lt.md && !route.meta?.hideBottomNav);
 const showFab = computed(() => !route.meta?.hideFab && isAuthenticated.value);
 
-const navItems = computed(() => [
-  { to: '/', icon: 'home', label: t('nav.home') },
-  { to: '/farmers', icon: 'people', label: t('nav.farmers') },
-  { to: '/cows', icon: COW_ICON, label: t('nav.myCows') },
-  { to: '/diet', icon: 'restaurant', label: t('nav.diet') },
-  { to: '/feeds', icon: 'grass', label: t('nav.feeds') },
-  { to: '/logs', icon: 'water_drop', label: t('nav.milkLogs'), badge: pendingCount.value > 0 ? pendingCount.value : undefined },
-  { to: '/yields', icon: 'analytics', label: t('nav.yieldHistory') },
-  { to: '/reports', icon: 'assessment', label: t('nav.reports') },
-  { to: '/analytics', icon: 'insights', label: t('nav.analytics') },
-  { to: '/settings', icon: 'settings', label: t('nav.settings') },
-]);
+const navItems = computed(() => {
+  const items = [
+    { to: '/', icon: 'home', label: t('nav.home') },
+    { to: '/farmers', icon: 'people', label: t('nav.farmers') },
+    { to: '/cows', icon: COW_ICON, label: t('nav.myCows') },
+    { to: '/diet', icon: 'restaurant', label: t('nav.diet') },
+    { to: '/feeds', icon: 'grass', label: t('nav.feeds') },
+    { to: '/logs', icon: 'water_drop', label: t('nav.milkLogs'), badge: pendingCount.value > 0 ? pendingCount.value : undefined },
+    { to: '/yields', icon: 'analytics', label: t('nav.yieldHistory') },
+    { to: '/reports', icon: 'assessment', label: t('nav.reports') },
+  ];
+  // Organization analytics only for extension workers / nutritionists / researchers
+  if (authStore.isExtensionWorker || authStore.isResearcher) {
+    items.push({ to: '/analytics', icon: 'insights', label: t('nav.analytics') });
+  }
+  items.push({ to: '/settings', icon: 'settings', label: t('nav.settings') });
+  return items;
+});
 
 const bottomNavItems = computed(() => [
   { to: '/', icon: 'home', label: t('nav.home') },

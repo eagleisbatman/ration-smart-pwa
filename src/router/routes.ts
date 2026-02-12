@@ -70,7 +70,7 @@ const routes: RouteRecordRaw[] = [
         path: 'cows',
         name: 'cows',
         component: () => import('pages/cows/CowListPage.vue'),
-        meta: { title: 'My Cows' },
+        meta: { title: 'My Cows', hideFab: true },
       },
       {
         path: 'cows/new',
@@ -82,7 +82,7 @@ const routes: RouteRecordRaw[] = [
         path: 'cows/:id',
         name: 'cow-detail',
         component: () => import('pages/cows/CowDetailPage.vue'),
-        meta: { title: 'Cow Details', showBack: true },
+        meta: { title: 'Cow Details', showBack: true, hideFab: true },
       },
       {
         path: 'cows/:id/edit',
@@ -96,7 +96,7 @@ const routes: RouteRecordRaw[] = [
         path: 'diet',
         name: 'diet',
         component: () => import('pages/diet/DietListPage.vue'),
-        meta: { title: 'Diet Plans' },
+        meta: { title: 'Diet Plans', hideFab: true },
       },
       {
         path: 'diet/new',
@@ -148,7 +148,7 @@ const routes: RouteRecordRaw[] = [
         path: 'logs',
         name: 'logs',
         component: () => import('pages/logs/LogListPage.vue'),
-        meta: { titleKey: 'nav.milkLogs' },
+        meta: { titleKey: 'nav.milkLogs', hideFab: true },
       },
       {
         path: 'logs/new',

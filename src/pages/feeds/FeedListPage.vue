@@ -119,6 +119,9 @@
 
               <q-item-section>
                 <q-item-label>{{ feed.name }}</q-item-label>
+                <q-item-label v-if="feed.fd_name && feed.fd_name !== feed.name" caption class="text-grey-5 text-italic">
+                  {{ feed.fd_name }}
+                </q-item-label>
                 <q-item-label caption>
                   {{ $t('feed.labels.cpPercentShort') }}: {{ feed.cp_percentage != null ? feed.cp_percentage + '%' : '–' }} · {{ $t('feed.labels.tdnPercentShort') }}: {{ feed.tdn_percentage != null ? feed.tdn_percentage + '%' : '–' }} · {{ $t('feed.labels.dmPercentShort') }}: {{ feed.dm_percentage != null ? feed.dm_percentage + '%' : '–' }}
                 </q-item-label>
@@ -145,7 +148,7 @@
     </PullToRefresh>
 
     <!-- FAB for adding custom feed -->
-    <q-page-sticky v-if="activeTab === 'custom' && !compareMode" position="bottom-right" :offset="[18, 18]">
+    <q-page-sticky v-if="activeTab === 'custom' && !compareMode" position="bottom-right" :offset="[16, 72]">
       <q-btn fab icon="add" color="primary" @click="router.push('/feeds/new')" />
     </q-page-sticky>
 
