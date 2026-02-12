@@ -402,7 +402,7 @@ const {
 const notifications = ref(false);
 const pushSupported = isPushSupported();
 const showSyncHistory = ref(false);
-const profileImage = ref<string | null>(localStorage.getItem('profile_image'));
+const profileImage = computed(() => authStore.profileImage);
 
 // Language
 const showLanguageDialog = ref(false);

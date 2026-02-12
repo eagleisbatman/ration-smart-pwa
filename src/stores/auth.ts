@@ -49,6 +49,7 @@ export const useAuthStore = defineStore('auth', () => {
   const preferredLanguage = ref<string>(localStorage.getItem('preferred_language') || 'en');
   const selfFarmerProfileId = ref<string | null>(localStorage.getItem('self_farmer_profile_id'));
   const onboardingSkipped = ref(sessionStorage.getItem('onboarding_skipped') === 'true');
+  const profileImage = ref<string | null>(localStorage.getItem('profile_image'));
 
   // Computed
   const isAuthenticated = computed(() => !!token.value && !!userId.value);
@@ -505,6 +506,15 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
+  function setProfileImage(image: string | null): void {
+    profileImage.value = image;
+    if (image) {
+      localStorage.setItem('profile_image', image);
+    } else {
+      localStorage.removeItem('profile_image');
+    }
+  }
+
   function clearAuth(): void {
     user.value = null;
     token.value = null;
@@ -513,6 +523,7 @@ export const useAuthStore = defineStore('auth', () => {
     preferredLanguage.value = 'en';
     selfFarmerProfileId.value = null;
     onboardingSkipped.value = false;
+    profileImage.value = null;
 
     // Clear auth data from both storages
     for (const storage of [localStorage, sessionStorage]) {
@@ -523,6 +534,7 @@ export const useAuthStore = defineStore('auth', () => {
     localStorage.removeItem('user_role');
     localStorage.removeItem('preferred_language');
     localStorage.removeItem('self_farmer_profile_id');
+    localStorage.removeItem('profile_image');
     sessionStorage.removeItem('onboarding_skipped');
   }
 
@@ -552,6 +564,7 @@ export const useAuthStore = defineStore('auth', () => {
     preferredLanguage,
     selfFarmerProfileId,
     onboardingSkipped,
+    profileImage,
     // Computed
     isAuthenticated,
     userCountry,
@@ -572,6 +585,7 @@ export const useAuthStore = defineStore('auth', () => {
     createSelfProfile,
     getSelfProfile,
     changePin,
+    setProfileImage,
     requestContactChange,
     verifyContactChange,
     clearAuth,
