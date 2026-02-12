@@ -1190,6 +1190,7 @@
     "noSearchResults": "No farmers found matching \"{query}\"",
     "pending": "Pending",
     "cattle": "cattle",
+    "you": "You",
     "farmerDetails": "Farmer Details",
     "farmerNotFound": "Farmer Not Found",
     "farmerNotFoundDescription": "The farmer profile you're looking for doesn't exist or has been removed.",
