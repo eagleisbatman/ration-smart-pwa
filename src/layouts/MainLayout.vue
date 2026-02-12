@@ -53,7 +53,10 @@
       <q-scroll-area class="fit">
         <!-- User Info -->
         <div class="drawer-header bg-primary text-white q-pa-md">
-          <q-avatar size="56px" color="white" text-color="primary">
+          <q-avatar v-if="authStore.profileImage" size="56px">
+            <q-img :src="authStore.profileImage" :ratio="1" />
+          </q-avatar>
+          <q-avatar v-else size="56px" color="white" text-color="primary">
             <q-icon name="person" size="32px" />
           </q-avatar>
           <div class="q-mt-sm text-subtitle1">{{ userName }}</div>

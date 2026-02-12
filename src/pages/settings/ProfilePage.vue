@@ -248,7 +248,7 @@ async function takePhoto() {
   const result = await captureFromCamera();
   if (result) {
     profileImage.value = result;
-    localStorage.setItem('profile_image', result);
+    authStore.setProfileImage(result);
   }
 }
 
@@ -256,14 +256,14 @@ async function chooseFromGallery() {
   const result = await selectFromGallery();
   if (result) {
     profileImage.value = result;
-    localStorage.setItem('profile_image', result);
+    authStore.setProfileImage(result);
   }
 }
 
 function removePhoto() {
   profileImage.value = null;
   clearImage();
-  localStorage.removeItem('profile_image');
+  authStore.setProfileImage(null);
 }
 
 const form = reactive({
@@ -354,11 +354,8 @@ onMounted(async () => {
     form.country_code = authStore.user.country_code || 'IN';
     form.language = authStore.user.language || 'en';
   }
-  // Load saved profile image
-  const savedImage = localStorage.getItem('profile_image');
-  if (savedImage) {
-    profileImage.value = savedImage;
-  }
+  // Load saved profile image from store
+  profileImage.value = authStore.profileImage;
   await authStore.fetchCountries();
 });
 </script>
