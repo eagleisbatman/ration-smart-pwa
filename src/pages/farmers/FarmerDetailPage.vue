@@ -48,18 +48,24 @@
           </q-card-section>
         </q-card>
 
-        <!-- Statistics -->
+        <!-- Statistics (3+2 grid per wireframe) -->
         <div class="row q-col-gutter-sm q-mb-md">
-          <div class="col-6">
+          <div class="col-4">
             <div class="stat-inline">
               <div class="text-h5 text-primary">{{ summary?.statistics.total_active_cows || farmer.total_cattle }}</div>
               <div class="text-caption text-grey-6">{{ $t('farmer.totalCattle') }}</div>
             </div>
           </div>
-          <div class="col-6">
+          <div class="col-4">
             <div class="stat-inline">
               <div class="text-h5 text-positive">{{ summary?.statistics.lactating_cows || 0 }}</div>
               <div class="text-caption text-grey-6">{{ $t('farmer.lactating') }}</div>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="stat-inline">
+              <div class="text-h5 text-grey-7">{{ dryCows }}</div>
+              <div class="text-caption text-grey-6">{{ $t('cow.dry') }}</div>
             </div>
           </div>
           <div class="col-6">
@@ -75,6 +81,16 @@
             </div>
           </div>
         </div>
+
+        <!-- View Cows Button -->
+        <q-btn
+          color="primary"
+          class="full-width q-mb-md"
+          unelevated
+          :label="`${$t('farmer.viewCows')} (${cows.length})`"
+          :icon="COW_ICON"
+          @click="router.push({ path: '/cows', query: { farmer_id: farmerId } })"
+        />
 
         <!-- Farm Details -->
         <q-card flat bordered class="q-mb-md">
@@ -163,23 +179,20 @@
         </q-card>
 
         <!-- Quick Actions -->
-        <div class="row q-gutter-sm">
-          <q-btn
-            class="col"
-            outline
-            color="primary"
-            icon="add_chart"
-            :label="$t('farmer.recordYield')"
-            @click="router.push({ name: 'yield-new', query: { farmer: farmerId } })"
-          />
-          <q-btn
-            class="col"
-            outline
-            color="secondary"
-            icon="history"
-            :label="$t('farmer.viewHistory')"
-            @click="router.push({ name: 'yields', query: { farmer: farmerId } })"
-          />
+        <div class="section-label">{{ $t('dashboard.quickActions') }}</div>
+        <div class="action-row q-mb-md">
+          <button class="action-row__btn" @click="addCowForFarmer">
+            <q-icon name="add" />
+            {{ $t('farmer.addCow') }}
+          </button>
+          <button class="action-row__btn" @click="router.push({ name: 'yield-new', query: { farmer: farmerId } })">
+            <q-icon name="add_chart" />
+            {{ $t('farmer.recordYield') }}
+          </button>
+          <button class="action-row__btn" @click="router.push({ path: '/diet/new', query: { farmer_id: farmerId } })">
+            <q-icon name="restaurant" />
+            {{ $t('dashboard.getFarmerDiet') }}
+          </button>
         </div>
       </template>
     </PullToRefresh>
@@ -197,7 +210,7 @@ import SkeletonCard from 'src/components/ui/SkeletonCard.vue';
 import EmptyState from 'src/components/ui/EmptyState.vue';
 import { COW_ICON } from 'src/boot/icons';
 
-const { t } = useI18n();
+useI18n(); // Used for template translations via $t
 
 interface CowInfo {
   id: string;
@@ -224,6 +237,13 @@ const summary = ref<FarmerSummary | null>(null);
 const cows = ref<CowInfo[]>([]);
 
 const loading = computed(() => farmersStore.loading);
+
+// Dry cows = total - lactating
+const dryCows = computed(() => {
+  const total = summary.value?.statistics.total_active_cows || farmer.value?.total_cattle || 0;
+  const lactating = summary.value?.statistics.lactating_cows || 0;
+  return Math.max(0, total - lactating);
+});
 
 async function loadFarmerData() {
   if (!farmerId.value) return;

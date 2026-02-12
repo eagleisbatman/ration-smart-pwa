@@ -12,8 +12,8 @@
         color="white"
         text-color="primary"
         :options="[
-          { label: $t('dashboard.managedFarmers'), value: 'managed', icon: 'groups' },
-          { label: $t('dashboard.myFarm'), value: 'personal', icon: 'home' },
+          { label: $t('dashboard.myFarmers'), value: 'managed', icon: 'groups' },
+          { label: $t('dashboard.personal'), value: 'personal', icon: 'home' },
         ]"
       />
     </div>
@@ -88,22 +88,16 @@
     <template v-if="viewMode === 'managed'">
       <!-- Quick Stats -->
       <div class="row q-col-gutter-sm q-mb-md">
-        <div class="col-4">
+        <div class="col-6">
           <div class="stat-inline">
             <div class="text-h6 text-primary">{{ farmerCount }}</div>
             <div class="text-caption text-grey-7">{{ $t('dashboard.farmersManaged') }}</div>
           </div>
         </div>
-        <div class="col-4">
+        <div class="col-6">
           <div class="stat-inline">
-            <div class="text-h6 text-secondary">{{ totalCows }}</div>
-            <div class="text-caption text-grey-7">{{ $t('dashboard.totalCows') }}</div>
-          </div>
-        </div>
-        <div class="col-4">
-          <div class="stat-inline">
-            <div class="text-h6 text-accent">{{ totalMilk.toFixed(1) }}{{ $t('units.l') }}</div>
-            <div class="text-caption text-grey-7">{{ $t('dashboard.todaysMilk') }}</div>
+            <div class="text-h6 text-secondary">{{ pendingYieldCount }}</div>
+            <div class="text-caption text-grey-7">{{ $t('dashboard.pendingYields') }}</div>
           </div>
         </div>
       </div>
@@ -111,13 +105,17 @@
       <!-- Quick Actions -->
       <div class="section-label">{{ $t('dashboard.quickActions') }}</div>
       <div class="action-row q-mb-md">
-        <button class="action-row__btn" @click="router.push('/farmers')">
-          <q-icon name="groups" />
-          {{ $t('dashboard.viewFarmers') }}
-        </button>
         <button class="action-row__btn" @click="router.push('/farmers/new')">
           <q-icon name="person_add" />
-          {{ $t('dashboard.addFarmer') }}
+          {{ $t('farmer.addFarmer') }}
+        </button>
+        <button class="action-row__btn" @click="router.push('/yields/new')">
+          <q-icon name="add_chart" />
+          {{ $t('dashboard.recordYield') }}
+        </button>
+        <button class="action-row__btn" @click="router.push({ name: 'farmer-import' })">
+          <q-icon name="upload_file" />
+          {{ $t('dashboard.importCSV') }}
         </button>
       </div>
 
@@ -244,11 +242,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useAuthStore } from 'src/stores/auth';
-import { useFarmersStore, FarmerSummary } from 'src/stores/farmers';
+import { useFarmersStore } from 'src/stores/farmers';
+import { useYieldsStore } from 'src/stores/yields';
 import { useNotificationsStore, AppNotification } from 'src/stores/notifications';
 import SkeletonList from 'src/components/ui/SkeletonList.vue';
 import MilkProductionChart from 'src/components/dashboard/MilkProductionChart.vue';
@@ -262,6 +261,7 @@ const router = useRouter();
 const { t } = useI18n();
 const authStore = useAuthStore();
 const farmersStore = useFarmersStore();
+const yieldsStore = useYieldsStore();
 const notificationsStore = useNotificationsStore();
 const { formatRelative } = useDateFormat();
 
@@ -305,47 +305,9 @@ const loading = computed(() => farmersStore.loading);
 const farmers = computed(() => farmersStore.managedFarmers);
 const farmerCount = computed(() => farmersStore.activeFarmerCount);
 
-// Calculate total cows across all managed farmers
-const totalCows = computed(() => {
-  return farmers.value.reduce((sum, farmer) => sum + (farmer.total_cattle || 0), 0);
-});
-
-// Store farmer summaries for milk aggregation
-const farmerSummaries = ref<Map<string, FarmerSummary>>(new Map());
-
-// Calculate total milk from all farmers' cows using summaries
-const totalMilk = computed(() => {
-  let total = 0;
-  for (const summary of farmerSummaries.value.values()) {
-    total += summary.statistics?.total_daily_milk_production || 0;
-  }
-  return total;
-});
-
-// Fetch summaries for all farmers to get milk production data
-async function fetchFarmerSummaries() {
-  const summaryPromises = farmers.value.map(async (farmer) => {
-    try {
-      const summary = await farmersStore.getFarmerSummary(farmer.id);
-      if (summary) {
-        farmerSummaries.value.set(farmer.id, summary);
-      }
-    } catch (err) {
-      console.warn(`Failed to fetch summary for farmer ${farmer.id}:`, err);
-    }
-  });
-  await Promise.all(summaryPromises);
-}
-
-// Watch for changes in farmers list and refresh summaries
-watch(
-  () => farmers.value,
-  async (newFarmers) => {
-    if (newFarmers.length > 0) {
-      await fetchFarmerSummaries();
-    }
-  },
-  { immediate: false }
+// Count of pending yield records (not yet synced)
+const pendingYieldCount = computed(() =>
+  yieldsStore.yieldRecords.filter((r) => !r._synced).length
 );
 
 // --- Recent Activity Feed ---
@@ -495,10 +457,7 @@ function selectFarmer(farmer: FarmerProfile) {
 // Load data on mount
 onMounted(async () => {
   await farmersStore.fetchFarmers();
-  // Fetch summaries for milk production data after farmers are loaded
-  if (farmers.value.length > 0) {
-    await fetchFarmerSummaries();
-  }
+  await yieldsStore.fetchYieldHistory();
   // Load recent activity feed
   await loadRecentActivities();
   // M20: Generate notifications after data is loaded
@@ -508,9 +467,7 @@ onMounted(async () => {
 // Expose viewMode for parent component and refresh function
 async function refresh() {
   await farmersStore.fetchFarmers();
-  if (farmers.value.length > 0) {
-    await fetchFarmerSummaries();
-  }
+  await yieldsStore.fetchYieldHistory();
   chartRef.value?.refresh();
   await loadRecentActivities();
   // M20: Regenerate notifications on refresh

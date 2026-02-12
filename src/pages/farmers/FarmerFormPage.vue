@@ -64,7 +64,11 @@
         outlined
         type="tel"
         :hint="$t('farmer.phoneHint')"
-      />
+      >
+        <template #prepend>
+          <span class="text-body2 text-grey-8">{{ dialCodePrefix }}</span>
+        </template>
+      </q-input>
 
       <!-- Location Section -->
       <q-separator class="q-my-md" />
@@ -184,6 +188,8 @@ import { useOrganizationsStore } from 'src/stores/organizations';
 import { useQuasar } from 'quasar';
 import { useHapticFeedback } from 'src/composables/useHapticFeedback';
 import { useImageUpload } from 'src/composables/useImageUpload';
+import { useAuthStore } from 'src/stores/auth';
+import { getDialCode } from 'src/services/api-adapter';
 
 const router = useRouter();
 const route = useRoute();
@@ -193,6 +199,13 @@ const farmersStore = useFarmersStore();
 const organizationsStore = useOrganizationsStore();
 const { success, error: hapticError, warning, medium } = useHapticFeedback();
 const { captureFromCamera, selectFromGallery, clearImage } = useImageUpload();
+const authStore = useAuthStore();
+
+// Dial code prefix based on user's country
+const dialCodePrefix = computed(() => {
+  const cc = authStore.user?.country_code || 'IN';
+  return getDialCode(cc) || '+91';
+});
 
 const farmerId = computed(() => route.params.id as string | undefined);
 const isEditing = computed(() => !!farmerId.value && farmerId.value !== 'new');
@@ -218,6 +231,8 @@ const farmingTypeOptions = computed(() => [
   { label: t('farmer.farmingTypes.dairy'), value: 'dairy' },
   { label: t('farmer.farmingTypes.mixed'), value: 'mixed' },
   { label: t('farmer.farmingTypes.crop'), value: 'crop' },
+  { label: t('farmer.farmingTypes.beef'), value: 'beef' },
+  { label: t('farmer.farmingTypes.other'), value: 'other' },
 ]);
 
 const loading = computed(() => farmersStore.loading);

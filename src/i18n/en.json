@@ -786,7 +786,9 @@
     },
     "summary": {
       "today": "Today",
-      "thisWeek": "This Week"
+      "yesterday": "Yesterday",
+      "thisWeek": "This Week",
+      "weekAvg": "Week Avg"
     },
     "filter": {
       "byCow": "Filter by Cow",
@@ -811,7 +813,9 @@
       "eveningFull": "Evening (L)",
       "total": "Total",
       "pending": "Pending",
-      "unknownCow": "Unknown Cow"
+      "unknownCow": "Unknown Cow",
+      "fedDietBadge": "Fed Diet",
+      "noDietBadge": "No Diet"
     },
     "dialog": {
       "selectDateRange": "Select Date Range",
@@ -1117,7 +1121,12 @@
     "addFarmer": "Add Farmer",
     "selectFarmer": "Select Farmer",
     "myFarm": "My Farm",
+    "myFarmers": "My Farmers",
+    "personal": "Personal",
     "managedFarmers": "Managed Farmers",
+    "pendingYields": "Pending Yields",
+    "recordYield": "Record Yield",
+    "importCSV": "Import CSV",
     "switchToPersonal": "Switch to My Farm",
     "switchToManaged": "Switch to Managed Farmers",
     "recentActivity": "Recent Activity",
@@ -1210,12 +1219,16 @@
     "farmingTypes": {
       "dairy": "Dairy Farming",
       "mixed": "Mixed Farming",
-      "crop": "Crop Farming"
+      "crop": "Crop Farming",
+      "beef": "Beef Farming",
+      "other": "Other"
     },
     "filter": {
       "all": "All",
       "dairy": "Dairy",
-      "mixed": "Mixed"
+      "mixed": "Mixed",
+      "beef": "Beef",
+      "other": "Other"
     },
     "tapToAddPhoto": "Tap to add photo",
     "takePhoto": "Take Photo",

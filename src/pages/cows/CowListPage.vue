@@ -99,6 +99,36 @@
               <q-item-label caption>
                 {{ cow.breed }}<template v-if="cow.coat_color"> &middot; {{ cow.coat_color }}</template> &middot; {{ cow.weight_kg }}{{ $t('cow.weightKg') }} &middot; {{ cow.milk_yield_liters }}{{ $t('cow.milkYield') }}
               </q-item-label>
+              <div class="q-mt-xs">
+                <q-chip
+                  v-if="cow.lactation_stage !== 'dry'"
+                  dense
+                  size="sm"
+                  color="positive"
+                  text-color="white"
+                >
+                  {{ $t('cow.lactating') }}
+                </q-chip>
+                <q-chip
+                  v-else
+                  dense
+                  size="sm"
+                  color="grey-5"
+                  text-color="white"
+                >
+                  {{ $t('cow.dry') }}
+                </q-chip>
+                <q-chip
+                  v-if="cow.is_pregnant"
+                  dense
+                  size="sm"
+                  color="purple"
+                  text-color="white"
+                  class="q-ml-xs"
+                >
+                  {{ $t('cow.pregnant') }}<template v-if="cow.pregnancy_month"> ({{ cow.pregnancy_month }} mo)</template>
+                </q-chip>
+              </div>
             </q-item-section>
 
             <q-item-section v-if="!selectionMode" side>
