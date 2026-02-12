@@ -150,6 +150,18 @@
         </div>
       </div>
 
+      <!-- Season -->
+      <q-select
+        v-model="form.season"
+        :label="$t('feed.labels.season')"
+        outlined
+        :options="seasonOptions"
+        emit-value
+        map-options
+        clearable
+        :hint="$t('feed.hints.optional')"
+      />
+
       <!-- Price -->
       <q-separator />
       <q-input
@@ -227,6 +239,7 @@ const form = reactive<FeedInput>({
   ndf_percentage: undefined,
   price_per_kg: undefined,
   image_url: undefined,
+  season: undefined,
 });
 
 const loading = computed(() => feedsStore.loading);
@@ -245,6 +258,17 @@ const CATEGORY_VALUES = [
 
 const categoryOptions = computed(() =>
   CATEGORY_VALUES.map((c) => ({ label: t(c.key), value: c.value }))
+);
+
+const SEASON_VALUES = [
+  { value: 'all_year', key: 'feed.seasons.allYear' },
+  { value: 'summer', key: 'feed.seasons.summer' },
+  { value: 'winter', key: 'feed.seasons.winter' },
+  { value: 'monsoon', key: 'feed.seasons.monsoon' },
+];
+
+const seasonOptions = computed(() =>
+  SEASON_VALUES.map((s) => ({ label: t(s.key), value: s.value }))
 );
 
 async function takePhoto() {
@@ -338,6 +362,7 @@ onMounted(async () => {
         ndf_percentage: feed.ndf_percentage,
         price_per_kg: feed.price_per_kg,
         image_url: feed.image_url,
+        season: feed.season,
       });
     } else {
       $q.notify({ type: 'negative', message: t('feed.notifications.feedNotFound') });

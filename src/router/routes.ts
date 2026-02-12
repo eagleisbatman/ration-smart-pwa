@@ -221,6 +221,14 @@ const routes: RouteRecordRaw[] = [
         meta: { titleKey: 'logs.yield.editYield', showBack: true, hideBottomNav: true },
       },
 
+      // Organization Analytics
+      {
+        path: 'analytics',
+        name: 'org-analytics',
+        component: () => import('pages/yields/OrgAnalyticsPage.vue'),
+        meta: { title: 'Organization Analytics', showBack: true },
+      },
+
       // Reports
       {
         path: 'reports',

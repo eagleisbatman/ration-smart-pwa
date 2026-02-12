@@ -98,6 +98,25 @@
         </q-list>
       </q-card>
 
+      <!-- Season -->
+      <template v-if="feed.season">
+        <q-card flat bordered class="q-mb-md">
+          <q-card-section>
+            <div class="row items-center">
+              <q-icon name="calendar_month" size="sm" color="primary" class="q-mr-sm" />
+              <span class="text-subtitle2">{{ $t('feed.labels.season') }}:</span>
+              <q-chip
+                :label="translateSeason(feed.season)"
+                color="primary"
+                text-color="white"
+                size="sm"
+                class="q-ml-sm"
+              />
+            </div>
+          </q-card-section>
+        </q-card>
+      </template>
+
       <!-- Price -->
       <template v-if="feed.price_per_kg">
         <div class="text-subtitle1 q-mb-sm">{{ $t('feed.labels.pricing') }}</div>
@@ -159,6 +178,18 @@ const CATEGORY_I18N_MAP: Record<string, string> = {
 function translateCategory(category: string): string {
   const key = CATEGORY_I18N_MAP[category];
   return key ? t(key) : category;
+}
+
+const SEASON_I18N_MAP: Record<string, string> = {
+  all_year: 'feed.seasons.allYear',
+  summer: 'feed.seasons.summer',
+  winter: 'feed.seasons.winter',
+  monsoon: 'feed.seasons.monsoon',
+};
+
+function translateSeason(season: string): string {
+  const key = SEASON_I18N_MAP[season];
+  return key ? t(key) : season;
 }
 import { useFeedsStore } from 'src/stores/feeds';
 import { Feed } from 'src/lib/offline/db';

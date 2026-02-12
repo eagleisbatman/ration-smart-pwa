@@ -44,6 +44,21 @@
               <q-icon :name="type === 'email' ? 'email' : 'phone'" />
             </template>
           </q-input>
+
+          <!-- PIN verification -->
+          <q-input
+            v-model="pin"
+            :label="$t('auth.pin')"
+            type="password"
+            outlined
+            mask="####"
+            class="q-mt-md"
+            :rules="[(val: string) => (val && val.length === 4) || $t('auth.pinRequired')]"
+          >
+            <template #prepend>
+              <q-icon name="lock" />
+            </template>
+          </q-input>
         </q-card-section>
 
         <q-card-actions align="right" class="q-px-md q-pb-md">
@@ -162,6 +177,7 @@ const authStore = useAuthStore();
 
 const step = ref(1);
 const newValue = ref('');
+const pin = ref('');
 const otpCode = ref('');
 const loading = ref(false);
 const error = ref<string | null>(null);
@@ -175,6 +191,7 @@ const typeLabel = computed(() =>
 
 const isNewValueValid = computed(() => {
   if (!newValue.value) return false;
+  if (pin.value.length !== 4) return false;
   if (newValue.value === props.currentValue) return false;
   if (props.type === 'email') {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newValue.value);
@@ -212,7 +229,7 @@ async function requestChange() {
   loading.value = true;
   error.value = null;
 
-  const success = await authStore.requestContactChange(props.type, newValue.value);
+  const success = await authStore.requestContactChange(props.type, newValue.value, pin.value);
 
   loading.value = false;
 
@@ -254,6 +271,7 @@ function onDone() {
 function resetState() {
   step.value = 1;
   newValue.value = '';
+  pin.value = '';
   otpCode.value = '';
   error.value = null;
   cooldownSeconds.value = 0;

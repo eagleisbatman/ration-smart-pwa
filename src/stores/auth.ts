@@ -459,20 +459,50 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  async function requestContactChange(type: 'email' | 'phone', newValue: string): Promise<boolean> {
-    // NOTE: Backend does not have change-contact endpoints yet.
-    // This is a stub until the backend adds /auth/change-contact/request.
-    console.warn('[auth] requestContactChange called but backend has no /auth/change-contact/request endpoint');
-    error.value = 'Contact change is not yet available';
-    return false;
+  async function requestContactChange(type: 'email' | 'phone', newValue: string, pin?: string): Promise<boolean> {
+    error.value = null;
+    try {
+      await api.post('/api/v1/auth/change-contact/request', {
+        user_id: userId.value,
+        type,
+        new_value: newValue,
+        pin: pin || '',
+      });
+      return true;
+    } catch (err: unknown) {
+      const msg = (err as { response?: { data?: { detail?: string } } })?.response?.data?.detail;
+      error.value = msg || 'Failed to request contact change';
+      return false;
+    }
   }
 
   async function verifyContactChange(type: 'email' | 'phone', newValue: string, code: string): Promise<boolean> {
-    // NOTE: Backend does not have change-contact endpoints yet.
-    // This is a stub until the backend adds /auth/change-contact/verify.
-    console.warn('[auth] verifyContactChange called but backend has no /auth/change-contact/verify endpoint');
-    error.value = 'Contact change verification is not yet available';
-    return false;
+    error.value = null;
+    try {
+      await api.post('/api/v1/auth/change-contact/verify', {
+        user_id: userId.value,
+        type,
+        new_value: newValue,
+        code,
+      });
+
+      // Update local user info
+      if (user.value) {
+        if (type === 'email') {
+          user.value.email = newValue;
+        } else {
+          user.value.phone = newValue;
+        }
+        // Persist to IndexedDB
+        await db.users.put(user.value);
+      }
+
+      return true;
+    } catch (err: unknown) {
+      const msg = (err as { response?: { data?: { detail?: string } } })?.response?.data?.detail;
+      error.value = msg || 'Failed to verify contact change';
+      return false;
+    }
   }
 
   function clearAuth(): void {

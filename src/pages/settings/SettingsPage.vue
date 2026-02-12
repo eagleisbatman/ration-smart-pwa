@@ -80,10 +80,20 @@
         </q-item-section>
         <q-item-section>
           <q-item-label>{{ $t('settings.pushNotifications') }}</q-item-label>
-          <q-item-label caption>{{ $t('settings.notificationsDesc') }}</q-item-label>
+          <q-item-label caption>
+            <template v-if="!pushSupported">{{ $t('settings.pushNotSupported') }}</template>
+            <template v-else-if="pushPermission === 'denied'">{{ $t('settings.pushDenied') }}</template>
+            <template v-else>{{ $t('settings.notificationsDesc') }}</template>
+          </q-item-label>
         </q-item-section>
         <q-item-section side>
-          <q-toggle v-model="notifications" color="primary" />
+          <q-spinner-dots v-if="pushLoading" color="primary" size="24px" />
+          <q-toggle
+            v-else
+            v-model="notifications"
+            color="primary"
+            :disable="!pushSupported || pushPermission === 'denied'"
+          />
         </q-item-section>
       </q-item>
 
@@ -359,6 +369,15 @@ import { availableLocales, setLocale, getLocale } from 'src/boot/i18n';
 import { api } from 'src/boot/axios';
 import { useI18n } from 'vue-i18n';
 import SyncHistoryDrawer from 'src/components/pwa/SyncHistoryDrawer.vue';
+import {
+  isPushSupported,
+  pushSubscribed,
+  pushLoading,
+  pushPermission,
+  subscribeToPush,
+  unsubscribeFromPush,
+  initPushState,
+} from 'src/services/push-notifications';
 
 interface Organization {
   id: string;
@@ -381,6 +400,7 @@ const {
 } = useOfflineSync();
 
 const notifications = ref(false);
+const pushSupported = isPushSupported();
 const showSyncHistory = ref(false);
 const profileImage = ref<string | null>(localStorage.getItem('profile_image'));
 
@@ -571,7 +591,32 @@ function confirmLogout() {
   });
 }
 
+// Watch notification toggle to subscribe/unsubscribe
+watch(notifications, async (enabled) => {
+  if (!authStore.userId) return;
+  if (enabled) {
+    const ok = await subscribeToPush(authStore.userId);
+    if (!ok) {
+      // Revert toggle if subscription failed
+      notifications.value = false;
+      if (pushPermission.value === 'denied') {
+        $q.notify({
+          type: 'warning',
+          message: t('settings.pushDenied'),
+          position: 'bottom',
+        });
+      }
+    }
+  } else {
+    await unsubscribeFromPush();
+  }
+});
+
 onMounted(async () => {
+  // Initialize push notification state
+  await initPushState();
+  notifications.value = pushSubscribed.value;
+
   // Load current organization if user has one
   if (authStore.user?.organization_id) {
     selectedOrgId.value = authStore.user.organization_id;

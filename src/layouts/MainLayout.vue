@@ -213,6 +213,7 @@ const navItems = computed(() => [
   { to: '/logs', icon: 'water_drop', label: t('nav.milkLogs'), badge: pendingCount.value > 0 ? pendingCount.value : undefined },
   { to: '/yields', icon: 'analytics', label: t('nav.yieldHistory') },
   { to: '/reports', icon: 'assessment', label: t('nav.reports') },
+  { to: '/analytics', icon: 'insights', label: t('nav.analytics') },
   { to: '/settings', icon: 'settings', label: t('nav.settings') },
 ]);
 
