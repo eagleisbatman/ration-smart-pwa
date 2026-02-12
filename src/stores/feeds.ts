@@ -19,6 +19,7 @@ export interface FeedInput {
   ndf_percentage?: number;
   price_per_kg?: number;
   image_url?: string;
+  season?: string;
 }
 
 export const useFeedsStore = defineStore('feeds', () => {

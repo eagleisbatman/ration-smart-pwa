@@ -4,6 +4,12 @@
       <!-- Milk Trend Sparkline -->
       <MilkTrendSparkline v-if="logs.length > 0" :logs="logs" class="q-mb-md" />
 
+      <!-- Detailed Milk Trends Panel (period toggle + per-cow breakdown) -->
+      <MilkTrendsPanel
+        v-if="logs.length > 0"
+        @cow-click="(id: string) => router.push(`/cows/${id}`)"
+      />
+
       <!-- Milk Price & Revenue Card -->
       <MilkPriceCard
         v-if="logs.length > 0"
@@ -190,6 +196,7 @@ import SkeletonList from 'src/components/ui/SkeletonList.vue';
 import EmptyState from 'src/components/ui/EmptyState.vue';
 import QuickLogDialog from 'src/components/logs/QuickLogDialog.vue';
 import MilkTrendSparkline from 'src/components/logs/MilkTrendSparkline.vue';
+import MilkTrendsPanel from 'src/components/logs/MilkTrendsPanel.vue';
 import MilkPriceCard from 'src/components/logs/MilkPriceCard.vue';
 import { useCurrency } from 'src/composables/useCurrency';
 

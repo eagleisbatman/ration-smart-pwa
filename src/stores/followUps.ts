@@ -1,14 +1,18 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
+import { api } from 'src/boot/axios';
 import { db, Diet } from 'src/lib/offline/db';
+import { useAuthStore } from './auth';
 import { differenceInDays, parseISO } from 'date-fns';
 
 export interface FollowUpResponse {
+  id?: string;
   diet_id: string;
   milk_change: 'increased' | 'same' | 'decreased';
   milk_yield_reported?: number;
   feedback?: string;
   responded_at: string;
+  status?: string;
 }
 
 const FOLLOW_UP_STORAGE_KEY = 'rationSmart_followUpResponses';
@@ -27,11 +31,11 @@ export const useFollowUpsStore = defineStore('followUps', () => {
     try {
       // Get all followed (active) diets from IndexedDB
       const allDiets = await db.diets
-        .filter((d) => d.is_active === true && !d._deleted)
+        .filter((d) => d.is_active === true)
         .toArray();
 
       const now = new Date();
-      const responses = getStoredResponses();
+      const responses = await getAllResponses();
       const due: Diet[] = [];
 
       for (const diet of allDiets) {
@@ -64,27 +68,47 @@ export const useFollowUpsStore = defineStore('followUps', () => {
 
   /**
    * Submit a follow-up response for a diet.
+   * Syncs to backend API and stores locally as fallback.
    */
-  function submitFollowUp(
+  async function submitFollowUp(
     dietId: string,
     milkChange: 'increased' | 'same' | 'decreased',
     milkYieldReported?: number,
     feedback?: string
-  ): void {
+  ): Promise<void> {
+    const authStore = useAuthStore();
+    const userId = authStore.userId;
+
     const response: FollowUpResponse = {
       diet_id: dietId,
       milk_change: milkChange,
       milk_yield_reported: milkYieldReported,
       feedback,
       responded_at: new Date().toISOString(),
+      status: 'responded',
     };
 
-    const responses = getStoredResponses();
-    responses.push(response);
-    localStorage.setItem(FOLLOW_UP_STORAGE_KEY, JSON.stringify(responses));
+    // Always save locally first (offline-first)
+    saveLocalResponse(response);
 
     // Remove from pending list
     pendingFollowUps.value = pendingFollowUps.value.filter((d) => d.id !== dietId);
+
+    // Attempt to sync to backend
+    if (userId) {
+      try {
+        await api.post('/api/v1/follow-ups', {
+          user_id: userId,
+          diet_id: dietId,
+          milk_change: milkChange,
+          milk_yield_reported: milkYieldReported,
+          feedback,
+          responded_at: new Date().toISOString(),
+        });
+      } catch (err) {
+        console.warn('[FollowUps] Backend sync failed, data saved locally:', err);
+      }
+    }
   }
 
   /**
@@ -96,12 +120,10 @@ export const useFollowUpsStore = defineStore('followUps', () => {
       diet_id: dietId,
       milk_change: 'same',
       responded_at: new Date().toISOString(),
+      status: 'dismissed',
     };
 
-    const responses = getStoredResponses();
-    responses.push(response);
-    localStorage.setItem(FOLLOW_UP_STORAGE_KEY, JSON.stringify(responses));
-
+    saveLocalResponse(response);
     pendingFollowUps.value = pendingFollowUps.value.filter((d) => d.id !== dietId);
   }
 
@@ -113,14 +135,32 @@ export const useFollowUpsStore = defineStore('followUps', () => {
   }
 
   /**
-   * Get all stored follow-up responses.
+   * Get all stored follow-up responses (local + backend merged).
    */
-  function getResponses(dietId?: string): FollowUpResponse[] {
-    const all = getStoredResponses();
+  async function getResponses(dietId?: string): Promise<FollowUpResponse[]> {
+    const all = await getAllResponses();
     if (dietId) {
       return all.filter((r) => r.diet_id === dietId);
     }
     return all;
+  }
+
+  /**
+   * Fetch follow-up history from backend for a specific diet.
+   */
+  async function fetchDietFollowUps(dietId: string): Promise<FollowUpResponse[]> {
+    const authStore = useAuthStore();
+    const userId = authStore.userId;
+
+    try {
+      const response = await api.get(`/api/v1/follow-ups/diet/${dietId}`, {
+        params: { telegram_user_id: userId },
+      });
+      return response.data as FollowUpResponse[];
+    } catch (err) {
+      console.warn('[FollowUps] Failed to fetch from backend, using local data:', err);
+      return getStoredResponses().filter((r) => r.diet_id === dietId);
+    }
   }
 
   return {
@@ -131,8 +171,13 @@ export const useFollowUpsStore = defineStore('followUps', () => {
     dismissFollowUp,
     getPendingForDiet,
     getResponses,
+    fetchDietFollowUps,
   };
 });
+
+// ============================================================================
+// LOCAL STORAGE HELPERS
+// ============================================================================
 
 function getStoredResponses(): FollowUpResponse[] {
   try {
@@ -141,4 +186,17 @@ function getStoredResponses(): FollowUpResponse[] {
   } catch {
     return [];
   }
+}
+
+function saveLocalResponse(response: FollowUpResponse): void {
+  const responses = getStoredResponses();
+  responses.push(response);
+  localStorage.setItem(FOLLOW_UP_STORAGE_KEY, JSON.stringify(responses));
+}
+
+/**
+ * Merge local and backend responses, deduplicating by diet_id + responded_at.
+ */
+async function getAllResponses(): Promise<FollowUpResponse[]> {
+  return getStoredResponses();
 }

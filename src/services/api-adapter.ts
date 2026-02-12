@@ -436,6 +436,42 @@ function mapFeedToBackend(input: Record<string, unknown>): Record<string, unknow
   };
 }
 
+/**
+ * Map a backend BotFollowUpLogResponse to the PWA FollowUpResponse interface.
+ */
+function mapFollowUpFromBackend(log: Record<string, unknown>): Record<string, unknown> {
+  if (!log) return log;
+  return {
+    id: log.id,
+    diet_id: log.diet_history_id,
+    user_id: log.telegram_user_id,
+    milk_change: log.milk_change,
+    milk_yield_reported: log.milk_yield_reported,
+    feedback: log.user_feedback,
+    status: log.status,
+    scheduled_at: log.scheduled_at,
+    responded_at: log.response_at,
+    created_at: log.created_at,
+  };
+}
+
+/**
+ * Map PWA follow-up fields to backend BotFollowUpLogCreate fields.
+ */
+function mapFollowUpToBackend(input: Record<string, unknown>): Record<string, unknown> {
+  if (!input) return input;
+  return {
+    telegram_user_id: input.user_id ?? input.telegram_user_id,
+    diet_history_id: input.diet_id ?? input.diet_history_id,
+    scheduled_at: input.scheduled_at ?? new Date().toISOString(),
+    response_at: input.responded_at ?? input.response_at ?? new Date().toISOString(),
+    milk_yield_reported: input.milk_yield_reported,
+    milk_change: input.milk_change,
+    user_feedback: input.feedback ?? input.user_feedback,
+    status: input.status ?? 'responded',
+  };
+}
+
 // ============================================================================
 // ENDPOINT MAPPING
 // ============================================================================
@@ -587,6 +623,27 @@ const ENDPOINT_MAP: Record<string, EndpointMapping> = {
   '/api/v1/users/:id/settings': {
     path: '/auth/users/:id/settings',
   },
+  '/api/v1/auth/change-contact/request': {
+    path: '/auth/change-contact/request',
+  },
+  '/api/v1/auth/change-contact/verify': {
+    path: '/auth/change-contact/verify',
+  },
+
+  // --- Push Notifications / Device Tokens ---
+  '/api/v1/app/vapid-public-key': {
+    path: '/app/vapid-public-key',
+  },
+  '/api/v1/app/device-tokens': {
+    path: '/app/device-tokens',
+  },
+  '/api/v1/app/device-tokens/:token': {
+    path: '/app/device-tokens/:token',
+  },
+  '/api/v1/app/notifications/send': {
+    path: '/app/notifications/send',
+  },
+
   '/api/v1/users/:id/self-profile': {
     // Backend: POST/GET/PUT /auth/users/{user_id}/self-profile
     path: '/auth/users/:id/self-profile',
@@ -784,6 +841,9 @@ const ENDPOINT_MAP: Record<string, EndpointMapping> = {
       response: (data: unknown) => mapDietFromBackend(data as Record<string, unknown>),
     },
   },
+  '/api/v1/diet/:id/evaluate': {
+    path: '/bot-diet-history/:id/evaluate',
+  },
   '/api/v1/diet/:id/archive': {
     path: '/bot-diet-history/:id/archive',
   },
@@ -911,6 +971,60 @@ const ENDPOINT_MAP: Record<string, EndpointMapping> = {
   },
   '/api/v1/farmer-profiles/:id/summary': {
     path: '/farmer-profiles/:id/summary',
+  },
+
+  // ============================================================================
+  // REPORT ENDPOINTS
+  // ============================================================================
+  '/api/v1/reports/generate': {
+    path: '/farmer-reports/generate',
+  },
+  '/api/v1/reports/:id/download': {
+    path: '/farmer-reports/:id/download',
+  },
+  '/api/v1/reports/farmer/:id': {
+    path: '/farmer-reports/farmer/:id',
+  },
+
+  // ============================================================================
+  // FOLLOW-UP LOG ENDPOINTS
+  // ============================================================================
+  '/api/v1/follow-ups': {
+    path: '/bot-follow-up-logs/',
+    transform: {
+      request: (data: unknown) => mapFollowUpToBackend(data as Record<string, unknown>),
+      response: (data: unknown) => mapFollowUpFromBackend(data as Record<string, unknown>),
+    },
+  },
+  '/api/v1/follow-ups/user/:userId': {
+    path: '/bot-follow-up-logs/user/:userId',
+    transform: {
+      response: (data: unknown) => {
+        const resp = data as { follow_ups?: Record<string, unknown>[] };
+        const followUps = resp.follow_ups || (Array.isArray(data) ? data as Record<string, unknown>[] : []);
+        return followUps.map(mapFollowUpFromBackend);
+      },
+    },
+  },
+  '/api/v1/follow-ups/diet/:dietId': {
+    path: '/bot-follow-up-logs/diet/:dietId',
+    transform: {
+      response: (data: unknown) => {
+        const resp = data as { follow_ups?: Record<string, unknown>[] };
+        const followUps = resp.follow_ups || (Array.isArray(data) ? data as Record<string, unknown>[] : []);
+        return followUps.map(mapFollowUpFromBackend);
+      },
+    },
+  },
+  '/api/v1/follow-ups/:id': {
+    path: '/bot-follow-up-logs/:id',
+    transform: {
+      request: (data: unknown) => {
+        if (data && typeof data === 'object') return mapFollowUpToBackend(data as Record<string, unknown>);
+        return data;
+      },
+      response: (data: unknown) => mapFollowUpFromBackend(data as Record<string, unknown>),
+    },
   },
 
   // ============================================================================

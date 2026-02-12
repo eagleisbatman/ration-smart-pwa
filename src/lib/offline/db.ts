@@ -55,6 +55,7 @@ export interface Feed {
   ndf_percentage?: number;
   price_per_kg?: number;
   image_url?: string;
+  season?: string;
   is_custom: boolean;
   user_id?: string;
   country_code?: string;
