@@ -25,6 +25,7 @@ export interface DietInput {
   // Optimization settings
   optimization_goal: 'minimize_cost' | 'maximize_milk' | 'balanced';
   available_feeds: string[]; // Feed IDs
+  feed_price_overrides?: Record<string, number>; // Per-feed price overrides from user
   feed_constraints?: Record<string, { min?: number; max?: number }>;
   budget_per_day?: number;
 }
@@ -207,10 +208,12 @@ export const useDietsStore = defineStore('diets', () => {
       const lactationStage = input.lactation_stage || 'mid';
       const daysInMilkMap: Record<string, number> = { early: 60, mid: 150, late: 250, dry: 0 };
 
-      // Build feed_selection with prices from feeds store
+      // Build feed_selection with prices from feeds store (or user overrides)
+      const priceOverrides = input.feed_price_overrides as Record<string, number> | undefined;
       const feedSelection = input.available_feeds.map((feedId) => {
         const feed = feedsStore.allFeeds.find((f) => f.id === feedId);
-        return { feed_id: feedId, price_per_kg: feed?.price_per_kg ?? 1.0 };
+        const price = priceOverrides?.[feedId] ?? feed?.price_per_kg ?? 0;
+        return { feed_id: feedId, price_per_kg: price };
       });
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
