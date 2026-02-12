@@ -1,7 +1,7 @@
 <template>
   <q-page class="q-pa-md">
     <q-form class="q-gutter-md" @submit="onSubmit">
-      <!-- Cow Selection -->
+      <!-- Cow Selection (locked in edit mode) -->
       <q-select
         v-model="form.cow_id"
         :label="$t('logs.form.selectCow') + ' *'"
@@ -9,15 +9,16 @@
         :options="cowOptions"
         emit-value
         map-options
+        :readonly="isEditing"
         :rules="[(val) => !!val || $t('logs.form.selectCowRequired')]"
         @update:model-value="onCowSelected"
       >
         <template #prepend>
-          <q-icon :name="COW_ICON" />
+          <q-icon :name="isEditing ? 'lock' : COW_ICON" />
         </template>
       </q-select>
 
-      <!-- Date -->
+      <!-- Date (locked in edit mode) -->
       <q-input
         v-model="form.log_date"
         :label="$t('logs.date') + ' *'"
@@ -26,9 +27,9 @@
         :rules="[(val) => !!val || $t('logs.form.dateRequired')]"
       >
         <template #prepend>
-          <q-icon name="calendar_today" />
+          <q-icon :name="isEditing ? 'lock' : 'calendar_today'" />
         </template>
-        <template #append>
+        <template v-if="!isEditing" #append>
           <q-icon name="edit" class="cursor-pointer">
             <q-popup-proxy cover transition-show="scale" transition-hide="scale">
               <q-date v-model="form.log_date" mask="YYYY-MM-DD">

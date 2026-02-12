@@ -86,24 +86,30 @@
           </div>
         </div>
 
-        <!-- Feed Breakdown -->
+        <!-- Feed Breakdown (table format per wireframe) -->
         <div class="text-subtitle1 q-mb-sm">{{ $t('diet.recommendedFeeds') }}</div>
         <q-card flat bordered class="q-mb-md">
-          <q-list separator>
-            <q-item v-for="feed in resultData.feeds" :key="feed.feed_id">
-              <q-item-section>
-                <q-item-label>{{ feed.feed_name }}</q-item-label>
-                <q-item-label caption>
-                  {{ $t('diet.dmLabel') }}: {{ feed.dm_contribution?.toFixed(2) }}{{ $t('diet.kg') }} ·
-                  {{ $t('diet.cpLabel') }}: {{ feed.cp_contribution?.toFixed(1) }}{{ $t('diet.g') }}
-                </q-item-label>
-              </q-item-section>
-              <q-item-section side>
-                <q-item-label class="text-h6">{{ feed.amount_kg?.toFixed(2) }} {{ $t('diet.kg') }}</q-item-label>
-                <q-item-label caption>{{ formatCurrency(feed.cost ?? 0) }}</q-item-label>
-              </q-item-section>
-            </q-item>
-          </q-list>
+          <q-markup-table flat bordered dense class="text-left">
+            <thead>
+              <tr class="bg-grey-2">
+                <th>{{ $t('diet.ingredient') }}</th>
+                <th class="text-right">{{ $t('diet.quantity') }} ({{ $t('diet.kg') }})</th>
+                <th class="text-right">{{ $t('diet.cost') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="feed in resultData.feeds" :key="feed.feed_id">
+                <td>{{ feed.feed_name }}</td>
+                <td class="text-right">{{ feed.amount_kg?.toFixed(2) }}</td>
+                <td class="text-right">{{ formatCurrency(feed.cost ?? 0) }}</td>
+              </tr>
+              <tr class="bg-grey-1 text-weight-bold">
+                <td>{{ $t('chart.total') }}</td>
+                <td class="text-right">{{ feedTotalKg.toFixed(2) }}</td>
+                <td class="text-right">{{ formatCurrency(diet.total_cost ?? 0) }}</td>
+              </tr>
+            </tbody>
+          </q-markup-table>
         </q-card>
 
         <!-- Nutrient Balance -->
@@ -415,6 +421,10 @@ const diet = ref<Diet | null>(null);
 const loading = ref(true);
 
 const resultData = computed<DietResultData>(() => (diet.value?.result_data as DietResultData) || {});
+
+const feedTotalKg = computed(() =>
+  (resultData.value.feeds || []).reduce((sum, f) => sum + (f.amount_kg || 0), 0)
+);
 
 const cpProgress = computed(() => {
   const nb = resultData.value.nutrient_balance;

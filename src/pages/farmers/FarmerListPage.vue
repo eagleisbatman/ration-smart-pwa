@@ -1,7 +1,7 @@
 <template>
   <q-page class="q-pa-md">
     <PullToRefresh @refresh="onRefresh">
-      <!-- Search Bar & Import Button -->
+      <!-- Search Bar & Count Badge -->
       <div class="row items-center q-mb-md q-gutter-sm">
         <q-input
           v-model="searchQuery"
@@ -17,6 +17,7 @@
             <q-icon name="close" class="cursor-pointer" @click="searchQuery = ''" />
           </template>
         </q-input>
+        <q-badge color="primary" :label="`${farmerCount} ${t('farmer.farmers')}`" class="q-pa-sm" />
         <q-btn
           outline
           color="primary"
@@ -31,28 +32,14 @@
       <!-- Filter Chips -->
       <div class="row q-gutter-sm q-mb-md">
         <q-chip
-          :outline="filterType !== 'all'"
-          :color="filterType === 'all' ? 'primary' : undefined"
+          v-for="chip in filterChips"
+          :key="chip.value"
+          :outline="filterType !== chip.value"
+          :color="filterType === chip.value ? 'primary' : undefined"
           clickable
-          @click="filterType = 'all'"
+          @click="filterType = chip.value"
         >
-          {{ $t('farmer.filter.all') }} ({{ farmerCount }})
-        </q-chip>
-        <q-chip
-          :outline="filterType !== 'dairy'"
-          :color="filterType === 'dairy' ? 'primary' : undefined"
-          clickable
-          @click="filterType = 'dairy'"
-        >
-          {{ $t('farmer.filter.dairy') }}
-        </q-chip>
-        <q-chip
-          :outline="filterType !== 'mixed'"
-          :color="filterType === 'mixed' ? 'primary' : undefined"
-          clickable
-          @click="filterType = 'mixed'"
-        >
-          {{ $t('farmer.filter.mixed') }}
+          {{ chip.label }}
         </q-chip>
       </div>
 
@@ -93,16 +80,39 @@
             </q-item-section>
 
             <q-item-section>
-              <q-item-label>{{ farmer.name }}</q-item-label>
+              <q-item-label>
+                <div class="row items-center justify-between">
+                  <span>{{ farmer.name }}</span>
+                  <q-chip
+                    v-if="farmer.farming_type"
+                    dense
+                    size="sm"
+                    outline
+                    :color="farmingTypeColor(farmer.farming_type)"
+                    class="q-ml-sm"
+                  >
+                    {{ $t(`farmer.farmingTypes.${farmer.farming_type}`) }}
+                  </q-chip>
+                </div>
+              </q-item-label>
+              <q-item-label v-if="farmer.phone" caption class="text-grey-6">
+                <q-icon name="phone" size="12px" class="q-mr-xs" />{{ farmer.phone }}
+              </q-item-label>
               <q-item-label caption>
                 <span v-if="farmer.village">{{ farmer.village }}</span>
                 <span v-if="farmer.village && farmer.district">, </span>
                 <span v-if="farmer.district">{{ farmer.district }}</span>
               </q-item-label>
-              <q-item-label caption class="text-grey-6">
-                {{ farmer.total_cattle }} {{ $t('farmer.cattle') }}
-                <span v-if="farmer.farming_type"> &middot; {{ $t(`farmer.farmingTypes.${farmer.farming_type}`) }}</span>
-              </q-item-label>
+              <div class="q-mt-xs">
+                <q-chip
+                  dense
+                  size="sm"
+                  outline
+                  color="grey"
+                >
+                  {{ farmer.total_cattle }} {{ $t('farmer.cattle') }}
+                </q-chip>
+              </div>
             </q-item-section>
 
             <q-item-section side>
@@ -154,11 +164,19 @@ const { t } = useI18n();
 const farmersStore = useFarmersStore();
 
 const searchQuery = ref('');
-const filterType = ref<'all' | 'dairy' | 'mixed' | 'crop'>('all');
+const filterType = ref<'all' | 'dairy' | 'mixed' | 'beef' | 'other'>('all');
 
 const loading = computed(() => farmersStore.loading);
 const farmers = computed(() => farmersStore.activeFarmers);
 const farmerCount = computed(() => farmersStore.activeFarmerCount);
+
+const filterChips = computed(() => [
+  { label: `${t('farmer.filter.all')} (${farmerCount.value})`, value: 'all' as const },
+  { label: t('farmer.filter.dairy'), value: 'dairy' as const },
+  { label: t('farmer.filter.mixed'), value: 'mixed' as const },
+  { label: t('farmer.filter.beef'), value: 'beef' as const },
+  { label: t('farmer.filter.other'), value: 'other' as const },
+]);
 
 const filteredFarmers = computed(() => {
   let result = farmers.value;
@@ -182,6 +200,15 @@ const filteredFarmers = computed(() => {
 
   return result;
 });
+
+function farmingTypeColor(type: string): string {
+  switch (type) {
+    case 'dairy': return 'dark';
+    case 'mixed': return 'warning';
+    case 'beef': return 'grey-6';
+    default: return 'grey';
+  }
+}
 
 async function onRefresh(done: () => void) {
   await farmersStore.fetchFarmers();

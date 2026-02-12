@@ -21,16 +21,22 @@
 
       <!-- Summary Stats -->
       <div class="row q-col-gutter-sm q-mb-md">
-        <div class="col-6">
+        <div class="col-4">
           <div class="stat-inline">
-            <div class="text-h5 text-primary">{{ todayTotal.toFixed(1) }}L</div>
+            <div class="text-h6 text-primary">{{ todayTotal.toFixed(1) }}L</div>
             <div class="text-caption text-grey-7">{{ $t('logs.summary.today') }}</div>
           </div>
         </div>
-        <div class="col-6">
+        <div class="col-4">
           <div class="stat-inline">
-            <div class="text-h5 text-secondary">{{ weekTotal.toFixed(1) }}L</div>
-            <div class="text-caption text-grey-7">{{ $t('logs.summary.thisWeek') }}</div>
+            <div class="text-h6 text-secondary">{{ yesterdayTotal.toFixed(1) }}L</div>
+            <div class="text-caption text-grey-7">{{ $t('logs.summary.yesterday') }}</div>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="stat-inline">
+            <div class="text-h6 text-accent">{{ weekAvg.toFixed(1) }}L</div>
+            <div class="text-caption text-grey-7">{{ $t('logs.summary.weekAvg') }}</div>
           </div>
         </div>
       </div>
@@ -98,7 +104,29 @@
               </q-item-section>
 
               <q-item-section>
-                <q-item-label>{{ log.cow_name || $t('logs.labels.unknownCow') }}</q-item-label>
+                <q-item-label>
+                  <div class="row items-center justify-between">
+                    <span>{{ log.cow_name || $t('logs.labels.unknownCow') }}</span>
+                    <q-chip
+                      v-if="log.fed_diet === true"
+                      dense
+                      size="sm"
+                      color="positive"
+                      text-color="white"
+                    >
+                      {{ $t('logs.labels.fedDietBadge') }}
+                    </q-chip>
+                    <q-chip
+                      v-else
+                      dense
+                      size="sm"
+                      outline
+                      color="grey"
+                    >
+                      {{ $t('logs.labels.noDietBadge') }}
+                    </q-chip>
+                  </div>
+                </q-item-label>
                 <q-item-label caption>
                   <span v-if="log.morning_liters">{{ $t('logs.labels.morning') }}: {{ log.morning_liters }}L</span>
                   <span v-if="log.evening_liters" class="q-ml-sm">{{ $t('logs.labels.evening') }}: {{ log.evening_liters }}L</span>
@@ -220,7 +248,9 @@ const dateRange = ref<{ from: string; to: string } | null>(null);
 const loading = computed(() => milkLogsStore.loading);
 const logs = computed(() => milkLogsStore.logs);
 const todayTotal = computed(() => milkLogsStore.todayTotal);
+const yesterdayTotal = computed(() => milkLogsStore.yesterdayTotal);
 const weekTotal = computed(() => milkLogsStore.thisWeekSummary.total_liters);
+const weekAvg = computed(() => milkLogsStore.thisWeekSummary.average_per_day);
 
 const cowOptions = computed(() => [
   { label: t('logs.filter.allCows'), value: null },
