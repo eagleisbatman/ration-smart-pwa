@@ -212,7 +212,7 @@ import { useRouter } from 'vue-router';
 import { useQuasar } from 'quasar';
 import { useI18n } from 'vue-i18n';
 import { format, subDays } from 'date-fns';
-import { api } from 'src/boot/axios';
+import { api } from 'src/lib/api';
 import { useCowsStore } from 'src/stores/cows';
 import { useReportsStore } from 'src/stores/reports';
 import { useDateFormat } from 'src/composables/useDateFormat';

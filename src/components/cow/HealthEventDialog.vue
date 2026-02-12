@@ -96,7 +96,7 @@ import { useQuasar } from 'quasar';
 import { v4 as uuidv4 } from 'uuid';
 import { format } from 'date-fns';
 import { db, HealthEvent } from 'src/lib/offline/db';
-import { api } from 'src/boot/axios';
+import { api } from 'src/lib/api';
 import { isOnline } from 'src/boot/pwa';
 import { queueCreate, queueUpdate } from 'src/lib/offline/sync-manager';
 import { useAuthStore } from 'src/stores/auth';

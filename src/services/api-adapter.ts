@@ -153,6 +153,17 @@ export const FALLBACK_COUNTRIES = [
 // Cache for country code to UUID mapping
 let countryCache: Record<string, string> | null = null;
 
+// Lazy reference to the Axios instance, set by the boot file to break the circular dependency.
+// api-adapter.ts is imported BY axios.ts (for interceptors), so we can't import axios.ts here.
+let _apiRef: { get: (url: string) => Promise<{ data: unknown }> } | null = null;
+
+/**
+ * Set the Axios API instance (called once from the axios boot file).
+ */
+export function setApiRef(api: { get: (url: string) => Promise<{ data: unknown }> }): void {
+  _apiRef = api;
+}
+
 /**
  * Fetch countries from backend and cache them
  */
@@ -161,10 +172,13 @@ export async function fetchAndCacheCountries(): Promise<Record<string, string>> 
     return countryCache;
   }
 
+  if (!_apiRef) {
+    console.warn('[API Adapter] API not initialized yet, cannot fetch countries');
+    return {};
+  }
+
   try {
-    // Import api dynamically to avoid circular dependency
-    const { api } = await import('src/boot/axios');
-    const response = await api.get('/api/v1/countries');
+    const response = await _apiRef.get('/api/v1/countries');
     const countries = response.data as Array<{ id: string; country_code: string }>;
 
     countryCache = {};
@@ -405,6 +419,7 @@ function mapFeedFromBackend(feed: Record<string, unknown>): Record<string, unkno
     _backend_fd_adf: feed.fd_adf,
     _backend_fd_lg: feed.fd_lg,
     _backend_fd_st: feed.fd_st,
+    season: feed.fd_season ?? feed.season,
     // Timestamps (custom feeds)
     created_at: feed.created_at,
     updated_at: feed.updated_at,
@@ -433,6 +448,7 @@ function mapFeedToBackend(input: Record<string, unknown>): Record<string, unknow
     fd_st: input._backend_fd_st,
     baseline_price: input.price_per_kg ?? input.baseline_price,
     baseline_currency: input.currency ?? input.baseline_currency,
+    fd_season: input.season ?? input.fd_season,
   };
 }
 

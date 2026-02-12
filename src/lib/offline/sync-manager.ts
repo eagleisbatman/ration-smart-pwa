@@ -1,6 +1,6 @@
 import { ref, computed } from 'vue';
 import { db, SyncQueueItem, SyncHistoryEntry } from './db';
-import { api } from 'src/boot/axios';
+import { api } from 'src/lib/api';
 import { isOnline } from 'src/boot/pwa';
 import { i18n } from 'src/boot/i18n';
 

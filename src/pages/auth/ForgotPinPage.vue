@@ -130,7 +130,7 @@
 import { ref, reactive, computed, onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
-import { api } from 'src/boot/axios';
+import { api } from 'src/lib/api';
 import { useAuthStore } from 'src/stores/auth';
 import { formatPhoneE164, getDialCode, getPhoneMask, FALLBACK_COUNTRIES } from 'src/services/api-adapter';
 

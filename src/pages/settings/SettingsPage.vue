@@ -366,7 +366,7 @@ import { useOfflineSync } from 'src/composables/useOfflineSync';
 import { isInstalled, canInstall, installPWA } from 'src/boot/pwa';
 import { db } from 'src/lib/offline/db';
 import { availableLocales, setLocale, getLocale } from 'src/boot/i18n';
-import { api } from 'src/boot/axios';
+import { api } from 'src/lib/api';
 import { useI18n } from 'vue-i18n';
 import SyncHistoryDrawer from 'src/components/pwa/SyncHistoryDrawer.vue';
 import {

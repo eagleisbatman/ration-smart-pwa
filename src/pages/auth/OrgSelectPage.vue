@@ -115,7 +115,7 @@
 import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
-import { api } from 'src/boot/axios';
+import { api } from 'src/lib/api';
 import { getOnboardingItem, setOnboardingItem, removeOnboardingItem } from 'src/lib/onboarding-storage';
 import OnboardingProgress from 'src/components/ui/OnboardingProgress.vue';
 

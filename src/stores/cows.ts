@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import { v4 as uuidv4 } from 'uuid';
-import { api } from 'src/boot/axios';
+import { api } from 'src/lib/api';
 import { db, Cow } from 'src/lib/offline/db';
 import { queueCreate, queueUpdate, queueDelete } from 'src/lib/offline/sync-manager';
 import { useAuthStore } from './auth';

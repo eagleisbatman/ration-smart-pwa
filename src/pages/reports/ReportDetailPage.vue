@@ -124,7 +124,7 @@
 import { ref, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
-import { api } from 'src/boot/axios';
+import { api } from 'src/lib/api';
 import { useDateFormat } from 'src/composables/useDateFormat';
 import { useExport } from 'src/composables/useExport';
 import { db, Report } from 'src/lib/offline/db';

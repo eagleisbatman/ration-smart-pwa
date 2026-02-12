@@ -259,7 +259,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, watch } from 'vue';
-import { api } from 'src/boot/axios';
+import { api } from 'src/lib/api';
 import { useFarmersStore } from 'src/stores/farmers';
 import { YieldData } from 'src/lib/offline/db';
 

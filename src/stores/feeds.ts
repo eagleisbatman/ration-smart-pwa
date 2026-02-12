@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import { v4 as uuidv4 } from 'uuid';
-import { api } from 'src/boot/axios';
+import { api } from 'src/lib/api';
 import { db, Feed } from 'src/lib/offline/db';
 import { queueCreate, queueUpdate, queueDelete } from 'src/lib/offline/sync-manager';
 import { useAuthStore } from './auth';
@@ -170,7 +170,10 @@ export const useFeedsStore = defineStore('feeds', () => {
 
   async function createCustomFeed(input: FeedInput): Promise<Feed | null> {
     const authStore = useAuthStore();
-    if (!authStore.userId) return null;
+    if (!authStore.userId) {
+      error.value = 'Not authenticated. Please log in again.';
+      return null;
+    }
 
     loading.value = true;
     error.value = null;

@@ -56,10 +56,12 @@ export default boot(() => {
     navigator.serviceWorker.ready.then((reg) => {
       registration.value = reg;
 
-      // Check for updates periodically (every 60 seconds)
+      // Check for updates periodically (every 5 minutes, only when visible and online)
       setInterval(() => {
-        reg.update().catch(console.error);
-      }, 60 * 1000);
+        if (document.visibilityState === 'visible' && navigator.onLine) {
+          reg.update().catch(console.error);
+        }
+      }, 5 * 60 * 1000);
 
       // Listen for new service worker
       reg.addEventListener('updatefound', () => {

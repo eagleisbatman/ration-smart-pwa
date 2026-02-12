@@ -47,7 +47,7 @@
               <q-item-label>{{ $t('feed.labels.dmPercent') }}</q-item-label>
             </q-item-section>
             <q-item-section side>
-              <q-item-label class="text-h6">{{ feed.dm_percentage }}%</q-item-label>
+              <q-item-label class="text-h6">{{ feed.dm_percentage != null ? feed.dm_percentage + '%' : '–' }}</q-item-label>
             </q-item-section>
           </q-item>
 
@@ -56,7 +56,7 @@
               <q-item-label>{{ $t('feed.labels.cpPercent') }}</q-item-label>
             </q-item-section>
             <q-item-section side>
-              <q-item-label class="text-h6">{{ feed.cp_percentage }}%</q-item-label>
+              <q-item-label class="text-h6">{{ feed.cp_percentage != null ? feed.cp_percentage + '%' : '–' }}</q-item-label>
             </q-item-section>
           </q-item>
 
@@ -65,7 +65,7 @@
               <q-item-label>{{ $t('feed.labels.tdnPercent') }}</q-item-label>
             </q-item-section>
             <q-item-section side>
-              <q-item-label class="text-h6">{{ feed.tdn_percentage }}%</q-item-label>
+              <q-item-label class="text-h6">{{ feed.tdn_percentage != null ? feed.tdn_percentage + '%' : '–' }}</q-item-label>
             </q-item-section>
           </q-item>
 
