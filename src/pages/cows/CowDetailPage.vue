@@ -83,15 +83,15 @@
 
       <!-- Quick Stats -->
       <div class="row q-col-gutter-sm q-mb-md">
-        <div class="col-4">
+        <div class="col-4 col-xs-4">
           <div class="stat-inline">
-            <div class="text-h6 text-primary">{{ cow.weight_kg }}</div>
+            <div class="text-subtitle1 text-weight-bold text-primary">{{ cow.weight_kg }}</div>
             <div class="text-caption text-grey-7">{{ $t('cow.weightKg') }}</div>
           </div>
         </div>
-        <div class="col-4">
+        <div class="col-4 col-xs-4">
           <div class="stat-inline">
-            <div class="text-h6 text-secondary">{{ cow.milk_yield_liters }}</div>
+            <div class="text-subtitle1 text-weight-bold text-secondary">{{ cow.milk_yield_liters }}</div>
             <div class="text-caption text-grey-7">{{ $t('cow.milkYield') }}</div>
             <div v-if="yieldTrend" class="trend-indicator q-mt-xs">
               <q-icon
@@ -107,9 +107,9 @@
             </div>
           </div>
         </div>
-        <div class="col-4">
+        <div class="col-4 col-xs-4">
           <div class="stat-inline">
-            <div class="text-h6 text-accent">{{ cow.milk_fat_percentage }}{{ $t('units.percent') }}</div>
+            <div class="text-subtitle1 text-weight-bold text-accent">{{ cow.milk_fat_percentage }}{{ $t('units.percent') }}</div>
             <div class="text-caption text-grey-7">{{ $t('cow.fat') }}</div>
           </div>
         </div>

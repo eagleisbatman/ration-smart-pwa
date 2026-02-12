@@ -78,56 +78,7 @@ export default defineConfig((/* ctx */) => {
         cfg.maximumFileSizeToCacheInBytes = 5 * 1024 * 1024; // 5MB
       },
 
-      manifest: {
-        name: 'RationSmart',
-        short_name: 'RationSmart',
-        description: 'Optimize your cattle\'s diet for better productivity and lower costs',
-        display: 'standalone',
-        orientation: 'portrait-primary',
-        background_color: '#ffffff',
-        theme_color: '#2E7D32',
-        start_url: '/',
-        scope: '/',
-        categories: ['agriculture', 'productivity', 'utilities'],
-        icons: [
-          { src: 'icons/icon-72x72.png', sizes: '72x72', type: 'image/png' },
-          { src: 'icons/icon-96x96.png', sizes: '96x96', type: 'image/png' },
-          { src: 'icons/icon-128x128.png', sizes: '128x128', type: 'image/png' },
-          { src: 'icons/icon-144x144.png', sizes: '144x144', type: 'image/png' },
-          { src: 'icons/icon-152x152.png', sizes: '152x152', type: 'image/png' },
-          { src: 'icons/icon-192x192.png', sizes: '192x192', type: 'image/png' },
-          { src: 'icons/icon-384x384.png', sizes: '384x384', type: 'image/png' },
-          { src: 'icons/icon-512x512.png', sizes: '512x512', type: 'image/png' },
-          { src: 'icons/maskable-icon-512x512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
-        ],
-        shortcuts: [
-          {
-            name: 'Log Milk',
-            short_name: 'Log',
-            description: 'Log daily milk production',
-            url: '/logs/new?source=shortcut',
-            icons: [{ src: 'icons/shortcut-log.png', sizes: '192x192' }],
-          },
-          {
-            name: 'Get Diet',
-            short_name: 'Diet',
-            description: 'Get diet recommendation',
-            url: '/diet/new?source=shortcut',
-            icons: [{ src: 'icons/shortcut-diet.png', sizes: '192x192' }],
-          },
-        ],
-      },
-
-      metaVariables: {
-        appleMobileWebAppCapable: 'yes',
-        appleMobileWebAppStatusBarStyle: 'default',
-        appleTouchIcon120: 'icons/apple-icon-120x120.png',
-        appleTouchIcon180: 'icons/apple-icon-180x180.png',
-        appleTouchIcon152: 'icons/apple-icon-152x152.png',
-        appleTouchIcon167: 'icons/apple-icon-167x167.png',
-        msapplicationTileImage: 'icons/ms-icon-144x144.png',
-        msapplicationTileColor: '#2E7D32',
-      },
+      // Manifest is in src-pwa/manifest.json (canonical for @quasar/app-vite v2)
     },
   };
 });

@@ -83,6 +83,7 @@
               <q-item-label>
                 <div class="row items-center justify-between">
                   <span>{{ farmer.name }}</span>
+                  <q-badge v-if="farmer.id === authStore.selfFarmerProfileId" color="info" class="q-ml-xs" :label="$t('farmer.you')" />
                   <q-chip
                     v-if="farmer.farming_type"
                     dense
@@ -155,6 +156,7 @@ import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useFarmersStore } from 'src/stores/farmers';
+import { useAuthStore } from 'src/stores/auth';
 import PullToRefresh from 'src/components/ui/PullToRefresh.vue';
 import SkeletonList from 'src/components/ui/SkeletonList.vue';
 import EmptyState from 'src/components/ui/EmptyState.vue';
@@ -162,6 +164,7 @@ import EmptyState from 'src/components/ui/EmptyState.vue';
 const router = useRouter();
 const { t } = useI18n();
 const farmersStore = useFarmersStore();
+const authStore = useAuthStore();
 
 const searchQuery = ref('');
 const filterType = ref<'all' | 'dairy' | 'mixed' | 'beef' | 'other'>('all');
@@ -196,6 +199,16 @@ const filteredFarmers = computed(() => {
         farmer.district?.toLowerCase().includes(query) ||
         farmer.phone?.includes(query)
     );
+  }
+
+  // Sort self-profile to top
+  const selfId = authStore.selfFarmerProfileId;
+  if (selfId) {
+    result = [...result].sort((a, b) => {
+      if (a.id === selfId) return -1;
+      if (b.id === selfId) return 1;
+      return 0;
+    });
   }
 
   return result;
