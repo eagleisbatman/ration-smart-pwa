@@ -15,13 +15,18 @@ setApiRef(api);
 
 // Configure retry logic for failed requests
 axiosRetry(api, {
-  retries: 3,
+  retries: 2,
   retryDelay: axiosRetry.exponentialDelay,
   retryCondition: (error: AxiosError) => {
+    // Never retry auth failures — let the interceptor handle redirect
+    const responseStatus = error.response?.status;
+    if (responseStatus === 401 || responseStatus === 403) {
+      return false;
+    }
     // Retry on network errors or 5xx server errors
     return (
       axiosRetry.isNetworkOrIdempotentRequestError(error) ||
-      (error.response?.status !== undefined && error.response.status >= 500)
+      (responseStatus !== undefined && responseStatus >= 500)
     );
   },
 });
@@ -66,8 +71,14 @@ api.interceptors.response.use(
   async (error: AxiosError) => {
     const authStore = useAuthStore();
 
-    // Handle 401 Unauthorized - token expired
-    if (error.response?.status === 401) {
+    // Handle 401 Unauthorized / 403 with expired token — redirect to login
+    const status = error.response?.status;
+    const detail = (error.response?.data as { detail?: string })?.detail || '';
+    const isAuthFailure =
+      status === 401 ||
+      (status === 403 && /invalid|expired|token/i.test(detail));
+
+    if (isAuthFailure) {
       // Only show notification if user was previously authenticated
       if (authStore.isAuthenticated) {
         Notify.create({
