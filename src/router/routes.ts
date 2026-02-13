@@ -76,7 +76,7 @@ const routes: RouteRecordRaw[] = [
         path: 'cows/new',
         name: 'cow-new',
         component: () => import('pages/cows/CowFormPage.vue'),
-        meta: { title: 'Add Cow', showBack: true, hideBottomNav: true },
+        meta: { title: 'Add Cow', showBack: true, hideBottomNav: true, hideFab: true },
       },
       {
         path: 'cows/:id',
@@ -88,7 +88,7 @@ const routes: RouteRecordRaw[] = [
         path: 'cows/:id/edit',
         name: 'cow-edit',
         component: () => import('pages/cows/CowFormPage.vue'),
-        meta: { title: 'Edit Cow', showBack: true, hideBottomNav: true },
+        meta: { title: 'Edit Cow', showBack: true, hideBottomNav: true, hideFab: true },
       },
 
       // Diet
@@ -108,13 +108,13 @@ const routes: RouteRecordRaw[] = [
         path: 'diet/compare',
         name: 'diet-compare',
         component: () => import('pages/diet/DietComparePage.vue'),
-        meta: { titleKey: 'diet.compare', showBack: true },
+        meta: { titleKey: 'diet.compare', showBack: true, hideFab: true },
       },
       {
         path: 'diet/:id',
         name: 'diet-detail',
         component: () => import('pages/diet/DietDetailPage.vue'),
-        meta: { title: 'Diet Details', showBack: true },
+        meta: { title: 'Diet Details', showBack: true, hideFab: true },
       },
 
       // Feeds
@@ -122,25 +122,25 @@ const routes: RouteRecordRaw[] = [
         path: 'feeds',
         name: 'feeds',
         component: () => import('pages/feeds/FeedListPage.vue'),
-        meta: { title: 'Feeds' },
+        meta: { title: 'Feeds', hideFab: true },
       },
       {
         path: 'feeds/new',
         name: 'feed-new',
         component: () => import('pages/feeds/FeedFormPage.vue'),
-        meta: { title: 'Add Custom Feed', showBack: true, hideBottomNav: true },
+        meta: { title: 'Add Custom Feed', showBack: true, hideBottomNav: true, hideFab: true },
       },
       {
         path: 'feeds/:id',
         name: 'feed-detail',
         component: () => import('pages/feeds/FeedDetailPage.vue'),
-        meta: { title: 'Feed Details', showBack: true },
+        meta: { title: 'Feed Details', showBack: true, hideFab: true },
       },
       {
         path: 'feeds/:id/edit',
         name: 'feed-edit',
         component: () => import('pages/feeds/FeedFormPage.vue'),
-        meta: { title: 'Edit Feed', showBack: true, hideBottomNav: true },
+        meta: { title: 'Edit Feed', showBack: true, hideBottomNav: true, hideFab: true },
       },
 
       // Milk Logs
@@ -154,13 +154,13 @@ const routes: RouteRecordRaw[] = [
         path: 'logs/new',
         name: 'log-new',
         component: () => import('pages/logs/LogFormPage.vue'),
-        meta: { titleKey: 'logs.form.title.new', showBack: true, hideBottomNav: true },
+        meta: { titleKey: 'logs.form.title.new', showBack: true, hideBottomNav: true, hideFab: true },
       },
       {
         path: 'logs/:id/edit',
         name: 'log-edit',
         component: () => import('pages/logs/LogFormPage.vue'),
-        meta: { titleKey: 'logs.form.title.edit', showBack: true, hideBottomNav: true },
+        meta: { titleKey: 'logs.form.title.edit', showBack: true, hideBottomNav: true, hideFab: true },
       },
 
       // Farmers
@@ -168,31 +168,31 @@ const routes: RouteRecordRaw[] = [
         path: 'farmers',
         name: 'farmers',
         component: () => import('pages/farmers/FarmerListPage.vue'),
-        meta: { titleKey: 'farmer.farmers' },
+        meta: { titleKey: 'farmer.farmers', hideFab: true },
       },
       {
         path: 'farmers/new',
         name: 'farmer-new',
         component: () => import('pages/farmers/FarmerFormPage.vue'),
-        meta: { titleKey: 'farmer.addFarmer', showBack: true, hideBottomNav: true },
+        meta: { titleKey: 'farmer.addFarmer', showBack: true, hideBottomNav: true, hideFab: true },
       },
       {
         path: 'farmers/import',
         name: 'farmer-import',
         component: () => import('pages/farmers/FarmerImportPage.vue'),
-        meta: { titleKey: 'farmers.import.title', showBack: true, hideBottomNav: true },
+        meta: { titleKey: 'farmers.import.title', showBack: true, hideBottomNav: true, hideFab: true },
       },
       {
         path: 'farmers/:id',
         name: 'farmer-detail',
         component: () => import('pages/farmers/FarmerDetailPage.vue'),
-        meta: { titleKey: 'farmer.farmerDetails', showBack: true },
+        meta: { titleKey: 'farmer.farmerDetails', showBack: true, hideFab: true },
       },
       {
         path: 'farmers/:id/edit',
         name: 'farmer-edit',
         component: () => import('pages/farmers/FarmerFormPage.vue'),
-        meta: { titleKey: 'farmer.editFarmer', showBack: true, hideBottomNav: true },
+        meta: { titleKey: 'farmer.editFarmer', showBack: true, hideBottomNav: true, hideFab: true },
       },
 
       // Yields
@@ -200,25 +200,25 @@ const routes: RouteRecordRaw[] = [
         path: 'yields',
         name: 'yields',
         component: () => import('pages/yields/YieldHistoryPage.vue'),
-        meta: { titleKey: 'nav.yieldHistory' },
+        meta: { titleKey: 'nav.yieldHistory', hideFab: true },
       },
       {
         path: 'yields/new',
         name: 'yield-new',
         component: () => import('pages/yields/YieldFormPage.vue'),
-        meta: { titleKey: 'logs.yield.recordYield', showBack: true, hideBottomNav: true },
+        meta: { titleKey: 'logs.yield.recordYield', showBack: true, hideBottomNav: true, hideFab: true },
       },
       {
         path: 'yields/compare-farmers',
         name: 'yield-farmer-compare',
         component: () => import('pages/yields/FarmerYieldComparePage.vue'),
-        meta: { titleKey: 'yields.compare.title', showBack: true },
+        meta: { titleKey: 'yields.compare.title', showBack: true, hideFab: true },
       },
       {
         path: 'yields/:id/edit',
         name: 'yield-edit',
         component: () => import('pages/yields/YieldFormPage.vue'),
-        meta: { titleKey: 'logs.yield.editYield', showBack: true, hideBottomNav: true },
+        meta: { titleKey: 'logs.yield.editYield', showBack: true, hideBottomNav: true, hideFab: true },
       },
 
       // Organization Analytics
@@ -226,7 +226,7 @@ const routes: RouteRecordRaw[] = [
         path: 'analytics',
         name: 'org-analytics',
         component: () => import('pages/yields/OrgAnalyticsPage.vue'),
-        meta: { title: 'Organization Analytics', showBack: true },
+        meta: { title: 'Organization Analytics', showBack: true, hideFab: true },
       },
 
       // Reports
@@ -234,13 +234,13 @@ const routes: RouteRecordRaw[] = [
         path: 'reports',
         name: 'reports',
         component: () => import('pages/reports/ReportListPage.vue'),
-        meta: { title: 'Reports' },
+        meta: { title: 'Reports', hideFab: true },
       },
       {
         path: 'reports/:id',
         name: 'report-detail',
         component: () => import('pages/reports/ReportDetailPage.vue'),
-        meta: { title: 'Report', showBack: true },
+        meta: { title: 'Report', showBack: true, hideFab: true },
       },
 
       // Settings
@@ -248,25 +248,25 @@ const routes: RouteRecordRaw[] = [
         path: 'settings',
         name: 'settings',
         component: () => import('pages/settings/SettingsPage.vue'),
-        meta: { title: 'Settings' },
+        meta: { title: 'Settings', hideFab: true },
       },
       {
         path: 'settings/profile',
         name: 'profile',
         component: () => import('pages/settings/ProfilePage.vue'),
-        meta: { title: 'Profile', showBack: true },
+        meta: { title: 'Profile', showBack: true, hideFab: true },
       },
       {
         path: 'settings/help',
         name: 'help',
         component: () => import('pages/settings/HelpPage.vue'),
-        meta: { titleKey: 'help.title', showBack: true },
+        meta: { titleKey: 'help.title', showBack: true, hideFab: true },
       },
       {
         path: 'settings/privacy',
         name: 'privacy',
         component: () => import('pages/settings/PrivacyPolicyPage.vue'),
-        meta: { titleKey: 'privacy.title', showBack: true },
+        meta: { titleKey: 'privacy.title', showBack: true, hideFab: true },
       },
     ],
   },
