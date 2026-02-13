@@ -83,6 +83,15 @@ export const useFarmersStore = defineStore('farmers', () => {
 
       farmers.value = response.data.farmer_profiles || [];
 
+      // Mark the user's own self-profile so managedFarmers filter works
+      const selfId = authStore.selfFarmerProfileId;
+      if (selfId) {
+        const selfIdx = farmers.value.findIndex((f) => f.id === selfId);
+        if (selfIdx !== -1) {
+          farmers.value[selfIdx] = { ...farmers.value[selfIdx], is_self_profile: true };
+        }
+      }
+
       // Cache to IndexedDB
       await db.farmerProfiles.clear();
       for (const farmer of farmers.value) {
@@ -98,6 +107,14 @@ export const useFarmersStore = defineStore('farmers', () => {
         .toArray();
       if (cached.length > 0) {
         farmers.value = cached.filter((f) => !f._deleted);
+        // Mark self-profile from cache too
+        const selfId = authStore.selfFarmerProfileId;
+        if (selfId) {
+          const selfIdx = farmers.value.findIndex((f) => f.id === selfId);
+          if (selfIdx !== -1) {
+            farmers.value[selfIdx] = { ...farmers.value[selfIdx], is_self_profile: true };
+          }
+        }
       }
     } finally {
       loading.value = false;
@@ -360,6 +377,14 @@ export const useFarmersStore = defineStore('farmers', () => {
 
     if (cached.length > 0) {
       farmers.value = cached.filter((f) => !f._deleted);
+      // Mark self-profile
+      const selfId = authStore.selfFarmerProfileId;
+      if (selfId) {
+        const selfIdx = farmers.value.findIndex((f) => f.id === selfId);
+        if (selfIdx !== -1) {
+          farmers.value[selfIdx] = { ...farmers.value[selfIdx], is_self_profile: true };
+        }
+      }
     }
   }
 

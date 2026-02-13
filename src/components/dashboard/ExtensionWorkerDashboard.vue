@@ -86,25 +86,37 @@
 
     <!-- Managed Farmers View -->
     <template v-if="viewMode === 'managed'">
-      <!-- Quick Stats -->
+      <!-- Stat Cards (shadcn-inspired) -->
       <div class="row q-col-gutter-sm q-mb-md">
         <div class="col-6">
-          <div class="stat-inline">
-            <div class="text-h6 text-primary">{{ farmerCount }}</div>
-            <div class="text-caption text-grey-7">{{ $t('dashboard.farmersManaged') }}</div>
-          </div>
+          <q-card flat class="stat-card stat-card--primary">
+            <q-card-section class="q-pa-md">
+              <div class="stat-card__label">{{ $t('dashboard.farmersManaged') }}</div>
+              <div class="stat-card__value">{{ farmerCount }}</div>
+              <div class="stat-card__footer">
+                <q-icon name="groups" size="14px" class="q-mr-xs" />
+                {{ $t('dashboard.activeProfiles') }}
+              </div>
+            </q-card-section>
+          </q-card>
         </div>
         <div class="col-6">
-          <div class="stat-inline">
-            <div class="text-h6 text-secondary">{{ pendingYieldCount }}</div>
-            <div class="text-caption text-grey-7">{{ $t('dashboard.pendingYields') }}</div>
-          </div>
+          <q-card flat class="stat-card stat-card--secondary">
+            <q-card-section class="q-pa-md">
+              <div class="stat-card__label">{{ $t('dashboard.pendingYields') }}</div>
+              <div class="stat-card__value">{{ pendingYieldCount }}</div>
+              <div class="stat-card__footer">
+                <q-icon name="sync" size="14px" class="q-mr-xs" />
+                {{ $t('dashboard.awaitingSync') }}
+              </div>
+            </q-card-section>
+          </q-card>
         </div>
       </div>
 
       <!-- Quick Actions -->
       <div class="section-label">{{ $t('dashboard.quickActions') }}</div>
-      <div class="action-row q-mb-md">
+      <div class="action-row q-mb-lg">
         <button class="action-row__btn" @click="router.push('/farmers/new')">
           <q-icon name="person_add" />
           {{ $t('farmer.addFarmer') }}
@@ -121,13 +133,15 @@
 
       <!-- Farmers List -->
       <div class="row items-center q-mb-sm">
-        <div class="text-subtitle1">{{ $t('farmer.managedFarmers') }}</div>
+        <div class="text-subtitle1 text-weight-medium">{{ $t('farmer.managedFarmers') }}</div>
         <q-space />
         <q-btn
           flat
           dense
+          no-caps
           color="primary"
           :label="$t('dashboard.viewAll')"
+          icon-right="chevron_right"
           @click="router.push('/farmers')"
         />
       </div>
@@ -136,54 +150,74 @@
         <SkeletonList :count="3" />
       </template>
       <template v-else-if="farmers.length === 0">
-        <q-card flat bordered>
-          <q-card-section class="text-center q-py-lg">
-            <q-icon name="groups" size="48px" color="grey-4" />
-            <div class="text-body2 text-grey-7 q-mt-sm">{{ $t('farmer.noFarmers') }}</div>
+        <q-card flat bordered class="empty-state-card">
+          <q-card-section class="text-center q-py-xl">
+            <div class="empty-state-icon q-mb-md">
+              <q-icon name="groups" size="40px" color="grey-5" />
+            </div>
+            <div class="text-body1 text-weight-medium q-mb-xs">{{ $t('farmer.noFarmers') }}</div>
+            <div class="text-body2 text-grey-6 q-mb-md">{{ $t('farmer.noFarmersDescription') }}</div>
             <q-btn
               :label="$t('farmer.addFarmer')"
               color="primary"
-              flat
-              class="q-mt-sm"
+              unelevated
+              no-caps
+              icon="person_add"
               @click="router.push('/farmers/new')"
             />
           </q-card-section>
         </q-card>
       </template>
       <template v-else>
-        <q-list bordered separator class="rounded-borders">
-          <q-item
-            v-for="farmer in farmers.slice(0, visibleFarmerCount)"
-            :key="farmer.id"
-            v-ripple
-            clickable
-            @click="selectFarmer(farmer)"
-          >
-            <q-item-section avatar>
-              <q-avatar color="primary" text-color="white">
-                <q-icon name="person" />
-              </q-avatar>
-            </q-item-section>
-            <q-item-section>
-              <q-item-label>{{ farmer.name }}</q-item-label>
-              <q-item-label caption>
-                {{ farmer.village || farmer.district || $t('profile.location') }}
-              </q-item-label>
-            </q-item-section>
-            <q-item-section side>
-              <q-chip size="sm" color="grey-3">
-                {{ farmer.total_cattle || 0 }} {{ $t('dashboard.cows') }}
-              </q-chip>
-            </q-item-section>
-            <q-item-section side>
-              <q-icon name="chevron_right" color="grey-6" />
-            </q-item-section>
-          </q-item>
-        </q-list>
+        <q-card flat bordered class="farmer-list-card">
+          <q-list separator>
+            <q-item
+              v-for="farmer in farmers.slice(0, visibleFarmerCount)"
+              :key="farmer.id"
+              v-ripple
+              clickable
+              @click="selectFarmer(farmer)"
+            >
+              <q-item-section avatar>
+                <q-avatar
+                  :color="farmer.is_self_profile ? 'teal-2' : 'primary'"
+                  :text-color="farmer.is_self_profile ? 'teal-9' : 'white'"
+                  size="40px"
+                >
+                  <q-icon :name="farmer.is_self_profile ? 'person' : 'agriculture'" size="20px" />
+                </q-avatar>
+              </q-item-section>
+              <q-item-section>
+                <q-item-label class="row items-center">
+                  <span class="text-weight-medium">{{ farmer.name }}</span>
+                  <q-badge
+                    v-if="farmer.is_self_profile"
+                    color="teal-2"
+                    text-color="teal-9"
+                    class="q-ml-sm"
+                    :label="$t('farmer.you')"
+                  />
+                </q-item-label>
+                <q-item-label caption class="text-grey-6">
+                  <q-icon name="location_on" size="12px" class="q-mr-xs" />{{ farmer.village || farmer.district || $t('profile.location') }}
+                </q-item-label>
+              </q-item-section>
+              <q-item-section side>
+                <q-badge outline color="grey-7" class="farmer-cattle-badge">
+                  {{ farmer.total_cattle || 0 }} {{ $t('dashboard.cows') }}
+                </q-badge>
+              </q-item-section>
+              <q-item-section side>
+                <q-icon name="chevron_right" color="grey-5" size="20px" />
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-card>
         <div v-if="farmers.length > visibleFarmerCount" class="text-center q-mt-sm">
           <q-btn
             flat
             dense
+            no-caps
             color="primary"
             :label="$t('dashboard.showMore')"
             icon="expand_more"
@@ -197,7 +231,7 @@
         <MilkProductionChart ref="chartRef" :height="180" />
       </div>
 
-      <!-- Recent Activity Across All Farmers -->
+      <!-- Recent Activity -->
       <div class="section-label">{{ $t('dashboard.recentActivity') }}</div>
       <template v-if="activitiesLoading">
         <div class="text-center q-py-md">
@@ -205,30 +239,34 @@
         </div>
       </template>
       <template v-else-if="recentActivities.length === 0">
-        <div class="text-center q-py-md text-grey-6">
-          <q-icon name="timeline" size="32px" />
-          <div class="text-caption q-mt-xs">{{ $t('dashboard.noRecentActivity') }}</div>
-        </div>
+        <q-card flat bordered class="empty-state-card">
+          <q-card-section class="text-center q-py-lg">
+            <q-icon name="timeline" size="32px" color="grey-5" />
+            <div class="text-caption text-grey-6 q-mt-xs">{{ $t('dashboard.noRecentActivity') }}</div>
+          </q-card-section>
+        </q-card>
       </template>
       <template v-else>
-        <q-list bordered separator class="rounded-borders">
-          <q-item v-for="activity in recentActivities" :key="activity.id" dense>
-            <q-item-section avatar>
-              <q-avatar
-                :color="activity.color"
-                text-color="white"
-                size="32px"
-              >
-                <q-icon v-if="activity.type !== 'cow'" :name="activity.icon" size="16px" />
-                <q-img v-else :src="activity.icon" width="16px" height="16px" />
-              </q-avatar>
-            </q-item-section>
-            <q-item-section>
-              <q-item-label class="text-body2">{{ activity.description }}</q-item-label>
-              <q-item-label caption>{{ activity.relativeTime }}</q-item-label>
-            </q-item-section>
-          </q-item>
-        </q-list>
+        <q-card flat bordered class="activity-list-card">
+          <q-list separator>
+            <q-item v-for="activity in recentActivities" :key="activity.id" dense>
+              <q-item-section avatar>
+                <q-avatar
+                  :color="activity.color"
+                  text-color="white"
+                  size="32px"
+                >
+                  <q-icon v-if="activity.type !== 'cow'" :name="activity.icon" size="16px" />
+                  <q-img v-else :src="activity.icon" width="16px" height="16px" />
+                </q-avatar>
+              </q-item-section>
+              <q-item-section>
+                <q-item-label class="text-body2">{{ activity.description }}</q-item-label>
+                <q-item-label caption>{{ activity.relativeTime }}</q-item-label>
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-card>
       </template>
     </template>
 
@@ -496,8 +534,78 @@ defineExpose({ viewMode, refresh });
   }
 }
 
-.rounded-borders {
+/* shadcn-inspired stat cards */
+.stat-card {
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.2s ease;
+
+  &:hover {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  }
+
+  &--primary {
+    background: linear-gradient(to top, #fff, rgba($primary, 0.04));
+  }
+
+  &--secondary {
+    background: linear-gradient(to top, #fff, rgba($secondary, 0.04));
+  }
+}
+
+.stat-card__label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.55);
+  margin-bottom: 4px;
+}
+
+.stat-card__value {
+  font-size: 1.75rem;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-card--primary .stat-card__value {
+  color: $primary;
+}
+
+.stat-card--secondary .stat-card__value {
+  color: $secondary;
+}
+
+.stat-card__footer {
+  font-size: 0.7rem;
+  color: rgba(0, 0, 0, 0.45);
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+}
+
+/* Farmer & activity list cards */
+.farmer-list-card,
+.activity-list-card,
+.empty-state-card {
   border-radius: 12px;
   overflow: hidden;
+}
+
+.farmer-cattle-badge {
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
+.empty-state-icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  background: rgba(0, 0, 0, 0.04);
 }
 </style>

@@ -74,62 +74,63 @@
               <q-avatar v-if="farmer.image_url" size="40px">
                 <q-img :src="farmer.image_url" :ratio="1" />
               </q-avatar>
-              <q-avatar v-else :color="farmer.is_active ? 'teal' : 'grey'" text-color="white">
-                <q-icon name="agriculture" />
+              <q-avatar
+                v-else
+                :color="farmer.is_self_profile ? 'teal-2' : farmer.is_active ? 'primary' : 'grey-4'"
+                :text-color="farmer.is_self_profile ? 'teal-9' : 'white'"
+                size="40px"
+              >
+                <q-icon :name="farmer.is_self_profile ? 'person' : 'agriculture'" size="20px" />
               </q-avatar>
             </q-item-section>
 
             <q-item-section>
               <q-item-label>
-                <div class="row items-center justify-between">
-                  <span>{{ farmer.name }}</span>
-                  <q-badge v-if="farmer.id === authStore.selfFarmerProfileId" color="info" class="q-ml-xs" :label="$t('farmer.you')" />
-                  <q-chip
+                <div class="row items-center no-wrap">
+                  <span class="text-weight-medium">{{ farmer.name }}</span>
+                  <q-badge
+                    v-if="farmer.is_self_profile"
+                    color="teal-2"
+                    text-color="teal-9"
+                    class="q-ml-sm"
+                    :label="$t('farmer.you')"
+                  />
+                  <q-space />
+                  <q-badge
                     v-if="farmer.farming_type"
-                    dense
-                    size="sm"
                     outline
                     :color="farmingTypeColor(farmer.farming_type)"
-                    class="q-ml-sm"
                   >
                     {{ $t(`farmer.farmingTypes.${farmer.farming_type}`) }}
-                  </q-chip>
+                  </q-badge>
                 </div>
               </q-item-label>
               <q-item-label v-if="farmer.phone" caption class="text-grey-6">
                 <q-icon name="phone" size="12px" class="q-mr-xs" />{{ farmer.phone }}
               </q-item-label>
               <q-item-label caption>
+                <q-icon name="location_on" size="12px" class="q-mr-xs" />
                 <span v-if="farmer.village">{{ farmer.village }}</span>
                 <span v-if="farmer.village && farmer.district">, </span>
                 <span v-if="farmer.district">{{ farmer.district }}</span>
               </q-item-label>
-              <div class="q-mt-xs">
-                <q-chip
-                  dense
-                  size="sm"
-                  outline
-                  color="grey"
-                >
+              <div class="q-mt-xs row items-center q-gutter-xs">
+                <q-badge outline color="grey-7" class="q-pa-xs">
                   {{ farmer.total_cattle }} {{ $t('farmer.cattle') }}
-                </q-chip>
+                </q-badge>
+                <q-badge
+                  v-if="!farmer._synced"
+                  color="warning"
+                  text-color="white"
+                  class="q-pa-xs"
+                >
+                  <q-icon name="sync" size="10px" class="q-mr-xs" />{{ $t('farmer.pending') }}
+                </q-badge>
               </div>
             </q-item-section>
 
             <q-item-section side>
-              <div class="row items-center">
-                <q-chip
-                  v-if="!farmer._synced"
-                  size="sm"
-                  color="warning"
-                  text-color="white"
-                  icon="sync"
-                  dense
-                >
-                  {{ $t('farmer.pending') }}
-                </q-chip>
-                <q-icon name="chevron_right" color="grey" />
-              </div>
+              <q-icon name="chevron_right" color="grey-5" size="20px" />
             </q-item-section>
           </q-item>
         </q-list>
@@ -202,14 +203,11 @@ const filteredFarmers = computed(() => {
   }
 
   // Sort self-profile to top
-  const selfId = authStore.selfFarmerProfileId;
-  if (selfId) {
-    result = [...result].sort((a, b) => {
-      if (a.id === selfId) return -1;
-      if (b.id === selfId) return 1;
-      return 0;
-    });
-  }
+  result = [...result].sort((a, b) => {
+    if (a.is_self_profile) return -1;
+    if (b.is_self_profile) return 1;
+    return 0;
+  });
 
   return result;
 });
