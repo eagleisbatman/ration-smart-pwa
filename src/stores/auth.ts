@@ -259,6 +259,10 @@ export const useAuthStore = defineStore('auth', () => {
         preferredLanguage.value = userData.language_code;
         localStorage.setItem('preferred_language', userData.language_code);
       }
+      if (userData?.profile_image_url) {
+        profileImage.value = userData.profile_image_url;
+        localStorage.setItem('profile_image', userData.profile_image_url);
+      }
 
       // If self_farmer_profile_id wasn't in login response, fetch full profile
       if (!selfFarmerProfileId.value && responseUserId) {
@@ -306,6 +310,10 @@ export const useAuthStore = defineStore('auth', () => {
       if (response.data.self_farmer_profile_id) {
         selfFarmerProfileId.value = response.data.self_farmer_profile_id;
         localStorage.setItem('self_farmer_profile_id', response.data.self_farmer_profile_id);
+      }
+      if (response.data.profile_image_url) {
+        profileImage.value = response.data.profile_image_url;
+        localStorage.setItem('profile_image', response.data.profile_image_url);
       }
 
       // If self_farmer_profile_id still not set, check via self-profile endpoint

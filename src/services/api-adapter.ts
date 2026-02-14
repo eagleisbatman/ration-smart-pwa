@@ -268,6 +268,7 @@ function mapCowFromBackend(cow: Record<string, unknown>): Record<string, unknown
     pregnancy_month: daysPreg ? Math.round(daysPreg / 30) : undefined,
     is_active: cow.is_active ?? true,
     created_at: cow.created_at,
+    image_url: cow.image_url,
     updated_at: cow.updated_at,
     farmer_profile_id: cow.farmer_profile_id,
     // Pass through extra backend fields for round-tripping
@@ -299,6 +300,7 @@ function mapCowToBackend(input: Record<string, unknown>): Record<string, unknown
     parity: input._backend_parity ?? undefined,
     target_milk_yield: input._backend_target_milk_yield ?? undefined,
     days_of_pregnancy: isPregnant ? (pregnancyMonth ?? 0) * 30 : 0,
+    image_url: input.image_url,
     is_active: input.is_active,
     farmer_profile_id: input.farmer_profile_id || undefined,
   };
