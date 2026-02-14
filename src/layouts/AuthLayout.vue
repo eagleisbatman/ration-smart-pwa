@@ -59,12 +59,7 @@ const isOnboarding = computed(() =>
     max-width: 560px;
   }
 
-  :global(.body--dark) & {
-    background: var(--q-dark, #1d1d1d);
-    box-shadow:
-      0 4px 16px rgba(0, 0, 0, 0.3),
-      0 12px 40px rgba(0, 0, 0, 0.4);
-  }
+  // Dark mode override is in app.scss (scoped :global() compiles incorrectly)
 }
 
 .auth-logo {

@@ -202,8 +202,6 @@ onMounted(() => {
   border-radius: $radius-loose;
   background: linear-gradient(135deg, #f0fdf4 0%, #fff 100%);
 
-  :global(.body--dark) & {
-    background: linear-gradient(135deg, rgba(46, 125, 50, 0.12) 0%, var(--q-dark, #1d1d1d) 100%);
-  }
+  // Dark mode override is in app.scss (scoped :global() compiles incorrectly)
 }
 </style>

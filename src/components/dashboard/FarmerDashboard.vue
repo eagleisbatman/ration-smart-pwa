@@ -541,10 +541,5 @@ defineExpose({ refresh });
   background: linear-gradient(135deg, rgba(25, 118, 210, 0.04) 0%, rgba(100, 181, 246, 0.08) 100%);
 }
 
-// Dark mode overrides
-:global(.body--dark) {
-  .onboarding-card {
-    background: linear-gradient(135deg, rgba(25, 118, 210, 0.12) 0%, rgba(100, 181, 246, 0.08) 100%);
-  }
-}
+// Dark mode overrides are in app.scss (scoped :global() compiles incorrectly)
 </style>
