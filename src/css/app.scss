@@ -699,6 +699,13 @@ body {
     background: linear-gradient(to top, #09090B, rgba(255, 255, 255, 0.04)) !important;
   }
 
+  .stat-card__value {
+    color: var(--q-primary) !important; // $primary compiles to #18181B → invisible on dark
+  }
+  .stat-card--secondary .stat-card__value {
+    color: var(--q-secondary) !important;
+  }
+
   .stat-card__label {
     color: rgba(255, 255, 255, 0.6) !important;
   }
