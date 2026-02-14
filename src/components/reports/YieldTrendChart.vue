@@ -178,7 +178,10 @@
 import { ref, computed } from 'vue';
 import { format, parseISO } from 'date-fns';
 import { getDateFnsLocaleSync } from 'src/composables/useDateFormat';
-import { CHART } from 'src/lib/chart-colors';
+import { useChartColors } from 'src/lib/chart-colors';
+
+const chartColors = useChartColors();
+const CHART = chartColors;
 
 interface ChartDataPoint {
   date: string;

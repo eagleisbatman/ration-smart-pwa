@@ -168,7 +168,10 @@ import { ref, computed } from 'vue';
 import { format, parseISO } from 'date-fns';
 import { getDateFnsLocaleSync } from 'src/composables/useDateFormat';
 import { useCurrency } from 'src/composables/useCurrency';
-import { CHART } from 'src/lib/chart-colors';
+import { useChartColors } from 'src/lib/chart-colors';
+
+const chartColors = useChartColors();
+const CHART = chartColors;
 import type { Diet } from 'src/lib/offline/db';
 
 const props = withDefaults(

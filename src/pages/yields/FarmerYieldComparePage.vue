@@ -260,7 +260,10 @@ import { ref, computed, onMounted, watch } from 'vue';
 import { api } from 'src/lib/api';
 import { useFarmersStore } from 'src/stores/farmers';
 import { YieldData } from 'src/lib/offline/db';
-import { CHART } from 'src/lib/chart-colors';
+import { useChartColors } from 'src/lib/chart-colors';
+
+const chartColors = useChartColors();
+const CHART = chartColors;
 
 interface FarmerYieldStats {
   farmerId: string;
