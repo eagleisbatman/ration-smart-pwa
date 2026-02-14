@@ -61,7 +61,6 @@
             rounded
             unelevated
             toggle-color="primary"
-            toggle-text-color="white"
             color="white"
             text-color="grey-8"
             :options="[
