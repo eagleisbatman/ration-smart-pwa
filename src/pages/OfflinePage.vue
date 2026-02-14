@@ -7,24 +7,24 @@
 
       <!-- No cached data available -->
       <template v-if="hasCachedData === false">
-        <p class="text-body1 text-grey-7 q-mb-md" style="max-width: 340px">
+        <p class="text-body1 text-grey-7 q-mb-md text-constrain text-constrain--lg">
           {{ $t('offline.noCachedData') }}
         </p>
-        <p class="text-body2 text-grey-6 q-mb-lg" style="max-width: 340px">
+        <p class="text-body2 text-grey-6 q-mb-lg text-constrain text-constrain--lg">
           {{ $t('offline.connectToLoad') }}
         </p>
       </template>
 
       <!-- Has cached data, just needs network for this page -->
       <template v-else-if="hasCachedData === true">
-        <p class="text-body1 text-grey-7 q-mb-lg" style="max-width: 300px">
+        <p class="text-body1 text-grey-7 q-mb-lg text-constrain text-constrain--md">
           {{ $t('offline.requiresConnection') }}
         </p>
       </template>
 
       <!-- Still checking cache status -->
       <template v-else>
-        <p class="text-body1 text-grey-7 q-mb-lg" style="max-width: 300px">
+        <p class="text-body1 text-grey-7 q-mb-lg text-constrain text-constrain--md">
           {{ $t('offline.requiresConnection') }}
         </p>
       </template>

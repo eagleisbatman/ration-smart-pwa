@@ -484,6 +484,11 @@ button,
   max-width: 400px;
 }
 
+.dialog-card--lg {
+  width: 100%;
+  max-width: 450px;
+}
+
 // ============================================
 // Chart Styles (shared by YieldTrendChart, DietCostChart, etc.)
 // ============================================
@@ -554,6 +559,92 @@ button,
   width: 100%;
   height: 100%;
   border-radius: 50%;
+}
+
+// ============================================
+// Scrollable Containers
+// ============================================
+
+// Flex-fill scrollable area (fills remaining flex space)
+.scroll-fill {
+  flex: 1;
+  overflow-y: auto;
+}
+
+// Max-height constrained, vertically scrollable
+.scroll-list {
+  overflow-y: auto;
+}
+
+.scroll-list--300 {
+  max-height: 300px;
+}
+
+.scroll-list--50vh {
+  max-height: 50vh;
+}
+
+.scroll-list--80vh {
+  max-height: 80vh;
+}
+
+// ============================================
+// Constrained Text Blocks (info pages, empty states)
+// ============================================
+
+.text-constrain {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.text-constrain--sm {
+  max-width: 280px;
+}
+
+.text-constrain--md {
+  max-width: 300px;
+}
+
+.text-constrain--lg {
+  max-width: 340px;
+}
+
+// ============================================
+// Legend Dots (colored indicator in comparison views)
+// ============================================
+
+.legend-dot {
+  width: 12px;
+  height: 12px;
+  min-width: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.legend-dot--sm {
+  width: 10px;
+  height: 10px;
+  min-width: 10px;
+}
+
+// ============================================
+// Micro Text (smaller than text-caption)
+// ============================================
+
+.text-micro {
+  font-size: 0.7rem;
+}
+
+.text-micro--xs {
+  font-size: 0.65rem;
+}
+
+// ============================================
+// Sparkline Spacing
+// ============================================
+
+.sparkline-labels {
+  margin-top: 2px;
 }
 
 // ============================================

@@ -39,7 +39,7 @@
           rx="2"
         />
       </svg>
-      <div class="row justify-between text-caption text-grey-5" style="margin-top: 2px">
+      <div class="row justify-between text-caption text-grey-5 sparkline-labels">
         <span v-for="(label, idx) in barLabels" :key="idx" class="bar-label">{{ label }}</span>
       </div>
     </q-card-section>

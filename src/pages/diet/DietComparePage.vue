@@ -276,13 +276,13 @@
               </q-item-section>
               <q-item-section side class="text-right">
                 <div class="row items-center q-gutter-sm">
-                  <div class="text-caption" style="min-width: 60px;">
+                  <div class="text-caption compare-amount-col">
                     <div class="text-weight-bold" :class="feed.onlyInB ? 'text-grey-4' : ''">
                       {{ feed.amountA?.toFixed(2) ?? '-' }} {{ $t('diet.kg') }}
                     </div>
                     <div class="text-grey-6">A</div>
                   </div>
-                  <div class="text-caption" style="min-width: 60px;">
+                  <div class="text-caption compare-amount-col">
                     <div class="text-weight-bold" :class="feed.onlyInA ? 'text-grey-4' : ''">
                       {{ feed.amountB?.toFixed(2) ?? '-' }} {{ $t('diet.kg') }}
                     </div>
@@ -503,3 +503,9 @@ onMounted(async () => {
   loading.value = false;
 });
 </script>
+
+<style lang="scss" scoped>
+.compare-amount-col {
+  min-width: 60px;
+}
+</style>

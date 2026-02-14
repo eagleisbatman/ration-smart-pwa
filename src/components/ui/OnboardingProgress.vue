@@ -69,19 +69,19 @@ withDefaults(defineProps<{
   &--active {
     background-color: var(--q-primary);
     color: #fff;
-    box-shadow: 0 0 0 4px rgba(46, 125, 50, 0.18);
+    box-shadow: 0 0 0 4px rgba($primary, 0.18);
   }
 
   &--upcoming {
-    background-color: #e0e0e0;
-    color: #9e9e9e;
+    background-color: $grey-200;
+    color: $grey-400;
   }
 }
 
 .progress-connector {
   width: 40px;
   height: 3px;
-  background-color: #e0e0e0;
+  background-color: $grey-200;
   flex-shrink: 0;
   transition: background-color 0.3s ease;
   border-radius: 2px;

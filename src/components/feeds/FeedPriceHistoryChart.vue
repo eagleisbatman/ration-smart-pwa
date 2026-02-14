@@ -25,7 +25,7 @@
               :y1="tick.y"
               :x2="svgWidth - chartPadding.right"
               :y2="tick.y"
-              stroke="#e0e0e0"
+              :stroke="CHART.grid"
               stroke-width="0.5"
               stroke-dasharray="4,4"
             />
@@ -38,7 +38,7 @@
               :y="tick.y + 4"
               text-anchor="end"
               class="chart-label"
-              fill="#9e9e9e"
+              :fill="CHART.axisTextLight"
               font-size="10"
             >
               {{ tick.label }}
@@ -52,7 +52,7 @@
               :y="svgHeight - 4"
               text-anchor="middle"
               class="chart-label"
-              fill="#9e9e9e"
+              :fill="CHART.axisTextLight"
               font-size="9"
             >
               {{ label.text }}
@@ -68,8 +68,8 @@
             <!-- Gradient definition -->
             <defs>
               <linearGradient id="priceGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="#1976d2" stop-opacity="0.4" />
-                <stop offset="100%" stop-color="#1976d2" stop-opacity="0.05" />
+                <stop offset="0%" :stop-color="CHART.primary" stop-opacity="0.4" />
+                <stop offset="100%" :stop-color="CHART.primary" stop-opacity="0.05" />
               </linearGradient>
             </defs>
 
@@ -77,7 +77,7 @@
             <path
               :d="linePath"
               fill="none"
-              stroke="#1976d2"
+              :stroke="CHART.primary"
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -90,8 +90,8 @@
               :cx="point.x"
               :cy="point.y"
               :r="i === chartPoints.length - 1 ? 5 : 3"
-              :fill="i === chartPoints.length - 1 ? '#1976d2' : 'white'"
-              :stroke="i === chartPoints.length - 1 ? 'white' : '#1976d2'"
+              :fill="i === chartPoints.length - 1 ? CHART.primary : 'white'"
+              :stroke="i === chartPoints.length - 1 ? 'white' : CHART.primary"
               :stroke-width="i === chartPoints.length - 1 ? 2 : 1.5"
             />
 
@@ -101,7 +101,7 @@
               :x="chartPoints[chartPoints.length - 1].x"
               :y="chartPoints[chartPoints.length - 1].y - 10"
               text-anchor="middle"
-              fill="#1976d2"
+              :fill="CHART.primary"
               font-size="11"
               font-weight="bold"
             >
@@ -168,6 +168,7 @@
 import { ref, computed, onMounted } from 'vue';
 import { db, FeedPriceHistory } from 'src/lib/offline/db';
 import { useCurrency } from 'src/composables/useCurrency';
+import { CHART } from 'src/lib/chart-colors';
 
 const props = defineProps<{
   feedId: string;

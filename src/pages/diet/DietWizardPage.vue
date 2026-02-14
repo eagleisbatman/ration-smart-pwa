@@ -151,7 +151,7 @@
           </template>
         </q-input>
 
-        <q-list bordered separator class="rounded-borders" style="max-height: 300px; overflow: auto">
+        <q-list bordered separator class="rounded-borders scroll-list scroll-list--300">
           <q-item
             v-for="feed in filteredFeeds"
             :key="feed.id"

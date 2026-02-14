@@ -34,7 +34,7 @@
 
         <q-btn v-if="showMenu" flat round dense icon="more_vert">
           <q-menu>
-            <q-list style="min-width: 150px">
+            <q-list class="user-menu-list">
               <slot name="menu-items" />
             </q-list>
           </q-menu>
@@ -300,5 +300,9 @@ watch(
 
 .q-footer {
   padding-bottom: env(safe-area-inset-bottom);
+}
+
+.user-menu-list {
+  min-width: 150px;
 }
 </style>

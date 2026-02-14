@@ -47,7 +47,7 @@
       </q-card-section>
 
       <!-- Content -->
-      <q-card-section class="q-pa-none" style="flex: 1; overflow-y: auto">
+      <q-card-section class="q-pa-none scroll-fill">
         <!-- No cows message -->
         <div v-if="activeCows.length === 0" class="text-center q-pa-xl text-grey-6">
           <q-icon name="water_drop" size="64px" class="q-mb-md" />

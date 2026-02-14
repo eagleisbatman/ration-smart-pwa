@@ -100,9 +100,8 @@
                 size="12px"
               />
               <span
-                class="text-caption q-ml-xs"
+                class="text-caption q-ml-xs text-micro--xs"
                 :class="`text-${yieldTrend.color}`"
-                style="font-size: 0.65rem"
               >{{ yieldTrend.percentText }}</span>
             </div>
           </div>

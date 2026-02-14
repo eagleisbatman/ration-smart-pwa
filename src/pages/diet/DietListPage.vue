@@ -26,7 +26,6 @@
           flat
           bordered
           class="q-mb-md"
-          style="border-radius: 12px;"
         >
           <q-expansion-item
             icon="trending_up"

@@ -21,8 +21,8 @@
       </div>
 
       <!-- Simple table view for milk production data -->
-      <div v-if="chartData.length > 0 && !loading" class="chart-table" style="overflow-x: auto">
-        <q-markup-table flat bordered dense class="text-left" style="min-width: 320px">
+      <div v-if="chartData.length > 0 && !loading" class="chart-table chart-scroll-wrapper">
+        <q-markup-table flat bordered dense class="text-left">
           <thead>
             <tr class="bg-grey-2">
               <th>{{ $t('chart.date') }}</th>

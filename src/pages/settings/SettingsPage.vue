@@ -284,7 +284,7 @@
 
     <!-- Organization Dialog -->
     <q-dialog v-model="showOrgDialog">
-      <q-card style="max-height: 80vh">
+      <q-card class="scroll-list--80vh">
         <q-card-section>
           <div class="text-h6">{{ $t('settings.selectOrganization') }}</div>
         </q-card-section>
@@ -300,7 +300,7 @@
             </template>
           </q-input>
         </q-card-section>
-        <q-list style="max-height: 300px; overflow-y: auto">
+        <q-list class="scroll-list scroll-list--300">
           <!-- Not affiliated -->
           <q-item
             v-ripple
