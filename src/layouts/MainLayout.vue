@@ -133,15 +133,13 @@
       <q-fab
         icon="add"
         direction="up"
-        color="dark"
-        text-color="white"
+        color="primary"
         padding="sm"
         vertical-actions-align="right"
         @click="medium()"
       >
         <q-fab-action
-          color="grey-8"
-          text-color="white"
+          color="primary"
           :icon="COW_ICON"
           :label="$t('nav.addCow')"
           label-position="left"
@@ -150,8 +148,7 @@
           @click="onFabAction('/cows/new')"
         />
         <q-fab-action
-          color="grey-8"
-          text-color="white"
+          color="primary"
           icon="water_drop"
           :label="$t('nav.logMilk')"
           label-position="left"
@@ -160,8 +157,7 @@
           @click="onFabAction('/logs/new')"
         />
         <q-fab-action
-          color="grey-8"
-          text-color="white"
+          color="primary"
           icon="menu_book"
           :label="$t('nav.getDiet')"
           label-position="left"

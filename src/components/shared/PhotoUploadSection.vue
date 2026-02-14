@@ -7,8 +7,8 @@
         :ratio="1"
         class="rounded-borders photo-avatar"
       />
-      <q-avatar v-else size="120px" color="grey-3">
-        <q-icon name="photo_camera" size="40px" color="grey-5" />
+      <q-avatar v-else size="120px" color="grey-2" class="photo-placeholder">
+        <q-icon name="photo_camera" size="40px" color="grey-6" />
       </q-avatar>
       <q-btn
         v-if="modelValue"
@@ -85,6 +85,10 @@ function onRemove() {
   position: relative;
   display: inline-block;
   cursor: pointer;
+}
+
+.photo-placeholder {
+  border: 2px dashed rgba(0, 0, 0, 0.15);
 }
 
 .photo-remove-btn {

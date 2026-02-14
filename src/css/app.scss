@@ -268,16 +268,18 @@ body {
 // ============================================
 
 .q-tabs {
-  background: rgba(0, 0, 0, 0.03);
+  background: #F4F4F5; // zinc-100 — shadcn muted
   border-radius: $radius-default;
   padding: 4px;
 
   .q-tab {
     border-radius: 6px;
+    font-weight: 500;
 
     &.q-tab--active {
       background: white;
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      color: #09090B; // zinc-950 foreground
     }
   }
 }
@@ -569,10 +571,12 @@ body {
 // ============================================
 
 .body--dark {
-  // Flip primary to near-white so buttons/active-tabs invert
-  --q-primary: #FAFAFA;
+  // shadcn zinc: primary flips to zinc-200 (not pure white — softer contrast)
+  --q-primary: #E4E4E7;
   --q-secondary: #A1A1AA;
-  --q-accent: #FAFAFA;
+  --q-accent: #E4E4E7;
+  --q-dark: #18181B;
+  --q-info: #A1A1AA;
 
   // Header and drawer adapt
   .main-header {
@@ -608,9 +612,16 @@ body {
     background: rgba(255, 255, 255, 0.06);
 
     .q-tab.q-tab--active {
-      background: rgba(255, 255, 255, 0.12);
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+      background: #27272A; // zinc-800 — matches shadcn accent
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+      color: #FAFAFA;
     }
+  }
+
+  // Filter chips: active chip in dark mode
+  .q-chip--selected,
+  .q-chip[class*="bg-primary"] {
+    color: #18181B !important; // dark text on light chip
   }
 
   // Unread/highlight backgrounds (grey-2 etc.)
@@ -706,12 +717,6 @@ body {
     background: rgba(255, 255, 255, 0.04) !important;
   }
 
-  // Auth layout container
-  .auth-container {
-    background: #1d1d1d !important;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3), 0 12px 40px rgba(0, 0, 0, 0.4) !important;
-  }
-
   // EW view toggle button (white bg in light mode)
   .q-btn-toggle .q-btn--flat {
     background: rgba(255, 255, 255, 0.08);
@@ -723,9 +728,26 @@ body {
     filter: invert(1);
   }
 
+  // Photo upload placeholder
+  .photo-placeholder {
+    border-color: rgba(255, 255, 255, 0.2) !important;
+    background: rgba(255, 255, 255, 0.06) !important;
+  }
+
+  // FAB needs dark text on light primary bg
+  .q-fab > .q-btn--fab {
+    color: #18181B !important;
+  }
+
   // Auth layout logo border adapts to dark bg
   .auth-logo {
-    border-color: #1d1d1d;
+    border-color: #18181B;
+  }
+
+  // Auth container uses zinc-900
+  .auth-container {
+    background: #18181B !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3), 0 12px 40px rgba(0, 0, 0, 0.4) !important;
   }
 }
 
