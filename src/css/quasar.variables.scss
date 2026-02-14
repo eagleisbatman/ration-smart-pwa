@@ -42,3 +42,10 @@ $chart-primary : #1976D2; // primary data series
 $chart-warning : #FF9800; // secondary / warning series
 $chart-success : #4CAF50; // positive / average line
 $chart-tooltip-bg: rgba(0, 0, 0, 0.8);
+
+// ============================================
+// Neutral Palette (borders, disabled, placeholders)
+// ============================================
+
+$grey-200 : #E0E0E0;  // borders, inactive tracks, grid lines
+$grey-400 : #9E9E9E;  // placeholder text, disabled text

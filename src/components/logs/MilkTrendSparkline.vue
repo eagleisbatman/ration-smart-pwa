@@ -53,7 +53,7 @@
       </svg>
 
       <!-- Day labels -->
-      <div class="row justify-between text-caption text-grey-5" style="margin-top: 2px;">
+      <div class="row justify-between text-caption text-grey-5 sparkline-labels">
         <span v-for="(day, idx) in dayLabels" :key="idx">{{ day }}</span>
       </div>
     </q-card-section>

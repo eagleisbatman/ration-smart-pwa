@@ -1,6 +1,6 @@
 <template>
   <q-dialog :model-value="modelValue" @update:model-value="$emit('update:modelValue', $event)">
-    <q-card style="width: 100%; max-width: 450px;">
+    <q-card class="dialog-card--lg">
       <q-card-section class="row items-center q-pb-none">
         <div class="text-h6">
           {{ editEvent ? $t('health.editEvent') : $t('health.addEvent') }}

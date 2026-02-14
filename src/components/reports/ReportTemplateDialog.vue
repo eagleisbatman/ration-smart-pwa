@@ -1,6 +1,6 @@
 <template>
   <q-dialog :model-value="modelValue" @update:model-value="$emit('update:modelValue', $event)">
-    <q-card style="width: 100%; max-width: 400px;">
+    <q-card class="dialog-card">
       <q-card-section class="row items-center q-pb-none">
         <div class="text-h6">{{ $t('reports.templates.saveTemplate') }}</div>
         <q-space />

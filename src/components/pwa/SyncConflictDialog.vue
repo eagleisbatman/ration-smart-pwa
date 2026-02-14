@@ -40,7 +40,7 @@
 
       <q-separator />
 
-      <q-card-section class="q-pa-none" style="max-height: 50vh; overflow-y: auto">
+      <q-card-section class="q-pa-none scroll-list scroll-list--50vh">
         <q-list separator>
           <q-item v-for="conflict in conflicts" :key="conflict.id" class="q-pa-md">
             <q-item-section>

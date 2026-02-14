@@ -22,7 +22,7 @@
           :y1="tick.y"
           :x2="svgWidth - padding.right"
           :y2="tick.y"
-          stroke="#E0E0E0"
+          :stroke="CHART.grid"
           stroke-width="0.5"
         />
 
@@ -33,7 +33,7 @@
           :x="padding.left - 6"
           :y="tick.y + 3"
           text-anchor="end"
-          fill="#666"
+          :fill="CHART.axisText"
           font-size="10"
         >{{ tick.label }}</text>
 
@@ -45,7 +45,7 @@
             :x="svgWidth - padding.right + 6"
             :y="tick.y + 3"
             text-anchor="start"
-            fill="#FF9800"
+            :fill="CHART.warning"
             font-size="10"
           >{{ tick.label }}</text>
         </template>
@@ -57,7 +57,7 @@
           :x="label.x"
           :y="svgHeight - padding.bottom + 16"
           text-anchor="middle"
-          fill="#666"
+          :fill="CHART.axisText"
           font-size="10"
         >{{ label.text }}</text>
 
@@ -67,7 +67,7 @@
           :y1="averageY"
           :x2="svgWidth - padding.right"
           :y2="averageY"
-          stroke="#4CAF50"
+          :stroke="CHART.success"
           stroke-width="1"
           stroke-dasharray="6,3"
         />
@@ -76,7 +76,7 @@
         <text
           :x="padding.left + 4"
           :y="averageY - 4"
-          fill="#4CAF50"
+          :fill="CHART.success"
           font-size="9"
         >{{ $t('chart.average') }}: {{ averageYield.toFixed(1) }}{{ $t('chart.liters') }}</text>
 
@@ -84,7 +84,7 @@
         <path
           :d="yieldLinePath"
           fill="none"
-          stroke="#1976D2"
+          :stroke="CHART.primary"
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
@@ -95,7 +95,7 @@
           v-if="showFat && hasFatData"
           :d="fatLinePath"
           fill="none"
-          stroke="#FF9800"
+          :stroke="CHART.warning"
           stroke-width="1.5"
           stroke-linecap="round"
           stroke-linejoin="round"
@@ -109,7 +109,7 @@
           :cx="point.x"
           :cy="point.y"
           r="3"
-          fill="#1976D2"
+          :fill="CHART.primary"
           stroke="white"
           stroke-width="1"
         />
@@ -122,7 +122,7 @@
             :cx="point.x"
             :cy="point.y"
             r="2.5"
-            fill="#FF9800"
+            :fill="CHART.warning"
             stroke="white"
             stroke-width="1"
           />
@@ -134,7 +134,7 @@
           :cx="yieldPoints[selectedIndex].x"
           :cy="yieldPoints[selectedIndex].y"
           r="5"
-          fill="#1976D2"
+          :fill="CHART.primary"
           stroke="white"
           stroke-width="2"
         />
@@ -178,6 +178,7 @@
 import { ref, computed } from 'vue';
 import { format, parseISO } from 'date-fns';
 import { getDateFnsLocaleSync } from 'src/composables/useDateFormat';
+import { CHART } from 'src/lib/chart-colors';
 
 interface ChartDataPoint {
   date: string;

@@ -4,7 +4,7 @@
 
     <div class="text-h6 q-mb-sm">{{ title }}</div>
 
-    <p class="text-body2 text-grey-7 q-mb-lg" style="max-width: 280px; margin: 0 auto">
+    <p class="text-body2 text-grey-7 q-mb-lg text-constrain text-constrain--sm">
       {{ description }}
     </p>
 

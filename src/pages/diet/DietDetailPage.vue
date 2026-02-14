@@ -88,8 +88,8 @@
 
         <!-- Feed Breakdown (table format per wireframe) -->
         <div class="text-subtitle1 q-mb-sm">{{ $t('diet.recommendedFeeds') }}</div>
-        <q-card flat bordered class="q-mb-md" style="overflow-x: auto">
-          <q-markup-table flat bordered dense class="text-left" style="min-width: 320px">
+        <q-card flat bordered class="q-mb-md chart-scroll-wrapper">
+          <q-markup-table flat bordered dense class="text-left">
             <thead>
               <tr class="bg-grey-2">
                 <th>{{ $t('diet.ingredient') }}</th>
@@ -304,7 +304,7 @@
 
     <!-- Share Bottom Sheet -->
     <q-dialog v-model="showShareSheet" position="bottom">
-      <q-card style="width: 100%; max-width: 400px;">
+      <q-card class="dialog-card">
         <q-card-section class="row items-center q-pb-none">
           <div class="text-h6">{{ $t('export.shareOptions') }}</div>
           <q-space />

@@ -95,8 +95,7 @@
                 <q-badge
                   :color="farmerColor(index)"
                   rounded
-                  class="q-mr-sm"
-                  style="width: 12px; height: 12px; min-width: 12px;"
+                  class="q-mr-sm legend-dot"
                 />
                 <div class="text-subtitle2 ellipsis">{{ stats.farmerName }}</div>
               </div>
@@ -154,7 +153,7 @@
               text-anchor="end"
               class="chart-label"
               font-size="11"
-              fill="#999"
+              :fill="CHART.axisTextLight"
             >
               {{ tick }}
             </text>
@@ -167,7 +166,7 @@
               :y1="yScale(tick)"
               :x2="chartWidth - chartPadding.right"
               :y2="yScale(tick)"
-              stroke="#eee"
+              :stroke="CHART.gridLight"
               stroke-width="1"
             />
 
@@ -199,7 +198,7 @@
                 :y="chartHeight - 4"
                 text-anchor="middle"
                 font-size="10"
-                fill="#666"
+                :fill="CHART.axisText"
               >
                 {{ truncateName(stats.farmerName) }}
               </text>
@@ -211,7 +210,7 @@
               :y1="chartHeight - chartPadding.bottom"
               :x2="chartWidth - chartPadding.right"
               :y2="chartHeight - chartPadding.bottom"
-              stroke="#ccc"
+              :stroke="CHART.baseline"
               stroke-width="1"
             />
           </svg>
@@ -238,8 +237,7 @@
                   <q-badge
                     :color="farmerColor(index)"
                     rounded
-                    class="q-mr-sm"
-                    style="width: 10px; height: 10px; min-width: 10px;"
+                    class="q-mr-sm legend-dot legend-dot--sm"
                   />
                   <span class="ellipsis">{{ stats.farmerName }}</span>
                 </div>
@@ -262,6 +260,7 @@ import { ref, computed, onMounted, watch } from 'vue';
 import { api } from 'src/lib/api';
 import { useFarmersStore } from 'src/stores/farmers';
 import { YieldData } from 'src/lib/offline/db';
+import { CHART } from 'src/lib/chart-colors';
 
 interface FarmerYieldStats {
   farmerId: string;

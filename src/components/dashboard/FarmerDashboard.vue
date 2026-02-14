@@ -175,9 +175,8 @@
               size="12px"
             />
             <span
-              class="text-caption q-ml-xs"
+              class="text-caption q-ml-xs text-micro"
               :class="`text-${milkTrend.color}`"
-              style="font-size: 0.7rem"
             >{{ milkTrend.percentText }}</span>
           </div>
         </div>

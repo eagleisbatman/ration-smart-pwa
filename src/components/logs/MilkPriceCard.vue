@@ -15,7 +15,7 @@
                 {{ $t('logs.price.notSet') }}
               </span>
             </div>
-            <div v-else class="row items-center q-gutter-x-xs" style="flex: 1">
+            <div v-else class="row items-center q-gutter-x-xs col">
               <q-input
                 ref="priceInputRef"
                 v-model.number="editPriceValue"

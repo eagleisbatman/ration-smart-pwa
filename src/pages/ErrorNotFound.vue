@@ -5,7 +5,7 @@
 
       <h1 class="text-h5 q-mb-sm">{{ $t('errors.pageNotFound') }}</h1>
 
-      <p class="text-body1 text-grey-7 q-mb-lg" style="max-width: 300px">
+      <p class="text-body1 text-grey-7 q-mb-lg text-constrain text-constrain--md">
         {{ $t('errors.pageNotFoundDescription') }}
       </p>
 
