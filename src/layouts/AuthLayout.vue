@@ -68,7 +68,7 @@ const isOnboarding = computed(() =>
 @media (max-width: 480px) {
   .auth-container {
     padding: 24px 20px;
-    border-radius: 16px;
+    border-radius: $radius-dialog;
   }
 }
 

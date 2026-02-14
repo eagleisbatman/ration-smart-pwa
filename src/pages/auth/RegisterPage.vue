@@ -365,6 +365,6 @@ async function onSubmit() {
   letter-spacing: 0.025em;
   padding-top: 14px;
   padding-bottom: 14px;
-  border-radius: 12px;
+  border-radius: $radius-loose;
 }
 </style>

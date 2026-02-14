@@ -155,12 +155,12 @@ defineExpose({
 <style lang="scss" scoped>
 .a2hs-card {
   max-width: 340px;
-  border-radius: 16px;
+  border-radius: $radius-dialog;
 }
 
 .ios-instructions {
   background: $grey-2;
-  border-radius: 12px;
+  border-radius: $radius-loose;
   padding: 16px;
 
   ol {
@@ -185,7 +185,7 @@ defineExpose({
   background: $primary;
   color: white;
   padding: 12px 16px;
-  border-radius: 12px;
+  border-radius: $radius-loose;
   display: flex;
   align-items: center;
   cursor: pointer;

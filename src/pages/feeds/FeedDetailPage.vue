@@ -216,7 +216,7 @@ onMounted(async () => {
 
 <style lang="scss" scoped>
 .feed-hero-image {
-  border-radius: 12px;
+  border-radius: $radius-loose;
   max-height: 220px;
 }
 </style>

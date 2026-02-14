@@ -455,7 +455,7 @@ async function logoutFallback() {
 
 .location-section {
   border: 1px solid $grey-4;
-  border-radius: 8px;
+  border-radius: $radius-default;
   padding: 16px;
 }
 

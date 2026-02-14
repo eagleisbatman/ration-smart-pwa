@@ -522,14 +522,14 @@ defineExpose({ viewMode, refresh });
 .view-toggle {
   .q-btn-toggle {
     border: 1px solid $primary;
-    border-radius: 8px;
+    border-radius: $radius-default;
     overflow: hidden;
   }
 }
 
 /* shadcn-inspired stat cards */
 .stat-card {
-  border-radius: 12px;
+  border-radius: $radius-loose;
   border: 1px solid rgba(0, 0, 0, 0.08);
   transition: box-shadow 0.2s ease;
 
@@ -581,7 +581,7 @@ defineExpose({ viewMode, refresh });
 .farmer-list-card,
 .activity-list-card,
 .empty-state-card {
-  border-radius: 12px;
+  border-radius: $radius-loose;
   overflow: hidden;
 }
 
@@ -598,7 +598,7 @@ defineExpose({ viewMode, refresh });
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 16px;
+  border-radius: $radius-dialog;
   background: rgba(0, 0, 0, 0.04);
 }
 </style>

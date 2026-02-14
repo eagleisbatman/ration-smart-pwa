@@ -526,7 +526,7 @@ defineExpose({ refresh });
 }
 
 .rounded-borders {
-  border-radius: 12px;
+  border-radius: $radius-loose;
   overflow: hidden;
 }
 

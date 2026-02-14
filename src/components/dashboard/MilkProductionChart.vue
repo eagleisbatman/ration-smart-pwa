@@ -246,12 +246,12 @@ defineExpose({ refresh });
 
 <style lang="scss" scoped>
 .milk-production-chart {
-  border-radius: 12px;
+  border-radius: $radius-loose;
 }
 
 .period-toggle {
   border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
+  border-radius: $radius-default;
   overflow: hidden;
 
   .q-btn {
