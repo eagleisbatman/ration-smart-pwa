@@ -250,6 +250,7 @@ async function onSubmit() {
     name: form.name,
     country_code: form.country_code,
     language: form.language,
+    profile_image_url: profileImage.value,
   });
 
   if (success) {
