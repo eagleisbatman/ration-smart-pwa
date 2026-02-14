@@ -1,15 +1,15 @@
 import { boot } from 'quasar/wrappers';
+import { Dark } from 'quasar';
 
-export default boot(({ app }) => {
-  const { $q } = app.config.globalProperties;
+export default boot(() => {
   const saved = localStorage.getItem('darkMode');
 
   if (saved === '1') {
-    $q.dark.set(true);
+    Dark.set(true);
   } else if (saved === '0') {
-    $q.dark.set(false);
+    Dark.set(false);
   } else {
     // No preference saved — follow system preference
-    $q.dark.set('auto');
+    Dark.set('auto');
   }
 });

@@ -577,28 +577,7 @@ defineExpose({ viewMode, refresh });
   align-items: center;
 }
 
-// Dark mode overrides for stat cards
-:global(.body--dark) {
-  .stat-card {
-    border-color: rgba(255, 255, 255, 0.1);
-
-    &--primary {
-      background: linear-gradient(to top, var(--q-dark-page, #121212), rgba($primary, 0.15));
-    }
-
-    &--secondary {
-      background: linear-gradient(to top, var(--q-dark-page, #121212), rgba($secondary, 0.15));
-    }
-  }
-
-  .stat-card__label {
-    color: rgba(255, 255, 255, 0.6);
-  }
-
-  .stat-card__footer {
-    color: rgba(255, 255, 255, 0.45);
-  }
-}
+// Dark mode overrides are in app.scss (scoped :global() compiles incorrectly)
 
 /* Farmer & activity list cards */
 .farmer-list-card,

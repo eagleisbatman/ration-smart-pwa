@@ -644,5 +644,52 @@ body {
   .q-separator {
     background: rgba(255, 255, 255, 0.1);
   }
+
+  // ---- Component-level overrides ----
+  // These must live here (not in scoped <style>) because Vue's scoped
+  // :global(.body--dark) compilation strips nested selectors.
+  // !important is needed to override [data-v-xxx] scoped specificity.
+
+  // EW Dashboard stat cards
+  .stat-card {
+    border-color: rgba(255, 255, 255, 0.1) !important;
+  }
+
+  .stat-card--primary {
+    background: linear-gradient(to top, #121212, rgba(46, 125, 50, 0.15)) !important;
+  }
+
+  .stat-card--secondary {
+    background: linear-gradient(to top, #121212, rgba(85, 139, 47, 0.15)) !important;
+  }
+
+  .stat-card__label {
+    color: rgba(255, 255, 255, 0.6) !important;
+  }
+
+  .stat-card__footer {
+    color: rgba(255, 255, 255, 0.45) !important;
+  }
+
+  // Farmer Dashboard onboarding card
+  .onboarding-card {
+    background: linear-gradient(135deg, rgba(25, 118, 210, 0.12) 0%, rgba(100, 181, 246, 0.08) 100%) !important;
+  }
+
+  // MilkPriceCard
+  .milk-price-card {
+    background: linear-gradient(135deg, rgba(46, 125, 50, 0.12) 0%, #1d1d1d 100%) !important;
+  }
+
+  // Auth layout container
+  .auth-container {
+    background: #1d1d1d !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3), 0 12px 40px rgba(0, 0, 0, 0.4) !important;
+  }
+
+  // EW view toggle button (white bg in light mode)
+  .q-btn-toggle .q-btn--flat {
+    background: rgba(255, 255, 255, 0.08);
+  }
 }
 
