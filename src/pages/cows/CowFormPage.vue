@@ -48,6 +48,23 @@
         </q-card>
       </q-dialog>
 
+      <!-- Farmer Selection (only in create mode) -->
+      <q-select
+        v-if="!isEditing"
+        v-model="selectedFarmerId"
+        :label="$t('cow.selectFarmer')"
+        outlined
+        :options="farmerOptions"
+        emit-value
+        map-options
+        :loading="farmersLoading"
+        :rules="[(val: string) => !!val || $t('cow.validation.farmerRequired')]"
+      >
+        <template #prepend>
+          <q-icon name="person" />
+        </template>
+      </q-select>
+
       <!-- Basic Info Section -->
       <div class="text-subtitle1 text-weight-medium q-mb-sm">{{ $t('cow.basicInfo') }}</div>
 
@@ -227,6 +244,7 @@ import { useQuasar } from 'quasar';
 import { useI18n } from 'vue-i18n';
 import { useCowsStore, CowInput } from 'src/stores/cows';
 import { useAuthStore } from 'src/stores/auth';
+import { useFarmersStore } from 'src/stores/farmers';
 import { useHapticFeedback } from 'src/composables/useHapticFeedback';
 import { useImageUpload } from 'src/composables/useImageUpload';
 
@@ -236,6 +254,7 @@ const $q = useQuasar();
 const { t } = useI18n();
 const cowsStore = useCowsStore();
 const authStore = useAuthStore();
+const farmersStore = useFarmersStore();
 const { success, error: hapticError, warning, medium } = useHapticFeedback();
 const { captureFromCamera, selectFromGallery, clearImage } = useImageUpload();
 
@@ -244,6 +263,30 @@ const showPhotoOptions = ref(false);
 const cowId = computed(() => route.params.id as string | undefined);
 const farmerProfileId = computed(() => route.query.farmer_id as string | undefined);
 const isEditing = computed(() => !!cowId.value);
+
+// Farmer selection
+const selectedFarmerId = ref<string>('');
+const farmersLoading = computed(() => farmersStore.loading);
+
+const farmerOptions = computed(() => {
+  const options: Array<{ label: string; value: string }> = [];
+
+  // Add "My Cow" option if user has a self profile
+  if (authStore.selfFarmerProfileId) {
+    options.push({
+      label: `${authStore.user?.name || t('farmer.me')} (${t('farmer.you')})`,
+      value: authStore.selfFarmerProfileId,
+    });
+  }
+
+  // Add managed farmers
+  for (const farmer of farmersStore.managedFarmers) {
+    if (farmer.id === authStore.selfFarmerProfileId) continue; // skip self, already added
+    options.push({ label: farmer.name, value: farmer.id });
+  }
+
+  return options;
+});
 
 const form = reactive<CowInput>({
   name: '',
@@ -345,7 +388,7 @@ async function onSubmit() {
       hapticError(); // Haptic feedback on error
     }
   } else {
-    const cowInput = { ...form, farmer_profile_id: farmerProfileId.value };
+    const cowInput = { ...form, farmer_profile_id: selectedFarmerId.value || farmerProfileId.value };
     const cow = await cowsStore.createCow(cowInput);
     if (cow) {
       success(); // Haptic feedback on successful operation
@@ -377,6 +420,21 @@ function confirmDelete() {
 }
 
 onMounted(async () => {
+  // Clear any stale errors from previous navigation
+  cowsStore.error = null;
+
+  // Load farmers for the selector
+  await farmersStore.fetchFarmers();
+
+  // Pre-select farmer from URL query param, or default to self
+  if (farmerProfileId.value) {
+    selectedFarmerId.value = farmerProfileId.value;
+  } else if (authStore.selfFarmerProfileId) {
+    selectedFarmerId.value = authStore.selfFarmerProfileId;
+  } else if (farmerOptions.value.length === 1) {
+    selectedFarmerId.value = farmerOptions.value[0].value;
+  }
+
   // Fetch breeds based on user's country
   await authStore.fetchCountries();
   const userCountryCode = authStore.userCountry;

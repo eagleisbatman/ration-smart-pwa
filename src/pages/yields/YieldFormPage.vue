@@ -242,6 +242,9 @@ async function onSubmit() {
 }
 
 onMounted(async () => {
+  // Clear any stale errors from previous navigation
+  yieldsStore.error = null;
+
   // Load farmers
   await farmersStore.fetchFarmers();
 

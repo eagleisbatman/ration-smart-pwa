@@ -349,6 +349,9 @@ function confirmDelete() {
 }
 
 onMounted(async () => {
+  // Clear any stale errors from previous navigation
+  feedsStore.error = null;
+
   if (isEditing.value) {
     const feed = await feedsStore.getFeed(feedId.value!);
     if (feed && feed.is_custom) {

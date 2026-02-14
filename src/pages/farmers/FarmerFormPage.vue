@@ -339,6 +339,9 @@ async function onArchive() {
 }
 
 onMounted(() => {
+  // Clear any stale errors from previous navigation
+  farmersStore.error = null;
+
   loadFarmer();
   // Load current organization for default assignment
   organizationsStore.fetchCurrentOrganization();
