@@ -739,14 +739,53 @@ body {
     color: #18181B !important;
   }
 
-  // Auth layout logo border adapts to dark bg
-  .auth-logo {
-    border-color: #18181B;
+  // ---- Primary bg: text must be dark since --q-primary flips to light ----
+  // Covers submit buttons, unelevated primary buttons, badges, toggles
+  .q-btn.bg-primary {
+    color: #18181B !important;
   }
 
-  // Auth container uses zinc-900
+  // ---- btn-toggle: inactive buttons adapt to dark surface ----
+  // All toggles use color="white" for inactive state → white bg is jarring
+  .q-btn-toggle .q-btn.bg-white {
+    background: rgba(255, 255, 255, 0.06) !important;
+    color: #A1A1AA !important;
+  }
+
+  // ---- Grey text: brighten for dark background readability ----
+  // grey-7 (#616161) on zinc-900 = 3.4:1 contrast (fails WCAG AA)
+  // grey-8 (#424242) on zinc-900 = 2.1:1 contrast (barely visible)
+  .text-grey-7 {
+    color: rgba(255, 255, 255, 0.5) !important;
+  }
+  .text-grey-8 {
+    color: rgba(255, 255, 255, 0.65) !important;
+  }
+
+  // ---- Separator with explicit color prop ----
+  // Quasar's .bg-grey-3 { background: #E0E0E0 !important } overrides our generic fix
+  .q-separator.bg-grey-3 {
+    background: rgba(255, 255, 255, 0.1) !important;
+  }
+
+  // ---- Checkbox: dark check on light primary bg ----
+  .q-checkbox__inner--truthy .q-checkbox__bg {
+    color: #18181B !important;
+  }
+
+  // ---- Auth layout ----
+  // Page bg darker than card for visual separation (zinc-950 vs zinc-900)
+  .auth-layout {
+    background: #09090B !important;
+  }
+
+  .auth-logo {
+    border-color: #27272A; // zinc-800 — subtle ring between dark surfaces
+  }
+
   .auth-container {
     background: #18181B !important;
+    border: 1px solid rgba(255, 255, 255, 0.08);
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3), 0 12px 40px rgba(0, 0, 0, 0.4) !important;
   }
 }
