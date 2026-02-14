@@ -8,6 +8,7 @@ import { useCowsStore } from './cows';
 import { useFeedsStore } from './feeds';
 import { isOnline } from 'src/boot/pwa';
 import { getCountryId } from 'src/services/api-adapter';
+import { extractUserFriendlyError } from 'src/lib/error-messages';
 
 export interface DietInput {
   cow_id?: string;
@@ -137,7 +138,7 @@ export const useDietsStore = defineStore('diets', () => {
       diets.value = sortWithActiveFirst(allDiets);
 
       if (diets.value.length === 0) {
-        error.value = extractErrorMessage(err);
+        error.value = extractUserFriendlyError(err);
       }
     } finally {
       loading.value = false;
@@ -259,7 +260,7 @@ export const useDietsStore = defineStore('diets', () => {
       currentDiet.value = serverDiet;
       return serverDiet;
     } catch (err) {
-      error.value = extractErrorMessage(err);
+      error.value = extractUserFriendlyError(err);
 
       // Remove placeholder on error
       diets.value = diets.value.filter((d) => d.id !== localId);
@@ -289,7 +290,7 @@ export const useDietsStore = defineStore('diets', () => {
       });
       return response.data;
     } catch (err) {
-      error.value = extractErrorMessage(err);
+      error.value = extractUserFriendlyError(err);
       return null;
     } finally {
       loading.value = false;
@@ -314,7 +315,7 @@ export const useDietsStore = defineStore('diets', () => {
 
       return true;
     } catch (err) {
-      error.value = extractErrorMessage(err);
+      error.value = extractUserFriendlyError(err);
       return false;
     } finally {
       loading.value = false;
@@ -365,7 +366,7 @@ export const useDietsStore = defineStore('diets', () => {
 
       return true;
     } catch (err) {
-      error.value = extractErrorMessage(err);
+      error.value = extractUserFriendlyError(err);
       return false;
     } finally {
       loading.value = false;
@@ -406,7 +407,7 @@ export const useDietsStore = defineStore('diets', () => {
 
       return true;
     } catch (err) {
-      error.value = extractErrorMessage(err);
+      error.value = extractUserFriendlyError(err);
       return false;
     } finally {
       loading.value = false;
@@ -503,16 +504,3 @@ export const useDietsStore = defineStore('diets', () => {
     getInputDataForRegeneration,
   };
 });
-
-function extractErrorMessage(err: unknown): string {
-  if (err && typeof err === 'object' && 'response' in err) {
-    const response = (err as { response?: { data?: { detail?: string } } }).response;
-    if (response?.data?.detail) {
-      return response.data.detail;
-    }
-  }
-  if (err instanceof Error) {
-    return err.message;
-  }
-  return 'An unexpected error occurred';
-}

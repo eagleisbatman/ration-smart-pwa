@@ -3,6 +3,7 @@ import { ref, computed } from 'vue';
 import { api } from 'src/lib/api';
 import { db, User } from 'src/lib/offline/db';
 import { fetchAndCacheCountries, setCountryCache } from 'src/services/api-adapter';
+import { extractUserFriendlyError } from 'src/lib/error-messages';
 
 export interface Country {
   id: string;
@@ -181,7 +182,7 @@ export const useAuthStore = defineStore('auth', () => {
 
       return true;
     } catch (err) {
-      error.value = extractErrorMessage(err);
+      error.value = extractUserFriendlyError(err);
       return false;
     } finally {
       loading.value = false;
@@ -266,7 +267,7 @@ export const useAuthStore = defineStore('auth', () => {
 
       return true;
     } catch (err) {
-      error.value = extractErrorMessage(err);
+      error.value = extractUserFriendlyError(err);
       return false;
     } finally {
       loading.value = false;
@@ -342,7 +343,7 @@ export const useAuthStore = defineStore('auth', () => {
       await db.users.put(response.data);
       return true;
     } catch (err) {
-      error.value = extractErrorMessage(err);
+      error.value = extractUserFriendlyError(err);
       return false;
     } finally {
       loading.value = false;
@@ -363,7 +364,7 @@ export const useAuthStore = defineStore('auth', () => {
       });
       return true;
     } catch (err) {
-      error.value = extractErrorMessage(err);
+      error.value = extractUserFriendlyError(err);
       return false;
     } finally {
       loading.value = false;
@@ -408,7 +409,7 @@ export const useAuthStore = defineStore('auth', () => {
 
       return true;
     } catch (err) {
-      error.value = extractErrorMessage(err);
+      error.value = extractUserFriendlyError(err);
       return false;
     } finally {
       loading.value = false;
@@ -438,7 +439,7 @@ export const useAuthStore = defineStore('auth', () => {
 
       return true;
     } catch (err) {
-      error.value = extractErrorMessage(err);
+      error.value = extractUserFriendlyError(err);
       return false;
     } finally {
       loading.value = false;
@@ -593,17 +594,3 @@ export const useAuthStore = defineStore('auth', () => {
     initialize,
   };
 });
-
-// Helper to extract error message
-function extractErrorMessage(err: unknown): string {
-  if (err && typeof err === 'object' && 'response' in err) {
-    const response = (err as { response?: { data?: { detail?: string } } }).response;
-    if (response?.data?.detail) {
-      return response.data.detail;
-    }
-  }
-  if (err instanceof Error) {
-    return err.message;
-  }
-  return 'An unexpected error occurred';
-}

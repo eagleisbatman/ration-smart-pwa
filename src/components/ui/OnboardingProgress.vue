@@ -57,7 +57,7 @@ withDefaults(defineProps<{
   align-items: center;
   justify-content: center;
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 500;
   flex-shrink: 0;
   transition: all 0.3s ease;
 

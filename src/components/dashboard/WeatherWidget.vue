@@ -390,7 +390,7 @@ onMounted(() => {
 }
 
 .weather-temp {
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1.1;
 }
 

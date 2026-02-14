@@ -7,6 +7,7 @@ import { db, MilkLog } from 'src/lib/offline/db';
 import { queueCreate, queueUpdate, queueDelete } from 'src/lib/offline/sync-manager';
 import { useAuthStore } from './auth';
 import { isOnline } from 'src/boot/pwa';
+import { extractUserFriendlyError } from 'src/lib/error-messages';
 
 export interface MilkLogInput {
   cow_id: string;
@@ -175,7 +176,7 @@ export const useMilkLogsStore = defineStore('milkLogs', () => {
         .toArray();
 
       if (logs.value.length === 0) {
-        error.value = extractErrorMessage(err);
+        error.value = extractUserFriendlyError(err);
       }
     } finally {
       loading.value = false;
@@ -247,7 +248,7 @@ export const useMilkLogsStore = defineStore('milkLogs', () => {
         return newLog;
       }
     } catch (err) {
-      error.value = extractErrorMessage(err);
+      error.value = extractUserFriendlyError(err);
 
       if (!isOnline.value) {
         await queueCreate('milk_log', newLog.id, { ...input, total_liters: totalLiters });
@@ -309,7 +310,7 @@ export const useMilkLogsStore = defineStore('milkLogs', () => {
 
       return true;
     } catch (err) {
-      error.value = extractErrorMessage(err);
+      error.value = extractUserFriendlyError(err);
 
       if (!isOnline.value) {
         await queueUpdate('milk_log', id, input as unknown as Record<string, unknown>);
@@ -342,7 +343,7 @@ export const useMilkLogsStore = defineStore('milkLogs', () => {
 
       return true;
     } catch (err) {
-      error.value = extractErrorMessage(err);
+      error.value = extractUserFriendlyError(err);
 
       if (!isOnline.value) {
         await queueDelete('milk_log', id);
@@ -399,16 +400,3 @@ export const useMilkLogsStore = defineStore('milkLogs', () => {
     getLogByDate,
   };
 });
-
-function extractErrorMessage(err: unknown): string {
-  if (err && typeof err === 'object' && 'response' in err) {
-    const response = (err as { response?: { data?: { detail?: string } } }).response;
-    if (response?.data?.detail) {
-      return response.data.detail;
-    }
-  }
-  if (err instanceof Error) {
-    return err.message;
-  }
-  return 'An unexpected error occurred';
-}

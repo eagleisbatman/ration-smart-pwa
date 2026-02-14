@@ -128,7 +128,7 @@ export function useExport() {
       .no-print { display: none; }
     }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       color: #333;
       max-width: 700px;
       margin: 0 auto;
@@ -172,7 +172,7 @@ export function useExport() {
     }
     .meta-value {
       font-size: 18px;
-      font-weight: 600;
+      font-weight: 500;
       color: #333;
     }
     h2 {

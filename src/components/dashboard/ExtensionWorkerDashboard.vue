@@ -555,7 +555,7 @@ defineExpose({ viewMode, refresh });
 
 .stat-card__value {
   font-size: 1.75rem;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1.2;
   letter-spacing: -0.02em;
   font-variant-numeric: tabular-nums;

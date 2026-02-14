@@ -3,6 +3,7 @@ import { ref, computed } from 'vue';
 import { api } from 'src/lib/api';
 import { db, Organization } from 'src/lib/offline/db';
 import { useAuthStore } from './auth';
+import { extractUserFriendlyError } from 'src/lib/error-messages';
 
 export interface OrganizationInput {
   name: string;
@@ -25,18 +26,6 @@ export const useOrganizationsStore = defineStore('organizations', () => {
   const organizationCount = computed(() => organizations.value.length);
   const hasOrganization = computed(() => !!currentOrganization.value);
 
-  // Helper to extract error message
-  function extractErrorMessage(err: unknown): string {
-    if (err && typeof err === 'object' && 'response' in err) {
-      const axiosError = err as { response?: { data?: { detail?: string } } };
-      return axiosError.response?.data?.detail || 'An error occurred';
-    }
-    if (err instanceof Error) {
-      return err.message;
-    }
-    return 'An unexpected error occurred';
-  }
-
   // Actions
   async function fetchOrganizations(includeInactive = false): Promise<void> {
     loading.value = true;
@@ -55,7 +44,7 @@ export const useOrganizationsStore = defineStore('organizations', () => {
         await db.organizations.put({ ...org, _synced: true });
       }
     } catch (err) {
-      error.value = extractErrorMessage(err);
+      error.value = extractUserFriendlyError(err);
 
       // Try to load from IndexedDB cache
       const cached = await db.organizations.toArray();
@@ -86,7 +75,7 @@ export const useOrganizationsStore = defineStore('organizations', () => {
 
       return org;
     } catch (err) {
-      error.value = extractErrorMessage(err);
+      error.value = extractUserFriendlyError(err);
 
       // Try cache
       const cached = await db.organizations.get(id);
@@ -125,7 +114,7 @@ export const useOrganizationsStore = defineStore('organizations', () => {
 
       return org;
     } catch (err) {
-      error.value = extractErrorMessage(err);
+      error.value = extractUserFriendlyError(err);
       return null;
     } finally {
       loading.value = false;
@@ -156,7 +145,7 @@ export const useOrganizationsStore = defineStore('organizations', () => {
 
       return true;
     } catch (err) {
-      error.value = extractErrorMessage(err);
+      error.value = extractUserFriendlyError(err);
       return false;
     } finally {
       loading.value = false;
@@ -185,7 +174,7 @@ export const useOrganizationsStore = defineStore('organizations', () => {
 
       return true;
     } catch (err) {
-      error.value = extractErrorMessage(err);
+      error.value = extractUserFriendlyError(err);
       return false;
     } finally {
       loading.value = false;
@@ -197,7 +186,7 @@ export const useOrganizationsStore = defineStore('organizations', () => {
       const response = await api.get(`/api/v1/organizations/${orgId}/users`);
       return response.data.users || [];
     } catch (err) {
-      error.value = extractErrorMessage(err);
+      error.value = extractUserFriendlyError(err);
       return [];
     }
   }
@@ -207,7 +196,7 @@ export const useOrganizationsStore = defineStore('organizations', () => {
       const response = await api.get(`/api/v1/organizations/${orgId}/farmers`);
       return response.data.farmers || [];
     } catch (err) {
-      error.value = extractErrorMessage(err);
+      error.value = extractUserFriendlyError(err);
       return [];
     }
   }

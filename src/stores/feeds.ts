@@ -7,6 +7,7 @@ import { queueCreate, queueUpdate, queueDelete } from 'src/lib/offline/sync-mana
 import { useAuthStore } from './auth';
 import { isOnline } from 'src/boot/pwa';
 import { fetchAndCacheCountries } from 'src/services/api-adapter';
+import { extractUserFriendlyError } from 'src/lib/error-messages';
 
 export interface FeedInput {
   name: string;
@@ -92,7 +93,7 @@ export const useFeedsStore = defineStore('feeds', () => {
         .toArray();
 
       if (masterFeeds.value.length === 0) {
-        error.value = extractErrorMessage(err);
+        error.value = extractUserFriendlyError(err);
       }
     } finally {
       loading.value = false;
@@ -139,7 +140,7 @@ export const useFeedsStore = defineStore('feeds', () => {
 
       if (customFeeds.value.length === 0 && !isOnline.value) {
         // Only show error if offline and no cached data
-        error.value = extractErrorMessage(err);
+        error.value = extractUserFriendlyError(err);
       }
     } finally {
       loading.value = false;
@@ -224,7 +225,7 @@ export const useFeedsStore = defineStore('feeds', () => {
         return newFeed;
       }
     } catch (err) {
-      error.value = extractErrorMessage(err);
+      error.value = extractUserFriendlyError(err);
 
       if (!isOnline.value) {
         await queueCreate('feed', newFeed.id, input as unknown as Record<string, unknown>);
@@ -280,7 +281,7 @@ export const useFeedsStore = defineStore('feeds', () => {
 
       return true;
     } catch (err) {
-      error.value = extractErrorMessage(err);
+      error.value = extractUserFriendlyError(err);
 
       if (!isOnline.value) {
         await queueUpdate('feed', id, input as unknown as Record<string, unknown>);
@@ -319,7 +320,7 @@ export const useFeedsStore = defineStore('feeds', () => {
 
       return true;
     } catch (err) {
-      error.value = extractErrorMessage(err);
+      error.value = extractUserFriendlyError(err);
 
       if (!isOnline.value) {
         await queueDelete('feed', id);
@@ -365,16 +366,3 @@ export const useFeedsStore = defineStore('feeds', () => {
     searchFeeds,
   };
 });
-
-function extractErrorMessage(err: unknown): string {
-  if (err && typeof err === 'object' && 'response' in err) {
-    const response = (err as { response?: { data?: { detail?: string } } }).response;
-    if (response?.data?.detail) {
-      return response.data.detail;
-    }
-  }
-  if (err instanceof Error) {
-    return err.message;
-  }
-  return 'An unexpected error occurred';
-}

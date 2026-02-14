@@ -148,10 +148,12 @@
                 readonly
               >
                 <template #append>
-                  <q-icon name="event" class="cursor-pointer">
-                    <q-popup-proxy cover>
-                      <q-date v-model="reportParams.start_date" mask="YYYY-MM-DD" />
-                    </q-popup-proxy>
+                  <q-icon name="event" class="cursor-pointer" @click="startDateRef?.open()">
+                    <DatePickerPopup
+                      ref="startDateRef"
+                      v-model="reportParams.start_date"
+                      mask="YYYY-MM-DD"
+                    />
                   </q-icon>
                 </template>
               </q-input>
@@ -164,10 +166,12 @@
                 readonly
               >
                 <template #append>
-                  <q-icon name="event" class="cursor-pointer">
-                    <q-popup-proxy cover>
-                      <q-date v-model="reportParams.end_date" mask="YYYY-MM-DD" />
-                    </q-popup-proxy>
+                  <q-icon name="event" class="cursor-pointer" @click="endDateRef?.open()">
+                    <DatePickerPopup
+                      ref="endDateRef"
+                      v-model="reportParams.end_date"
+                      mask="YYYY-MM-DD"
+                    />
                   </q-icon>
                 </template>
               </q-input>
@@ -221,6 +225,7 @@ import { isOnline } from 'src/boot/pwa';
 import SkeletonList from 'src/components/ui/SkeletonList.vue';
 import ReportTemplateDialog from 'src/components/reports/ReportTemplateDialog.vue';
 import ReportTemplateList from 'src/components/reports/ReportTemplateList.vue';
+import DatePickerPopup from 'src/components/ui/DatePickerPopup.vue';
 import { COW_ICON } from 'src/boot/icons';
 
 const router = useRouter();
@@ -239,6 +244,8 @@ const processingQueue = ref(false);
 const selectedReportType = ref<{ value: string; label: string; icon: string; color: string; needsCow: boolean } | null>(null);
 const showSaveTemplateDialog = ref(false);
 const templateListRef = ref<InstanceType<typeof ReportTemplateList> | null>(null);
+const startDateRef = ref<InstanceType<typeof DatePickerPopup> | null>(null);
+const endDateRef = ref<InstanceType<typeof DatePickerPopup> | null>(null);
 
 const reportParams = reactive({
   cow_id: null as string | null,
