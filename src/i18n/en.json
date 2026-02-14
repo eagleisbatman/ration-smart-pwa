@@ -240,6 +240,7 @@
     "editCow": "Edit Cow",
     "updateCow": "Update Cow",
     "cowDetails": "Cow Details",
+    "selectFarmer": "Select Farmer *",
     "name": "Cow Name",
     "nameRequired": "Cow Name *",
     "tagNumber": "Tag Number",
@@ -342,6 +343,7 @@
     "ageFormatMonth": "{count} month",
     "ageFormatMonthPlural": "{count} months",
     "validation": {
+      "farmerRequired": "Please select a farmer",
       "nameRequired": "Name is required",
       "breedRequired": "Breed is required",
       "weightPositive": "Weight must be greater than 0",
@@ -1192,6 +1194,7 @@
     "noSearchResults": "No farmers found matching \"{query}\"",
     "pending": "Pending",
     "cattle": "cattle",
+    "me": "Me",
     "you": "You",
     "farmerDetails": "Farmer Details",
     "farmerNotFound": "Farmer Not Found",

@@ -324,6 +324,9 @@ function confirmDelete() {
 }
 
 onMounted(async () => {
+  // Clear any stale errors from previous navigation
+  milkLogsStore.error = null;
+
   await cowsStore.fetchCows();
 
   // Pre-fill cow name and fetch active diet if cow_id from query
