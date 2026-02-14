@@ -395,7 +395,7 @@ const storeErrors = computed(() => {
   if (cowsStore.error && !dismissedErrors.value.has('cows')) {
     errors.push({
       key: 'cows',
-      message: `${t('dashboard.errorLoadingCows')}: ${cowsStore.error}`,
+      message: cowsStore.error,
       retry: () => {
         dismissedErrors.value.delete('cows');
         cowsStore.fetchCows();
@@ -410,7 +410,7 @@ const storeErrors = computed(() => {
   if (milkLogsStore.error && !dismissedErrors.value.has('milkLogs')) {
     errors.push({
       key: 'milkLogs',
-      message: `${t('dashboard.errorLoadingMilkLogs')}: ${milkLogsStore.error}`,
+      message: milkLogsStore.error,
       retry: () => {
         dismissedErrors.value.delete('milkLogs');
         milkLogsStore.fetchLogs();
@@ -425,7 +425,7 @@ const storeErrors = computed(() => {
   if (dietsStore.error && !dismissedErrors.value.has('diets')) {
     errors.push({
       key: 'diets',
-      message: `${t('dashboard.errorLoadingDiets')}: ${dietsStore.error}`,
+      message: dietsStore.error,
       retry: () => {
         dismissedErrors.value.delete('diets');
         dietsStore.fetchDiets();
