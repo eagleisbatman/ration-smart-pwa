@@ -47,7 +47,6 @@
       v-model="leftDrawerOpen"
       show-if-above
       bordered
-      class="bg-white"
       :width="280"
     >
       <q-scroll-area class="fit">
@@ -105,7 +104,7 @@
     </q-page-container>
 
     <!-- Bottom Navigation (Mobile) -->
-    <q-footer v-if="showBottomNav" class="bg-white" bordered>
+    <q-footer v-if="showBottomNav" bordered>
       <q-tabs
         v-model="activeTab"
         class="text-grey-7"
@@ -226,7 +225,7 @@ const navItems = computed(() => {
     { to: '/feeds', icon: 'grass', label: t('nav.feeds') },
     { to: '/logs', icon: 'water_drop', label: t('nav.milkLogs'), badge: pendingCount.value > 0 ? pendingCount.value : undefined },
     { to: '/yields', icon: 'analytics', label: t('nav.yieldHistory') },
-    { to: '/reports', icon: 'assessment', label: t('nav.reports') },
+    { to: '/reports', icon: 'summarize', label: t('nav.reports') },
   ];
   // Organization analytics only for extension workers / nutritionists / researchers
   if (authStore.isExtensionWorker || authStore.isResearcher) {

@@ -7,7 +7,7 @@ export default defineConfig((/* ctx */) => {
       errors: true,
     },
 
-    boot: ['axios', 'dexie', 'pwa', 'i18n', 'icons'],
+    boot: ['axios', 'dexie', 'pwa', 'i18n', 'icons', 'dark-mode'],
 
     css: ['app.scss'],
 
@@ -61,6 +61,7 @@ export default defineConfig((/* ctx */) => {
         'LocalStorage',
         'SessionStorage',
         'BottomSheet',
+        'Dark',
       ],
     },
 

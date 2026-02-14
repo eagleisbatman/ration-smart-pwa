@@ -99,6 +99,22 @@
 
       <q-separator />
 
+      <!-- Dark Mode -->
+      <q-item>
+        <q-item-section avatar>
+          <q-icon name="dark_mode" />
+        </q-item-section>
+        <q-item-section>
+          <q-item-label>{{ $t('settings.darkMode') }}</q-item-label>
+          <q-item-label caption>{{ $t('settings.darkModeDesc') }}</q-item-label>
+        </q-item-section>
+        <q-item-section side>
+          <q-toggle v-model="darkMode" color="primary" />
+        </q-item-section>
+      </q-item>
+
+      <q-separator />
+
       <q-item v-ripple clickable @click="showInstallPrompt">
         <q-item-section avatar>
           <q-icon name="install_mobile" />
@@ -209,15 +225,19 @@
       </q-item>
     </q-list>
 
-    <!-- Logout -->
-    <q-btn
-      :label="$t('settings.logout')"
-      icon="logout"
-      color="negative"
-      flat
-      class="full-width q-mt-lg"
-      @click="confirmLogout"
-    />
+    <!-- Account -->
+    <div class="text-subtitle2 text-grey-7 q-mb-sm q-ml-sm">{{ $t('settings.account') }}</div>
+    <q-list bordered class="rounded-borders q-mb-md">
+      <q-item v-ripple clickable @click="confirmLogout">
+        <q-item-section avatar>
+          <q-icon name="logout" color="negative" />
+        </q-item-section>
+        <q-item-section>
+          <q-item-label class="text-negative">{{ $t('settings.logout') }}</q-item-label>
+          <q-item-label caption>{{ $t('settings.logoutDesc') }}</q-item-label>
+        </q-item-section>
+      </q-item>
+    </q-list>
 
     <!-- Language Dialog -->
     <q-dialog v-model="showLanguageDialog">
@@ -400,6 +420,7 @@ const {
 } = useOfflineSync();
 
 const notifications = ref(false);
+const darkMode = ref($q.dark.isActive);
 const pushSupported = isPushSupported();
 const showSyncHistory = ref(false);
 const profileImage = computed(() => authStore.profileImage);
@@ -590,6 +611,12 @@ function confirmLogout() {
     router.push('/auth/login');
   });
 }
+
+// Watch dark mode toggle
+watch(darkMode, (val) => {
+  $q.dark.set(val);
+  localStorage.setItem('darkMode', val ? '1' : '0');
+});
 
 // Watch notification toggle to subscribe/unsubscribe
 watch(notifications, async (enabled) => {
