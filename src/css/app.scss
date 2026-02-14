@@ -572,11 +572,13 @@ body {
 
 .body--dark {
   // shadcn zinc: primary flips to zinc-200 (not pure white — softer contrast)
-  --q-primary: #E4E4E7;
-  --q-secondary: #A1A1AA;
-  --q-accent: #E4E4E7;
-  --q-dark: #18181B;
-  --q-info: #A1A1AA;
+  // !important is REQUIRED: Quasar sets brand colors as inline styles on <body>
+  // which beat stylesheet rules. !important overrides inline styles.
+  --q-primary: #E4E4E7 !important;
+  --q-secondary: #A1A1AA !important;
+  --q-accent: #E4E4E7 !important;
+  --q-dark: #18181B !important;
+  --q-info: #A1A1AA !important;
 
   // Links: default browser blue is low contrast; use primary for consistency
   a {
@@ -934,6 +936,11 @@ body {
 
   .auth-logo {
     border-color: #27272A; // zinc-800 — subtle ring between dark surfaces
+    // Avatar bg-primary flips to light (#E4E4E7) but cow icon is inverted to white
+    // → white on light = invisible. Keep avatar dark so inverted cow shows.
+    &.bg-primary {
+      background: #27272A !important;
+    }
   }
 
   .auth-container {
