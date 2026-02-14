@@ -18,7 +18,7 @@
             :label="$t('health.eventType') + ' *'"
             emit-value
             map-options
-            filled
+            outlined
             :rules="[val => !!val || $t('validation.required')]"
           />
 
@@ -26,7 +26,7 @@
           <q-input
             v-model="form.title"
             :label="$t('health.eventTitle') + ' *'"
-            filled
+            outlined
             :rules="[val => !!val || $t('validation.required')]"
           />
 
@@ -35,7 +35,7 @@
             v-model="form.event_date"
             :label="$t('health.eventDate') + ' *'"
             type="date"
-            filled
+            outlined
             :rules="[val => !!val || $t('validation.required')]"
           />
 
@@ -43,7 +43,7 @@
           <q-input
             v-model="form.description"
             :label="$t('health.description') + ' ' + $t('common.optionalSuffix')"
-            filled
+            outlined
             autogrow
             type="textarea"
           />
@@ -53,14 +53,14 @@
             v-model="form.next_due_date"
             :label="$t('health.nextDueDate') + ' ' + $t('common.optionalSuffix')"
             type="date"
-            filled
+            outlined
           />
 
           <!-- Veterinarian -->
           <q-input
             v-model="form.veterinarian"
             :label="$t('health.veterinarian') + ' ' + $t('common.optionalSuffix')"
-            filled
+            outlined
           />
 
           <!-- Cost -->
@@ -68,7 +68,7 @@
             v-model.number="form.cost"
             :label="$t('health.cost') + ' ' + $t('common.optionalSuffix')"
             type="number"
-            filled
+            outlined
             :prefix="currencySymbol"
             :rules="[val => val === null || val === undefined || val === '' || val >= 0 || $t('validation.positive')]"
           />

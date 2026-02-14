@@ -213,11 +213,6 @@ body {
 // Input Enhancements
 // ========================================
 
-// Larger touch targets for inputs
-.q-field__control {
-  min-height: 48px;
-}
-
 // iOS-style focus ring
 .q-field--outlined.q-field--focused .q-field__control {
   box-shadow: 0 0 0 2px var(--q-primary);

@@ -29,7 +29,7 @@
           v-model="customDate"
           :label="$t('diet.reminder.customDate')"
           type="date"
-          filled
+          outlined
           :min="minDate"
           class="q-mb-md"
         />
@@ -38,7 +38,7 @@
         <q-input
           v-model="note"
           :label="$t('diet.reminder.note')"
-          filled
+          outlined
           autogrow
           maxlength="200"
         />

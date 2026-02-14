@@ -46,7 +46,11 @@
     "selectOrganization": "Select Organization (Optional)",
     "selectRole": "What best describes you?",
     "notAffiliated": "Not affiliated with any organization",
-    "notAvailable": "N/A"
+    "notAvailable": "N/A",
+    "tapToAddPhoto": "Tap to add photo",
+    "takePhoto": "Take Photo",
+    "chooseFromGallery": "Choose from Gallery",
+    "removePhoto": "Remove Photo"
   },
   "countries": {
     "IN": "India",
