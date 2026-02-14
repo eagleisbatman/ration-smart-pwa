@@ -130,7 +130,7 @@ const resolvingAll = ref(false);
 const ENTITY_ICONS: Record<string, string> = {
   cow: 'pets',
   feed: 'grass',
-  diet: 'restaurant_menu',
+  diet: 'menu_book',
   milk_log: 'water_drop',
   farmer: 'agriculture',
   yield: 'trending_up',

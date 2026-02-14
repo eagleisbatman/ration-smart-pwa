@@ -158,7 +158,7 @@
         />
         <q-fab-action
           color="info"
-          icon="restaurant"
+          icon="menu_book"
           :label="$t('nav.getDiet')"
           label-position="left"
           external-label
@@ -221,7 +221,7 @@ const navItems = computed(() => {
     { to: '/', icon: 'home', label: t('nav.home') },
     { to: '/farmers', icon: 'people', label: t('nav.farmers') },
     { to: '/cows', icon: COW_ICON, label: t('nav.myCows') },
-    { to: '/diet', icon: 'restaurant', label: t('nav.diet') },
+    { to: '/diet', icon: 'menu_book', label: t('nav.diet') },
     { to: '/feeds', icon: 'grass', label: t('nav.feeds') },
     { to: '/logs', icon: 'water_drop', label: t('nav.milkLogs'), badge: pendingCount.value > 0 ? pendingCount.value : undefined },
     { to: '/yields', icon: 'analytics', label: t('nav.yieldHistory') },
@@ -239,7 +239,7 @@ const bottomNavItems = computed(() => [
   { to: '/', icon: 'home', label: t('nav.home') },
   { to: '/farmers', icon: 'people', label: t('nav.farmers') },
   { to: '/cows', icon: COW_ICON, label: t('nav.cows') },
-  { to: '/diet', icon: 'restaurant', label: t('nav.diet') },
+  { to: '/diet', icon: 'menu_book', label: t('nav.diet') },
   { to: '/settings', icon: 'settings', label: t('nav.more') },
 ]);
 

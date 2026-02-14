@@ -152,7 +152,7 @@
                   <q-item-label
                     v-if="currentMilkPrice !== null"
                     caption
-                    class="text-green-7 text-weight-medium"
+                    class="text-primary text-weight-medium"
                   >
                     {{ formatCurrency(log.total_liters * currentMilkPrice) }}
                   </q-item-label>

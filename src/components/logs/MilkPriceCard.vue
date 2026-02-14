@@ -5,7 +5,7 @@
         <!-- Price Display / Edit -->
         <div class="col">
           <div class="row items-center q-gutter-x-sm">
-            <q-icon name="payments" size="sm" color="green-7" />
+            <q-icon name="payments" size="sm" color="primary" />
             <div v-if="!editing" class="row items-center q-gutter-x-xs">
               <span class="text-caption text-grey-7">{{ $t('logs.price.milkPrice') }}:</span>
               <span v-if="milkPrice !== null" class="text-body2 text-weight-medium">
@@ -74,13 +74,13 @@
       <div v-if="milkPrice !== null" class="row q-mt-xs q-gutter-x-md">
         <div class="text-caption">
           <span class="text-grey-6">{{ $t('logs.summary.today') }}:</span>
-          <span class="text-green-7 text-weight-medium q-ml-xs">
+          <span class="text-primary text-weight-medium q-ml-xs">
             {{ formatCurrency(todayRevenue) }}
           </span>
         </div>
         <div class="text-caption">
           <span class="text-grey-6">{{ $t('logs.price.weeklyRevenue') }}:</span>
-          <span class="text-green-7 text-weight-medium q-ml-xs">
+          <span class="text-primary text-weight-medium q-ml-xs">
             {{ formatCurrency(weeklyRevenue) }}
           </span>
         </div>
@@ -200,7 +200,7 @@ onMounted(() => {
 <style lang="scss" scoped>
 .milk-price-card {
   border-radius: $radius-loose;
-  background: linear-gradient(135deg, #f0fdf4 0%, #fff 100%);
+  background: linear-gradient(135deg, #e3f2fd 0%, #fff 100%);
 
   // Dark mode override is in app.scss (scoped :global() compiles incorrectly)
 }

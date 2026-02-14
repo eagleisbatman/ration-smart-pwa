@@ -272,7 +272,7 @@ function getEntityIcon(entityType: SyncQueueItem['entity_type']): string {
     case 'feed':
       return 'grass';
     case 'diet':
-      return 'restaurant_menu';
+      return 'menu_book';
     case 'milk_log':
       return 'water_drop';
     case 'farmer':

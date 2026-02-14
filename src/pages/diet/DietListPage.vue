@@ -9,7 +9,7 @@
       <!-- Empty State -->
       <template v-else-if="diets.length === 0">
         <EmptyState
-          icon="restaurant"
+          icon="menu_book"
           :title="$t('diet.noDietPlans')"
           :description="$t('diet.createFirstDiet')"
           :action-label="$t('diet.createDiet')"

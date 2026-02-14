@@ -219,7 +219,7 @@
         <div class="col-12 col-sm-6">
           <q-btn
             :label="$t('cow.getDiet')"
-            icon="restaurant"
+            icon="menu_book"
             color="secondary"
             class="full-width"
             unelevated

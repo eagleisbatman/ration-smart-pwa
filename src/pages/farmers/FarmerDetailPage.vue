@@ -190,7 +190,7 @@
             {{ $t('farmer.recordYield') }}
           </button>
           <button class="action-row__btn" @click="router.push({ path: '/diet/new', query: { farmer_id: farmerId } })">
-            <q-icon name="restaurant" />
+            <q-icon name="menu_book" />
             {{ $t('dashboard.getFarmerDiet') }}
           </button>
         </div>
