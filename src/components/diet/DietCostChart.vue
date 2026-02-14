@@ -151,11 +151,11 @@
       <!-- Legend -->
       <div class="chart-legend q-mt-sm">
         <div class="legend-item">
-          <span class="legend-color" style="background: #1976D2;"></span>
+          <span class="legend-color legend-color--primary"></span>
           <span class="text-caption">{{ $t('diets.dailyCost') }}</span>
         </div>
         <div class="legend-item">
-          <span class="legend-color legend-dashed" style="border-color: #4CAF50;"></span>
+          <span class="legend-color legend-dashed legend-dashed--success"></span>
           <span class="text-caption">{{ $t('diets.avgCost') }}</span>
         </div>
       </div>
@@ -423,41 +423,5 @@ function onChartClick(event: MouseEvent) {
 
 .data-dot {
   cursor: pointer;
-}
-
-.chart-tooltip {
-  background: rgba(0, 0, 0, 0.8);
-  color: white;
-  border-radius: 6px;
-  padding: 6px 10px;
-  pointer-events: none;
-  white-space: nowrap;
-  z-index: 10;
-}
-
-.chart-legend {
-  display: flex;
-  justify-content: center;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-.legend-item {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.legend-color {
-  width: 16px;
-  height: 3px;
-  border-radius: 2px;
-  display: inline-block;
-}
-
-.legend-dashed {
-  background: none !important;
-  border-top: 2px dashed;
-  height: 0;
 }
 </style>

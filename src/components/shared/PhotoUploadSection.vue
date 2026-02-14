@@ -5,8 +5,7 @@
         v-if="modelValue"
         :src="modelValue"
         :ratio="1"
-        class="rounded-borders"
-        style="width: 120px; height: 120px; border-radius: 50%"
+        class="rounded-borders photo-avatar"
       />
       <q-avatar v-else size="120px" color="grey-3">
         <q-icon name="photo_camera" size="40px" color="grey-5" />
@@ -27,7 +26,7 @@
 
   <!-- Photo Options Dialog -->
   <q-dialog v-model="showOptions" position="bottom">
-    <q-card style="width: 100%; max-width: 400px">
+    <q-card class="dialog-card">
       <q-list>
         <q-item clickable v-close-popup @click="onTakePhoto">
           <q-item-section avatar><q-icon name="photo_camera" /></q-item-section>

@@ -23,7 +23,7 @@
                 v-if="feed.image_url"
                 :src="feed.image_url"
                 :ratio="1"
-                style="width: 100%; height: 100%; border-radius: 50%"
+                class="photo-avatar--fill"
               />
               <q-icon v-else name="grass" size="32px" />
             </q-avatar>

@@ -28,3 +28,17 @@ $typography-font-family : 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI
 // ============================================
 
 $generic-border-radius: 8px;
+
+$radius-tight : 2px;   // flag thumbnails, small badges
+$radius-default: 8px;   // inputs, buttons, chips
+$radius-loose  : 12px;  // cards, banners, list containers
+$radius-dialog : 16px;  // bottom sheets, dialog corners
+
+// ============================================
+// Chart Palette
+// ============================================
+
+$chart-primary : #1976D2; // primary data series
+$chart-warning : #FF9800; // secondary / warning series
+$chart-success : #4CAF50; // positive / average line
+$chart-tooltip-bg: rgba(0, 0, 0, 0.8);
