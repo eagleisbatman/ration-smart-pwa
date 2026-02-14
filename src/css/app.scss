@@ -602,6 +602,11 @@ body {
     background: rgba(33, 150, 243, 0.12) !important;
   }
 
+  // Error banner backgrounds
+  .bg-red-1 {
+    background: rgba(244, 67, 54, 0.12) !important;
+  }
+
   // Quasar q-card default — ensure bordered cards get dark borders
   .q-card--bordered {
     border-color: rgba(255, 255, 255, 0.1);
