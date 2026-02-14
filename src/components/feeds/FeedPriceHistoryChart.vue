@@ -168,7 +168,10 @@
 import { ref, computed, onMounted } from 'vue';
 import { db, FeedPriceHistory } from 'src/lib/offline/db';
 import { useCurrency } from 'src/composables/useCurrency';
-import { CHART } from 'src/lib/chart-colors';
+import { useChartColors } from 'src/lib/chart-colors';
+
+const chartColors = useChartColors();
+const CHART = chartColors;
 
 const props = defineProps<{
   feedId: string;

@@ -773,6 +773,111 @@ body {
     color: #18181B !important;
   }
 
+  // ---- Additional grey text overrides ----
+  // grey-6 (#757575) on zinc-900 = 3.9:1 — borderline, brighten
+  .text-grey-6 {
+    color: rgba(255, 255, 255, 0.45) !important;
+  }
+  // grey-9 (#212121) on zinc-900 = 1.1:1 — invisible
+  .text-grey-9 {
+    color: rgba(255, 255, 255, 0.7) !important;
+  }
+
+  // ---- Additional background overrides ----
+  // bg-grey-3 (#E0E0E0) too bright on dark surfaces
+  .bg-grey-3:not(.q-separator) {
+    background: rgba(255, 255, 255, 0.08) !important;
+  }
+  // bg-orange-1 (health event timeline, avatars)
+  .bg-orange-1 {
+    background: rgba(255, 152, 0, 0.12) !important;
+  }
+  // bg-green-1 (success backgrounds)
+  .bg-green-1 {
+    background: rgba(76, 175, 80, 0.12) !important;
+  }
+
+  // ---- btn-toggle borders (auth pages use $grey-4 in scoped CSS) ----
+  .q-btn-toggle .q-btn {
+    border-color: rgba(255, 255, 255, 0.15) !important;
+  }
+
+  // ---- Scoped component dark mode overrides ----
+  // (Must use !important to beat [data-v-xxx] scoped specificity)
+
+  // WeatherWidget
+  .weather-widget {
+    background: rgba(255, 255, 255, 0.04) !important;
+  }
+
+  // EW Dashboard empty state icon
+  .empty-state-icon {
+    background: rgba(255, 255, 255, 0.06) !important;
+  }
+
+  // MilkProductionChart: "today" row + period toggle border
+  .bg-primary-1 {
+    background-color: rgba(255, 255, 255, 0.06) !important;
+  }
+  .period-toggle {
+    border-color: rgba(255, 255, 255, 0.12) !important;
+  }
+
+  // RoleSelectPage card selection
+  .role-card--selected {
+    background-color: rgba(255, 255, 255, 0.06) !important;
+  }
+
+  // SyncConflictDialog
+  .conflict-field {
+    background: rgba(255, 255, 255, 0.06) !important;
+  }
+  .conflict-local {
+    background: rgba(228, 228, 231, 0.08) !important;
+  }
+  .conflict-server {
+    background: rgba(161, 161, 170, 0.08) !important;
+  }
+
+  // OnboardingProgress: upcoming step + connector track
+  .step-circle--upcoming {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    color: rgba(255, 255, 255, 0.4) !important;
+  }
+  .progress-connector {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+  }
+
+  // AddToHomeScreen iOS instructions
+  .ios-instructions {
+    background: rgba(255, 255, 255, 0.06) !important;
+  }
+
+  // FarmerImportPage upload zone
+  .upload-zone {
+    border-color: rgba(255, 255, 255, 0.15) !important;
+    background: rgba(255, 255, 255, 0.04) !important;
+  }
+
+  // MilkTrendsPanel hover rows
+  .cow-breakdown-row:hover {
+    background-color: rgba(255, 255, 255, 0.04) !important;
+  }
+
+  // Photo remove button: flip to dark bg
+  .photo-remove-btn {
+    background: rgba(0, 0, 0, 0.7) !important;
+    color: white !important;
+  }
+
+  // MyProfileSetupPage location borders
+  .location-display {
+    border-color: rgba(255, 255, 255, 0.12) !important;
+  }
+  .location-hint {
+    border-left-color: rgba(255, 255, 255, 0.12) !important;
+  }
+
   // ---- Auth layout ----
   // Page bg darker than card for visual separation (zinc-950 vs zinc-900)
   .auth-layout {
