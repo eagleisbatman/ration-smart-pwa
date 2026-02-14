@@ -137,7 +137,7 @@ export function useOfflineSync() {
       case 'pending':
         return 'warning';
       case 'synced':
-        return 'positive';
+        return 'grey-7';
       default:
         return 'grey';
     }

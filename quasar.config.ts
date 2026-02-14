@@ -36,11 +36,11 @@ export default defineConfig((/* ctx */) => {
           primary: '#18181B',    // zinc-900 — monochrome
           secondary: '#71717A',  // zinc-500
           accent: '#18181B',     // same as primary
-          dark: '#1D1D1D',
-          'dark-page': '#121212',
+          dark: '#18181B',       // zinc-900 (card bg in dark mode)
+          'dark-page': '#09090B', // zinc-950 (page bg in dark mode)
           positive: '#4CAF50',
           negative: '#F44336',
-          info: '#2196F3',
+          info: '#71717A',        // zinc-500 (neutral info)
           warning: '#FF9800',
         },
         notify: {
