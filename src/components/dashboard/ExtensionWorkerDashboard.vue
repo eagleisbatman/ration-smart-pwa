@@ -53,7 +53,7 @@
         <q-item
           v-for="notif in ewVisibleNotifications"
           :key="notif.id"
-          :class="{ 'bg-blue-1': !notif.read }"
+          :class="{ 'bg-grey-2': !notif.read }"
           clickable
           @click="handleNotificationClick(notif)"
         >

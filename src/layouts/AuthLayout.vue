@@ -48,7 +48,7 @@ const isOnboarding = computed(() =>
 
 <style lang="scss" scoped>
 .auth-layout {
-  background: linear-gradient(135deg, $primary 0%, lighten($primary, 8%) 50%, darken($primary, 8%) 100%);
+  background: #18181B;
   min-height: 100vh;
 }
 

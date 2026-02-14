@@ -569,6 +569,22 @@ body {
 // ============================================
 
 .body--dark {
+  // Flip primary to near-white so buttons/active-tabs invert
+  --q-primary: #FAFAFA;
+  --q-secondary: #A1A1AA;
+  --q-accent: #FAFAFA;
+
+  // Header and drawer adapt
+  .main-header {
+    background: #18181B !important;
+    color: #FAFAFA !important;
+    border-color: #27272A !important;
+  }
+
+  .drawer-header {
+    border-color: #27272A !important;
+  }
+
   // Section labels: light text on dark bg
   .section-label {
     color: rgba(255, 255, 255, 0.5);
@@ -597,9 +613,9 @@ body {
     }
   }
 
-  // Notification unread highlight
-  .bg-blue-1 {
-    background: rgba(33, 150, 243, 0.12) !important;
+  // Unread/highlight backgrounds (grey-2 etc.)
+  .bg-grey-2 {
+    background: rgba(255, 255, 255, 0.06) !important;
   }
 
   // Error banner backgrounds
@@ -628,7 +644,7 @@ body {
 
   // Light-colored avatar backgrounds adapt
   .q-avatar[class*="orange-1"],
-  .q-avatar[class*="blue-1"],
+  .q-avatar[class*="grey-2"],
   .q-avatar[class*="green-1"] {
     opacity: 0.85;
   }
@@ -665,11 +681,11 @@ body {
   }
 
   .stat-card--primary {
-    background: linear-gradient(to top, #121212, rgba(21, 101, 192, 0.15)) !important;
+    background: linear-gradient(to top, #09090B, rgba(255, 255, 255, 0.06)) !important;
   }
 
   .stat-card--secondary {
-    background: linear-gradient(to top, #121212, rgba(30, 136, 229, 0.15)) !important;
+    background: linear-gradient(to top, #09090B, rgba(255, 255, 255, 0.04)) !important;
   }
 
   .stat-card__label {
@@ -682,12 +698,12 @@ body {
 
   // Farmer Dashboard onboarding card
   .onboarding-card {
-    background: linear-gradient(135deg, rgba(25, 118, 210, 0.12) 0%, rgba(100, 181, 246, 0.08) 100%) !important;
+    background: rgba(255, 255, 255, 0.04) !important;
   }
 
   // MilkPriceCard
   .milk-price-card {
-    background: linear-gradient(135deg, rgba(21, 101, 192, 0.12) 0%, #1d1d1d 100%) !important;
+    background: rgba(255, 255, 255, 0.04) !important;
   }
 
   // Auth layout container

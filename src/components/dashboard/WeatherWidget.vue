@@ -386,7 +386,7 @@ onMounted(() => {
 <style lang="scss" scoped>
 .weather-widget {
   border-radius: $radius-loose;
-  background: linear-gradient(135deg, rgba(33, 150, 243, 0.04) 0%, rgba(100, 181, 246, 0.08) 100%);
+  background: rgba(0, 0, 0, 0.02);
 }
 
 .weather-temp {

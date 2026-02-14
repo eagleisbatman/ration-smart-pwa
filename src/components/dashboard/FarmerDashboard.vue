@@ -66,8 +66,8 @@
           </q-item>
           <q-item>
             <q-item-section avatar>
-              <q-avatar size="36px" color="blue-1">
-                <q-icon name="water_drop" size="20px" color="blue-6" />
+              <q-avatar size="36px" color="grey-2">
+                <q-icon name="water_drop" size="20px" color="grey-8" />
               </q-avatar>
             </q-item-section>
             <q-item-section>
@@ -76,8 +76,8 @@
           </q-item>
           <q-item>
             <q-item-section avatar>
-              <q-avatar size="36px" color="blue-1">
-                <q-icon name="menu_book" size="20px" color="blue-7" />
+              <q-avatar size="36px" color="grey-2">
+                <q-icon name="menu_book" size="20px" color="grey-8" />
               </q-avatar>
             </q-item-section>
             <q-item-section>
@@ -118,7 +118,7 @@
         <q-item
           v-for="notif in visibleNotifications"
           :key="notif.id"
-          :class="{ 'bg-blue-1': !notif.read }"
+          :class="{ 'bg-grey-2': !notif.read }"
           clickable
           @click="handleNotificationClick(notif)"
         >
@@ -538,7 +538,7 @@ defineExpose({ refresh });
 /* M19: Onboarding welcome card */
 .onboarding-card {
   border-color: $primary;
-  background: linear-gradient(135deg, rgba(25, 118, 210, 0.04) 0%, rgba(100, 181, 246, 0.08) 100%);
+  background: rgba(0, 0, 0, 0.02);
 }
 
 // Dark mode overrides are in app.scss (scoped :global() compiles incorrectly)

@@ -7,8 +7,8 @@
  * src/css/quasar.variables.scss to keep them in sync.
  */
 export const CHART = {
-  primary: '#1976D2',
-  primaryFill: 'rgba(25, 118, 210, 0.08)',
+  primary: '#18181B',
+  primaryFill: 'rgba(24, 24, 27, 0.08)',
   success: '#4CAF50',
   warning: '#FF9800',
   grid: '#E0E0E0',
