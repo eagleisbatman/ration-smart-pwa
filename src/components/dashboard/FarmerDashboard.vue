@@ -1,7 +1,7 @@
 <template>
   <div class="farmer-dashboard">
-    <!-- Welcome Section -->
-    <div class="welcome-section q-mb-lg">
+    <!-- Welcome Section (hidden when embedded inside ExtensionWorkerDashboard) -->
+    <div v-if="!embedded" class="welcome-section q-mb-lg">
       <div class="row items-center no-wrap q-mb-xs">
         <img
           src="/icons/cow.svg"
@@ -330,6 +330,11 @@ import { useAuthStore } from 'src/stores/auth';
 import { useCowsStore } from 'src/stores/cows';
 import { useMilkLogsStore } from 'src/stores/milkLogs';
 import { useDietsStore } from 'src/stores/diets';
+
+withDefaults(defineProps<{
+  /** Hide greeting when embedded inside ExtensionWorkerDashboard */
+  embedded?: boolean;
+}>(), { embedded: false });
 import { useNotificationsStore, AppNotification } from 'src/stores/notifications';
 import SkeletonList from 'src/components/ui/SkeletonList.vue';
 import SkeletonCard from 'src/components/ui/SkeletonCard.vue';
