@@ -171,7 +171,7 @@
 
     <!-- Export Bottom Sheet -->
     <q-dialog v-model="showExportSheet" position="bottom">
-      <q-card style="width: 100%; max-width: 400px">
+      <q-card class="dialog-card">
         <q-card-section>
           <div class="text-h6">{{ $t('logs.yield.export') }}</div>
         </q-card-section>

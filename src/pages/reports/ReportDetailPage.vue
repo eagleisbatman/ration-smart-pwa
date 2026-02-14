@@ -36,7 +36,7 @@
 
       <!-- Share Bottom Sheet -->
       <q-dialog v-model="showShareSheet" position="bottom">
-        <q-card style="width: 100%; max-width: 400px">
+        <q-card class="dialog-card">
           <q-card-section>
             <div class="text-h6">{{ $t('reports.shareReport') }}</div>
           </q-card-section>

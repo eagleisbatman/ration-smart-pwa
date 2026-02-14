@@ -18,12 +18,12 @@
           :rules="[(val) => !!val || $t('validation.required')]"
         >
           <template #prepend>
-            <img :src="flagUrl(form.country_code)" width="20" height="15" style="border-radius: 2px; object-fit: cover;" />
+            <img :src="flagUrl(form.country_code)" width="20" height="15" class="flag-img" />
           </template>
           <template v-slot:option="{ itemProps, opt }">
             <q-item v-bind="itemProps">
-              <q-item-section side style="min-width: 28px; padding-right: 8px;">
-                <img :src="flagUrl(opt.value)" width="20" height="15" style="border-radius: 2px; object-fit: cover;" />
+              <q-item-section side class="country-option-flag">
+                <img :src="flagUrl(opt.value)" width="20" height="15" class="flag-img" />
               </q-item-section>
               <q-item-section>
                 <q-item-label>{{ opt.label }}</q-item-label>
@@ -99,7 +99,7 @@
             :rules="[(val) => !!val || $t('validation.required')]"
           >
             <template #prepend>
-              <img :src="flagUrl(form.country_code)" width="20" height="15" class="q-mr-xs" style="border-radius: 2px; object-fit: cover;" />
+              <img :src="flagUrl(form.country_code)" width="20" height="15" class="q-mr-xs flag-img" />
               <span class="text-body2 text-weight-medium text-grey-8 q-mr-xs">{{ selectedDialCode }}</span>
             </template>
           </q-input>

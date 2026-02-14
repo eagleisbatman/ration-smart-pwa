@@ -459,6 +459,104 @@ button,
 }
 
 // ============================================
+// Flag Thumbnails
+// ============================================
+// Replaces 9+ identical inline style="border-radius: 2px; object-fit: cover;"
+
+.flag-img {
+  border-radius: $radius-tight;
+  object-fit: cover;
+}
+
+// Country-selector option side section
+.country-option-flag {
+  min-width: 28px;
+  padding-right: 8px;
+}
+
+// ============================================
+// Dialog Card Sizing
+// ============================================
+// Replaces inline style="width: 100%; max-width: 400px"
+
+.dialog-card {
+  width: 100%;
+  max-width: 400px;
+}
+
+// ============================================
+// Chart Styles (shared by YieldTrendChart, DietCostChart, etc.)
+// ============================================
+
+.chart-tooltip {
+  background: $chart-tooltip-bg;
+  color: white;
+  border-radius: 6px;
+  padding: 6px 10px;
+  pointer-events: none;
+  white-space: nowrap;
+  z-index: 10;
+}
+
+.chart-legend {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.legend-color {
+  width: 16px;
+  height: 3px;
+  border-radius: $radius-tight;
+  display: inline-block;
+}
+
+.legend-dashed {
+  background: none !important;
+  border-top: 2px dashed;
+  height: 0;
+}
+
+// Semantic legend color helpers
+.legend-color--primary { background: $chart-primary; }
+.legend-color--warning { background: $chart-warning; }
+.legend-color--success { background: $chart-success; }
+.legend-dashed--warning { border-color: $chart-warning; }
+.legend-dashed--success { border-color: $chart-success; }
+
+// Scrollable chart wrapper (horizontal scroll on mobile)
+.chart-scroll-wrapper {
+  overflow-x: auto;
+
+  > * {
+    min-width: 320px;
+  }
+}
+
+// ============================================
+// Photo Avatar (shared by PhotoUploadSection, detail pages)
+// ============================================
+
+.photo-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+}
+
+.photo-avatar--fill {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+// ============================================
 // PWA Specific
 // ============================================
 
