@@ -7,7 +7,7 @@
         ref="extensionDashboardRef"
       >
         <template #personal-dashboard>
-          <FarmerDashboard ref="farmerDashboardRef" hide-weather />
+          <FarmerDashboard ref="farmerDashboardRef" />
         </template>
       </ExtensionWorkerDashboard>
 

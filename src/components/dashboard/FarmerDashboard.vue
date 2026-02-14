@@ -44,9 +44,6 @@
       </q-banner>
     </template>
 
-    <!-- L6: Weather Widget (hidden when embedded inside EW dashboard which has its own) -->
-    <WeatherWidget v-if="!hideWeather" />
-
     <!-- M19: Onboarding Welcome Card for first-time users -->
     <q-card
       v-if="showOnboardingTips"
@@ -206,7 +203,8 @@
       />
     </div>
 
-    <!-- Milk Production Chart -->
+    <!-- Milk Production -->
+    <div class="section-label">{{ $t('chart.milkProductionTrend') }}</div>
     <div class="q-mb-lg">
       <MilkProductionChart ref="chartRef" :height="180" />
     </div>
@@ -337,13 +335,7 @@ import { useNotificationsStore, AppNotification } from 'src/stores/notifications
 import SkeletonList from 'src/components/ui/SkeletonList.vue';
 import SkeletonCard from 'src/components/ui/SkeletonCard.vue';
 import MilkProductionChart from 'src/components/dashboard/MilkProductionChart.vue';
-import WeatherWidget from 'src/components/dashboard/WeatherWidget.vue';
 import { COW_ICON } from 'src/boot/icons';
-
-defineProps<{
-  /** Skip weather widget when embedded inside ExtensionWorkerDashboard (which renders its own) */
-  hideWeather?: boolean;
-}>();
 
 const router = useRouter();
 const { t } = useI18n();

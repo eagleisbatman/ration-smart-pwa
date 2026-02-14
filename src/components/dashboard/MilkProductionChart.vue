@@ -1,17 +1,23 @@
 <template>
-  <q-card flat class="milk-production-chart">
+  <q-card flat bordered class="milk-production-chart">
     <q-card-section>
       <div class="row items-center q-mb-sm">
-        <div class="text-subtitle1">{{ $t('chart.milkProductionTrend') }}</div>
         <q-space />
-        <q-btn-toggle
-          v-model="period"
-          flat
-          dense
-          toggle-color="primary"
-          :options="periodOptions"
-          size="sm"
-        />
+        <q-btn-group flat class="period-toggle">
+          <q-btn
+            v-for="opt in periodOptions"
+            :key="opt.value"
+            :label="opt.label"
+            dense
+            no-caps
+            size="sm"
+            :flat="period !== opt.value"
+            :unelevated="period === opt.value"
+            :color="period === opt.value ? 'primary' : undefined"
+            :text-color="period !== opt.value ? 'grey-7' : undefined"
+            @click="period = opt.value"
+          />
+        </q-btn-group>
       </div>
 
       <!-- Simple table view for milk production data -->
@@ -241,6 +247,20 @@ defineExpose({ refresh });
 <style lang="scss" scoped>
 .milk-production-chart {
   border-radius: 12px;
+}
+
+.period-toggle {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+
+  .q-btn {
+    border-radius: 0;
+    min-height: 28px;
+    padding: 2px 12px;
+    font-weight: 500;
+    font-size: 0.75rem;
+  }
 }
 
 .chart-table {

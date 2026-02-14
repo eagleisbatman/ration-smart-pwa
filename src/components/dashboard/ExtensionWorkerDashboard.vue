@@ -33,9 +33,6 @@
       <div class="text-body2 text-grey-7">{{ greeting }}</div>
     </div>
 
-    <!-- L6: Weather Widget -->
-    <WeatherWidget />
-
     <!-- M20: Notifications Section -->
     <div v-if="ewNotifications.length > 0" class="q-mb-lg">
       <div class="row items-center justify-between q-mb-sm">
@@ -86,7 +83,7 @@
 
     <!-- Managed Farmers View -->
     <template v-if="viewMode === 'managed'">
-      <!-- Stat Cards (shadcn-inspired) -->
+      <!-- Stat Cards -->
       <div class="row q-col-gutter-sm q-mb-md">
         <div class="col-6">
           <q-card flat class="stat-card stat-card--primary">
@@ -103,11 +100,11 @@
         <div class="col-6">
           <q-card flat class="stat-card stat-card--secondary">
             <q-card-section class="q-pa-md">
-              <div class="stat-card__label">{{ $t('dashboard.pendingYields') }}</div>
-              <div class="stat-card__value">{{ pendingYieldCount }}</div>
+              <div class="stat-card__label">{{ $t('dashboard.totalCows') }}</div>
+              <div class="stat-card__value">{{ totalCowCount }}</div>
               <div class="stat-card__footer">
-                <q-icon name="sync" size="14px" class="q-mr-xs" />
-                {{ $t('dashboard.awaitingSync') }}
+                <q-icon name="pets" size="14px" class="q-mr-xs" />
+                {{ $t('dashboard.acrossAllFarmers') }}
               </div>
             </q-card-section>
           </q-card>
@@ -226,8 +223,9 @@
         </div>
       </template>
 
-      <!-- Aggregate Milk Production Chart -->
-      <div class="q-mt-lg q-mb-lg">
+      <!-- Milk Production -->
+      <div class="section-label q-mt-lg">{{ $t('chart.milkProductionTrend') }}</div>
+      <div class="q-mb-lg">
         <MilkProductionChart ref="chartRef" :height="180" />
       </div>
 
@@ -285,11 +283,9 @@ import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useAuthStore } from 'src/stores/auth';
 import { useFarmersStore } from 'src/stores/farmers';
-import { useYieldsStore } from 'src/stores/yields';
 import { useNotificationsStore, AppNotification } from 'src/stores/notifications';
 import SkeletonList from 'src/components/ui/SkeletonList.vue';
 import MilkProductionChart from 'src/components/dashboard/MilkProductionChart.vue';
-import WeatherWidget from 'src/components/dashboard/WeatherWidget.vue';
 import { useDateFormat } from 'src/composables/useDateFormat';
 import { COW_ICON } from 'src/composables/useCowIcon';
 import { db } from 'src/lib/offline/db';
@@ -299,7 +295,6 @@ const router = useRouter();
 const { t } = useI18n();
 const authStore = useAuthStore();
 const farmersStore = useFarmersStore();
-const yieldsStore = useYieldsStore();
 const notificationsStore = useNotificationsStore();
 const { formatRelative } = useDateFormat();
 
@@ -343,9 +338,9 @@ const loading = computed(() => farmersStore.loading);
 const farmers = computed(() => farmersStore.managedFarmers);
 const farmerCount = computed(() => farmersStore.activeFarmerCount);
 
-// Count of pending yield records (not yet synced)
-const pendingYieldCount = computed(() =>
-  yieldsStore.yieldRecords.filter((r) => !r._synced).length
+// Total cattle across all managed farmers
+const totalCowCount = computed(() =>
+  farmers.value.reduce((sum, f) => sum + (f.total_cattle || 0), 0)
 );
 
 // --- Recent Activity Feed ---
@@ -495,7 +490,6 @@ function selectFarmer(farmer: FarmerProfile) {
 // Load data on mount
 onMounted(async () => {
   await farmersStore.fetchFarmers();
-  await yieldsStore.fetchYieldHistory();
   // Load recent activity feed
   await loadRecentActivities();
   // M20: Generate notifications after data is loaded
@@ -505,7 +499,6 @@ onMounted(async () => {
 // Expose viewMode for parent component and refresh function
 async function refresh() {
   await farmersStore.fetchFarmers();
-  await yieldsStore.fetchYieldHistory();
   chartRef.value?.refresh();
   await loadRecentActivities();
   // M20: Regenerate notifications on refresh
