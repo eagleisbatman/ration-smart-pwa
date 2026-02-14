@@ -395,12 +395,12 @@ function exportYieldData(format: 'csv' | 'pdf') {
   <title>Yield Data Export</title>
   <style>
     @media print { body { margin: 0; padding: 20px; } }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #333; max-width: 900px; margin: 0 auto; padding: 24px; }
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #333; max-width: 900px; margin: 0 auto; padding: 24px; }
     h1 { color: #1976d2; font-size: 22px; border-bottom: 3px solid #1976d2; padding-bottom: 12px; }
     .summary { display: flex; gap: 16px; margin-bottom: 24px; }
     .summary-item { background: #f5f5f5; padding: 10px 16px; border-radius: 6px; flex: 1; text-align: center; }
     .summary-label { font-size: 12px; color: #888; text-transform: uppercase; }
-    .summary-value { font-size: 18px; font-weight: 600; }
+    .summary-value { font-size: 18px; font-weight: 500; }
     table { width: 100%; border-collapse: collapse; }
     th { background-color: #1976d2; color: white; padding: 10px 12px; text-align: left; font-size: 13px; text-transform: uppercase; }
     .footer { margin-top: 32px; text-align: center; font-size: 12px; color: #999; border-top: 1px solid #e0e0e0; padding-top: 16px; }

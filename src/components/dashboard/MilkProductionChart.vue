@@ -269,7 +269,7 @@ defineExpose({ refresh });
   }
 
   :deep(th) {
-    font-weight: 600;
+    font-weight: 500;
     font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 0.5px;

@@ -69,36 +69,6 @@ export function useOfflineSync() {
   // Check storage quota on composable init
   void checkStorageQuota($q.notify.bind($q), t);
 
-  // Watch for sync completion and show notification
-  watch(
-    () => isSyncing.value,
-    (syncing, wasSyncing) => {
-      if (wasSyncing && !syncing && pendingCount.value === 0) {
-        $q.notify({
-          type: 'positive',
-          message: t('offline.allChangesSynced'),
-          icon: 'cloud_done',
-          timeout: 2000,
-        });
-      }
-    }
-  );
-
-  // Watch for coming back online
-  watch(
-    () => isOnline.value,
-    (online, wasOnline) => {
-      if (online && !wasOnline && hasPendingChanges.value) {
-        $q.notify({
-          type: 'info',
-          message: t('offline.backOnlineSyncing', { count: pendingCount.value }),
-          icon: 'sync',
-          timeout: 3000,
-        });
-      }
-    }
-  );
-
   // Watch for sync conflicts
   watch(
     () => conflictCount.value,

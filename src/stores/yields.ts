@@ -6,6 +6,7 @@ import { isOnline } from 'src/boot/pwa';
 import { useAuthStore } from './auth';
 import { v4 as uuidv4 } from 'uuid';
 import { i18n } from 'src/boot/i18n';
+import { extractUserFriendlyError } from 'src/lib/error-messages';
 
 export interface YieldInput {
   farmer_profile_id: string;
@@ -52,18 +53,6 @@ export const useYieldsStore = defineStore('yields', () => {
     return Math.round((sum / yields.length) * 100) / 100;
   });
 
-  // Helper to extract error message
-  function extractErrorMessage(err: unknown): string {
-    if (err && typeof err === 'object' && 'response' in err) {
-      const axiosError = err as { response?: { data?: { detail?: string } } };
-      return axiosError.response?.data?.detail || t('errors.generic');
-    }
-    if (err instanceof Error) {
-      return err.message;
-    }
-    return t('errors.unexpectedError');
-  }
-
   // Actions
   async function fetchYieldHistory(options?: {
     farmerProfileId?: string;
@@ -101,7 +90,7 @@ export const useYieldsStore = defineStore('yields', () => {
         }
       }
     } catch (err) {
-      error.value = extractErrorMessage(err);
+      error.value = extractUserFriendlyError(err);
 
       // Try to load from IndexedDB cache
       if (options?.farmerProfileId) {
@@ -145,7 +134,7 @@ export const useYieldsStore = defineStore('yields', () => {
         await db.yieldData.put({ ...record, _synced: true, _deleted: false });
       }
     } catch (err) {
-      error.value = extractErrorMessage(err);
+      error.value = extractUserFriendlyError(err);
 
       // Try cache
       const cached = await db.yieldData
@@ -187,7 +176,7 @@ export const useYieldsStore = defineStore('yields', () => {
         await db.yieldData.put({ ...record, _synced: true, _deleted: false });
       }
     } catch (err) {
-      error.value = extractErrorMessage(err);
+      error.value = extractUserFriendlyError(err);
 
       // Try cache
       const cached = await db.yieldData
@@ -258,7 +247,7 @@ export const useYieldsStore = defineStore('yields', () => {
 
       return record;
     } catch (err) {
-      error.value = extractErrorMessage(err);
+      error.value = extractUserFriendlyError(err);
 
       // Save locally for offline sync
       yieldRecords.value.unshift(localRecord);
@@ -303,7 +292,7 @@ export const useYieldsStore = defineStore('yields', () => {
 
       return true;
     } catch (err) {
-      error.value = extractErrorMessage(err);
+      error.value = extractUserFriendlyError(err);
 
       // Keep optimistic update and queue for sync
       await db.yieldData.put({ ...updatedRecord, _synced: false, _deleted: false });
@@ -333,7 +322,7 @@ export const useYieldsStore = defineStore('yields', () => {
 
       return true;
     } catch (err) {
-      error.value = extractErrorMessage(err);
+      error.value = extractUserFriendlyError(err);
 
       // Mark as deleted locally
       const cached = await db.yieldData.get(id);
@@ -369,7 +358,7 @@ export const useYieldsStore = defineStore('yields', () => {
       analytics.value = response.data as YieldAnalytics;
       return analytics.value;
     } catch (err) {
-      error.value = extractErrorMessage(err);
+      error.value = extractUserFriendlyError(err);
       return null;
     } finally {
       loading.value = false;

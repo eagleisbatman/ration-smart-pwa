@@ -32,14 +32,12 @@
             style="max-width: 200px"
           >
             <template #append>
-              <q-icon name="edit" class="cursor-pointer" size="xs">
-                <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                  <q-date v-model="logDate" mask="YYYY-MM-DD">
-                    <div class="row items-center justify-end">
-                      <q-btn v-close-popup :label="$t('common.close')" color="primary" flat />
-                    </div>
-                  </q-date>
-                </q-popup-proxy>
+              <q-icon name="edit" class="cursor-pointer" size="xs" @click="datePickerRef?.open()">
+                <DatePickerPopup
+                  ref="datePickerRef"
+                  v-model="logDate"
+                  mask="YYYY-MM-DD"
+                />
               </q-icon>
             </template>
           </q-input>
@@ -181,6 +179,7 @@ import { format } from 'date-fns';
 import { useMilkLogsStore, MilkLogInput } from 'src/stores/milkLogs';
 import { useCowsStore } from 'src/stores/cows';
 import { COW_ICON } from 'src/boot/icons';
+import DatePickerPopup from 'src/components/ui/DatePickerPopup.vue';
 import type { Cow } from 'src/lib/offline/db';
 
 interface QuickLogEntry {
@@ -202,6 +201,7 @@ const $q = useQuasar();
 const milkLogsStore = useMilkLogsStore();
 const cowsStore = useCowsStore();
 
+const datePickerRef = ref<InstanceType<typeof DatePickerPopup> | null>(null);
 const logDate = ref(format(new Date(), 'yyyy-MM-dd'));
 const entries = reactive<Record<string, QuickLogEntry>>({});
 const savedRows = reactive<Record<string, boolean>>({});

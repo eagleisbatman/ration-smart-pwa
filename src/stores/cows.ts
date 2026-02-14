@@ -6,6 +6,7 @@ import { db, Cow } from 'src/lib/offline/db';
 import { queueCreate, queueUpdate, queueDelete } from 'src/lib/offline/sync-manager';
 import { useAuthStore } from './auth';
 import { isOnline } from 'src/boot/pwa';
+import { extractUserFriendlyError } from 'src/lib/error-messages';
 
 export interface CowInput {
   name: string;
@@ -110,7 +111,7 @@ export const useCowsStore = defineStore('cows', () => {
       }
 
       if (cows.value.length === 0) {
-        error.value = extractErrorMessage(err);
+        error.value = extractUserFriendlyError(err);
       }
     } finally {
       loading.value = false;
@@ -182,7 +183,7 @@ export const useCowsStore = defineStore('cows', () => {
         return newCow;
       }
     } catch (err) {
-      error.value = extractErrorMessage(err);
+      error.value = extractUserFriendlyError(err);
 
       // Still keep local if online sync failed
       if (!isOnline.value) {
@@ -239,7 +240,7 @@ export const useCowsStore = defineStore('cows', () => {
 
       return true;
     } catch (err) {
-      error.value = extractErrorMessage(err);
+      error.value = extractUserFriendlyError(err);
 
       if (!isOnline.value) {
         await queueUpdate('cow', id, input as unknown as Record<string, unknown>);
@@ -272,7 +273,7 @@ export const useCowsStore = defineStore('cows', () => {
 
       return true;
     } catch (err) {
-      error.value = extractErrorMessage(err);
+      error.value = extractUserFriendlyError(err);
 
       if (!isOnline.value) {
         await queueDelete('cow', id);
@@ -375,16 +376,3 @@ export const useCowsStore = defineStore('cows', () => {
     fetchBreeds,
   };
 });
-
-function extractErrorMessage(err: unknown): string {
-  if (err && typeof err === 'object' && 'response' in err) {
-    const response = (err as { response?: { data?: { detail?: string } } }).response;
-    if (response?.data?.detail) {
-      return response.data.detail;
-    }
-  }
-  if (err instanceof Error) {
-    return err.message;
-  }
-  return 'An unexpected error occurred';
-}

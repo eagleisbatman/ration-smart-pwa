@@ -30,14 +30,12 @@
           <q-icon :name="isEditing ? 'lock' : 'calendar_today'" />
         </template>
         <template v-if="!isEditing" #append>
-          <q-icon name="edit" class="cursor-pointer">
-            <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-              <q-date v-model="form.log_date" mask="YYYY-MM-DD">
-                <div class="row items-center justify-end">
-                  <q-btn v-close-popup :label="$t('common.close')" color="primary" flat />
-                </div>
-              </q-date>
-            </q-popup-proxy>
+          <q-icon name="edit" class="cursor-pointer" @click="datePickerRef?.open()">
+            <DatePickerPopup
+              ref="datePickerRef"
+              v-model="form.log_date"
+              mask="YYYY-MM-DD"
+            />
           </q-icon>
         </template>
       </q-input>
@@ -200,6 +198,7 @@ import { useDietsStore } from 'src/stores/diets';
 import { Diet } from 'src/lib/offline/db';
 import { useCurrency } from 'src/composables/useCurrency';
 import { COW_ICON } from 'src/boot/icons';
+import DatePickerPopup from 'src/components/ui/DatePickerPopup.vue';
 
 const { t } = useI18n();
 const router = useRouter();
@@ -210,6 +209,7 @@ const milkLogsStore = useMilkLogsStore();
 const cowsStore = useCowsStore();
 const dietsStore = useDietsStore();
 
+const datePickerRef = ref<InstanceType<typeof DatePickerPopup> | null>(null);
 const logId = computed(() => route.params.id as string | undefined);
 const isEditing = computed(() => !!logId.value);
 

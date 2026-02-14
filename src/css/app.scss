@@ -1,5 +1,8 @@
 // App-wide styles for RationSmart PWA
 
+// Import Inter variable font
+@import '@fontsource-variable/inter';
+
 // Import Quasar variables
 @import 'quasar.variables.scss';
 
@@ -99,7 +102,7 @@ body {
 
 .section-label {
   font-size: 0.6875rem; // 11px
-  font-weight: 600;
+  font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.8px;
   color: rgba(0, 0, 0, 0.45);

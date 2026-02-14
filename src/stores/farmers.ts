@@ -5,6 +5,7 @@ import { db, FarmerProfile } from 'src/lib/offline/db';
 import { useAuthStore } from './auth';
 import { v4 as uuidv4 } from 'uuid';
 import { i18n } from 'src/boot/i18n';
+import { extractUserFriendlyError } from 'src/lib/error-messages';
 
 export interface FarmerInput {
   organization_id?: string;
@@ -49,18 +50,6 @@ export const useFarmersStore = defineStore('farmers', () => {
   // Helper to get translated text
   const t = i18n.global.t;
 
-  // Helper to extract error message
-  function extractErrorMessage(err: unknown): string {
-    if (err && typeof err === 'object' && 'response' in err) {
-      const axiosError = err as { response?: { data?: { detail?: string } } };
-      return axiosError.response?.data?.detail || t('errors.generic');
-    }
-    if (err instanceof Error) {
-      return err.message;
-    }
-    return t('errors.generic');
-  }
-
   // Actions
   async function fetchFarmers(options?: {
     organizationId?: string;
@@ -98,7 +87,7 @@ export const useFarmersStore = defineStore('farmers', () => {
         await db.farmerProfiles.put({ ...farmer, _synced: true, _deleted: false });
       }
     } catch (err) {
-      error.value = extractErrorMessage(err);
+      error.value = extractUserFriendlyError(err);
 
       // Try to load from IndexedDB cache
       const cached = await db.farmerProfiles
@@ -145,7 +134,7 @@ export const useFarmersStore = defineStore('farmers', () => {
 
       return farmer;
     } catch (err) {
-      error.value = extractErrorMessage(err);
+      error.value = extractUserFriendlyError(err);
 
       // Try cache
       const cached = await db.farmerProfiles.get(id);
@@ -198,7 +187,7 @@ export const useFarmersStore = defineStore('farmers', () => {
 
       return farmer;
     } catch (err) {
-      error.value = extractErrorMessage(err);
+      error.value = extractUserFriendlyError(err);
 
       // Save locally for offline sync
       farmers.value.push(localFarmer);
@@ -248,7 +237,7 @@ export const useFarmersStore = defineStore('farmers', () => {
 
       return true;
     } catch (err) {
-      error.value = extractErrorMessage(err);
+      error.value = extractUserFriendlyError(err);
 
       // Keep optimistic update and queue for sync
       await db.farmerProfiles.put({ ...updatedFarmer, _synced: false, _deleted: false });
@@ -289,7 +278,7 @@ export const useFarmersStore = defineStore('farmers', () => {
 
       return true;
     } catch (err) {
-      error.value = extractErrorMessage(err);
+      error.value = extractUserFriendlyError(err);
 
       // Queue for sync
       await db.addToSyncQueue('farmer', id, 'delete', { soft: true });
@@ -323,7 +312,7 @@ export const useFarmersStore = defineStore('farmers', () => {
 
       return true;
     } catch (err) {
-      error.value = extractErrorMessage(err);
+      error.value = extractUserFriendlyError(err);
       return false;
     } finally {
       loading.value = false;
@@ -335,7 +324,7 @@ export const useFarmersStore = defineStore('farmers', () => {
       const response = await api.get(`/api/v1/farmer-profiles/${id}/summary`);
       return response.data as FarmerSummary;
     } catch (err) {
-      error.value = extractErrorMessage(err);
+      error.value = extractUserFriendlyError(err);
       return null;
     }
   }
@@ -345,7 +334,7 @@ export const useFarmersStore = defineStore('farmers', () => {
       const response = await api.get(`/api/v1/farmer-profiles/${id}/cows`);
       return response.data.cows || [];
     } catch (err) {
-      error.value = extractErrorMessage(err);
+      error.value = extractUserFriendlyError(err);
       return [];
     }
   }
