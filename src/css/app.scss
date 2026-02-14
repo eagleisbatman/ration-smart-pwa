@@ -560,3 +560,89 @@ body {
   margin-top: 2px;
 }
 
+// ============================================
+// Dark Mode Overrides
+// ============================================
+
+.body--dark {
+  // Section labels: light text on dark bg
+  .section-label {
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  // Action row buttons: dark surface with light border
+  .action-row .action-row__btn {
+    background: var(--q-dark-page, #121212);
+    border-color: rgba(255, 255, 255, 0.12);
+    color: rgba(255, 255, 255, 0.8);
+    box-shadow: none;
+
+    &:active {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+  }
+
+  // Pill-style tabs (NOT bottom nav — that's reset in .q-footer)
+  .q-tabs {
+    background: rgba(255, 255, 255, 0.06);
+
+    .q-tab.q-tab--active {
+      background: rgba(255, 255, 255, 0.12);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    }
+  }
+
+  // Notification unread highlight
+  .bg-blue-1 {
+    background: rgba(33, 150, 243, 0.12) !important;
+  }
+
+  // Quasar q-card default — ensure bordered cards get dark borders
+  .q-card--bordered {
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  // Grey background classes used in tables
+  .bg-grey-1 {
+    background: rgba(255, 255, 255, 0.04) !important;
+  }
+
+  .bg-grey-2 {
+    background: rgba(255, 255, 255, 0.06) !important;
+  }
+
+  // Drawer active item
+  .bg-grey-2.text-primary {
+    background: rgba(255, 255, 255, 0.08) !important;
+  }
+
+  // Light-colored avatar backgrounds adapt
+  .q-avatar[class*="orange-1"],
+  .q-avatar[class*="blue-1"],
+  .q-avatar[class*="green-1"] {
+    opacity: 0.85;
+  }
+
+  // Card default border
+  .q-card.q-card--bordered {
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  // Stat-inline (farmer dashboard quick stats)
+  .stat-inline {
+    background: linear-gradient(to top, var(--q-dark-page, #121212), rgba(255, 255, 255, 0.04));
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  // Bordered q-list (settings, lists)
+  .q-list--bordered {
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  // q-separator
+  .q-separator {
+    background: rgba(255, 255, 255, 0.1);
+  }
+}
+
