@@ -1150,7 +1150,7 @@
     "activityDietCreated": "{farmer} created a diet plan for {cow}",
     "activityCowRegistered": "{farmer} registered cow {cow}",
     "activeProfiles": "Active profiles",
-    "awaitingSync": "Awaiting sync",
+    "acrossAllFarmers": "Across all farmers",
     "noRecentActivity": "No recent activity yet",
     "noRecentActivityHint": "Activity will appear here as you manage farmers",
     "errorLoadingCows": "Failed to load cows data",
