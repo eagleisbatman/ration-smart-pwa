@@ -2,48 +2,10 @@
   <q-page class="q-pa-md">
     <q-form class="q-gutter-md" @submit="onSubmit">
       <!-- Avatar -->
-      <div class="text-center q-mb-lg">
-        <div class="photo-container q-mx-auto" @click="showPhotoOptions = true" style="position: relative; display: inline-block; cursor: pointer;">
-          <q-avatar v-if="profileImage" size="100px">
-            <q-img :src="profileImage" :ratio="1" />
-          </q-avatar>
-          <q-avatar v-else size="100px" color="primary" text-color="white">
-            <q-icon name="photo_camera" size="40px" />
-          </q-avatar>
-          <q-btn
-            v-if="profileImage"
-            round
-            flat
-            dense
-            size="sm"
-            icon="close"
-            class="photo-remove-btn"
-            style="position: absolute; top: -4px; right: -4px; background: rgba(0,0,0,0.5); color: white;"
-            @click.stop="removePhoto"
-          />
-        </div>
-        <div class="text-caption text-grey-6 q-mt-xs">{{ $t('profile.tapToAddPhoto') }}</div>
-      </div>
-
-      <!-- Photo Options Dialog -->
-      <q-dialog v-model="showPhotoOptions" position="bottom">
-        <q-card>
-          <q-list>
-            <q-item v-close-popup clickable @click="takePhoto">
-              <q-item-section avatar><q-icon name="photo_camera" /></q-item-section>
-              <q-item-section>{{ $t('profile.takePhoto') }}</q-item-section>
-            </q-item>
-            <q-item v-close-popup clickable @click="chooseFromGallery">
-              <q-item-section avatar><q-icon name="photo_library" /></q-item-section>
-              <q-item-section>{{ $t('profile.chooseFromGallery') }}</q-item-section>
-            </q-item>
-            <q-item v-if="profileImage" v-close-popup clickable @click="removePhoto">
-              <q-item-section avatar><q-icon name="delete" color="negative" /></q-item-section>
-              <q-item-section class="text-negative">{{ $t('profile.removePhoto') }}</q-item-section>
-            </q-item>
-          </q-list>
-        </q-card>
-      </q-dialog>
+      <PhotoUploadSection
+        :model-value="profileImage ?? undefined"
+        @update:model-value="onProfileImageChange"
+      />
 
       <!-- Name -->
       <q-input
@@ -206,17 +168,14 @@ import { useQuasar } from 'quasar';
 import { useI18n } from 'vue-i18n';
 import { useAuthStore } from 'src/stores/auth';
 import { availableLocales } from 'src/boot/i18n';
-import { useImageUpload } from 'src/composables/useImageUpload';
 import ChangeContactDialog from 'src/components/settings/ChangeContactDialog.vue';
+import PhotoUploadSection from 'src/components/shared/PhotoUploadSection.vue';
 
 const $q = useQuasar();
 const { t } = useI18n();
 const authStore = useAuthStore();
 
-const { captureFromCamera, selectFromGallery, clearImage } = useImageUpload();
-
 const loading = computed(() => authStore.loading);
-const showPhotoOptions = ref(false);
 const profileImage = ref<string | null>(null);
 
 // Change contact dialog state
@@ -244,26 +203,9 @@ function onContactChanged() {
   });
 }
 
-async function takePhoto() {
-  const result = await captureFromCamera();
-  if (result) {
-    profileImage.value = result;
-    authStore.setProfileImage(result);
-  }
-}
-
-async function chooseFromGallery() {
-  const result = await selectFromGallery();
-  if (result) {
-    profileImage.value = result;
-    authStore.setProfileImage(result);
-  }
-}
-
-function removePhoto() {
-  profileImage.value = null;
-  clearImage();
-  authStore.setProfileImage(null);
+function onProfileImageChange(value: string | undefined) {
+  profileImage.value = value ?? null;
+  authStore.setProfileImage(value ?? null);
 }
 
 const form = reactive({

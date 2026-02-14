@@ -218,11 +218,40 @@ button,
 }
 
 // ============================================
-// Form Styles
+// Form Styles — centralised; change here = change everywhere
 // ============================================
 
 .q-field--outlined .q-field__control {
   border-radius: 8px;
+}
+
+// Better vertical centering of text inside labeled inputs.
+// Quasar default padding: 24px top / 8px bottom → text sits 8px below
+// the visual centre. Our override: 20px / 12px → only 4px below centre,
+// giving a more balanced, iOS-like feel.
+.q-field--labeled {
+  .q-field__native,
+  .q-field__prefix,
+  .q-field__suffix {
+    padding-top: 20px;
+    padding-bottom: 12px;
+  }
+
+  // Dense variant (dialogs, compact UI)
+  &.q-field--dense {
+    .q-field__native,
+    .q-field__prefix,
+    .q-field__suffix {
+      padding-top: 12px;
+      padding-bottom: 4px;
+    }
+  }
+}
+
+// Consistent prepend/append icon alignment
+.q-field__prepend,
+.q-field__append {
+  align-items: center;
 }
 
 // ============================================

@@ -2,51 +2,7 @@
   <q-page class="q-pa-md">
     <q-form class="q-gutter-md" @submit="onSubmit">
       <!-- Photo Section -->
-      <div class="text-center q-mb-lg">
-        <div class="photo-container q-mx-auto" @click="showPhotoOptions = true">
-          <q-img
-            v-if="form.image_url"
-            :src="form.image_url"
-            :ratio="1"
-            class="rounded-borders"
-            style="width: 120px; height: 120px; border-radius: 50%"
-          />
-          <q-avatar v-else size="120px" color="grey-3">
-            <q-icon name="photo_camera" size="40px" color="grey-5" />
-          </q-avatar>
-          <q-btn
-            v-if="form.image_url"
-            round
-            flat
-            dense
-            size="sm"
-            icon="close"
-            class="photo-remove-btn"
-            @click.stop="removePhoto"
-          />
-        </div>
-        <div class="text-caption text-grey-6 q-mt-xs">{{ $t('farmer.tapToAddPhoto') }}</div>
-      </div>
-
-      <!-- Photo Options Dialog -->
-      <q-dialog v-model="showPhotoOptions" position="bottom">
-        <q-card style="width: 100%; max-width: 400px">
-          <q-list>
-            <q-item clickable v-close-popup @click="takePhoto">
-              <q-item-section avatar><q-icon name="photo_camera" /></q-item-section>
-              <q-item-section>{{ $t('farmer.takePhoto') }}</q-item-section>
-            </q-item>
-            <q-item clickable v-close-popup @click="chooseFromGallery">
-              <q-item-section avatar><q-icon name="photo_library" /></q-item-section>
-              <q-item-section>{{ $t('farmer.chooseFromGallery') }}</q-item-section>
-            </q-item>
-            <q-item v-if="form.image_url" clickable v-close-popup @click="removePhoto">
-              <q-item-section avatar><q-icon name="delete" color="negative" /></q-item-section>
-              <q-item-section class="text-negative">{{ $t('farmer.removePhoto') }}</q-item-section>
-            </q-item>
-          </q-list>
-        </q-card>
-      </q-dialog>
+      <PhotoUploadSection v-model="form.image_url" />
 
       <!-- Basic Info Section -->
       <div class="text-subtitle1 text-weight-medium q-mb-sm">{{ $t('farmer.basicInfo') }}</div>
@@ -187,8 +143,8 @@ import { useFarmersStore, FarmerInput } from 'src/stores/farmers';
 import { useOrganizationsStore } from 'src/stores/organizations';
 import { useQuasar } from 'quasar';
 import { useHapticFeedback } from 'src/composables/useHapticFeedback';
-import { useImageUpload } from 'src/composables/useImageUpload';
 import { useAuthStore } from 'src/stores/auth';
+import PhotoUploadSection from 'src/components/shared/PhotoUploadSection.vue';
 import { getDialCode } from 'src/services/api-adapter';
 
 const router = useRouter();
@@ -198,7 +154,6 @@ const $q = useQuasar();
 const farmersStore = useFarmersStore();
 const organizationsStore = useOrganizationsStore();
 const { success, error: hapticError, warning, medium } = useHapticFeedback();
-const { captureFromCamera, selectFromGallery, clearImage } = useImageUpload();
 const authStore = useAuthStore();
 
 // Dial code prefix based on user's country
@@ -211,7 +166,6 @@ const farmerId = computed(() => route.params.id as string | undefined);
 const isEditing = computed(() => !!farmerId.value && farmerId.value !== 'new');
 
 const showArchiveDialog = ref(false);
-const showPhotoOptions = ref(false);
 
 const form = reactive<FarmerInput>({
   organization_id: undefined,
@@ -237,25 +191,6 @@ const farmingTypeOptions = computed(() => [
 
 const loading = computed(() => farmersStore.loading);
 const error = computed(() => farmersStore.error);
-
-async function takePhoto() {
-  const result = await captureFromCamera();
-  if (result) {
-    form.image_url = result;
-  }
-}
-
-async function chooseFromGallery() {
-  const result = await selectFromGallery();
-  if (result) {
-    form.image_url = result;
-  }
-}
-
-function removePhoto() {
-  form.image_url = undefined;
-  clearImage();
-}
 
 async function loadFarmer() {
   if (!isEditing.value || !farmerId.value) return;
@@ -348,18 +283,3 @@ onMounted(() => {
 });
 </script>
 
-<style lang="scss" scoped>
-.photo-container {
-  position: relative;
-  display: inline-block;
-  cursor: pointer;
-}
-
-.photo-remove-btn {
-  position: absolute;
-  top: -4px;
-  right: -4px;
-  background: rgba(255, 255, 255, 0.9);
-  z-index: 1;
-}
-</style>
