@@ -2,15 +2,15 @@
 // https://quasar.dev/style/sass-scss-variables
 
 // ============================================
-// Brand Colors - RationSmart Blue Theme
+// Brand Colors - Monochrome (shadcn-inspired zinc)
 // ============================================
 
-$primary   : #1565C0;  // Deep Blue - main brand color
-$secondary : #1E88E5;  // Medium Blue - secondary actions
-$accent    : #FFA000;  // Amber - highlights and accents
+$primary   : #18181B;  // zinc-900 — dark in light mode, flips to light in dark mode via CSS
+$secondary : #71717A;  // zinc-500 — muted secondary
+$accent    : #18181B;  // monochrome accent (same as primary)
 
-$dark      : #1D1D1D;
-$dark-page : #121212;
+$dark      : #18181B;  // zinc-900
+$dark-page : #09090B;  // zinc-950
 
 $positive  : #4CAF50;  // Success states
 $negative  : #F44336;  // Error states
@@ -36,7 +36,7 @@ $radius-dialog : 16px;  // bottom sheets, dialog corners
 // Chart Palette
 // ============================================
 
-$chart-primary : #1976D2; // primary data series
+$chart-primary : #18181B; // primary data series (neutral)
 $chart-warning : #FF9800; // secondary / warning series
 $chart-success : #4CAF50; // positive / average line
 $chart-tooltip-bg: rgba(0, 0, 0, 0.8);

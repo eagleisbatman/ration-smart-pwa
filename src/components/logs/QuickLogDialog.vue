@@ -57,7 +57,7 @@
           <q-item
             v-for="cow in activeCows"
             :key="cow.id"
-            :class="{ 'bg-blue-1': savedRows[cow.id] }"
+            :class="{ 'bg-grey-2': savedRows[cow.id] }"
             class="q-py-sm"
           >
             <q-item-section>
@@ -106,7 +106,7 @@
                     outlined
                     dense
                     :disable="savedRows[cow.id]"
-                    :bg-color="savedRows[cow.id] ? 'blue-1' : undefined"
+                    :bg-color="savedRows[cow.id] ? 'grey-2' : undefined"
                   >
                     <template #prepend>
                       <q-icon name="wb_sunny" color="warning" size="xs" />
@@ -124,7 +124,7 @@
                     outlined
                     dense
                     :disable="savedRows[cow.id]"
-                    :bg-color="savedRows[cow.id] ? 'blue-1' : undefined"
+                    :bg-color="savedRows[cow.id] ? 'grey-2' : undefined"
                   >
                     <template #prepend>
                       <q-icon name="nightlight" color="primary" size="xs" />

@@ -200,7 +200,7 @@ onMounted(() => {
 <style lang="scss" scoped>
 .milk-price-card {
   border-radius: $radius-loose;
-  background: linear-gradient(135deg, #e3f2fd 0%, #fff 100%);
+  background: #FAFAFA;
 
   // Dark mode override is in app.scss (scoped :global() compiles incorrectly)
 }

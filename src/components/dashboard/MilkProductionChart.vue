@@ -281,6 +281,6 @@ defineExpose({ refresh });
 }
 
 .bg-primary-1 {
-  background-color: rgba(25, 118, 210, 0.08);
+  background-color: rgba(0, 0, 0, 0.04);
 }
 </style>

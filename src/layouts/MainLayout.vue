@@ -7,7 +7,7 @@
     <UpdatePrompt />
 
     <!-- Header -->
-    <q-header elevated class="bg-primary text-white">
+    <q-header bordered class="main-header">
       <q-toolbar>
         <q-btn
           v-if="showBackButton"
@@ -51,15 +51,15 @@
     >
       <q-scroll-area class="fit">
         <!-- User Info -->
-        <div class="drawer-header bg-primary text-white q-pa-md">
+        <div class="drawer-header q-pa-md">
           <q-avatar v-if="authStore.profileImage" size="56px">
             <q-img :src="authStore.profileImage" :ratio="1" />
           </q-avatar>
-          <q-avatar v-else size="56px" color="white" text-color="primary">
+          <q-avatar v-else size="56px" color="grey-3" text-color="grey-8">
             <q-icon name="person" size="32px" />
           </q-avatar>
           <div class="q-mt-sm text-subtitle1">{{ userName }}</div>
-          <div class="text-caption text-white-7">{{ userEmail }}</div>
+          <div class="text-caption text-grey-6">{{ userEmail }}</div>
         </div>
 
         <!-- Navigation -->
@@ -133,13 +133,15 @@
       <q-fab
         icon="add"
         direction="up"
-        color="primary"
+        color="dark"
+        text-color="white"
         padding="sm"
         vertical-actions-align="right"
         @click="medium()"
       >
         <q-fab-action
-          color="secondary"
+          color="grey-8"
+          text-color="white"
           :icon="COW_ICON"
           :label="$t('nav.addCow')"
           label-position="left"
@@ -148,7 +150,8 @@
           @click="onFabAction('/cows/new')"
         />
         <q-fab-action
-          color="accent"
+          color="grey-8"
+          text-color="white"
           icon="water_drop"
           :label="$t('nav.logMilk')"
           label-position="left"
@@ -157,7 +160,8 @@
           @click="onFabAction('/logs/new')"
         />
         <q-fab-action
-          color="info"
+          color="grey-8"
+          text-color="white"
           icon="menu_book"
           :label="$t('nav.getDiet')"
           label-position="left"
@@ -279,12 +283,14 @@ watch(
 </script>
 
 <style lang="scss" scoped>
-.drawer-header {
-  padding-top: calc(16px + env(safe-area-inset-top));
+.main-header {
+  background: white;
+  color: #18181b;
 }
 
-.text-white-7 {
-  color: rgba(255, 255, 255, 0.7);
+.drawer-header {
+  padding-top: calc(16px + env(safe-area-inset-top));
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 .fade-enter-active,

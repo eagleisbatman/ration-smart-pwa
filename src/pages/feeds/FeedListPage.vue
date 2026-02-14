@@ -43,7 +43,7 @@
       </div>
 
       <!-- Compare Banner -->
-      <q-banner v-if="compareMode" class="bg-blue-1 q-mb-md rounded-borders" dense>
+      <q-banner v-if="compareMode" class="bg-grey-2 q-mb-md rounded-borders" dense>
         <template #avatar>
           <q-icon name="compare_arrows" color="primary" />
         </template>
@@ -95,7 +95,7 @@
               :key="feed.id"
               v-ripple
               clickable
-              :class="{ 'bg-blue-1': compareMode && isSelected(feed.id) }"
+              :class="{ 'bg-grey-2': compareMode && isSelected(feed.id) }"
               @click="compareMode ? toggleFeedSelection(feed) : router.push(`/feeds/${feed.id}`)"
             >
               <q-item-section v-if="compareMode" side>

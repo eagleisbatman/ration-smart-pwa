@@ -33,9 +33,9 @@ export default defineConfig((/* ctx */) => {
     framework: {
       config: {
         brand: {
-          primary: '#1565C0',    // Deep Blue - RationSmart brand
-          secondary: '#1E88E5',  // Medium Blue
-          accent: '#FFA000',     // Amber for accents
+          primary: '#18181B',    // zinc-900 — monochrome
+          secondary: '#71717A',  // zinc-500
+          accent: '#18181B',     // same as primary
           dark: '#1D1D1D',
           'dark-page': '#121212',
           positive: '#4CAF50',
