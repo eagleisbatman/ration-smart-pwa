@@ -135,6 +135,6 @@ const summaryData = computed(() => {
 
 <style lang="scss" scoped>
 .report-preview {
-  border-radius: 12px;
+  border-radius: $radius-loose;
 }
 </style>

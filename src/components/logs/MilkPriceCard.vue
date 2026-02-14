@@ -199,7 +199,7 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .milk-price-card {
-  border-radius: 12px;
+  border-radius: $radius-loose;
   background: linear-gradient(135deg, #f0fdf4 0%, #fff 100%);
 }
 </style>

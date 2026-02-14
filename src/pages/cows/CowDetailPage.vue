@@ -404,12 +404,12 @@ onMounted(async () => {
 
 <style lang="scss" scoped>
 .rounded-borders {
-  border-radius: 12px;
+  border-radius: $radius-loose;
   overflow: hidden;
 }
 
 .cow-hero-card {
-  border-radius: 12px;
+  border-radius: $radius-loose;
   overflow: hidden;
 }
 
@@ -425,7 +425,7 @@ onMounted(async () => {
 }
 
 .active-diet-card {
-  border-radius: 12px;
+  border-radius: $radius-loose;
   border-left: 4px solid var(--q-positive);
 }
 </style>

@@ -274,7 +274,7 @@ const maxCowAvg = computed(() =>
 
 <style lang="scss" scoped>
 .milk-trends-panel {
-  border-radius: 12px;
+  border-radius: $radius-loose;
 }
 
 .herd-chart {
@@ -292,7 +292,7 @@ const maxCowAvg = computed(() =>
 .cow-breakdown-row {
   cursor: pointer;
   padding: 4px 8px;
-  border-radius: 8px;
+  border-radius: $radius-default;
   transition: background-color 0.15s;
 
   &:hover {

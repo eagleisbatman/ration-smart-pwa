@@ -335,13 +335,13 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .rounded-borders {
-  border-radius: 12px;
+  border-radius: $radius-loose;
   overflow: hidden;
 }
 
 .bulk-action-bar {
   background: $dark;
-  border-radius: 12px;
+  border-radius: $radius-loose;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
   min-height: 48px;
 }

@@ -385,7 +385,7 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .weather-widget {
-  border-radius: 12px;
+  border-radius: $radius-loose;
   background: linear-gradient(135deg, rgba(33, 150, 243, 0.04) 0%, rgba(100, 181, 246, 0.08) 100%);
 }
 
@@ -403,6 +403,6 @@ onMounted(() => {
   display: flex;
   align-items: flex-start;
   background: rgba(255, 193, 7, 0.08);
-  border-radius: 8px;
+  border-radius: $radius-default;
 }
 </style>

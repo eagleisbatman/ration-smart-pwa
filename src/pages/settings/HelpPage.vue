@@ -111,7 +111,7 @@ const appVersion = '1.0.0';
 
 <style lang="scss" scoped>
 .rounded-borders {
-  border-radius: 12px;
+  border-radius: $radius-loose;
   overflow: hidden;
 }
 </style>

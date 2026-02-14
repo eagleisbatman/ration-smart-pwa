@@ -74,7 +74,7 @@ function postpone() {
 <style lang="scss" scoped>
 .update-card {
   max-width: 320px;
-  border-radius: 16px;
+  border-radius: $radius-dialog;
 }
 
 .update-banner {

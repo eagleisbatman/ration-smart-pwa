@@ -279,6 +279,6 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .q-card {
-  border-radius: 12px;
+  border-radius: $radius-loose;
 }
 </style>

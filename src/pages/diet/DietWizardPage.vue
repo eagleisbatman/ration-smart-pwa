@@ -527,11 +527,11 @@ onMounted(async () => {
 
 <style lang="scss" scoped>
 .diet-stepper {
-  border-radius: 12px;
+  border-radius: $radius-loose;
 }
 
 .rounded-borders {
-  border-radius: 12px;
+  border-radius: $radius-loose;
   overflow: hidden;
 }
 </style>

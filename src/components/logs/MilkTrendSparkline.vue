@@ -169,7 +169,7 @@ const dayLabels = computed(() => {
 
 <style lang="scss" scoped>
 .milk-trend-sparkline {
-  border-radius: 12px;
+  border-radius: $radius-loose;
 }
 
 .sparkline-svg {

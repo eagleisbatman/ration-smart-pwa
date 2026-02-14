@@ -427,7 +427,7 @@ onUnmounted(() => {
 
 <style lang="scss" scoped>
 .report-type-card {
-  border-radius: 12px;
+  border-radius: $radius-loose;
   transition: transform 0.2s;
 
   &:active {
@@ -436,7 +436,7 @@ onUnmounted(() => {
 }
 
 .rounded-borders {
-  border-radius: 12px;
+  border-radius: $radius-loose;
   overflow: hidden;
 }
 

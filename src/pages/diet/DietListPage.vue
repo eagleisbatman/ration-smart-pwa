@@ -213,6 +213,6 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .diet-card {
-  border-radius: 12px;
+  border-radius: $radius-loose;
 }
 </style>

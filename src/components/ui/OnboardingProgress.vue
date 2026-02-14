@@ -84,7 +84,7 @@ withDefaults(defineProps<{
   background-color: $grey-200;
   flex-shrink: 0;
   transition: background-color 0.3s ease;
-  border-radius: 2px;
+  border-radius: $radius-tight;
 
   &--completed {
     background-color: var(--q-primary);

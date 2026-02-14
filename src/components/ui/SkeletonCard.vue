@@ -28,6 +28,6 @@ defineProps<{
 
 <style lang="scss" scoped>
 .skeleton-card {
-  border-radius: 12px;
+  border-radius: $radius-loose;
 }
 </style>

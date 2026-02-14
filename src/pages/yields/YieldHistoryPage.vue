@@ -449,7 +449,7 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .rounded-borders {
-  border-radius: 12px;
+  border-radius: $radius-loose;
   overflow: hidden;
 }
 </style>

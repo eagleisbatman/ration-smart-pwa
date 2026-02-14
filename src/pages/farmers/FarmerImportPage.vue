@@ -548,13 +548,13 @@ function formatFileSize(bytes: number): string {
 
 <style lang="scss" scoped>
 .rounded-borders {
-  border-radius: 12px;
+  border-radius: $radius-loose;
   overflow: hidden;
 }
 
 .upload-zone {
   border: 2px dashed $grey-4;
-  border-radius: 12px;
+  border-radius: $radius-loose;
   background: $grey-1;
   transition: all 0.2s ease;
   min-height: 200px;
