@@ -1,5 +1,5 @@
 import { boot } from 'quasar/wrappers';
-import { Quasar } from 'quasar';
+import { useQuasar } from 'quasar';
 import CowIcon from 'src/components/icons/CowIcon.vue';
 
 /**
@@ -16,12 +16,17 @@ export const COW_ICON = 'img:/icons/cow.svg';
 // Prefixes that Quasar already handles — do NOT remap these
 const knownPrefixRE = /^(sym_[ors]_|[ors]_|mdi-|icon-|bt-|eva-|ion-|iconfont |ti-|bi-|fa[srlbdk]? |fa-(classic|sharp|solid|regular|light|brands|duotone|thin) |img:|svguse:|[Mm]\s?[-+]?\.?\d)/;
 
+function iconMapFn(name: string) {
+  if (knownPrefixRE.test(name)) return undefined; // already qualified
+  return { icon: `sym_o_${name}` };
+}
+
 export default boot(({ app }) => {
   app.component('CowIcon', CowIcon);
 
-  // Remap plain icon names → sym_o_ so Quasar uses Material Symbols Outlined
-  Quasar.iconMapFn = (name: string) => {
-    if (knownPrefixRE.test(name)) return undefined; // already qualified
-    return { icon: `sym_o_${name}` };
-  };
+  // Set iconMapFn on the $q reactive instance (what QIcon actually reads)
+  const $q = app.config.globalProperties.$q;
+  if ($q) {
+    $q.iconMapFn = iconMapFn;
+  }
 });
