@@ -9,6 +9,10 @@
 // Import native-like PWA enhancements
 @import 'native-like.scss';
 
+// Material Symbols: lighter weight for modern, sharp look
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+}
 
 // ============================================
 // Base Styles
@@ -656,11 +660,11 @@ body {
   }
 
   .stat-card--primary {
-    background: linear-gradient(to top, #121212, rgba(46, 125, 50, 0.15)) !important;
+    background: linear-gradient(to top, #121212, rgba(21, 101, 192, 0.15)) !important;
   }
 
   .stat-card--secondary {
-    background: linear-gradient(to top, #121212, rgba(85, 139, 47, 0.15)) !important;
+    background: linear-gradient(to top, #121212, rgba(30, 136, 229, 0.15)) !important;
   }
 
   .stat-card__label {
@@ -678,7 +682,7 @@ body {
 
   // MilkPriceCard
   .milk-price-card {
-    background: linear-gradient(135deg, rgba(46, 125, 50, 0.12) 0%, #1d1d1d 100%) !important;
+    background: linear-gradient(135deg, rgba(21, 101, 192, 0.12) 0%, #1d1d1d 100%) !important;
   }
 
   // Auth layout container
@@ -690,6 +694,17 @@ body {
   // EW view toggle button (white bg in light mode)
   .q-btn-toggle .q-btn--flat {
     background: rgba(255, 255, 255, 0.08);
+  }
+
+  // Cow icon: loaded as <img> so currentColor doesn't work; invert black→white
+  .q-icon img[src*="cow"],
+  img[src*="cow.svg"] {
+    filter: invert(1);
+  }
+
+  // Auth layout logo border adapts to dark bg
+  .auth-logo {
+    border-color: #1d1d1d;
   }
 }
 

@@ -428,8 +428,8 @@ async function loadRecentActivities() {
       activities.push({
         id: `diet_${diet.id}`,
         type: 'diet',
-        icon: 'restaurant_menu',
-        color: 'green-6',
+        icon: 'menu_book',
+        color: 'primary',
         description: t('dashboard.activityDietCreated', {
           farmer: farmerName,
           cow: cowName,

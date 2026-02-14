@@ -147,7 +147,7 @@ export const useNotificationsStore = defineStore('notifications', () => {
               newNotifications.push({
                 id: notifId,
                 type: 'alert',
-                icon: 'restaurant_menu',
+                icon: 'menu_book',
                 title: 'notifications.staleDiet',
                 message: 'notifications.staleDietMessage',
                 params: { cowName: cow.name, days: daysOld },

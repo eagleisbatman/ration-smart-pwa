@@ -218,6 +218,6 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .bg-primary-1 {
-  background-color: rgba(46, 125, 50, 0.08);
+  background-color: rgba(21, 101, 192, 0.08);
 }
 </style>

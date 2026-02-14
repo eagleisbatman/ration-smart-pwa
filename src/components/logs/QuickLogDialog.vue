@@ -57,7 +57,7 @@
           <q-item
             v-for="cow in activeCows"
             :key="cow.id"
-            :class="{ 'bg-green-1': savedRows[cow.id] }"
+            :class="{ 'bg-blue-1': savedRows[cow.id] }"
             class="q-py-sm"
           >
             <q-item-section>
@@ -66,7 +66,7 @@
                 <div class="col-12 q-mb-xs">
                   <div class="row items-center">
                     <q-avatar
-                      :color="savedRows[cow.id] ? 'green' : 'primary'"
+                      :color="savedRows[cow.id] ? 'positive' : 'primary'"
                       text-color="white"
                       size="28px"
                       class="q-mr-sm"
@@ -106,7 +106,7 @@
                     outlined
                     dense
                     :disable="savedRows[cow.id]"
-                    :bg-color="savedRows[cow.id] ? 'green-1' : undefined"
+                    :bg-color="savedRows[cow.id] ? 'blue-1' : undefined"
                   >
                     <template #prepend>
                       <q-icon name="wb_sunny" color="warning" size="xs" />
@@ -124,7 +124,7 @@
                     outlined
                     dense
                     :disable="savedRows[cow.id]"
-                    :bg-color="savedRows[cow.id] ? 'green-1' : undefined"
+                    :bg-color="savedRows[cow.id] ? 'blue-1' : undefined"
                   >
                     <template #prepend>
                       <q-icon name="nightlight" color="primary" size="xs" />
@@ -134,7 +134,7 @@
                 <div class="col-auto">
                   <q-btn
                     :icon="savedRows[cow.id] ? 'check_circle' : 'check'"
-                    :color="savedRows[cow.id] ? 'green' : 'primary'"
+                    :color="savedRows[cow.id] ? 'positive' : 'primary'"
                     :flat="!savedRows[cow.id]"
                     round
                     dense

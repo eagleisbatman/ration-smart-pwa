@@ -127,9 +127,9 @@ function proceed() {
   &--selected {
     border-color: var(--q-primary);
     border-width: 2px;
-    background-color: rgba(46, 125, 50, 0.04);
+    background-color: rgba(21, 101, 192, 0.04);
     transform: scale(1.02);
-    box-shadow: 0 4px 16px rgba(46, 125, 50, 0.15);
+    box-shadow: 0 4px 16px rgba(21, 101, 192, 0.15);
   }
 }
 

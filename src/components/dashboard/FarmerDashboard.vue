@@ -76,8 +76,8 @@
           </q-item>
           <q-item>
             <q-item-section avatar>
-              <q-avatar size="36px" color="green-1">
-                <q-icon name="restaurant_menu" size="20px" color="green-7" />
+              <q-avatar size="36px" color="blue-1">
+                <q-icon name="menu_book" size="20px" color="blue-7" />
               </q-avatar>
             </q-item-section>
             <q-item-section>
@@ -216,7 +216,7 @@
         {{ $t('logs.logMilk') }}
       </button>
       <button class="action-row__btn" @click="router.push({ name: 'diet-new' })">
-        <q-icon name="restaurant" />
+        <q-icon name="menu_book" />
         {{ $t('diet.getDiet') }}
       </button>
       <button class="action-row__btn" @click="router.push({ name: 'cow-new' })">
@@ -275,7 +275,7 @@
     </template>
     <template v-else-if="recentDiets.length === 0">
       <div class="text-center q-py-lg q-mb-md">
-        <q-icon name="restaurant_menu" size="36px" color="grey-4" />
+        <q-icon name="menu_book" size="36px" color="grey-4" />
         <div class="text-body2 text-grey-7 q-mt-xs">{{ $t('dashboard.noDietsYet') }}</div>
         <q-btn
           :label="$t('dashboard.createDiet')"
@@ -284,7 +284,7 @@
           dense
           no-caps
           class="q-mt-sm"
-          icon="restaurant_menu"
+          icon="menu_book"
           @click="router.push({ name: 'diet-new' })"
         />
       </div>
@@ -299,7 +299,7 @@
           @click="router.push({ name: 'diet-detail', params: { id: diet.id } })"
         >
           <q-item-section avatar>
-            <q-icon name="restaurant_menu" color="green-6" />
+            <q-icon name="menu_book" color="primary" />
           </q-item-section>
           <q-item-section>
             <q-item-label>{{ diet.cow_name || $t('diet.generalDiet') }}</q-item-label>

@@ -12,8 +12,7 @@ export default defineConfig((/* ctx */) => {
     css: ['app.scss'],
 
     extras: [
-      'material-icons',
-      'material-icons-outlined',
+      'material-symbols-outlined',
     ],
 
     build: {
@@ -34,8 +33,8 @@ export default defineConfig((/* ctx */) => {
     framework: {
       config: {
         brand: {
-          primary: '#2E7D32',    // Green - agriculture theme
-          secondary: '#558B2F',  // Light green
+          primary: '#1565C0',    // Deep Blue - RationSmart brand
+          secondary: '#1E88E5',  // Medium Blue
           accent: '#FFA000',     // Amber for accents
           dark: '#1D1D1D',
           'dark-page': '#121212',
@@ -53,7 +52,7 @@ export default defineConfig((/* ctx */) => {
           spinnerColor: 'primary',
         },
       },
-      iconSet: 'material-icons',
+      iconSet: 'material-symbols-outlined',
       plugins: [
         'Notify',
         'Dialog',
