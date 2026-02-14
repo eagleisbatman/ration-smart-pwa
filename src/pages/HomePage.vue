@@ -7,7 +7,7 @@
         ref="extensionDashboardRef"
       >
         <template #personal-dashboard>
-          <FarmerDashboard ref="farmerDashboardRef" />
+          <FarmerDashboard ref="farmerDashboardRef" embedded />
         </template>
       </ExtensionWorkerDashboard>
 
