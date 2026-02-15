@@ -12,6 +12,7 @@ export interface User {
   user_role?: string;
   organization_id?: string | null;
   self_farmer_profile_id?: string | null;
+  profile_image_url?: string | null;
   created_at: string;
   updated_at: string;
 }

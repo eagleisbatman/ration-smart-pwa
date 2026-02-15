@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import { api } from 'src/lib/api';
 import { db, User } from 'src/lib/offline/db';
-import { fetchAndCacheCountries, setCountryCache } from 'src/services/api-adapter';
+import { fetchAndCacheCountries, setCountryCache, toAlpha2 } from 'src/services/api-adapter';
 import { extractUserFriendlyError } from 'src/lib/error-messages';
 
 export interface Country {
@@ -27,6 +27,40 @@ export interface AuthState {
 // When "Remember me" was checked we persist in localStorage; otherwise sessionStorage.
 function getStorage(): Storage {
   return localStorage.getItem('remember_me') === '1' ? localStorage : sessionStorage;
+}
+
+// Normalize backend user response to match frontend User type.
+// Backend returns email_id, phone_number, country_id (UUID), language_code;
+// frontend expects email, phone, country_code (alpha-2), language.
+function normalizeUser(data: Record<string, unknown>): User {
+  const normalized = { ...data };
+
+  // email_id → email
+  if ('email_id' in normalized && !normalized.email) {
+    normalized.email = normalized.email_id;
+  }
+  delete normalized.email_id;
+
+  // phone_number → phone
+  if ('phone_number' in normalized && !normalized.phone) {
+    normalized.phone = normalized.phone_number;
+  }
+  delete normalized.phone_number;
+
+  // language_code → language (same value, e.g. "en")
+  if (normalized.language_code && !normalized.language) {
+    normalized.language = normalized.language_code;
+  }
+
+  // Extract country_code from nested country object (alpha-3 → alpha-2)
+  if (!normalized.country_code && normalized.country && typeof normalized.country === 'object') {
+    const country = normalized.country as Record<string, unknown>;
+    if (country.country_code) {
+      normalized.country_code = toAlpha2(country.country_code as string);
+    }
+  }
+
+  return normalized as unknown as User;
 }
 
 export const useAuthStore = defineStore('auth', () => {
@@ -156,9 +190,12 @@ export const useAuthStore = defineStore('auth', () => {
 
       // Handle response - backend returns different field names
       const responseData = response.data;
-      const userData = responseData.user;
+      const rawUser = responseData.user;
       const authToken = responseData.access_token || responseData.token;
-      const responseUserId = userData?.id || responseData.user_id;
+      const responseUserId = rawUser?.id || responseData.user_id;
+
+      // Normalize backend field names (email_id→email, phone_number→phone, etc.)
+      const userData = rawUser ? normalizeUser(rawUser) : null;
 
       // Save to local state
       user.value = userData;
@@ -216,9 +253,12 @@ export const useAuthStore = defineStore('auth', () => {
 
       // Handle response - backend returns different field names
       const responseData = response.data;
-      const userData = responseData.user;
+      const rawUser = responseData.user;
       const authToken = responseData.access_token || responseData.token;
-      const responseUserId = userData?.id || responseData.user_id;
+      const responseUserId = rawUser?.id || responseData.user_id;
+
+      // Normalize backend field names (email_id→email, phone_number→phone, etc.)
+      const userData = rawUser ? normalizeUser(rawUser) : null;
 
       // Save to local state
       user.value = userData;
@@ -295,25 +335,27 @@ export const useAuthStore = defineStore('auth', () => {
     try {
       // Try to load from server first
       const response = await api.get(`/api/v1/users/${userId.value}`);
-      user.value = response.data;
-      await db.users.put(response.data);
+      const normalizedData = normalizeUser(response.data);
+      user.value = normalizedData;
+      await db.users.put(normalizedData);
 
       // Update extended state from user data
-      if (response.data.user_role) {
-        userRole.value = response.data.user_role;
-        localStorage.setItem('user_role', response.data.user_role);
+      if (normalizedData.user_role) {
+        userRole.value = normalizedData.user_role;
+        localStorage.setItem('user_role', normalizedData.user_role);
       }
-      if (response.data.language_code) {
-        preferredLanguage.value = response.data.language_code;
-        localStorage.setItem('preferred_language', response.data.language_code);
+      if (normalizedData.language_code || normalizedData.language) {
+        const lang = normalizedData.language_code || normalizedData.language || 'en';
+        preferredLanguage.value = lang;
+        localStorage.setItem('preferred_language', lang);
       }
-      if (response.data.self_farmer_profile_id) {
-        selfFarmerProfileId.value = response.data.self_farmer_profile_id;
-        localStorage.setItem('self_farmer_profile_id', response.data.self_farmer_profile_id);
+      if (normalizedData.self_farmer_profile_id) {
+        selfFarmerProfileId.value = normalizedData.self_farmer_profile_id;
+        localStorage.setItem('self_farmer_profile_id', normalizedData.self_farmer_profile_id);
       }
-      if (response.data.profile_image_url) {
-        profileImage.value = response.data.profile_image_url;
-        localStorage.setItem('profile_image', response.data.profile_image_url);
+      if (normalizedData.profile_image_url) {
+        profileImage.value = normalizedData.profile_image_url;
+        localStorage.setItem('profile_image', normalizedData.profile_image_url);
       }
 
       // If self_farmer_profile_id still not set, check via self-profile endpoint
@@ -562,7 +604,8 @@ export const useAuthStore = defineStore('auth', () => {
       try {
         const cachedUser = await db.users.get(userId.value);
         if (cachedUser) {
-          user.value = cachedUser;
+          // Normalize in case cached data has old backend field names
+          user.value = normalizeUser(cachedUser as unknown as Record<string, unknown>);
         }
       } catch {
         // IndexedDB unavailable — will rely on API below
