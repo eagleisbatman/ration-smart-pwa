@@ -163,7 +163,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted } from 'vue';
+import { ref, reactive, computed, onMounted, watch } from 'vue';
 import { useQuasar } from 'quasar';
 import { useI18n } from 'vue-i18n';
 import { useAuthStore } from 'src/stores/auth';
@@ -289,7 +289,8 @@ async function changePin() {
   }
 }
 
-onMounted(async () => {
+// Populate form when user data becomes available (may arrive after mount via API)
+function populateForm() {
   if (authStore.user) {
     form.name = authStore.user.name || '';
     form.email = authStore.user.email || '';
@@ -297,7 +298,14 @@ onMounted(async () => {
     form.country_code = authStore.user.country_code || 'IN';
     form.language = authStore.user.language || 'en';
   }
-  // Load saved profile image from store
+}
+
+watch(() => authStore.user, (newUser) => {
+  if (newUser) populateForm();
+});
+
+onMounted(async () => {
+  populateForm();
   profileImage.value = authStore.profileImage;
   await authStore.fetchCountries();
 });

@@ -624,7 +624,7 @@ body {
     }
   }
 
-  // Pill-style tabs (NOT bottom nav — that's reset in .q-footer)
+  // Pill-style tabs (NOT bottom nav — that's reset below for .q-footer)
   .q-tabs {
     background: rgba(255, 255, 255, 0.06);
 
@@ -632,6 +632,26 @@ body {
       background: #27272A; // zinc-800 — matches shadcn accent
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
       color: #FAFAFA;
+    }
+  }
+
+  // Bottom navigation: distinct from pill-style tabs above
+  .q-footer {
+    background: #18181B !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+
+    .q-tabs {
+      background: transparent !important; // Don't apply the pill-tab tint
+    }
+
+    .q-tab {
+      color: rgba(255, 255, 255, 0.5) !important; // Inactive tabs visible but muted
+    }
+
+    .q-tab.q-tab--active {
+      background: transparent !important;
+      box-shadow: none !important;
+      color: var(--q-primary) !important; // Active tab uses primary
     }
   }
 
@@ -1052,6 +1072,17 @@ body {
   // ---- bg-grey-4: used as avatar bg in some places ----
   .bg-grey-4 {
     background: rgba(255, 255, 255, 0.12) !important;
+  }
+
+  // ---- Flat buttons with grey color prop ----
+  // Quasar flat buttons with color="grey-7" apply .text-grey-7 which we override,
+  // but the icon inside may use its own color. Ensure full button text+icon visible.
+  .q-btn--flat.text-grey-7 {
+    color: rgba(255, 255, 255, 0.6) !important;
+
+    .q-icon {
+      color: inherit !important;
+    }
   }
 }
 

@@ -553,9 +553,21 @@ export const useAuthStore = defineStore('auth', () => {
     await db.clearUserData();
   }
 
-  // Initialize - load user from cache if token exists
+  // Initialize - restore user from IndexedDB immediately, then refresh from API.
+  // This ensures UI has data instantly (name, email, phone) instead of waiting
+  // for the network request — critical after app updates / page reloads.
   async function initialize(): Promise<void> {
     if (userId.value) {
+      // 1. Instant restore from IndexedDB (survives reloads)
+      try {
+        const cachedUser = await db.users.get(userId.value);
+        if (cachedUser) {
+          user.value = cachedUser;
+        }
+      } catch {
+        // IndexedDB unavailable — will rely on API below
+      }
+      // 2. Refresh from server (updates IndexedDB too)
       await loadUserProfile();
     }
   }
