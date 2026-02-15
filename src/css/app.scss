@@ -1074,15 +1074,5 @@ body {
     background: rgba(255, 255, 255, 0.12) !important;
   }
 
-  // ---- Flat buttons with grey color prop ----
-  // Quasar flat buttons with color="grey-7" apply .text-grey-7 which we override,
-  // but the icon inside may use its own color. Ensure full button text+icon visible.
-  .q-btn--flat.text-grey-7 {
-    color: rgba(255, 255, 255, 0.6) !important;
-
-    .q-icon {
-      color: inherit !important;
-    }
-  }
 }
 
