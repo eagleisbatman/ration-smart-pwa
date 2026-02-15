@@ -1,5 +1,5 @@
 <template>
-  <q-page class="q-pa-md">
+  <q-page :class="$q.screen.lt.sm ? 'q-pa-none' : 'q-pa-md'">
     <!-- Stepper -->
     <q-stepper
       ref="stepper"
@@ -7,7 +7,7 @@
       color="primary"
       animated
       flat
-      bordered
+      :bordered="!$q.screen.lt.sm"
       :vertical="$q.screen.lt.sm"
       :alternative-labels="!$q.screen.lt.sm"
       class="diet-stepper"
@@ -173,7 +173,7 @@
                 {{ feed.category }} · {{ $t('diet.cpLabel') }}: {{ feed.cp_percentage != null ? feed.cp_percentage + '%' : '–' }} · {{ $t('diet.tdnLabel') }}: {{ feed.tdn_percentage != null ? feed.tdn_percentage + '%' : '–' }}
               </q-item-label>
             </q-item-section>
-            <q-item-section side style="min-width: 90px">
+            <q-item-section side>
               <q-input
                 v-if="form.available_feeds.includes(feed.id)"
                 :model-value="feedPriceOverrides[feed.id] ?? feed.price_per_kg ?? ''"
@@ -182,8 +182,8 @@
                 outlined
                 :prefix="currencySymbol"
                 :suffix="$t('units.perKg')"
-                input-style="text-align: right; width: 60px"
-                style="max-width: 130px"
+                input-style="text-align: right; width: 50px"
+                style="max-width: 110px"
                 @update:model-value="(v: string | number | null) => setFeedPrice(feed.id, v)"
                 @click.stop
               />
@@ -530,6 +530,20 @@ onMounted(async () => {
 <style lang="scss" scoped>
 .diet-stepper {
   border-radius: $radius-loose;
+
+  // On mobile vertical mode: reduce indentation to reclaim horizontal space
+  @media (max-width: 599px) {
+    border-radius: 0;
+
+    :deep(.q-stepper__step-inner) {
+      padding-left: 8px;
+      padding-right: 4px;
+    }
+
+    :deep(.q-stepper__tab) {
+      padding: 8px 12px;
+    }
+  }
 }
 
 .rounded-borders {
