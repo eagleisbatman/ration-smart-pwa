@@ -2,21 +2,22 @@
   <q-page class="q-pa-md">
     <PullToRefresh @refresh="onRefresh">
       <!-- Tabs for Master/Custom (btn-toggle matches dashboard toggle style) -->
-      <q-btn-toggle
-        v-model="activeTab"
-        spread
-        no-caps
-        rounded
-        unelevated
-        toggle-color="primary"
-        color="white"
-        text-color="primary"
-        class="q-mb-md"
-        :options="[
-          { label: $t('feed.tabs.master'), value: 'master', icon: 'inventory_2' },
-          { label: $t('feed.tabs.custom'), value: 'custom', icon: 'tune' },
-        ]"
-      />
+      <div class="view-toggle q-mb-md">
+        <q-btn-toggle
+          v-model="activeTab"
+          spread
+          no-caps
+          rounded
+          unelevated
+          toggle-color="primary"
+          color="white"
+          text-color="primary"
+          :options="[
+            { label: $t('feed.tabs.master'), value: 'master', icon: 'inventory_2' },
+            { label: $t('feed.tabs.custom'), value: 'custom', icon: 'tune' },
+          ]"
+        />
+      </div>
 
       <!-- Search & Compare Toggle -->
       <div class="row q-gutter-sm q-mb-md items-center">
@@ -276,5 +277,13 @@ onMounted(() => {
 .rounded-borders {
   border-radius: $radius-loose;
   overflow: hidden;
+}
+
+.view-toggle {
+  .q-btn-toggle {
+    border: 1px solid $primary;
+    border-radius: $radius-default;
+    overflow: hidden;
+  }
 }
 </style>
