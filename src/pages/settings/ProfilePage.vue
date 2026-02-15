@@ -312,10 +312,10 @@ onMounted(async () => {
 
 <style lang="scss" scoped>
 .change-pin-btn {
-  color: #616161; // grey-7 equivalent — subdued in light mode
+  color: #616161 !important;
 
   .body--dark & {
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(255, 255, 255, 0.6) !important;
   }
 }
 </style>
