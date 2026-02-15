@@ -54,9 +54,7 @@ async function refreshAll(done: () => void) {
 }
 
 onMounted(async () => {
-  // Initialize auth store
-  await authStore.initialize();
-
+  // Auth store is initialized by the router guard (src/router/index.ts).
   // Load farmers data to determine if user is managing farmers
   await farmersStore.loadFromCache();
   await farmersStore.fetchFarmers();

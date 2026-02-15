@@ -21,10 +21,20 @@ export default route(function (/* { store, ssrContext } */) {
     history: createHistory(process.env.VUE_ROUTER_BASE),
   });
 
+  // Track whether auth store has been initialized this session
+  let authInitialized = false;
+
   // Navigation guards
-  Router.beforeEach((to, _from, next) => {
+  Router.beforeEach(async (to, _from, next) => {
     const authStore = useAuthStore();
     const isOnboardingRoute = to.matched.some((record) => record.meta.isOnboarding);
+
+    // Initialize auth store once per session (loads user profile from IndexedDB + API)
+    if (!authInitialized && authStore.isAuthenticated) {
+      authInitialized = true;
+      // Don't block navigation — fire and forget so the page loads fast
+      authStore.initialize();
+    }
 
     // Check if route requires authentication
     if (to.matched.some((record) => record.meta.requiresAuth)) {
