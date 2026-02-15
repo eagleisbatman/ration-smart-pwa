@@ -98,9 +98,8 @@
       <q-btn
         :label="$t('profile.changePin')"
         icon="lock"
-        color="grey-7"
         flat
-        class="full-width"
+        class="full-width change-pin-btn"
         @click="showChangePinDialog"
       />
     </q-form>
@@ -310,3 +309,13 @@ onMounted(async () => {
   await authStore.fetchCountries();
 });
 </script>
+
+<style lang="scss" scoped>
+.change-pin-btn {
+  color: #616161; // grey-7 equivalent — subdued in light mode
+
+  .body--dark & {
+    color: rgba(255, 255, 255, 0.6);
+  }
+}
+</style>
