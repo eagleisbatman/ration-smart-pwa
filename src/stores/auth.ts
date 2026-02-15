@@ -371,10 +371,12 @@ export const useAuthStore = defineStore('auth', () => {
         }
       }
     } catch {
-      // Fallback to local cache
-      const cachedUser = await db.users.get(userId.value);
-      if (cachedUser) {
-        user.value = cachedUser;
+      // Fallback to local cache (userId may have been cleared by 401 interceptor)
+      if (userId.value) {
+        const cachedUser = await db.users.get(userId.value);
+        if (cachedUser) {
+          user.value = cachedUser;
+        }
       }
     } finally {
       loading.value = false;

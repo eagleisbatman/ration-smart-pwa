@@ -116,7 +116,9 @@ export const useDietsStore = defineStore('diets', () => {
         await db.diets.bulkPut(serverDiets);
       }
 
-      // Load from local database — active (followed) diets first
+      // Load from local database (userId may have been cleared by 401 interceptor)
+      if (!authStore.userId) return;
+
       const allDiets = await db.diets
         .where({ user_id: authStore.userId })
         .reverse()
@@ -130,14 +132,16 @@ export const useDietsStore = defineStore('diets', () => {
         }
       }
     } catch (err) {
-      // Fallback to local data
-      const allDiets = await db.diets
-        .where({ user_id: authStore.userId })
-        .reverse()
-        .sortBy('created_at');
-      diets.value = sortWithActiveFirst(allDiets);
+      // Fallback to local data (userId may have been cleared by 401 interceptor)
+      if (authStore.userId) {
+        const allDiets = await db.diets
+          .where({ user_id: authStore.userId })
+          .reverse()
+          .sortBy('created_at');
+        diets.value = sortWithActiveFirst(allDiets);
+      }
 
-      if (diets.value.length === 0) {
+      if (diets.value.length === 0 && authStore.userId) {
         error.value = extractUserFriendlyError(err);
       }
     } finally {

@@ -89,28 +89,28 @@ export const useCowsStore = defineStore('cows', () => {
           .equals(farmerProfileId)
           .filter((cow) => !cow._deleted)
           .toArray();
-      } else {
+      } else if (authStore.userId) {
         cows.value = await db.cows
           .where({ user_id: authStore.userId })
           .filter((cow) => !cow._deleted)
           .toArray();
       }
     } catch (err) {
-      // Fallback to local data
+      // Fallback to local data (userId may have been cleared by 401 interceptor)
       if (farmerProfileId) {
         cows.value = await db.cows
           .where('farmer_profile_id')
           .equals(farmerProfileId)
           .filter((cow) => !cow._deleted)
           .toArray();
-      } else {
+      } else if (authStore.userId) {
         cows.value = await db.cows
           .where({ user_id: authStore.userId })
           .filter((cow) => !cow._deleted)
           .toArray();
       }
 
-      if (cows.value.length === 0) {
+      if (cows.value.length === 0 && authStore.userId) {
         error.value = extractUserFriendlyError(err);
       }
     } finally {

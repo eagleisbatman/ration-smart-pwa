@@ -126,17 +126,21 @@ export const useFeedsStore = defineStore('feeds', () => {
         }
       }
 
-      // Load from local database
+      // Load from local database (userId may have been cleared by 401 interceptor)
+      if (!authStore.userId) return;
+
       customFeeds.value = await db.feeds
         .where({ user_id: authStore.userId, is_custom: 1 })
         .filter((f) => !f._deleted)
         .toArray();
     } catch (err) {
-      // Fallback to local data
-      customFeeds.value = await db.feeds
-        .where({ user_id: authStore.userId })
-        .filter((f) => f.is_custom && !f._deleted)
-        .toArray();
+      // Fallback to local data (userId may have been cleared by 401 interceptor)
+      if (authStore.userId) {
+        customFeeds.value = await db.feeds
+          .where({ user_id: authStore.userId })
+          .filter((f) => f.is_custom && !f._deleted)
+          .toArray();
+      }
 
       if (customFeeds.value.length === 0 && !isOnline.value) {
         // Only show error if offline and no cached data
