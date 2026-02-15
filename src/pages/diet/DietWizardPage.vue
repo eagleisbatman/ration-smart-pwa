@@ -531,17 +531,30 @@ onMounted(async () => {
 .diet-stepper {
   border-radius: $radius-loose;
 
-  // On mobile vertical mode: reduce indentation to reclaim horizontal space
+  // On mobile vertical mode: full-width content
   @media (max-width: 599px) {
     border-radius: 0;
 
-    :deep(.q-stepper__step-inner) {
-      padding-left: 8px;
-      padding-right: 4px;
+    // Hide the vertical connector line between steps — it steals horizontal space
+    :deep(.q-stepper__dot::before),
+    :deep(.q-stepper__dot::after) {
+      display: none !important;
     }
 
+    // Reduce the left indent so step content uses full width
+    :deep(.q-stepper__step-inner) {
+      padding: 0 12px 24px 12px;
+    }
+
+    // Compact step header
     :deep(.q-stepper__tab) {
-      padding: 8px 12px;
+      padding: 10px 12px;
+      min-height: auto;
+    }
+
+    // Navigation buttons full-width
+    :deep(.q-stepper__nav) {
+      padding: 16px 12px 8px;
     }
   }
 }
