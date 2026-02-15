@@ -150,7 +150,9 @@ export const useMilkLogsStore = defineStore('milkLogs', () => {
         await db.milkLogs.bulkPut(serverLogs);
       }
 
-      // Load from local database
+      // Load from local database (userId may have been cleared by 401 interceptor)
+      if (!authStore.userId) return;
+
       let query = db.milkLogs.where({ user_id: authStore.userId });
 
       if (params?.cow_id) {
@@ -169,13 +171,15 @@ export const useMilkLogsStore = defineStore('milkLogs', () => {
         });
       }
     } catch (err) {
-      // Fallback to local data
-      logs.value = await db.milkLogs
-        .where({ user_id: authStore.userId })
-        .filter((log) => !log._deleted)
-        .toArray();
+      // Fallback to local data (userId may have been cleared by 401 interceptor)
+      if (authStore.userId) {
+        logs.value = await db.milkLogs
+          .where({ user_id: authStore.userId })
+          .filter((log) => !log._deleted)
+          .toArray();
+      }
 
-      if (logs.value.length === 0) {
+      if (logs.value.length === 0 && authStore.userId) {
         error.value = extractUserFriendlyError(err);
       }
     } finally {
