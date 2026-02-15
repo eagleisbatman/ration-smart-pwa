@@ -284,6 +284,16 @@ body {
   }
 }
 
+// Hide tab indicator (underline) for pill-styled tabs
+// The pill bg + shadow IS the active state; the underline is visual noise.
+// Bottom nav tabs keep their indicator.
+.q-tabs .q-tab__indicator {
+  display: none;
+}
+.q-footer .q-tabs .q-tab__indicator {
+  display: block;
+}
+
 // ============================================
 // Avatar Styles
 // ============================================
@@ -724,6 +734,7 @@ body {
   // Farmer Dashboard onboarding card
   .onboarding-card {
     background: rgba(255, 255, 255, 0.04) !important;
+    border-color: rgba(255, 255, 255, 0.15) !important; // $primary compiles to #18181B → invisible
   }
 
   // MilkPriceCard
@@ -884,9 +895,11 @@ body {
   }
   .conflict-local {
     background: rgba(228, 228, 231, 0.08) !important;
+    border-left-color: var(--q-primary) !important; // $primary compiles to #18181B → invisible
   }
   .conflict-server {
     background: rgba(161, 161, 170, 0.08) !important;
+    border-left-color: var(--q-secondary) !important; // $secondary compiles to #71717A → low contrast
   }
 
   // OnboardingProgress: upcoming step + connector track
@@ -896,6 +909,15 @@ body {
   }
   .progress-connector {
     background-color: rgba(255, 255, 255, 0.1) !important;
+  }
+  // OnboardingProgress: completed/active circles use var(--q-primary) bg (now light)
+  // + hardcoded white text → invisible. Flip text to dark.
+  .progress-circle--completed,
+  .progress-circle--active {
+    color: #18181B !important;
+  }
+  .progress-circle--active {
+    box-shadow: 0 0 0 4px rgba(228, 228, 231, 0.25) !important; // $primary shadow doesn't flip
   }
 
   // AddToHomeScreen iOS instructions
@@ -907,6 +929,10 @@ body {
   .upload-zone {
     border-color: rgba(255, 255, 255, 0.15) !important;
     background: rgba(255, 255, 255, 0.04) !important;
+  }
+  .upload-zone--active {
+    border-color: var(--q-primary) !important; // $primary doesn't flip
+    background: rgba(228, 228, 231, 0.06) !important;
   }
 
   // MilkTrendsPanel hover rows
@@ -947,6 +973,82 @@ body {
     background: #18181B !important;
     border: 1px solid rgba(255, 255, 255, 0.08);
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3), 0 12px 40px rgba(0, 0, 0, 0.4) !important;
+  }
+
+  // ---- bg-primary containers: keep dark bg so text-white stays visible ----
+  // bg-primary flips to light (#E4E4E7) in dark mode; containers using
+  // bg-primary as a "branded fill" with white text become unreadable.
+  .q-toolbar.bg-primary {
+    background: #27272A !important;
+    color: #FAFAFA !important;
+  }
+  .q-card.bg-primary {
+    background: #27272A !important;
+    color: #FAFAFA !important;
+  }
+
+  // ---- Primary avatars: keep dark bg for cow icons (filter:invert) and text ----
+  .q-avatar.bg-primary {
+    background: #27272A !important;
+    color: #FAFAFA !important;
+  }
+
+  // ---- PWA banners: $primary bg (#18181B) nearly invisible against dark page ----
+  .update-banner {
+    background: #27272A !important;
+  }
+  .a2hs-banner {
+    background: #27272A !important;
+  }
+
+  // ---- Teal self-profile indicators: adapt for dark monochrome theme ----
+  // FarmerListPage + EW Dashboard use teal-2/teal-9 for "You" badges & avatars.
+  // In dark mode, pastel teal-2 bg looks out of place; darken to subtle teal.
+  .bg-teal-2 {
+    background: rgba(38, 166, 154, 0.15) !important;
+  }
+  .text-teal-9 {
+    color: #4DB6AC !important; // teal-300: readable on dark bg
+  }
+
+  // ---- Grey text shades: additional brightening ----
+  // grey-4 (#BDBDBD) is OK in light but used on secondary icons
+  .text-grey-4 {
+    color: rgba(255, 255, 255, 0.35) !important;
+  }
+  .text-grey-5 {
+    color: rgba(255, 255, 255, 0.45) !important;
+  }
+
+  // ---- Outlined chips: visible border in dark mode ----
+  .q-chip--outline {
+    border-color: rgba(255, 255, 255, 0.25) !important;
+  }
+
+  // ---- Outlined badges: visible border in dark mode ----
+  .q-badge--outline {
+    border-color: rgba(255, 255, 255, 0.3) !important;
+  }
+
+  // ---- Grey-colored Quasar elements: brighten for dark mode ----
+  // q-icon with color="grey-5" etc.
+  .text-grey-5 .q-icon,
+  .q-icon.text-grey-5 {
+    color: rgba(255, 255, 255, 0.45) !important;
+  }
+  .text-grey-4 .q-icon,
+  .q-icon.text-grey-4 {
+    color: rgba(255, 255, 255, 0.35) !important;
+  }
+
+  // ---- Action row icon: $primary compiled to #18181B → invisible on dark bg ----
+  .action-row .action-row__btn .q-icon {
+    color: rgba(255, 255, 255, 0.7) !important;
+  }
+
+  // ---- bg-grey-4: used as avatar bg in some places ----
+  .bg-grey-4 {
+    background: rgba(255, 255, 255, 0.12) !important;
   }
 }
 
