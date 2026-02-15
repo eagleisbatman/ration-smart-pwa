@@ -1174,7 +1174,11 @@
     "onboardingStep1": "Add your cows",
     "onboardingStep2": "Log daily milk production",
     "onboardingStep3": "Get optimized diet plans",
-    "onboardingDismiss": "Got it!"
+    "onboardingDismiss": "Got it!",
+    "ewOnboardingWelcome": "Get started as an Extension Worker:",
+    "ewOnboardingStep1": "Add farmers you support",
+    "ewOnboardingStep2": "Register their cattle",
+    "ewOnboardingStep3": "Track milk & get diet plans"
   },
   "farmer": {
     "farmers": "Farmers",

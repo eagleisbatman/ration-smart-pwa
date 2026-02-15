@@ -19,12 +19,13 @@
         </q-input>
         <q-badge color="primary" :label="`${farmerCount} ${t('farmer.farmers')}`" class="q-pa-sm" />
         <q-btn
-          outline
+          flat
+          dense
+          no-caps
           color="primary"
           icon="upload_file"
           :label="$t('farmers.import.importBtn')"
-          dense
-          no-caps
+          size="sm"
           @click="router.push({ name: 'farmer-import' })"
         />
       </div>

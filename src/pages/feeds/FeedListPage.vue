@@ -1,17 +1,22 @@
 <template>
   <q-page class="q-pa-md">
     <PullToRefresh @refresh="onRefresh">
-      <!-- Tabs for Master/Custom -->
-      <q-tabs
+      <!-- Tabs for Master/Custom (btn-toggle matches dashboard toggle style) -->
+      <q-btn-toggle
         v-model="activeTab"
-        class="text-grey q-mb-md"
-        active-color="primary"
-        indicator-color="primary"
-        align="justify"
-      >
-        <q-tab name="master" :label="$t('feed.tabs.master')" />
-        <q-tab name="custom" :label="$t('feed.tabs.custom')" />
-      </q-tabs>
+        spread
+        no-caps
+        rounded
+        unelevated
+        toggle-color="primary"
+        color="white"
+        text-color="primary"
+        class="q-mb-md"
+        :options="[
+          { label: $t('feed.tabs.master'), value: 'master', icon: 'inventory_2' },
+          { label: $t('feed.tabs.custom'), value: 'custom', icon: 'tune' },
+        ]"
+      />
 
       <!-- Search & Compare Toggle -->
       <div class="row q-gutter-sm q-mb-md items-center">

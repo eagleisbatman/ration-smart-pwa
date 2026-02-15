@@ -83,6 +83,50 @@
 
     <!-- Managed Farmers View -->
     <template v-if="viewMode === 'managed'">
+      <!-- EW Onboarding Card (shown when no farmers yet) -->
+      <q-card
+        v-if="farmers.length === 0 && !loading"
+        flat
+        bordered
+        class="q-mb-lg onboarding-card"
+      >
+        <q-card-section>
+          <div class="text-subtitle1 q-mb-sm">{{ $t('dashboard.ewOnboardingWelcome') }}</div>
+          <q-list dense>
+            <q-item>
+              <q-item-section avatar>
+                <q-avatar size="36px" color="grey-2">
+                  <q-icon name="person_add" size="20px" color="grey-8" />
+                </q-avatar>
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>{{ $t('dashboard.ewOnboardingStep1') }}</q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item>
+              <q-item-section avatar>
+                <q-avatar size="36px" color="orange-1">
+                  <img src="/icons/cow.svg" alt="" width="20" height="20" />
+                </q-avatar>
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>{{ $t('dashboard.ewOnboardingStep2') }}</q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item>
+              <q-item-section avatar>
+                <q-avatar size="36px" color="grey-2">
+                  <q-icon name="menu_book" size="20px" color="grey-8" />
+                </q-avatar>
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>{{ $t('dashboard.ewOnboardingStep3') }}</q-item-label>
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-card-section>
+      </q-card>
+
       <!-- Stat Cards -->
       <div class="row q-col-gutter-sm q-mb-md">
         <div class="col-6">
