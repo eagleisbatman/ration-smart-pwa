@@ -8,6 +8,8 @@
       animated
       flat
       bordered
+      :vertical="$q.screen.lt.sm"
+      :alternative-labels="!$q.screen.lt.sm"
       class="diet-stepper"
     >
       <!-- Step 1: Select Cow -->

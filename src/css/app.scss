@@ -323,11 +323,31 @@ body {
 
   .q-tab {
     border-radius: 0;
+    min-height: 56px;
+    padding: 6px 0 2px;
 
     &.q-tab--active {
       background: transparent;
       box-shadow: none;
     }
+  }
+
+  // Remove uppercase, use sentence-case labels
+  .q-tab__label {
+    text-transform: none;
+    font-size: 0.625rem; // 10px — standard bottom nav label size
+    line-height: 1.2;
+  }
+
+  // Consistent icon sizing
+  .q-tab__icon {
+    font-size: 22px;
+  }
+
+  // Cow SVG icon in bottom nav — match font icon sizing
+  .q-tab__icon img {
+    width: 22px;
+    height: 22px;
   }
 }
 
