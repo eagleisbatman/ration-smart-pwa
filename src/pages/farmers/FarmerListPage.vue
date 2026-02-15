@@ -1,33 +1,36 @@
 <template>
   <q-page class="q-pa-md">
     <PullToRefresh @refresh="onRefresh">
-      <!-- Search Bar & Count Badge -->
-      <div class="row items-center q-mb-md q-gutter-sm">
-        <q-input
-          v-model="searchQuery"
-          outlined
-          dense
-          :placeholder="$t('farmer.searchFarmers')"
-          class="col"
-        >
-          <template #prepend>
-            <q-icon name="search" />
-          </template>
-          <template v-if="searchQuery" #append>
-            <q-icon name="close" class="cursor-pointer" @click="searchQuery = ''" />
-          </template>
-        </q-input>
-        <q-badge color="primary" :label="`${farmerCount} ${t('farmer.farmers')}`" class="q-pa-sm" />
-        <q-btn
-          flat
-          dense
-          no-caps
-          color="primary"
-          icon="upload_file"
-          :label="$t('farmers.import.importBtn')"
-          size="sm"
-          @click="router.push({ name: 'farmer-import' })"
-        />
+      <!-- Search Bar & Actions -->
+      <div class="row items-center q-mb-md q-col-gutter-sm">
+        <div class="col">
+          <q-input
+            v-model="searchQuery"
+            outlined
+            dense
+            :placeholder="$t('farmer.searchFarmers')"
+          >
+            <template #prepend>
+              <q-icon name="search" />
+            </template>
+            <template v-if="searchQuery" #append>
+              <q-icon name="close" class="cursor-pointer" @click="searchQuery = ''" />
+            </template>
+          </q-input>
+        </div>
+        <div class="col-auto row items-center q-gutter-xs">
+          <q-badge color="primary" :label="`${farmerCount} ${t('farmer.farmers')}`" class="q-pa-sm" />
+          <q-btn
+            flat
+            dense
+            no-caps
+            color="primary"
+            icon="upload_file"
+            :label="$t('farmers.import.importBtn')"
+            size="sm"
+            @click="router.push({ name: 'farmer-import' })"
+          />
+        </div>
       </div>
 
       <!-- Filter Chips -->
