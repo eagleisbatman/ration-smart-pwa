@@ -55,7 +55,7 @@
       <!-- Empty State -->
       <template v-else-if="farmers.length === 0">
         <EmptyState
-          icon="agriculture"
+          icon="people"
           :title="$t('farmer.noFarmersYet')"
           :description="$t('farmer.noFarmersDescription')"
           :action-label="$t('farmer.addFarmer')"
@@ -84,7 +84,7 @@
                 :text-color="farmer.is_self_profile ? 'teal-9' : 'white'"
                 size="40px"
               >
-                <q-icon :name="farmer.is_self_profile ? 'person' : 'agriculture'" size="20px" />
+                <q-icon name="person" size="20px" />
               </q-avatar>
             </q-item-section>
 

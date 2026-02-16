@@ -9,7 +9,7 @@
       <!-- Farmer Not Found -->
       <template v-else-if="!farmer">
         <EmptyState
-          icon="agriculture"
+          icon="people"
           :title="$t('farmer.farmerNotFound')"
           :description="$t('farmer.farmerNotFoundDescription')"
           :action-label="$t('farmer.backToFarmers')"
@@ -28,7 +28,7 @@
                 <q-img :src="farmer.image_url" :ratio="1" />
               </q-avatar>
               <q-avatar v-else size="64px" color="teal" text-color="white">
-                <q-icon name="agriculture" size="32px" />
+                <q-icon name="person" size="32px" />
               </q-avatar>
               <div class="col">
                 <div class="text-h6">{{ farmer.name }}</div>
