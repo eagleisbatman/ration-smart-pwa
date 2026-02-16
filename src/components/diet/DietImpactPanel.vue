@@ -186,7 +186,7 @@ const baselineY = computed(() => {
 
 <style scoped>
 .diet-impact-card {
-  border-left: 4px solid var(--q-primary);
+  border-inline-start: 4px solid var(--q-primary);
 }
 
 .baseline-row {

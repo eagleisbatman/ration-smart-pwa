@@ -329,7 +329,7 @@ button,
     content: '';
     position: absolute;
     top: 4px;
-    right: 4px;
+    inset-inline-end: 4px;
     width: 8px;
     height: 8px;
     background-color: var(--q-warning);

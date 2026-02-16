@@ -245,11 +245,11 @@ onMounted(async () => {
 
 .conflict-local {
   background: rgba($primary, 0.05);
-  border-left: 3px solid $primary;
+  border-inline-start: 3px solid $primary;
 }
 
 .conflict-server {
   background: rgba($secondary, 0.05);
-  border-left: 3px solid $secondary;
+  border-inline-start: 3px solid $secondary;
 }
 </style>

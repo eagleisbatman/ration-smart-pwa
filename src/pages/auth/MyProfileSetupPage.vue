@@ -464,7 +464,7 @@ async function logoutFallback() {
 }
 
 .admin-levels {
-  border-left: 2px solid $grey-4;
-  padding-left: 8px;
+  border-inline-start: 2px solid $grey-4;
+  padding-inline-start: 8px;
 }
 </style>
