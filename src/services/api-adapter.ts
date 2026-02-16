@@ -937,6 +937,9 @@ const ENDPOINT_MAP: Record<string, EndpointMapping> = {
   '/api/v1/auth/forgot-pin': {
     path: '/auth/forgot-pin',
   },
+  '/api/v1/auth/forgot-pin-phone': {
+    path: '/auth/forgot-pin-phone',
+  },
   '/api/v1/countries': {
     path: '/auth/countries',
     transform: {
