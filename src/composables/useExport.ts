@@ -1,5 +1,56 @@
 import { useI18n } from 'vue-i18n';
 
+/**
+ * Print HTML content using a hidden iframe with fallback to file download.
+ * Works on iOS Safari, Android Chrome, and desktop browsers.
+ * The user can "Save as PDF" from the browser print dialog.
+ */
+export function printHTML(html: string, fallbackFilename: string): void {
+  const iframe = document.createElement('iframe');
+  iframe.style.cssText = 'position:fixed;right:0;bottom:0;width:0;height:0;border:none;';
+  document.body.appendChild(iframe);
+
+  const iframeWindow = iframe.contentWindow;
+  const doc = iframe.contentDocument ?? iframeWindow?.document;
+
+  if (!doc || !iframeWindow) {
+    downloadAsFile(html, fallbackFilename);
+    try { document.body.removeChild(iframe); } catch { /* already removed */ }
+    return;
+  }
+
+  doc.open();
+  doc.write(html);
+  doc.close();
+
+  // Give the browser time to render styles before triggering print
+  setTimeout(() => {
+    try {
+      iframeWindow.focus();
+      iframeWindow.print();
+    } catch {
+      downloadAsFile(html, fallbackFilename);
+    }
+    // Clean up iframe after print dialog closes
+    setTimeout(() => {
+      try { document.body.removeChild(iframe); } catch { /* noop */ }
+    }, 1000);
+  }, 300);
+}
+
+/**
+ * Download HTML string as a file (fallback when print is unavailable).
+ */
+function downloadAsFile(html: string, filename: string): void {
+  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename;
+  link.click();
+  URL.revokeObjectURL(url);
+}
+
 export interface DietExportData {
   cowName: string;
   date: string;
@@ -85,19 +136,12 @@ export function useExport() {
   }
 
   /**
-   * Print diet by opening a new window with formatted HTML and triggering the print dialog.
-   * The user can also "Save as PDF" from the browser print dialog.
+   * Print diet by rendering HTML in a hidden iframe and triggering the print dialog.
+   * Falls back to downloading the HTML file if printing is unavailable (e.g. iOS PWA).
    */
   function printDiet(diet: DietExportData): void {
     const html = generatePrintHTML(diet);
-    const printWindow = window.open('', '_blank');
-    if (printWindow) {
-      printWindow.document.write(html);
-      printWindow.document.close();
-      printWindow.onload = () => {
-        printWindow.print();
-      };
-    }
+    printHTML(html, `diet-${diet.cowName}-${diet.date}.html`);
   }
 
   /**

@@ -237,6 +237,7 @@ import { useQuasar } from 'quasar';
 import { useYieldsStore } from 'src/stores/yields';
 import { useFarmersStore } from 'src/stores/farmers';
 import { useDateFormat } from 'src/composables/useDateFormat';
+import { printHTML } from 'src/composables/useExport';
 import PullToRefresh from 'src/components/ui/PullToRefresh.vue';
 import SkeletonList from 'src/components/ui/SkeletonList.vue';
 import EmptyState from 'src/components/ui/EmptyState.vue';
@@ -421,14 +422,8 @@ function exportYieldData(format: 'csv' | 'pdf') {
 </body>
 </html>`;
 
-    const printWindow = window.open('', '_blank');
-    if (printWindow) {
-      printWindow.document.write(html);
-      printWindow.document.close();
-      printWindow.onload = () => {
-        printWindow.print();
-      };
-    }
+    printHTML(html, `yield-data-${new Date().toISOString().slice(0, 10)}.html`);
+    $q.notify({ type: 'positive', message: t('logs.yield.exported') });
   }
 }
 

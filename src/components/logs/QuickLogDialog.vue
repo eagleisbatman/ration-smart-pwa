@@ -1,5 +1,5 @@
 <template>
-  <q-dialog v-model="dialogVisible" maximized transition-show="slide-up" transition-hide="slide-down">
+  <q-dialog v-model="dialogVisible" :maximized="$q.screen.xs" transition-show="slide-up" transition-hide="slide-down">
     <q-card class="quick-log-card">
       <!-- Header -->
       <q-toolbar class="bg-primary text-white">
@@ -337,5 +337,12 @@ async function saveAll() {
   display: flex;
   flex-direction: column;
   max-height: 100vh;
+
+  // Constrain dialog on tablet/desktop
+  @media (min-width: 600px) {
+    width: 560px;
+    max-height: 85vh;
+    border-radius: 16px;
+  }
 }
 </style>
