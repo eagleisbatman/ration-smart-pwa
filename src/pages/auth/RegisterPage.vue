@@ -260,6 +260,7 @@ const countryLanguageMap: Record<string, string[]> = {
   IN: ['en', 'hi', 'te', 'kn', 'mr', 'ta', 'bn', 'ml', 'gu', 'pa', 'or', 'as', 'ur'],
   ET: ['en', 'am', 'om'],
   KE: ['en'],
+  NP: ['ne', 'en', 'hi'],
   VN: ['vi', 'en'],
   BD: ['bn', 'en'],
 };
