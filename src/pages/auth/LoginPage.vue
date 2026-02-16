@@ -12,7 +12,6 @@
         dense
         borderless
         class="language-select"
-        behavior="dialog"
         @update:model-value="switchLanguage"
       >
         <template #prepend>
@@ -51,7 +50,6 @@
             emit-value
             map-options
             dense
-            behavior="dialog"
             :loading="authStore.countriesLoading"
             class="q-mb-sm"
           >
