@@ -214,6 +214,12 @@ export const useYieldsStore = defineStore('yields', () => {
     error.value = null;
     const authStore = useAuthStore();
 
+    if (!authStore.userId) {
+      error.value = t('errors.unauthorized');
+      loading.value = false;
+      return null;
+    }
+
     // Create optimistic local record
     const localId = uuidv4();
     const now = new Date().toISOString();
@@ -265,6 +271,12 @@ export const useYieldsStore = defineStore('yields', () => {
     error.value = null;
     const authStore = useAuthStore();
 
+    if (!authStore.userId) {
+      error.value = t('errors.unauthorized');
+      loading.value = false;
+      return false;
+    }
+
     // Find current record for optimistic update
     const record = yieldRecords.value.find((y) => y.id === id);
     if (!record) {
@@ -308,6 +320,12 @@ export const useYieldsStore = defineStore('yields', () => {
     loading.value = true;
     error.value = null;
     const authStore = useAuthStore();
+
+    if (!authStore.userId) {
+      error.value = t('errors.unauthorized');
+      loading.value = false;
+      return false;
+    }
 
     try {
       await api.delete(`/api/v1/yield-data/${id}`, {
