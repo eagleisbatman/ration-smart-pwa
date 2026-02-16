@@ -186,27 +186,36 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted } from 'vue';
+import { ref, reactive, computed, onMounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useAuthStore } from 'src/stores/auth';
 import { setOnboardingItem } from 'src/lib/onboarding-storage';
 import { getDialCode, getPhoneMask, FALLBACK_COUNTRIES } from 'src/services/api-adapter';
+import { useGeoCountry } from 'src/composables/useGeoCountry';
 
 const flagUrl = (code: string) => `/flags/${(code || 'xx').toLowerCase()}.svg`;
 
 const { t } = useI18n();
 const router = useRouter();
 const authStore = useAuthStore();
+const { detectedCountry } = useGeoCountry();
 
 const showPin = ref(false);
 
 const form = reactive({
   name: '',
   phone: '',
-  country_code: 'IN',
+  country_code: detectedCountry.value,
   pin: '',
   confirmPin: '',
+});
+
+// Update country when geo-detection resolves (only if user hasn't changed it)
+watch(detectedCountry, (code) => {
+  if (form.country_code === 'IN' || !form.phone) {
+    form.country_code = code;
+  }
 });
 
 const countryOptions = computed(() => {

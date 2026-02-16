@@ -92,22 +92,31 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted, onUnmounted } from 'vue';
+import { ref, reactive, computed, onMounted, onUnmounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { api } from 'src/lib/api';
 import { useAuthStore } from 'src/stores/auth';
 import { formatPhoneE164, getDialCode, getPhoneMask, FALLBACK_COUNTRIES } from 'src/services/api-adapter';
+import { useGeoCountry } from 'src/composables/useGeoCountry';
 
 const flagUrl = (code: string) => `/flags/${(code || 'xx').toLowerCase()}.svg`;
 
 const { t } = useI18n();
 const router = useRouter();
 const authStore = useAuthStore();
+const { detectedCountry } = useGeoCountry();
 
 const form = reactive({
   phone: '',
-  country_code: 'IN',
+  country_code: detectedCountry.value,
+});
+
+// Update country when geo-detection resolves (only if user hasn't changed it)
+watch(detectedCountry, (code) => {
+  if (form.country_code === 'IN' || !form.phone) {
+    form.country_code = code;
+  }
 });
 
 const countryOptions = computed(() => {
