@@ -33,7 +33,7 @@ withDefaults(defineProps<{
   currentStep: number;
   totalSteps?: number;
 }>(), {
-  totalSteps: 4,
+  totalSteps: 3,
 });
 </script>
 

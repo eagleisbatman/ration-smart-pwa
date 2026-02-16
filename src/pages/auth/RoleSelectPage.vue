@@ -1,6 +1,6 @@
 <template>
   <div class="role-select-page">
-    <OnboardingProgress :current-step="2" />
+    <OnboardingProgress :current-step="1" />
 
     <div class="text-center q-mb-xl">
       <div class="text-h5 text-weight-medium q-mb-sm">{{ $t('onboarding.chooseRole') }}</div>
@@ -51,7 +51,7 @@
           color="grey-7"
           class="full-width"
           size="lg"
-          @click="router.push('/auth/language')"
+          @click="router.back()"
         />
       </div>
       <div class="col-8">

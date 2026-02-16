@@ -55,7 +55,7 @@ export default route(function (/* { store, ssrContext } */) {
       // Check if authenticated user needs to complete onboarding
       if (authStore.needsOnboarding && !isOnboardingRoute) {
         // Redirect to onboarding flow
-        next({ path: '/auth/language' });
+        next({ path: '/auth/role' });
         return;
       }
     }
@@ -65,7 +65,7 @@ export default route(function (/* { store, ssrContext } */) {
       if (authStore.isAuthenticated) {
         // Check if user needs onboarding before going to home
         if (authStore.needsOnboarding) {
-          next({ path: '/auth/language' });
+          next({ path: '/auth/role' });
         } else {
           next({ path: '/' });
         }
