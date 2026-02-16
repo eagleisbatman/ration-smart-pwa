@@ -821,6 +821,11 @@ body {
   .q-avatar.bg-primary img[src*="cow.svg"] {
     filter: none;
   }
+  // Auth logo cow: always inverted — its bg is forced dark (#27272A) in both modes
+  .auth-logo .q-icon img[src*="cow"],
+  .auth-logo img[src*="cow.svg"] {
+    filter: invert(1) !important;
+  }
 
   // Photo upload placeholder
   .photo-placeholder {
@@ -962,11 +967,11 @@ body {
   }
   .conflict-local {
     background: rgba(228, 228, 231, 0.08) !important;
-    border-left-color: var(--q-primary) !important; // $primary compiles to #18181B → invisible
+    border-inline-start-color: var(--q-primary) !important; // $primary compiles to #18181B → invisible
   }
   .conflict-server {
     background: rgba(161, 161, 170, 0.08) !important;
-    border-left-color: var(--q-secondary) !important; // $secondary compiles to #71717A → low contrast
+    border-inline-start-color: var(--q-secondary) !important; // $secondary compiles to #71717A → low contrast
   }
 
   // OnboardingProgress: upcoming step + connector track
@@ -1026,7 +1031,7 @@ body {
     border-color: rgba(255, 255, 255, 0.12) !important;
   }
   .location-hint {
-    border-left-color: rgba(255, 255, 255, 0.12) !important;
+    border-inline-start-color: rgba(255, 255, 255, 0.12) !important;
   }
 
   // ---- Auth layout ----

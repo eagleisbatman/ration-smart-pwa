@@ -188,13 +188,13 @@
     <QuickLogDialog v-model="showQuickLog" @saved="onQuickLogSaved" />
 
     <!-- FAB Speed Dial -->
-    <q-page-sticky position="bottom-right" :offset="[16, 72]">
-      <q-fab icon="add" direction="up" color="primary" vertical-actions-align="right">
+    <q-page-sticky :position="rtl ? 'bottom-left' : 'bottom-right'" :offset="[16, 72]">
+      <q-fab icon="add" direction="up" color="primary" :vertical-actions-align="rtl ? 'left' : 'right'">
         <q-fab-action
           color="secondary"
           icon="flash_on"
           :label="$t('logs.quickLog.button')"
-          label-position="left"
+          :label-position="rtl ? 'right' : 'left'"
           external-label
           @click="showQuickLog = true"
         />
@@ -202,7 +202,7 @@
           color="primary"
           icon="edit_note"
           :label="$t('logs.empty.action')"
-          label-position="left"
+          :label-position="rtl ? 'right' : 'left'"
           external-label
           @click="router.push('/logs/new')"
         />
@@ -227,8 +227,10 @@ import MilkTrendSparkline from 'src/components/logs/MilkTrendSparkline.vue';
 import MilkTrendsPanel from 'src/components/logs/MilkTrendsPanel.vue';
 import MilkPriceCard from 'src/components/logs/MilkPriceCard.vue';
 import { useCurrency } from 'src/composables/useCurrency';
+import { isRTL } from 'src/boot/i18n';
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
+const rtl = computed(() => isRTL(locale.value));
 const router = useRouter();
 const milkLogsStore = useMilkLogsStore();
 const cowsStore = useCowsStore();

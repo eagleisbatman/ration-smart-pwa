@@ -124,6 +124,6 @@ function onDismiss() {
 
 <style scoped>
 .follow-up-card {
-  border-left: 4px solid var(--q-warning);
+  border-inline-start: 4px solid var(--q-warning);
 }
 </style>

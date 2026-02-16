@@ -116,4 +116,12 @@ const isOnboarding = computed(() =>
   transform: translateX(-20px);
   opacity: 0;
 }
+
+[dir="rtl"] .slide-enter-from {
+  transform: translateX(-20px);
+}
+
+[dir="rtl"] .slide-leave-to {
+  transform: translateX(20px);
+}
 </style>

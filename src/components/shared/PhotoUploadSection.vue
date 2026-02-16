@@ -94,7 +94,7 @@ function onRemove() {
 .photo-remove-btn {
   position: absolute;
   top: -4px;
-  right: -4px;
+  inset-inline-end: -4px;
   background: rgba(255, 255, 255, 0.9);
   z-index: 1;
 }

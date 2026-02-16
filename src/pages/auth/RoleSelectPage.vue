@@ -144,6 +144,6 @@ function proceed() {
 .role-check {
   position: absolute;
   top: 8px;
-  right: 8px;
+  inset-inline-end: 8px;
 }
 </style>
