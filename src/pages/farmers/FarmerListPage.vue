@@ -118,8 +118,8 @@
                 <span v-if="farmer.village && farmer.district">, </span>
                 <span v-if="farmer.district">{{ farmer.district }}</span>
               </q-item-label>
-              <div class="q-mt-xs row items-center q-gutter-xs">
-                <q-badge outline color="grey-7" class="q-pa-xs">
+              <div v-if="farmer.total_cattle > 0 || !farmer._synced" class="q-mt-xs row items-center q-gutter-xs">
+                <q-badge v-if="farmer.total_cattle > 0" outline color="grey-7" class="q-pa-xs">
                   {{ farmer.total_cattle }} {{ $t('farmer.cattle') }}
                 </q-badge>
                 <q-badge

@@ -118,6 +118,7 @@
           :to="tab.to"
           :icon="tab.icon"
           :label="tab.label"
+          :exact="tab.to === '/'"
         />
       </q-tabs>
     </q-footer>
@@ -237,10 +238,9 @@ const navItems = computed(() => {
 
 const bottomNavItems = computed(() => [
   { to: '/', icon: 'home', label: t('nav.home') },
-  { to: '/farmers', icon: 'people', label: t('nav.farmers') },
   { to: '/cows', icon: COW_ICON, label: t('nav.cows') },
+  { to: '/logs', icon: 'water_drop', label: t('nav.milkLogs') },
   { to: '/diet', icon: 'menu_book', label: t('nav.diet') },
-  { to: '/settings', icon: 'settings', label: t('nav.more') },
 ]);
 
 function isActive(path: string): boolean {

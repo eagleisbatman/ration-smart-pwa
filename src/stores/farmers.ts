@@ -70,7 +70,10 @@ export const useFarmersStore = defineStore('farmers', () => {
         },
       });
 
-      farmers.value = response.data.farmer_profiles || [];
+      const rawFarmers = (response.data.farmer_profiles || []) as FarmerProfile[];
+
+      // Mark all API-fetched farmers as synced
+      farmers.value = rawFarmers.map((f) => ({ ...f, _synced: true, _deleted: false }));
 
       // Mark the user's own self-profile so managedFarmers filter works
       const selfId = authStore.selfFarmerProfileId;
@@ -84,7 +87,7 @@ export const useFarmersStore = defineStore('farmers', () => {
       // Cache to IndexedDB
       await db.farmerProfiles.clear();
       for (const farmer of farmers.value) {
-        await db.farmerProfiles.put({ ...farmer, _synced: true, _deleted: false });
+        await db.farmerProfiles.put(farmer);
       }
     } catch (err) {
       error.value = extractUserFriendlyError(err);
@@ -119,7 +122,7 @@ export const useFarmersStore = defineStore('farmers', () => {
       const response = await api.get(`/api/v1/farmer-profiles/${id}`, {
         params: { user_id: authStore.userId },
       });
-      const farmer = response.data as FarmerProfile;
+      const farmer = { ...response.data, _synced: true, _deleted: false } as FarmerProfile;
 
       // Update in local state
       const index = farmers.value.findIndex((f) => f.id === id);
@@ -130,7 +133,7 @@ export const useFarmersStore = defineStore('farmers', () => {
       }
 
       // Update cache
-      await db.farmerProfiles.put({ ...farmer, _synced: true, _deleted: false });
+      await db.farmerProfiles.put(farmer);
 
       return farmer;
     } catch (err) {

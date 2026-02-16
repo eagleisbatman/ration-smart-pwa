@@ -52,7 +52,7 @@
         <div class="row q-col-gutter-sm q-mb-md">
           <div class="col-4">
             <div class="stat-inline">
-              <div class="text-h5 text-primary">{{ summary?.statistics.total_active_cows || farmer.total_cattle }}</div>
+              <div class="text-h5 text-primary">{{ summary?.statistics.total_active_cows ?? farmer.total_cattle }}</div>
               <div class="text-caption text-grey-6">{{ $t('farmer.totalCattle') }}</div>
             </div>
           </div>
@@ -240,8 +240,8 @@ const loading = computed(() => farmersStore.loading);
 
 // Dry cows = total - lactating
 const dryCows = computed(() => {
-  const total = summary.value?.statistics.total_active_cows || farmer.value?.total_cattle || 0;
-  const lactating = summary.value?.statistics.lactating_cows || 0;
+  const total = summary.value?.statistics.total_active_cows ?? farmer.value?.total_cattle ?? 0;
+  const lactating = summary.value?.statistics.lactating_cows ?? 0;
   return Math.max(0, total - lactating);
 });
 

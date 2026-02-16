@@ -23,5 +23,13 @@ export default defineConfig({
       name: 'walkthrough',
       testMatch: 'form-walkthrough.spec.ts',
     },
+    {
+      name: 'features',
+      testMatch: 'feature-tests.spec.ts',
+    },
+    {
+      name: 'responsive',
+      testMatch: 'responsive-audit.spec.ts',
+    },
   ],
 });
