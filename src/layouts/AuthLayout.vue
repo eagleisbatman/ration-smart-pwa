@@ -74,6 +74,12 @@ const isOnboarding = computed(() =>
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   border: 3px solid white;
   // Dark mode border-color is in app.scss
+
+  // Cow SVG loaded via <img> doesn't inherit currentColor — always black.
+  // Auth bg is always dark, so always invert the icon to white.
+  :deep(.q-icon img) {
+    filter: invert(1);
+  }
 }
 
 .auth-container {
