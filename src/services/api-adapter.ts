@@ -140,7 +140,10 @@ export function toAlpha2(code: string): string {
   return ALPHA3_TO_ALPHA2[upper] || upper;
 }
 
-// Fallback country list when API is unreachable (matches SUPPORTED_COUNTRIES)
+// ============================================================================
+// SUPPORTED COUNTRIES — single source of truth
+// To add a new country: add one entry here. Everything else derives from it.
+// ============================================================================
 export const FALLBACK_COUNTRIES = [
   { country_code: 'IN', name: 'India' },
   { country_code: 'KE', name: 'Kenya' },
@@ -149,7 +152,34 @@ export const FALLBACK_COUNTRIES = [
   { country_code: 'MA', name: 'Morocco' },
   { country_code: 'BD', name: 'Bangladesh' },
   { country_code: 'VN', name: 'Vietnam' },
+  { country_code: 'ID', name: 'Indonesia' },
+  { country_code: 'PK', name: 'Pakistan' },
+  { country_code: 'PH', name: 'Philippines' },
+  { country_code: 'TH', name: 'Thailand' },
 ] as const;
+
+/** Set of supported alpha-2 country codes (derived from FALLBACK_COUNTRIES). */
+export const SUPPORTED_COUNTRY_CODES = new Set(
+  FALLBACK_COUNTRIES.map((c) => c.country_code),
+);
+
+/**
+ * Country → recommended language codes, ordered by priority.
+ * Used by language selectors on auth pages and onboarding.
+ */
+export const COUNTRY_LANGUAGE_MAP: Record<string, string[]> = {
+  IN: ['en', 'hi', 'te', 'kn', 'mr', 'ta', 'bn', 'ml', 'gu', 'pa', 'or', 'as', 'ur', 'ne'],
+  ET: ['en', 'am', 'om'],
+  KE: ['en'],
+  NP: ['ne', 'en', 'hi'],
+  MA: ['ar', 'fr', 'en'],
+  BD: ['bn', 'en'],
+  VN: ['vi', 'en'],
+  ID: ['id', 'en'],
+  PK: ['ur', 'en'],
+  PH: ['fil', 'en'],
+  TH: ['th', 'en'],
+};
 
 // Cache for country code to UUID mapping
 let countryCache: Record<string, string> | null = null;
