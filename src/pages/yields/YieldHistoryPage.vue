@@ -236,6 +236,7 @@ import { useI18n } from 'vue-i18n';
 import { useQuasar } from 'quasar';
 import { useYieldsStore } from 'src/stores/yields';
 import { useFarmersStore } from 'src/stores/farmers';
+import { useAuthStore } from 'src/stores/auth';
 import { useDateFormat } from 'src/composables/useDateFormat';
 import { printHTML } from 'src/composables/useExport';
 import PullToRefresh from 'src/components/ui/PullToRefresh.vue';
@@ -249,6 +250,7 @@ const router = useRouter();
 const route = useRoute();
 const yieldsStore = useYieldsStore();
 const farmersStore = useFarmersStore();
+const authStore = useAuthStore();
 const { formatDate } = useDateFormat();
 
 const selectedFarmer = ref<string | null>(null);
@@ -282,7 +284,7 @@ const chartYieldData = computed(() =>
 
 const farmerOptions = computed(() =>
   farmersStore.activeFarmers.map((f) => ({
-    label: f.name,
+    label: f.id === authStore.selfFarmerProfileId ? `${f.name} (${t('common.you')})` : f.name,
     value: f.id,
   }))
 );

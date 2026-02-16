@@ -148,6 +148,7 @@ import { useRouter, useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useYieldsStore, YieldInput } from 'src/stores/yields';
 import { useFarmersStore } from 'src/stores/farmers';
+import { useAuthStore } from 'src/stores/auth';
 import { useQuasar } from 'quasar';
 import { COW_ICON } from 'src/boot/icons';
 import { useHapticFeedback } from 'src/composables/useHapticFeedback';
@@ -164,6 +165,7 @@ const route = useRoute();
 const $q = useQuasar();
 const yieldsStore = useYieldsStore();
 const farmersStore = useFarmersStore();
+const authStore = useAuthStore();
 const { success, error: hapticError, medium } = useHapticFeedback();
 
 const yieldId = computed(() => route.params.id as string | undefined);
@@ -186,7 +188,7 @@ const error = computed(() => yieldsStore.error);
 
 const farmerOptions = computed(() =>
   farmersStore.activeFarmers.map((f) => ({
-    label: f.name,
+    label: f.id === authStore.selfFarmerProfileId ? `${f.name} (${t('common.you')})` : f.name,
     value: f.id,
   }))
 );
