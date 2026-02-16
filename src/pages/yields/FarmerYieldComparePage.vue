@@ -259,9 +259,12 @@
 import { ref, computed, onMounted, watch } from 'vue';
 import { api } from 'src/lib/api';
 import { useFarmersStore } from 'src/stores/farmers';
+import { useAuthStore } from 'src/stores/auth';
 import { YieldData } from 'src/lib/offline/db';
 import { useChartColors } from 'src/lib/chart-colors';
+import { useI18n } from 'vue-i18n';
 
+const { t } = useI18n();
 const chartColors = useChartColors();
 const CHART = chartColors;
 
@@ -276,6 +279,7 @@ interface FarmerYieldStats {
 }
 
 const farmersStore = useFarmersStore();
+const authStore = useAuthStore();
 
 const selectedFarmerIds = ref<string[]>([]);
 const dateFrom = ref<string | null>(null);
@@ -299,7 +303,7 @@ function farmerColorHex(index: number): string {
 
 const farmerOptions = computed(() =>
   farmersStore.activeFarmers.map((f) => ({
-    label: f.name,
+    label: f.id === authStore.selfFarmerProfileId ? `${f.name} (${t('common.you')})` : f.name,
     value: f.id,
   }))
 );
