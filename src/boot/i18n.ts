@@ -48,6 +48,13 @@ export type SupportedLocale =
   | 'ar'
   | 'fr';
 
+// RTL languages
+const RTL_LANGUAGES = new Set(['ar', 'ur']);
+
+export function isRTL(locale: string): boolean {
+  return RTL_LANGUAGES.has(locale);
+}
+
 // Create i18n instance
 export const i18n = createI18n<[MessageSchema], SupportedLocale>({
   locale: localStorage.getItem('locale') || 'en',
@@ -59,12 +66,17 @@ export const i18n = createI18n<[MessageSchema], SupportedLocale>({
   fallbackWarn: process.env.NODE_ENV === 'development',
 });
 
+function applyDirection(locale: string): void {
+  document.documentElement.setAttribute('lang', locale);
+  document.documentElement.setAttribute('dir', isRTL(locale) ? 'rtl' : 'ltr');
+}
+
 export default boot(({ app }) => {
   app.use(i18n);
 
-  // Sync HTML lang attribute with stored locale on boot
+  // Sync HTML lang and dir attributes with stored locale on boot
   const storedLocale = localStorage.getItem('locale') || 'en';
-  document.documentElement.setAttribute('lang', storedLocale);
+  applyDirection(storedLocale);
 });
 
 /**
@@ -74,8 +86,7 @@ export function setLocale(locale: string): void {
   if (i18n.global.availableLocales.includes(locale as SupportedLocale)) {
     (i18n.global.locale as unknown as { value: string }).value = locale;
     localStorage.setItem('locale', locale);
-    // Update HTML lang attribute for accessibility
-    document.documentElement.setAttribute('lang', locale);
+    applyDirection(locale);
   }
 }
 
