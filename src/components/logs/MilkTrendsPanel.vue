@@ -34,7 +34,7 @@
           :y="bar.y"
           :width="bar.width"
           :height="bar.height"
-          :fill="bar.total > 0 ? 'var(--q-primary)' : '#e0e0e0'"
+          :fill="bar.total > 0 ? 'var(--q-primary)' : 'var(--bar-empty, #e0e0e0)'"
           :opacity="bar.total > 0 ? 0.8 : 0.3"
           rx="2"
         />
@@ -278,6 +278,7 @@ const maxCowAvg = computed(() =>
 <style lang="scss" scoped>
 .milk-trends-panel {
   border-radius: $radius-loose;
+  --bar-empty: #e0e0e0;
 }
 
 .herd-chart {

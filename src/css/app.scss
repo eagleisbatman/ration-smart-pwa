@@ -983,9 +983,17 @@ body {
     background: rgba(228, 228, 231, 0.06) !important;
   }
 
-  // MilkTrendsPanel hover rows
+  // MilkTrendsPanel: empty bar fill + hover rows
+  .milk-trends-panel {
+    --bar-empty: rgba(255, 255, 255, 0.12);
+  }
   .cow-breakdown-row:hover {
     background-color: rgba(255, 255, 255, 0.04) !important;
+  }
+
+  // WeatherWidget farming tip
+  .weather-tip {
+    background: rgba(255, 193, 7, 0.12) !important;
   }
 
   // Photo remove button: flip to dark bg
