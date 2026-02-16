@@ -145,6 +145,7 @@ export const FALLBACK_COUNTRIES = [
   { country_code: 'IN', name: 'India' },
   { country_code: 'KE', name: 'Kenya' },
   { country_code: 'ET', name: 'Ethiopia' },
+  { country_code: 'NP', name: 'Nepal' },
   { country_code: 'BD', name: 'Bangladesh' },
   { country_code: 'VN', name: 'Vietnam' },
 ] as const;
