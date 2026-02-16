@@ -56,9 +56,9 @@ async function detectCountry(): Promise<string> {
   const stored = readStoredCountry();
   if (stored) return stored;
 
-  // 2. Try primary provider: ipapi.co
+  // 2. Try primary provider: ipwho.is (free, HTTPS, no key, generous limits)
   const primary = await tryProvider(
-    'https://ipapi.co/json/',
+    'https://ipwho.is/',
     (d) => d.country_code as string | undefined,
   );
   if (primary) {
@@ -66,14 +66,24 @@ async function detectCountry(): Promise<string> {
     return primary;
   }
 
-  // 3. Fallback provider: ip-api.com (different rate-limit pool)
+  // 3. Fallback: api.country.is (free, HTTPS, minimal response)
   const fallback = await tryProvider(
-    'https://ip-api.com/json/?fields=countryCode',
-    (d) => d.countryCode as string | undefined,
+    'https://api.country.is/',
+    (d) => d.country as string | undefined,
   );
   if (fallback) {
     storeCountry(fallback);
     return fallback;
+  }
+
+  // 4. Last resort: ipapi.co (often rate-limited on free tier)
+  const lastResort = await tryProvider(
+    'https://ipapi.co/json/',
+    (d) => d.country_code as string | undefined,
+  );
+  if (lastResort) {
+    storeCountry(lastResort);
+    return lastResort;
   }
 
   return DEFAULT_COUNTRY;
