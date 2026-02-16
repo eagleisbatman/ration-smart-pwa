@@ -1,6 +1,6 @@
 import { ref } from 'vue';
 
-export const SUPPORTED_COUNTRIES = new Set(['IN', 'KE', 'ET', 'NP', 'BD', 'VN']);
+export const SUPPORTED_COUNTRIES = new Set(['IN', 'KE', 'ET', 'NP', 'BD', 'VN', 'MA']);
 const DEFAULT_COUNTRY = 'IN';
 const STORAGE_KEY = 'geo_detected_country';
 const CACHE_TTL = 24 * 60 * 60 * 1000; // 24 hours
