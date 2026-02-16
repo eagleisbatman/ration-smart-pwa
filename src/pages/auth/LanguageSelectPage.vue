@@ -146,24 +146,11 @@ import { useRouter } from 'vue-router';
 import { setLocale, availableLocales } from 'src/boot/i18n';
 import { setOnboardingItem, getOnboardingItem, clearOnboardingData } from 'src/lib/onboarding-storage';
 import { useAuthStore } from 'src/stores/auth';
+import { COUNTRY_LANGUAGE_MAP } from 'src/services/api-adapter';
 import OnboardingProgress from 'src/components/ui/OnboardingProgress.vue';
 
 const router = useRouter();
 const authStore = useAuthStore();
-
-// Country code to recommended language codes mapping
-const countryLanguageMap: Record<string, string[]> = {
-  IN: ['en', 'hi', 'te', 'kn', 'mr', 'ta', 'bn', 'ml', 'gu', 'pa', 'or', 'as', 'ur', 'ne'],
-  ET: ['en', 'am', 'om'],
-  KE: ['en'],
-  VN: ['vi', 'en'],
-  BD: ['bn', 'en'],
-  NP: ['ne', 'en', 'hi'],
-  ID: ['id', 'en'],
-  PH: ['fil', 'en'],
-  TH: ['th', 'en'],
-  MA: ['ar', 'fr', 'en'],
-};
 
 // Build the full list of languages from availableLocales
 const allLanguages = availableLocales.map(locale => ({
@@ -173,7 +160,7 @@ const allLanguages = availableLocales.map(locale => ({
 
 // Get the user's selected country
 const selectedCountry = getOnboardingItem('selected_country');
-const countryCodes = selectedCountry ? (countryLanguageMap[selectedCountry] || []) : [];
+const countryCodes = selectedCountry ? (COUNTRY_LANGUAGE_MAP[selectedCountry] || []) : [];
 
 // Split into recommended and other
 const recommendedLanguages = computed(() => {

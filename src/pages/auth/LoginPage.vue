@@ -203,8 +203,8 @@ import { ref, reactive, computed, onMounted, watch } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useAuthStore } from 'src/stores/auth';
-import { getDialCode, getPhoneMask, FALLBACK_COUNTRIES } from 'src/services/api-adapter';
-import { useGeoCountry, SUPPORTED_COUNTRIES } from 'src/composables/useGeoCountry';
+import { getDialCode, getPhoneMask, FALLBACK_COUNTRIES, SUPPORTED_COUNTRY_CODES, COUNTRY_LANGUAGE_MAP } from 'src/services/api-adapter';
+import { useGeoCountry } from 'src/composables/useGeoCountry';
 import { availableLocales, setLocale } from 'src/boot/i18n';
 
 const flagUrl = (code: string) => `/flags/${(code || 'xx').toLowerCase()}.svg`;
@@ -232,20 +232,10 @@ watch(detectedCountry, (code) => {
 });
 
 // Language selection
-const countryLanguageMap: Record<string, string[]> = {
-  IN: ['en', 'hi', 'te', 'kn', 'mr', 'ta', 'bn', 'ml', 'gu', 'pa', 'or', 'as', 'ur'],
-  ET: ['en', 'am', 'om'],
-  KE: ['en'],
-  NP: ['ne', 'en', 'hi'],
-  MA: ['fr', 'ar', 'en'],
-  VN: ['vi', 'en'],
-  BD: ['bn', 'en'],
-};
-
 const selectedLanguage = ref(localStorage.getItem('locale') || 'en');
 
 const languageOptions = computed(() => {
-  const codes = countryLanguageMap[form.country_code] || ['en'];
+  const codes = COUNTRY_LANGUAGE_MAP[form.country_code] || ['en'];
   const recommended = codes
     .map(code => availableLocales.find(l => l.value === code))
     .filter(Boolean) as typeof availableLocales;
@@ -263,7 +253,7 @@ function switchLanguage(code: string) {
 const countryOptions = computed(() => {
   const source = authStore.countries.length > 0 ? authStore.countries : FALLBACK_COUNTRIES;
   return source
-    .filter((c) => SUPPORTED_COUNTRIES.has(c.country_code))
+    .filter((c) => SUPPORTED_COUNTRY_CODES.has(c.country_code))
     .map((c) => {
       const dialCode = getDialCode(c.country_code);
       const name = t(`countries.${c.country_code}`, c.name || c.country_code);

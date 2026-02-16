@@ -1,6 +1,6 @@
 import { ref } from 'vue';
+import { SUPPORTED_COUNTRY_CODES } from 'src/services/api-adapter';
 
-export const SUPPORTED_COUNTRIES = new Set(['IN', 'KE', 'ET', 'NP', 'BD', 'VN', 'MA']);
 const DEFAULT_COUNTRY = 'IN';
 const STORAGE_KEY = 'geo_detected_country';
 const CACHE_TTL = 24 * 60 * 60 * 1000; // 24 hours
@@ -16,7 +16,7 @@ function readStoredCountry(): string | null {
     if (!raw) return null;
     const { code, ts } = JSON.parse(raw) as { code: string; ts: number };
     if (Date.now() - ts > CACHE_TTL) return null;
-    return SUPPORTED_COUNTRIES.has(code) ? code : null;
+    return SUPPORTED_COUNTRY_CODES.has(code) ? code : null;
   } catch {
     return null;
   }
@@ -45,7 +45,7 @@ async function tryProvider(
     if (!res.ok) return null;
     const data = (await res.json()) as Record<string, unknown>;
     const code = extractCode(data)?.toUpperCase();
-    return code && SUPPORTED_COUNTRIES.has(code) ? code : null;
+    return code && SUPPORTED_COUNTRY_CODES.has(code) ? code : null;
   } catch {
     return null;
   }

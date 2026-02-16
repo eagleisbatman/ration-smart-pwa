@@ -814,9 +814,11 @@ body {
   img[src*="cow.svg"] {
     filter: invert(1);
   }
-  // Primary buttons/avatars get light bg in dark mode → undo invert so black icon shows
+  // Primary buttons/avatars/FABs keep dark bg in dark mode → undo invert so black icon shows
   .q-btn.bg-primary .q-icon img[src*="cow"],
-  .q-btn--fab .q-icon img[src*="cow"] {
+  .q-btn--fab .q-icon img[src*="cow"],
+  .q-avatar.bg-primary .q-icon img[src*="cow"],
+  .q-avatar.bg-primary img[src*="cow.svg"] {
     filter: none;
   }
 
