@@ -300,6 +300,7 @@ watch(
 }
 
 .q-footer {
+  background: white;
   padding-bottom: env(safe-area-inset-bottom);
 }
 
