@@ -30,6 +30,7 @@
           emit-value
           map-options
           dense
+          behavior="dialog"
           :loading="authStore.countriesLoading"
           class="q-mb-sm"
         >
@@ -98,7 +99,7 @@ import { useI18n } from 'vue-i18n';
 import { api } from 'src/lib/api';
 import { useAuthStore } from 'src/stores/auth';
 import { formatPhoneE164, getDialCode, getPhoneMask, FALLBACK_COUNTRIES } from 'src/services/api-adapter';
-import { useGeoCountry } from 'src/composables/useGeoCountry';
+import { useGeoCountry, SUPPORTED_COUNTRIES } from 'src/composables/useGeoCountry';
 
 const flagUrl = (code: string) => `/flags/${(code || 'xx').toLowerCase()}.svg`;
 
@@ -121,14 +122,16 @@ watch(detectedCountry, (code) => {
 
 const countryOptions = computed(() => {
   const source = authStore.countries.length > 0 ? authStore.countries : FALLBACK_COUNTRIES;
-  return source.map((c) => {
-    const dialCode = getDialCode(c.country_code);
-    const name = t(`countries.${c.country_code}`, c.name || c.country_code);
-    return {
-      label: dialCode ? `${name} (${dialCode})` : name,
-      value: c.country_code,
-    };
-  });
+  return source
+    .filter((c) => SUPPORTED_COUNTRIES.has(c.country_code))
+    .map((c) => {
+      const dialCode = getDialCode(c.country_code);
+      const name = t(`countries.${c.country_code}`, c.name || c.country_code);
+      return {
+        label: dialCode ? `${name} (${dialCode})` : name,
+        value: c.country_code,
+      };
+    });
 });
 
 const selectedDialCode = computed(() => getDialCode(form.country_code));

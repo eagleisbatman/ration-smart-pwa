@@ -2,35 +2,37 @@
   <div class="register-page">
     <!-- Language Selector (always visible at top) -->
     <div class="language-bar q-mb-md">
-      <q-btn
-        flat
+      <q-select
+        v-model="selectedLanguage"
+        :options="languageOptions"
+        option-value="value"
+        option-label="nativeLabel"
+        emit-value
+        map-options
         dense
-        no-caps
-        icon="translate"
-        :label="currentLanguageLabel"
-        class="text-body2"
-        color="primary"
+        borderless
+        class="language-select"
+        behavior="dialog"
+        @update:model-value="switchLanguage"
       >
-        <q-menu auto-close>
-          <q-list dense style="min-width: 180px">
-            <q-item
-              v-for="lang in languageOptions"
-              :key="lang.value"
-              clickable
-              :active="selectedLanguage === lang.value"
-              @click="switchLanguage(lang.value)"
-            >
-              <q-item-section>
-                <q-item-label>{{ lang.nativeLabel }}</q-item-label>
-                <q-item-label caption>{{ lang.label }}</q-item-label>
-              </q-item-section>
-              <q-item-section side v-if="selectedLanguage === lang.value">
-                <q-icon name="check" color="primary" size="xs" />
-              </q-item-section>
-            </q-item>
-          </q-list>
-        </q-menu>
-      </q-btn>
+        <template #prepend>
+          <q-icon name="translate" size="xs" class="q-mr-xs" />
+        </template>
+        <template #append>
+          <q-icon name="expand_more" size="xs" />
+        </template>
+        <template v-slot:option="{ itemProps, opt }">
+          <q-item v-bind="itemProps" dense>
+            <q-item-section>
+              <q-item-label>{{ opt.nativeLabel }}</q-item-label>
+              <q-item-label caption>{{ opt.label }}</q-item-label>
+            </q-item-section>
+            <q-item-section side v-if="selectedLanguage === opt.value">
+              <q-icon name="check" color="primary" size="xs" />
+            </q-item-section>
+          </q-item>
+        </template>
+      </q-select>
     </div>
 
     <q-form @submit="onSubmit">
@@ -60,6 +62,7 @@
             :options="countryOptions"
             emit-value
             map-options
+            behavior="dialog"
             :loading="authStore.countriesLoading"
             :disable="authStore.countriesLoading"
             :rules="[(val) => !!val || $t('validation.required')]"
@@ -225,7 +228,7 @@ import { useI18n } from 'vue-i18n';
 import { useAuthStore } from 'src/stores/auth';
 import { setOnboardingItem } from 'src/lib/onboarding-storage';
 import { getDialCode, getPhoneMask, FALLBACK_COUNTRIES } from 'src/services/api-adapter';
-import { useGeoCountry } from 'src/composables/useGeoCountry';
+import { useGeoCountry, SUPPORTED_COUNTRIES } from 'src/composables/useGeoCountry';
 import { availableLocales, setLocale } from 'src/boot/i18n';
 
 const flagUrl = (code: string) => `/flags/${(code || 'xx').toLowerCase()}.svg`;
@@ -276,26 +279,22 @@ const languageOptions = computed(() => {
   return recommended;
 });
 
-const currentLanguageLabel = computed(() => {
-  const lang = availableLocales.find(l => l.value === selectedLanguage.value);
-  return lang ? lang.nativeLabel : 'English';
-});
-
 function switchLanguage(code: string) {
-  selectedLanguage.value = code;
   setLocale(code);
 }
 
 const countryOptions = computed(() => {
   const source = authStore.countries.length > 0 ? authStore.countries : FALLBACK_COUNTRIES;
-  return source.map((c) => {
-    const dialCode = getDialCode(c.country_code);
-    const name = t(`countries.${c.country_code}`, c.name || c.country_code);
-    return {
-      label: dialCode ? `${name} (${dialCode})` : name,
-      value: c.country_code,
-    };
-  });
+  return source
+    .filter((c) => SUPPORTED_COUNTRIES.has(c.country_code))
+    .map((c) => {
+      const dialCode = getDialCode(c.country_code);
+      const name = t(`countries.${c.country_code}`, c.name || c.country_code);
+      return {
+        label: dialCode ? `${name} (${dialCode})` : name,
+        value: c.country_code,
+      };
+    });
 });
 
 const selectedDialCode = computed(() => getDialCode(form.country_code));
@@ -379,6 +378,23 @@ async function onSubmit() {
 </script>
 
 <style lang="scss" scoped>
+.language-bar {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.language-select {
+  max-width: 200px;
+  :deep(.q-field__control) {
+    padding: 0 8px;
+    min-height: 32px;
+  }
+  :deep(.q-field__native) {
+    font-size: 0.85rem;
+    padding: 2px 0;
+  }
+}
+
 .pin-strength-indicator {
   margin-top: -8px;
   padding: 0 12px;
