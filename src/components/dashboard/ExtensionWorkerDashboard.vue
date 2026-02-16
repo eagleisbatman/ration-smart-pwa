@@ -298,8 +298,7 @@
                   text-color="white"
                   size="32px"
                 >
-                  <q-icon v-if="activity.type !== 'cow'" :name="activity.icon" size="16px" />
-                  <q-img v-else :src="activity.icon" width="16px" height="16px" />
+                  <q-icon :name="activity.icon" size="16px" />
                 </q-avatar>
               </q-item-section>
               <q-item-section>
@@ -327,6 +326,7 @@ import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useAuthStore } from 'src/stores/auth';
 import { useFarmersStore } from 'src/stores/farmers';
+import { useCowsStore } from 'src/stores/cows';
 import { useNotificationsStore, AppNotification } from 'src/stores/notifications';
 import SkeletonList from 'src/components/ui/SkeletonList.vue';
 import MilkProductionChart from 'src/components/dashboard/MilkProductionChart.vue';
@@ -339,6 +339,7 @@ const router = useRouter();
 const { t } = useI18n();
 const authStore = useAuthStore();
 const farmersStore = useFarmersStore();
+const cowsStore = useCowsStore();
 const notificationsStore = useNotificationsStore();
 const { formatRelative } = useDateFormat();
 
@@ -534,6 +535,9 @@ function selectFarmer(farmer: FarmerProfile) {
 // Load data on mount
 onMounted(async () => {
   await farmersStore.fetchFarmers();
+  // Fetch cows and sync cattle counts so totals are accurate
+  await cowsStore.fetchCows();
+  farmersStore.syncCattleCounts();
   // Load recent activity feed
   await loadRecentActivities();
   // M20: Generate notifications after data is loaded
@@ -543,6 +547,8 @@ onMounted(async () => {
 // Expose viewMode for parent component and refresh function
 async function refresh() {
   await farmersStore.fetchFarmers();
+  await cowsStore.fetchCows();
+  farmersStore.syncCattleCounts();
   chartRef.value?.refresh();
   await loadRecentActivities();
   // M20: Regenerate notifications on refresh

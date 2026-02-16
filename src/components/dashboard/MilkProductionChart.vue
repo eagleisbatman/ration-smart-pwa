@@ -160,8 +160,13 @@ function processLogs() {
   }
 
   const allData = Array.from(dailyMap.values());
-  // Only show the chart if there's at least one day with actual data
-  chartData.value = allData.some((d) => d.total > 0) ? allData : [];
+  // Only show days from the first day with actual data (trim leading zeros)
+  const firstDataIdx = allData.findIndex((d) => d.total > 0);
+  if (firstDataIdx === -1) {
+    chartData.value = [];
+  } else {
+    chartData.value = allData.slice(firstDataIdx);
+  }
 }
 
 // Summary statistics

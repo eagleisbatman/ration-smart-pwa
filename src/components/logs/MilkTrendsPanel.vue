@@ -154,7 +154,10 @@ const dailyTotals = computed((): DailyTotal[] => {
   for (const [date, total] of dateMap) {
     result.push({ date, total });
   }
-  return result;
+  // Trim leading zeros — only show from first day with data
+  const firstDataIdx = result.findIndex((d) => d.total > 0);
+  if (firstDataIdx === -1) return [];
+  return result.slice(firstDataIdx);
 });
 
 const periodTotal = computed(() =>

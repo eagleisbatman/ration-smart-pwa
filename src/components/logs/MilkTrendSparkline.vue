@@ -109,7 +109,10 @@ const dailyTotals = computed((): DailyTotal[] => {
     days.push({ date, total });
   }
 
-  return days;
+  // Trim leading zeros — only show from first day with data
+  const firstDataIdx = days.findIndex((d) => d.total > 0);
+  if (firstDataIdx === -1) return [];
+  return days.slice(firstDataIdx);
 });
 
 /** Whether there is any meaningful data to display */

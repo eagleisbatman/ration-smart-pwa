@@ -161,7 +161,7 @@ import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useFarmersStore } from 'src/stores/farmers';
-import { useAuthStore } from 'src/stores/auth';
+import { useCowsStore } from 'src/stores/cows';
 import PullToRefresh from 'src/components/ui/PullToRefresh.vue';
 import SkeletonList from 'src/components/ui/SkeletonList.vue';
 import EmptyState from 'src/components/ui/EmptyState.vue';
@@ -169,7 +169,7 @@ import EmptyState from 'src/components/ui/EmptyState.vue';
 const router = useRouter();
 const { t } = useI18n();
 const farmersStore = useFarmersStore();
-const authStore = useAuthStore();
+const cowsStore = useCowsStore();
 
 const searchQuery = ref('');
 const filterType = ref<'all' | 'dairy' | 'mixed' | 'beef' | 'other'>('all');
@@ -227,11 +227,15 @@ function farmingTypeColor(type: string): string {
 
 async function onRefresh(done: () => void) {
   await farmersStore.fetchFarmers();
+  await cowsStore.fetchCows();
+  farmersStore.syncCattleCounts();
   done();
 }
 
-onMounted(() => {
-  farmersStore.fetchFarmers();
+onMounted(async () => {
+  await farmersStore.fetchFarmers();
+  await cowsStore.fetchCows();
+  farmersStore.syncCattleCounts();
 });
 </script>
 
