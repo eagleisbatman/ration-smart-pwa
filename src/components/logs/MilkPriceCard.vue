@@ -26,7 +26,7 @@
                 dense
                 outlined
                 input-class="text-right"
-                style="max-width: 180px"
+                class="milk-price-input"
                 @keyup.enter="savePrice"
                 @keyup.escape="cancelEdit"
               />
@@ -203,5 +203,10 @@ onMounted(() => {
   background: #FAFAFA;
 
   // Dark mode override is in app.scss (scoped :global() compiles incorrectly)
+}
+
+.milk-price-input {
+  min-width: 120px;
+  max-width: 180px;
 }
 </style>

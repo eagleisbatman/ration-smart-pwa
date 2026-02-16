@@ -37,8 +37,7 @@
               outlined
               dense
               accept=".csv"
-              class="q-mt-md"
-              style="max-width: 300px"
+              class="q-mt-md import-file-input"
               @update:model-value="onFileSelected"
             >
               <template #prepend>
@@ -563,6 +562,14 @@ function formatFileSize(bytes: number): string {
   &--active {
     border-color: $primary;
     background: rgba($primary, 0.05);
+  }
+}
+
+.import-file-input {
+  max-width: 100%;
+
+  @media (min-width: $breakpoint-sm-min) {
+    max-width: 300px;
   }
 }
 </style>
