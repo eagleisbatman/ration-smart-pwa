@@ -1,0 +1,255 @@
+{
+  "credentials": {
+    "email": "mandewalkergautam@gmail.com",
+    "pin": "1981"
+  },
+  "productionUrl": "https://ration-smart-pwa.up.railway.app",
+  "farmers": [
+    {
+      "ref": "farmer_1",
+      "name": "Ramesh Yadav",
+      "phone": "9412305678",
+      "village": "Mahendragarh",
+      "district": "Karnal",
+      "state": "Haryana",
+      "total_cattle": 6,
+      "land_acres": 3.5,
+      "farming_type": "dairy"
+    },
+    {
+      "ref": "farmer_2",
+      "name": "Sunita Devi",
+      "phone": "8756012345",
+      "village": "Bahadurgarh",
+      "district": "Jhajjar",
+      "state": "Haryana",
+      "total_cattle": 4,
+      "land_acres": 2.0,
+      "farming_type": "mixed"
+    },
+    {
+      "ref": "farmer_3",
+      "name": "Vikram Patel",
+      "phone": "7890456123",
+      "village": "Anand Nagar",
+      "district": "Anand",
+      "state": "Gujarat",
+      "total_cattle": 8,
+      "land_acres": 5.0,
+      "farming_type": "dairy"
+    }
+  ],
+  "cows": [
+    {
+      "ref": "cow_1",
+      "farmer_ref": "farmer_1",
+      "name": "Lakshmi",
+      "breed": "HF Crossbred",
+      "tag_number": "HR-K-201",
+      "coat_color": "Black and White",
+      "weight_kg": 480,
+      "milk_yield_liters": 18,
+      "milk_fat_percentage": 3.5,
+      "lactation_stage": "mid",
+      "age_months": 54,
+      "body_condition_score": 3.5,
+      "activity_level": "normal",
+      "is_pregnant": false,
+      "notes": "Strong producer, second lactation"
+    },
+    {
+      "ref": "cow_2",
+      "farmer_ref": "farmer_1",
+      "name": "Gauri",
+      "breed": "Sahiwal",
+      "tag_number": "HR-K-202",
+      "coat_color": "Reddish Brown",
+      "weight_kg": 380,
+      "milk_yield_liters": 8,
+      "milk_fat_percentage": 5.2,
+      "lactation_stage": "early",
+      "age_months": 42,
+      "body_condition_score": 3.0,
+      "activity_level": "normal",
+      "is_pregnant": false,
+      "notes": "Indigenous breed, high fat content"
+    },
+    {
+      "ref": "cow_3",
+      "farmer_ref": "farmer_2",
+      "name": "Shyama",
+      "breed": "Murrah",
+      "tag_number": "HR-J-301",
+      "coat_color": "Jet Black",
+      "weight_kg": 520,
+      "milk_yield_liters": 12,
+      "milk_fat_percentage": 7.0,
+      "lactation_stage": "mid",
+      "age_months": 60,
+      "body_condition_score": 3.5,
+      "activity_level": "normal",
+      "is_pregnant": true,
+      "pregnancy_month": 3,
+      "notes": "Murrah buffalo, excellent butterfat"
+    },
+    {
+      "ref": "cow_4",
+      "farmer_ref": "farmer_3",
+      "name": "Nandini",
+      "breed": "Gir",
+      "tag_number": "GJ-A-101",
+      "coat_color": "Red with White Patches",
+      "weight_kg": 400,
+      "milk_yield_liters": 10,
+      "milk_fat_percentage": 4.5,
+      "lactation_stage": "late",
+      "age_months": 72,
+      "body_condition_score": 3.0,
+      "activity_level": "low",
+      "is_pregnant": false,
+      "notes": "A2 milk, Gir breed from Saurashtra"
+    }
+  ],
+  "milkLogs": [
+    {
+      "ref": "log_1a",
+      "cow_ref": "cow_1",
+      "log_date": "2026-02-14",
+      "morning_liters": 10.5,
+      "evening_liters": 8.0,
+      "fat_percentage": 3.6,
+      "notes": ""
+    },
+    {
+      "ref": "log_1b",
+      "cow_ref": "cow_1",
+      "log_date": "2026-02-15",
+      "morning_liters": 10.0,
+      "evening_liters": 8.5,
+      "fat_percentage": 3.5,
+      "notes": ""
+    },
+    {
+      "ref": "log_1c",
+      "cow_ref": "cow_1",
+      "log_date": "2026-02-16",
+      "morning_liters": 11.0,
+      "evening_liters": 7.5,
+      "fat_percentage": 3.4,
+      "notes": "Slightly higher morning yield"
+    },
+    {
+      "ref": "log_2a",
+      "cow_ref": "cow_2",
+      "log_date": "2026-02-14",
+      "morning_liters": 4.5,
+      "evening_liters": 3.5,
+      "fat_percentage": 5.3,
+      "notes": ""
+    },
+    {
+      "ref": "log_2b",
+      "cow_ref": "cow_2",
+      "log_date": "2026-02-15",
+      "morning_liters": 4.0,
+      "evening_liters": 4.0,
+      "fat_percentage": 5.1,
+      "notes": ""
+    },
+    {
+      "ref": "log_2c",
+      "cow_ref": "cow_2",
+      "log_date": "2026-02-16",
+      "morning_liters": 5.0,
+      "evening_liters": 3.0,
+      "fat_percentage": 5.4,
+      "notes": ""
+    },
+    {
+      "ref": "log_3a",
+      "cow_ref": "cow_3",
+      "log_date": "2026-02-15",
+      "morning_liters": 6.5,
+      "evening_liters": 5.5,
+      "fat_percentage": 7.1,
+      "notes": ""
+    },
+    {
+      "ref": "log_3b",
+      "cow_ref": "cow_3",
+      "log_date": "2026-02-16",
+      "morning_liters": 7.0,
+      "evening_liters": 5.0,
+      "fat_percentage": 6.8,
+      "notes": ""
+    },
+    {
+      "ref": "log_4a",
+      "cow_ref": "cow_4",
+      "log_date": "2026-02-15",
+      "morning_liters": 5.0,
+      "evening_liters": 4.5,
+      "fat_percentage": 4.6,
+      "notes": ""
+    },
+    {
+      "ref": "log_4b",
+      "cow_ref": "cow_4",
+      "log_date": "2026-02-16",
+      "morning_liters": 5.5,
+      "evening_liters": 4.0,
+      "fat_percentage": 4.4,
+      "notes": ""
+    }
+  ],
+  "diets": [
+    {
+      "ref": "diet_1",
+      "cow_ref": "cow_1",
+      "optimization_goal": "balanced",
+      "min_feeds_to_select": 4,
+      "notes": "HF Crossbred, high yield, balanced optimization"
+    },
+    {
+      "ref": "diet_2",
+      "cow_ref": "cow_2",
+      "optimization_goal": "minimize_cost",
+      "min_feeds_to_select": 3,
+      "notes": "Sahiwal, moderate yield, cost optimization"
+    }
+  ],
+  "milkPrice": {
+    "price_per_liter": 45,
+    "currency": "INR"
+  },
+  "viewports": [
+    { "name": "mobile", "width": 360, "height": 800 },
+    { "name": "tablet", "width": 768, "height": 1024 },
+    { "name": "desktop", "width": 1280, "height": 900 }
+  ],
+  "pages_to_audit": [
+    { "name": "dashboard", "path": "/dashboard" },
+    { "name": "farmers", "path": "/farmers" },
+    { "name": "farmer-detail", "path": "/farmers/:id", "requires": "farmer_1" },
+    { "name": "cows", "path": "/cows" },
+    { "name": "cow-detail", "path": "/cows/:id", "requires": "cow_1" },
+    { "name": "diet-list", "path": "/diet" },
+    { "name": "diet-new", "path": "/diet/new" },
+    { "name": "diet-detail", "path": "/diet/:id", "requires": "diet_1" },
+    { "name": "diet-compare", "path": "/diet/compare" },
+    { "name": "milk-logs", "path": "/logs" },
+    { "name": "milk-log-new", "path": "/logs/new" },
+    { "name": "feeds", "path": "/feeds" },
+    { "name": "yields", "path": "/yields" },
+    { "name": "reports", "path": "/reports" },
+    { "name": "profile", "path": "/profile" },
+    { "name": "settings", "path": "/settings" },
+    { "name": "farmer-import", "path": "/farmers/import" }
+  ],
+  "cleanup": {
+    "strategy": "delete_by_name",
+    "farmer_names_to_delete": ["Ramesh Yadav", "Sunita Devi", "Vikram Patel"],
+    "cow_names_to_delete": ["Lakshmi", "Gauri", "Shyama", "Nandini"],
+    "notes": "After all tests complete, delete farmers by name. Cascading delete should remove associated cows, logs, and diets."
+  }
+}

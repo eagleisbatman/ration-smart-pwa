@@ -797,6 +797,11 @@ body {
   img[src*="cow.svg"] {
     filter: invert(1);
   }
+  // Primary buttons/avatars get light bg in dark mode → undo invert so black icon shows
+  .q-btn.bg-primary .q-icon img[src*="cow"],
+  .q-btn--fab .q-icon img[src*="cow"] {
+    filter: none;
+  }
 
   // Photo upload placeholder
   .photo-placeholder {
