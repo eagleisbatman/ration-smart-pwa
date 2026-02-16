@@ -78,7 +78,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { canInstall, isInstalled, installPWA } from 'src/boot/pwa';
+import { canInstall, isInstalled, installPWA, updateAvailable } from 'src/boot/pwa';
 import { db } from 'src/lib/offline/db';
 
 const showPrompt = ref(false);
@@ -105,14 +105,16 @@ onMounted(async () => {
     : true;
 
   if (shouldShow.value && (!dismissed || showAgain)) {
-    // Delay showing prompt for better UX
+    // Delay showing prompt for better UX — defer if update is pending
     setTimeout(() => {
-      showBanner.value = true;
+      if (!updateAvailable.value) {
+        showBanner.value = true;
+      }
     }, 30000); // Show after 30 seconds of usage
 
     // Show full prompt after more engagement
     setTimeout(() => {
-      if (shouldShow.value && showBanner.value) {
+      if (shouldShow.value && showBanner.value && !updateAvailable.value) {
         showPrompt.value = true;
         showBanner.value = false;
       }
@@ -159,9 +161,13 @@ defineExpose({
 }
 
 .ios-instructions {
-  background: $grey-2;
+  background: rgba(0, 0, 0, 0.04);
   border-radius: $radius-loose;
   padding: 16px;
+
+  .body--dark & {
+    background: rgba(255, 255, 255, 0.06);
+  }
 
   ol {
     margin: 0;

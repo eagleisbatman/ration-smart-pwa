@@ -41,31 +41,51 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref, watch, onMounted } from 'vue';
 import { updateAvailable, applyUpdate } from 'src/boot/pwa';
+
+const POSTPONE_KEY = 'update_postponed_at';
+const POSTPONE_TTL = 30 * 60 * 1000; // Re-show after 30 minutes
 
 const showDialog = ref(false);
 const showBanner = ref(false);
 const updating = ref(false);
 
+function isPostponed(): boolean {
+  const ts = localStorage.getItem(POSTPONE_KEY);
+  if (!ts) return false;
+  return Date.now() - Number(ts) < POSTPONE_TTL;
+}
+
 // Watch for update availability
 watch(
   () => updateAvailable.value,
   (available) => {
-    if (available) {
+    if (available && !isPostponed()) {
       showDialog.value = true;
+    } else if (available) {
+      showBanner.value = true;
     }
   },
   { immediate: true }
 );
 
+onMounted(() => {
+  // If update was previously postponed but TTL expired, show dialog
+  if (updateAvailable.value && !isPostponed() && !showDialog.value) {
+    showDialog.value = true;
+  }
+});
+
 function update() {
   updating.value = true;
+  localStorage.removeItem(POSTPONE_KEY);
   applyUpdate();
   // The page will reload automatically when controller changes
 }
 
 function postpone() {
+  localStorage.setItem(POSTPONE_KEY, String(Date.now()));
   showDialog.value = false;
   showBanner.value = true;
 }
