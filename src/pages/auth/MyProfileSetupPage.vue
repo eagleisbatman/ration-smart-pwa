@@ -1,6 +1,6 @@
 <template>
   <div class="profile-setup-page">
-    <OnboardingProgress :current-step="4" />
+    <OnboardingProgress :current-step="3" />
 
     <div class="text-center q-mb-xl">
       <div class="text-h5 text-weight-medium q-mb-sm">{{ $t('onboarding.createProfile') }}</div>

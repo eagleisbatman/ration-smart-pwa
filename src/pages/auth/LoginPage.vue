@@ -1,5 +1,38 @@
 <template>
   <div class="login-page">
+    <!-- Language Selector -->
+    <div class="language-bar q-mb-md">
+      <q-btn
+        flat
+        dense
+        no-caps
+        icon="translate"
+        :label="currentLanguageLabel"
+        class="text-body2"
+        color="primary"
+      >
+        <q-menu auto-close>
+          <q-list dense style="min-width: 180px">
+            <q-item
+              v-for="lang in languageOptions"
+              :key="lang.value"
+              clickable
+              :active="selectedLanguage === lang.value"
+              @click="switchLanguage(lang.value)"
+            >
+              <q-item-section>
+                <q-item-label>{{ lang.nativeLabel }}</q-item-label>
+                <q-item-label caption>{{ lang.label }}</q-item-label>
+              </q-item-section>
+              <q-item-section side v-if="selectedLanguage === lang.value">
+                <q-icon name="check" color="primary" size="xs" />
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-menu>
+      </q-btn>
+    </div>
+
     <q-form @submit="onSubmit">
       <!-- Section: Credentials -->
       <div class="form-section">
@@ -169,6 +202,7 @@ import { useI18n } from 'vue-i18n';
 import { useAuthStore } from 'src/stores/auth';
 import { getDialCode, getPhoneMask, FALLBACK_COUNTRIES } from 'src/services/api-adapter';
 import { useGeoCountry } from 'src/composables/useGeoCountry';
+import { availableLocales, setLocale } from 'src/boot/i18n';
 
 const flagUrl = (code: string) => `/flags/${(code || 'xx').toLowerCase()}.svg`;
 
@@ -193,6 +227,39 @@ watch(detectedCountry, (code) => {
     form.country_code = code;
   }
 });
+
+// Language selection
+const countryLanguageMap: Record<string, string[]> = {
+  IN: ['en', 'hi', 'te', 'kn', 'mr', 'ta', 'bn', 'ml', 'gu', 'pa', 'or', 'as', 'ur'],
+  ET: ['en', 'am', 'om'],
+  KE: ['en'],
+  VN: ['vi', 'en'],
+  BD: ['bn', 'en'],
+};
+
+const selectedLanguage = ref(localStorage.getItem('locale') || 'en');
+
+const languageOptions = computed(() => {
+  const codes = countryLanguageMap[form.country_code] || ['en'];
+  const recommended = codes
+    .map(code => availableLocales.find(l => l.value === code))
+    .filter(Boolean) as typeof availableLocales;
+  if (!codes.includes(selectedLanguage.value)) {
+    const current = availableLocales.find(l => l.value === selectedLanguage.value);
+    if (current) recommended.unshift(current);
+  }
+  return recommended;
+});
+
+const currentLanguageLabel = computed(() => {
+  const lang = availableLocales.find(l => l.value === selectedLanguage.value);
+  return lang ? lang.nativeLabel : 'English';
+});
+
+function switchLanguage(code: string) {
+  selectedLanguage.value = code;
+  setLocale(code);
+}
 
 const countryOptions = computed(() => {
   const source = authStore.countries.length > 0 ? authStore.countries : FALLBACK_COUNTRIES;
@@ -232,7 +299,7 @@ async function onSubmit() {
 
     // Check if user needs to complete onboarding
     if (authStore.needsOnboarding) {
-      router.push('/auth/language');
+      router.push('/auth/role');
     } else {
       // Redirect to intended page or home
       const redirect = route.query.redirect as string;
