@@ -55,7 +55,6 @@ export async function initSyncManager(): Promise<void> {
 
   // Listen for online events to trigger sync
   window.addEventListener('online', () => {
-    console.log('Back online - starting sync');
     syncPendingChanges();
   });
 
