@@ -257,6 +257,12 @@ async function loadFarmerData() {
   // Fetch farmer's cattle
   const cowsData = await farmersStore.getFarmerCows(farmerId.value);
   cows.value = cowsData as CowInfo[];
+
+  // Sync total_cattle with actual cow count so list page stays accurate
+  const actualCount = summary.value?.statistics.total_active_cows ?? cows.value.length;
+  if (farmer.value && farmer.value.total_cattle !== actualCount) {
+    farmersStore.updateFarmer(farmerId.value, { total_cattle: actualCount });
+  }
 }
 
 async function onRefresh(done: () => void) {
