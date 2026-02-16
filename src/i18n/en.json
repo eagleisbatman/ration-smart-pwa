@@ -1064,6 +1064,8 @@
     "deleteAccountWarning": "This action cannot be undone. All your data will be permanently deleted.",
     "syncHistory": "Sync History",
     "syncHistoryDesc": "View past sync activity",
+    "orgFetchError": "Could not load organizations. Please try again later.",
+    "languageSaveError": "Language changed locally but could not be saved to server.",
     "orgTypes": {
       "university": "University",
       "government": "Government",

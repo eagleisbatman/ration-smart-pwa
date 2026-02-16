@@ -487,6 +487,11 @@ async function fetchOrganizations() {
     }
   } catch (error) {
     console.error('Failed to fetch organizations:', error);
+    $q.notify({
+      type: 'warning',
+      message: t('settings.orgFetchError'),
+      position: 'bottom',
+    });
   } finally {
     loadingOrgs.value = false;
   }
@@ -519,6 +524,11 @@ async function changeLanguage(locale: string) {
     await authStore.updateUserSettings({ language_code: locale });
   } catch (error) {
     console.error('Failed to save language preference:', error);
+    $q.notify({
+      type: 'warning',
+      message: t('settings.languageSaveError'),
+      position: 'bottom',
+    });
   }
 
   showLanguageDialog.value = false;
