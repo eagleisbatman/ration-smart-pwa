@@ -32,7 +32,6 @@ const bgSyncPlugin = new BackgroundSyncPlugin('mutations-queue', {
     while ((entry = await queue.shiftRequest())) {
       try {
         await fetch(entry.request);
-        console.log('Replay successful for request', entry.request.url);
       } catch (error) {
         console.error('Replay failed for request', entry.request.url, error);
         await queue.unshiftRequest(entry);
