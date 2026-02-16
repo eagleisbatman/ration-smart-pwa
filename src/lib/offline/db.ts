@@ -39,6 +39,12 @@ export interface Cow {
   is_active: boolean;
   created_at: string;
   updated_at: string;
+  // Backend-specific fields preserved by API adapter for round-trip fidelity
+  _backend_lactating?: boolean;
+  _backend_days_in_milk?: number;
+  _backend_parity?: number;
+  _backend_target_milk_yield?: number;
+  _backend_milk_protein_percent?: number;
   // Local sync status
   _synced: boolean;
   _deleted: boolean;
