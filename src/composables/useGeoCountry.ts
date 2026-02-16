@@ -12,15 +12,15 @@ async function detectCountry(): Promise<string> {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 3000);
 
-    const res = await fetch('http://ip-api.com/json/?fields=countryCode', {
+    const res = await fetch('https://ipapi.co/json/', {
       signal: controller.signal,
     });
     clearTimeout(timeout);
 
     if (!res.ok) return DEFAULT_COUNTRY;
 
-    const data = (await res.json()) as { countryCode?: string };
-    const code = data.countryCode?.toUpperCase() || DEFAULT_COUNTRY;
+    const data = (await res.json()) as { country_code?: string };
+    const code = data.country_code?.toUpperCase() || DEFAULT_COUNTRY;
 
     // Only use detected country if it's one we support
     return SUPPORTED_COUNTRIES.has(code) ? code : DEFAULT_COUNTRY;
