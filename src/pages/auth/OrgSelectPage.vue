@@ -203,7 +203,9 @@ async function fetchOrganizations() {
 
     if (country) {
       const orgsRes = await api.get(`/api/v1/organizations?country_id=${country.id}`);
-      organizations.value = orgsRes.data;
+      // Backend returns { success, count, organizations: [...] }
+      const data = orgsRes.data;
+      organizations.value = Array.isArray(data) ? data : (data.organizations || []);
     }
   } catch (error) {
     console.error('Failed to fetch organizations:', error);
