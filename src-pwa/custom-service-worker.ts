@@ -21,7 +21,7 @@ cleanupOutdatedCaches();
 
 // Cache names
 const API_CACHE = 'api-cache-v1';
-const IMAGE_CACHE = 'image-cache-v1';
+const IMAGE_CACHE = 'image-cache-v2';
 const STATIC_CACHE = 'static-cache-v1';
 
 // Background sync queue for mutations

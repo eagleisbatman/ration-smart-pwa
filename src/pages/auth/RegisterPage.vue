@@ -12,7 +12,6 @@
         dense
         borderless
         class="language-select"
-        behavior="dialog"
         @update:model-value="switchLanguage"
       >
         <template #prepend>
@@ -62,7 +61,6 @@
             :options="countryOptions"
             emit-value
             map-options
-            behavior="dialog"
             :loading="authStore.countriesLoading"
             :disable="authStore.countriesLoading"
             :rules="[(val) => !!val || $t('validation.required')]"
