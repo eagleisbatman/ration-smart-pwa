@@ -62,14 +62,19 @@ body {
   }
 }
 
-// Bottom breathing room on mobile: add invisible spacer after page content
-// so last items aren't flush against the bottom tab bar or FABs.
-// Uses ::after to avoid conflicting with per-page q-pa-md padding.
-@media screen and (max-width: 1023px) {
+// Bottom breathing room: invisible spacer so last items aren't flush against
+// bottom tab bar (phones) or FAB (tablets/desktop).
+// Phones (< 600px): bottom nav is 56px + safe area
+// Tablets+ (>= 600px): FAB sits bottom-right, needs smaller clearance
+.q-page::after {
+  content: '';
+  display: block;
+  height: 48px; // FAB clearance on tablets/desktop
+}
+
+@media screen and (max-width: 599px) {
   .q-page::after {
-    content: '';
-    display: block;
-    height: 64px; // clears bottom nav (~48px) + comfortable gap
+    height: 72px; // bottom nav (~56px) + safe area gap
   }
 }
 

@@ -48,6 +48,7 @@
       show-if-above
       bordered
       :width="280"
+      :breakpoint="599"
     >
       <q-scroll-area class="fit">
         <!-- User Info -->
@@ -214,7 +215,7 @@ const pageTitle = computed(() => {
 const showBackButton = computed(() => !!route.meta?.showBack);
 const hideDrawerToggle = computed(() => !!route.meta?.hideDrawer);
 const showMenu = computed(() => !!route.meta?.showMenu);
-const showBottomNav = computed(() => $q.screen.lt.md && !route.meta?.hideBottomNav);
+const showBottomNav = computed(() => $q.screen.xs && !route.meta?.hideBottomNav);
 const showFab = computed(() => !route.meta?.hideFab && isAuthenticated.value);
 
 const navItems = computed(() => {
