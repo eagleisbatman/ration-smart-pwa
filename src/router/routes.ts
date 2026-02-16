@@ -70,25 +70,25 @@ const routes: RouteRecordRaw[] = [
         path: 'cows',
         name: 'cows',
         component: () => import('pages/cows/CowListPage.vue'),
-        meta: { title: 'My Cows', hideFab: true },
+        meta: { titleKey: 'nav.myCows', hideFab: true },
       },
       {
         path: 'cows/new',
         name: 'cow-new',
         component: () => import('pages/cows/CowFormPage.vue'),
-        meta: { title: 'Add Cow', showBack: true, hideBottomNav: true, hideFab: true },
+        meta: { titleKey: 'cow.addCow', showBack: true, hideBottomNav: true, hideFab: true },
       },
       {
         path: 'cows/:id',
         name: 'cow-detail',
         component: () => import('pages/cows/CowDetailPage.vue'),
-        meta: { title: 'Cow Details', showBack: true, hideFab: true },
+        meta: { titleKey: 'cow.cowDetails', showBack: true, hideFab: true },
       },
       {
         path: 'cows/:id/edit',
         name: 'cow-edit',
         component: () => import('pages/cows/CowFormPage.vue'),
-        meta: { title: 'Edit Cow', showBack: true, hideBottomNav: true, hideFab: true },
+        meta: { titleKey: 'cow.editCow', showBack: true, hideBottomNav: true, hideFab: true },
       },
 
       // Diet
@@ -96,13 +96,13 @@ const routes: RouteRecordRaw[] = [
         path: 'diet',
         name: 'diet',
         component: () => import('pages/diet/DietListPage.vue'),
-        meta: { title: 'Diet Plans', hideFab: true },
+        meta: { titleKey: 'nav.diet', hideFab: true },
       },
       {
         path: 'diet/new',
         name: 'diet-new',
         component: () => import('pages/diet/DietWizardPage.vue'),
-        meta: { title: 'New Diet Plan', showBack: true, hideBottomNav: true, hideFab: true },
+        meta: { titleKey: 'diet.newDietPlan', showBack: true, hideBottomNav: true, hideFab: true },
       },
       {
         path: 'diet/compare',
@@ -114,7 +114,7 @@ const routes: RouteRecordRaw[] = [
         path: 'diet/:id',
         name: 'diet-detail',
         component: () => import('pages/diet/DietDetailPage.vue'),
-        meta: { title: 'Diet Details', showBack: true, hideFab: true },
+        meta: { titleKey: 'diet.dietDetails', showBack: true, hideFab: true },
       },
 
       // Feeds
@@ -122,25 +122,25 @@ const routes: RouteRecordRaw[] = [
         path: 'feeds',
         name: 'feeds',
         component: () => import('pages/feeds/FeedListPage.vue'),
-        meta: { title: 'Feeds', hideFab: true },
+        meta: { titleKey: 'nav.feeds', hideFab: true },
       },
       {
         path: 'feeds/new',
         name: 'feed-new',
         component: () => import('pages/feeds/FeedFormPage.vue'),
-        meta: { title: 'Add Custom Feed', showBack: true, hideBottomNav: true, hideFab: true },
+        meta: { titleKey: 'feeds.addCustomFeed', showBack: true, hideBottomNav: true, hideFab: true },
       },
       {
         path: 'feeds/:id',
         name: 'feed-detail',
         component: () => import('pages/feeds/FeedDetailPage.vue'),
-        meta: { title: 'Feed Details', showBack: true, hideFab: true },
+        meta: { titleKey: 'feeds.feedDetails', showBack: true, hideFab: true },
       },
       {
         path: 'feeds/:id/edit',
         name: 'feed-edit',
         component: () => import('pages/feeds/FeedFormPage.vue'),
-        meta: { title: 'Edit Feed', showBack: true, hideBottomNav: true, hideFab: true },
+        meta: { titleKey: 'feeds.editFeed', showBack: true, hideBottomNav: true, hideFab: true },
       },
 
       // Milk Logs
@@ -226,7 +226,7 @@ const routes: RouteRecordRaw[] = [
         path: 'analytics',
         name: 'org-analytics',
         component: () => import('pages/yields/OrgAnalyticsPage.vue'),
-        meta: { title: 'Organization Analytics', showBack: true, hideFab: true },
+        meta: { titleKey: 'nav.analytics', showBack: true, hideFab: true },
       },
 
       // Reports
@@ -234,13 +234,13 @@ const routes: RouteRecordRaw[] = [
         path: 'reports',
         name: 'reports',
         component: () => import('pages/reports/ReportListPage.vue'),
-        meta: { title: 'Reports', hideFab: true },
+        meta: { titleKey: 'nav.reports', hideFab: true },
       },
       {
         path: 'reports/:id',
         name: 'report-detail',
         component: () => import('pages/reports/ReportDetailPage.vue'),
-        meta: { title: 'Report', showBack: true, hideFab: true },
+        meta: { titleKey: 'reports.reportDetail', showBack: true, hideFab: true },
       },
 
       // Settings
@@ -248,13 +248,13 @@ const routes: RouteRecordRaw[] = [
         path: 'settings',
         name: 'settings',
         component: () => import('pages/settings/SettingsPage.vue'),
-        meta: { title: 'Settings', hideFab: true },
+        meta: { titleKey: 'nav.settings', hideFab: true },
       },
       {
         path: 'settings/profile',
         name: 'profile',
         component: () => import('pages/settings/ProfilePage.vue'),
-        meta: { title: 'Profile', showBack: true, hideFab: true },
+        meta: { titleKey: 'settings.profile', showBack: true, hideFab: true },
       },
       {
         path: 'settings/help',

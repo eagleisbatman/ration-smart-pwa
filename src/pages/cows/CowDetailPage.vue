@@ -220,7 +220,7 @@
 
       <!-- Quick Actions -->
       <div class="row q-col-gutter-sm q-mb-md">
-        <div class="col-12 col-sm-6">
+        <div class="col-6">
           <q-btn
             :label="$t('cow.logMilk')"
             icon="water_drop"
@@ -230,7 +230,7 @@
             @click="router.push({ path: '/logs/new', query: { cow_id: cow.id } })"
           />
         </div>
-        <div class="col-12 col-sm-6">
+        <div class="col-6">
           <q-btn
             :label="$t('cow.getDiet')"
             icon="menu_book"
@@ -238,6 +238,26 @@
             class="full-width"
             unelevated
             @click="router.push({ path: '/diet/new', query: { cow_id: cow.id } })"
+          />
+        </div>
+        <div class="col-6">
+          <q-btn
+            :label="$t('cow.viewYields')"
+            icon="analytics"
+            outline
+            color="primary"
+            class="full-width"
+            @click="router.push({ path: '/yields', query: { cow_id: cow.id } })"
+          />
+        </div>
+        <div class="col-6">
+          <q-btn
+            :label="$t('cow.viewDiets')"
+            icon="menu_book"
+            outline
+            color="primary"
+            class="full-width"
+            @click="router.push({ path: '/diet', query: { cow_id: cow.id } })"
           />
         </div>
       </div>

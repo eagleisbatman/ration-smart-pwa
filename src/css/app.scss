@@ -91,6 +91,18 @@ body {
 }
 
 // ============================================
+// Form Width Constraint
+// ============================================
+// Prevent forms from stretching too wide on tablet/desktop
+.q-form {
+  @media screen and (min-width: 600px) {
+    max-width: 560px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+// ============================================
 // Inline Stat (wireframe: ui-stat pattern)
 // ============================================
 // Compact number + label — no heavy card wrapping

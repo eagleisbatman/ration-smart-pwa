@@ -82,15 +82,29 @@
           </div>
         </div>
 
-        <!-- View Cows Button -->
-        <q-btn
-          color="primary"
-          class="full-width q-mb-md"
-          unelevated
-          :label="`${$t('farmer.viewCows')} (${cows.length})`"
-          :icon="COW_ICON"
-          @click="router.push({ path: '/cows', query: { farmer_id: farmerId } })"
-        />
+        <!-- Quick Actions -->
+        <div class="row q-col-gutter-sm q-mb-md">
+          <div class="col-6">
+            <q-btn
+              color="primary"
+              class="full-width"
+              unelevated
+              :label="`${$t('farmer.viewCows')} (${cows.length})`"
+              :icon="COW_ICON"
+              @click="router.push({ path: '/cows', query: { farmer_id: farmerId } })"
+            />
+          </div>
+          <div class="col-6">
+            <q-btn
+              outline
+              color="primary"
+              class="full-width"
+              :label="$t('farmer.viewYields')"
+              icon="analytics"
+              @click="router.push({ path: '/yields', query: { farmer: farmerId } })"
+            />
+          </div>
+        </div>
 
         <!-- Farm Details -->
         <q-card flat bordered class="q-mb-md">
