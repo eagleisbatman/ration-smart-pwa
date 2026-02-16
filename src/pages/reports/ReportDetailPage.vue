@@ -146,9 +146,15 @@ const showShareSheet = ref(false);
 const params = computed(() => (report.value?.parameters as Record<string, string>) || {});
 
 function downloadReport() {
-  if (report.value?.file_url) {
-    window.open(report.value.file_url, '_blank');
-  }
+  if (!report.value?.file_url) return;
+  const link = document.createElement('a');
+  link.href = report.value.file_url;
+  link.target = '_blank';
+  link.rel = 'noopener';
+  link.download = `${report.value.title || 'report'}.html`;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 }
 
 function buildReportSummaryText(): string {
