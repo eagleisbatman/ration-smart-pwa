@@ -3,12 +3,13 @@
     <q-form class="q-gutter-md" @submit="onSubmit">
       <!-- Description -->
       <p class="text-body2 text-grey-7 text-center q-mb-md">
-        {{ $t('auth.forgotPinDescription') }}
+        {{ $t('auth.forgotPinPhoneDescription') }}
       </p>
 
-      <!-- Success Message -->
-      <q-banner v-if="success" dense class="bg-positive text-white q-mb-md" rounded>
-        {{ $t('auth.forgotPinSuccess') }}
+      <!-- New PIN Dialog -->
+      <q-banner v-if="newPin" dense class="bg-positive text-white q-mb-md" rounded>
+        <div class="text-weight-bold q-mb-xs">{{ $t('auth.newPinGenerated') }}</div>
+        <div>{{ $t('auth.newPinMessage', { pin: newPin }) }}</div>
         <div v-if="redirectCountdown > 0" class="text-caption q-mt-xs">
           {{ $t('auth.redirectingToLogin', { seconds: redirectCountdown }) }}
         </div>
@@ -19,87 +20,52 @@
         {{ error }}
       </q-banner>
 
-      <template v-if="!success">
-        <!-- Method Toggle -->
-        <q-btn-toggle
-          v-model="method"
-          spread
-          no-caps
-          rounded
-          unelevated
-          toggle-color="primary"
-          color="white"
-          text-color="grey-8"
-          :options="[
-            { label: $t('auth.email'), value: 'email', icon: 'email' },
-            { label: $t('auth.phone'), value: 'phone', icon: 'phone' },
-          ]"
-          class="method-toggle"
-        />
-
-        <!-- Email Input -->
-        <q-input
-          v-if="method === 'email'"
-          v-model="form.email"
-          :label="$t('auth.email')"
-          type="email"
+      <template v-if="!newPin">
+        <!-- Country Selection -->
+        <q-select
+          v-model="form.country_code"
+          :label="$t('profile.country')"
           outlined
-          :rules="[
-            (val) => !!val || $t('validation.required'),
-            (val) => /.+@.+\..+/.test(val) || $t('validation.invalidEmail'),
-          ]"
+          :options="countryOptions"
+          emit-value
+          map-options
+          dense
+          :loading="authStore.countriesLoading"
+          class="q-mb-sm"
         >
           <template #prepend>
-            <q-icon name="email" />
+            <img :src="flagUrl(form.country_code)" width="20" height="15" class="flag-img" />
+          </template>
+          <template v-slot:option="{ itemProps, opt }">
+            <q-item v-bind="itemProps">
+              <q-item-section side class="country-option-flag">
+                <img :src="flagUrl(opt.value)" width="20" height="15" class="flag-img" />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>{{ opt.label }}</q-item-label>
+              </q-item-section>
+            </q-item>
+          </template>
+        </q-select>
+
+        <!-- Phone Input -->
+        <q-input
+          v-model="form.phone"
+          :label="$t('auth.phone')"
+          type="tel"
+          outlined
+          :mask="selectedPhoneMask"
+          :rules="[(val) => !!val || $t('validation.required')]"
+        >
+          <template #prepend>
+            <img :src="flagUrl(form.country_code)" width="20" height="15" class="q-mr-xs flag-img" />
+            <span class="text-body2 text-weight-medium text-grey-8 q-mr-xs">{{ selectedDialCode }}</span>
           </template>
         </q-input>
 
-        <!-- Phone Input with Country -->
-        <template v-else>
-          <q-select
-            v-model="form.country_code"
-            :label="$t('profile.country')"
-            outlined
-            :options="countryOptions"
-            emit-value
-            map-options
-            dense
-            :loading="authStore.countriesLoading"
-            class="q-mb-sm"
-          >
-            <template #prepend>
-              <img :src="flagUrl(form.country_code)" width="20" height="15" class="flag-img" />
-            </template>
-            <template v-slot:option="{ itemProps, opt }">
-              <q-item v-bind="itemProps">
-                <q-item-section side class="country-option-flag">
-                  <img :src="flagUrl(opt.value)" width="20" height="15" class="flag-img" />
-                </q-item-section>
-                <q-item-section>
-                  <q-item-label>{{ opt.label }}</q-item-label>
-                </q-item-section>
-              </q-item>
-            </template>
-          </q-select>
-
-          <q-input
-            v-model="form.phone"
-            :label="$t('auth.phone')"
-            type="tel"
-            outlined
-            :mask="selectedPhoneMask"
-            :rules="[(val) => !!val || $t('validation.required')]"
-          >
-            <template #prepend>
-              <img :src="flagUrl(form.country_code)" width="20" height="15" class="q-mr-xs flag-img" />
-              <span class="text-body2 text-weight-medium text-grey-8 q-mr-xs">{{ selectedDialCode }}</span>
-            </template>
-          </q-input>
-        </template>
-
         <!-- Submit Button -->
         <q-btn
-          :label="$t('auth.forgotPinSubmit')"
+          :label="$t('auth.forgotPinPhoneSubmit')"
           type="submit"
           color="primary"
           class="full-width"
@@ -139,10 +105,7 @@ const { t } = useI18n();
 const router = useRouter();
 const authStore = useAuthStore();
 
-const method = ref<'email' | 'phone'>('email');
-
 const form = reactive({
-  email: '',
   phone: '',
   country_code: 'IN',
 });
@@ -168,7 +131,7 @@ onMounted(() => {
 
 const loading = ref(false);
 const error = ref<string | null>(null);
-const success = ref(false);
+const newPin = ref<string | null>(null);
 const redirectCountdown = ref(0);
 let redirectTimer: ReturnType<typeof setInterval> | null = null;
 
@@ -179,18 +142,22 @@ onUnmounted(() => {
 async function onSubmit() {
   loading.value = true;
   error.value = null;
-  success.value = false;
+  newPin.value = null;
 
   try {
-    const payload = method.value === 'email'
-      ? { email: form.email }
-      : { phone_number: formatPhoneE164(form.phone, form.country_code) };
+    const payload = {
+      phone_number: formatPhoneE164(form.phone, form.country_code),
+    };
 
-    await api.post('/api/v1/auth/forgot-pin', payload);
-    success.value = true;
+    const response = await api.post('/api/v1/auth/forgot-pin-phone', payload);
+    const data = response.data as { new_pin?: string };
 
-    // Auto-redirect to login after 3 seconds
-    redirectCountdown.value = 3;
+    if (data.new_pin) {
+      newPin.value = data.new_pin;
+    }
+
+    // Auto-redirect to login after 5 seconds (longer to let user note PIN)
+    redirectCountdown.value = 5;
     redirectTimer = setInterval(() => {
       redirectCountdown.value--;
       if (redirectCountdown.value <= 0) {
@@ -217,14 +184,3 @@ async function onSubmit() {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.method-toggle :deep(.q-btn) {
-  border: 1.5px solid $grey-4;
-  transition: all 0.2s ease;
-}
-
-.method-toggle :deep(.q-btn.bg-primary) {
-  border-color: var(--q-primary);
-}
-</style>

@@ -7,83 +7,47 @@
           {{ $t('auth.sectionCredentials') }}
         </div>
         <div class="q-gutter-sm">
-          <!-- Login Method Toggle -->
-          <q-btn-toggle
-            v-model="loginMethod"
-            spread
-            no-caps
-            rounded
-            unelevated
-            toggle-color="primary"
-            color="white"
-            text-color="grey-8"
-            :options="[
-              { label: $t('auth.email'), value: 'email', icon: 'email' },
-              { label: $t('auth.phone'), value: 'phone', icon: 'phone' },
-            ]"
-            class="login-method-toggle"
-          />
-
-          <!-- Email Input -->
-          <q-input
-            v-if="loginMethod === 'email'"
-            v-model="form.email"
-            :label="$t('auth.email')"
-            type="email"
+          <!-- Country Selection -->
+          <q-select
+            v-model="form.country_code"
+            :label="$t('profile.country')"
             outlined
-            :rules="[
-              (val) => !!val || $t('validation.required'),
-              (val) => /.+@.+\..+/.test(val) || $t('validation.invalidEmail'),
-            ]"
+            :options="countryOptions"
+            emit-value
+            map-options
+            dense
+            :loading="authStore.countriesLoading"
+            class="q-mb-sm"
           >
             <template #prepend>
-              <q-icon name="email" />
+              <img :src="flagUrl(form.country_code)" width="20" height="15" class="flag-img" />
+            </template>
+            <template v-slot:option="{ itemProps, opt }">
+              <q-item v-bind="itemProps">
+                <q-item-section side class="country-option-flag">
+                  <img :src="flagUrl(opt.value)" width="20" height="15" class="flag-img" />
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label>{{ opt.label }}</q-item-label>
+                </q-item-section>
+              </q-item>
+            </template>
+          </q-select>
+
+          <!-- Phone Input -->
+          <q-input
+            v-model="form.phone"
+            :label="$t('auth.phone')"
+            type="tel"
+            outlined
+            :mask="selectedPhoneMask"
+            :rules="[(val) => !!val || $t('validation.required')]"
+          >
+            <template #prepend>
+              <img :src="flagUrl(form.country_code)" width="20" height="15" class="q-mr-xs flag-img" />
+              <span class="text-body2 text-weight-medium text-grey-8 q-mr-xs">{{ selectedDialCode }}</span>
             </template>
           </q-input>
-
-          <!-- Phone Input with Country Code -->
-          <template v-else>
-            <!-- Country Selection for Phone -->
-            <q-select
-              v-model="form.country_code"
-              :label="$t('profile.country')"
-              outlined
-              :options="countryOptions"
-              emit-value
-              map-options
-              dense
-              :loading="authStore.countriesLoading"
-              class="q-mb-sm"
-            >
-              <template #prepend>
-                <img :src="flagUrl(form.country_code)" width="20" height="15" class="flag-img" />
-              </template>
-              <template v-slot:option="{ itemProps, opt }">
-                <q-item v-bind="itemProps">
-                  <q-item-section side class="country-option-flag">
-                    <img :src="flagUrl(opt.value)" width="20" height="15" class="flag-img" />
-                  </q-item-section>
-                  <q-item-section>
-                    <q-item-label>{{ opt.label }}</q-item-label>
-                  </q-item-section>
-                </q-item>
-              </template>
-            </q-select>
-
-            <q-input
-              v-model="form.phone"
-              :label="$t('auth.phone')"
-              type="tel"
-              outlined
-              :mask="selectedPhoneMask"
-              :rules="[(val) => !!val || $t('validation.required')]"
-            >
-              <template #prepend>
-                <img :src="flagUrl(form.country_code)" width="20" height="15" class="q-mr-xs flag-img" />
-                <span class="text-body2 text-weight-medium text-grey-8 q-mr-xs">{{ selectedDialCode }}</span>
-              </template>
-            </q-input>
-          </template>
         </div>
       </div>
 
@@ -212,12 +176,10 @@ const router = useRouter();
 const route = useRoute();
 const authStore = useAuthStore();
 
-const loginMethod = ref<'email' | 'phone'>('email');
 const showPin = ref(false);
 const rememberMe = ref(false);
 
 const form = reactive({
-  email: '',
   phone: '',
   pin: '',
   country_code: 'IN',
@@ -240,13 +202,6 @@ const selectedPhoneMask = computed(() => getPhoneMask(form.country_code));
 
 onMounted(() => {
   authStore.fetchCountries();
-
-  // Pre-fill email from query param (e.g., after registration)
-  const emailParam = route.query.email as string;
-  if (emailParam) {
-    form.email = emailParam;
-    loginMethod.value = 'email';
-  }
 });
 
 const loading = computed(() => authStore.loading);
@@ -256,9 +211,8 @@ async function onSubmit() {
   const credentials = {
     pin: form.pin,
     rememberMe: rememberMe.value,
-    ...(loginMethod.value === 'email'
-      ? { email: form.email }
-      : { phone: form.phone, country_code: form.country_code }),
+    phone: form.phone,
+    country_code: form.country_code,
   };
 
   const success = await authStore.login(credentials);
@@ -280,15 +234,6 @@ async function onSubmit() {
 </script>
 
 <style lang="scss" scoped>
-.login-method-toggle :deep(.q-btn) {
-  border: 1.5px solid $grey-4;
-  transition: all 0.2s ease;
-}
-
-.login-method-toggle :deep(.q-btn.bg-primary) {
-  border-color: var(--q-primary);
-}
-
 .submit-btn {
   font-size: 1.05rem;
   letter-spacing: 0.025em;

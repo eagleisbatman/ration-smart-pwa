@@ -1,41 +1,7 @@
 <template>
   <div class="register-page">
     <q-form @submit="onSubmit">
-      <!-- Section 1: Country -->
-      <div class="form-section">
-        <div class="text-caption text-grey-7 text-uppercase text-weight-medium q-mb-sm q-px-xs">
-          {{ $t('auth.sectionLocation') }}
-        </div>
-        <q-select
-          v-model="form.country_code"
-          :label="$t('profile.country')"
-          outlined
-          :options="countryOptions"
-          emit-value
-          map-options
-          :loading="authStore.countriesLoading"
-          :disable="authStore.countriesLoading"
-          :rules="[(val) => !!val || $t('validation.required')]"
-        >
-          <template #prepend>
-            <img :src="flagUrl(form.country_code)" width="20" height="15" class="flag-img" />
-          </template>
-          <template v-slot:option="{ itemProps, opt }">
-            <q-item v-bind="itemProps">
-              <q-item-section side class="country-option-flag">
-                <img :src="flagUrl(opt.value)" width="20" height="15" class="flag-img" />
-              </q-item-section>
-              <q-item-section>
-                <q-item-label>{{ opt.label }}</q-item-label>
-              </q-item-section>
-            </q-item>
-          </template>
-        </q-select>
-      </div>
-
-      <q-separator class="q-my-md" color="grey-3" />
-
-      <!-- Section 2: Account -->
+      <!-- Section 1: Account -->
       <div class="form-section">
         <div class="text-caption text-grey-7 text-uppercase text-weight-medium q-mb-sm q-px-xs">
           {{ $t('auth.sectionAccount') }}
@@ -53,43 +19,35 @@
             </template>
           </q-input>
 
-          <!-- Registration Method Toggle -->
-          <q-btn-toggle
-            v-model="registerMethod"
-            spread
-            no-caps
-            rounded
-            unelevated
-            toggle-color="primary"
-            color="white"
-            text-color="grey-8"
-            :options="[
-              { label: $t('auth.email'), value: 'email', icon: 'email' },
-              { label: $t('auth.phone'), value: 'phone', icon: 'phone' },
-            ]"
-            class="register-method-toggle"
-          />
-
-          <!-- Email Input -->
-          <q-input
-            v-if="registerMethod === 'email'"
-            v-model="form.email"
-            :label="$t('auth.email')"
-            type="email"
+          <!-- Country Selection -->
+          <q-select
+            v-model="form.country_code"
+            :label="$t('profile.country')"
             outlined
-            :rules="[
-              (val) => !!val || $t('validation.required'),
-              (val) => /.+@.+\..+/.test(val) || $t('validation.invalidEmail'),
-            ]"
+            :options="countryOptions"
+            emit-value
+            map-options
+            :loading="authStore.countriesLoading"
+            :disable="authStore.countriesLoading"
+            :rules="[(val) => !!val || $t('validation.required')]"
           >
             <template #prepend>
-              <q-icon name="email" />
+              <img :src="flagUrl(form.country_code)" width="20" height="15" class="flag-img" />
             </template>
-          </q-input>
+            <template v-slot:option="{ itemProps, opt }">
+              <q-item v-bind="itemProps">
+                <q-item-section side class="country-option-flag">
+                  <img :src="flagUrl(opt.value)" width="20" height="15" class="flag-img" />
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label>{{ opt.label }}</q-item-label>
+                </q-item-section>
+              </q-item>
+            </template>
+          </q-select>
 
           <!-- Phone Input with dial code -->
           <q-input
-            v-else
             v-model="form.phone"
             :label="$t('auth.phone')"
             type="tel"
@@ -107,7 +65,7 @@
 
       <q-separator class="q-my-md" color="grey-3" />
 
-      <!-- Section 3: Security -->
+      <!-- Section 2: Security -->
       <div class="form-section">
         <div class="text-caption text-grey-7 text-uppercase text-weight-medium q-mb-sm q-px-xs">
           {{ $t('auth.sectionSecurity') }}
@@ -241,12 +199,10 @@ const { t } = useI18n();
 const router = useRouter();
 const authStore = useAuthStore();
 
-const registerMethod = ref<'email' | 'phone'>('email');
 const showPin = ref(false);
 
 const form = reactive({
   name: '',
-  email: '',
   phone: '',
   country_code: 'IN',
   pin: '',
@@ -330,7 +286,7 @@ async function onSubmit() {
     name: form.name,
     pin: form.pin,
     country_code: form.country_code,
-    ...(registerMethod.value === 'email' ? { email: form.email } : { phone: form.phone }),
+    phone: form.phone,
   };
 
   const success = await authStore.register(data);
@@ -345,15 +301,6 @@ async function onSubmit() {
 </script>
 
 <style lang="scss" scoped>
-.register-method-toggle :deep(.q-btn) {
-  border: 1.5px solid $grey-4;
-  transition: all 0.2s ease;
-}
-
-.register-method-toggle :deep(.q-btn.bg-primary) {
-  border-color: var(--q-primary);
-}
-
 .pin-strength-indicator {
   margin-top: -8px;
   padding: 0 12px;

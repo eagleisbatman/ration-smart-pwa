@@ -176,11 +176,8 @@ export const useAuthStore = defineStore('auth', () => {
       // Ensure countries are loaded for country_code -> country_id mapping
       await ensureCountriesLoaded();
 
-      // Determine the correct endpoint based on registration method
-      const isPhoneRegistration = data.phone && !data.email;
-      const endpoint = isPhoneRegistration
-        ? '/api/v1/users/register-phone'
-        : '/api/v1/users/register';
+      // Always use phone registration endpoint
+      const endpoint = '/api/v1/users/register-phone';
 
       // The api-adapter will transform the request data automatically:
       // - Convert phone to E.164 format (e.g., "9876543210" -> "+919876543210")
@@ -237,11 +234,8 @@ export const useAuthStore = defineStore('auth', () => {
     error.value = null;
 
     try {
-      // Determine the correct endpoint based on login method
-      const isPhoneLogin = data.phone && !data.email;
-      const endpoint = isPhoneLogin
-        ? '/api/v1/users/login-phone'
-        : '/api/v1/users/login';
+      // Always use phone login endpoint
+      const endpoint = '/api/v1/users/login-phone';
 
       // Strip rememberMe before sending to the API
       const { rememberMe, ...apiData } = data;
