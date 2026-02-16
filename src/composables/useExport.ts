@@ -235,8 +235,8 @@ export function useExport() {
     <thead>
       <tr>
         <th>${t('export.feeds')}</th>
-        <th>${diet.feeds.length > 0 ? 'Amount' : ''}</th>
-        <th>${diet.feeds.length > 0 ? 'Cost' : ''}</th>
+        <th>${diet.feeds.length > 0 ? t('export.amount') : ''}</th>
+        <th>${diet.feeds.length > 0 ? t('export.cost') : ''}</th>
       </tr>
     </thead>
     <tbody>

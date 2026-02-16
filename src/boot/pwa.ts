@@ -29,12 +29,10 @@ export default boot(() => {
     e.preventDefault();
     deferredPrompt.value = e as BeforeInstallPromptEvent;
     canInstall.value = true;
-    console.log('PWA install prompt available');
   });
 
   // Listen for app installed event
   window.addEventListener('appinstalled', () => {
-    console.log('PWA installed successfully');
     isInstalled.value = true;
     canInstall.value = false;
     deferredPrompt.value = null;
@@ -43,12 +41,10 @@ export default boot(() => {
   // Network status listeners
   window.addEventListener('online', () => {
     isOnline.value = true;
-    console.log('App is online');
   });
 
   window.addEventListener('offline', () => {
     isOnline.value = false;
-    console.log('App is offline');
   });
 
   // Service worker update detection
@@ -71,7 +67,6 @@ export default boot(() => {
             if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
               // New content available
               updateAvailable.value = true;
-              console.log('New version available');
             }
           });
         }
@@ -97,12 +92,10 @@ export async function installPWA(): Promise<boolean> {
     const { outcome } = await deferredPrompt.value.userChoice;
 
     if (outcome === 'accepted') {
-      console.log('User accepted the install prompt');
       canInstall.value = false;
       deferredPrompt.value = null;
       return true;
     } else {
-      console.log('User dismissed the install prompt');
       return false;
     }
   } catch (error) {
