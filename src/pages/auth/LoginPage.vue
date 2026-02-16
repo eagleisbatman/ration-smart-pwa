@@ -17,9 +17,6 @@
         <template #prepend>
           <q-icon name="translate" size="xs" class="q-mr-xs" />
         </template>
-        <template #append>
-          <q-icon name="expand_more" size="xs" />
-        </template>
         <template v-slot:option="{ itemProps, opt }">
           <q-item v-bind="itemProps" dense>
             <q-item-section>
