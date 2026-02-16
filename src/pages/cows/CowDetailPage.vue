@@ -132,6 +132,20 @@
             <div class="text-caption text-grey-7">
               {{ activeDiet.optimization_goal }} · {{ formatCurrency(activeDiet.total_cost ?? 0) }}{{ $t('diet.perDay') }}
             </div>
+            <div v-if="dietImpact.hasData.value" class="q-mt-xs">
+              <q-badge
+                :color="dietImpact.adherenceRate.value >= 70 ? 'positive' : 'grey-6'"
+                class="q-mr-xs"
+              >
+                {{ $t('dietImpact.adherenceBadge', { rate: dietImpact.adherenceRate.value }) }}
+              </q-badge>
+              <q-badge
+                v-if="dietImpact.yieldChange.value !== null"
+                :color="dietImpact.yieldChange.value > 0 ? 'positive' : dietImpact.yieldChange.value < 0 ? 'negative' : 'grey-6'"
+              >
+                {{ $t('dietImpact.yieldBadge', { change: (dietImpact.yieldChange.value > 0 ? '+' : '') + dietImpact.yieldChange.value.toFixed(1) }) }}
+              </q-badge>
+            </div>
           </div>
           <q-icon name="chevron_right" color="grey-6" />
         </q-card-section>
@@ -294,6 +308,7 @@ import { useMilkLogsStore } from 'src/stores/milkLogs';
 import { useDietsStore } from 'src/stores/diets';
 import { Cow, Diet } from 'src/lib/offline/db';
 import { useCurrency } from 'src/composables/useCurrency';
+import { useDietImpact } from 'src/composables/useDietImpact';
 import SkeletonCard from 'src/components/ui/SkeletonCard.vue';
 import EmptyState from 'src/components/ui/EmptyState.vue';
 import MilkProductionChart from 'src/components/dashboard/MilkProductionChart.vue';
@@ -310,6 +325,9 @@ const cowId = computed(() => route.params.id as string);
 const cow = ref<Cow | null>(null);
 const recentLogs = ref<typeof milkLogsStore.logs>([]);
 const activeDiet = ref<Diet | null>(null);
+const dietImpact = useDietImpact(
+  computed(() => activeDiet.value?.id),
+);
 const loading = ref(true);
 const healthTimeline = ref<InstanceType<typeof HealthEventTimeline> | null>(null);
 

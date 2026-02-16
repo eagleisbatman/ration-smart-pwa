@@ -25,7 +25,7 @@
         <q-card-section>
           <div class="text-subtitle1 q-mb-sm">{{ $t('diet.compareDiets') }}</div>
           <div class="row q-col-gutter-sm">
-            <div class="col-6">
+            <div class="col-12 col-sm-6">
               <q-select
                 v-model="selectedDietA"
                 :options="completedDietOptions"
@@ -38,7 +38,7 @@
                 dense
               />
             </div>
-            <div class="col-6">
+            <div class="col-12 col-sm-6">
               <q-select
                 v-model="selectedDietB"
                 :options="completedDietOptions"
@@ -155,7 +155,7 @@
             <div class="q-mb-md">
               <div class="text-caption text-grey-7 q-mb-xs">{{ $t('diet.crudeProteinCP') }}</div>
               <div class="row q-col-gutter-sm">
-                <div class="col-6">
+                <div class="col-12 col-sm-6">
                   <div class="row justify-between text-caption q-mb-xs">
                     <span>A</span>
                     <span>{{ resultDataA.nutrient_balance?.cp_supplied?.toFixed(0) ?? 0 }} / {{ resultDataA.nutrient_balance?.cp_requirement?.toFixed(0) ?? 0 }}{{ $t('diet.g') }}</span>
@@ -166,7 +166,7 @@
                     rounded
                   />
                 </div>
-                <div class="col-6">
+                <div class="col-12 col-sm-6">
                   <div class="row justify-between text-caption q-mb-xs">
                     <span>B</span>
                     <span>{{ resultDataB.nutrient_balance?.cp_supplied?.toFixed(0) ?? 0 }} / {{ resultDataB.nutrient_balance?.cp_requirement?.toFixed(0) ?? 0 }}{{ $t('diet.g') }}</span>
@@ -184,7 +184,7 @@
             <div class="q-mb-md">
               <div class="text-caption text-grey-7 q-mb-xs">{{ $t('diet.totalDigestibleNutrients') }}</div>
               <div class="row q-col-gutter-sm">
-                <div class="col-6">
+                <div class="col-12 col-sm-6">
                   <div class="row justify-between text-caption q-mb-xs">
                     <span>A</span>
                     <span>{{ resultDataA.nutrient_balance?.tdn_supplied?.toFixed(0) ?? 0 }} / {{ resultDataA.nutrient_balance?.tdn_requirement?.toFixed(0) ?? 0 }}{{ $t('diet.g') }}</span>
@@ -195,7 +195,7 @@
                     rounded
                   />
                 </div>
-                <div class="col-6">
+                <div class="col-12 col-sm-6">
                   <div class="row justify-between text-caption q-mb-xs">
                     <span>B</span>
                     <span>{{ resultDataB.nutrient_balance?.tdn_supplied?.toFixed(0) ?? 0 }} / {{ resultDataB.nutrient_balance?.tdn_requirement?.toFixed(0) ?? 0 }}{{ $t('diet.g') }}</span>
@@ -213,7 +213,7 @@
             <div>
               <div class="text-caption text-grey-7 q-mb-xs">{{ $t('diet.dryMatterDM') }}</div>
               <div class="row q-col-gutter-sm">
-                <div class="col-6">
+                <div class="col-12 col-sm-6">
                   <div class="row justify-between text-caption q-mb-xs">
                     <span>A</span>
                     <span>{{ resultDataA.nutrient_balance?.dm_supplied?.toFixed(2) ?? 0 }} / {{ resultDataA.nutrient_balance?.dm_requirement?.toFixed(2) ?? 0 }}{{ $t('diet.kg') }}</span>
@@ -224,7 +224,7 @@
                     rounded
                   />
                 </div>
-                <div class="col-6">
+                <div class="col-12 col-sm-6">
                   <div class="row justify-between text-caption q-mb-xs">
                     <span>B</span>
                     <span>{{ resultDataB.nutrient_balance?.dm_supplied?.toFixed(2) ?? 0 }} / {{ resultDataB.nutrient_balance?.dm_requirement?.toFixed(2) ?? 0 }}{{ $t('diet.kg') }}</span>

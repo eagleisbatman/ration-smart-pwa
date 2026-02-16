@@ -101,6 +101,28 @@
         />
       </q-card>
 
+      <!-- No active diet nudge -->
+      <q-banner
+        v-if="form.cow_id && dietChecked && !activeDiet"
+        class="bg-info text-white q-mb-md"
+        rounded
+        dense
+      >
+        <template #avatar>
+          <q-icon name="info" />
+        </template>
+        {{ $t('dietImpact.noDietBanner') }}
+        <template #action>
+          <q-btn
+            flat
+            color="white"
+            :label="$t('diet.generateDiet')"
+            size="sm"
+            @click="router.push(`/diet/new?cow_id=${form.cow_id}`)"
+          />
+        </template>
+      </q-banner>
+
       <!-- Optional Quality Metrics -->
       <q-card flat bordered class="q-pa-md">
         <div class="text-subtitle2 q-mb-md">{{ $t('logs.form.qualityMetrics') }}</div>
@@ -217,6 +239,7 @@ const isEditing = computed(() => !!logId.value);
 const queryCowId = route.query.cow_id as string | undefined;
 
 const activeDiet = ref<Diet | null>(null);
+const dietChecked = ref(false);
 
 const form = reactive<MilkLogInput>({
   cow_id: queryCowId || '',
@@ -251,7 +274,9 @@ async function onCowSelected(cowId: string) {
   }
 
   // Fetch active diet for this cow to show adherence toggle
+  dietChecked.value = false;
   activeDiet.value = await dietsStore.getActiveDietForCow(cowId);
+  dietChecked.value = true;
   if (activeDiet.value) {
     form.diet_history_id = activeDiet.value.id;
     // Default to undefined (user must choose)
