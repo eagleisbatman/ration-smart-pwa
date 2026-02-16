@@ -3,6 +3,7 @@ import { ref, computed } from 'vue';
 import { api } from 'src/lib/api';
 import { db, FarmerProfile } from 'src/lib/offline/db';
 import { useAuthStore } from './auth';
+import { useCowsStore } from './cows';
 import { v4 as uuidv4 } from 'uuid';
 import { i18n } from 'src/boot/i18n';
 import { extractUserFriendlyError } from 'src/lib/error-messages';
@@ -357,6 +358,21 @@ export const useFarmersStore = defineStore('farmers', () => {
     error.value = null;
   }
 
+  /**
+   * Sync total_cattle on all loaded farmers using actual cow records
+   * from the cows store. Call this after both farmers and cows are loaded.
+   */
+  function syncCattleCounts(): void {
+    const cowsStore = useCowsStore();
+    for (let i = 0; i < farmers.value.length; i++) {
+      const farmer = farmers.value[i];
+      const actualCount = cowsStore.getCowsForFarmer(farmer.id).filter((c) => c.is_active).length;
+      if (farmer.total_cattle !== actualCount) {
+        farmers.value[i] = { ...farmer, total_cattle: actualCount };
+      }
+    }
+  }
+
   // Load from IndexedDB cache on init
   async function loadFromCache(): Promise<void> {
     const authStore = useAuthStore();
@@ -402,6 +418,7 @@ export const useFarmersStore = defineStore('farmers', () => {
     getFarmerSummary,
     getFarmerCows,
     selectFarmer,
+    syncCattleCounts,
     clearError,
     reset,
     loadFromCache,
