@@ -1,7 +1,7 @@
 <template>
   <q-page class="flex flex-center">
     <div class="text-center q-pa-xl">
-      <div class="text-h1 text-primary" style="font-size: 120px; line-height: 1">404</div>
+      <div class="text-h1 text-primary error-code">404</div>
 
       <h1 class="text-h5 q-mb-sm">{{ $t('errors.pageNotFound') }}</h1>
 
@@ -25,3 +25,10 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter();
 </script>
+
+<style lang="scss" scoped>
+.error-code {
+  font-size: clamp(72px, 20vw, 120px);
+  line-height: 1;
+}
+</style>

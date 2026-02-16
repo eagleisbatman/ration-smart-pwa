@@ -62,6 +62,13 @@
         @responded="hasPendingFollowUp = false"
       />
 
+      <!-- Diet Impact Analysis -->
+      <DietImpactPanel
+        v-if="['completed', 'following', 'saved'].includes(diet.status) && diet.cow_id"
+        :diet-id="dietId"
+        :cow-id="diet.cow_id"
+      />
+
       <!-- Results (for completed/following/saved diets) -->
       <template v-if="['completed', 'following', 'saved'].includes(diet.status) && diet.result_data">
         <!-- Summary Stats -->
@@ -374,6 +381,7 @@ import SkeletonCard from 'src/components/ui/SkeletonCard.vue';
 import EmptyState from 'src/components/ui/EmptyState.vue';
 import DietReminderDialog from 'src/components/diet/DietReminderDialog.vue';
 import FollowUpCard from 'src/components/diet/FollowUpCard.vue';
+import DietImpactPanel from 'src/components/diet/DietImpactPanel.vue';
 import { useFollowUpsStore } from 'src/stores/followUps';
 import { useCurrency } from 'src/composables/useCurrency';
 import { useExport, DietExportData } from 'src/composables/useExport';

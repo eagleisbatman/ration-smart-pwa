@@ -380,6 +380,24 @@ export const useMilkLogsStore = defineStore('milkLogs', () => {
     );
   }
 
+  async function getLogsByDietId(dietHistoryId: string): Promise<MilkLog[]> {
+    return db.milkLogs
+      .filter((log) => !log._deleted && log.diet_history_id === dietHistoryId)
+      .sortBy('log_date');
+  }
+
+  async function getLogsForCowInRange(cowId: string, startDate: string, endDate?: string): Promise<MilkLog[]> {
+    return db.milkLogs
+      .where({ cow_id: cowId })
+      .filter((log) => {
+        if (log._deleted) return false;
+        if (log.log_date < startDate) return false;
+        if (endDate && log.log_date > endDate) return false;
+        return true;
+      })
+      .sortBy('log_date');
+  }
+
   return {
     // State
     logs,
@@ -402,5 +420,7 @@ export const useMilkLogsStore = defineStore('milkLogs', () => {
     deleteLog,
     getLogsForCow,
     getLogByDate,
+    getLogsByDietId,
+    getLogsForCowInRange,
   };
 });
