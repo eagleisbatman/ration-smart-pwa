@@ -628,16 +628,10 @@ defineExpose({ viewMode, refresh });
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
   }
 
-  &--primary {
-    background: linear-gradient(to top, #fff, rgba($primary, 0.04));
-  }
-
-  &--secondary {
-    background: linear-gradient(to top, #fff, rgba($secondary, 0.04));
-  }
-
+  &--primary,
+  &--secondary,
   &--accent {
-    background: linear-gradient(to top, #fff, rgba($info, 0.04));
+    background: #fff;
   }
 }
 

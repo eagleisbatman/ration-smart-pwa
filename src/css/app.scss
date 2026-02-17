@@ -131,7 +131,7 @@ body {
 .stat-inline {
   text-align: center;
   padding: 12px 8px;
-  background: linear-gradient(to top, #fff, #f8f9fa);
+  background: #fff;
   border-radius: $radius-loose;
   border: 1px solid rgba(0, 0, 0, 0.06);
   transition: box-shadow 0.2s ease;
@@ -832,7 +832,7 @@ body {
 
   // Stat-inline (farmer dashboard quick stats)
   .stat-inline {
-    background: linear-gradient(to top, var(--q-dark-page, #121212), rgba(255, 255, 255, 0.04));
+    background: transparent;
     border-color: rgba(255, 255, 255, 0.1);
   }
 
@@ -856,12 +856,10 @@ body {
     border-color: rgba(255, 255, 255, 0.1) !important;
   }
 
-  .stat-card--primary {
-    background: linear-gradient(to top, #09090B, rgba(255, 255, 255, 0.06)) !important;
-  }
-
-  .stat-card--secondary {
-    background: linear-gradient(to top, #09090B, rgba(255, 255, 255, 0.04)) !important;
+  .stat-card--primary,
+  .stat-card--secondary,
+  .stat-card--accent {
+    background: transparent !important;
   }
 
   .stat-card__value {
