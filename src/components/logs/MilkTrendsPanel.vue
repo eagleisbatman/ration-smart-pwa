@@ -63,8 +63,9 @@
             <span class="text-body2 text-primary text-weight-bold">{{ cow.average.toFixed(1) }}L</span>
             <q-chip
               v-if="cow.changePercent !== null"
-              :color="cow.declining ? 'orange' : cow.changePercent > 0 ? 'green' : 'grey-4'"
-              :text-color="cow.declining ? 'white' : cow.changePercent > 0 ? 'white' : 'grey-8'"
+              :color="cow.declining ? 'warning' : cow.changePercent > 0 ? 'positive' : undefined"
+              :text-color="cow.declining || cow.changePercent > 0 ? 'white' : undefined"
+              :outline="!cow.declining && cow.changePercent <= 0"
               size="sm"
               dense
               class="q-ml-xs"

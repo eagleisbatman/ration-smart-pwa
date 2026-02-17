@@ -146,9 +146,11 @@
         <!-- Price change indicator -->
         <div v-if="priceChangePercent !== null" class="text-center q-mt-sm">
           <q-chip
-            :color="priceChangePercent > 0 ? 'negative' : priceChangePercent < 0 ? 'positive' : 'grey'"
-            text-color="white"
+            :color="priceChangePercent > 0 ? 'negative' : priceChangePercent < 0 ? 'positive' : undefined"
+            :text-color="priceChangePercent !== 0 ? 'white' : undefined"
+            :outline="priceChangePercent === 0"
             size="sm"
+            dense
             :icon="priceChangePercent > 0 ? 'trending_up' : priceChangePercent < 0 ? 'trending_down' : 'trending_flat'"
           >
             {{ $t('feed.priceChange') }}: {{ priceChangePercent > 0 ? '+' : '' }}{{ priceChangePercent.toFixed(1) }}%

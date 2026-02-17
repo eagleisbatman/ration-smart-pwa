@@ -124,7 +124,7 @@
           <q-item-label caption>{{ $t('settings.installDesc') }}</q-item-label>
         </q-item-section>
         <q-item-section side>
-          <q-chip v-if="isInstalled" color="positive" text-color="white" size="sm">
+          <q-chip v-if="isInstalled" color="positive" text-color="white" size="sm" dense>
             {{ $t('settings.installed') }}
           </q-chip>
           <q-icon v-else name="chevron_right" />
