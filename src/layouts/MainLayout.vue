@@ -228,7 +228,7 @@ const navItems = computed(() => {
     { to: '/diet', icon: 'menu_book', label: t('nav.diet') },
     { to: '/feeds', icon: 'grass', label: t('nav.feeds') },
     { to: '/logs', icon: 'water_drop', label: t('nav.milkLogs'), badge: pendingCount.value > 0 ? pendingCount.value : undefined },
-    { to: '/yields', icon: 'analytics', label: t('nav.yieldHistory') },
+    { to: '/yields', icon: 'analytics', label: t('nav.milkSummary') },
     { to: '/reports', icon: 'summarize', label: t('nav.reports') },
   ];
   // Organization analytics only for extension workers / nutritionists / researchers

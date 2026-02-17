@@ -69,6 +69,27 @@
           <q-icon name="chevron_right" />
         </q-item-section>
       </q-item>
+
+      <q-separator />
+
+      <!-- Milk Price -->
+      <q-item v-ripple clickable @click="showMilkPriceDialog = true">
+        <q-item-section avatar>
+          <q-icon name="payments" />
+        </q-item-section>
+        <q-item-section>
+          <q-item-label>{{ $t('settings.milkPrice') }}</q-item-label>
+          <q-item-label caption>
+            <template v-if="settingsStore.milkPricePerLiter">
+              {{ formatCurrency(settingsStore.milkPricePerLiter) }}/{{ $t('units.l') }}
+            </template>
+            <template v-else>{{ $t('settings.milkPriceNotSet') }}</template>
+          </q-item-label>
+        </q-item-section>
+        <q-item-section side>
+          <q-icon name="chevron_right" />
+        </q-item-section>
+      </q-item>
     </q-list>
 
     <!-- App Settings -->
@@ -299,6 +320,32 @@
       </q-card>
     </q-dialog>
 
+    <!-- Milk Price Dialog -->
+    <q-dialog v-model="showMilkPriceDialog">
+      <q-card style="min-width: 300px">
+        <q-card-section>
+          <div class="text-h6">{{ $t('settings.milkPrice') }}</div>
+        </q-card-section>
+        <q-card-section class="q-pt-none">
+          <q-input
+            v-model.number="milkPriceInput"
+            type="number"
+            :label="$t('settings.milkPriceLabel')"
+            :prefix="getCurrencySymbol()"
+            :suffix="'/' + $t('units.l')"
+            outlined
+            autofocus
+            :rules="[(val) => val > 0 || $t('settings.milkPricePositive')]"
+            @keyup.enter="saveMilkPrice"
+          />
+        </q-card-section>
+        <q-card-actions align="right">
+          <q-btn v-close-popup flat :label="$t('common.cancel')" />
+          <q-btn flat color="primary" :label="$t('common.save')" @click="saveMilkPrice" />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+
     <!-- Sync History Drawer -->
     <SyncHistoryDrawer v-model="showSyncHistory" />
 
@@ -389,6 +436,8 @@ import { availableLocales, setLocale, getLocale } from 'src/boot/i18n';
 import { api } from 'src/lib/api';
 import { useI18n } from 'vue-i18n';
 import SyncHistoryDrawer from 'src/components/pwa/SyncHistoryDrawer.vue';
+import { useSettingsStore } from 'src/stores/settings';
+import { useCurrency } from 'src/composables/useCurrency';
 import {
   isPushSupported,
   pushSubscribed,
@@ -419,8 +468,23 @@ const {
   manualSync,
 } = useOfflineSync();
 
+const settingsStore = useSettingsStore();
+const { formatCurrency, getCurrencySymbol } = useCurrency();
+
 const notifications = ref(false);
 const darkMode = ref($q.dark.isActive);
+
+// Milk price
+const showMilkPriceDialog = ref(false);
+const milkPriceInput = ref<number | null>(settingsStore.milkPricePerLiter);
+
+function saveMilkPrice(): void {
+  if (milkPriceInput.value && milkPriceInput.value > 0) {
+    settingsStore.saveMilkPrice(milkPriceInput.value);
+    $q.notify({ type: 'positive', message: t('settings.milkPriceSaved') });
+  }
+  showMilkPriceDialog.value = false;
+}
 const pushSupported = isPushSupported();
 const showSyncHistory = ref(false);
 const profileImage = computed(() => authStore.profileImage);

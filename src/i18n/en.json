@@ -80,7 +80,7 @@
     "diet": "Diet Plans",
     "feeds": "Feeds",
     "milkLogs": "Milk Logs",
-    "yieldHistory": "Yield History",
+    "milkSummary": "Milk Summary",
     "reports": "Reports",
     "analytics": "Analytics",
     "settings": "Settings",
@@ -1078,6 +1078,11 @@
     "deleteAccountWarning": "This action cannot be undone. All your data will be permanently deleted.",
     "syncHistory": "Sync History",
     "syncHistoryDesc": "View past sync activity",
+    "milkPrice": "Milk Price",
+    "milkPriceLabel": "Price per liter",
+    "milkPriceNotSet": "Not set — tap to configure",
+    "milkPriceSaved": "Milk price updated",
+    "milkPricePositive": "Price must be greater than 0",
     "orgFetchError": "Could not load organizations. Please try again later.",
     "languageSaveError": "Language changed locally but could not be saved to server.",
     "orgTypes": {
@@ -1438,6 +1443,31 @@
   },
   "storage": {
     "quotaWarning": "Storage is {percent}% full ({usageMB} MB of {quotaMB} MB). Consider syncing and clearing old data to free space."
+  },
+  "milkSummary": {
+    "filterByFarmer": "Select Farmer",
+    "filterByDate": "Filter by Date",
+    "from": "From",
+    "to": "To",
+    "apply": "Apply",
+    "compareFarmers": "Compare Farmers",
+    "noData": "No Milk Data",
+    "noDataForFarmer": "No milk logs found for this farmer's cows",
+    "selectFarmerHint": "Select a farmer to see their milk summary",
+    "logMilk": "Log Milk",
+    "records": "Records",
+    "avgLPerDay": "Avg L/Day",
+    "avgFat": "Avg Fat %",
+    "fat": "Fat",
+    "snf": "SNF",
+    "revenue": "Revenue",
+    "totalRevenue": "Total",
+    "perDay": "Per Day",
+    "actualsVsProjected": "Actuals vs Diet Plan",
+    "baseline": "Baseline",
+    "actual": "Actual",
+    "adherence": "Adherence",
+    "dailyTrend": "Daily Milk Trend"
   },
   "yields": {
     "compare": {

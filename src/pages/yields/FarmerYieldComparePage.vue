@@ -257,10 +257,10 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, watch } from 'vue';
-import { api } from 'src/lib/api';
+import { useMilkLogsStore } from 'src/stores/milkLogs';
 import { useFarmersStore } from 'src/stores/farmers';
 import { useAuthStore } from 'src/stores/auth';
-import { YieldData } from 'src/lib/offline/db';
+import { MilkLog } from 'src/lib/offline/db';
 import { useChartColors } from 'src/lib/chart-colors';
 import { useI18n } from 'vue-i18n';
 
@@ -280,14 +280,15 @@ interface FarmerYieldStats {
 
 const farmersStore = useFarmersStore();
 const authStore = useAuthStore();
+const milkLogsStore = useMilkLogsStore();
 
 const selectedFarmerIds = ref<string[]>([]);
 const dateFrom = ref<string | null>(null);
 const dateTo = ref<string | null>(null);
 const loading = ref(false);
 
-// Map of farmerId -> YieldData[]
-const farmerYieldData = ref<Map<string, YieldData[]>>(new Map());
+// Map of farmerId -> MilkLog[]
+const farmerYieldData = ref<Map<string, MilkLog[]>>(new Map());
 
 // Color palette for farmers
 const colorPalette = ['primary', 'positive', 'orange', 'purple'] as const;
@@ -315,13 +316,14 @@ const farmerStats = computed<FarmerYieldStats[]>(() => {
     const farmerName =
       farmersStore.activeFarmers.find((f) => f.id === farmerId)?.name || farmerId;
 
-    const yieldRecords = records.filter((r) => r.milk_yield_liters != null);
+    const yieldRecords = records.filter((r) => r.total_liters != null);
     const fatRecords = records.filter((r) => r.fat_percentage != null);
     const snfRecords = records.filter((r) => r.snf_percentage != null);
 
-    const totalMilk = yieldRecords.reduce((sum, r) => sum + (r.milk_yield_liters || 0), 0);
+    const totalMilk = yieldRecords.reduce((sum, r) => sum + (r.total_liters || 0), 0);
+    const uniqueDates = new Set(yieldRecords.map((r) => r.log_date));
     const avgDailyYield =
-      yieldRecords.length > 0 ? totalMilk / yieldRecords.length : 0;
+      uniqueDates.size > 0 ? totalMilk / uniqueDates.size : 0;
     const avgFat =
       fatRecords.length > 0
         ? fatRecords.reduce((sum, r) => sum + (r.fat_percentage || 0), 0) / fatRecords.length
@@ -389,26 +391,27 @@ function truncateName(name: string): string {
   return name.length > 10 ? name.slice(0, 9) + '...' : name;
 }
 
-// Fetch yield data for all selected farmers
+// Fetch milk log data for all selected farmers (aggregated from their cows)
 async function fetchComparisonData(): Promise<void> {
   if (selectedFarmerIds.value.length < 2) return;
 
   loading.value = true;
-  const newData = new Map<string, YieldData[]>();
+  const newData = new Map<string, MilkLog[]>();
 
   try {
+    // Ensure logs are loaded from backend
+    await milkLogsStore.fetchLogs();
+
     const promises = selectedFarmerIds.value.map(async (farmerId) => {
       try {
-        const response = await api.get(`/api/v1/yield-data/farmer/${farmerId}`, {
-          params: {
-            date_from: dateFrom.value || undefined,
-            date_to: dateTo.value || undefined,
-          },
+        const cows = await farmersStore.getFarmerCows(farmerId) as Array<{ id: string }>;
+        const cowIds = cows.map((c) => c.id);
+        const logs = await milkLogsStore.getLogsForFarmer(cowIds, {
+          startDate: dateFrom.value || undefined,
+          endDate: dateTo.value || undefined,
         });
-        const records: YieldData[] = response.data.yield_data || [];
-        newData.set(farmerId, records);
+        newData.set(farmerId, logs);
       } catch {
-        // If a single farmer fails, set empty array
         newData.set(farmerId, []);
       }
     });
