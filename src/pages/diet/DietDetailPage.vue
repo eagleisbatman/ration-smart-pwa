@@ -83,9 +83,9 @@
         @responded="hasPendingFollowUp = false"
       />
 
-      <!-- Diet Impact Analysis -->
+      <!-- Diet Impact Analysis (only when actively following this diet) -->
       <DietImpactPanel
-        v-if="['completed', 'following', 'saved'].includes(diet.status) && diet.cow_id"
+        v-if="diet.is_active && diet.cow_id"
         :diet-id="dietId"
         :cow-id="diet.cow_id"
       />

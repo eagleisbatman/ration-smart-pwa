@@ -217,7 +217,7 @@
     <!-- Quick Actions -->
     <div class="section-label">{{ $t('dashboard.quickActions') }}</div>
     <div class="action-row q-mb-md">
-      <button class="action-row__btn" @click="router.push({ name: 'log-new' })">
+      <button v-if="cowsOnDietCount > 0" class="action-row__btn" @click="router.push({ name: 'log-new' })">
         <q-icon name="water_drop" />
         {{ $t('logs.logMilk') }}
       </button>
@@ -231,27 +231,28 @@
       </button>
     </div>
 
-    <!-- Today's Logs -->
-    <div class="section-label">{{ $t('dashboard.todaysLogs') }}</div>
-    <template v-if="loadingLogs">
-      <SkeletonList :count="3" />
-    </template>
-    <template v-else-if="todayLogs.length === 0">
-      <div class="text-center q-py-lg q-mb-md">
-        <q-icon name="water_drop" size="36px" color="grey-4" />
-        <div class="text-body2 text-grey-7 q-mt-xs">{{ $t('dashboard.noLogsToday') }}</div>
-        <q-btn
-          :label="$t('dashboard.logNow')"
-          color="primary"
-          flat
-          dense
-          no-caps
-          class="q-mt-sm"
-          icon="water_drop"
-          @click="router.push({ name: 'log-new' })"
-        />
-      </div>
-    </template>
+    <!-- Today's Logs (only show when at least one cow is on a diet) -->
+    <template v-if="cowsOnDietCount > 0 || todayLogs.length > 0">
+      <div class="section-label">{{ $t('dashboard.todaysLogs') }}</div>
+      <template v-if="loadingLogs">
+        <SkeletonList :count="3" />
+      </template>
+      <template v-else-if="todayLogs.length === 0">
+        <div class="text-center q-py-lg q-mb-md">
+          <q-icon name="water_drop" size="36px" color="grey-4" />
+          <div class="text-body2 text-grey-7 q-mt-xs">{{ $t('dashboard.noLogsToday') }}</div>
+          <q-btn
+            :label="$t('dashboard.logNow')"
+            color="primary"
+            flat
+            dense
+            no-caps
+            class="q-mt-sm"
+            icon="water_drop"
+            @click="router.push({ name: 'log-new' })"
+          />
+        </div>
+      </template>
     <template v-else>
       <q-list bordered separator class="rounded-borders q-mb-lg">
         <q-item v-for="log in todayLogs" :key="log.id" v-ripple clickable>
@@ -277,6 +278,7 @@
           </q-item-section>
         </q-item>
       </q-list>
+    </template>
     </template>
 
     <!-- Recent Diet Plans -->
