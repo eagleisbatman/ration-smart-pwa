@@ -158,13 +158,13 @@
 
     <!-- Quick Stats -->
     <div class="row q-col-gutter-sm q-mb-md">
-      <div class="col-6">
+      <div class="col-4">
         <div class="stat-inline">
           <div class="text-h5 text-primary">{{ cowCount }}</div>
           <div class="text-caption text-grey-7">{{ $t('dashboard.activeCows') }}</div>
         </div>
       </div>
-      <div class="col-6">
+      <div class="col-4">
         <div class="stat-inline">
           <div class="text-h5 text-secondary">{{ todayMilk.toFixed(1) }}{{ $t('units.l') }}</div>
           <div class="text-caption text-grey-7">{{ $t('dashboard.todaysMilk') }}</div>
@@ -179,6 +179,12 @@
               :class="`text-${milkTrend.color}`"
             >{{ milkTrend.percentText }}</span>
           </div>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="stat-inline">
+          <div class="text-h5 text-accent">{{ cowsOnDietCount }}</div>
+          <div class="text-caption text-grey-7">{{ $t('dashboard.cowsOnDiet') }}</div>
         </div>
       </div>
     </div>
@@ -255,7 +261,12 @@
             </q-avatar>
           </q-item-section>
           <q-item-section>
-            <q-item-label>{{ log.cow_name || $t('logs.labels.unknownCow') }}</q-item-label>
+            <q-item-label>
+              {{ log.cow_name || $t('logs.labels.unknownCow') }}
+              <q-badge v-if="getDietNameForLog(log)" color="info" class="q-ml-xs" dense>
+                {{ getDietNameForLog(log) }}
+              </q-badge>
+            </q-item-label>
             <q-item-label caption>
               <span v-if="log.morning_liters">{{ $t('logs.labels.morningLabel') }}: {{ log.morning_liters }}{{ $t('units.l') }}</span>
               <span v-if="log.evening_liters" class="q-ml-sm">{{ $t('logs.labels.eveningLabel') }}: {{ log.evening_liters }}{{ $t('units.l') }}</span>
@@ -501,6 +512,21 @@ const recentDiets = computed(() => {
   }
   return all;
 });
+
+const cowsOnDietCount = computed(() => {
+  const allActive = dietsStore.activeDiets;
+  if (selfCowIds.value !== null) {
+    return [...selfCowIds.value].filter((id) => allActive[id]).length;
+  }
+  return Object.keys(allActive).length;
+});
+
+/** Get diet name for a log entry (via diet_history_id lookup from diets store) */
+function getDietNameForLog(log: { diet_history_id?: string }): string | null {
+  if (!log.diet_history_id) return null;
+  const diet = dietsStore.diets.find((d) => d.id === log.diet_history_id);
+  return diet?.name || null;
+}
 
 const milkTrend = computed(() => {
   const today = todayMilk.value;

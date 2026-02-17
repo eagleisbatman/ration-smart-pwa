@@ -128,6 +128,17 @@
                 >
                   {{ $t('cow.pregnant') }}<template v-if="cow.pregnancy_month"> ({{ cow.pregnancy_month }} mo)</template>
                 </q-chip>
+                <q-chip
+                  v-if="dietsStore.activeDiets[cow.id]"
+                  dense
+                  size="sm"
+                  color="info"
+                  text-color="white"
+                  icon="menu_book"
+                  class="q-ml-xs"
+                >
+                  {{ $t('diet.onDiet') }}
+                </q-chip>
               </div>
             </q-item-section>
 
@@ -203,6 +214,7 @@ import { useRouter } from 'vue-router';
 import { useQuasar } from 'quasar';
 import { useI18n } from 'vue-i18n';
 import { useCowsStore } from 'src/stores/cows';
+import { useDietsStore } from 'src/stores/diets';
 import { useHapticFeedback } from 'src/composables/useHapticFeedback';
 import PullToRefresh from 'src/components/ui/PullToRefresh.vue';
 import SkeletonList from 'src/components/ui/SkeletonList.vue';
@@ -213,6 +225,7 @@ const router = useRouter();
 const $q = useQuasar();
 const { t } = useI18n();
 const cowsStore = useCowsStore();
+const dietsStore = useDietsStore();
 const { success, error: hapticError, warning } = useHapticFeedback();
 
 const searchQuery = ref('');
@@ -330,6 +343,7 @@ async function onRefresh(done: () => void) {
 
 onMounted(() => {
   cowsStore.fetchCows();
+  dietsStore.fetchDiets();
 });
 </script>
 
