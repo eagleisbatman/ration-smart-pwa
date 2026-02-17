@@ -338,11 +338,83 @@ function mapCowToBackend(input: Record<string, unknown>): Record<string, unknown
 }
 
 /**
+ * Normalize a raw backend diet result into the PWA result_data shape.
+ * Handles both already-normalized data (from optimize transform) and
+ * raw backend responses (from full_result stored in bot-diet-history).
+ */
+function normalizeDietResultData(raw: Record<string, unknown> | undefined): Record<string, unknown> | undefined {
+  if (!raw) return undefined;
+
+  // If already normalized (has feeds array at top level), return as-is
+  if (Array.isArray(raw.feeds)) return raw;
+
+  // Raw backend response: extract and normalize
+  const leastCostDiet = raw.least_cost_diet as Array<Record<string, unknown>> | undefined;
+  const nutrientBalanceRaw = raw.nutrient_balance as Array<Record<string, unknown>> | undefined;
+  const additionalInfo = raw.additional_information as Record<string, unknown> | undefined;
+  const solutionSummary = raw.solution_summary as Record<string, unknown> | undefined;
+
+  // If it doesn't look like a raw backend response either, return as-is
+  if (!leastCostDiet && !nutrientBalanceRaw && !solutionSummary) return raw;
+
+  const feeds = (leastCostDiet || []).map((f) => ({
+    feed_name: f.feed_name as string || '',
+    amount_kg: f.quantity_kg_per_day as number || 0,
+    cost: f.daily_cost as number || 0,
+    price_per_kg: f.price_per_kg as number || 0,
+  }));
+
+  const nutrientBalance: Record<string, number> = {
+    cp_supplied: 0, cp_requirement: 0,
+    tdn_supplied: 0, tdn_requirement: 0,
+    dm_supplied: 0, dm_requirement: 0,
+  };
+  for (const row of nutrientBalanceRaw || []) {
+    const param = (row.parameter as string || '').toLowerCase();
+    const req = row.requirement as number || 0;
+    const sup = row.supply as number || 0;
+    if (param.includes('crude protein') || param === 'cp') {
+      nutrientBalance.cp_requirement = req;
+      nutrientBalance.cp_supplied = sup;
+    } else if (param.includes('tdn') || param.includes('total digestible')) {
+      nutrientBalance.tdn_requirement = req;
+      nutrientBalance.tdn_supplied = sup;
+    } else if (param.includes('dry matter') || param === 'dm' || param === 'dmi') {
+      nutrientBalance.dm_requirement = req;
+      nutrientBalance.dm_supplied = sup;
+    }
+  }
+
+  return {
+    feeds,
+    nutrient_balance: nutrientBalance,
+    recommendations: (additionalInfo?.recommendations as string[]) || [],
+    warnings: (additionalInfo?.warnings as string[]) || [],
+    diet_status: raw.diet_status || {},
+    environmental_impact: raw.environmental_impact || {},
+  };
+}
+
+/**
  * Map a backend BotDietHistoryResponse to the PWA Diet interface.
  */
 function mapDietFromBackend(diet: Record<string, unknown>): Record<string, unknown> {
   if (!diet) return diet;
   const dietSummary = diet.diet_summary as Record<string, unknown> | undefined;
+  const fullResult = diet.full_result as Record<string, unknown> | undefined;
+  const normalizedResult = normalizeDietResultData(fullResult);
+
+  // Extract dm_intake from full_result if available
+  let dmIntake: number | undefined;
+  if (fullResult?.solution_summary) {
+    const ss = fullResult.solution_summary as Record<string, unknown>;
+    const dmStr = ss.dry_matter_intake as string | undefined;
+    if (dmStr) {
+      const parsed = parseFloat(String(dmStr));
+      if (!isNaN(parsed)) dmIntake = parsed;
+    }
+  }
+
   return {
     id: diet.id,
     user_id: diet.telegram_user_id,
@@ -352,8 +424,10 @@ function mapDietFromBackend(diet: Record<string, unknown>): Record<string, unkno
     status: diet.status,
     is_active: diet.is_active,
     input_data: dietSummary || {},
-    result_data: diet.full_result,
+    result_data: normalizedResult,
+    _raw_backend_result: fullResult,
     total_cost: diet.total_cost_per_day,
+    dm_intake: dmIntake,
     created_at: diet.created_at,
     updated_at: diet.created_at, // backend doesn't have updated_at
   };
@@ -370,7 +444,8 @@ function mapDietToBackend(input: Record<string, unknown>): Record<string, unknow
     status: input.status,
     is_active: input.is_active,
     diet_summary: input.input_data ?? input.diet_summary,
-    full_result: input.result_data ?? input.full_result,
+    // Prefer the raw backend result for round-tripping; fall back to result_data or full_result
+    full_result: input._raw_backend_result ?? input.result_data ?? input.full_result,
     total_cost_per_day: input.total_cost ?? input.total_cost_per_day,
     currency: input.currency,
     simulation_id: input.simulation_id,
@@ -833,15 +908,69 @@ const ENDPOINT_MAP: Record<string, EndpointMapping> = {
     transform: {
       // Request is already built by the diets store — pass through
       response: (data: unknown) => {
-        // Backend returns a complex diet result; map to PWA Diet shape
         const resp = data as Record<string, unknown>;
-        const leastCostDiet = resp.least_cost_diet as Record<string, unknown> | undefined;
+        const reportInfo = resp.report_info as Record<string, unknown> | undefined;
+        const solutionSummary = resp.solution_summary as Record<string, unknown> | undefined;
+        const dietStatus = resp.diet_status as Record<string, unknown> | undefined;
+        const leastCostDiet = resp.least_cost_diet as Array<Record<string, unknown>> | undefined;
+        const nutrientBalanceRaw = resp.nutrient_balance as Array<Record<string, unknown>> | undefined;
+        const additionalInfo = resp.additional_information as Record<string, unknown> | undefined;
+
+        // Parse DM intake from string like "12.5 kg/day"
+        let dmIntake = 0;
+        const dmStr = solutionSummary?.dry_matter_intake as string | undefined;
+        if (dmStr) {
+          const parsed = parseFloat(String(dmStr));
+          if (!isNaN(parsed)) dmIntake = parsed;
+        }
+
+        // Map feeds: backend → PWA shape
+        const feeds = (leastCostDiet || []).map((f) => ({
+          feed_name: f.feed_name as string || '',
+          amount_kg: f.quantity_kg_per_day as number || 0,
+          cost: f.daily_cost as number || 0,
+          price_per_kg: f.price_per_kg as number || 0,
+        }));
+
+        // Map nutrient balance: array of { parameter, requirement, supply, balance } → object
+        const nutrientBalance: Record<string, number> = {
+          cp_supplied: 0, cp_requirement: 0,
+          tdn_supplied: 0, tdn_requirement: 0,
+          dm_supplied: 0, dm_requirement: 0,
+        };
+        for (const row of nutrientBalanceRaw || []) {
+          const param = (row.parameter as string || '').toLowerCase();
+          const req = row.requirement as number || 0;
+          const sup = row.supply as number || 0;
+          if (param.includes('crude protein') || param === 'cp') {
+            nutrientBalance.cp_requirement = req;
+            nutrientBalance.cp_supplied = sup;
+          } else if (param.includes('tdn') || param.includes('total digestible')) {
+            nutrientBalance.tdn_requirement = req;
+            nutrientBalance.tdn_supplied = sup;
+          } else if (param.includes('dry matter') || param === 'dm' || param === 'dmi') {
+            nutrientBalance.dm_requirement = req;
+            nutrientBalance.dm_supplied = sup;
+          }
+        }
+
+        const isValid = dietStatus?.is_valid as boolean ?? (feeds.length > 0);
+
         return {
-          id: resp.report_id ?? resp.simulation_id,
-          status: resp.diet_status === 'Feasible' ? 'completed' : 'failed',
-          total_cost: resp.total_diet_cost,
-          dm_intake: leastCostDiet?.total_dm_intake,
-          result_data: resp,
+          id: reportInfo?.report_id ?? reportInfo?.simulation_id ?? resp.simulation_id,
+          status: isValid ? 'completed' : 'failed',
+          total_cost: resp.total_diet_cost as number || solutionSummary?.daily_cost as number || 0,
+          dm_intake: dmIntake,
+          result_data: {
+            feeds,
+            nutrient_balance: nutrientBalance,
+            recommendations: (additionalInfo?.recommendations as string[]) || [],
+            warnings: (additionalInfo?.warnings as string[]) || [],
+            diet_status: dietStatus || {},
+            environmental_impact: resp.environmental_impact || {},
+          },
+          // Raw backend response for round-tripping to bot-diet-history
+          _raw_backend_result: resp,
           created_at: new Date().toISOString(),
         };
       },

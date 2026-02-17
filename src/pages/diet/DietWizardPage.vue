@@ -52,7 +52,7 @@
       <q-step :name="2" :title="$t('diet.wizard.stepDetails')" icon="info" :done="step > 2">
         <div class="text-subtitle1 q-mb-md">{{ $t('diet.wizard.animalInformation') }}</div>
 
-        <div class="row q-col-gutter-sm">
+        <div class="row q-col-gutter-md">
           <div class="col-12 col-sm-6">
             <q-input
               v-model.number="form.weight_kg"
@@ -73,7 +73,7 @@
           </div>
         </div>
 
-        <div class="row q-col-gutter-sm q-mt-sm">
+        <div class="row q-col-gutter-md q-mt-sm">
           <div class="col-12 col-sm-6">
             <q-input
               v-model.number="form.milk_fat_percentage"
@@ -106,7 +106,7 @@
           class="q-mt-sm"
         />
 
-        <div class="row q-col-gutter-sm q-mt-sm">
+        <div class="row q-col-gutter-md q-mt-sm">
           <div class="col-12 col-sm-6">
             <div class="text-caption q-mb-xs">{{ $t('diet.wizard.bodyConditionScore') }}</div>
             <q-slider

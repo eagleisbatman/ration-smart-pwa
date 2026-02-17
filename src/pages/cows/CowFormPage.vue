@@ -62,49 +62,59 @@
         :rules="[(val: string) => !!val || $t('cow.validation.breedRequired')]"
       />
 
-      <q-input
-        v-model.number="form.weight_kg"
-        :label="$t('cow.weight')"
-        type="number"
-        outlined
-        :rules="[
-          (val: number) => val > 0 || $t('cow.validation.weightPositive'),
-          (val: number) => val <= 1500 || $t('cow.validation.weightTooHigh'),
-        ]"
-      />
-
-      <q-input
-        v-model.number="form.age_months"
-        :label="$t('cow.ageMonths')"
-        type="number"
-        outlined
-        :hint="$t('common.optional')"
-      />
+      <div class="row q-col-gutter-md">
+        <div class="col-12 col-sm-6">
+          <q-input
+            v-model.number="form.weight_kg"
+            :label="$t('cow.weight')"
+            type="number"
+            outlined
+            :rules="[
+              (val: number) => val > 0 || $t('cow.validation.weightPositive'),
+              (val: number) => val <= 1500 || $t('cow.validation.weightTooHigh'),
+            ]"
+          />
+        </div>
+        <div class="col-12 col-sm-6">
+          <q-input
+            v-model.number="form.age_months"
+            :label="$t('cow.ageMonths')"
+            type="number"
+            outlined
+            :hint="$t('common.optional')"
+          />
+        </div>
+      </div>
 
       <!-- Milk Production Section -->
       <q-separator class="q-my-md" />
       <div class="text-subtitle1 text-weight-medium q-mb-sm">{{ $t('cow.milkProductionSection') }}</div>
 
-      <q-input
-        v-model.number="form.milk_yield_liters"
-        :label="$t('cow.averageDailyYield')"
-        type="number"
-        step="0.1"
-        outlined
-        :rules="[(val: number) => val >= 0 || $t('cow.validation.yieldNonNegative')]"
-      />
-
-      <q-input
-        v-model.number="form.milk_fat_percentage"
-        :label="$t('cow.milkFatRequired')"
-        type="number"
-        step="0.1"
-        outlined
-        :rules="[
-          (val: number) => val >= 0 || $t('cow.validation.fatNonNegative'),
-          (val: number) => val <= 10 || $t('cow.validation.fatTooHigh'),
-        ]"
-      />
+      <div class="row q-col-gutter-md">
+        <div class="col-12 col-sm-6">
+          <q-input
+            v-model.number="form.milk_yield_liters"
+            :label="$t('cow.averageDailyYield')"
+            type="number"
+            step="0.1"
+            outlined
+            :rules="[(val: number) => val >= 0 || $t('cow.validation.yieldNonNegative')]"
+          />
+        </div>
+        <div class="col-12 col-sm-6">
+          <q-input
+            v-model.number="form.milk_fat_percentage"
+            :label="$t('cow.milkFatRequired')"
+            type="number"
+            step="0.1"
+            outlined
+            :rules="[
+              (val: number) => val >= 0 || $t('cow.validation.fatNonNegative'),
+              (val: number) => val <= 10 || $t('cow.validation.fatTooHigh'),
+            ]"
+          />
+        </div>
+      </div>
 
       <q-select
         v-model="form.lactation_stage"

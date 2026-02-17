@@ -9,7 +9,7 @@
     <template v-else-if="diet">
       <!-- Status Banner -->
       <q-banner
-        v-if="diet.status !== 'completed'"
+        v-if="!['completed', 'saved', 'following'].includes(diet.status)"
         :class="`bg-${getStatusColor(diet.status)} text-white q-mb-md`"
         rounded
       >
@@ -105,7 +105,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="feed in resultData.feeds" :key="feed.feed_id">
+              <tr v-for="(feed, idx) in resultData.feeds" :key="idx">
                 <td>{{ feed.feed_name }}</td>
                 <td class="text-right">{{ feed.amount_kg?.toFixed(2) }}</td>
                 <td class="text-right">{{ formatCurrency(feed.cost ?? 0) }}</td>
@@ -192,7 +192,24 @@
         </template>
       </template>
 
-      <!-- Actions -->
+      <!-- Save Diet (only for locally-created, not yet saved diets) -->
+      <div v-if="diet.status === 'completed' && !diet._synced" class="q-mt-md">
+        <q-btn
+          :label="$t('diet.saveDiet')"
+          icon="save"
+          color="primary"
+          class="full-width"
+          unelevated
+          size="lg"
+          :loading="dietsStore.loading"
+          @click="handleSaveDiet"
+        />
+        <div class="text-caption text-grey-7 text-center q-mt-xs">
+          {{ $t('diet.saveHint') }}
+        </div>
+      </div>
+
+      <!-- Actions row -->
       <div class="row q-col-gutter-sm q-mt-md">
         <div class="col-12 col-sm-6">
           <q-btn
@@ -226,8 +243,8 @@
         </div>
       </div>
 
-      <!-- Follow / Stop Following Button -->
-      <div v-if="diet.status === 'completed' || diet.status === 'following' || diet.status === 'saved'" class="q-mt-md">
+      <!-- Follow / Stop Following (only for saved/backend-persisted diets) -->
+      <div v-if="diet._synced && ['saved', 'following'].includes(diet.status)" class="q-mt-md">
         <q-btn
           v-if="!diet.is_active"
           :label="$t('diet.startFollowing')"
@@ -393,12 +410,10 @@ const { formatDietText, shareContent, shareViaWhatsApp, copyToClipboard, printDi
 
 // Type for diet result data
 interface DietResultFeed {
-  feed_id: string;
   feed_name: string;
   amount_kg: number;
   cost: number;
-  dm_contribution: number;
-  cp_contribution: number;
+  price_per_kg?: number;
 }
 
 interface NutrientBalance {
@@ -565,6 +580,16 @@ async function handleCopy() {
   const success = await copyToClipboard(text);
   if (success) {
     $q.notify({ type: 'positive', message: t('export.copied') });
+  }
+}
+
+async function handleSaveDiet() {
+  const success = await dietsStore.saveDiet(dietId.value);
+  if (success) {
+    diet.value = await dietsStore.getDiet(dietId.value);
+    $q.notify({ type: 'positive', message: t('diet.dietSaved') });
+  } else if (dietsStore.error) {
+    $q.notify({ type: 'negative', message: dietsStore.error });
   }
 }
 

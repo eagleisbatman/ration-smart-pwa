@@ -128,19 +128,19 @@ const routes: RouteRecordRaw[] = [
         path: 'feeds/new',
         name: 'feed-new',
         component: () => import('pages/feeds/FeedFormPage.vue'),
-        meta: { titleKey: 'feeds.addCustomFeed', showBack: true, hideBottomNav: true, hideFab: true },
+        meta: { titleKey: 'feed.addCustomFeed', showBack: true, hideBottomNav: true, hideFab: true },
       },
       {
         path: 'feeds/:id',
         name: 'feed-detail',
         component: () => import('pages/feeds/FeedDetailPage.vue'),
-        meta: { titleKey: 'feeds.feedDetails', showBack: true, hideFab: true },
+        meta: { titleKey: 'feed.feedDetails', showBack: true, hideFab: true },
       },
       {
         path: 'feeds/:id/edit',
         name: 'feed-edit',
         component: () => import('pages/feeds/FeedFormPage.vue'),
-        meta: { titleKey: 'feeds.editFeed', showBack: true, hideBottomNav: true, hideFab: true },
+        meta: { titleKey: 'feed.editFeed', showBack: true, hideBottomNav: true, hideFab: true },
       },
 
       // Milk Logs
