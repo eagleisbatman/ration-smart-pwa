@@ -383,10 +383,21 @@ const loading = computed(() => farmersStore.loading);
 const farmers = computed(() => farmersStore.managedFarmers);
 const farmerCount = computed(() => farmersStore.activeFarmerCount);
 
-// Total cattle across all managed farmers
-const totalCowCount = computed(() =>
-  farmers.value.reduce((sum, f) => sum + (f.total_cattle || 0), 0)
-);
+// Total cattle across all managed farmers.
+// Computed directly from cowsStore.activeCows rather than summing per-farmer
+// total_cattle, because syncCattleCounts depends on farmer_profile_id matching
+// which can be unreliable if the backend doesn't include it in list responses.
+const totalCowCount = computed(() => {
+  const selfFarmerId = authStore.selfFarmerProfileId;
+  if (!selfFarmerId) {
+    // No self-profile: all cows belong to managed farmers
+    return cowsStore.activeCows.length;
+  }
+  // Exclude self-profile's cows from the managed total
+  return cowsStore.activeCows.filter(
+    (c) => c.farmer_profile_id !== selfFarmerId
+  ).length;
+});
 
 // --- Recent Activity Feed ---
 interface Activity {
@@ -407,9 +418,10 @@ async function loadRecentActivities() {
   activitiesLoading.value = true;
 
   try {
-    // Build a farmer name lookup from the loaded farmers list
+    // Build a farmer name lookup from ALL active farmers (including self-profile)
+    // so cow → farmer resolution works for all cows
     const farmerNameMap = new Map<string, string>();
-    for (const farmer of farmers.value) {
+    for (const farmer of farmersStore.activeFarmers) {
       farmerNameMap.set(farmer.id, farmer.name);
     }
 
@@ -440,7 +452,6 @@ async function loadRecentActivities() {
 
     for (const log of recentMilkLogs.slice(0, 15)) {
       const cowInfo = cowMap.get(log.cow_id);
-      const farmerName = cowInfo?.farmerName || t('roles.farmer');
       const cowName = log.cow_name || cowInfo?.name || t('cow.cow');
 
       activities.push({
@@ -449,7 +460,7 @@ async function loadRecentActivities() {
         icon: 'water_drop',
         color: 'blue-6',
         description: t('dashboard.activityMilkLog', {
-          farmer: farmerName,
+          farmer: t('farmer.you'),
           liters: log.total_liters.toFixed(1),
           cow: cowName,
         }),
@@ -467,7 +478,6 @@ async function loadRecentActivities() {
 
     for (const diet of recentDiets.slice(0, 15)) {
       const cowInfo = diet.cow_id ? cowMap.get(diet.cow_id) : null;
-      const farmerName = cowInfo?.farmerName || t('roles.farmer');
       const cowName = diet.cow_name || cowInfo?.name || t('cow.cow');
 
       activities.push({
@@ -476,7 +486,7 @@ async function loadRecentActivities() {
         icon: 'menu_book',
         color: 'primary',
         description: t('dashboard.activityDietCreated', {
-          farmer: farmerName,
+          farmer: t('farmer.you'),
           cow: cowName,
         }),
         relativeTime: formatRelative(diet.created_at),
@@ -490,17 +500,13 @@ async function loadRecentActivities() {
     );
 
     for (const cow of cowsByCreated.slice(0, 15)) {
-      const farmerName = cow.farmer_profile_id
-        ? farmerNameMap.get(cow.farmer_profile_id) || t('roles.farmer')
-        : t('roles.farmer');
-
       activities.push({
         id: `cow_${cow.id}`,
         type: 'cow',
         icon: COW_ICON,
         color: 'orange-6',
         description: t('dashboard.activityCowRegistered', {
-          farmer: farmerName,
+          farmer: t('farmer.you'),
           cow: cow.name,
         }),
         relativeTime: formatRelative(cow.created_at),
