@@ -114,9 +114,13 @@ export const useDietsStore = defineStore('diets', () => {
           _synced: true,
         }));
 
-        // Replace local database (clear stale data, then store fresh)
+        // Preserve unsynced local diets, then replace with server data
+        const unsyncedDiets = await db.diets
+          .where({ user_id: authStore.userId! })
+          .filter((d) => !d._synced)
+          .toArray();
         await db.diets.where({ user_id: authStore.userId! }).delete();
-        await db.diets.bulkPut(serverDiets);
+        await db.diets.bulkPut([...serverDiets, ...unsyncedDiets]);
       }
 
       // Load from local database (userId may have been cleared by 401 interceptor)
@@ -128,7 +132,8 @@ export const useDietsStore = defineStore('diets', () => {
         .sortBy('created_at');
       diets.value = sortWithActiveFirst(allDiets);
 
-      // Populate activeDiets cache
+      // Rebuild activeDiets cache (clear stale entries first)
+      activeDiets.value = {};
       for (const d of allDiets) {
         if (d.is_active && d.cow_id) {
           activeDiets.value[d.cow_id] = d;

@@ -219,7 +219,7 @@
 
       <!-- Milk Production Trend -->
       <div class="text-subtitle1 q-mt-md q-mb-sm">{{ $t('cow.milkTrend') }}</div>
-      <MilkProductionChart :cow-id="cow.id" :height="200" />
+      <MilkProductionChart :cow-id="cow.id" :height="200" :diet-periods="cowDietPeriods" />
 
       <!-- Quick Actions -->
       <div class="row q-col-gutter-sm q-mb-md">
@@ -334,7 +334,7 @@ import { useCurrency } from 'src/composables/useCurrency';
 import { useDietImpact } from 'src/composables/useDietImpact';
 import SkeletonCard from 'src/components/ui/SkeletonCard.vue';
 import EmptyState from 'src/components/ui/EmptyState.vue';
-import MilkProductionChart from 'src/components/dashboard/MilkProductionChart.vue';
+import MilkProductionChart, { type DietPeriod } from 'src/components/dashboard/MilkProductionChart.vue';
 import HealthEventTimeline from 'src/components/cow/HealthEventTimeline.vue';
 import { COW_ICON } from 'src/boot/icons';
 
@@ -348,6 +348,7 @@ const cowId = computed(() => route.params.id as string);
 const cow = ref<Cow | null>(null);
 const recentLogs = ref<typeof milkLogsStore.logs>([]);
 const activeDiet = ref<Diet | null>(null);
+const cowDietPeriods = ref<DietPeriod[]>([]);
 const dietImpact = useDietImpact(
   computed(() => activeDiet.value?.id),
 );
@@ -442,6 +443,7 @@ onMounted(async () => {
   if (cow.value) {
     recentLogs.value = await milkLogsStore.getLogsForCow(cowId.value);
     activeDiet.value = await dietsStore.getActiveDietForCow(cowId.value);
+    cowDietPeriods.value = await dietsStore.getDietPeriodsForCow(cowId.value);
   }
 
   loading.value = false;
