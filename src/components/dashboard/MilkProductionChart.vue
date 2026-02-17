@@ -90,6 +90,7 @@ import { useMilkLogsStore } from 'src/stores/milkLogs';
 const props = defineProps<{
   height?: number;
   cowId?: string; // Optional: filter by specific cow
+  cowIds?: string[]; // Optional: filter by a set of cow IDs (used by Personal tab)
 }>();
 
 useI18n(); // Used for template translations via $t
@@ -146,7 +147,9 @@ function processLogs() {
   const logs = milkLogsStore.logs.filter((log) => {
     const logDate = parseISO(log.log_date);
     const inRange = logDate >= startDate && logDate <= endDate;
-    const matchesCow = !props.cowId || log.cow_id === props.cowId;
+    const matchesCow = props.cowIds
+      ? props.cowIds.includes(log.cow_id)
+      : !props.cowId || log.cow_id === props.cowId;
     return inRange && matchesCow && !log._deleted;
   });
 
@@ -207,8 +210,8 @@ const trendIcon = computed(() => {
   return 'trending_flat';
 });
 
-// Watch for period changes
-watch(period, () => {
+// Watch for period or filter changes
+watch([period, () => props.cowIds, () => props.cowId], () => {
   processLogs();
 });
 
