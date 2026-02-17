@@ -60,7 +60,7 @@ export const useFeedsStore = defineStore('feeds', () => {
         await fetchAndCacheCountries();
 
         const response = await api.get('/api/v1/feeds/master', {
-          params: { country_code: country, limit: 500 },
+          params: { country_code: country, limit: 2000 },
         });
 
         const rawFeeds = Array.isArray(response.data) ? response.data : [];
