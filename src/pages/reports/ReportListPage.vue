@@ -30,14 +30,17 @@
     <div class="row q-col-gutter-sm q-mb-lg">
       <div v-for="type in reportTypes" :key="type.value" class="col-6">
         <q-card
+          v-ripple
           flat
           bordered
-          class="report-type-card"
+          class="report-type-card cursor-pointer"
           clickable
           @click="generateReport(type.value)"
         >
           <q-card-section class="text-center">
-            <q-icon :name="type.icon" size="32px" :color="type.color" />
+            <q-avatar size="40px" color="primary" text-color="white">
+              <q-icon :name="type.icon" size="20px" />
+            </q-avatar>
             <div class="text-body2 q-mt-sm">{{ type.label }}</div>
           </q-card-section>
         </q-card>
@@ -87,7 +90,7 @@
     <template v-if="loading">
       <SkeletonList :count="3" />
     </template>
-    <template v-else-if="reports.length === 0 && reportsStore.queuedReports.length === 0">
+    <template v-else-if="reports.length === 0">
       <q-card flat bordered class="text-center q-pa-lg">
         <q-icon name="assessment" size="48px" color="grey-4" />
         <div class="text-body2 text-grey-7 q-mt-sm">{{ $t('reports.noReportsYet') }}</div>
@@ -131,6 +134,15 @@
         </q-card-section>
 
         <q-card-section>
+          <!-- Report Name -->
+          <q-input
+            v-model="reportName"
+            :label="$t('reports.reportName')"
+            outlined
+            :placeholder="selectedReportType?.label"
+            class="q-mb-sm"
+          />
+
           <q-select
             v-if="selectedReportType?.needsCow"
             v-model="reportParams.cow_id"
@@ -218,11 +230,10 @@ import { useRouter } from 'vue-router';
 import { useQuasar } from 'quasar';
 import { useI18n } from 'vue-i18n';
 import { format, subDays } from 'date-fns';
-import { api } from 'src/lib/api';
 import { useCowsStore } from 'src/stores/cows';
 import { useReportsStore } from 'src/stores/reports';
 import { useDateFormat } from 'src/composables/useDateFormat';
-import { db, Report, ReportTemplate } from 'src/lib/offline/db';
+import { Report, ReportTemplate } from 'src/lib/offline/db';
 import { isOnline } from 'src/boot/pwa';
 import SkeletonList from 'src/components/ui/SkeletonList.vue';
 import ReportTemplateDialog from 'src/components/reports/ReportTemplateDialog.vue';
@@ -243,7 +254,8 @@ const loading = ref(true);
 const showGenerateDialog = ref(false);
 const generating = ref(false);
 const processingQueue = ref(false);
-const selectedReportType = ref<{ value: string; label: string; icon: string; color: string; needsCow: boolean } | null>(null);
+const reportName = ref('');
+const selectedReportType = ref<{ value: string; label: string; icon: string; needsCow: boolean } | null>(null);
 const showSaveTemplateDialog = ref(false);
 const templateListRef = ref<InstanceType<typeof ReportTemplateList> | null>(null);
 const startDateRef = ref<InstanceType<typeof DatePickerPopup> | null>(null);
@@ -256,10 +268,10 @@ const reportParams = reactive({
 });
 
 const reportTypes = computed(() => [
-  { value: 'milk_production', label: t('reports.reportTypes.milkProduction'), icon: 'water_drop', color: 'primary', needsCow: false },
-  { value: 'feed_consumption', label: t('reports.reportTypes.feedConsumption'), icon: 'grass', color: 'secondary', needsCow: false },
-  { value: 'cow_performance', label: t('reports.reportTypes.cowPerformance'), icon: COW_ICON, color: 'accent', needsCow: true },
-  { value: 'cost_analysis', label: t('reports.reportTypes.costAnalysis'), icon: 'savings', color: 'positive', needsCow: false },
+  { value: 'milk_production', label: t('reports.reportTypes.milkProduction'), icon: 'water_drop', needsCow: false },
+  { value: 'feed_consumption', label: t('reports.reportTypes.feedConsumption'), icon: 'grass', needsCow: false },
+  { value: 'cow_performance', label: t('reports.reportTypes.cowPerformance'), icon: COW_ICON, needsCow: true },
+  { value: 'cost_analysis', label: t('reports.reportTypes.costAnalysis'), icon: 'savings', needsCow: false },
 ]);
 
 const cowOptions = computed(() => [
@@ -283,6 +295,7 @@ const currentParameters = computed(() => ({
 
 function generateReport(type: string) {
   selectedReportType.value = reportTypes.value.find((rt) => rt.value === type) || null;
+  reportName.value = selectedReportType.value?.label || '';
   showGenerateDialog.value = true;
 }
 
@@ -296,10 +309,8 @@ function onTemplateSaved() {
 }
 
 function onUseTemplate(template: ReportTemplate) {
-  // Find and set the report type
   selectedReportType.value = reportTypes.value.find((rt) => rt.value === template.report_type) || null;
 
-  // Apply template parameters
   if (template.parameters.cow_id !== undefined) {
     reportParams.cow_id = template.parameters.cow_id as string | null;
   }
@@ -310,7 +321,7 @@ function onUseTemplate(template: ReportTemplate) {
     reportParams.end_date = template.parameters.end_date as string;
   }
 
-  // Open the generate dialog with pre-filled params
+  reportName.value = selectedReportType.value?.label || '';
   showGenerateDialog.value = true;
 
   $q.notify({
@@ -332,24 +343,22 @@ async function submitReport() {
       end_date: reportParams.end_date,
     };
 
-    const title = selectedReportType.value.label;
+    const title = reportName.value.trim() || selectedReportType.value.label;
     const result = await reportsStore.queueReportGeneration(
       selectedReportType.value.value,
       parameters,
-      title
+      title,
     );
 
     showGenerateDialog.value = false;
 
     if (result.queued) {
-      // Report was queued for offline generation
       $q.notify({
         type: 'info',
         message: t('reports.reportQueued'),
         icon: 'schedule',
       });
     } else if (result.report) {
-      // Report was generated immediately (online)
       reports.value.unshift(result.report);
       $q.notify({
         type: 'positive',
@@ -357,7 +366,7 @@ async function submitReport() {
       });
       router.push(`/reports/${result.report.id}`);
     }
-  } catch (error) {
+  } catch {
     $q.notify({
       type: 'negative',
       message: t('reports.generatedFailed'),
@@ -378,7 +387,6 @@ function viewReport(report: Report) {
   }
 }
 
-// Handle coming back online: process queued reports
 async function handleOnline() {
   if (reportsStore.pendingReportCount > 0) {
     processingQueue.value = true;
@@ -397,17 +405,11 @@ async function handleOnline() {
         message: t('reports.queueProcessed'),
       });
       // Refresh reports list
-      try {
-        const response = await api.get('/api/v1/reports');
-        reports.value = response.data;
-      } catch {
-        reports.value = await db.reports.orderBy('created_at').reverse().toArray();
-      }
+      reports.value = await reportsStore.fetchReports();
     }
   }
 }
 
-// Watch for online status changes
 const stopOnlineWatcher = watch(online, (newVal, oldVal) => {
   if (newVal && !oldVal) {
     handleOnline();
@@ -419,13 +421,7 @@ onMounted(async () => {
   await reportsStore.fetchPendingReportCount();
 
   loading.value = true;
-  try {
-    const response = await api.get('/api/v1/reports');
-    reports.value = response.data;
-  } catch {
-    // Load from cache
-    reports.value = await db.reports.orderBy('created_at').reverse().toArray();
-  }
+  reports.value = await reportsStore.fetchReports();
   loading.value = false;
 });
 

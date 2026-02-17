@@ -61,25 +61,21 @@
         </q-card>
       </q-dialog>
 
-      <!-- Report Summary Preview -->
+      <!-- Report HTML Preview -->
+      <q-card v-if="htmlContent" flat bordered class="q-mb-md">
+        <q-card-section>
+          <div class="report-html-preview" v-html="htmlContent" />
+        </q-card-section>
+      </q-card>
+
+      <!-- Report Summary Preview (fallback when no HTML) -->
       <ReportPreview
+        v-if="!htmlContent"
         :report-type="report.report_type"
         :parameters="params"
         :report-data="(report as Record<string, unknown>)"
         class="q-mb-md"
       />
-
-      <!-- PDF Download Card -->
-      <q-card v-if="report.file_url" flat bordered>
-        <q-card-section class="row items-center q-gutter-md">
-          <q-icon name="picture_as_pdf" size="40px" color="negative" />
-          <div class="col">
-            <div class="text-body1">{{ $t('reports.pdfReady') }}</div>
-            <div class="text-caption text-grey-7">{{ $t('reports.pdfDownloadHint') }}</div>
-          </div>
-          <q-btn flat round icon="download" color="primary" @click="downloadReport" />
-        </q-card-section>
-      </q-card>
 
       <!-- Parameters -->
       <div class="text-subtitle1 q-mt-md q-mb-sm">{{ $t('reports.parameters') }}</div>
@@ -127,6 +123,7 @@ import { useI18n } from 'vue-i18n';
 import { api } from 'src/lib/api';
 import { useDateFormat } from 'src/composables/useDateFormat';
 import { useExport } from 'src/composables/useExport';
+import { useAuthStore } from 'src/stores/auth';
 import { db, Report } from 'src/lib/offline/db';
 import SkeletonCard from 'src/components/ui/SkeletonCard.vue';
 import EmptyState from 'src/components/ui/EmptyState.vue';
@@ -137,9 +134,11 @@ const router = useRouter();
 const { t } = useI18n();
 const { formatDate } = useDateFormat();
 const { shareContent, shareViaWhatsApp } = useExport();
+const authStore = useAuthStore();
 
 const reportId = computed(() => route.params.id as string);
 const report = ref<Report | null>(null);
+const htmlContent = ref<string | null>(null);
 const loading = ref(true);
 const showShareSheet = ref(false);
 
@@ -147,14 +146,10 @@ const params = computed(() => (report.value?.parameters as Record<string, string
 
 function downloadReport() {
   if (!report.value?.file_url) return;
-  const link = document.createElement('a');
-  link.href = report.value.file_url;
-  link.target = '_blank';
-  link.rel = 'noopener';
-  link.download = `${report.value.title || 'report'}.html`;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+  // Open the download URL (backend HTML report) in a new tab
+  const baseUrl = api.defaults.baseURL || '';
+  const downloadUrl = `${baseUrl}${report.value.file_url}`;
+  window.open(downloadUrl, '_blank', 'noopener');
 }
 
 function buildReportSummaryText(): string {
@@ -169,9 +164,6 @@ function buildReportSummaryText(): string {
   }
   if (p.cow_id) {
     text += `${t('reports.cow')}: ${p.cow_id}\n`;
-  }
-  if (r.file_url) {
-    text += `\n${t('reports.downloadPdf')}: ${r.file_url}\n`;
   }
   text += `\n${t('export.generatedBy')}`;
   return text;
@@ -190,14 +182,37 @@ async function shareReportViaOther() {
 onMounted(async () => {
   loading.value = true;
 
-  // Try to get from API first
+  // Try to get report metadata from API
   try {
     const response = await api.get(`/api/v1/reports/${reportId.value}`);
-    report.value = response.data;
-    await db.reports.put({
-      ...response.data,
+    const data = response.data;
+
+    // Map backend FarmerReportSummary → PWA Report
+    report.value = {
+      id: data.id,
+      user_id: authStore.userId || '',
+      report_type: data.report_type,
+      title: data.farmer_name || data.report_type,
+      parameters: {},
+      file_url: data.download_url,
+      status: 'completed',
+      created_at: data.generated_at,
       _cached_at: new Date().toISOString(),
-    });
+    };
+
+    await db.reports.put(report.value);
+
+    // Fetch HTML content
+    if (data.download_url) {
+      try {
+        const htmlResp = await api.get(`/api/v1/reports/${reportId.value}/download`);
+        if (typeof htmlResp.data === 'string') {
+          htmlContent.value = htmlResp.data;
+        }
+      } catch {
+        // HTML not available — fall back to preview
+      }
+    }
   } catch {
     // Fallback to cache
     report.value = await db.reports.get(reportId.value) || null;
@@ -206,3 +221,21 @@ onMounted(async () => {
   loading.value = false;
 });
 </script>
+
+<style lang="scss" scoped>
+.report-html-preview {
+  max-height: 600px;
+  overflow-y: auto;
+
+  :deep(body) {
+    font-size: 12pt;
+    padding: 0;
+    margin: 0;
+  }
+
+  :deep(table) {
+    width: 100%;
+    font-size: 0.85rem;
+  }
+}
+</style>

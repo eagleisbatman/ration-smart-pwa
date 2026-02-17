@@ -3,6 +3,47 @@ import { ref } from 'vue';
 import { api } from 'src/lib/api';
 import { db, Report, ReportQueueItem } from 'src/lib/offline/db';
 import { isOnline } from 'src/boot/pwa';
+import { useAuthStore } from 'src/stores/auth';
+
+/**
+ * Build the backend-compatible payload from PWA parameters.
+ * Backend expects: { farmer_profile_id, cow_profile_id?, date_from?, date_to?, include_yield_history? }
+ * PWA stores: { cow_id, start_date, end_date }
+ */
+function buildBackendPayload(
+  farmerProfileId: string,
+  parameters: Record<string, unknown>,
+): Record<string, unknown> {
+  return {
+    farmer_profile_id: farmerProfileId,
+    cow_profile_id: parameters.cow_id || undefined,
+    date_from: parameters.start_date || undefined,
+    date_to: parameters.end_date || undefined,
+    include_yield_history: true,
+  };
+}
+
+/**
+ * Transform backend FarmerReportSummary → PWA Report interface.
+ */
+function mapBackendReport(
+  data: Record<string, unknown>,
+  title: string,
+  userId: string,
+  parameters: Record<string, unknown>,
+): Report {
+  return {
+    id: data.id as string,
+    user_id: userId,
+    report_type: data.report_type as string,
+    title,
+    parameters,
+    file_url: data.download_url as string | undefined,
+    status: 'completed',
+    created_at: data.generated_at as string,
+    _cached_at: new Date().toISOString(),
+  };
+}
 
 export const useReportsStore = defineStore('reports', () => {
   // State
@@ -14,9 +55,6 @@ export const useReportsStore = defineStore('reports', () => {
 
   // Actions
 
-  /**
-   * Fetch pending report count from IndexedDB
-   */
   async function fetchPendingReportCount(): Promise<void> {
     const queued = await db.getQueuedReports();
     pendingReportCount.value = queued.length;
@@ -24,45 +62,51 @@ export const useReportsStore = defineStore('reports', () => {
   }
 
   /**
+   * Fetch recent reports from backend for the current user.
+   */
+  async function fetchReports(): Promise<Report[]> {
+    const authStore = useAuthStore();
+    if (!authStore.userId) return [];
+
+    try {
+      const response = await api.get(`/api/v1/reports/user/${authStore.userId}`);
+      const backendReports = response.data as Record<string, unknown>[];
+
+      const mapped = backendReports.map((r) =>
+        mapBackendReport(r, r.farmer_name as string || (r.report_type as string), authStore.userId!, {}),
+      );
+
+      // Cache locally
+      for (const report of mapped) {
+        await db.reports.put(report);
+      }
+
+      reports.value = mapped;
+      return mapped;
+    } catch {
+      // Fallback to cache
+      const cached = await db.reports.orderBy('created_at').reverse().toArray();
+      reports.value = cached;
+      return cached;
+    }
+  }
+
+  /**
    * Queue a report for generation.
-   * When online, calls the API directly.
+   * When online, calls the API directly with correct backend payload.
    * When offline, saves to the reportQueue in IndexedDB.
    */
   async function queueReportGeneration(
     reportType: string,
     parameters: Record<string, unknown>,
-    title: string
+    title: string,
   ): Promise<{ queued: boolean; report?: Report }> {
-    if (isOnline.value) {
-      // Online: call API directly
-      try {
-        const response = await api.post('/api/v1/reports/generate', {
-          report_type: reportType,
-          parameters,
-        });
+    const authStore = useAuthStore();
+    const userId = authStore.userId;
+    const farmerProfileId = authStore.selfFarmerProfileId;
 
-        const report = response.data as Report;
-        await db.reports.put({
-          ...report,
-          _cached_at: new Date().toISOString(),
-        });
-
-        return { queued: false, report };
-      } catch (err) {
-        // If API call fails while online, still queue it
-        const id = await db.addToReportQueue({
-          report_type: reportType,
-          parameters,
-          title,
-          requested_at: new Date().toISOString(),
-          status: 'queued',
-        });
-
-        await fetchPendingReportCount();
-        return { queued: true };
-      }
-    } else {
-      // Offline: queue for later
+    if (!userId || !farmerProfileId) {
+      // Can't generate without auth context — queue for later
       await db.addToReportQueue({
         report_type: reportType,
         parameters,
@@ -70,7 +114,42 @@ export const useReportsStore = defineStore('reports', () => {
         requested_at: new Date().toISOString(),
         status: 'queued',
       });
+      await fetchPendingReportCount();
+      return { queued: true };
+    }
 
+    if (isOnline.value) {
+      try {
+        const payload = buildBackendPayload(farmerProfileId, parameters);
+        const response = await api.post(
+          `/api/v1/reports/generate?user_id=${encodeURIComponent(userId)}`,
+          payload,
+        );
+
+        const report = mapBackendReport(response.data, title, userId, parameters);
+        await db.reports.put(report);
+
+        return { queued: false, report };
+      } catch {
+        // API failed while online — queue for retry
+        await db.addToReportQueue({
+          report_type: reportType,
+          parameters,
+          title,
+          requested_at: new Date().toISOString(),
+          status: 'queued',
+        });
+        await fetchPendingReportCount();
+        return { queued: true };
+      }
+    } else {
+      await db.addToReportQueue({
+        report_type: reportType,
+        parameters,
+        title,
+        requested_at: new Date().toISOString(),
+        status: 'queued',
+      });
       await fetchPendingReportCount();
       return { queued: true };
     }
@@ -85,30 +164,31 @@ export const useReportsStore = defineStore('reports', () => {
       return { processed: 0, failed: 0 };
     }
 
+    const authStore = useAuthStore();
+    const userId = authStore.userId;
+    const farmerProfileId = authStore.selfFarmerProfileId;
+
+    if (!userId || !farmerProfileId) {
+      return { processed: 0, failed: 0 };
+    }
+
     const queuedItems = await db.getQueuedReports();
     let processed = 0;
     let failed = 0;
 
     for (const item of queuedItems) {
       try {
-        // Mark as processing
         await db.updateReportQueueItem(item.id!, { status: 'processing' });
 
-        // Call API to generate report
-        const response = await api.post('/api/v1/reports/generate', {
-          report_type: item.report_type,
-          parameters: item.parameters,
-        });
+        const payload = buildBackendPayload(farmerProfileId, item.parameters);
+        const response = await api.post(
+          `/api/v1/reports/generate?user_id=${encodeURIComponent(userId)}`,
+          payload,
+        );
 
-        const report = response.data as Report;
+        const report = mapBackendReport(response.data, item.title, userId, item.parameters);
+        await db.reports.put(report);
 
-        // Cache the generated report
-        await db.reports.put({
-          ...report,
-          _cached_at: new Date().toISOString(),
-        });
-
-        // Mark queue item as completed
         await db.updateReportQueueItem(item.id!, {
           status: 'completed',
           result_report_id: report.id,
@@ -129,7 +209,6 @@ export const useReportsStore = defineStore('reports', () => {
     return { processed, failed };
   }
 
-  // Listen for online event to process the queue
   function setupOnlineListener(): void {
     window.addEventListener('online', async () => {
       if (pendingReportCount.value > 0) {
@@ -138,7 +217,6 @@ export const useReportsStore = defineStore('reports', () => {
     });
   }
 
-  // Initialize the listener
   setupOnlineListener();
 
   return {
@@ -150,6 +228,7 @@ export const useReportsStore = defineStore('reports', () => {
     pendingReportCount,
     // Actions
     fetchPendingReportCount,
+    fetchReports,
     queueReportGeneration,
     processReportQueue,
   };
