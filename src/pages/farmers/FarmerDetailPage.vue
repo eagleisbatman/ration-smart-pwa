@@ -199,9 +199,9 @@
             <q-icon name="add" />
             {{ $t('farmer.addCow') }}
           </button>
-          <button class="action-row__btn" @click="router.push({ name: 'yield-new', query: { farmer: farmerId } })">
-            <q-icon name="add_chart" />
-            {{ $t('farmer.recordYield') }}
+          <button class="action-row__btn" @click="router.push({ name: 'log-new', query: { farmer: farmerId } })">
+            <q-icon name="water_drop" />
+            {{ $t('logs.logMilk') }}
           </button>
           <button class="action-row__btn" @click="router.push({ path: '/diet/new', query: { farmer_id: farmerId } })">
             <q-icon name="menu_book" />
