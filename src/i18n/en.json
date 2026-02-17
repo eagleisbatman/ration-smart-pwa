@@ -1345,7 +1345,7 @@
   "errors": {
     "generic": "Something went wrong. Please try again.",
     "network": "Network error. Please check your connection.",
-    "notFound": "The requested item was not found.",
+    "notFound": "Sorry, we couldn't find what you were looking for.",
     "unauthorized": "Please login to continue.",
     "forbidden": "You don't have permission to do this.",
     "validation": "Please check your input and try again.",
