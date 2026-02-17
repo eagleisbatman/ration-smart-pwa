@@ -135,21 +135,28 @@ export const useCowsStore = defineStore('cows', () => {
   }
 
   async function getCow(id: string): Promise<Cow | null> {
-    // Try local first
-    const cow = await db.cows.get(id);
+    const localCow = await db.cows.get(id);
 
-    if (!cow && isOnline.value) {
+    if (isOnline.value) {
       try {
         const response = await api.get(`/api/v1/cows/${id}`);
-        const serverCow: Cow = { ...response.data, _synced: true, _deleted: false };
+        const serverCow: Cow = {
+          ...response.data,
+          // Preserve local-only fields not yet on backend
+          age_months: response.data.age_months ?? localCow?.age_months,
+          body_condition_score: response.data.body_condition_score ?? localCow?.body_condition_score,
+          activity_level: response.data.activity_level ?? localCow?.activity_level,
+          _synced: true,
+          _deleted: false,
+        };
         await db.cows.put(serverCow);
         return serverCow;
       } catch {
-        return null;
+        return localCow ?? null;
       }
     }
 
-    return cow ?? null;
+    return localCow ?? null;
   }
 
   async function createCow(input: CowInput): Promise<Cow | null> {
