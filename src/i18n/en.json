@@ -50,7 +50,8 @@
     "tapToAddPhoto": "Tap to add photo",
     "takePhoto": "Take Photo",
     "chooseFromGallery": "Choose from Gallery",
-    "removePhoto": "Remove Photo"
+    "removePhoto": "Remove Photo",
+    "you": "You"
   },
   "countries": {
     "IN": "India",
@@ -801,6 +802,7 @@
       "fatPercent": "Fat %",
       "snfPercent": "SNF %",
       "maxPercent": "Max 15%",
+      "linkedToDiet": "Linked to active diet for {name}",
       "notesLabel": "Notes",
       "notesHint": "Optional - any observations",
       "recordYield": "Record Yield",
