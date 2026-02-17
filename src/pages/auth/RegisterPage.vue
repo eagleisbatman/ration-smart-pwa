@@ -235,17 +235,20 @@ const { detectedCountry } = useGeoCountry();
 
 const showPin = ref(false);
 
+// Prefer saved country from a previous login/registration over geo-detection
+const savedCountry = localStorage.getItem('last_country_code');
+
 const form = reactive({
   name: '',
   phone: '',
-  country_code: detectedCountry.value,
+  country_code: savedCountry || detectedCountry.value,
   pin: '',
   confirmPin: '',
 });
 
-// Update country when geo-detection resolves (only if user hasn't changed it)
+// Update country when geo-detection resolves, but only if no saved preference
 watch(detectedCountry, (code) => {
-  if (form.country_code === 'IN' || !form.phone) {
+  if (!savedCountry && (form.country_code === 'IN' || !form.phone)) {
     form.country_code = code;
   }
 });

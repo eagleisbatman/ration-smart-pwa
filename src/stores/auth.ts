@@ -4,6 +4,7 @@ import { api } from 'src/lib/api';
 import { db, User } from 'src/lib/offline/db';
 import { fetchAndCacheCountries, setCountryCache, toAlpha2 } from 'src/services/api-adapter';
 import { extractUserFriendlyError } from 'src/lib/error-messages';
+import { setLocale } from 'src/boot/i18n';
 
 export interface Country {
   id: string;
@@ -214,6 +215,11 @@ export const useAuthStore = defineStore('auth', () => {
         await db.users.put(userData);
       }
 
+      // Persist last-used country for future login pre-fill
+      if (data.country_code) {
+        localStorage.setItem('last_country_code', data.country_code);
+      }
+
       return true;
     } catch (err) {
       error.value = extractUserFriendlyError(err);
@@ -280,6 +286,12 @@ export const useAuthStore = defineStore('auth', () => {
         await db.users.put(userData);
       }
 
+      // Persist last-used country so the login page can pre-fill it next time
+      // (this key is intentionally NOT cleared by clearAuth)
+      if (data.country_code) {
+        localStorage.setItem('last_country_code', data.country_code);
+      }
+
       // Restore onboarding-related fields from login response
       if (userData?.self_farmer_profile_id) {
         selfFarmerProfileId.value = userData.self_farmer_profile_id;
@@ -292,6 +304,8 @@ export const useAuthStore = defineStore('auth', () => {
       if (userData?.language_code) {
         preferredLanguage.value = userData.language_code;
         localStorage.setItem('preferred_language', userData.language_code);
+        // Sync i18n engine so the app displays in the correct language immediately
+        setLocale(userData.language_code);
       }
       if (userData?.profile_image_url) {
         profileImage.value = userData.profile_image_url;
@@ -342,6 +356,7 @@ export const useAuthStore = defineStore('auth', () => {
         const lang = normalizedData.language_code || normalizedData.language || 'en';
         preferredLanguage.value = lang;
         localStorage.setItem('preferred_language', lang);
+        setLocale(lang);
       }
       if (normalizedData.self_farmer_profile_id) {
         selfFarmerProfileId.value = normalizedData.self_farmer_profile_id;
@@ -566,8 +581,12 @@ export const useAuthStore = defineStore('auth', () => {
     user.value = null;
     token.value = null;
     userId.value = null;
-    userRole.value = 'farmer';
-    preferredLanguage.value = 'en';
+    // Preserve user preferences (role, language) — they survive session expiry
+    // and will be restored from the backend on next login
+    const savedRole = localStorage.getItem('user_role') || 'farmer';
+    const savedLang = localStorage.getItem('preferred_language') || 'en';
+    userRole.value = savedRole;
+    preferredLanguage.value = savedLang;
     selfFarmerProfileId.value = null;
     onboardingSkipped.value = false;
     profileImage.value = null;
@@ -578,8 +597,8 @@ export const useAuthStore = defineStore('auth', () => {
       storage.removeItem('user_id');
     }
     localStorage.removeItem('remember_me');
-    localStorage.removeItem('user_role');
-    localStorage.removeItem('preferred_language');
+    // Keep user_role, preferred_language, and last_country_code so they
+    // survive session expiry and pre-fill the login page correctly
     localStorage.removeItem('self_farmer_profile_id');
     localStorage.removeItem('profile_image');
     sessionStorage.removeItem('onboarding_skipped');
