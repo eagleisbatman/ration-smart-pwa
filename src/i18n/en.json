@@ -1477,7 +1477,8 @@
     "baseline": "Baseline",
     "actual": "Actual",
     "adherence": "Adherence",
-    "dailyTrend": "Daily Milk Trend"
+    "dailyTrend": "Daily Milk Trend",
+    "daysLogged": "Days Logged"
   },
   "yields": {
     "compare": {

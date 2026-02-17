@@ -20,26 +20,9 @@
         </q-btn-group>
       </div>
 
-      <!-- Simple table view for milk production data -->
-      <div v-if="chartData.length > 0 && !loading" class="chart-table chart-scroll-wrapper">
-        <q-markup-table flat bordered dense class="text-left">
-          <thead>
-            <tr class="bg-grey-2">
-              <th>{{ $t('chart.date') }}</th>
-              <th class="text-right">{{ $t('chart.morning') }}</th>
-              <th class="text-right">{{ $t('chart.evening') }}</th>
-              <th class="text-right">{{ $t('chart.totalMilk') }}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="day in displayData" :key="day.date" :class="{ 'bg-primary-1': isToday(day.date) }">
-              <td>{{ formatDateShort(day.date) }}</td>
-              <td class="text-right text-primary">{{ day.morning.toFixed(1) }}L</td>
-              <td class="text-right text-secondary">{{ day.evening.toFixed(1) }}L</td>
-              <td class="text-right text-weight-medium">{{ day.total.toFixed(1) }}L</td>
-            </tr>
-          </tbody>
-        </q-markup-table>
+      <!-- Chart View -->
+      <div v-if="chartData.length > 0 && !loading" style="height: 180px; position: relative">
+        <Bar :data="barChartData" :options="barChartOptions" />
       </div>
 
       <!-- Summary Stats -->
@@ -84,27 +67,40 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, shallowRef } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { format, subDays, parseISO, isToday as dateFnsIsToday } from 'date-fns';
+import { format, subDays, parseISO } from 'date-fns';
+import { Bar } from 'vue-chartjs';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Tooltip,
+  Legend,
+} from 'chart.js';
 import { useMilkLogsStore } from 'src/stores/milkLogs';
+import { useChartColors } from 'src/lib/chart-colors';
+import type { ChartData, ChartOptions } from 'chart.js';
+
+ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 const props = defineProps<{
   height?: number;
-  cowId?: string; // Optional: filter by specific cow
-  cowIds?: string[]; // Optional: filter by a set of cow IDs (used by Personal tab)
+  cowId?: string;
+  cowIds?: string[];
 }>();
 
-useI18n(); // Used for template translations via $t
+useI18n();
 const milkLogsStore = useMilkLogsStore();
+const colors = useChartColors();
 
 const period = ref<'7d' | '14d'>('7d');
 const loading = ref(false);
 
 const periodOptions = [
-  { label: '7D', value: '7d' },
-  { label: '14D', value: '14d' },
+  { label: '7D', value: '7d' as const },
+  { label: '14D', value: '14d' as const },
 ];
 
-// Chart data processing
 interface DailyData {
   date: string;
   morning: number;
@@ -114,28 +110,11 @@ interface DailyData {
 
 const chartData = shallowRef<DailyData[]>([]);
 
-// Get display data (most recent days first for table display)
-const displayData = computed(() => {
-  return [...chartData.value].reverse();
-});
-
-// Format date for display
-function formatDateShort(dateStr: string): string {
-  return format(parseISO(dateStr), 'MMM d');
-}
-
-// Check if date is today
-function isToday(dateStr: string): boolean {
-  return dateFnsIsToday(parseISO(dateStr));
-}
-
-// Process logs into daily aggregates
 function processLogs() {
   const days = period.value === '7d' ? 7 : 14;
   const endDate = new Date();
   const startDate = subDays(endDate, days - 1);
 
-  // Create a map for each day in the range
   const dailyMap = new Map<string, DailyData>();
 
   for (let i = 0; i < days; i++) {
@@ -143,7 +122,6 @@ function processLogs() {
     dailyMap.set(date, { date, morning: 0, evening: 0, total: 0 });
   }
 
-  // Filter and aggregate logs
   const logs = milkLogsStore.logs.filter((log) => {
     const logDate = parseISO(log.log_date);
     const inRange = logDate >= startDate && logDate <= endDate;
@@ -163,7 +141,6 @@ function processLogs() {
   }
 
   const allData = Array.from(dailyMap.values());
-  // Only show days from the first day with actual data (trim leading zeros)
   const firstDataIdx = allData.findIndex((d) => d.total > 0);
   if (firstDataIdx === -1) {
     chartData.value = [];
@@ -171,6 +148,101 @@ function processLogs() {
     chartData.value = allData.slice(firstDataIdx);
   }
 }
+
+// Chart.js stacked bar data
+const barChartData = computed((): ChartData<'bar'> => {
+  const c = colors.value;
+  const data = chartData.value;
+
+  return {
+    labels: data.map((d) => format(parseISO(d.date), 'MMM d')),
+    datasets: [
+      {
+        label: 'Morning',
+        data: data.map((d) => d.morning),
+        backgroundColor: c.primary,
+        borderRadius: { topLeft: 0, topRight: 0, bottomLeft: 2, bottomRight: 2 },
+        barPercentage: 0.7,
+        categoryPercentage: 0.8,
+      },
+      {
+        label: 'Evening',
+        data: data.map((d) => d.evening),
+        backgroundColor: c.primary + '80', // 50% opacity
+        borderRadius: { topLeft: 2, topRight: 2, bottomLeft: 0, bottomRight: 0 },
+        barPercentage: 0.7,
+        categoryPercentage: 0.8,
+      },
+    ],
+  };
+});
+
+const barChartOptions = computed((): ChartOptions<'bar'> => {
+  const c = colors.value;
+  return {
+    responsive: true,
+    maintainAspectRatio: false,
+    interaction: {
+      mode: 'index',
+      intersect: false,
+    },
+    plugins: {
+      tooltip: {
+        backgroundColor: 'rgba(0,0,0,0.8)',
+        titleFont: { size: 11 },
+        bodyFont: { size: 11 },
+        padding: 8,
+        cornerRadius: 4,
+        callbacks: {
+          afterBody: (items) => {
+            const idx = items[0]?.dataIndex;
+            if (idx == null) return '';
+            const d = chartData.value[idx];
+            return `Total: ${d.total.toFixed(1)}L`;
+          },
+          label: (ctx) => {
+            const val = ctx.parsed.y;
+            return `${ctx.dataset.label}: ${val.toFixed(1)}L`;
+          },
+        },
+      },
+      legend: {
+        display: true,
+        position: 'bottom',
+        labels: {
+          color: c.axisText,
+          usePointStyle: true,
+          pointStyle: 'rect',
+          padding: 12,
+          font: { size: 11 },
+        },
+      },
+    },
+    scales: {
+      x: {
+        stacked: true,
+        ticks: {
+          color: c.axisText,
+          font: { size: 10 },
+          maxRotation: 0,
+          autoSkip: true,
+          maxTicksLimit: 7,
+        },
+        grid: { display: false },
+      },
+      y: {
+        stacked: true,
+        ticks: {
+          color: c.axisTextLight,
+          font: { size: 10 },
+        },
+        grid: {
+          color: c.gridLight,
+        },
+      },
+    },
+  };
+});
 
 // Summary statistics
 const totalProduction = computed(() =>
@@ -182,7 +254,6 @@ const averageDaily = computed(() => {
   return daysWithData > 0 ? totalProduction.value / daysWithData : 0;
 });
 
-// Trend calculation (compare last 3 days to previous 3 days)
 const trendPercent = computed(() => {
   const data = chartData.value;
   if (data.length < 6) return '0';
@@ -210,12 +281,10 @@ const trendIcon = computed(() => {
   return 'trending_flat';
 });
 
-// Watch for period or filter changes
 watch([period, () => props.cowIds, () => props.cowId], () => {
   processLogs();
 });
 
-// Watch for store changes
 watch(
   () => milkLogsStore.logs,
   () => {
@@ -224,11 +293,9 @@ watch(
   { deep: true }
 );
 
-// Initial load
 onMounted(async () => {
   loading.value = true;
   try {
-    // Ensure logs are loaded
     if (milkLogsStore.logs.length === 0) {
       await milkLogsStore.fetchLogs();
     }
@@ -238,7 +305,6 @@ onMounted(async () => {
   }
 });
 
-// Expose refresh method
 async function refresh() {
   loading.value = true;
   try {
@@ -269,26 +335,5 @@ defineExpose({ refresh });
     font-weight: 500;
     font-size: 0.75rem;
   }
-}
-
-.chart-table {
-  :deep(.q-table) {
-    font-size: 12px;
-  }
-
-  :deep(th) {
-    font-weight: 500;
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-
-  :deep(td), :deep(th) {
-    padding: 8px 12px;
-  }
-}
-
-.bg-primary-1 {
-  background-color: rgba(0, 0, 0, 0.04);
 }
 </style>
