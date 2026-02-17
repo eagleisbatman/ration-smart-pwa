@@ -603,10 +603,11 @@ body {
 // Max-height constrained, vertically scrollable
 .scroll-list {
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch; // iOS momentum scrolling in nested containers
 }
 
 .scroll-list--300 {
-  max-height: 300px;
+  max-height: 50vh;
 }
 
 .scroll-list--50vh {

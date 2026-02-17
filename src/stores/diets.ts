@@ -255,8 +255,10 @@ export const useDietsStore = defineStore('diets', () => {
         feed_selection: feedSelection,
       };
 
-      // Call optimization API
-      const response = await api.post('/api/v1/diet/optimize', backendRequest);
+      // Call optimization API (longer timeout — optimization engine can take 30-60s)
+      const response = await api.post('/api/v1/diet/optimize', backendRequest, {
+        timeout: 90000,
+      });
       const serverDiet: Diet = {
         ...response.data,
         user_id: authStore.userId,
