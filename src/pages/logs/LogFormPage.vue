@@ -217,7 +217,9 @@ import { format } from 'date-fns';
 import { useMilkLogsStore, MilkLogInput } from 'src/stores/milkLogs';
 import { useCowsStore } from 'src/stores/cows';
 import { useDietsStore } from 'src/stores/diets';
-import { Diet } from 'src/lib/offline/db';
+import { useAuthStore } from 'src/stores/auth';
+import { useFarmersStore } from 'src/stores/farmers';
+import { Diet, Cow } from 'src/lib/offline/db';
 import { useCurrency } from 'src/composables/useCurrency';
 import { COW_ICON } from 'src/boot/icons';
 import DatePickerPopup from 'src/components/ui/DatePickerPopup.vue';
@@ -230,6 +232,11 @@ const { formatCurrency } = useCurrency();
 const milkLogsStore = useMilkLogsStore();
 const cowsStore = useCowsStore();
 const dietsStore = useDietsStore();
+const authStore = useAuthStore();
+const farmersStore = useFarmersStore();
+
+/** Flat lookup of all cows (own + managed farmers' cows) for onCowSelected */
+const allCowsMap = ref<Map<string, Cow>>(new Map());
 
 const datePickerRef = ref<InstanceType<typeof DatePickerPopup> | null>(null);
 const logId = computed(() => route.params.id as string | undefined);
@@ -260,15 +267,48 @@ const error = computed(() => milkLogsStore.error);
 
 const totalLiters = computed(() => (form.morning_liters || 0) + (form.evening_liters || 0));
 
-const cowOptions = computed(() =>
-  cowsStore.activeCows.map((cow) => ({
-    label: cow.name,
-    value: cow.id,
-  }))
-);
+const cowOptions = computed(() => {
+  const isEW = authStore.isExtensionWorker;
+  if (!isEW) {
+    // Farmer: flat list of own cows
+    return cowsStore.activeCows.map((cow) => ({
+      label: cow.name,
+      value: cow.id,
+    }));
+  }
+
+  // Extension Worker: grouped by farmer
+  const selfProfileId = authStore.selfFarmerProfileId;
+  const options: Array<{ label: string; value: string; disable?: boolean }> = [];
+
+  // "My Cows" group
+  const myCows = cowsStore.activeCows.filter(
+    (c) => !c.farmer_profile_id || c.farmer_profile_id === selfProfileId
+  );
+  if (myCows.length > 0) {
+    options.push({ label: t('logs.form.myCows'), value: '', disable: true });
+    for (const cow of myCows) {
+      options.push({ label: `  ${cow.name}`, value: cow.id });
+    }
+  }
+
+  // Each managed farmer's cows
+  for (const farmer of farmersStore.managedFarmers) {
+    const farmerCows = cowsStore.getCowsForFarmer(farmer.id).filter((c) => c.is_active);
+    if (farmerCows.length > 0) {
+      options.push({ label: farmer.name, value: '', disable: true });
+      for (const cow of farmerCows) {
+        options.push({ label: `  ${cow.name}`, value: cow.id });
+      }
+    }
+  }
+
+  return options;
+});
 
 async function onCowSelected(cowId: string) {
-  const cow = cowsStore.activeCows.find((c) => c.id === cowId);
+  // Look up cow from allCowsMap (includes managed farmers' cows for EW)
+  const cow = allCowsMap.value.get(cowId) || cowsStore.activeCows.find((c) => c.id === cowId);
   if (cow) {
     form.cow_name = cow.name;
   }
@@ -352,7 +392,25 @@ onMounted(async () => {
   // Clear any stale errors from previous navigation
   milkLogsStore.error = null;
 
+  // Fetch own cows
   await cowsStore.fetchCows();
+
+  // For EW: also fetch managed farmers and their cows
+  if (authStore.isExtensionWorker) {
+    await farmersStore.fetchFarmers();
+    for (const farmer of farmersStore.managedFarmers) {
+      // fetchCows without filter loads all user's cows (already done)
+      // getCowsForFarmer reads from local DB using farmer_profile_id index
+      const farmerCows = cowsStore.getCowsForFarmer(farmer.id);
+      for (const cow of farmerCows) {
+        allCowsMap.value.set(cow.id, cow);
+      }
+    }
+  }
+  // Also add own cows to lookup map
+  for (const cow of cowsStore.activeCows) {
+    allCowsMap.value.set(cow.id, cow);
+  }
 
   // Pre-fill cow name and fetch active diet if cow_id from query
   if (queryCowId) {

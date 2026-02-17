@@ -432,6 +432,8 @@ function mapDietFromBackend(diet: Record<string, unknown>): Record<string, unkno
     _raw_backend_result: fullResult,
     total_cost: diet.total_cost_per_day,
     dm_intake: dmIntake,
+    followed_from: diet.followed_from || undefined,
+    followed_until: diet.followed_until || undefined,
     created_at: diet.created_at,
     updated_at: diet.created_at, // backend doesn't have updated_at
   };

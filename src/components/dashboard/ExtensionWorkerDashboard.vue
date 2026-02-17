@@ -129,27 +129,27 @@
 
       <!-- Stat Cards -->
       <div class="row q-col-gutter-sm q-mb-md">
-        <div class="col-6">
+        <div class="col-4">
           <q-card flat class="stat-card stat-card--primary">
-            <q-card-section class="q-pa-md">
+            <q-card-section class="q-pa-sm">
               <div class="stat-card__label">{{ $t('dashboard.farmersManaged') }}</div>
               <div class="stat-card__value">{{ farmerCount }}</div>
-              <div class="stat-card__footer">
-                <q-icon name="groups" size="14px" class="q-mr-xs" />
-                {{ $t('dashboard.activeProfiles') }}
-              </div>
             </q-card-section>
           </q-card>
         </div>
-        <div class="col-6">
+        <div class="col-4">
           <q-card flat class="stat-card stat-card--secondary">
-            <q-card-section class="q-pa-md">
+            <q-card-section class="q-pa-sm">
               <div class="stat-card__label">{{ $t('dashboard.totalCows') }}</div>
               <div class="stat-card__value">{{ totalCowCount }}</div>
-              <div class="stat-card__footer">
-                <q-icon name="pets" size="14px" class="q-mr-xs" />
-                {{ $t('dashboard.acrossAllFarmers') }}
-              </div>
+            </q-card-section>
+          </q-card>
+        </div>
+        <div class="col-4">
+          <q-card flat class="stat-card stat-card--accent">
+            <q-card-section class="q-pa-sm">
+              <div class="stat-card__label">{{ $t('dashboard.cowsOnDiet') }}</div>
+              <div class="stat-card__value">{{ ewCowsOnDietCount }}</div>
             </q-card-section>
           </q-card>
         </div>
@@ -244,9 +244,14 @@
                 </q-item-label>
               </q-item-section>
               <q-item-section side>
-                <q-badge outline color="grey-7" class="farmer-cattle-badge">
-                  {{ farmer.total_cattle || 0 }} {{ $t('dashboard.cows') }}
-                </q-badge>
+                <div class="column items-end q-gutter-y-xs">
+                  <q-badge outline color="grey-7" class="farmer-cattle-badge">
+                    {{ farmer.total_cattle || 0 }} {{ $t('dashboard.cows') }}
+                  </q-badge>
+                  <q-badge v-if="getCowsOnDietForFarmer(farmer.id) > 0" color="info" class="farmer-cattle-badge">
+                    {{ getCowsOnDietForFarmer(farmer.id) }} {{ $t('dashboard.onDiet') }}
+                  </q-badge>
+                </div>
               </q-item-section>
               <q-item-section side>
                 <q-icon name="chevron_right" color="grey-5" size="20px" />
@@ -327,6 +332,7 @@ import { useI18n } from 'vue-i18n';
 import { useAuthStore } from 'src/stores/auth';
 import { useFarmersStore } from 'src/stores/farmers';
 import { useCowsStore } from 'src/stores/cows';
+import { useDietsStore } from 'src/stores/diets';
 import { useNotificationsStore, AppNotification } from 'src/stores/notifications';
 import SkeletonList from 'src/components/ui/SkeletonList.vue';
 import MilkProductionChart from 'src/components/dashboard/MilkProductionChart.vue';
@@ -340,6 +346,7 @@ const { t } = useI18n();
 const authStore = useAuthStore();
 const farmersStore = useFarmersStore();
 const cowsStore = useCowsStore();
+const dietsStore = useDietsStore();
 const notificationsStore = useNotificationsStore();
 const { formatRelative } = useDateFormat();
 
@@ -398,6 +405,14 @@ const totalCowCount = computed(() => {
     (c) => c.farmer_profile_id !== selfFarmerId
   ).length;
 });
+
+// Diet coverage stats
+const ewCowsOnDietCount = computed(() => Object.keys(dietsStore.activeDiets).length);
+
+function getCowsOnDietForFarmer(farmerId: string): number {
+  const farmerCows = cowsStore.getCowsForFarmer(farmerId);
+  return farmerCows.filter((c) => c.is_active && dietsStore.activeDiets[c.id]).length;
+}
 
 // --- Recent Activity Feed ---
 interface Activity {
@@ -544,6 +559,8 @@ onMounted(async () => {
   // Fetch cows and sync cattle counts so totals are accurate
   await cowsStore.fetchCows();
   farmersStore.syncCattleCounts();
+  // Fetch diets to populate activeDiets cache for "Cows on Diet" stats
+  await dietsStore.fetchDiets();
   // Load recent activity feed
   await loadRecentActivities();
   // M20: Generate notifications after data is loaded
@@ -555,6 +572,7 @@ async function refresh() {
   await farmersStore.fetchFarmers();
   await cowsStore.fetchCows();
   farmersStore.syncCattleCounts();
+  await dietsStore.fetchDiets();
   chartRef.value?.refresh();
   await loadRecentActivities();
   // M20: Regenerate notifications on refresh
@@ -600,6 +618,10 @@ defineExpose({ viewMode, refresh });
   &--secondary {
     background: linear-gradient(to top, #fff, rgba($secondary, 0.04));
   }
+
+  &--accent {
+    background: linear-gradient(to top, #fff, rgba($info, 0.04));
+  }
 }
 
 .stat-card__label {
@@ -623,6 +645,10 @@ defineExpose({ viewMode, refresh });
 
 .stat-card--secondary .stat-card__value {
   color: $secondary;
+}
+
+.stat-card--accent .stat-card__value {
+  color: $info;
 }
 
 .stat-card__footer {

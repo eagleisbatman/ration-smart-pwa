@@ -149,17 +149,14 @@ export const useMilkLogsStore = defineStore('milkLogs', () => {
             _deleted: false,
           }));
 
-        // Update local database
-        await db.milkLogs.bulkPut(serverLogs);
-
-        // Clean up orphaned logs (cow deleted from backend, cow_name missing)
-        const orphanedLogs = await db.milkLogs
+        // Replace local database (clear stale data, then store fresh)
+        // Keep unsynced local logs that haven't been pushed yet
+        const unsyncedLogs = await db.milkLogs
           .where({ user_id: authStore.userId! })
-          .filter((l) => l._synced === true && !l.cow_name)
+          .filter((l) => !l._synced)
           .toArray();
-        if (orphanedLogs.length > 0) {
-          await db.milkLogs.bulkDelete(orphanedLogs.map((l) => l.id));
-        }
+        await db.milkLogs.where({ user_id: authStore.userId! }).delete();
+        await db.milkLogs.bulkPut([...serverLogs, ...unsyncedLogs]);
       }
 
       // Load from local database (userId may have been cleared by 401 interceptor)
@@ -394,7 +391,9 @@ export const useMilkLogsStore = defineStore('milkLogs', () => {
 
   async function getLogsByDietId(dietHistoryId: string): Promise<MilkLog[]> {
     return db.milkLogs
-      .filter((log) => !log._deleted && log.diet_history_id === dietHistoryId)
+      .where('diet_history_id')
+      .equals(dietHistoryId)
+      .filter((log) => !log._deleted)
       .sortBy('log_date');
   }
 

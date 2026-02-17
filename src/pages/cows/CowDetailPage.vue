@@ -128,9 +128,12 @@
             <q-icon name="favorite" />
           </q-avatar>
           <div class="q-ml-md col">
-            <div class="text-subtitle2">{{ $t('diet.currentDiet') }}</div>
+            <div class="text-subtitle2">{{ activeDiet.name || $t('diet.currentDiet') }}</div>
             <div class="text-caption text-grey-7">
-              {{ activeDiet.optimization_goal }} · {{ formatCurrency(activeDiet.total_cost ?? 0) }}{{ $t('diet.perDay') }}
+              {{ formatCurrency(activeDiet.total_cost ?? 0) }}{{ $t('diet.perDay') }}
+              <template v-if="activeDiet.followed_from">
+                · {{ $t('diet.followingSince', { days: followedDays }) }}
+              </template>
             </div>
             <div v-if="dietImpact.hasData.value" class="q-mt-xs">
               <q-badge
@@ -322,7 +325,7 @@ import { useI18n } from 'vue-i18n';
 
 const router = useRouter();
 const { t } = useI18n();
-import { format, subDays, startOfWeek, endOfWeek, parseISO } from 'date-fns';
+import { format, subDays, startOfWeek, endOfWeek, parseISO, differenceInDays } from 'date-fns';
 import { useCowsStore } from 'src/stores/cows';
 import { useMilkLogsStore } from 'src/stores/milkLogs';
 import { useDietsStore } from 'src/stores/diets';
@@ -350,6 +353,11 @@ const dietImpact = useDietImpact(
 );
 const loading = ref(true);
 const healthTimeline = ref<InstanceType<typeof HealthEventTimeline> | null>(null);
+
+const followedDays = computed(() => {
+  if (!activeDiet.value?.followed_from) return 0;
+  return Math.max(1, differenceInDays(new Date(), parseISO(activeDiet.value.followed_from)));
+});
 
 const yieldTrend = computed(() => {
   if (recentLogs.value.length === 0) return null;

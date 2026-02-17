@@ -61,6 +61,7 @@
           flat
           bordered
           class="q-mb-sm diet-card"
+          :class="{ 'diet-card--following': diet.is_active }"
           clickable
           @click="router.push(`/diet/${diet.id}`)"
         >
@@ -186,6 +187,7 @@ const cowFarmerMap = computed(() => {
 const filterOptions = computed(() => {
   const opts: { label: string; value: string }[] = [
     { label: t('diet.filter.all'), value: 'all' },
+    { label: t('diet.filterFollowing'), value: 'following' },
   ];
   if (farmersStore.managedFarmers.length > 0) {
     opts.push({ label: t('diet.filter.myCows'), value: 'my' });
@@ -198,6 +200,7 @@ const filterOptions = computed(() => {
 
 const filteredDiets = computed(() => {
   if (activeFilter.value === 'all') return diets.value;
+  if (activeFilter.value === 'following') return diets.value.filter((d) => d.is_active);
   const selfProfileId = authStore.selfFarmerProfileId;
   if (activeFilter.value === 'my') {
     return diets.value.filter((d) => {
@@ -312,6 +315,10 @@ onMounted(async () => {
 <style lang="scss" scoped>
 .diet-card {
   border-radius: $radius-loose;
+
+  &--following {
+    border-left: 4px solid $positive;
+  }
 }
 
 .filter-chips {

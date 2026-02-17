@@ -99,6 +99,10 @@ export interface Diet {
   _raw_backend_result?: Record<string, unknown>;
   total_cost?: number;
   dm_intake?: number;
+  /** When the user started following this diet */
+  followed_from?: string;
+  /** When the user stopped following this diet */
+  followed_until?: string;
   created_at: string;
   updated_at: string;
   // Local sync status
@@ -427,6 +431,27 @@ class RationSmartDB extends Dexie {
       feeds: 'id, user_id, name, category, is_custom, country_code, _synced, _deleted, [user_id+is_custom]',
       diets: 'id, user_id, cow_id, status, created_at, _synced, [user_id+status]',
       milkLogs: 'id, user_id, cow_id, log_date, _synced, _deleted, [user_id+cow_id], [user_id+log_date]',
+      reports: 'id, user_id, report_type, status, created_at, _cached_at',
+      organizations: 'id, name, type, country_id, is_active, _synced',
+      farmerProfiles: 'id, organization_id, managed_by_user_id, name, village, district, is_active, _synced, _deleted, [managed_by_user_id+is_active], [organization_id+is_active]',
+      yieldData: 'id, farmer_profile_id, cow_profile_id, collection_date, collected_by_user_id, _synced, _deleted, [farmer_profile_id+collection_date]',
+      reportQueue: '++id, report_type, status, requested_at',
+      syncQueue: '++id, entity_type, entity_id, operation, created_at, retry_count',
+      syncConflicts: '++id, entity_type, entity_id, detected_at, resolved',
+      syncHistory: '++id, timestamp, entity_type, status',
+      healthEvents: 'id, cow_id, event_type, event_date, next_due_date, _synced, _deleted, [cow_id+event_date]',
+      feedPriceHistory: 'id, feed_id, recorded_at, [feed_id+recorded_at]',
+      reportTemplates: 'id, name, report_type, created_at',
+      settings: 'key',
+    });
+
+    // Version 9: Add diet_history_id index on milkLogs for diet-linked queries
+    this.version(9).stores({
+      users: 'id, email, phone, country_code, organization_id',
+      cows: 'id, user_id, farmer_profile_id, name, breed, is_active, _synced, _deleted, [user_id+is_active], [farmer_profile_id+is_active]',
+      feeds: 'id, user_id, name, category, is_custom, country_code, _synced, _deleted, [user_id+is_custom]',
+      diets: 'id, user_id, cow_id, status, created_at, _synced, [user_id+status]',
+      milkLogs: 'id, user_id, cow_id, log_date, diet_history_id, _synced, _deleted, [user_id+cow_id], [user_id+log_date]',
       reports: 'id, user_id, report_type, status, created_at, _cached_at',
       organizations: 'id, name, type, country_id, is_active, _synced',
       farmerProfiles: 'id, organization_id, managed_by_user_id, name, village, district, is_active, _synced, _deleted, [managed_by_user_id+is_active], [organization_id+is_active]',
