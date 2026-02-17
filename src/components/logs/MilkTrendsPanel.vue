@@ -225,13 +225,14 @@ const cowBreakdowns = computed((): CowBreakdown[] => {
   );
 
   // Group by cow
-  const cowMap = new Map<string, { total: number; count: number }>();
+  const cowMap = new Map<string, { total: number; count: number; cowName?: string }>();
   const prevCowMap = new Map<string, { total: number; count: number }>();
 
   for (const log of currentLogs) {
     const entry = cowMap.get(log.cow_id) || { total: 0, count: 0 };
     entry.total += log.total_liters;
     entry.count += 1;
+    if (log.cow_name && !entry.cowName) entry.cowName = log.cow_name;
     cowMap.set(log.cow_id, entry);
   }
 
@@ -258,7 +259,7 @@ const cowBreakdowns = computed((): CowBreakdown[] => {
 
     results.push({
       id: cowId,
-      name: cow?.name || 'Unknown',
+      name: cow?.name || data.cowName || 'Unknown',
       average: avg,
       previousAverage: prevAvg,
       changePercent,

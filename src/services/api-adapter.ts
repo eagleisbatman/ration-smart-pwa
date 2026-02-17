@@ -464,6 +464,7 @@ function mapMilkLogFromBackend(log: Record<string, unknown>): Record<string, unk
     id: log.id,
     user_id: log.telegram_user_id,
     cow_id: log.cow_profile_id,
+    cow_name: log.cow_name || undefined,
     log_date: log.log_date,
     morning_liters: morning,
     evening_liters: evening,
