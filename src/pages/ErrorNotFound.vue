@@ -1,5 +1,5 @@
 <template>
-  <q-page class="flex flex-center">
+  <div class="fullscreen flex flex-center">
     <div class="text-center q-pa-xl">
       <div class="text-h1 text-primary error-code">404</div>
 
@@ -17,7 +17,7 @@
         @click="router.push('/')"
       />
     </div>
-  </q-page>
+  </div>
 </template>
 
 <script setup lang="ts">
