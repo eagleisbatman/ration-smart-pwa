@@ -77,16 +77,25 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
+import annotationPlugin from 'chartjs-plugin-annotation';
 import { useMilkLogsStore } from 'src/stores/milkLogs';
 import { useChartColors } from 'src/lib/chart-colors';
 import type { ChartData, ChartOptions } from 'chart.js';
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend, annotationPlugin);
+
+export interface DietPeriod {
+  id: string;
+  name: string;
+  from: string;
+  to?: string;
+}
 
 const props = defineProps<{
   height?: number;
   cowId?: string;
   cowIds?: string[];
+  dietPeriods?: DietPeriod[];
 }>();
 
 useI18n();
@@ -177,6 +186,49 @@ const barChartData = computed((): ChartData<'bar'> => {
   };
 });
 
+/** Build annotation boxes for diet periods that overlap with the visible chart dates */
+const dietAnnotations = computed(() => {
+  if (!props.dietPeriods?.length || chartData.value.length === 0) return {};
+  const data = chartData.value;
+  const labels = data.map((d) => d.date); // yyyy-MM-dd
+  const bandColors = ['rgba(76, 175, 80, 0.08)', 'rgba(33, 150, 243, 0.08)', 'rgba(255, 152, 0, 0.08)'];
+  const borderColors = ['rgba(76, 175, 80, 0.4)', 'rgba(33, 150, 243, 0.4)', 'rgba(255, 152, 0, 0.4)'];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const annotations: Record<string, any> = {};
+  props.dietPeriods.forEach((dp, idx) => {
+    const dpFrom = dp.from.slice(0, 10); // yyyy-MM-dd
+    const dpTo = dp.to ? dp.to.slice(0, 10) : format(new Date(), 'yyyy-MM-dd');
+    // Find first/last chart label that falls within the diet period
+    let xMin = -1;
+    let xMax = -1;
+    for (let i = 0; i < labels.length; i++) {
+      if (labels[i] >= dpFrom && labels[i] <= dpTo) {
+        if (xMin === -1) xMin = i;
+        xMax = i;
+      }
+    }
+    if (xMin === -1) return; // no overlap
+    annotations[`diet_${idx}`] = {
+      type: 'box',
+      xMin: xMin - 0.5,
+      xMax: xMax + 0.5,
+      yMin: 0,
+      backgroundColor: bandColors[idx % bandColors.length],
+      borderColor: borderColors[idx % borderColors.length],
+      borderWidth: 1,
+      label: {
+        display: true,
+        content: dp.name,
+        position: { x: 'start', y: 'start' },
+        font: { size: 9, weight: '500' },
+        color: borderColors[idx % borderColors.length].replace('0.4', '1'),
+        padding: 2,
+      },
+    };
+  });
+  return annotations;
+});
+
 const barChartOptions = computed((): ChartOptions<'bar'> => {
   const c = colors.value;
   return {
@@ -187,6 +239,9 @@ const barChartOptions = computed((): ChartOptions<'bar'> => {
       intersect: false,
     },
     plugins: {
+      annotation: {
+        annotations: dietAnnotations.value,
+      },
       tooltip: {
         backgroundColor: 'rgba(0,0,0,0.8)',
         titleFont: { size: 11 },

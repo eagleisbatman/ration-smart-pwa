@@ -286,7 +286,7 @@ const cowOptions = computed(() => {
     (c) => !c.farmer_profile_id || c.farmer_profile_id === selfProfileId
   );
   if (myCows.length > 0) {
-    options.push({ label: t('logs.form.myCows'), value: '', disable: true });
+    options.push({ label: t('logs.form.myCows'), value: '__group_my__', disable: true });
     for (const cow of myCows) {
       options.push({ label: `  ${cow.name}`, value: cow.id });
     }
@@ -296,7 +296,7 @@ const cowOptions = computed(() => {
   for (const farmer of farmersStore.managedFarmers) {
     const farmerCows = cowsStore.getCowsForFarmer(farmer.id).filter((c) => c.is_active);
     if (farmerCows.length > 0) {
-      options.push({ label: farmer.name, value: '', disable: true });
+      options.push({ label: farmer.name, value: `__group_${farmer.id}__`, disable: true });
       for (const cow of farmerCows) {
         options.push({ label: `  ${cow.name}`, value: cow.id });
       }

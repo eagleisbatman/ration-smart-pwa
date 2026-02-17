@@ -407,7 +407,15 @@ const totalCowCount = computed(() => {
 });
 
 // Diet coverage stats
-const ewCowsOnDietCount = computed(() => Object.keys(dietsStore.activeDiets).length);
+const ewCowsOnDietCount = computed(() => {
+  const selfFarmerId = authStore.selfFarmerProfileId;
+  if (!selfFarmerId) return Object.keys(dietsStore.activeDiets).length;
+  // Exclude personal cows — only count managed farmers' cows
+  return Object.entries(dietsStore.activeDiets).filter(([cowId]) => {
+    const cow = cowsStore.activeCows.find((c) => c.id === cowId);
+    return cow && cow.farmer_profile_id !== selfFarmerId;
+  }).length;
+});
 
 function getCowsOnDietForFarmer(farmerId: string): number {
   const farmerCows = cowsStore.getCowsForFarmer(farmerId);
