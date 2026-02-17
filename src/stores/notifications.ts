@@ -94,13 +94,14 @@ export const useNotificationsStore = defineStore('notifications', () => {
     const dismissed = getDismissedIds();
     dismissedIds.value = dismissed;
 
-    // 1. Missing milk log today
+    // 1. Missing milk log today (only for cows with an active/followed diet)
     try {
       const activeCows = cowsStore.activeCows;
+      const activeDiets = dietsStore.activeDiets;
       const todayLogs = milkLogsStore.todayLogs;
       const loggedCowIds = new Set(todayLogs.map((log) => log.cow_id));
       const cowsMissingLog = activeCows.filter(
-        (cow) => !loggedCowIds.has(cow.id)
+        (cow) => activeDiets[cow.id] && !loggedCowIds.has(cow.id)
       );
 
       if (cowsMissingLog.length > 0) {
