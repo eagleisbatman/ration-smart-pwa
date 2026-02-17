@@ -205,7 +205,7 @@
     <!-- Milk Production -->
     <div class="section-label">{{ $t('chart.milkProductionTrend') }}</div>
     <div class="q-mb-lg">
-      <MilkProductionChart ref="chartRef" :height="180" />
+      <MilkProductionChart ref="chartRef" :height="180" :cow-ids="selfCowIdsList" />
     </div>
 
     <!-- Quick Actions -->
@@ -460,6 +460,12 @@ const selfCowIds = computed((): Set<string> | null => {
       .filter((c) => c.is_active)
       .map((c) => c.id)
   );
+});
+
+// Array form of selfCowIds for passing as a prop to MilkProductionChart
+const selfCowIdsList = computed((): string[] | undefined => {
+  if (selfCowIds.value === null) return undefined; // no filtering
+  return [...selfCowIds.value];
 });
 
 const cowCount = computed(() => {
