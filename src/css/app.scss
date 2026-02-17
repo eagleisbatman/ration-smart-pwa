@@ -1261,5 +1261,10 @@ body {
     color: #18181B !important;
   }
 
+  // CowDetailPage: default avatar — lighter bg so inverted (white) cow icon is visible
+  .cow-avatar {
+    background: #3F3F46 !important; // zinc-700 — lighter than page bg
+  }
+
 }
 
