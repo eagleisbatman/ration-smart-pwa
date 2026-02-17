@@ -119,29 +119,17 @@ export const useReportsStore = defineStore('reports', () => {
     }
 
     if (isOnline.value) {
-      try {
-        const payload = buildBackendPayload(farmerProfileId, parameters);
-        const response = await api.post(
-          `/api/v1/reports/generate?user_id=${encodeURIComponent(userId)}`,
-          payload,
-        );
+      // Let errors propagate so the UI can show the actual backend message
+      const payload = buildBackendPayload(farmerProfileId, parameters);
+      const response = await api.post(
+        `/api/v1/reports/generate?user_id=${encodeURIComponent(userId)}`,
+        payload,
+      );
 
-        const report = mapBackendReport(response.data, title, userId, parameters);
-        await db.reports.put(report);
+      const report = mapBackendReport(response.data, title, userId, parameters);
+      await db.reports.put(report);
 
-        return { queued: false, report };
-      } catch {
-        // API failed while online — queue for retry
-        await db.addToReportQueue({
-          report_type: reportType,
-          parameters,
-          title,
-          requested_at: new Date().toISOString(),
-          status: 'queued',
-        });
-        await fetchPendingReportCount();
-        return { queued: true };
-      }
+      return { queued: false, report };
     } else {
       await db.addToReportQueue({
         report_type: reportType,

@@ -4,20 +4,116 @@
       <SkeletonCard />
     </template>
 
-    <template v-else-if="report">
+    <template v-else-if="reportData">
       <!-- Header -->
       <q-card flat bordered class="q-mb-md">
         <q-card-section>
-          <div class="text-h6">{{ report.title }}</div>
-          <div class="text-caption text-grey-7">{{ formatDate(report.created_at, 'PPPp') }}</div>
+          <div class="text-h6">{{ reportData.farmer_name }}</div>
+          <div class="text-caption text-grey-7">{{ reportData.farmer_location }}</div>
+          <div class="text-caption text-grey-7">{{ formatDate(reportData.generated_at, 'PPPp') }}</div>
         </q-card-section>
       </q-card>
 
-      <!-- Download & Share Buttons -->
+      <!-- Cow Details -->
+      <q-card v-if="reportData.cow_name" flat bordered class="q-mb-md">
+        <q-card-section>
+          <div class="text-subtitle2 q-mb-xs">{{ $t('reports.cowDetails') }}</div>
+          <div class="text-body2 text-weight-medium">{{ reportData.cow_name }}</div>
+          <div v-if="reportData.cow_details" class="text-caption text-grey-7">{{ reportData.cow_details }}</div>
+        </q-card-section>
+      </q-card>
+
+      <!-- Summary Box -->
+      <div v-if="reportData.total_dm_kg || reportData.total_cost_daily" class="row q-col-gutter-sm q-mb-md">
+        <div v-if="reportData.total_cost_daily" class="col-6">
+          <q-card flat bordered class="text-center q-pa-sm">
+            <div class="text-h6 text-primary">Rs. {{ Math.round(reportData.total_cost_daily) }}</div>
+            <div class="text-caption text-grey-7">{{ $t('reports.dailyCost') }}</div>
+          </q-card>
+        </div>
+        <div v-if="reportData.total_dm_kg" class="col-6">
+          <q-card flat bordered class="text-center q-pa-sm">
+            <div class="text-h6 text-primary">{{ reportData.total_dm_kg }} kg</div>
+            <div class="text-caption text-grey-7">{{ $t('reports.dmIntake') }}</div>
+          </q-card>
+        </div>
+      </div>
+
+      <!-- Feed Table -->
+      <div v-if="reportData.diet_feeds?.length" class="q-mb-md">
+        <div class="text-subtitle1 q-mb-sm">
+          {{ $t('reports.recommendedDiet') }}
+          <span v-if="reportData.diet_name" class="text-caption text-grey-7"> — {{ reportData.diet_name }}</span>
+        </div>
+        <q-card flat bordered>
+          <q-markup-table flat separator="horizontal" dense>
+            <thead>
+              <tr>
+                <th class="text-left">{{ $t('reports.feedName') }}</th>
+                <th class="text-right">{{ $t('reports.amount') }}</th>
+                <th class="text-right">{{ $t('reports.cost') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(feed, idx) in reportData.diet_feeds" :key="idx">
+                <td>{{ feed.feed_name }}</td>
+                <td class="text-right text-weight-medium">{{ feed.amount_kg?.toFixed(2) }} kg</td>
+                <td class="text-right text-weight-medium">Rs. {{ Math.round(feed.cost || 0) }}</td>
+              </tr>
+            </tbody>
+          </q-markup-table>
+        </q-card>
+      </div>
+
+      <!-- Nutrient Balance -->
+      <div v-if="reportData.nutrient_balance?.length" class="q-mb-md">
+        <div class="text-subtitle1 q-mb-sm">{{ $t('reports.nutrientBalance') }}</div>
+        <q-card flat bordered>
+          <q-list separator dense>
+            <q-item v-for="(nb, idx) in reportData.nutrient_balance" :key="idx">
+              <q-item-section>
+                <q-item-label>{{ nb.parameter }}</q-item-label>
+              </q-item-section>
+              <q-item-section side>
+                <q-item-label>
+                  <span :class="nb.supply >= nb.requirement * 0.95 ? 'text-positive' : 'text-negative'">
+                    {{ nb.supply?.toFixed(1) }}
+                  </span>
+                  / {{ nb.requirement?.toFixed(1) }} {{ nb.unit }}
+                </q-item-label>
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-card>
+      </div>
+
+      <!-- Yield History -->
+      <div v-if="reportData.yield_history?.length" class="q-mb-md">
+        <div class="text-subtitle1 q-mb-sm">{{ $t('reports.yieldHistory') }}</div>
+        <q-card flat bordered>
+          <q-markup-table flat separator="horizontal" dense>
+            <thead>
+              <tr>
+                <th class="text-left">{{ $t('reports.date') }}</th>
+                <th class="text-right">{{ $t('reports.milk') }}</th>
+                <th class="text-right">{{ $t('reports.fatPct') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(row, idx) in reportData.yield_history" :key="idx">
+                <td>{{ row.date }}</td>
+                <td class="text-right text-weight-medium">{{ row.milk_liters?.toFixed(1) }} L</td>
+                <td class="text-right">{{ row.fat_pct }}%</td>
+              </tr>
+            </tbody>
+          </q-markup-table>
+        </q-card>
+      </div>
+
+      <!-- Actions -->
       <div class="row q-gutter-sm q-mb-md">
         <q-btn
-          v-if="report.file_url"
-          :label="$t('reports.downloadPdf')"
+          :label="$t('reports.downloadReport')"
           icon="download"
           color="primary"
           class="col"
@@ -27,9 +123,9 @@
         <q-btn
           :label="$t('reports.shareReport')"
           icon="share"
-          color="secondary"
+          outline
+          color="primary"
           class="col"
-          unelevated
           @click="showShareSheet = true"
         />
       </div>
@@ -60,47 +156,6 @@
           </q-list>
         </q-card>
       </q-dialog>
-
-      <!-- Report HTML Preview -->
-      <q-card v-if="htmlContent" flat bordered class="q-mb-md">
-        <q-card-section>
-          <div class="report-html-preview" v-html="htmlContent" />
-        </q-card-section>
-      </q-card>
-
-      <!-- Report Summary Preview (fallback when no HTML) -->
-      <ReportPreview
-        v-if="!htmlContent"
-        :report-type="report.report_type"
-        :parameters="params"
-        :report-data="(report as Record<string, unknown>)"
-        class="q-mb-md"
-      />
-
-      <!-- Parameters -->
-      <div class="text-subtitle1 q-mt-md q-mb-sm">{{ $t('reports.parameters') }}</div>
-      <q-card flat bordered>
-        <q-list separator>
-          <q-item>
-            <q-item-section>
-              <q-item-label caption>{{ $t('reports.reportType') }}</q-item-label>
-              <q-item-label class="text-capitalize">{{ report.report_type.replace('_', ' ') }}</q-item-label>
-            </q-item-section>
-          </q-item>
-          <q-item v-if="params.start_date">
-            <q-item-section>
-              <q-item-label caption>{{ $t('reports.dateRange') }}</q-item-label>
-              <q-item-label>{{ params.start_date }} to {{ params.end_date }}</q-item-label>
-            </q-item-section>
-          </q-item>
-          <q-item v-if="params.cow_id">
-            <q-item-section>
-              <q-item-label caption>{{ $t('reports.cow') }}</q-item-label>
-              <q-item-label>{{ params.cow_id }}</q-item-label>
-            </q-item-section>
-          </q-item>
-        </q-list>
-      </q-card>
     </template>
 
     <template v-else>
@@ -123,136 +178,120 @@ import { useI18n } from 'vue-i18n';
 import { api } from 'src/lib/api';
 import { useDateFormat } from 'src/composables/useDateFormat';
 import { useExport } from 'src/composables/useExport';
-import { useAuthStore } from 'src/stores/auth';
-import { db, Report } from 'src/lib/offline/db';
 import SkeletonCard from 'src/components/ui/SkeletonCard.vue';
 import EmptyState from 'src/components/ui/EmptyState.vue';
-import ReportPreview from 'src/components/reports/ReportPreview.vue';
+
+interface ReportFeed {
+  feed_name: string;
+  amount_kg: number;
+  cost: number;
+  price_per_kg?: number;
+}
+
+interface NutrientRow {
+  parameter: string;
+  requirement: number;
+  supply: number;
+  unit: string;
+}
+
+interface YieldRow {
+  date: string;
+  milk_liters: number;
+  fat_pct: number | string;
+}
+
+interface ReportData {
+  farmer_name: string;
+  farmer_location?: string;
+  cow_name?: string;
+  cow_details?: string;
+  diet_name?: string;
+  diet_feeds?: ReportFeed[];
+  nutrient_balance?: NutrientRow[];
+  total_dm_kg?: number;
+  total_cost_daily?: number;
+  yield_history?: YieldRow[];
+  generated_at: string;
+}
 
 const route = useRoute();
 const router = useRouter();
 const { t } = useI18n();
 const { formatDate } = useDateFormat();
 const { shareContent, shareViaWhatsApp } = useExport();
-const authStore = useAuthStore();
 
 const reportId = computed(() => route.params.id as string);
-const report = ref<Report | null>(null);
-const htmlContent = ref<string | null>(null);
+const reportData = ref<ReportData | null>(null);
+const downloadUrl = ref<string | null>(null);
 const loading = ref(true);
 const showShareSheet = ref(false);
 
-const params = computed(() => (report.value?.parameters as Record<string, string>) || {});
-
 async function downloadReport() {
-  if (!htmlContent.value && !report.value?.file_url) return;
-
-  // Use already-fetched HTML or fetch it
-  let html = htmlContent.value;
-  if (!html) {
-    try {
-      const resp = await api.get(`/api/v1/reports/${reportId.value}/download`, {
-        responseType: 'text',
-      });
-      html = resp.data as string;
-    } catch {
-      return;
-    }
+  try {
+    const resp = await api.get(`/api/v1/reports/${reportId.value}/download`, {
+      responseType: 'text',
+    });
+    const html = resp.data as string;
+    const blob = new Blob([html], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    window.open(url, '_blank', 'noopener');
+    setTimeout(() => URL.revokeObjectURL(url), 10000);
+  } catch {
+    // silent
   }
-
-  // Open HTML in a new tab via blob URL
-  const blob = new Blob([html], { type: 'text/html' });
-  const url = URL.createObjectURL(blob);
-  window.open(url, '_blank', 'noopener');
-  setTimeout(() => URL.revokeObjectURL(url), 10000);
 }
 
 function buildReportSummaryText(): string {
-  if (!report.value) return '';
-  const r = report.value;
-  const p = params.value;
-  let text = `${t('reports.shareReport')}\n`;
-  text += `${t('reports.reportType')}: ${r.report_type.replace('_', ' ')}\n`;
-  text += `${r.title}\n`;
-  if (p.start_date && p.end_date) {
-    text += `${t('reports.dateRange')}: ${p.start_date} to ${p.end_date}\n`;
+  if (!reportData.value) return '';
+  const r = reportData.value;
+  let text = `${t('reports.dietReport')}\n`;
+  text += `${r.farmer_name}\n`;
+  if (r.farmer_location) text += `${r.farmer_location}\n`;
+  if (r.cow_name) text += `\n${t('reports.cowDetails')}: ${r.cow_name} ${r.cow_details || ''}\n`;
+  if (r.diet_feeds?.length) {
+    text += `\n${t('reports.recommendedDiet')}:\n`;
+    for (const feed of r.diet_feeds) {
+      text += `  ${feed.feed_name}: ${feed.amount_kg?.toFixed(2)} kg\n`;
+    }
   }
-  if (p.cow_id) {
-    text += `${t('reports.cow')}: ${p.cow_id}\n`;
-  }
-  text += `\n${t('export.generatedBy')}`;
+  if (r.total_cost_daily) text += `\n${t('reports.dailyCost')}: Rs. ${Math.round(r.total_cost_daily)}`;
+  if (r.total_dm_kg) text += `\n${t('reports.dmIntake')}: ${r.total_dm_kg} kg`;
+  text += `\n\n${t('export.generatedBy')}`;
   return text;
 }
 
 function shareReportViaWhatsApp() {
-  const text = buildReportSummaryText();
-  shareViaWhatsApp(text);
+  shareViaWhatsApp(buildReportSummaryText());
 }
 
 async function shareReportViaOther() {
-  const text = buildReportSummaryText();
-  await shareContent(t('reports.shareReport'), text);
+  await shareContent(t('reports.shareReport'), buildReportSummaryText());
 }
 
 onMounted(async () => {
   loading.value = true;
 
-  // Try to get report metadata from API
   try {
     const response = await api.get(`/api/v1/reports/${reportId.value}`);
     const data = response.data;
 
-    // Map backend FarmerReportSummary → PWA Report
-    report.value = {
-      id: data.id,
-      user_id: authStore.userId || '',
-      report_type: data.report_type,
-      title: data.farmer_name || data.report_type,
-      parameters: {},
-      file_url: data.download_url,
-      status: 'completed',
-      created_at: data.generated_at,
-      _cached_at: new Date().toISOString(),
-    };
+    // The detail endpoint now returns report_data with structured content
+    if (data.report_data) {
+      reportData.value = data.report_data as ReportData;
+    } else {
+      // Fallback for old reports without report_data
+      reportData.value = {
+        farmer_name: data.farmer_name || data.report_type,
+        generated_at: data.generated_at,
+      };
+    }
 
-    await db.reports.put(report.value);
+    downloadUrl.value = data.download_url;
   } catch {
-    // Fallback to cache
-    report.value = await db.reports.get(reportId.value) || null;
+    reportData.value = null;
   }
 
   loading.value = false;
-
-  // Fetch HTML content in the background (after loading spinner is gone)
-  if (report.value) {
-    try {
-      const htmlResp = await api.get(`/api/v1/reports/${reportId.value}/download`, {
-        responseType: 'text',
-      });
-      if (typeof htmlResp.data === 'string' && htmlResp.data.includes('<')) {
-        htmlContent.value = htmlResp.data;
-      }
-    } catch {
-      // HTML not available — user can still use Download button
-    }
-  }
 });
 </script>
-
-<style lang="scss" scoped>
-.report-html-preview {
-  max-height: 600px;
-  overflow-y: auto;
-
-  :deep(body) {
-    font-size: 12pt;
-    padding: 0;
-    margin: 0;
-  }
-
-  :deep(table) {
-    width: 100%;
-    font-size: 0.85rem;
-  }
-}
-</style>

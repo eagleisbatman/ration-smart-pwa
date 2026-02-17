@@ -25,35 +25,25 @@
       {{ $t('reports.processingQueue') }}
     </q-banner>
 
-    <!-- Report Types -->
-    <div class="text-subtitle1 q-mb-sm">{{ $t('reports.generateReport') }}</div>
-    <div class="row q-col-gutter-sm q-mb-lg">
-      <div v-for="type in reportTypes" :key="type.value" class="col-6">
-        <q-card
-          v-ripple
-          flat
-          bordered
-          class="report-type-card cursor-pointer"
-          clickable
-          @click="generateReport(type.value)"
-        >
-          <q-card-section class="text-center">
-            <q-avatar size="40px" color="primary" text-color="white">
-              <q-icon :name="type.icon" size="20px" />
-            </q-avatar>
-            <div class="text-body2 q-mt-sm">{{ type.label }}</div>
-          </q-card-section>
-        </q-card>
-      </div>
-    </div>
-
-    <!-- Report Templates -->
-    <div class="q-mb-lg">
-      <ReportTemplateList
-        ref="templateListRef"
-        @use="onUseTemplate"
-      />
-    </div>
+    <!-- Generate Diet Report CTA -->
+    <q-card
+      v-ripple
+      flat
+      bordered
+      class="report-cta-card cursor-pointer q-mb-lg"
+      @click="openGenerateDialog"
+    >
+      <q-card-section class="row items-center q-gutter-md">
+        <q-avatar size="48px" color="primary" text-color="white">
+          <q-icon name="menu_book" size="24px" />
+        </q-avatar>
+        <div class="col">
+          <div class="text-subtitle1">{{ $t('reports.generateDietReport') }}</div>
+          <div class="text-caption text-grey-7">{{ $t('reports.generateDietReportDesc') }}</div>
+        </div>
+        <q-icon name="chevron_right" color="grey-5" size="sm" />
+      </q-card-section>
+    </q-card>
 
     <!-- Queued Reports Section -->
     <template v-if="reportsStore.queuedReports.length > 0">
@@ -64,7 +54,7 @@
           :key="item.id"
         >
           <q-item-section avatar>
-            <q-icon :name="getReportIcon(item.report_type)" color="grey-6" />
+            <q-icon name="menu_book" color="grey-6" />
           </q-item-section>
           <q-item-section>
             <q-item-label>{{ item.title }}</q-item-label>
@@ -106,21 +96,14 @@
           @click="viewReport(report)"
         >
           <q-item-section avatar>
-            <q-icon :name="getReportIcon(report.report_type)" color="primary" />
+            <q-icon name="menu_book" color="primary" />
           </q-item-section>
           <q-item-section>
             <q-item-label>{{ report.title }}</q-item-label>
             <q-item-label caption>{{ formatDate(report.created_at, 'PPp') }}</q-item-label>
           </q-item-section>
           <q-item-section side>
-            <q-chip
-              :color="report.status === 'completed' ? 'positive' : 'warning'"
-              text-color="white"
-              size="sm"
-              dense
-            >
-              {{ report.status }}
-            </q-chip>
+            <q-icon name="chevron_right" color="grey-5" />
           </q-item-section>
         </q-item>
       </q-list>
@@ -128,41 +111,69 @@
 
     <!-- Generate Report Dialog -->
     <q-dialog v-model="showGenerateDialog" persistent>
-      <q-card>
+      <q-card style="min-width: 320px">
         <q-card-section>
-          <div class="text-h6">{{ $t('reports.generate') }} {{ selectedReportType?.label }}</div>
+          <div class="text-h6">{{ $t('reports.generateDietReport') }}</div>
         </q-card-section>
 
         <q-card-section>
-          <!-- Report Name -->
-          <q-input
-            v-model="reportName"
-            :label="$t('reports.reportName')"
-            outlined
-            :placeholder="selectedReportType?.label"
-            class="q-mb-sm"
-          />
-
+          <!-- Cow Selection (required) -->
           <q-select
-            v-if="selectedReportType?.needsCow"
-            v-model="reportParams.cow_id"
+            v-model="selectedCowId"
             :label="$t('reports.selectCow')"
             outlined
             :options="cowOptions"
             emit-value
             map-options
+            :rules="[val => !!val || $t('reports.cowRequired')]"
+            class="q-mb-sm"
           />
 
-          <div class="row q-col-gutter-sm q-mt-sm">
-            <div class="col-12 col-sm-6">
+          <!-- Diet info -->
+          <q-banner
+            v-if="selectedCowId && !cowHasDiet"
+            class="bg-orange-1 text-orange-9 q-mb-sm rounded-borders"
+            dense
+          >
+            <template #avatar>
+              <q-icon name="warning" color="orange" />
+            </template>
+            {{ $t('reports.noDietAvailable') }}
+          </q-banner>
+
+          <q-banner
+            v-if="selectedCowId && cowHasDiet && activeDietLabel"
+            class="bg-green-1 text-green-9 q-mb-sm rounded-borders"
+            dense
+          >
+            <template #avatar>
+              <q-icon name="check_circle" color="green" />
+            </template>
+            {{ activeDietLabel }}
+          </q-banner>
+
+          <!-- Report Name -->
+          <q-input
+            v-model="reportName"
+            :label="$t('reports.reportName')"
+            outlined
+            :placeholder="defaultReportName"
+            class="q-mb-sm"
+          />
+
+          <!-- Date Range (for yield history) -->
+          <div class="text-caption text-grey-7 q-mb-xs">{{ $t('reports.yieldHistoryRange') }}</div>
+          <div class="row q-col-gutter-sm">
+            <div class="col-6">
               <q-input
                 v-model="reportParams.start_date"
                 :label="$t('reports.startDate')"
                 outlined
+                dense
                 readonly
               >
                 <template #append>
-                  <q-icon name="event" class="cursor-pointer" @click="startDateRef?.open()">
+                  <q-icon name="event" class="cursor-pointer" size="xs" @click="startDateRef?.open()">
                     <DatePickerPopup
                       ref="startDateRef"
                       v-model="reportParams.start_date"
@@ -172,15 +183,16 @@
                 </template>
               </q-input>
             </div>
-            <div class="col-12 col-sm-6">
+            <div class="col-6">
               <q-input
                 v-model="reportParams.end_date"
                 :label="$t('reports.endDate')"
                 outlined
+                dense
                 readonly
               >
                 <template #append>
-                  <q-icon name="event" class="cursor-pointer" @click="endDateRef?.open()">
+                  <q-icon name="event" class="cursor-pointer" size="xs" @click="endDateRef?.open()">
                     <DatePickerPopup
                       ref="endDateRef"
                       v-model="reportParams.end_date"
@@ -194,33 +206,18 @@
         </q-card-section>
 
         <q-card-actions align="right">
-          <q-btn
-            flat
-            icon="bookmark_add"
-            :label="$t('reports.templates.saveTemplate')"
-            color="secondary"
-            @click="openSaveTemplate"
-          />
-          <q-space />
           <q-btn v-close-popup flat :label="$t('common.cancel')" />
           <q-btn
             flat
             :label="$t('reports.generate')"
             color="primary"
             :loading="generating"
+            :disable="!selectedCowId || !cowHasDiet"
             @click="submitReport"
           />
         </q-card-actions>
       </q-card>
     </q-dialog>
-
-    <!-- Save Template Dialog -->
-    <ReportTemplateDialog
-      v-model="showSaveTemplateDialog"
-      :report-type="selectedReportType?.value ?? ''"
-      :parameters="currentParameters"
-      @saved="onTemplateSaved"
-    />
   </q-page>
 </template>
 
@@ -231,20 +228,20 @@ import { useQuasar } from 'quasar';
 import { useI18n } from 'vue-i18n';
 import { format, subDays } from 'date-fns';
 import { useCowsStore } from 'src/stores/cows';
+import { useDietsStore } from 'src/stores/diets';
 import { useReportsStore } from 'src/stores/reports';
 import { useDateFormat } from 'src/composables/useDateFormat';
-import { Report, ReportTemplate } from 'src/lib/offline/db';
+import { Report } from 'src/lib/offline/db';
 import { isOnline } from 'src/boot/pwa';
+import { extractUserFriendlyError } from 'src/lib/error-messages';
 import SkeletonList from 'src/components/ui/SkeletonList.vue';
-import ReportTemplateDialog from 'src/components/reports/ReportTemplateDialog.vue';
-import ReportTemplateList from 'src/components/reports/ReportTemplateList.vue';
 import DatePickerPopup from 'src/components/ui/DatePickerPopup.vue';
-import { COW_ICON } from 'src/boot/icons';
 
 const router = useRouter();
 const $q = useQuasar();
 const { t } = useI18n();
 const cowsStore = useCowsStore();
+const dietsStore = useDietsStore();
 const reportsStore = useReportsStore();
 const { formatDate } = useDateFormat();
 
@@ -255,97 +252,74 @@ const showGenerateDialog = ref(false);
 const generating = ref(false);
 const processingQueue = ref(false);
 const reportName = ref('');
-const selectedReportType = ref<{ value: string; label: string; icon: string; needsCow: boolean } | null>(null);
-const showSaveTemplateDialog = ref(false);
-const templateListRef = ref<InstanceType<typeof ReportTemplateList> | null>(null);
+const selectedCowId = ref<string | null>(null);
 const startDateRef = ref<InstanceType<typeof DatePickerPopup> | null>(null);
 const endDateRef = ref<InstanceType<typeof DatePickerPopup> | null>(null);
 
 const reportParams = reactive({
-  cow_id: null as string | null,
   start_date: format(subDays(new Date(), 30), 'yyyy-MM-dd'),
   end_date: format(new Date(), 'yyyy-MM-dd'),
 });
 
-const reportTypes = computed(() => [
-  { value: 'milk_production', label: t('reports.reportTypes.milkProduction'), icon: 'water_drop', needsCow: false },
-  { value: 'feed_consumption', label: t('reports.reportTypes.feedConsumption'), icon: 'grass', needsCow: false },
-  { value: 'cow_performance', label: t('reports.reportTypes.cowPerformance'), icon: COW_ICON, needsCow: true },
-  { value: 'cost_analysis', label: t('reports.reportTypes.costAnalysis'), icon: 'savings', needsCow: false },
-]);
-
-const cowOptions = computed(() => [
-  { label: t('reports.allCows'), value: null },
-  ...cowsStore.activeCows.map((cow) => ({
+const cowOptions = computed(() =>
+  cowsStore.activeCows.map((cow) => ({
     label: cow.name,
     value: cow.id,
   })),
-]);
+);
 
-function getReportIcon(type: string): string {
-  const found = reportTypes.value.find((rt) => rt.value === type);
-  return found?.icon || 'assessment';
-}
+/** Check if the selected cow has at least one saved/completed diet */
+const cowHasDiet = computed(() => {
+  if (!selectedCowId.value) return false;
+  return dietsStore.diets.some(
+    (d) => d.cow_id === selectedCowId.value && (d.status === 'completed' || d.is_active),
+  );
+});
 
-const currentParameters = computed(() => ({
-  cow_id: reportParams.cow_id,
-  start_date: reportParams.start_date,
-  end_date: reportParams.end_date,
-}));
+/** Label for the active diet of the selected cow */
+const activeDietLabel = computed(() => {
+  if (!selectedCowId.value) return '';
+  const diet = dietsStore.activeDiets[selectedCowId.value];
+  if (diet) {
+    return t('reports.usingActiveDiet', { date: formatDate(diet.created_at, 'PPp') });
+  }
+  // Fall back to most recent completed diet
+  const recent = dietsStore.diets
+    .filter((d) => d.cow_id === selectedCowId.value && d.status === 'completed')
+    .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())[0];
+  if (recent) {
+    return t('reports.usingLatestDiet', { date: formatDate(recent.created_at, 'PPp') });
+  }
+  return '';
+});
 
-function generateReport(type: string) {
-  selectedReportType.value = reportTypes.value.find((rt) => rt.value === type) || null;
-  reportName.value = selectedReportType.value?.label || '';
+const defaultReportName = computed(() => {
+  if (!selectedCowId.value) return t('reports.dietReport');
+  const cow = cowsStore.activeCows.find((c) => c.id === selectedCowId.value);
+  return cow ? `${cow.name} - ${t('reports.dietReport')}` : t('reports.dietReport');
+});
+
+function openGenerateDialog() {
+  selectedCowId.value = null;
+  reportName.value = '';
   showGenerateDialog.value = true;
-}
-
-function openSaveTemplate() {
-  if (!selectedReportType.value) return;
-  showSaveTemplateDialog.value = true;
-}
-
-function onTemplateSaved() {
-  templateListRef.value?.loadTemplates();
-}
-
-function onUseTemplate(template: ReportTemplate) {
-  selectedReportType.value = reportTypes.value.find((rt) => rt.value === template.report_type) || null;
-
-  if (template.parameters.cow_id !== undefined) {
-    reportParams.cow_id = template.parameters.cow_id as string | null;
-  }
-  if (template.parameters.start_date) {
-    reportParams.start_date = template.parameters.start_date as string;
-  }
-  if (template.parameters.end_date) {
-    reportParams.end_date = template.parameters.end_date as string;
-  }
-
-  reportName.value = selectedReportType.value?.label || '';
-  showGenerateDialog.value = true;
-
-  $q.notify({
-    type: 'info',
-    message: t('reports.templates.useTemplate'),
-    icon: 'bookmark',
-  });
 }
 
 async function submitReport() {
-  if (!selectedReportType.value) return;
+  if (!selectedCowId.value || !cowHasDiet.value) return;
 
   generating.value = true;
 
   try {
     const parameters = {
-      cow_id: reportParams.cow_id,
+      cow_id: selectedCowId.value,
       start_date: reportParams.start_date,
       end_date: reportParams.end_date,
     };
 
-    const title = reportName.value.trim() || selectedReportType.value.label;
+    const title = reportName.value.trim() || defaultReportName.value;
     const result = await reportsStore.queueReportGeneration(
-      selectedReportType.value.value,
+      'diet_summary',
       parameters,
       title,
     );
@@ -366,10 +340,10 @@ async function submitReport() {
       });
       router.push(`/reports/${result.report.id}`);
     }
-  } catch {
+  } catch (err) {
     $q.notify({
       type: 'negative',
-      message: t('reports.generatedFailed'),
+      message: extractUserFriendlyError(err),
     });
   } finally {
     generating.value = false;
@@ -377,14 +351,7 @@ async function submitReport() {
 }
 
 function viewReport(report: Report) {
-  if (report.status === 'completed') {
-    router.push(`/reports/${report.id}`);
-  } else {
-    $q.notify({
-      type: 'info',
-      message: t('reports.stillGenerating'),
-    });
-  }
+  router.push(`/reports/${report.id}`);
 }
 
 async function handleOnline() {
@@ -404,7 +371,6 @@ async function handleOnline() {
         type: 'positive',
         message: t('reports.queueProcessed'),
       });
-      // Refresh reports list
       reports.value = await reportsStore.fetchReports();
     }
   }
@@ -418,6 +384,7 @@ const stopOnlineWatcher = watch(online, (newVal, oldVal) => {
 
 onMounted(async () => {
   await cowsStore.fetchCows();
+  await dietsStore.fetchDiets();
   await reportsStore.fetchPendingReportCount();
 
   loading.value = true;
@@ -431,7 +398,7 @@ onUnmounted(() => {
 </script>
 
 <style lang="scss" scoped>
-.report-type-card {
+.report-cta-card {
   border-radius: $radius-loose;
   transition: transform 0.2s;
 
