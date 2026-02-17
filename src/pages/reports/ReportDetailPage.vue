@@ -14,30 +14,24 @@
         </q-card-section>
       </q-card>
 
-      <!-- Cow Details -->
+      <!-- Cow Details + Summary -->
       <q-card v-if="reportData.cow_name" flat bordered class="q-mb-md">
         <q-card-section>
           <div class="text-subtitle2 q-mb-xs">{{ $t('reports.cowDetails') }}</div>
           <div class="text-body2 text-weight-medium">{{ reportData.cow_name }}</div>
-          <div v-if="reportData.cow_details" class="text-caption text-grey-7">{{ reportData.cow_details }}</div>
+          <div v-if="reportData.cow_details" class="text-caption text-grey-7 q-mb-sm">{{ reportData.cow_details }}</div>
+          <div v-if="reportData.total_cost_daily || reportData.total_dm_kg" class="row q-col-gutter-sm q-mt-xs">
+            <div v-if="reportData.total_cost_daily" class="col">
+              <div class="text-h6 text-primary">Rs. {{ Math.round(reportData.total_cost_daily) }}</div>
+              <div class="text-caption text-grey-7">{{ $t('reports.dailyCost') }}</div>
+            </div>
+            <div v-if="reportData.total_dm_kg" class="col">
+              <div class="text-h6 text-primary">{{ reportData.total_dm_kg }} kg</div>
+              <div class="text-caption text-grey-7">{{ $t('reports.dmIntake') }}</div>
+            </div>
+          </div>
         </q-card-section>
       </q-card>
-
-      <!-- Summary Box -->
-      <div v-if="reportData.total_dm_kg || reportData.total_cost_daily" class="row q-col-gutter-sm q-mb-md">
-        <div v-if="reportData.total_cost_daily" class="col-6">
-          <q-card flat bordered class="text-center q-pa-sm">
-            <div class="text-h6 text-primary">Rs. {{ Math.round(reportData.total_cost_daily) }}</div>
-            <div class="text-caption text-grey-7">{{ $t('reports.dailyCost') }}</div>
-          </q-card>
-        </div>
-        <div v-if="reportData.total_dm_kg" class="col-6">
-          <q-card flat bordered class="text-center q-pa-sm">
-            <div class="text-h6 text-primary">{{ reportData.total_dm_kg }} kg</div>
-            <div class="text-caption text-grey-7">{{ $t('reports.dmIntake') }}</div>
-          </q-card>
-        </div>
-      </div>
 
       <!-- Feed Table -->
       <div v-if="reportData.diet_feeds?.length" class="q-mb-md">
