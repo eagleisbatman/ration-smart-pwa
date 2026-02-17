@@ -501,7 +501,7 @@
     },
     "status": {
       "processing": "Optimization in progress... This may take a few seconds.",
-      "failed": "Optimization failed. Please try again with different parameters.",
+      "failed": "We couldn't create a balanced diet with these feeds. Try choosing a different mix — include grains, green fodder, and protein sources.",
       "waiting": "Waiting to start optimization..."
     },
     "statusLabel": {

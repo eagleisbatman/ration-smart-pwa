@@ -9,7 +9,7 @@
     <template v-else-if="diet">
       <!-- Status Banner -->
       <q-banner
-        v-if="!['completed', 'saved', 'following'].includes(diet.status)"
+        v-if="showBanner && !['completed', 'saved', 'following'].includes(diet.status)"
         :class="`bg-${getStatusColor(diet.status)} text-white q-mb-md`"
         rounded
       >
@@ -25,14 +25,16 @@
         <template v-else>
           {{ $t('diet.status.waiting') }}
         </template>
-        <template v-if="diet.status === 'failed'" #action>
+        <template #action>
           <q-btn
+            v-if="diet.status === 'failed'"
             flat
             color="white"
             :label="$t('diet.tryAgain')"
             icon="refresh"
             @click="regenerateDiet"
           />
+          <q-btn flat round dense icon="close" color="white" @click="showBanner = false" />
         </template>
       </q-banner>
 
@@ -461,6 +463,7 @@ const dietId = computed(() => route.params.id as string);
 const hasPendingFollowUp = ref(false);
 const diet = ref<Diet | null>(null);
 const loading = ref(true);
+const showBanner = ref(true);
 
 const resultData = computed<DietResultData>(() => (diet.value?.result_data as DietResultData) || {});
 

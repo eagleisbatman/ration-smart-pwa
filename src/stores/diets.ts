@@ -410,7 +410,9 @@ export const useDietsStore = defineStore('diets', () => {
     error.value = null;
 
     try {
-      if (isOnline.value) {
+      // Only call backend delete if the diet was saved/synced to the server
+      const existing = await db.diets.get(id);
+      if (isOnline.value && existing?._synced) {
         await api.delete(`/api/v1/diet/${id}`);
       }
 
