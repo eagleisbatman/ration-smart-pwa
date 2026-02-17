@@ -302,6 +302,9 @@ function mapCowFromBackend(cow: Record<string, unknown>): Record<string, unknown
     image_url: cow.image_url,
     updated_at: cow.updated_at,
     farmer_profile_id: cow.farmer_profile_id,
+    age_months: cow.age_months,
+    body_condition_score: cow.body_condition_score ? Number(cow.body_condition_score) : undefined,
+    activity_level: cow.activity_level || 'normal',
     // Pass through extra backend fields for round-tripping
     _backend_lactating: cow.lactating,
     _backend_days_in_milk: cow.days_in_milk,
@@ -332,6 +335,9 @@ function mapCowToBackend(input: Record<string, unknown>): Record<string, unknown
     target_milk_yield: input._backend_target_milk_yield ?? undefined,
     days_of_pregnancy: isPregnant ? (pregnancyMonth ?? 0) * 30 : 0,
     image_url: input.image_url,
+    age_months: input.age_months ?? undefined,
+    body_condition_score: input.body_condition_score ?? undefined,
+    activity_level: input.activity_level ?? undefined,
     is_active: input.is_active,
     farmer_profile_id: input.farmer_profile_id || undefined,
   };

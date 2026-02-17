@@ -78,8 +78,7 @@ export const useCowsStore = defineStore('cows', () => {
           _deleted: false,
         }));
 
-        // Preserve local-only fields (age_months, body_condition_score, activity_level)
-        // that the backend doesn't store yet
+        // Merge local-only fields with server data (server values take priority when present)
         const localCows = await db.cows.bulkGet(serverCows.map((c: Cow) => c.id));
         const mergedCows = serverCows.map((sc: Cow, i: number) => {
           const lc = localCows[i];

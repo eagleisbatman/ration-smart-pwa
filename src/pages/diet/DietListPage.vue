@@ -188,6 +188,7 @@ const filterOptions = computed(() => {
   const opts: { label: string; value: string }[] = [
     { label: t('diet.filter.all'), value: 'all' },
     { label: t('diet.filterFollowing'), value: 'following' },
+    { label: t('diet.filter.saved'), value: 'saved' },
   ];
   if (farmersStore.managedFarmers.length > 0) {
     opts.push({ label: t('diet.filter.myCows'), value: 'my' });
@@ -201,6 +202,7 @@ const filterOptions = computed(() => {
 const filteredDiets = computed(() => {
   if (activeFilter.value === 'all') return diets.value;
   if (activeFilter.value === 'following') return diets.value.filter((d) => d.is_active);
+  if (activeFilter.value === 'saved') return diets.value.filter((d) => ['completed', 'saved'].includes(d.status) && !d.is_active);
   const selfProfileId = authStore.selfFarmerProfileId;
   if (activeFilter.value === 'my') {
     return diets.value.filter((d) => {
