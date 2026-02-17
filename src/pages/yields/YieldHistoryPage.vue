@@ -177,7 +177,7 @@
               </q-item-section>
 
               <q-item-section>
-                <q-item-label>{{ formatDate(log.log_date) }} · {{ getCowName(log.cow_id) }}</q-item-label>
+                <q-item-label>{{ formatDate(log.log_date) }} · {{ getCowName(log) }}</q-item-label>
                 <q-item-label caption>
                   {{ (log.total_liters || 0).toFixed(1) }}{{ $t('units.l') }}
                   <span v-if="log.fat_percentage"> &middot; {{ $t('milkSummary.fat') }}: {{ log.fat_percentage }}%</span>
@@ -333,9 +333,10 @@ const formatDateRangeDisplay = computed(() => {
   return '';
 });
 
-function getCowName(cowId: string): string {
-  const cow = cowsStore.activeCows.find((c) => c.id === cowId);
-  return cow?.name || cowId;
+function getCowName(log: MilkLog): string {
+  if (log.cow_name) return log.cow_name;
+  const cow = cowsStore.activeCows.find((c) => c.id === log.cow_id);
+  return cow?.name || t('logs.labels.unknownCow');
 }
 
 async function loadData() {
