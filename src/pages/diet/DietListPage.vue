@@ -20,6 +20,22 @@
 
       <!-- Diet List -->
       <template v-else>
+        <!-- Filter Chips -->
+        <div v-if="filterOptions.length > 1" class="q-mb-md filter-chips">
+          <q-chip
+            v-for="opt in filterOptions"
+            :key="opt.value"
+            :color="activeFilter === opt.value ? 'primary' : undefined"
+            :text-color="activeFilter === opt.value ? 'white' : undefined"
+            :outline="activeFilter !== opt.value"
+            clickable
+            size="sm"
+            @click="activeFilter = opt.value"
+          >
+            {{ opt.label }}
+          </q-chip>
+        </div>
+
         <!-- Cost Trend Chart (collapsible) -->
         <q-card
           v-if="completedDietsWithCost.length >= 2"
@@ -40,7 +56,7 @@
         </q-card>
 
         <q-card
-          v-for="diet in diets"
+          v-for="diet in filteredDiets"
           :key="diet.id"
           flat
           bordered
@@ -56,7 +72,10 @@
 
               <div class="col q-ml-md">
                 <div class="text-subtitle1">
-                  {{ diet.cow_name || $t('diet.generalDiet') }}
+                  {{ getDietTitle(diet) }}
+                </div>
+                <div v-if="getDietSubtitle(diet)" class="text-caption text-grey-6">
+                  {{ getDietSubtitle(diet) }}
                 </div>
                 <div class="text-caption text-grey-7">
                   {{ formatDate(diet.created_at) }}
@@ -117,11 +136,14 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { format } from 'date-fns';
 import { useDietsStore } from 'src/stores/diets';
+import { useCowsStore } from 'src/stores/cows';
+import { useFarmersStore } from 'src/stores/farmers';
+import { useAuthStore } from 'src/stores/auth';
 import { Diet } from 'src/lib/offline/db';
 import { useCurrency } from 'src/composables/useCurrency';
 
@@ -134,12 +156,64 @@ import EmptyState from 'src/components/ui/EmptyState.vue';
 import DietCostChart from 'src/components/diet/DietCostChart.vue';
 
 const dietsStore = useDietsStore();
+const cowsStore = useCowsStore();
+const farmersStore = useFarmersStore();
+const authStore = useAuthStore();
 
+const activeFilter = ref('all');
 const loading = computed(() => dietsStore.loading);
 const diets = computed(() => dietsStore.diets);
 const completedDietsWithCost = computed(() =>
   diets.value.filter((d) => d.status === 'completed' && d.total_cost != null && d.total_cost > 0)
 );
+
+/** Build cow→farmer mapping from cows store */
+const cowFarmerMap = computed(() => {
+  const map: Record<string, { farmerId: string; farmerName: string }> = {};
+  for (const cow of cowsStore.cows) {
+    if (cow.farmer_profile_id) {
+      const farmer = farmersStore.activeFarmers.find((f) => f.id === cow.farmer_profile_id);
+      map[cow.id] = {
+        farmerId: cow.farmer_profile_id,
+        farmerName: farmer?.name || '',
+      };
+    }
+  }
+  return map;
+});
+
+/** Filter options: All + My Cows + one per managed farmer */
+const filterOptions = computed(() => {
+  const opts: { label: string; value: string }[] = [
+    { label: t('diet.filter.all'), value: 'all' },
+  ];
+  if (farmersStore.managedFarmers.length > 0) {
+    opts.push({ label: t('diet.filter.myCows'), value: 'my' });
+    for (const farmer of farmersStore.managedFarmers) {
+      opts.push({ label: farmer.name, value: `farmer:${farmer.id}` });
+    }
+  }
+  return opts;
+});
+
+const filteredDiets = computed(() => {
+  if (activeFilter.value === 'all') return diets.value;
+  const selfProfileId = authStore.selfFarmerProfileId;
+  if (activeFilter.value === 'my') {
+    return diets.value.filter((d) => {
+      if (!d.cow_id) return true; // manual entries belong to user
+      const cowInfo = cowFarmerMap.value[d.cow_id];
+      return !cowInfo || cowInfo.farmerId === selfProfileId;
+    });
+  }
+  // Filter by specific farmer
+  const farmerId = activeFilter.value.replace('farmer:', '');
+  return diets.value.filter((d) => {
+    if (!d.cow_id) return false;
+    const cowInfo = cowFarmerMap.value[d.cow_id];
+    return cowInfo?.farmerId === farmerId;
+  });
+});
 
 function formatDate(dateStr: string): string {
   return format(new Date(dateStr), 'MMM d, yyyy h:mm a');
@@ -152,6 +226,20 @@ function formatGoal(goal: string): string {
     balanced: t('diet.goals.balanced'),
   };
   return goals[goal] || goal;
+}
+
+function getDietTitle(diet: Diet): string {
+  return diet.name || diet.cow_name || t('diet.dietPlan');
+}
+
+function getDietSubtitle(diet: Diet): string | null {
+  if (!diet.cow_id) return null;
+  const cowInfo = cowFarmerMap.value[diet.cow_id];
+  const selfProfileId = authStore.selfFarmerProfileId;
+  if (cowInfo && cowInfo.farmerId !== selfProfileId && cowInfo.farmerName) {
+    return t('diet.forFarmer', { name: cowInfo.farmerName });
+  }
+  return null;
 }
 
 function getIngredientCount(diet: Diet): number {
@@ -212,13 +300,23 @@ async function onRefresh(done: () => void) {
   done();
 }
 
-onMounted(() => {
-  dietsStore.fetchDiets();
+onMounted(async () => {
+  await Promise.all([
+    dietsStore.fetchDiets(),
+    cowsStore.fetchCows(),
+    farmersStore.fetchFarmers(),
+  ]);
 });
 </script>
 
 <style lang="scss" scoped>
 .diet-card {
   border-radius: $radius-loose;
+}
+
+.filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
 }
 </style>

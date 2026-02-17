@@ -18,14 +18,13 @@
 
         <q-option-group
           v-model="inputMode"
-          :options="[
-            { label: $t('diet.wizard.selectFromMyCows'), value: 'select' },
-            { label: $t('diet.wizard.enterManually'), value: 'manual' },
-          ]"
+          :options="inputModeOptions"
           color="primary"
           class="q-mb-md"
+          @update:model-value="onInputModeChange"
         />
 
+        <!-- My cows -->
         <template v-if="inputMode === 'select'">
           <q-select
             v-model="form.cow_id"
@@ -38,6 +37,36 @@
           />
         </template>
 
+        <!-- Farmer's cow -->
+        <template v-else-if="inputMode === 'farmer'">
+          <q-select
+            v-model="selectedFarmerId"
+            :label="$t('diet.wizard.selectFarmer')"
+            outlined
+            :options="farmerOptions"
+            emit-value
+            map-options
+            class="q-mb-md"
+            @update:model-value="onFarmerSelected"
+          />
+          <q-select
+            v-if="selectedFarmerId"
+            v-model="form.cow_id"
+            :label="$t('diet.wizard.selectCow')"
+            outlined
+            :options="farmerCowOptions"
+            emit-value
+            map-options
+            :loading="loadingFarmerCows"
+            :disable="loadingFarmerCows"
+            @update:model-value="onFarmerCowSelected"
+          />
+          <div v-if="selectedFarmerId && !loadingFarmerCows && farmerCowOptions.length === 0" class="text-caption text-negative q-mt-sm">
+            {{ $t('diet.wizard.noCowsForFarmer') }}
+          </div>
+        </template>
+
+        <!-- Manual entry -->
         <template v-else>
           <q-input
             v-model="form.cow_name"
@@ -318,6 +347,7 @@ import { useI18n } from 'vue-i18n';
 import { useDietsStore, DietInput } from 'src/stores/diets';
 import { useCowsStore } from 'src/stores/cows';
 import { useFeedsStore } from 'src/stores/feeds';
+import { useFarmersStore } from 'src/stores/farmers';
 import { isOnline } from 'src/boot/pwa';
 import { COW_ICON } from 'src/boot/icons';
 import { useCurrency } from 'src/composables/useCurrency';
@@ -336,10 +366,14 @@ const $q = useQuasar();
 const dietsStore = useDietsStore();
 const cowsStore = useCowsStore();
 const feedsStore = useFeedsStore();
+const farmersStore = useFarmersStore();
 
 const step = ref(1);
-const inputMode = ref<'select' | 'manual'>('select');
+const inputMode = ref<'select' | 'manual' | 'farmer'>('select');
 const feedSearch = ref('');
+const selectedFarmerId = ref<string | null>(null);
+const farmerCowsList = ref<{ id: string; name: string; weight_kg: number; milk_yield_liters: number; milk_fat_percentage: number; lactation_stage: string; is_pregnant: boolean; pregnancy_month?: number; activity_level: string; body_condition_score?: number; age_months?: number; breed?: string; _backend_days_in_milk?: number; _backend_parity?: number; _backend_milk_protein_percent?: number }[]>([]);
+const loadingFarmerCows = ref(false);
 
 const queryCowId = route.query.cow_id as string | undefined;
 const regenerateFromId = route.query.regenerateFrom as string | undefined;
@@ -375,8 +409,35 @@ function setFeedPrice(feedId: string, value: string | number | null) {
 
 const optimizing = computed(() => dietsStore.optimizing);
 
+const hasManagedFarmers = computed(() => farmersStore.managedFarmers.length > 0);
+
+const inputModeOptions = computed(() => {
+  const opts = [
+    { label: t('diet.wizard.selectFromMyCows'), value: 'select' },
+  ];
+  if (hasManagedFarmers.value) {
+    opts.push({ label: t('diet.wizard.selectFromFarmerCows'), value: 'farmer' });
+  }
+  opts.push({ label: t('diet.wizard.enterManually'), value: 'manual' });
+  return opts;
+});
+
 const cowOptions = computed(() =>
   cowsStore.activeCows.map((cow) => ({
+    label: cow.name,
+    value: cow.id,
+  }))
+);
+
+const farmerOptions = computed(() =>
+  farmersStore.managedFarmers.map((f) => ({
+    label: f.name,
+    value: f.id,
+  }))
+);
+
+const farmerCowOptions = computed(() =>
+  farmerCowsList.value.map((cow) => ({
     label: cow.name,
     value: cow.id,
   }))
@@ -427,7 +488,9 @@ const goalOptions = computed(() => [
 const canProceed = computed(() => {
   switch (step.value) {
     case 1:
-      return inputMode.value === 'manual' || form.cow_id;
+      if (inputMode.value === 'manual') return true;
+      if (inputMode.value === 'farmer') return !!selectedFarmerId.value && !!form.cow_id;
+      return !!form.cow_id;
     case 2:
       return form.weight_kg > 0;
     case 3:
@@ -439,19 +502,59 @@ const canProceed = computed(() => {
   }
 });
 
+function onInputModeChange() {
+  // Reset cow selection when switching modes
+  form.cow_id = undefined;
+  form.cow_name = '';
+  form.farmer_profile_id = undefined;
+  form.farmer_name = undefined;
+  selectedFarmerId.value = null;
+  farmerCowsList.value = [];
+}
+
+function fillFormFromCow(cow: { name: string; weight_kg: number; milk_yield_liters: number; milk_fat_percentage: number; lactation_stage: string; is_pregnant: boolean; pregnancy_month?: number; activity_level: string; body_condition_score?: number; age_months?: number; _backend_days_in_milk?: number; _backend_parity?: number; _backend_milk_protein_percent?: number }) {
+  form.cow_name = cow.name;
+  form.weight_kg = cow.weight_kg;
+  form.milk_yield_liters = cow.milk_yield_liters;
+  form.milk_fat_percentage = cow.milk_fat_percentage;
+  form.lactation_stage = cow.lactation_stage;
+  form.is_pregnant = cow.is_pregnant;
+  form.pregnancy_month = cow.pregnancy_month;
+  form.activity_level = cow.activity_level;
+  form.body_condition_score = cow.body_condition_score ?? 3;
+  form.age_months = cow.age_months;
+}
+
 function onCowSelected(cowId: string) {
   const cow = cowsStore.activeCows.find((c) => c.id === cowId);
   if (cow) {
-    form.cow_name = cow.name;
-    form.weight_kg = cow.weight_kg;
-    form.milk_yield_liters = cow.milk_yield_liters;
-    form.milk_fat_percentage = cow.milk_fat_percentage;
-    form.lactation_stage = cow.lactation_stage;
-    form.is_pregnant = cow.is_pregnant;
-    form.pregnancy_month = cow.pregnancy_month;
-    form.activity_level = cow.activity_level;
-    form.body_condition_score = cow.body_condition_score ?? 3;
-    form.age_months = cow.age_months;
+    fillFormFromCow(cow);
+  }
+}
+
+async function onFarmerSelected(farmerId: string) {
+  form.cow_id = undefined;
+  form.cow_name = '';
+  farmerCowsList.value = [];
+  loadingFarmerCows.value = true;
+
+  const farmer = farmersStore.managedFarmers.find((f) => f.id === farmerId);
+  form.farmer_profile_id = farmerId;
+  form.farmer_name = farmer?.name;
+
+  try {
+    // Fetch cows for this farmer
+    await cowsStore.fetchCows(farmerId);
+    farmerCowsList.value = cowsStore.getCowsForFarmer(farmerId);
+  } finally {
+    loadingFarmerCows.value = false;
+  }
+}
+
+function onFarmerCowSelected(cowId: string) {
+  const cow = farmerCowsList.value.find((c) => c.id === cowId);
+  if (cow) {
+    fillFormFromCow(cow);
   }
 }
 
@@ -497,6 +600,7 @@ async function submitDiet() {
 onMounted(async () => {
   await cowsStore.fetchCows();
   await feedsStore.fetchAllFeeds();
+  await farmersStore.fetchFarmers();
 
   // Pre-fill from previous diet for regeneration
   if (regenerateFromId) {
