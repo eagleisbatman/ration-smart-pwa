@@ -98,8 +98,8 @@
       </q-card-section>
     </q-card>
 
-    <!-- M20: Notifications Section -->
-    <div v-if="notifications.length > 0" class="q-mb-lg">
+    <!-- M20: Notifications Section (hidden when embedded, EW dashboard shows its own) -->
+    <div v-if="!embedded && notifications.length > 0" class="q-mb-lg">
       <div class="row items-center justify-between q-mb-sm">
         <div class="text-subtitle2 text-grey-7">
           {{ $t('notifications.title') }}
@@ -331,7 +331,7 @@ import { useCowsStore } from 'src/stores/cows';
 import { useMilkLogsStore } from 'src/stores/milkLogs';
 import { useDietsStore } from 'src/stores/diets';
 
-withDefaults(defineProps<{
+const props = withDefaults(defineProps<{
   /** Hide greeting when embedded inside ExtensionWorkerDashboard */
   embedded?: boolean;
 }>(), { embedded: false });
@@ -357,6 +357,8 @@ const dismissedErrors = ref<Set<string>>(new Set());
 const onboardingTipsDismissed = ref(localStorage.getItem('onboarding_tips_dismissed') === 'true');
 
 const showOnboardingTips = computed(() => {
+  // Don't show onboarding in the Personal tab of the EW dashboard
+  if (props.embedded) return false;
   return cowCount.value === 0 && !cowsStore.loading && !onboardingTipsDismissed.value;
 });
 
@@ -446,11 +448,53 @@ const storeErrors = computed(() => {
 });
 
 const userName = computed(() => authStore.user?.name || t('roles.farmer'));
-const cowCount = computed(() => cowsStore.cowCount);
-const todayLogs = computed(() => milkLogsStore.todayLogs);
-const todayMilk = computed(() => milkLogsStore.todayTotal);
-const yesterdayMilk = computed(() => milkLogsStore.yesterdayTotal);
-const recentDiets = computed(() => dietsStore.recentDiets);
+
+// When embedded in EW dashboard's Personal tab, only show data for
+// cows belonging to the self-profile (not all managed farmers' cows).
+const selfCowIds = computed((): Set<string> | null => {
+  if (!props.embedded) return null; // no filtering
+  const selfFarmerId = authStore.selfFarmerProfileId;
+  if (!selfFarmerId) return new Set(); // no self-profile → empty set → 0 cows
+  return new Set(
+    cowsStore.getCowsForFarmer(selfFarmerId)
+      .filter((c) => c.is_active)
+      .map((c) => c.id)
+  );
+});
+
+const cowCount = computed(() => {
+  if (selfCowIds.value !== null) return selfCowIds.value.size;
+  return cowsStore.cowCount;
+});
+
+const todayLogs = computed(() => {
+  const all = milkLogsStore.todayLogs;
+  if (selfCowIds.value !== null) {
+    return all.filter((log) => selfCowIds.value!.has(log.cow_id));
+  }
+  return all;
+});
+
+const todayMilk = computed(() =>
+  todayLogs.value.reduce((sum, log) => sum + log.total_liters, 0)
+);
+
+const yesterdayMilk = computed(() => {
+  if (selfCowIds.value !== null) {
+    return milkLogsStore.yesterdayLogs
+      .filter((log) => selfCowIds.value!.has(log.cow_id))
+      .reduce((sum, log) => sum + log.total_liters, 0);
+  }
+  return milkLogsStore.yesterdayTotal;
+});
+
+const recentDiets = computed(() => {
+  const all = dietsStore.recentDiets;
+  if (selfCowIds.value !== null) {
+    return all.filter((d) => d.cow_id && selfCowIds.value!.has(d.cow_id));
+  }
+  return all;
+});
 
 const milkTrend = computed(() => {
   const today = todayMilk.value;
