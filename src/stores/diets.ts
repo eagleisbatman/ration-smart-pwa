@@ -13,6 +13,8 @@ import { extractUserFriendlyError } from 'src/lib/error-messages';
 export interface DietInput {
   cow_id?: string;
   cow_name?: string;
+  farmer_profile_id?: string;
+  farmer_name?: string;
   // Animal details
   weight_kg: number;
   milk_yield_liters: number;
@@ -189,6 +191,8 @@ export const useDietsStore = defineStore('diets', () => {
       user_id: authStore.userId,
       cow_id: input.cow_id,
       cow_name: input.cow_name,
+      farmer_profile_id: input.farmer_profile_id,
+      farmer_name: input.farmer_name,
       optimization_goal: input.optimization_goal,
       status: 'pending',
       input_data: input as unknown as Record<string, unknown>,
@@ -252,6 +256,8 @@ export const useDietsStore = defineStore('diets', () => {
         user_id: authStore.userId,
         cow_id: input.cow_id,
         cow_name: input.cow_name,
+        farmer_profile_id: input.farmer_profile_id,
+        farmer_name: input.farmer_name,
         optimization_goal: input.optimization_goal,
         input_data: input as unknown as Record<string, unknown>,
         // Not yet saved to backend — local only until user saves
@@ -326,9 +332,21 @@ export const useDietsStore = defineStore('diets', () => {
         return false;
       }
 
+      // Auto-generate a meaningful name
+      const goalLabels: Record<string, string> = {
+        minimize_cost: 'Min Cost',
+        maximize_milk: 'Max Milk',
+        balanced: 'Balanced',
+      };
+      const goalLabel = goalLabels[diet.optimization_goal] || diet.optimization_goal;
+      let autoName = diet.cow_name ? `${diet.cow_name} - ${goalLabel}` : `Diet Plan - ${goalLabel}`;
+      if (diet.farmer_name) {
+        autoName = `${diet.cow_name || 'Cow'} (${diet.farmer_name}) - ${goalLabel}`;
+      }
+
       const payload = {
         cow_id: diet.cow_id,
-        name: diet.cow_name ? `Diet for ${diet.cow_name}` : 'Diet Plan',
+        name: diet.name || autoName,
         status: 'saved',
         is_active: false,
         input_data: diet.input_data,
@@ -531,6 +549,32 @@ export const useDietsStore = defineStore('diets', () => {
     }
   }
 
+  async function updateDietName(dietId: string, name: string): Promise<boolean> {
+    if (!isOnline.value) {
+      error.value = 'Updating a diet requires an internet connection';
+      return false;
+    }
+
+    try {
+      await api.put(`/api/v1/diet/${dietId}`, { name });
+
+      // Update local state
+      const diet = diets.value.find((d) => d.id === dietId);
+      if (diet) {
+        diet.name = name;
+        await db.diets.put({ ...diet });
+      }
+      if (currentDiet.value?.id === dietId) {
+        currentDiet.value = { ...currentDiet.value, name };
+      }
+
+      return true;
+    } catch (err) {
+      error.value = extractUserFriendlyError(err);
+      return false;
+    }
+  }
+
   function clearCurrentDiet(): void {
     currentDiet.value = null;
   }
@@ -581,6 +625,7 @@ export const useDietsStore = defineStore('diets', () => {
     followDiet,
     stopFollowingDiet,
     getActiveDietForCow,
+    updateDietName,
     clearCurrentDiet,
     getInputDataForRegeneration,
   };

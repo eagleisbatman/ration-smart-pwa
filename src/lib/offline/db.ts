@@ -83,6 +83,11 @@ export interface Diet {
   user_id: string;
   cow_id?: string;
   cow_name?: string;
+  /** Custom or auto-generated diet name */
+  name?: string;
+  /** Farmer who owns the cow (for EW filtering) */
+  farmer_profile_id?: string;
+  farmer_name?: string;
   optimization_goal: string;
   /** PWA statuses: pending | processing | completed | failed
    *  Backend lifecycle: draft | saved | following | archived */

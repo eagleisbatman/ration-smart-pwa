@@ -415,11 +415,15 @@ function mapDietFromBackend(diet: Record<string, unknown>): Record<string, unkno
     }
   }
 
+  // cow_name: prefer top-level (from backend join), then diet_summary, then name field
+  const cowName = (diet.cow_name as string) || (dietSummary?.cow_name as string) || undefined;
+
   return {
     id: diet.id,
     user_id: diet.telegram_user_id,
     cow_id: diet.cow_profile_id,
-    cow_name: dietSummary?.cow_name,
+    cow_name: cowName,
+    name: diet.name as string | undefined,
     optimization_goal: (dietSummary?.optimization_goal as string) || 'balanced',
     status: diet.status,
     is_active: diet.is_active,

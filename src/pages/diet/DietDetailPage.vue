@@ -41,7 +41,26 @@
         <q-card-section>
           <div class="row items-center">
             <div class="col">
-              <div class="text-h6">{{ diet.cow_name || $t('diet.dietPlan') }}</div>
+              <div v-if="editingName" class="row items-center no-wrap">
+                <q-input
+                  v-model="editNameValue"
+                  dense
+                  outlined
+                  autofocus
+                  class="col"
+                  @keyup.enter="saveEditedName"
+                  @blur="saveEditedName"
+                />
+                <q-btn flat dense icon="check" size="sm" class="q-ml-xs" @click="saveEditedName" />
+                <q-btn flat dense icon="close" size="sm" @click="cancelEditName" />
+              </div>
+              <div v-else class="text-h6 cursor-pointer" @click="startEditName">
+                {{ diet.name || diet.cow_name || $t('diet.dietPlan') }}
+                <q-icon name="edit" size="16px" class="q-ml-xs text-grey-5" />
+              </div>
+              <div v-if="diet.farmer_name" class="text-caption text-grey-6">
+                {{ $t('diet.forFarmer', { name: diet.farmer_name }) }}
+              </div>
               <div class="text-caption text-grey-7">{{ formatDate(diet.created_at) }}</div>
             </div>
             <q-chip
@@ -516,6 +535,33 @@ function getStatusIcon(status: string): string {
       return 'error';
     default:
       return 'schedule';
+  }
+}
+
+// --- Name Editing ---
+const editingName = ref(false);
+const editNameValue = ref('');
+
+function startEditName() {
+  editNameValue.value = diet.value?.name || diet.value?.cow_name || '';
+  editingName.value = true;
+}
+
+function cancelEditName() {
+  editingName.value = false;
+}
+
+async function saveEditedName() {
+  if (!editingName.value) return;
+  editingName.value = false;
+  const newName = editNameValue.value.trim();
+  if (!newName || !diet.value) return;
+  if (newName === diet.value.name) return;
+
+  const success = await dietsStore.updateDietName(dietId.value, newName);
+  if (success) {
+    diet.value = { ...diet.value, name: newName };
+    $q.notify({ type: 'positive', message: t('diet.nameUpdated') });
   }
 }
 
