@@ -1009,6 +1009,7 @@
     "processingQueue": "Processing queued reports...",
     "queueProcessed": "All queued reports have been generated",
     "reportQueued": "Report queued for generation",
+    "reportName": "Report Name",
     "summary": "Report Summary",
     "preview": {
       "totalMilk": "Total Milk",

@@ -1170,6 +1170,9 @@ const ENDPOINT_MAP: Record<string, EndpointMapping> = {
   '/api/v1/reports/farmer/:id': {
     path: '/farmer-reports/farmer/:id',
   },
+  '/api/v1/reports/user/:id': {
+    path: '/farmer-reports/user/:id',
+  },
   '/api/v1/reports/:id': {
     path: '/farmer-reports/:id',
   },
