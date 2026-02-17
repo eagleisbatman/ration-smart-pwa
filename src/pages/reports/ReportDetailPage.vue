@@ -144,12 +144,27 @@ const showShareSheet = ref(false);
 
 const params = computed(() => (report.value?.parameters as Record<string, string>) || {});
 
-function downloadReport() {
-  if (!report.value?.file_url) return;
-  // Open the download URL (backend HTML report) in a new tab
-  const baseUrl = api.defaults.baseURL || '';
-  const downloadUrl = `${baseUrl}${report.value.file_url}`;
-  window.open(downloadUrl, '_blank', 'noopener');
+async function downloadReport() {
+  if (!htmlContent.value && !report.value?.file_url) return;
+
+  // Use already-fetched HTML or fetch it
+  let html = htmlContent.value;
+  if (!html) {
+    try {
+      const resp = await api.get(`/api/v1/reports/${reportId.value}/download`, {
+        responseType: 'text',
+      });
+      html = resp.data as string;
+    } catch {
+      return;
+    }
+  }
+
+  // Open HTML in a new tab via blob URL
+  const blob = new Blob([html], { type: 'text/html' });
+  const url = URL.createObjectURL(blob);
+  window.open(url, '_blank', 'noopener');
+  setTimeout(() => URL.revokeObjectURL(url), 10000);
 }
 
 function buildReportSummaryText(): string {
@@ -201,24 +216,26 @@ onMounted(async () => {
     };
 
     await db.reports.put(report.value);
-
-    // Fetch HTML content
-    if (data.download_url) {
-      try {
-        const htmlResp = await api.get(`/api/v1/reports/${reportId.value}/download`);
-        if (typeof htmlResp.data === 'string') {
-          htmlContent.value = htmlResp.data;
-        }
-      } catch {
-        // HTML not available — fall back to preview
-      }
-    }
   } catch {
     // Fallback to cache
     report.value = await db.reports.get(reportId.value) || null;
   }
 
   loading.value = false;
+
+  // Fetch HTML content in the background (after loading spinner is gone)
+  if (report.value) {
+    try {
+      const htmlResp = await api.get(`/api/v1/reports/${reportId.value}/download`, {
+        responseType: 'text',
+      });
+      if (typeof htmlResp.data === 'string' && htmlResp.data.includes('<')) {
+        htmlContent.value = htmlResp.data;
+      }
+    } catch {
+      // HTML not available — user can still use Download button
+    }
+  }
 });
 </script>
 
