@@ -79,6 +79,16 @@ body {
 }
 
 // ============================================
+// Toggle Button Hover Fix
+// ============================================
+// Quasar's .q-focus-helper creates a rectangular overlay on hover/focus
+// inside btn-toggle and btn-group. Suppress it globally for a cleaner look.
+.q-btn-toggle .q-btn .q-focus-helper,
+.q-btn-group .q-btn .q-focus-helper {
+  display: none;
+}
+
+// ============================================
 // Card Styles
 // ============================================
 

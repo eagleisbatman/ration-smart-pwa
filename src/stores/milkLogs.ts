@@ -139,15 +139,27 @@ export const useMilkLogsStore = defineStore('milkLogs', () => {
       if (isOnline.value) {
         const response = await api.get(`/api/v1/milk-logs/user/${authStore.userId}`, { params });
         // Adapter transforms backend fields → PWA fields and extracts array
-        const serverLogs = (Array.isArray(response.data) ? response.data : []).map((log: MilkLog) => ({
-          ...log,
-          user_id: log.user_id || authStore.userId,
-          _synced: true,
-          _deleted: false,
-        }));
+        const serverLogs = (Array.isArray(response.data) ? response.data : [])
+          // Skip orphaned logs (cow deleted from backend — no cow_name from outerjoin)
+          .filter((log: MilkLog) => !!log.cow_name)
+          .map((log: MilkLog) => ({
+            ...log,
+            user_id: log.user_id || authStore.userId,
+            _synced: true,
+            _deleted: false,
+          }));
 
         // Update local database
         await db.milkLogs.bulkPut(serverLogs);
+
+        // Clean up orphaned logs (cow deleted from backend, cow_name missing)
+        const orphanedLogs = await db.milkLogs
+          .where({ user_id: authStore.userId! })
+          .filter((l) => l._synced === true && !l.cow_name)
+          .toArray();
+        if (orphanedLogs.length > 0) {
+          await db.milkLogs.bulkDelete(orphanedLogs.map((l) => l.id));
+        }
       }
 
       // Load from local database (userId may have been cleared by 401 interceptor)
