@@ -89,6 +89,17 @@ body {
 }
 
 // ============================================
+// Cow Icon in Primary Avatars (light mode)
+// ============================================
+// cow.svg uses fill="currentColor" but img: prefix renders as <img>,
+// so currentColor defaults to black. Primary bg is #18181B → invisible.
+// Invert to white so the cow is visible on dark primary avatars.
+.q-avatar.bg-primary img[src*="cow.svg"],
+.q-avatar.bg-primary .q-icon img[src*="cow"] {
+  filter: invert(1);
+}
+
+// ============================================
 // Card Styles
 // ============================================
 

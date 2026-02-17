@@ -20,27 +20,8 @@
       <div class="text-caption text-grey-7 q-mb-xs">
         {{ $t('logs.trends.herdTotal') }}: {{ periodTotal.toFixed(1) }}{{ $t('units.l') }}
       </div>
-      <svg
-        :viewBox="`0 0 ${chartWidth} ${chartHeight}`"
-        :width="chartWidth"
-        :height="chartHeight"
-        class="herd-chart"
-        preserveAspectRatio="none"
-      >
-        <rect
-          v-for="(bar, idx) in bars"
-          :key="idx"
-          :x="bar.x"
-          :y="bar.y"
-          :width="bar.width"
-          :height="bar.height"
-          :fill="bar.total > 0 ? 'var(--q-primary)' : 'var(--bar-empty, #e0e0e0)'"
-          :opacity="bar.total > 0 ? 0.8 : 0.3"
-          rx="2"
-        />
-      </svg>
-      <div class="row justify-between text-caption text-grey-5 sparkline-labels">
-        <span v-for="(label, idx) in barLabels" :key="idx" class="bar-label">{{ label }}</span>
+      <div v-if="dailyTotals.length > 0" style="height: 100px; position: relative">
+        <Bar :data="barChartData" :options="barChartOptions" />
       </div>
     </q-card-section>
 
@@ -96,9 +77,21 @@
 import { ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { format, subDays, parseISO } from 'date-fns';
+import { Bar } from 'vue-chartjs';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Tooltip,
+} from 'chart.js';
 import { useMilkLogsStore } from 'src/stores/milkLogs';
 import { useCowsStore } from 'src/stores/cows';
+import { useChartColors } from 'src/lib/chart-colors';
 import { COW_ICON } from 'src/boot/icons';
+import type { ChartData, ChartOptions } from 'chart.js';
+
+ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip);
 
 defineEmits<{
   (e: 'cowClick', cowId: string): void;
@@ -107,6 +100,7 @@ defineEmits<{
 const { t } = useI18n();
 const milkLogsStore = useMilkLogsStore();
 const cowsStore = useCowsStore();
+const colors = useChartColors();
 
 const period = ref<'7d' | '30d' | 'all'>('7d');
 
@@ -116,23 +110,17 @@ const periodOptions = computed(() => [
   { label: t('logs.trends.all'), value: 'all' as const },
 ]);
 
-const chartWidth = 280;
-const chartHeight = 80;
-const barGap = 2;
-
 interface DailyTotal {
   date: string;
   total: number;
 }
 
-/** Get the number of days for the selected period */
 const periodDays = computed(() => {
   if (period.value === '7d') return 7;
   if (period.value === '30d') return 30;
-  return 90; // "all" shows up to 90 days
+  return 90;
 });
 
-/** Aggregate logs into daily totals for the selected period */
 const dailyTotals = computed((): DailyTotal[] => {
   const now = new Date();
   const days = periodDays.value;
@@ -155,7 +143,6 @@ const dailyTotals = computed((): DailyTotal[] => {
   for (const [date, total] of dateMap) {
     result.push({ date, total });
   }
-  // Trim leading zeros — only show from first day with data
   const firstDataIdx = result.findIndex((d) => d.total > 0);
   if (firstDataIdx === -1) return [];
   return result.slice(firstDataIdx);
@@ -165,38 +152,75 @@ const periodTotal = computed(() =>
   dailyTotals.value.reduce((sum, d) => sum + d.total, 0)
 );
 
-/** SVG bars for the herd total chart */
-const bars = computed(() => {
+/** Chart.js bar chart data */
+const barChartData = computed((): ChartData<'bar'> => {
+  const c = colors.value;
   const totals = dailyTotals.value;
-  const count = totals.length;
-  if (count === 0) return [];
 
-  const maxVal = Math.max(...totals.map((d) => d.total), 0.1);
-  const barWidth = Math.max((chartWidth - (count - 1) * barGap) / count, 1);
-
-  return totals.map((d, idx) => {
-    const height = (d.total / maxVal) * (chartHeight - 4);
-    return {
-      x: idx * (barWidth + barGap),
-      y: chartHeight - height,
-      width: barWidth,
-      height: Math.max(height, 1),
-      total: d.total,
-    };
+  const labels = totals.map((d) => {
+    if (totals.length <= 7) {
+      return format(parseISO(d.date), 'EEE').charAt(0);
+    }
+    const step = Math.ceil(totals.length / 7);
+    const idx = totals.indexOf(d);
+    return idx % step === 0 ? format(parseISO(d.date), 'MM/dd') : '';
   });
+
+  return {
+    labels,
+    datasets: [
+      {
+        data: totals.map((d) => d.total),
+        backgroundColor: totals.map((d) =>
+          d.total > 0 ? c.primary : (c.grid + '60')
+        ),
+        borderRadius: 2,
+        barPercentage: 0.85,
+        categoryPercentage: 0.9,
+      },
+    ],
+  };
 });
 
-/** Labels for the x-axis */
-const barLabels = computed(() => {
-  const totals = dailyTotals.value;
-  if (totals.length <= 7) {
-    return totals.map((d) => format(parseISO(d.date), 'EEE').charAt(0));
-  }
-  // For 30d/all, show every ~5th label
-  const step = Math.ceil(totals.length / 7);
-  return totals.map((d, idx) =>
-    idx % step === 0 ? format(parseISO(d.date), 'MM/dd') : ''
-  );
+const barChartOptions = computed((): ChartOptions<'bar'> => {
+  const c = colors.value;
+  return {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      tooltip: {
+        backgroundColor: 'rgba(0,0,0,0.8)',
+        titleFont: { size: 11 },
+        bodyFont: { size: 11 },
+        padding: 6,
+        cornerRadius: 4,
+        callbacks: {
+          title: (items) => {
+            const idx = items[0]?.dataIndex;
+            if (idx == null) return '';
+            const d = dailyTotals.value[idx];
+            return format(parseISO(d.date), 'MMM d');
+          },
+          label: (ctx) => `${ctx.parsed.y.toFixed(1)}L`,
+        },
+      },
+      legend: { display: false },
+    },
+    scales: {
+      x: {
+        ticks: {
+          color: c.axisTextLight,
+          font: { size: 10 },
+          maxRotation: 0,
+        },
+        grid: { display: false },
+      },
+      y: {
+        ticks: { display: false },
+        grid: { display: false },
+      },
+    },
+  };
 });
 
 /** Per-cow breakdown with trend indicators */
@@ -215,16 +239,13 @@ const cowBreakdowns = computed((): CowBreakdown[] => {
   const cutoff = format(subDays(now, days), 'yyyy-MM-dd');
   const prevCutoff = format(subDays(now, days * 2), 'yyyy-MM-dd');
 
-  // Current period logs
   const currentLogs = milkLogsStore.logs.filter(
     (l) => !l._deleted && l.log_date >= cutoff
   );
-  // Previous period logs (for trend comparison)
   const prevLogs = milkLogsStore.logs.filter(
     (l) => !l._deleted && l.log_date >= prevCutoff && l.log_date < cutoff
   );
 
-  // Group by cow
   const cowMap = new Map<string, { total: number; count: number; cowName?: string }>();
   const prevCowMap = new Map<string, { total: number; count: number }>();
 
@@ -267,7 +288,6 @@ const cowBreakdowns = computed((): CowBreakdown[] => {
     });
   }
 
-  // Sort by average descending
   results.sort((a, b) => b.average - a.average);
   return results;
 });
@@ -280,9 +300,7 @@ const maxCowAvg = computed(() =>
 <style lang="scss" scoped>
 .milk-trends-panel {
   border-radius: $radius-loose;
-  --bar-empty: #e0e0e0;
 
-  // Clean up toggle button hover — remove rectangular overlay
   :deep(.q-btn-toggle) {
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: $radius-default;
@@ -294,18 +312,6 @@ const maxCowAvg = computed(() =>
       padding: 2px 10px;
     }
   }
-}
-
-.herd-chart {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-.bar-label {
-  font-size: 10px;
-  min-width: 20px;
-  text-align: center;
 }
 
 .cow-breakdown-row {

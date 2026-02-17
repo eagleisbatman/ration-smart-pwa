@@ -5,15 +5,24 @@
       <div class="row q-gutter-sm q-mb-md items-center">
         <q-select
           v-model="selectedFarmer"
-          :options="farmerOptions"
+          :options="filteredFarmerOptions"
           :label="$t('milkSummary.filterByFarmer')"
           outlined
           dense
           clearable
           emit-value
           map-options
+          use-input
+          input-debounce="200"
           class="col"
-        />
+          @filter="filterFarmers"
+        >
+          <template #no-option>
+            <q-item>
+              <q-item-section class="text-grey">{{ $t('common.noResults') }}</q-item-section>
+            </q-item>
+          </template>
+        </q-select>
         <q-btn
           flat
           round
@@ -84,9 +93,13 @@
                 <div class="text-h5">{{ avgDailyYield }}</div>
                 <div class="text-caption">{{ $t('milkSummary.avgLPerDay') }}</div>
               </div>
-              <div class="col">
+              <div v-if="hasFatData" class="col">
                 <div class="text-h5">{{ avgFat }}%</div>
                 <div class="text-caption">{{ $t('milkSummary.avgFat') }}</div>
+              </div>
+              <div v-else class="col">
+                <div class="text-h5">{{ daysLogged }}</div>
+                <div class="text-caption">{{ $t('milkSummary.daysLogged') }}</div>
               </div>
             </div>
           </q-card-section>
@@ -300,8 +313,17 @@ const avgDailyLiters = computed(() => {
 
 const avgDailyYield = computed(() => avgDailyLiters.value.toFixed(1));
 
+const hasFatData = computed(() =>
+  farmerLogs.value.some((l) => l.fat_percentage != null && l.fat_percentage > 0)
+);
+
+const daysLogged = computed(() => {
+  const dates = new Set(farmerLogs.value.map((l) => l.log_date));
+  return dates.size;
+});
+
 const avgFat = computed(() => {
-  const records = farmerLogs.value.filter((l) => l.fat_percentage != null);
+  const records = farmerLogs.value.filter((l) => l.fat_percentage != null && l.fat_percentage > 0);
   if (records.length === 0) return '0.0';
   const sum = records.reduce((acc, l) => acc + (l.fat_percentage || 0), 0);
   return (sum / records.length).toFixed(1);
@@ -313,6 +335,17 @@ const farmerOptions = computed(() =>
     value: f.id,
   }))
 );
+
+const filteredFarmerOptions = ref(farmerOptions.value);
+
+function filterFarmers(val: string, update: (fn: () => void) => void) {
+  update(() => {
+    const needle = val.toLowerCase();
+    filteredFarmerOptions.value = needle
+      ? farmerOptions.value.filter((o) => o.label.toLowerCase().includes(needle))
+      : farmerOptions.value;
+  });
+}
 
 const chartData = computed(() =>
   [...farmerLogs.value]
@@ -418,6 +451,11 @@ async function onRefresh(done: () => void) {
 
 watch(selectedFarmer, () => {
   loadData();
+});
+
+// Keep filtered options in sync when farmer list changes
+watch(farmerOptions, (opts) => {
+  filteredFarmerOptions.value = opts;
 });
 
 onMounted(async () => {
