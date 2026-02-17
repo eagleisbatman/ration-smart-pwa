@@ -483,7 +483,8 @@
     "nameUpdated": "Diet name updated",
     "filter": {
       "all": "All",
-      "myCows": "My Cows"
+      "myCows": "My Cows",
+      "saved": "Saved"
     },
     "dmIntake": "DM Intake",
     "goal": "Goal",
