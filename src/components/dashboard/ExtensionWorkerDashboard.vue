@@ -162,9 +162,9 @@
           <q-icon name="person_add" />
           {{ $t('farmer.addFarmer') }}
         </button>
-        <button class="action-row__btn" @click="router.push('/yields/new')">
-          <q-icon name="add_chart" />
-          {{ $t('dashboard.recordYield') }}
+        <button class="action-row__btn" @click="router.push({ name: 'log-new' })">
+          <q-icon name="water_drop" />
+          {{ $t('logs.logMilk') }}
         </button>
         <button class="action-row__btn" @click="router.push({ name: 'farmer-import' })">
           <q-icon name="upload_file" />

@@ -155,7 +155,7 @@
           :title="$t('analytics.empty.title')"
           :description="$t('analytics.empty.description')"
           :action-label="$t('analytics.empty.action')"
-          @action="router.push('/yields/new')"
+          @action="router.push({ name: 'log-new' })"
         />
       </template>
     </PullToRefresh>
