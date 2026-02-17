@@ -60,6 +60,11 @@
     "NP": "Nepal",
     "BD": "Bangladesh",
     "VN": "Vietnam",
+    "MA": "Morocco",
+    "ID": "Indonesia",
+    "PK": "Pakistan",
+    "PH": "Philippines",
+    "TH": "Thailand",
     "OTHER": "Other",
     "withCode": {
       "IN": "India (+91)",
@@ -67,7 +72,12 @@
       "ET": "Ethiopia (+251)",
       "NP": "Nepal (+977)",
       "BD": "Bangladesh (+880)",
-      "VN": "Vietnam (+84)"
+      "VN": "Vietnam (+84)",
+      "MA": "Morocco (+212)",
+      "ID": "Indonesia (+62)",
+      "PK": "Pakistan (+92)",
+      "PH": "Philippines (+63)",
+      "TH": "Thailand (+66)"
     }
   },
   "nav": {
