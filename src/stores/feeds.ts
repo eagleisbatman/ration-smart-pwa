@@ -345,6 +345,7 @@ export const useFeedsStore = defineStore('feeds', () => {
     return allFeeds.value.filter(
       (feed) =>
         feed.name.toLowerCase().includes(lowerQuery) ||
+        (feed.fd_name && feed.fd_name.toLowerCase().includes(lowerQuery)) ||
         feed.category.toLowerCase().includes(lowerQuery)
     );
   }

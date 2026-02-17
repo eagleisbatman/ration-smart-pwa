@@ -521,6 +521,7 @@ function mapFeedFromBackend(feed: Record<string, unknown>): Record<string, unkno
   return {
     id: feed.feed_id ?? feed.id,
     name: (feed.local_name as string) || (feed.fd_name as string) || (feed.name as string),
+    fd_name: feed.fd_name,
     category: feed.fd_category ?? feed.category,
     fd_type: feed.fd_type,
     fd_code: feed.fd_code,
