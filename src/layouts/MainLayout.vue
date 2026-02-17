@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="lHh Lpr lff">
+  <q-layout view="lHh Lpr lFf">
     <!-- Offline Indicator -->
     <OfflineIndicator />
 
