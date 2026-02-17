@@ -212,6 +212,9 @@
                 </q-item-section>
                 <q-item-section>
                   <q-item-label>{{ feed.name }}</q-item-label>
+                  <q-item-label v-if="feed.fd_name && feed.fd_name !== feed.name" caption class="text-grey-7">
+                    {{ feed.fd_name }}
+                  </q-item-label>
                   <q-item-label caption>
                     {{ $t('diet.cpLabel') }}: {{ feed.cp_percentage != null ? feed.cp_percentage + '%' : '–' }} · {{ $t('diet.tdnLabel') }}: {{ feed.tdn_percentage != null ? feed.tdn_percentage + '%' : '–' }}
                   </q-item-label>
@@ -466,6 +469,7 @@ const filteredFeeds = computed(() => {
   return all.filter(
     (f) =>
       f.name.toLowerCase().includes(query) ||
+      (f.fd_name && f.fd_name.toLowerCase().includes(query)) ||
       f.category.toLowerCase().includes(query)
   );
 });
