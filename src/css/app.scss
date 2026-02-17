@@ -303,6 +303,21 @@ body {
 }
 
 // ============================================
+// Dropdown / Menu Portal Fixes (desktop)
+// ============================================
+// Quasar q-select menus are portalled to <body>. On desktop with
+// a persistent sidebar, the position engine can miscalculate,
+// causing menus to stretch full viewport width. Cap the width.
+.q-menu {
+  max-width: min(100vw - 32px, 480px);
+}
+
+// Notification toasts — constrain width on desktop
+.q-notification {
+  max-width: min(100vw - 32px, 480px);
+}
+
+// ============================================
 // Banner Styles
 // ============================================
 
