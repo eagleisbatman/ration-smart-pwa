@@ -348,8 +348,17 @@ async function loadData() {
   loading.value = true;
 
   try {
-    // Get farmer's cows
-    const cows = await farmersStore.getFarmerCows(selectedFarmer.value) as Array<{ id: string; name: string }>;
+    // Get farmer's cows — try backend first, fall back to local cow store
+    let cows = await farmersStore.getFarmerCows(selectedFarmer.value) as Array<{ id: string; name: string }>;
+    if (cows.length === 0) {
+      // Cows may not have farmer_profile_id set; fall back to local store
+      const isSelf = selectedFarmer.value === authStore.selfFarmerProfileId;
+      if (isSelf) {
+        cows = cowsStore.activeCows.map((c) => ({ id: c.id, name: c.name }));
+      } else {
+        cows = cowsStore.getCowsForFarmer(selectedFarmer.value).map((c) => ({ id: c.id, name: c.name }));
+      }
+    }
     farmerCowIds.value = cows.map((c) => c.id);
 
     // Ensure milk logs are fetched from backend first

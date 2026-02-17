@@ -259,6 +259,7 @@
 import { ref, computed, onMounted, watch } from 'vue';
 import { useMilkLogsStore } from 'src/stores/milkLogs';
 import { useFarmersStore } from 'src/stores/farmers';
+import { useCowsStore } from 'src/stores/cows';
 import { useAuthStore } from 'src/stores/auth';
 import { MilkLog } from 'src/lib/offline/db';
 import { useChartColors } from 'src/lib/chart-colors';
@@ -279,6 +280,7 @@ interface FarmerYieldStats {
 }
 
 const farmersStore = useFarmersStore();
+const cowsStore = useCowsStore();
 const authStore = useAuthStore();
 const milkLogsStore = useMilkLogsStore();
 
@@ -404,7 +406,15 @@ async function fetchComparisonData(): Promise<void> {
 
     const promises = selectedFarmerIds.value.map(async (farmerId) => {
       try {
-        const cows = await farmersStore.getFarmerCows(farmerId) as Array<{ id: string }>;
+        let cows = await farmersStore.getFarmerCows(farmerId) as Array<{ id: string }>;
+        if (cows.length === 0) {
+          const isSelf = farmerId === authStore.selfFarmerProfileId;
+          if (isSelf) {
+            cows = cowsStore.activeCows.map((c) => ({ id: c.id }));
+          } else {
+            cows = cowsStore.getCowsForFarmer(farmerId).map((c) => ({ id: c.id }));
+          }
+        }
         const cowIds = cows.map((c) => c.id);
         const logs = await milkLogsStore.getLogsForFarmer(cowIds, {
           startDate: dateFrom.value || undefined,
@@ -441,6 +451,7 @@ watch(
 
 onMounted(async () => {
   await farmersStore.fetchFarmers();
+  await cowsStore.fetchCows();
 });
 </script>
 
