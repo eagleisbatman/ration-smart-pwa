@@ -318,6 +318,15 @@ body {
 }
 
 // ============================================
+// Date Picker Fixes
+// ============================================
+// Quasar q-date day buttons are wider than tall, making today/selected
+// highlight look oval instead of a perfect circle. Force square aspect.
+.q-date__calendar-item .q-btn {
+  aspect-ratio: 1;
+}
+
+// ============================================
 // Banner Styles
 // ============================================
 
@@ -1239,6 +1248,17 @@ body {
   // ---- bg-grey-4: used as avatar bg in some places ----
   .bg-grey-4 {
     background: rgba(255, 255, 255, 0.12) !important;
+  }
+
+  // ---- q-date picker: header bg uses --q-primary which flips to light ----
+  .q-date__header {
+    background: #27272A !important;
+    color: #FAFAFA !important;
+  }
+
+  // Selected date button: text must be dark on light primary bg
+  .q-date__calendar-item .q-btn.bg-primary {
+    color: #18181B !important;
   }
 
 }
