@@ -106,7 +106,7 @@
             <q-item>
               <q-item-section avatar>
                 <q-avatar size="36px" color="orange-1">
-                  <img src="/icons/cow.svg" alt="" width="20" height="20" />
+                  <img src="/icons/cow.svg" alt="" style="width: 20px; height: 20px" />
                 </q-avatar>
               </q-item-section>
               <q-item-section>
@@ -134,6 +134,9 @@
             <q-card-section class="q-pa-sm">
               <div class="stat-card__label">{{ $t('dashboard.farmersManaged') }}</div>
               <div class="stat-card__value">{{ farmerCount }}</div>
+              <div class="stat-card__footer">
+                <q-icon name="groups" size="12px" class="q-mr-xs" />{{ $t('dashboard.activeProfiles') }}
+              </div>
             </q-card-section>
           </q-card>
         </div>
@@ -142,6 +145,9 @@
             <q-card-section class="q-pa-sm">
               <div class="stat-card__label">{{ $t('dashboard.totalCows') }}</div>
               <div class="stat-card__value">{{ totalCowCount }}</div>
+              <div class="stat-card__footer">
+                <img :src="COW_ICON.replace('img:', '')" alt="" style="width: 12px; height: 12px; vertical-align: middle" class="q-mr-xs" />{{ $t('dashboard.acrossAllFarmers') }}
+              </div>
             </q-card-section>
           </q-card>
         </div>
@@ -150,6 +156,9 @@
             <q-card-section class="q-pa-sm">
               <div class="stat-card__label">{{ $t('dashboard.cowsOnDiet') }}</div>
               <div class="stat-card__value">{{ ewCowsOnDietCount }}</div>
+              <div class="stat-card__footer">
+                <q-icon name="menu_book" size="12px" class="q-mr-xs" />{{ $t('dashboard.outOfTotal', { total: totalCowCount }) }}
+              </div>
             </q-card-section>
           </q-card>
         </div>

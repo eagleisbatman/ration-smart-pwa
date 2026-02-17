@@ -57,7 +57,7 @@
           <q-item>
             <q-item-section avatar>
               <q-avatar size="36px" color="orange-1">
-                <img src="/icons/cow.svg" alt="" width="20" height="20" />
+                <img src="/icons/cow.svg" alt="" style="width: 20px; height: 20px" />
               </q-avatar>
             </q-item-section>
             <q-item-section>
