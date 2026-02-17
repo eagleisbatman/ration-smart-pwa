@@ -238,6 +238,23 @@ body {
 
 .q-chip {
   border-radius: $radius-default;
+  padding-left: 12px;
+  padding-right: 12px;
+
+  &--dense {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+}
+
+// ============================================
+// Badge Styles
+// ============================================
+
+.q-badge {
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-weight: 500;
 }
 
 // ============================================
@@ -692,10 +709,39 @@ body {
     }
   }
 
-  // Filter chips: active chip in dark mode
+  // ---- Chips: comprehensive dark mode visibility ----
+
+  // Active/primary chips: dark text on light bg (since --q-primary flips to light)
   .q-chip--selected,
   .q-chip[class*="bg-primary"] {
-    color: #18181B !important; // dark text on light chip
+    color: #18181B !important;
+  }
+
+  // Outline chips: ensure text + border are visible on dark surface
+  // Covers: filter chips (no color), "no diet" (grey), etc.
+  .q-chip--outline {
+    border-color: rgba(255, 255, 255, 0.25) !important;
+    color: rgba(255, 255, 255, 0.7) !important;
+  }
+  // Restore semantic colors for outline chips that DO have meaningful color
+  .q-chip--outline.text-positive { color: #66BB6A !important; }
+  .q-chip--outline.text-negative { color: #EF5350 !important; }
+  .q-chip--outline.text-warning { color: #FFA726 !important; }
+
+  // Grey-background chips: light grey bg nearly invisible on dark surface
+  // Used in: CowDetailPage (coat color), DietCostChart (cow filter),
+  //          HealthEventTimeline (vet name, cost)
+  .q-chip.bg-grey-3 {
+    background: rgba(255, 255, 255, 0.12) !important;
+    color: rgba(255, 255, 255, 0.85) !important;
+  }
+  .q-chip.bg-grey-4 {
+    background: rgba(255, 255, 255, 0.15) !important;
+    color: rgba(255, 255, 255, 0.85) !important;
+  }
+  .q-chip.bg-grey-5 {
+    background: rgba(255, 255, 255, 0.22) !important;
+    color: #fff !important;
   }
 
   // Unread/highlight backgrounds (grey-2 etc.)
@@ -1100,14 +1146,42 @@ body {
     color: rgba(255, 255, 255, 0.45) !important;
   }
 
-  // ---- Outlined chips: visible border in dark mode ----
-  .q-chip--outline {
-    border-color: rgba(255, 255, 255, 0.25) !important;
-  }
-
-  // ---- Outlined badges: visible border in dark mode ----
+  // ---- Outline badges: comprehensive dark mode visibility ----
   .q-badge--outline {
     border-color: rgba(255, 255, 255, 0.3) !important;
+  }
+  // Outline badges with dark/grey colors: fix invisible text + border
+  // Used in: FarmerListPage (farming type "dairy"=dark, "beef"=grey-6, cattle count=grey-7)
+  .q-badge--outline.text-dark {
+    color: rgba(255, 255, 255, 0.85) !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
+  }
+  .q-badge--outline.text-grey,
+  .q-badge--outline.text-grey-6 {
+    color: rgba(255, 255, 255, 0.6) !important;
+    border-color: rgba(255, 255, 255, 0.25) !important;
+  }
+  .q-badge--outline.text-grey-7 {
+    color: rgba(255, 255, 255, 0.55) !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+  }
+
+  // Grey-background badges: light grey bg invisible on dark surface
+  // Used in: DietComparePage ("in both"), FeedCompareDialog
+  .q-badge.bg-grey-3 {
+    background: rgba(255, 255, 255, 0.12) !important;
+    color: rgba(255, 255, 255, 0.85) !important;
+  }
+
+  // Pastel-background badges: tone down garish pastels on dark surface
+  // Used in: DietComparePage ("only in A" / "only in B")
+  .q-badge.bg-blue-3 {
+    background: rgba(33, 150, 243, 0.2) !important;
+    color: #90CAF9 !important;
+  }
+  .q-badge.bg-orange-3 {
+    background: rgba(255, 152, 0, 0.2) !important;
+    color: #FFB74D !important;
   }
 
   // ---- Grey-colored Quasar elements: brighten for dark mode ----

@@ -19,7 +19,7 @@
           </q-input>
         </div>
         <div class="col-auto row items-center q-gutter-xs">
-          <q-badge color="primary" :label="`${farmerCount} ${t('farmer.farmers')}`" class="q-pa-sm" />
+          <q-badge color="primary" :label="`${farmerCount} ${t('farmer.farmers')}`" />
           <q-btn
             flat
             dense
@@ -119,14 +119,13 @@
                 <span v-if="farmer.district">{{ farmer.district }}</span>
               </q-item-label>
               <div v-if="farmer.total_cattle > 0 || !farmer._synced" class="q-mt-xs row items-center q-gutter-xs">
-                <q-badge v-if="farmer.total_cattle > 0" outline color="grey-7" class="q-pa-xs">
+                <q-badge v-if="farmer.total_cattle > 0" outline color="grey-7">
                   {{ farmer.total_cattle }} {{ $t('farmer.cattle') }}
                 </q-badge>
                 <q-badge
                   v-if="!farmer._synced"
                   color="warning"
                   text-color="white"
-                  class="q-pa-xs"
                 >
                   <q-icon name="sync" size="10px" class="q-mr-xs" />{{ $t('farmer.pending') }}
                 </q-badge>

@@ -69,9 +69,10 @@
           </q-item-section>
           <q-item-section side>
             <q-chip
-              color="orange"
+              color="warning"
               text-color="white"
               size="sm"
+              dense
               icon="schedule"
             >
               {{ $t('reports.queuedForGeneration') }}
@@ -113,6 +114,7 @@
               :color="report.status === 'completed' ? 'positive' : 'warning'"
               text-color="white"
               size="sm"
+              dense
             >
               {{ report.status }}
             </q-chip>

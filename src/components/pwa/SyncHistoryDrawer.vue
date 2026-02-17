@@ -58,8 +58,8 @@
         <q-chip
           v-for="typeOpt in entityTypeOptions"
           :key="typeOpt.value"
-          :color="filterEntityType === typeOpt.value ? 'primary' : 'grey-3'"
-          :text-color="filterEntityType === typeOpt.value ? 'white' : 'grey-8'"
+          :outline="filterEntityType !== typeOpt.value"
+          :color="filterEntityType === typeOpt.value ? 'primary' : undefined"
           clickable
           size="sm"
           @click="filterEntityType = typeOpt.value"
@@ -76,8 +76,8 @@
         <q-chip
           v-for="statusOpt in statusOptions"
           :key="statusOpt.value"
-          :color="filterStatus === statusOpt.value ? 'primary' : 'grey-3'"
-          :text-color="filterStatus === statusOpt.value ? 'white' : 'grey-8'"
+          :outline="filterStatus !== statusOpt.value"
+          :color="filterStatus === statusOpt.value ? 'primary' : undefined"
           clickable
           size="sm"
           @click="filterStatus = statusOpt.value"

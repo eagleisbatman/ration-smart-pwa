@@ -10,8 +10,8 @@
       <!-- Cow filter chips -->
       <div v-if="cowNames.length > 1" class="q-mb-sm row q-gutter-xs">
         <q-chip
-          :color="selectedCow === null ? 'primary' : 'grey-3'"
-          :text-color="selectedCow === null ? 'white' : 'grey-8'"
+          :outline="selectedCow !== null"
+          :color="selectedCow === null ? 'primary' : undefined"
           clickable
           dense
           size="sm"
@@ -22,8 +22,8 @@
         <q-chip
           v-for="name in cowNames"
           :key="name"
-          :color="selectedCow === name ? 'primary' : 'grey-3'"
-          :text-color="selectedCow === name ? 'white' : 'grey-8'"
+          :outline="selectedCow !== name"
+          :color="selectedCow === name ? 'primary' : undefined"
           clickable
           dense
           size="sm"

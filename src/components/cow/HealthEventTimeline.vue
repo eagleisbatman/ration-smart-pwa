@@ -79,7 +79,7 @@
           <div class="row items-center no-wrap">
             <span>{{ event.title }}</span>
             <q-chip
-              size="xs"
+              size="sm"
               :color="getEventColor(event.event_type)"
               text-color="white"
               class="q-ml-sm"
