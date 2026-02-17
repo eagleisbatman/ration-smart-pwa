@@ -178,11 +178,14 @@ export async function clickFab(page: Page) {
   await fab.click();
 }
 
-/** Toggle to Phone Number mode on auth pages */
+/** Toggle to Phone Number mode on auth pages (no-op if already in phone mode) */
 export async function toggleToPhone(page: Page) {
   const phoneBtn = page.getByRole('button', { name: 'Phone Number', exact: false }).first();
-  await phoneBtn.click();
-  await page.waitForTimeout(300);
+  if (await phoneBtn.isVisible().catch(() => false)) {
+    await phoneBtn.click();
+    await page.waitForTimeout(300);
+  }
+  // If no toggle button exists, page is already in phone mode
 }
 
 /** Toggle to Email mode on auth pages */
@@ -242,11 +245,16 @@ export async function registerWithPhone(page: Page, data: RegisterPhoneData) {
   await goto(page, '/auth/register');
   await waitForLoading(page);
 
-  // Country is pre-selected as India by default — only change if needed
-  // Fill name first (it's visible by default in email mode)
+  // Fill name first
   await fillByLabel(page, 'Full Name', data.name);
 
-  // Switch to phone mode
+  // Select country if needed (geo-IP may detect a different country)
+  if (data.countryName) {
+    await selectOption(page, 'Country', data.countryName);
+    await page.waitForTimeout(300);
+  }
+
+  // Switch to phone mode (no-op if already in phone mode)
   await toggleToPhone(page);
   await page.waitForTimeout(500);
 
@@ -260,7 +268,7 @@ export async function registerWithPhone(page: Page, data: RegisterPhoneData) {
   await fillByLabel(page, 'Confirm PIN', data.pin);
 
   await clickButton(page, 'Create Account');
-  await waitForRoute(page, '/auth/language');
+  await waitForRoute(page, '/auth/role');
 }
 
 interface RegisterEmailData {
@@ -294,7 +302,7 @@ export async function registerWithEmail(page: Page, data: RegisterEmailData) {
   await fillByLabel(page, 'Confirm PIN', data.pin);
 
   await clickButton(page, 'Create Account');
-  await waitForRoute(page, '/auth/language');
+  await waitForRoute(page, '/auth/role');
 }
 
 export async function loginWithPhone(page: Page, countryName: string, phone: string, pin: string) {
@@ -345,13 +353,8 @@ export async function completeOnboarding(
   role: string,
   org: string | null,
 ) {
-  // Step 1: Language
-  await waitForRoute(page, '/auth/language');
-  await waitForLoading(page);
-  await clickCard(page, language);
-  await clickOnboardingAction(page);
-
-  // Step 2: Role
+  // Language is now selected on register page, skip to role
+  // Step 1: Role
   await waitForRoute(page, '/auth/role');
   await waitForLoading(page);
   await clickCard(page, role);
