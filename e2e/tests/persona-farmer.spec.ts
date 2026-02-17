@@ -66,17 +66,12 @@ test('P1: Farmer Persona — India (51 steps)', async ({ page }) => {
 
   await test.step('P1-01 Register with Phone', async () => {
     await registerWithPhone(page, { name: NAME, countryName: COUNTRY, phone: PHONE, pin: PIN });
-    await expect(page).toHaveURL(/\/auth\/language/);
+    // Language is now selected on register page; app redirects to role selection
+    await expect(page).toHaveURL(/\/auth\/role/);
     await page.screenshot({ path: 'test-results/steps/P1-01.png' });
   });
 
-  await test.step('P1-02 Language Selection — English', async () => {
-    await waitForLoading(page);
-    await clickCard(page, 'English');
-    await clickOnboardingAction(page);
-    await waitForRoute(page, '/auth/role');
-    await page.screenshot({ path: 'test-results/steps/P1-02.png' });
-  });
+  // P1-02 Language step removed — language is now on the register page
 
   await test.step('P1-03 Role Selection — Farmer', async () => {
     await waitForLoading(page);
@@ -92,20 +87,20 @@ test('P1: Farmer Persona — India (51 steps)', async ({ page }) => {
     await clickCard(page, 'Not Affiliated');
     await page.waitForTimeout(300);
     await clickOnboardingAction(page);
-    await waitForRoute(page, '/auth/profile-setup');
+    // Profile is auto-created; app redirects to home or profile-setup
+    await page.waitForURL(/\/(auth\/profile-setup)?$/, { timeout: 15_000 });
     await page.screenshot({ path: 'test-results/steps/P1-04.png' });
   });
 
-  await test.step('P1-05 Complete Profile Setup', async () => {
+  await test.step('P1-05 Complete Profile & Verify Dashboard', async () => {
+    // If on profile-setup, complete it; otherwise already on dashboard
+    if (page.url().includes('/auth/profile-setup')) {
+      await waitForLoading(page);
+      await clickOnboardingAction(page);
+      await waitForRoute(page, '/');
+    }
     await waitForLoading(page);
-    await clickOnboardingAction(page);
-    await waitForRoute(page, '/');
     await page.screenshot({ path: 'test-results/steps/P1-05.png' });
-  });
-
-  await test.step('P1-06 Verify Dashboard Loads', async () => {
-    await waitForLoading(page);
-    await page.screenshot({ path: 'test-results/steps/P1-06.png' });
   });
 
   // ─── PHASE 2: Cow Management (hard steps) ───
