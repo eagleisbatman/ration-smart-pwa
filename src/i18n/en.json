@@ -610,6 +610,7 @@
       "generateDiet": "Generate Diet",
       "dietStarted": "Diet optimization started!",
       "generationFailed": "Diet generation failed. Please try again with different feeds or check your connection.",
+      "optimizationFailed": "The optimizer could not find a valid diet with the selected feeds. Try adding more feed varieties.",
       "required": "Required",
       "bodyConditionScore": "Body Condition Score",
       "ageMonths": "Age (months)",

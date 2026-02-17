@@ -190,6 +190,7 @@ export const useDietsStore = defineStore('diets', () => {
     error.value = null;
 
     const localId = uuidv4();
+    let serverId: string | undefined;
 
     // Create placeholder diet
     const placeholderDiet: Diet = {
@@ -201,7 +202,7 @@ export const useDietsStore = defineStore('diets', () => {
       farmer_name: input.farmer_name,
       optimization_goal: input.optimization_goal,
       status: 'pending',
-      input_data: input as unknown as Record<string, unknown>,
+      input_data: JSON.parse(JSON.stringify(input)) as Record<string, unknown>,
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
       _synced: false,
@@ -267,25 +268,26 @@ export const useDietsStore = defineStore('diets', () => {
         farmer_profile_id: input.farmer_profile_id,
         farmer_name: input.farmer_name,
         optimization_goal: input.optimization_goal,
-        input_data: input as unknown as Record<string, unknown>,
+        input_data: JSON.parse(JSON.stringify(input)) as Record<string, unknown>,
         // Not yet saved to backend — local only until user saves
         _synced: false,
       };
 
       // Remove placeholder and add server response
+      serverId = serverDiet.id;
       diets.value = diets.value.filter((d) => d.id !== localId);
       diets.value.unshift(serverDiet);
 
-      // Save to local database
-      await db.diets.put(serverDiet);
+      // Save to local database — deep-clone to strip Vue reactive proxies
+      await db.diets.put(JSON.parse(JSON.stringify(serverDiet)) as Diet);
 
       currentDiet.value = serverDiet;
       return serverDiet;
     } catch (err) {
       error.value = extractUserFriendlyError(err);
 
-      // Remove placeholder on error
-      diets.value = diets.value.filter((d) => d.id !== localId);
+      // Remove placeholder and any partially-added server diet on error
+      diets.value = diets.value.filter((d) => d.id !== localId && d.id !== serverId);
       currentDiet.value = null;
 
       return null;

@@ -622,11 +622,19 @@ async function submitDiet() {
   }
   const diet = await dietsStore.optimizeDiet(form);
 
-  if (diet) {
+  if (diet && diet.status !== 'failed') {
     success(); // Haptic feedback on successful operation
     $q.notify({
       type: 'positive',
       message: t('diet.wizard.dietStarted'),
+    });
+    router.push(`/diet/${diet.id}`);
+  } else if (diet && diet.status === 'failed') {
+    hapticError();
+    $q.notify({
+      type: 'warning',
+      message: t('diet.wizard.optimizationFailed'),
+      timeout: 6000,
     });
     router.push(`/diet/${diet.id}`);
   } else {
