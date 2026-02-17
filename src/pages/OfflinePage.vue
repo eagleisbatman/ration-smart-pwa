@@ -1,5 +1,5 @@
 <template>
-  <q-page class="flex flex-center">
+  <div class="fullscreen flex flex-center">
     <div class="text-center q-pa-xl">
       <q-icon name="cloud_off" size="100px" color="grey-5" class="q-mb-lg" />
 
@@ -49,7 +49,7 @@
         />
       </div>
     </div>
-  </q-page>
+  </div>
 </template>
 
 <script setup lang="ts">
