@@ -281,6 +281,19 @@ const maxCowAvg = computed(() =>
 .milk-trends-panel {
   border-radius: $radius-loose;
   --bar-empty: #e0e0e0;
+
+  // Clean up toggle button hover — remove rectangular overlay
+  :deep(.q-btn-toggle) {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: $radius-default;
+    overflow: hidden;
+
+    .q-btn {
+      border-radius: 0;
+      min-height: 28px;
+      padding: 2px 10px;
+    }
+  }
 }
 
 .herd-chart {
