@@ -78,8 +78,25 @@ export const useCowsStore = defineStore('cows', () => {
           _deleted: false,
         }));
 
+        // Preserve local-only fields (age_months, body_condition_score, activity_level)
+        // that the backend doesn't store yet
+        const localCows = await db.cows.bulkGet(serverCows.map((c: Cow) => c.id));
+        const mergedCows = serverCows.map((sc: Cow, i: number) => {
+          const lc = localCows[i];
+          if (!lc) return sc;
+          return {
+            ...sc,
+            age_months: sc.age_months ?? lc.age_months,
+            body_condition_score: sc.body_condition_score ?? lc.body_condition_score,
+            activity_level: sc.activity_level ?? lc.activity_level,
+            notes: sc.notes ?? lc.notes,
+            tag_number: sc.tag_number ?? lc.tag_number,
+            coat_color: sc.coat_color ?? lc.coat_color,
+          };
+        });
+
         // Update local database
-        await db.cows.bulkPut(serverCows);
+        await db.cows.bulkPut(mergedCows);
       }
 
       // Load from local database
