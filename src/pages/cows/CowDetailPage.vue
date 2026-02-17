@@ -47,7 +47,7 @@
       <q-card v-else flat bordered class="q-mb-md">
         <q-card-section>
           <div class="row items-center">
-            <q-avatar size="64px" color="primary" text-color="white">
+            <q-avatar size="64px" class="cow-avatar">
               <q-icon :name="COW_ICON" size="36px" />
             </q-avatar>
             <div class="q-ml-md">
@@ -178,17 +178,17 @@
             </q-item-section>
           </q-item>
 
-          <q-item v-if="cow.age_months">
+          <q-item>
             <q-item-section>
               <q-item-label caption>{{ $t('cow.age') }}</q-item-label>
-              <q-item-label>{{ formatAge(cow.age_months) }}</q-item-label>
+              <q-item-label>{{ cow.age_months ? formatAge(cow.age_months) : '–' }}</q-item-label>
             </q-item-section>
           </q-item>
 
-          <q-item v-if="cow.body_condition_score">
+          <q-item>
             <q-item-section>
               <q-item-label caption>{{ $t('cow.bodyConditionScore') }}</q-item-label>
-              <q-item-label>{{ $t('cow.bcsValue', { score: cow.body_condition_score }) }}</q-item-label>
+              <q-item-label>{{ cow.body_condition_score ? $t('cow.bcsValue', { score: cow.body_condition_score }) : '–' }}</q-item-label>
             </q-item-section>
           </q-item>
 
@@ -222,14 +222,14 @@
       <MilkProductionChart :cow-id="cow.id" :height="200" :diet-periods="cowDietPeriods" />
 
       <!-- Quick Actions -->
-      <div class="row q-col-gutter-sm q-mb-md">
+      <div class="row q-col-gutter-sm q-mt-md q-mb-md">
         <div class="col-6">
           <q-btn
             :label="$t('cow.logMilk')"
             icon="water_drop"
+            outline
             color="primary"
             class="full-width"
-            unelevated
             @click="router.push({ path: '/logs/new', query: { cow_id: cow.id } })"
           />
         </div>
@@ -237,9 +237,9 @@
           <q-btn
             :label="$t('cow.getDiet')"
             icon="menu_book"
-            color="secondary"
+            outline
+            color="primary"
             class="full-width"
-            unelevated
             @click="router.push({ path: '/diet/new', query: { cow_id: cow.id } })"
           />
         </div>
@@ -476,4 +476,9 @@ onMounted(async () => {
   border-radius: $radius-loose;
   border-left: 4px solid var(--q-positive);
 }
+
+.cow-avatar {
+  background: #E4E4E7;
+}
+
 </style>
