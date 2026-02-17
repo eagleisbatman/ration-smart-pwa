@@ -619,6 +619,37 @@ body {
 }
 
 // ============================================
+// Scrollbar — always visible, easy to grab
+// ============================================
+
+// Webkit/Blink (Chrome, Edge, Safari, most mobile browsers)
+* {
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 4px;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.4);
+    }
+  }
+}
+
+// Firefox
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.25) transparent;
+}
+
+// ============================================
 // Constrained Text Blocks (info pages, empty states)
 // ============================================
 
@@ -1264,6 +1295,19 @@ body {
   // CowDetailPage: default avatar — lighter bg so inverted (white) cow icon is visible
   .cow-avatar {
     background: #3F3F46 !important; // zinc-700 — lighter than page bg
+  }
+
+  // Scrollbar — light thumb on dark background
+  * {
+    &::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.25);
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.4);
+      }
+    }
+
+    scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
   }
 
 }
