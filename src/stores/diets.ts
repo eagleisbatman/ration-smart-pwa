@@ -249,7 +249,13 @@ export const useDietsStore = defineStore('diets', () => {
       const response = await api.post('/api/v1/diet/optimize', backendRequest);
       const serverDiet: Diet = {
         ...response.data,
-        _synced: true,
+        user_id: authStore.userId,
+        cow_id: input.cow_id,
+        cow_name: input.cow_name,
+        optimization_goal: input.optimization_goal,
+        input_data: input as unknown as Record<string, unknown>,
+        // Not yet saved to backend — local only until user saves
+        _synced: false,
       };
 
       // Remove placeholder and add server response
@@ -294,6 +300,78 @@ export const useDietsStore = defineStore('diets', () => {
     } catch (err) {
       error.value = extractUserFriendlyError(err);
       return null;
+    } finally {
+      loading.value = false;
+    }
+  }
+
+  /**
+   * Save a locally-optimized diet to the backend (bot-diet-history).
+   * Only locally-created diets (not yet synced) need saving.
+   */
+  async function saveDiet(dietId: string): Promise<boolean> {
+    const authStore = useAuthStore();
+    if (!isOnline.value) {
+      error.value = 'Saving a diet requires an internet connection';
+      return false;
+    }
+
+    loading.value = true;
+    error.value = null;
+
+    try {
+      const diet = diets.value.find((d) => d.id === dietId) || await db.diets.get(dietId);
+      if (!diet) {
+        error.value = 'Diet not found';
+        return false;
+      }
+
+      const payload = {
+        cow_id: diet.cow_id,
+        name: diet.cow_name ? `Diet for ${diet.cow_name}` : 'Diet Plan',
+        status: 'saved',
+        is_active: false,
+        input_data: diet.input_data,
+        result_data: diet._raw_backend_result ?? diet.result_data,
+        total_cost: diet.total_cost,
+        currency: 'INR',
+        simulation_id: diet.id,
+      };
+
+      const response = await api.post('/api/v1/diet/history', payload);
+      const savedDiet: Diet = {
+        ...response.data,
+        user_id: diet.user_id || authStore.userId,
+        cow_id: diet.cow_id,
+        cow_name: diet.cow_name,
+        optimization_goal: diet.optimization_goal,
+        input_data: diet.input_data,
+        // Preserve the local result_data (already normalized)
+        result_data: diet.result_data,
+        _raw_backend_result: diet._raw_backend_result,
+        _synced: true,
+      };
+
+      // Replace the local-only diet with the backend-saved version
+      const oldId = diet.id;
+      await db.diets.delete(oldId);
+      await db.diets.put(savedDiet);
+
+      const idx = diets.value.findIndex((d) => d.id === oldId);
+      if (idx >= 0) {
+        diets.value[idx] = savedDiet;
+      } else {
+        diets.value.unshift(savedDiet);
+      }
+
+      if (currentDiet.value?.id === oldId) {
+        currentDiet.value = savedDiet;
+      }
+
+      return true;
+    } catch (err) {
+      error.value = extractUserFriendlyError(err);
+      return false;
     } finally {
       loading.value = false;
     }
@@ -497,6 +575,7 @@ export const useDietsStore = defineStore('diets', () => {
     getDiet,
     optimizeDiet,
     evaluateDiet,
+    saveDiet,
     deleteDiet,
     getDietsForCow,
     followDiet,

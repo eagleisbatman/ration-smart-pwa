@@ -28,7 +28,7 @@
       <q-separator />
       <div class="text-subtitle1">{{ $t('feed.labels.nutritionalValues') }}</div>
 
-      <div class="row q-col-gutter-sm">
+      <div class="row q-col-gutter-md">
         <div class="col-12 col-sm-6">
           <q-input
             v-model.number="form.dm_percentage"
@@ -57,7 +57,7 @@
         </div>
       </div>
 
-      <div class="row q-col-gutter-sm">
+      <div class="row q-col-gutter-md">
         <div class="col-12 col-sm-6">
           <q-input
             v-model.number="form.tdn_percentage"
@@ -83,7 +83,7 @@
         </div>
       </div>
 
-      <div class="row q-col-gutter-sm">
+      <div class="row q-col-gutter-md">
         <div class="col-12 col-sm-6">
           <q-input
             v-model.number="form.ca_percentage"

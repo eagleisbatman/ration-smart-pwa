@@ -30,19 +30,24 @@
       <q-separator class="q-my-md" />
       <div class="text-subtitle1 text-weight-medium q-mb-sm">{{ $t('farmer.location') }}</div>
 
-      <q-input
-        v-model="form.village"
-        :label="$t('profile.village')"
-        outlined
-        :hint="$t('common.optional')"
-      />
-
-      <q-input
-        v-model="form.district"
-        :label="$t('profile.district')"
-        outlined
-        :hint="$t('common.optional')"
-      />
+      <div class="row q-col-gutter-md">
+        <div class="col-12 col-sm-6">
+          <q-input
+            v-model="form.village"
+            :label="$t('profile.village')"
+            outlined
+            :hint="$t('common.optional')"
+          />
+        </div>
+        <div class="col-12 col-sm-6">
+          <q-input
+            v-model="form.district"
+            :label="$t('profile.district')"
+            outlined
+            :hint="$t('common.optional')"
+          />
+        </div>
+      </div>
 
       <q-input
         v-model="form.state"
@@ -55,22 +60,27 @@
       <q-separator class="q-my-md" />
       <div class="text-subtitle1 text-weight-medium q-mb-sm">{{ $t('farmer.farmDetails') }}</div>
 
-      <q-input
-        v-model.number="form.total_cattle"
-        :label="$t('farmer.totalCattle')"
-        type="number"
-        outlined
-        :rules="[(val) => val >= 0 || $t('farmer.validation.cannotBeNegative')]"
-      />
-
-      <q-input
-        v-model.number="form.land_acres"
-        :label="$t('farmer.landAcres')"
-        type="number"
-        step="0.1"
-        outlined
-        :hint="$t('common.optional')"
-      />
+      <div class="row q-col-gutter-md">
+        <div class="col-12 col-sm-6">
+          <q-input
+            v-model.number="form.total_cattle"
+            :label="$t('farmer.totalCattle')"
+            type="number"
+            outlined
+            :rules="[(val) => val >= 0 || $t('farmer.validation.cannotBeNegative')]"
+          />
+        </div>
+        <div class="col-12 col-sm-6">
+          <q-input
+            v-model.number="form.land_acres"
+            :label="$t('farmer.landAcres')"
+            type="number"
+            step="0.1"
+            outlined
+            :hint="$t('common.optional')"
+          />
+        </div>
+      </div>
 
       <q-select
         v-model="form.farming_type"

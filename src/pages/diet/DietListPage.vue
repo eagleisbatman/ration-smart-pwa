@@ -89,11 +89,11 @@
               </div>
             </div>
 
-            <!-- Summary for completed diets -->
-            <div v-if="diet.status === 'completed' && diet.dm_intake" class="row q-mt-sm q-col-gutter-sm">
+            <!-- Summary for completed/saved/following diets -->
+            <div v-if="['completed', 'saved', 'following'].includes(diet.status)" class="row q-mt-sm q-col-gutter-sm">
               <div class="col-4 text-center">
-                <div class="text-caption text-grey-7">{{ $t('diet.dmIntake') }}</div>
-                <div class="text-body2">{{ diet.dm_intake.toFixed(1) }} {{ $t('diet.kg') }}</div>
+                <div class="text-caption text-grey-7">{{ $t('diet.ingredients') }}</div>
+                <div class="text-body2">{{ getIngredientCount(diet) }}</div>
               </div>
               <div class="col-4 text-center">
                 <div class="text-caption text-grey-7">{{ $t('diet.goal') }}</div>
@@ -122,6 +122,7 @@ import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { format } from 'date-fns';
 import { useDietsStore } from 'src/stores/diets';
+import { Diet } from 'src/lib/offline/db';
 import { useCurrency } from 'src/composables/useCurrency';
 
 const router = useRouter();
@@ -151,6 +152,11 @@ function formatGoal(goal: string): string {
     balanced: t('diet.goals.balanced'),
   };
   return goals[goal] || goal;
+}
+
+function getIngredientCount(diet: Diet): number {
+  const rd = diet.result_data as { feeds?: unknown[] } | undefined;
+  return rd?.feeds?.length ?? 0;
 }
 
 function getStatusLabel(status: string): string {

@@ -90,6 +90,8 @@ export interface Diet {
   is_active?: boolean;
   input_data: Record<string, unknown>;
   result_data?: Record<string, unknown>;
+  /** Raw backend response, preserved for round-tripping to bot-diet-history */
+  _raw_backend_result?: Record<string, unknown>;
   total_cost?: number;
   dm_intake?: number;
   created_at: string;

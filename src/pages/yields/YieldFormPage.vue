@@ -75,42 +75,44 @@
         </template>
       </q-input>
 
-      <div class="row q-gutter-md">
-        <q-input
-          v-model.number="form.fat_percentage"
-          :label="$t('logs.yield.fatPercent')"
-          type="number"
-          step="0.1"
-          outlined
-          class="col"
-          :rules="[
-            (val) => val === null || val === '' || val >= 0 || $t('logs.yield.cannotBeNegative'),
-            (val) => val === null || val === '' || val <= 15 || $t('logs.yield.maxPercent'),
-          ]"
-          :hint="$t('common.optional')"
-        >
-          <template #append>
-            <span class="text-grey-6">{{ $t('units.percent') }}</span>
-          </template>
-        </q-input>
+      <div class="row q-col-gutter-md">
+        <div class="col-12 col-sm-6">
+          <q-input
+            v-model.number="form.fat_percentage"
+            :label="$t('logs.yield.fatPercent')"
+            type="number"
+            step="0.1"
+            outlined
+            :rules="[
+              (val) => val === null || val === '' || val >= 0 || $t('logs.yield.cannotBeNegative'),
+              (val) => val === null || val === '' || val <= 15 || $t('logs.yield.maxPercent'),
+            ]"
+            :hint="$t('common.optional')"
+          >
+            <template #append>
+              <span class="text-grey-6">{{ $t('units.percent') }}</span>
+            </template>
+          </q-input>
+        </div>
 
-        <q-input
-          v-model.number="form.snf_percentage"
-          :label="$t('logs.yield.snfPercent')"
-          type="number"
-          step="0.1"
-          outlined
-          class="col"
-          :rules="[
-            (val) => val === null || val === '' || val >= 0 || $t('logs.yield.cannotBeNegative'),
-            (val) => val === null || val === '' || val <= 15 || $t('logs.yield.maxPercent'),
-          ]"
-          :hint="$t('common.optional')"
-        >
-          <template #append>
-            <span class="text-grey-6">{{ $t('units.percent') }}</span>
-          </template>
-        </q-input>
+        <div class="col-12 col-sm-6">
+          <q-input
+            v-model.number="form.snf_percentage"
+            :label="$t('logs.yield.snfPercent')"
+            type="number"
+            step="0.1"
+            outlined
+            :rules="[
+              (val) => val === null || val === '' || val >= 0 || $t('logs.yield.cannotBeNegative'),
+              (val) => val === null || val === '' || val <= 15 || $t('logs.yield.maxPercent'),
+            ]"
+            :hint="$t('common.optional')"
+          >
+            <template #append>
+              <span class="text-grey-6">{{ $t('units.percent') }}</span>
+            </template>
+          </q-input>
+        </div>
       </div>
 
       <!-- Notes -->
