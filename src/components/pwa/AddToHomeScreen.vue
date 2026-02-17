@@ -188,6 +188,9 @@ defineExpose({
   bottom: 80px;
   left: 16px;
   right: 16px;
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
   background: $primary;
   color: white;
   padding: 12px 16px;
