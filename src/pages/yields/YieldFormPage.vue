@@ -30,11 +30,18 @@
         clearable
         :disable="!form.farmer_profile_id"
         :hint="$t('logs.yield.farmLevelHint')"
+        @update:model-value="onCowChange"
       >
         <template #prepend>
           <q-icon :name="COW_ICON" />
         </template>
       </q-select>
+
+      <!-- Active diet info -->
+      <div v-if="activeDiet" class="text-caption text-positive q-mt-xs">
+        <q-icon name="check_circle" size="14px" class="q-mr-xs" />
+        {{ $t('logs.yield.linkedToDiet', { name: activeDiet.cow_name || $t('diet.dietPlan') }) }}
+      </div>
 
       <!-- Collection Date -->
       <q-separator class="q-my-md" />
@@ -151,9 +158,11 @@ import { useI18n } from 'vue-i18n';
 import { useYieldsStore, YieldInput } from 'src/stores/yields';
 import { useFarmersStore } from 'src/stores/farmers';
 import { useAuthStore } from 'src/stores/auth';
+import { useDietsStore } from 'src/stores/diets';
 import { useQuasar } from 'quasar';
 import { COW_ICON } from 'src/boot/icons';
 import { useHapticFeedback } from 'src/composables/useHapticFeedback';
+import type { Diet } from 'src/lib/offline/db';
 
 const { t } = useI18n();
 
@@ -168,7 +177,10 @@ const $q = useQuasar();
 const yieldsStore = useYieldsStore();
 const farmersStore = useFarmersStore();
 const authStore = useAuthStore();
+const dietsStore = useDietsStore();
 const { success, error: hapticError, medium } = useHapticFeedback();
+
+const activeDiet = ref<Diet | null>(null);
 
 const yieldId = computed(() => route.params.id as string | undefined);
 const isEditing = computed(() => !!yieldId.value);
@@ -196,6 +208,17 @@ const farmerOptions = computed(() =>
 );
 
 const cowOptions = computed(() => cows.value);
+
+async function onCowChange(cowId: string | undefined) {
+  activeDiet.value = null;
+  form.diet_recommendation_id = undefined;
+  if (cowId) {
+    activeDiet.value = await dietsStore.getActiveDietForCow(cowId);
+    if (activeDiet.value) {
+      form.diet_recommendation_id = activeDiet.value.id;
+    }
+  }
+}
 
 async function onFarmerChange(farmerId: string) {
   if (!farmerId) {
@@ -280,6 +303,7 @@ onMounted(async () => {
     // Check for pre-selected cow from query params
     if (route.query.cow) {
       form.cow_profile_id = route.query.cow as string;
+      await onCowChange(form.cow_profile_id);
     }
   }
 });

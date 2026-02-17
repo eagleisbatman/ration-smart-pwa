@@ -106,7 +106,7 @@
               <q-item-section>
                 <q-item-label>
                   <div class="row items-center justify-between">
-                    <span>{{ log.cow_name || $t('logs.labels.unknownCow') }}</span>
+                    <span>{{ getCowName(log) }}</span>
                     <q-chip
                       v-if="log.fed_diet === true"
                       dense
@@ -288,6 +288,15 @@ function formatDateHeader(dateStr: string): string {
   if (isToday(date)) return t('logs.dateHeader.today');
   if (isYesterday(date)) return t('logs.dateHeader.yesterday');
   return format(date, 'EEEE, MMMM d');
+}
+
+function getCowName(log: { cow_name?: string; cow_id?: string }): string {
+  if (log.cow_name) return log.cow_name;
+  if (log.cow_id) {
+    const cow = cowsStore.activeCows.find((c) => c.id === log.cow_id);
+    if (cow) return cow.name;
+  }
+  return t('logs.labels.unknownCow');
 }
 
 function editLog(id: string) {

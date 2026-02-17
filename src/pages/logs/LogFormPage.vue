@@ -372,7 +372,15 @@ onMounted(async () => {
         snf_percentage: log.snf_percentage,
         temperature: log.temperature,
         notes: log.notes,
+        fed_diet: log.fed_diet,
+        diet_history_id: log.diet_history_id,
       });
+      // Fetch active diet for the adherence card UI, then restore original values
+      if (log.cow_id) {
+        await onCowSelected(log.cow_id);
+        form.fed_diet = log.fed_diet;
+        form.diet_history_id = log.diet_history_id;
+      }
     } else {
       $q.notify({ type: 'negative', message: t('logs.form.logNotFound') });
       router.back();
