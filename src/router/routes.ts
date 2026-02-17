@@ -195,30 +195,18 @@ const routes: RouteRecordRaw[] = [
         meta: { titleKey: 'farmer.editFarmer', showBack: true, hideBottomNav: true, hideFab: true },
       },
 
-      // Yields
+      // Milk Summary (aggregated from milk logs)
       {
         path: 'yields',
-        name: 'yields',
+        name: 'milk-summary',
         component: () => import('pages/yields/YieldHistoryPage.vue'),
-        meta: { titleKey: 'nav.yieldHistory', hideFab: true },
-      },
-      {
-        path: 'yields/new',
-        name: 'yield-new',
-        component: () => import('pages/yields/YieldFormPage.vue'),
-        meta: { titleKey: 'logs.yield.recordYield', showBack: true, hideBottomNav: true, hideFab: true },
+        meta: { titleKey: 'nav.milkSummary', hideFab: true },
       },
       {
         path: 'yields/compare-farmers',
         name: 'yield-farmer-compare',
         component: () => import('pages/yields/FarmerYieldComparePage.vue'),
         meta: { titleKey: 'yields.compare.title', showBack: true, hideFab: true },
-      },
-      {
-        path: 'yields/:id/edit',
-        name: 'yield-edit',
-        component: () => import('pages/yields/YieldFormPage.vue'),
-        meta: { titleKey: 'logs.yield.editYield', showBack: true, hideBottomNav: true, hideFab: true },
       },
 
       // Organization Analytics

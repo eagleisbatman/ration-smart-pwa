@@ -386,6 +386,23 @@ export const useMilkLogsStore = defineStore('milkLogs', () => {
       .sortBy('log_date');
   }
 
+  async function getLogsForFarmer(cowIds: string[], options?: { startDate?: string; endDate?: string }): Promise<MilkLog[]> {
+    const allLogs: MilkLog[] = [];
+    for (const cowId of cowIds) {
+      const cowLogs = await db.milkLogs
+        .where({ cow_id: cowId })
+        .filter((log) => {
+          if (log._deleted) return false;
+          if (options?.startDate && log.log_date < options.startDate) return false;
+          if (options?.endDate && log.log_date > options.endDate) return false;
+          return true;
+        })
+        .toArray();
+      allLogs.push(...cowLogs);
+    }
+    return allLogs.sort((a, b) => b.log_date.localeCompare(a.log_date));
+  }
+
   async function getLogsForCowInRange(cowId: string, startDate: string, endDate?: string): Promise<MilkLog[]> {
     return db.milkLogs
       .where({ cow_id: cowId })
@@ -419,6 +436,7 @@ export const useMilkLogsStore = defineStore('milkLogs', () => {
     updateLog,
     deleteLog,
     getLogsForCow,
+    getLogsForFarmer,
     getLogByDate,
     getLogsByDietId,
     getLogsForCowInRange,

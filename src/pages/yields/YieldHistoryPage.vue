@@ -6,7 +6,7 @@
         <q-select
           v-model="selectedFarmer"
           :options="farmerOptions"
-          :label="$t('logs.yield.filterByFarmer')"
+          :label="$t('milkSummary.filterByFarmer')"
           outlined
           dense
           clearable
@@ -37,15 +37,8 @@
           icon="compare_arrows"
           @click="router.push({ name: 'yield-farmer-compare' })"
         >
-          <q-tooltip>{{ $t('yields.compare.title') }}</q-tooltip>
+          <q-tooltip>{{ $t('milkSummary.compareFarmers') }}</q-tooltip>
         </q-btn>
-        <q-btn
-          flat
-          round
-          icon="file_download"
-          :disable="yieldRecords.length === 0"
-          @click="showExportSheet = true"
-        />
       </div>
 
       <!-- Date Range Display -->
@@ -61,23 +54,23 @@
       </div>
 
       <!-- Loading State -->
-      <template v-if="loading && yieldRecords.length === 0">
+      <template v-if="loading">
         <SkeletonList :count="5" />
       </template>
 
       <!-- Empty State -->
-      <template v-else-if="yieldRecords.length === 0">
+      <template v-else-if="farmerLogs.length === 0">
         <EmptyState
           icon="analytics"
-          :title="$t('logs.yield.noYieldRecords')"
-          :description="$t('logs.yield.noYieldRecordsDesc')"
-          :action-label="$t('logs.yield.recordYield')"
-          action-icon="add_chart"
-          @action="router.push('/yields/new')"
+          :title="$t('milkSummary.noData')"
+          :description="selectedFarmer ? $t('milkSummary.noDataForFarmer') : $t('milkSummary.selectFarmerHint')"
+          :action-label="$t('milkSummary.logMilk')"
+          action-icon="add"
+          @action="router.push('/logs/new')"
         />
       </template>
 
-      <!-- Yield Data -->
+      <!-- Summary Data -->
       <template v-else>
         <!-- Summary Card -->
         <q-card class="q-mb-md bg-primary text-white">
@@ -85,27 +78,81 @@
             <div class="row q-gutter-md text-center">
               <div class="col">
                 <div class="text-h5">{{ totalRecords }}</div>
-                <div class="text-caption">{{ $t('logs.yield.records') }}</div>
+                <div class="text-caption">{{ $t('milkSummary.records') }}</div>
               </div>
               <div class="col">
-                <div class="text-h5">{{ avgYield }}</div>
-                <div class="text-caption">{{ $t('logs.yield.avgLPerDay') }}</div>
+                <div class="text-h5">{{ avgDailyYield }}</div>
+                <div class="text-caption">{{ $t('milkSummary.avgLPerDay') }}</div>
               </div>
               <div class="col">
                 <div class="text-h5">{{ avgFat }}%</div>
-                <div class="text-caption">{{ $t('logs.yield.avgFat') }}</div>
+                <div class="text-caption">{{ $t('milkSummary.avgFat') }}</div>
               </div>
             </div>
           </q-card-section>
         </q-card>
 
+        <!-- Revenue Card -->
+        <q-card v-if="milkPrice" flat bordered class="q-mb-md">
+          <q-card-section class="q-py-sm">
+            <div class="row items-center q-gutter-x-sm">
+              <q-icon name="payments" color="primary" />
+              <span class="text-caption text-grey-7">{{ $t('milkSummary.revenue') }}</span>
+            </div>
+            <div class="row q-mt-xs q-gutter-x-lg">
+              <div>
+                <div class="text-body2 text-weight-medium">{{ formatCurrency(totalLiters * milkPrice) }}</div>
+                <div class="text-caption text-grey-6">{{ $t('milkSummary.totalRevenue') }}</div>
+              </div>
+              <div>
+                <div class="text-body2 text-weight-medium">{{ formatCurrency(avgDailyLiters * milkPrice) }}</div>
+                <div class="text-caption text-grey-6">{{ $t('milkSummary.perDay') }}</div>
+              </div>
+            </div>
+          </q-card-section>
+        </q-card>
+
+        <!-- Actuals vs Projected (per cow with active diet) -->
+        <template v-if="cowDietMetrics.length > 0">
+          <div class="text-subtitle2 text-grey-7 q-mb-sm">{{ $t('milkSummary.actualsVsProjected') }}</div>
+          <q-card v-for="metric in cowDietMetrics" :key="metric.cowId" flat bordered class="q-mb-sm">
+            <q-card-section class="q-py-sm">
+              <div class="row items-center justify-between q-mb-xs">
+                <span class="text-body2 text-weight-medium">{{ metric.cowName }}</span>
+                <q-chip
+                  dense
+                  size="sm"
+                  :color="metric.yieldChange > 0 ? 'positive' : metric.yieldChange < 0 ? 'negative' : 'grey'"
+                  text-color="white"
+                >
+                  {{ metric.yieldChange > 0 ? '+' : '' }}{{ metric.yieldChange }}%
+                </q-chip>
+              </div>
+              <div class="row q-gutter-x-md text-caption">
+                <div>
+                  <span class="text-grey-6">{{ $t('milkSummary.baseline') }}:</span>
+                  <span class="q-ml-xs">{{ metric.baseline }}L</span>
+                </div>
+                <div>
+                  <span class="text-grey-6">{{ $t('milkSummary.actual') }}:</span>
+                  <span class="q-ml-xs">{{ metric.actual }}L</span>
+                </div>
+                <div>
+                  <span class="text-grey-6">{{ $t('milkSummary.adherence') }}:</span>
+                  <span class="q-ml-xs">{{ metric.adherence }}%</span>
+                </div>
+              </div>
+            </q-card-section>
+          </q-card>
+        </template>
+
         <!-- Chart View -->
         <template v-if="viewMode === 'chart'">
-          <q-card flat bordered class="q-mb-md rounded-borders">
+          <q-card flat bordered class="q-mb-md q-mt-md rounded-borders">
             <q-card-section>
-              <div class="text-subtitle2 q-mb-sm">{{ $t('chart.yieldTrend') }}</div>
+              <div class="text-subtitle2 q-mb-sm">{{ $t('milkSummary.dailyTrend') }}</div>
               <YieldTrendChart
-                :data="chartYieldData"
+                :data="chartData"
                 :show-fat="true"
                 :height="250"
               />
@@ -115,42 +162,38 @@
 
         <!-- List View -->
         <template v-else>
-          <q-list separator class="rounded-borders" bordered>
+          <q-list separator class="rounded-borders q-mt-md" bordered>
             <q-item
-              v-for="record in yieldRecords"
-              :key="record.id"
+              v-for="log in farmerLogs"
+              :key="log.id"
               v-ripple
               clickable
-              @click="editYield(record.id)"
+              @click="router.push(`/logs/${log.id}/edit`)"
             >
               <q-item-section avatar>
-                <q-avatar color="positive" text-color="white">
+                <q-avatar color="primary" text-color="white">
                   <q-icon name="water_drop" />
                 </q-avatar>
               </q-item-section>
 
               <q-item-section>
-                <q-item-label>{{ formatDate(record.collection_date) }}</q-item-label>
+                <q-item-label>{{ formatDate(log.log_date) }} · {{ getCowName(log.cow_id) }}</q-item-label>
                 <q-item-label caption>
-                  {{ record.milk_yield_liters?.toFixed(1) || '0' }}{{ $t('units.l') }}
-                  <span v-if="record.fat_percentage"> &middot; {{ $t('logs.yield.fat') }}: {{ record.fat_percentage }}%</span>
-                  <span v-if="record.snf_percentage"> &middot; {{ $t('logs.yield.snf') }}: {{ record.snf_percentage }}%</span>
-                </q-item-label>
-                <q-item-label v-if="record.notes" caption class="text-grey-6">
-                  {{ record.notes }}
+                  {{ (log.total_liters || 0).toFixed(1) }}{{ $t('units.l') }}
+                  <span v-if="log.fat_percentage"> &middot; {{ $t('milkSummary.fat') }}: {{ log.fat_percentage }}%</span>
+                  <span v-if="log.snf_percentage"> &middot; {{ $t('milkSummary.snf') }}: {{ log.snf_percentage }}%</span>
                 </q-item-label>
               </q-item-section>
 
               <q-item-section side>
                 <q-chip
-                  v-if="!record._synced"
+                  v-if="log.fed_diet === true"
                   size="sm"
-                  color="warning"
+                  color="positive"
                   text-color="white"
-                  icon="sync"
                   dense
                 >
-                  {{ $t('logs.yield.pending') }}
+                  {{ $t('logs.labels.fedDietBadge') }}
                 </q-chip>
               </q-item-section>
             </q-item>
@@ -159,61 +202,24 @@
       </template>
     </PullToRefresh>
 
-    <!-- FAB for adding new yield -->
-    <q-page-sticky position="bottom-right" :offset="[16, 72]">
-      <q-btn
-        fab
-        icon="add_chart"
-        color="primary"
-        @click="navigateToNewYield"
-      />
-    </q-page-sticky>
-
-    <!-- Export Bottom Sheet -->
-    <q-dialog v-model="showExportSheet" position="bottom">
-      <q-card class="dialog-card">
-        <q-card-section>
-          <div class="text-h6">{{ $t('logs.yield.export') }}</div>
-        </q-card-section>
-        <q-list>
-          <q-item v-close-popup clickable @click="exportYieldData('csv')">
-            <q-item-section avatar>
-              <q-icon name="description" color="green" />
-            </q-item-section>
-            <q-item-section>
-              <q-item-label>{{ $t('logs.yield.exportCSV') }}</q-item-label>
-            </q-item-section>
-          </q-item>
-          <q-item v-close-popup clickable @click="exportYieldData('pdf')">
-            <q-item-section avatar>
-              <q-icon name="picture_as_pdf" color="red" />
-            </q-item-section>
-            <q-item-section>
-              <q-item-label>{{ $t('logs.yield.exportPDF') }}</q-item-label>
-            </q-item-section>
-          </q-item>
-        </q-list>
-      </q-card>
-    </q-dialog>
-
     <!-- Date Range Dialog -->
     <q-dialog v-model="showDateFilter">
       <q-card>
         <q-card-section>
-          <div class="text-h6">{{ $t('logs.yield.filterByDate') }}</div>
+          <div class="text-h6">{{ $t('milkSummary.filterByDate') }}</div>
         </q-card-section>
 
         <q-card-section class="q-gutter-md">
           <q-input
             v-model="dateFrom"
-            :label="$t('logs.yield.from')"
+            :label="$t('milkSummary.from')"
             type="date"
             outlined
             dense
           />
           <q-input
             v-model="dateTo"
-            :label="$t('logs.yield.to')"
+            :label="$t('milkSummary.to')"
             type="date"
             outlined
             dense
@@ -221,8 +227,8 @@
         </q-card-section>
 
         <q-card-actions align="right">
-          <q-btn v-close-popup flat :label="$t('logs.yield.clear')" @click="clearDateFilter" />
-          <q-btn v-close-popup flat :label="$t('logs.yield.apply')" color="primary" @click="applyDateFilter" />
+          <q-btn v-close-popup flat :label="$t('common.cancel')" @click="clearDateFilter" />
+          <q-btn v-close-popup flat :label="$t('milkSummary.apply')" color="primary" @click="loadData" />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -231,56 +237,75 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, watch } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
+import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
-import { useQuasar } from 'quasar';
-import { useYieldsStore } from 'src/stores/yields';
+import { useMilkLogsStore } from 'src/stores/milkLogs';
 import { useFarmersStore } from 'src/stores/farmers';
+import { useCowsStore } from 'src/stores/cows';
+import { useDietsStore } from 'src/stores/diets';
 import { useAuthStore } from 'src/stores/auth';
+import { useSettingsStore } from 'src/stores/settings';
 import { useDateFormat } from 'src/composables/useDateFormat';
-import { printHTML } from 'src/composables/useExport';
+import { useCurrency } from 'src/composables/useCurrency';
 import PullToRefresh from 'src/components/ui/PullToRefresh.vue';
 import SkeletonList from 'src/components/ui/SkeletonList.vue';
 import EmptyState from 'src/components/ui/EmptyState.vue';
 import YieldTrendChart from 'src/components/reports/YieldTrendChart.vue';
+import type { MilkLog } from 'src/lib/offline/db';
 
 const { t } = useI18n();
-const $q = useQuasar();
 const router = useRouter();
-const route = useRoute();
-const yieldsStore = useYieldsStore();
+const milkLogsStore = useMilkLogsStore();
 const farmersStore = useFarmersStore();
+const cowsStore = useCowsStore();
+const dietsStore = useDietsStore();
 const authStore = useAuthStore();
+const settingsStore = useSettingsStore();
 const { formatDate } = useDateFormat();
+const { formatCurrency } = useCurrency();
 
 const selectedFarmer = ref<string | null>(null);
 const dateFrom = ref<string | null>(null);
 const dateTo = ref<string | null>(null);
 const showDateFilter = ref(false);
-const showExportSheet = ref(false);
 const viewMode = ref<'list' | 'chart'>('list');
+const loading = ref(false);
+const farmerLogs = ref<MilkLog[]>([]);
+const farmerCowIds = ref<string[]>([]);
 
-const loading = computed(() => yieldsStore.loading);
-const yieldRecords = computed(() => yieldsStore.yieldRecords);
+interface CowDietMetric {
+  cowId: string;
+  cowName: string;
+  baseline: number;
+  actual: number;
+  yieldChange: number;
+  adherence: number;
+}
 
-const totalRecords = computed(() => yieldRecords.value.length);
-const avgYield = computed(() => yieldsStore.averageMilkYield.toFixed(1));
-const avgFat = computed(() => {
-  const records = yieldRecords.value.filter((y) => y.fat_percentage != null);
-  if (records.length === 0) return '0.0';
-  const sum = records.reduce((acc, y) => acc + (y.fat_percentage || 0), 0);
-  return (sum / records.length).toFixed(1);
+const cowDietMetrics = ref<CowDietMetric[]>([]);
+
+const milkPrice = computed(() => settingsStore.milkPricePerLiter);
+
+const totalRecords = computed(() => farmerLogs.value.length);
+const totalLiters = computed(() =>
+  farmerLogs.value.reduce((sum, l) => sum + (l.total_liters || 0), 0)
+);
+
+// Average liters per unique date
+const avgDailyLiters = computed(() => {
+  const dates = new Set(farmerLogs.value.map((l) => l.log_date));
+  if (dates.size === 0) return 0;
+  return Math.round((totalLiters.value / dates.size) * 10) / 10;
 });
 
-const chartYieldData = computed(() =>
-  [...yieldRecords.value]
-    .sort((a, b) => a.collection_date.localeCompare(b.collection_date))
-    .map((r) => ({
-      date: r.collection_date,
-      yield: r.milk_yield_liters || 0,
-      fat: r.fat_percentage,
-    }))
-);
+const avgDailyYield = computed(() => avgDailyLiters.value.toFixed(1));
+
+const avgFat = computed(() => {
+  const records = farmerLogs.value.filter((l) => l.fat_percentage != null);
+  if (records.length === 0) return '0.0';
+  const sum = records.reduce((acc, l) => acc + (l.fat_percentage || 0), 0);
+  return (sum / records.length).toFixed(1);
+});
 
 const farmerOptions = computed(() =>
   farmersStore.activeFarmers.map((f) => ({
@@ -289,36 +314,85 @@ const farmerOptions = computed(() =>
   }))
 );
 
+const chartData = computed(() =>
+  [...farmerLogs.value]
+    .sort((a, b) => a.log_date.localeCompare(b.log_date))
+    .map((l) => ({
+      date: l.log_date,
+      yield: l.total_liters || 0,
+      fat: l.fat_percentage,
+    }))
+);
+
 const formatDateRangeDisplay = computed(() => {
   if (dateFrom.value && dateTo.value) {
     return `${formatDate(dateFrom.value, 'PP')} - ${formatDate(dateTo.value, 'PP')}`;
   }
-  if (dateFrom.value) {
-    return `${t('logs.yield.from')} ${formatDate(dateFrom.value, 'PP')}`;
-  }
-  if (dateTo.value) {
-    return `${t('logs.yield.to')} ${formatDate(dateTo.value, 'PP')}`;
-  }
+  if (dateFrom.value) return `${t('milkSummary.from')} ${formatDate(dateFrom.value, 'PP')}`;
+  if (dateTo.value) return `${t('milkSummary.to')} ${formatDate(dateTo.value, 'PP')}`;
   return '';
 });
 
-async function loadData() {
-  if (selectedFarmer.value) {
-    await yieldsStore.fetchFarmerYieldHistory(selectedFarmer.value, {
-      dateFrom: dateFrom.value || undefined,
-      dateTo: dateTo.value || undefined,
-    });
-  } else {
-    await yieldsStore.fetchYieldHistory({
-      dateFrom: dateFrom.value || undefined,
-      dateTo: dateTo.value || undefined,
-    });
-  }
+function getCowName(cowId: string): string {
+  const cow = cowsStore.activeCows.find((c) => c.id === cowId);
+  return cow?.name || cowId;
 }
 
-async function onRefresh(done: () => void) {
-  await loadData();
-  done();
+async function loadData() {
+  if (!selectedFarmer.value) {
+    farmerLogs.value = [];
+    cowDietMetrics.value = [];
+    return;
+  }
+
+  loading.value = true;
+
+  try {
+    // Get farmer's cows
+    const cows = await farmersStore.getFarmerCows(selectedFarmer.value) as Array<{ id: string; name: string }>;
+    farmerCowIds.value = cows.map((c) => c.id);
+
+    // Ensure milk logs are fetched from backend first
+    await milkLogsStore.fetchLogs();
+
+    // Get logs for all of this farmer's cows
+    farmerLogs.value = await milkLogsStore.getLogsForFarmer(farmerCowIds.value, {
+      startDate: dateFrom.value || undefined,
+      endDate: dateTo.value || undefined,
+    });
+
+    // Build actuals vs projected for cows with active diets
+    const metrics: CowDietMetric[] = [];
+    for (const cow of cows) {
+      const activeDiet = await dietsStore.getActiveDietForCow(cow.id);
+      if (!activeDiet) continue;
+
+      const inputData = activeDiet.input_data as Record<string, unknown> | undefined;
+      const baseline = inputData?.milk_yield_liters as number | undefined;
+      if (!baseline || baseline <= 0) continue;
+
+      // Get logs linked to this diet
+      const dietLogs = await milkLogsStore.getLogsByDietId(activeDiet.id);
+      if (dietLogs.length === 0) continue;
+
+      const avgYield = dietLogs.reduce((s, l) => s + (l.total_liters || 0), 0) / dietLogs.length;
+      const change = Math.round(((avgYield - baseline) / baseline) * 1000) / 10;
+      const fedCount = dietLogs.filter((l) => l.fed_diet === true).length;
+      const adherence = Math.round((fedCount / dietLogs.length) * 100);
+
+      metrics.push({
+        cowId: cow.id,
+        cowName: cow.name,
+        baseline: Math.round(baseline * 10) / 10,
+        actual: Math.round(avgYield * 10) / 10,
+        yieldChange: change,
+        adherence,
+      });
+    }
+    cowDietMetrics.value = metrics;
+  } finally {
+    loading.value = false;
+  }
 }
 
 function clearDateFilter() {
@@ -327,120 +401,23 @@ function clearDateFilter() {
   loadData();
 }
 
-function applyDateFilter() {
-  loadData();
+async function onRefresh(done: () => void) {
+  await loadData();
+  done();
 }
 
-function navigateToNewYield() {
-  const query: Record<string, string> = {};
-  if (selectedFarmer.value) {
-    query.farmer = selectedFarmer.value;
-  }
-  router.push({ path: '/yields/new', query });
-}
-
-function editYield(id: string) {
-  router.push(`/yields/${id}/edit`);
-}
-
-function getFarmerName(farmerId: string): string {
-  const farmer = farmersStore.activeFarmers.find((f) => f.id === farmerId);
-  return farmer?.name || farmerId;
-}
-
-function exportYieldData(format: 'csv' | 'pdf') {
-  const records = yieldRecords.value;
-  if (records.length === 0) return;
-
-  if (format === 'csv') {
-    const header = `${t('export.date')},${t('export.farmer')},Cow,${t('export.yieldL')},${t('export.fatPercent')},${t('export.snfPercent')},${t('export.notes')}`;
-    const rows = records.map((r) => {
-      const date = r.collection_date;
-      const farmer = getFarmerName(r.farmer_profile_id);
-      const cow = r.cow_profile_id || '';
-      const yieldL = r.milk_yield_liters?.toFixed(1) || '0';
-      const fat = r.fat_percentage != null ? r.fat_percentage.toString() : '';
-      const snf = r.snf_percentage != null ? r.snf_percentage.toString() : '';
-      const notes = (r.notes || '').replace(/"/g, '""');
-      return `${date},"${farmer}","${cow}",${yieldL},${fat},${snf},"${notes}"`;
-    });
-
-    const csvContent = [header, ...rows].join('\n');
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `yield-data-${new Date().toISOString().slice(0, 10)}.csv`;
-    link.click();
-    URL.revokeObjectURL(url);
-
-    $q.notify({ type: 'positive', message: t('logs.yield.exported') });
-  } else {
-    // PDF via print
-    const tableRows = records
-      .map(
-        (r, i) => `
-      <tr style="${i % 2 === 0 ? 'background-color: #f9f9f9;' : ''}">
-        <td style="padding: 8px 12px; border-bottom: 1px solid #e0e0e0;">${r.collection_date}</td>
-        <td style="padding: 8px 12px; border-bottom: 1px solid #e0e0e0;">${getFarmerName(r.farmer_profile_id)}</td>
-        <td style="padding: 8px 12px; border-bottom: 1px solid #e0e0e0; text-align: right;">${r.milk_yield_liters?.toFixed(1) || '0'} L</td>
-        <td style="padding: 8px 12px; border-bottom: 1px solid #e0e0e0; text-align: right;">${r.fat_percentage != null ? r.fat_percentage + '%' : '-'}</td>
-        <td style="padding: 8px 12px; border-bottom: 1px solid #e0e0e0; text-align: right;">${r.snf_percentage != null ? r.snf_percentage + '%' : '-'}</td>
-        <td style="padding: 8px 12px; border-bottom: 1px solid #e0e0e0;">${r.notes || ''}</td>
-      </tr>`
-      )
-      .join('');
-
-    const html = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>${t('export.yieldExport')}</title>
-  <style>
-    @media print { body { margin: 0; padding: 20px; } }
-    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #333; max-width: 900px; margin: 0 auto; padding: 24px; }
-    h1 { color: #1976d2; font-size: 22px; border-bottom: 3px solid #1976d2; padding-bottom: 12px; }
-    .summary { display: flex; gap: 16px; margin-bottom: 24px; }
-    .summary-item { background: #f5f5f5; padding: 10px 16px; border-radius: 6px; flex: 1; text-align: center; }
-    .summary-label { font-size: 12px; color: #888; text-transform: uppercase; }
-    .summary-value { font-size: 18px; font-weight: 500; }
-    table { width: 100%; border-collapse: collapse; }
-    th { background-color: #1976d2; color: white; padding: 10px 12px; text-align: left; font-size: 13px; text-transform: uppercase; }
-    .footer { margin-top: 32px; text-align: center; font-size: 12px; color: #999; border-top: 1px solid #e0e0e0; padding-top: 16px; }
-  </style>
-</head>
-<body>
-  <h1>${t('export.yieldExport')}</h1>
-  <div class="summary">
-    <div class="summary-item"><div class="summary-label">${t('export.records')}</div><div class="summary-value">${totalRecords.value}</div></div>
-    <div class="summary-item"><div class="summary-label">${t('export.avgYield')}</div><div class="summary-value">${avgYield.value} L</div></div>
-    <div class="summary-item"><div class="summary-label">${t('export.avgFat')}</div><div class="summary-value">${avgFat.value}%</div></div>
-  </div>
-  <table>
-    <thead><tr><th>${t('export.date')}</th><th>${t('export.farmer')}</th><th style="text-align:right">${t('export.yield')}</th><th style="text-align:right">${t('export.fatPercent')}</th><th style="text-align:right">${t('export.snfPercent')}</th><th>${t('export.notes')}</th></tr></thead>
-    <tbody>${tableRows}</tbody>
-  </table>
-  <div class="footer"><p>${t('export.generatedOn', { date: new Date().toLocaleDateString() })}</p></div>
-</body>
-</html>`;
-
-    printHTML(html, `yield-data-${new Date().toISOString().slice(0, 10)}.html`);
-    $q.notify({ type: 'positive', message: t('logs.yield.exported') });
-  }
-}
-
-// Watch for farmer filter changes
 watch(selectedFarmer, () => {
   loadData();
 });
 
-onMounted(() => {
-  // Check for farmer query param
-  if (route.query.farmer) {
-    selectedFarmer.value = route.query.farmer as string;
+onMounted(async () => {
+  await farmersStore.fetchFarmers();
+  await cowsStore.fetchCows();
+
+  // Auto-select self if farmer
+  if (authStore.selfFarmerProfileId) {
+    selectedFarmer.value = authStore.selfFarmerProfileId;
   }
-  loadData();
-  farmersStore.fetchFarmers();
 });
 </script>
 

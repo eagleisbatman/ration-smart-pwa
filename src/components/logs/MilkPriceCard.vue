@@ -90,15 +90,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, nextTick } from 'vue';
+import { ref, computed, nextTick } from 'vue';
 import { useQuasar, QInput } from 'quasar';
 import { useI18n } from 'vue-i18n';
 import { useCurrency } from 'src/composables/useCurrency';
-
-interface MilkPriceHistory {
-  price: number;
-  date: string;
-}
+import { useSettingsStore } from 'src/stores/settings';
 
 const props = defineProps<{
   todayLiters: number;
@@ -108,11 +104,9 @@ const props = defineProps<{
 const $q = useQuasar();
 const { t } = useI18n();
 const { formatCurrency, getCurrencySymbol } = useCurrency();
+const settingsStore = useSettingsStore();
 
-const PRICE_KEY = 'milk_price_per_liter';
-const HISTORY_KEY = 'milk_price_history';
-
-const milkPrice = ref<number | null>(null);
+const milkPrice = computed(() => settingsStore.milkPricePerLiter);
 const editing = ref(false);
 const editPriceValue = ref<number | null>(null);
 const priceInputRef = ref<InstanceType<typeof QInput> | null>(null);
@@ -126,14 +120,6 @@ const weeklyRevenue = computed(() => {
   if (milkPrice.value === null) return 0;
   return props.weekLiters * milkPrice.value;
 });
-
-function loadPrice(): void {
-  const stored = localStorage.getItem(PRICE_KEY);
-  if (stored !== null) {
-    const parsed = parseFloat(stored);
-    milkPrice.value = isNaN(parsed) ? null : parsed;
-  }
-}
 
 function startEdit(): void {
   editPriceValue.value = milkPrice.value;
@@ -153,30 +139,7 @@ function savePrice(): void {
     return;
   }
 
-  milkPrice.value = editPriceValue.value;
-  localStorage.setItem(PRICE_KEY, String(milkPrice.value));
-
-  // Update price history
-  const historyRaw = localStorage.getItem(HISTORY_KEY);
-  let history: MilkPriceHistory[] = [];
-  if (historyRaw) {
-    try {
-      history = JSON.parse(historyRaw) as MilkPriceHistory[];
-    } catch {
-      history = [];
-    }
-  }
-  history.push({
-    price: milkPrice.value,
-    date: new Date().toISOString(),
-  });
-
-  // Keep last 100 entries
-  if (history.length > 100) {
-    history = history.slice(-100);
-  }
-
-  localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+  settingsStore.saveMilkPrice(editPriceValue.value);
 
   editing.value = false;
   editPriceValue.value = null;
@@ -191,10 +154,6 @@ function savePrice(): void {
 
 // Expose milkPrice so parent can use it for per-log revenue
 defineExpose({ milkPrice });
-
-onMounted(() => {
-  loadPrice();
-});
 </script>
 
 <style lang="scss" scoped>
