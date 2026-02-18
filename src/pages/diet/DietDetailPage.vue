@@ -774,6 +774,8 @@ async function handleFollowDiet() {
   if (success) {
     diet.value = await dietsStore.getDiet(dietId.value);
     $q.notify({ type: 'positive', message: t('diet.followSuccess') });
+  } else if (dietsStore.error) {
+    $q.notify({ type: 'negative', message: dietsStore.error });
   }
 }
 
@@ -788,6 +790,8 @@ async function handleStopFollowing() {
     if (success) {
       diet.value = await dietsStore.getDiet(dietId.value);
       $q.notify({ type: 'info', message: t('diet.stopped') });
+    } else if (dietsStore.error) {
+      $q.notify({ type: 'negative', message: dietsStore.error });
     }
   });
 }
