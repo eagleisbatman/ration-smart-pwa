@@ -252,7 +252,11 @@ watch(
   { immediate: true }
 );
 
+let initGeneration = 0;
+
 async function initEntries() {
+  const generation = ++initGeneration;
+
   for (const cow of activeCows.value) {
     if (!entries[cow.id]) {
       entries[cow.id] = { morning: null, evening: null };
@@ -264,14 +268,18 @@ async function initEntries() {
   // Fetch active diets for all cows
   loadingDiets.value = true;
   for (const cow of activeCows.value) {
+    if (generation !== initGeneration) return; // stale call
     const diet = await dietsStore.getActiveDietForCow(cow.id);
+    if (generation !== initGeneration) return; // stale call
     if (diet) {
       cowDiets[cow.id] = diet;
     } else {
       delete cowDiets[cow.id];
     }
   }
-  loadingDiets.value = false;
+  if (generation === initGeneration) {
+    loadingDiets.value = false;
+  }
 }
 
 function getRowTotal(cowId: string): number {

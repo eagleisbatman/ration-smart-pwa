@@ -426,6 +426,11 @@ export const useDietsStore = defineStore('diets', () => {
         currentDiet.value = null;
       }
 
+      // Clear active diet cache if this was the active diet for its cow
+      if (existing?.cow_id && activeDiets.value[existing.cow_id]?.id === id) {
+        delete activeDiets.value[existing.cow_id];
+      }
+
       return true;
     } catch (err) {
       error.value = extractUserFriendlyError(err);
