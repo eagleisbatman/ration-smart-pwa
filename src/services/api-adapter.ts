@@ -1028,9 +1028,12 @@ const ENDPOINT_MAP: Record<string, EndpointMapping> = {
         return data;
       },
       response: (data: unknown) => {
-        // Could be a list response or single item
+        // Could be a list response or single item (POST create)
         const resp = data as { diets?: Record<string, unknown>[] };
         if (resp.diets) return resp.diets.map(mapDietFromBackend);
+        if (data && typeof data === 'object' && !Array.isArray(data)) {
+          return mapDietFromBackend(data as Record<string, unknown>);
+        }
         return data;
       },
     },

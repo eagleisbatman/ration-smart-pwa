@@ -383,6 +383,8 @@ export const useDietsStore = defineStore('diets', () => {
         input_data: diet.input_data,
         result_data: diet.result_data,
         _raw_backend_result: diet._raw_backend_result,
+        total_cost: diet.total_cost,
+        dm_intake: diet.dm_intake,
         status: 'saved',
         _synced: true,
       };
