@@ -102,8 +102,8 @@
           </div>
           <div class="col-4">
             <q-card flat bordered class="text-center q-pa-sm">
-              <div class="text-h6 text-secondary">{{ diet.dm_intake?.toFixed(1) }}</div>
-              <div class="text-caption text-grey-7">{{ $t('diet.dmKg') }}</div>
+              <div class="text-h6 text-secondary">{{ diet.dm_intake?.toFixed(1) }} kg</div>
+              <div class="text-caption text-grey-7">{{ $t('diet.dryMatterIntake') }}</div>
             </q-card>
           </div>
           <div class="col-4">
