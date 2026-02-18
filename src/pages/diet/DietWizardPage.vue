@@ -164,175 +164,8 @@
         </div>
       </q-step>
 
-      <!-- Step 3: Select Feeds -->
-      <q-step :name="3" :title="$t('diet.wizard.stepFeeds')" icon="grass" :done="step > 3">
-        <div class="text-subtitle1 q-mb-sm">
-          {{ $t('diet.wizard.selectAvailableFeeds', { count: effectiveFeedIds.length }) }}
-        </div>
-
-        <!-- Auto / Manual toggle -->
-        <q-option-group
-          v-model="feedSelectionMode"
-          :options="feedModeOptions"
-          color="primary"
-          inline
-          class="q-mb-md"
-        />
-
-        <!-- Auto mode: show chips -->
-        <template v-if="feedSelectionMode === 'auto'">
-          <div class="text-body2 text-grey-7 q-mb-sm">
-            {{ $t('diet.wizard.autoSelectDesc', { count: autoSelectedFeedIds.length }) }}
-          </div>
-          <div class="q-gutter-xs">
-            <q-chip
-              v-for="feed in autoSelectedFeeds"
-              :key="feed.id"
-              outline
-              size="sm"
-              icon="check"
-              color="primary"
-            >
-              {{ feed.name }}
-            </q-chip>
-          </div>
-        </template>
-
-        <!-- Manual mode: existing search + accordion UI -->
-        <template v-else>
-          <q-input
-            v-model="feedSearch"
-            outlined
-            dense
-            :placeholder="$t('diet.wizard.searchFeeds')"
-            class="q-mb-md"
-            clearable
-          >
-            <template #prepend>
-              <q-icon name="search" />
-            </template>
-          </q-input>
-
-          <div class="scroll-list scroll-list--300">
-            <!-- Flat list when searching (no accordions) -->
-            <q-list v-if="feedSearch" bordered separator class="rounded-borders">
-              <q-item v-if="filteredFeeds.length === 0" class="text-grey-6 text-center">
-                <q-item-section>{{ $t('common.noResults') }}</q-item-section>
-              </q-item>
-              <q-item
-                v-for="feed in filteredFeeds"
-                :key="feed.id"
-                v-ripple
-                tag="label"
-                dense
-              >
-                <q-item-section side>
-                  <q-checkbox
-                    v-model="form.available_feeds"
-                    :val="feed.id"
-                    color="primary"
-                  />
-                </q-item-section>
-                <q-item-section>
-                  <q-item-label>{{ feed.name }}</q-item-label>
-                  <q-item-label v-if="feed.fd_name && feed.fd_name !== feed.name" caption class="text-grey-7">
-                    {{ feed.fd_name }}
-                  </q-item-label>
-                  <q-item-label caption>
-                    {{ feed.category }} · {{ $t('diet.cpLabel') }}: {{ feed.cp_percentage != null ? feed.cp_percentage + '%' : '–' }} · {{ $t('diet.tdnLabel') }}: {{ feed.tdn_percentage != null ? feed.tdn_percentage + '%' : '–' }}
-                  </q-item-label>
-                </q-item-section>
-                <q-item-section side>
-                  <q-input
-                    v-if="form.available_feeds.includes(feed.id)"
-                    :model-value="feedPriceOverrides[feed.id] ?? feed.price_per_kg ?? ''"
-                    type="number"
-                    dense
-                    outlined
-                    :prefix="currencySymbol"
-                    :suffix="$t('units.perKg')"
-                    input-style="text-align: right; width: 50px"
-                    style="max-width: 110px"
-                    @update:model-value="(v: string | number | null) => setFeedPrice(feed.id, v)"
-                    @click.stop
-                  />
-                  <q-item-label v-else-if="feed.price_per_kg" caption>
-                    {{ formatCurrency(feed.price_per_kg) }}{{ $t('units.perKg') }}
-                  </q-item-label>
-                </q-item-section>
-              </q-item>
-            </q-list>
-
-            <!-- Category accordions when browsing (no search) -->
-            <template v-else>
-              <q-list
-                v-for="category in feedCategories"
-                :key="category.name"
-                bordered
-                separator
-                class="rounded-borders q-mb-sm"
-              >
-                <q-expansion-item
-                  :label="category.name"
-                  :caption="$t('diet.wizard.feedCategoryCount', { selected: countSelectedInCategory(category.feeds), total: category.feeds.length })"
-                  :default-opened="category.feeds.some(f => form.available_feeds.includes(f.id))"
-                  header-class="text-weight-medium"
-                >
-                  <q-item
-                    v-for="feed in category.feeds"
-                    :key="feed.id"
-                    v-ripple
-                    tag="label"
-                    dense
-                  >
-                    <q-item-section side>
-                      <q-checkbox
-                        v-model="form.available_feeds"
-                        :val="feed.id"
-                        color="primary"
-                      />
-                    </q-item-section>
-                    <q-item-section>
-                      <q-item-label>{{ feed.name }}</q-item-label>
-                      <q-item-label v-if="feed.fd_name && feed.fd_name !== feed.name" caption class="text-grey-7">
-                        {{ feed.fd_name }}
-                      </q-item-label>
-                      <q-item-label caption>
-                        {{ $t('diet.cpLabel') }}: {{ feed.cp_percentage != null ? feed.cp_percentage + '%' : '–' }} · {{ $t('diet.tdnLabel') }}: {{ feed.tdn_percentage != null ? feed.tdn_percentage + '%' : '–' }}
-                      </q-item-label>
-                    </q-item-section>
-                    <q-item-section side>
-                      <q-input
-                        v-if="form.available_feeds.includes(feed.id)"
-                        :model-value="feedPriceOverrides[feed.id] ?? feed.price_per_kg ?? ''"
-                        type="number"
-                        dense
-                        outlined
-                        :prefix="currencySymbol"
-                        :suffix="$t('units.perKg')"
-                        input-style="text-align: right; width: 50px"
-                        style="max-width: 110px"
-                        @update:model-value="(v: string | number | null) => setFeedPrice(feed.id, v)"
-                        @click.stop
-                      />
-                      <q-item-label v-else-if="feed.price_per_kg" caption>
-                        {{ formatCurrency(feed.price_per_kg) }}{{ $t('units.perKg') }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                </q-expansion-item>
-              </q-list>
-            </template>
-          </div>
-
-          <q-banner v-if="form.available_feeds.length < 3" class="bg-warning text-white q-mt-md" rounded>
-            {{ $t('diet.wizard.selectAtLeast3Feeds') }}
-          </q-banner>
-        </template>
-      </q-step>
-
-      <!-- Step 4: Optimization Goal -->
-      <q-step :name="4" :title="$t('diet.wizard.stepGoal')" icon="flag" :done="step > 4">
+      <!-- Step 3: Optimization Goal -->
+      <q-step :name="3" :title="$t('diet.wizard.stepGoal')" icon="flag" :done="step > 3">
         <div class="text-subtitle1 q-mb-md">{{ $t('diet.wizard.whatToOptimize') }}</div>
 
         <q-option-group
@@ -410,6 +243,96 @@
             style="max-width: 200px"
           />
         </div>
+      </q-step>
+
+      <!-- Step 4: Select Feeds -->
+      <q-step :name="4" :title="$t('diet.wizard.stepFeeds')" icon="grass" :done="step > 4">
+        <div class="text-subtitle1 q-mb-md">{{ $t('diet.wizard.selectAvailableFeeds', { count: effectiveFeedIds.length }) }}</div>
+
+        <!-- Auto / Manual toggle -->
+        <q-option-group
+          v-model="feedSelectionMode"
+          :options="feedModeOptions"
+          color="primary"
+          inline
+          class="q-mb-md"
+        />
+
+        <!-- Auto mode: show selected feed chips -->
+        <template v-if="feedSelectionMode === 'auto'">
+          <div class="text-body2 text-grey-7 q-mb-sm">
+            {{ $t('diet.wizard.autoSelectDesc', { count: autoSelectedFeeds.length }) }}
+          </div>
+          <div class="q-gutter-sm">
+            <q-chip
+              v-for="feed in autoSelectedFeeds"
+              :key="feed.id"
+              dense
+              outline
+              color="primary"
+            >
+              {{ feed.name }}
+            </q-chip>
+          </div>
+        </template>
+
+        <!-- Manual mode: search + category accordions -->
+        <template v-else>
+          <q-input
+            v-model="feedSearch"
+            :label="$t('diet.wizard.searchFeeds')"
+            outlined
+            dense
+            clearable
+            class="q-mb-md"
+          >
+            <template #prepend>
+              <q-icon name="search" />
+            </template>
+          </q-input>
+
+          <q-list>
+            <q-expansion-item
+              v-for="cat in feedCategories"
+              :key="cat.name"
+              :label="cat.name"
+              :caption="$t('diet.wizard.feedCategoryCount', { selected: countSelectedInCategory(cat.feeds), total: cat.feeds.length })"
+              group="feed-categories"
+              header-class="text-weight-medium"
+            >
+              <q-card>
+                <q-card-section class="q-pa-sm">
+                  <q-list dense>
+                    <q-item v-for="feed in cat.feeds" :key="feed.id" tag="label">
+                      <q-item-section side>
+                        <q-checkbox v-model="form.available_feeds" :val="feed.id" color="primary" />
+                      </q-item-section>
+                      <q-item-section>
+                        <q-item-label>{{ feed.name }}</q-item-label>
+                        <q-item-label caption>
+                          {{ feed.fd_name || '' }}
+                          <template v-if="feed.price_per_kg"> · {{ formatCurrency(feed.price_per_kg) }}/kg</template>
+                        </q-item-label>
+                      </q-item-section>
+                      <q-item-section v-if="form.available_feeds.includes(feed.id)" side>
+                        <q-input
+                          :model-value="feedPriceOverrides[feed.id] ?? feed.price_per_kg ?? ''"
+                          type="number"
+                          dense
+                          outlined
+                          :prefix="currencySymbol"
+                          style="width: 100px"
+                          :placeholder="String(feed.price_per_kg ?? '')"
+                          @update:model-value="setFeedPrice(feed.id, $event)"
+                        />
+                      </q-item-section>
+                    </q-item>
+                  </q-list>
+                </q-card-section>
+              </q-card>
+            </q-expansion-item>
+          </q-list>
+        </template>
       </q-step>
 
       <!-- Step 5: Review & Submit -->
@@ -751,9 +674,9 @@ const canProceed = computed(() => {
     case 2:
       return form.weight_kg > 0;
     case 3:
-      return effectiveFeedIds.value.length >= 2;
-    case 4:
       return !!form.optimization_goal;
+    case 4:
+      return effectiveFeedIds.value.length >= 2;
     default:
       return true;
   }
