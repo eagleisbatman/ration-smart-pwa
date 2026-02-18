@@ -646,6 +646,7 @@ export const useDietsStore = defineStore('diets', () => {
       available_feeds: input.available_feeds ?? [],
       feed_constraints: input.feed_constraints,
       budget_per_day: input.budget_per_day,
+      target_milk_yield: input.target_milk_yield,
     };
   }
 

@@ -556,7 +556,7 @@ const feedPriceOverrides = reactive<Record<string, number>>({});
 const currencySymbol = computed(() => getCurrencySymbol());
 
 // --- Auto / Manual feed selection ---
-const feedSelectionMode = ref<'auto' | 'manual'>(queryAutoFeeds ? 'auto' : 'auto');
+const feedSelectionMode = ref<'auto' | 'manual'>('auto');
 const goalRef = computed(() => form.optimization_goal);
 const { autoSelectedFeeds, autoSelectedFeedIds } = useAutoFeedSelection(goalRef);
 
@@ -893,7 +893,12 @@ onMounted(async () => {
       form.available_feeds = inputData.available_feeds;
       form.feed_constraints = inputData.feed_constraints;
       form.budget_per_day = inputData.budget_per_day;
+      form.target_milk_yield = inputData.target_milk_yield;
       inputMode.value = inputData.cow_id ? 'select' : 'manual';
+      // Show the restored feeds in manual mode (auto mode would ignore them)
+      if (inputData.available_feeds.length > 0) {
+        feedSelectionMode.value = 'manual';
+      }
     }
   } else if (queryCowId) {
     // Pre-select cow if from query

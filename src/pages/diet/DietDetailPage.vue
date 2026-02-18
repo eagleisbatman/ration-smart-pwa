@@ -519,6 +519,12 @@ interface DietResultData {
   nutrient_balance?: NutrientBalance;
   recommendations?: string[];
   warnings?: string[];
+  diet_status?: {
+    is_valid?: boolean;
+    status_classification?: string;
+    summary?: string;
+    formatted_messages?: string[];
+  };
 }
 
 const router = useRouter();
@@ -562,17 +568,13 @@ const dmProgress = computed(() => {
 });
 
 // --- Failure detail computeds ---
-const dietStatusSummary = computed(() => {
-  const rd = resultData.value as Record<string, unknown>;
-  const ds = rd.diet_status as { summary?: string } | undefined;
-  return ds?.summary || '';
-});
+const dietStatusSummary = computed(() =>
+  resultData.value.diet_status?.summary || ''
+);
 
-const dietStatusMessages = computed<string[]>(() => {
-  const rd = resultData.value as Record<string, unknown>;
-  const ds = rd.diet_status as { formatted_messages?: string[] } | undefined;
-  return ds?.formatted_messages || [];
-});
+const dietStatusMessages = computed<string[]>(() =>
+  resultData.value.diet_status?.formatted_messages || []
+);
 
 function regenerateWithAutoFeeds() {
   const cowId = diet.value?.cow_id;
