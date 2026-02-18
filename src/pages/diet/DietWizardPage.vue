@@ -899,6 +899,17 @@ onMounted(async () => {
       if (inputData.available_feeds.length > 0) {
         feedSelectionMode.value = 'manual';
       }
+      // Sync chip state with restored values
+      if (inputData.budget_per_day) {
+        const presetBudget = [100, 150, 200, 250, 300].includes(inputData.budget_per_day);
+        selectedBudgetChip.value = presetBudget ? inputData.budget_per_day : 'custom';
+      }
+      if (inputData.target_milk_yield) {
+        const current = inputData.milk_yield_liters || 10;
+        const presets = [1.2, 1.4, 1.6].map((m) => Math.round((current * m) * 2) / 2);
+        const matchIdx = presets.indexOf(inputData.target_milk_yield);
+        selectedMilkTargetChip.value = matchIdx >= 0 ? presets[matchIdx] : 'custom';
+      }
     }
   } else if (queryCowId) {
     // Pre-select cow if from query
