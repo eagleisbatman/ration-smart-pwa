@@ -96,7 +96,7 @@
           <!-- DM Intake -->
           <div class="col-4">
             <q-card flat bordered class="q-pa-sm">
-              <div class="text-caption text-grey-7 text-center">{{ $t('diet.dmKg') }}</div>
+              <div class="text-caption text-grey-7 text-center">{{ $t('diet.dryMatterIntake') }}</div>
               <div class="row items-center justify-center q-mt-xs">
                 <div class="text-center col">
                   <div class="text-body1 text-weight-bold text-secondary">{{ dietA.dm_intake?.toFixed(1) ?? '0' }}</div>
@@ -151,67 +151,125 @@
         <div class="text-subtitle1 q-mb-sm">{{ $t('diet.nutrientBalance') }}</div>
         <q-card flat bordered class="q-mb-md">
           <q-card-section>
-            <!-- CP -->
+            <!-- Metabolizable Protein (MP) -->
             <div class="q-mb-md">
-              <div class="text-caption text-grey-7 q-mb-xs">{{ $t('diet.crudeProteinCP') }}</div>
+              <div class="text-caption text-grey-7 q-mb-xs">{{ $t('diet.metabolizableProtein') }}</div>
               <div class="row q-col-gutter-sm">
                 <div class="col-12 col-sm-6">
                   <div class="row justify-between text-caption q-mb-xs">
                     <span>A</span>
-                    <span>{{ resultDataA.nutrient_balance?.cp_supplied?.toFixed(0) ?? 0 }} / {{ resultDataA.nutrient_balance?.cp_requirement?.toFixed(0) ?? 0 }}{{ $t('diet.g') }}</span>
+                    <span>{{ mpDisplayA.supplied }} / {{ mpDisplayA.requirement }} g/day</span>
                   </div>
                   <q-linear-progress
-                    :value="cpProgressA"
-                    :color="cpProgressA >= 1 ? 'positive' : 'warning'"
+                    :value="mpProgressA"
+                    :color="mpProgressA >= 1 ? 'positive' : 'warning'"
                     rounded
                   />
                 </div>
                 <div class="col-12 col-sm-6">
                   <div class="row justify-between text-caption q-mb-xs">
                     <span>B</span>
-                    <span>{{ resultDataB.nutrient_balance?.cp_supplied?.toFixed(0) ?? 0 }} / {{ resultDataB.nutrient_balance?.cp_requirement?.toFixed(0) ?? 0 }}{{ $t('diet.g') }}</span>
+                    <span>{{ mpDisplayB.supplied }} / {{ mpDisplayB.requirement }} g/day</span>
                   </div>
                   <q-linear-progress
-                    :value="cpProgressB"
-                    :color="cpProgressB >= 1 ? 'positive' : 'warning'"
+                    :value="mpProgressB"
+                    :color="mpProgressB >= 1 ? 'positive' : 'warning'"
                     rounded
                   />
                 </div>
               </div>
             </div>
 
-            <!-- TDN -->
+            <!-- Net Energy Lactation (NEL) -->
             <div class="q-mb-md">
-              <div class="text-caption text-grey-7 q-mb-xs">{{ $t('diet.totalDigestibleNutrients') }}</div>
+              <div class="text-caption text-grey-7 q-mb-xs">{{ $t('diet.netEnergyLactation') }}</div>
               <div class="row q-col-gutter-sm">
                 <div class="col-12 col-sm-6">
                   <div class="row justify-between text-caption q-mb-xs">
                     <span>A</span>
-                    <span>{{ resultDataA.nutrient_balance?.tdn_supplied?.toFixed(0) ?? 0 }} / {{ resultDataA.nutrient_balance?.tdn_requirement?.toFixed(0) ?? 0 }}{{ $t('diet.g') }}</span>
+                    <span>{{ nelDisplayA.supplied }} / {{ nelDisplayA.requirement }} Mcal/day</span>
                   </div>
                   <q-linear-progress
-                    :value="tdnProgressA"
-                    :color="tdnProgressA >= 1 ? 'positive' : 'warning'"
+                    :value="nelProgressA"
+                    :color="nelProgressA >= 1 ? 'positive' : 'warning'"
                     rounded
                   />
                 </div>
                 <div class="col-12 col-sm-6">
                   <div class="row justify-between text-caption q-mb-xs">
                     <span>B</span>
-                    <span>{{ resultDataB.nutrient_balance?.tdn_supplied?.toFixed(0) ?? 0 }} / {{ resultDataB.nutrient_balance?.tdn_requirement?.toFixed(0) ?? 0 }}{{ $t('diet.g') }}</span>
+                    <span>{{ nelDisplayB.supplied }} / {{ nelDisplayB.requirement }} Mcal/day</span>
                   </div>
                   <q-linear-progress
-                    :value="tdnProgressB"
-                    :color="tdnProgressB >= 1 ? 'positive' : 'warning'"
+                    :value="nelProgressB"
+                    :color="nelProgressB >= 1 ? 'positive' : 'warning'"
                     rounded
                   />
                 </div>
               </div>
             </div>
 
-            <!-- DM -->
+            <!-- Calcium -->
+            <div v-if="hasCaData" class="q-mb-md">
+              <div class="text-caption text-grey-7 q-mb-xs">Calcium</div>
+              <div class="row q-col-gutter-sm">
+                <div class="col-12 col-sm-6">
+                  <div class="row justify-between text-caption q-mb-xs">
+                    <span>A</span>
+                    <span>{{ caDisplayA.supplied }} / {{ caDisplayA.requirement }} g/day</span>
+                  </div>
+                  <q-linear-progress
+                    :value="caProgressA"
+                    :color="caProgressA >= 1 ? 'positive' : 'warning'"
+                    rounded
+                  />
+                </div>
+                <div class="col-12 col-sm-6">
+                  <div class="row justify-between text-caption q-mb-xs">
+                    <span>B</span>
+                    <span>{{ caDisplayB.supplied }} / {{ caDisplayB.requirement }} g/day</span>
+                  </div>
+                  <q-linear-progress
+                    :value="caProgressB"
+                    :color="caProgressB >= 1 ? 'positive' : 'warning'"
+                    rounded
+                  />
+                </div>
+              </div>
+            </div>
+
+            <!-- Phosphorus -->
+            <div v-if="hasPData" class="q-mb-md">
+              <div class="text-caption text-grey-7 q-mb-xs">Phosphorus</div>
+              <div class="row q-col-gutter-sm">
+                <div class="col-12 col-sm-6">
+                  <div class="row justify-between text-caption q-mb-xs">
+                    <span>A</span>
+                    <span>{{ pDisplayA.supplied }} / {{ pDisplayA.requirement }} g/day</span>
+                  </div>
+                  <q-linear-progress
+                    :value="pProgressA"
+                    :color="pProgressA >= 1 ? 'positive' : 'warning'"
+                    rounded
+                  />
+                </div>
+                <div class="col-12 col-sm-6">
+                  <div class="row justify-between text-caption q-mb-xs">
+                    <span>B</span>
+                    <span>{{ pDisplayB.supplied }} / {{ pDisplayB.requirement }} g/day</span>
+                  </div>
+                  <q-linear-progress
+                    :value="pProgressB"
+                    :color="pProgressB >= 1 ? 'positive' : 'warning'"
+                    rounded
+                  />
+                </div>
+              </div>
+            </div>
+
+            <!-- Dry Matter Intake -->
             <div>
-              <div class="text-caption text-grey-7 q-mb-xs">{{ $t('diet.dryMatterDM') }}</div>
+              <div class="text-caption text-grey-7 q-mb-xs">{{ $t('diet.dryMatterIntake') }}</div>
               <div class="row q-col-gutter-sm">
                 <div class="col-12 col-sm-6">
                   <div class="row justify-between text-caption q-mb-xs">
@@ -326,12 +384,21 @@ interface DietResultFeed {
 }
 
 interface NutrientBalance {
-  cp_supplied: number;
-  cp_requirement: number;
-  tdn_supplied: number;
-  tdn_requirement: number;
+  mp_supplied: number;
+  mp_requirement: number;
+  nel_supplied: number;
+  nel_requirement: number;
   dm_supplied: number;
   dm_requirement: number;
+  ca_supplied: number;
+  ca_requirement: number;
+  p_supplied: number;
+  p_requirement: number;
+  // Legacy fallbacks
+  cp_supplied?: number;
+  cp_requirement?: number;
+  tdn_supplied?: number;
+  tdn_requirement?: number;
 }
 
 interface DietResultData {
@@ -399,17 +466,91 @@ const dmDiff = computed(() => {
   return ((dmB - dmA) / dmA) * 100;
 });
 
-// Nutrient progress for diet A
-const cpProgressA = computed(() => {
+// Helper: convert kg to g for display (MP, Ca, P come in kg from backend)
+function toGrams(val: number | undefined): string {
+  if (!val) return '0';
+  return (val * 1000).toFixed(0);
+}
+
+// MP display values (kg → g)
+const mpDisplayA = computed(() => {
   const nb = resultDataA.value.nutrient_balance;
-  if (!nb || !nb.cp_requirement) return 0;
-  return nb.cp_supplied / nb.cp_requirement;
+  return {
+    supplied: toGrams(nb?.mp_supplied ?? nb?.cp_supplied),
+    requirement: toGrams(nb?.mp_requirement ?? nb?.cp_requirement),
+  };
+});
+const mpDisplayB = computed(() => {
+  const nb = resultDataB.value.nutrient_balance;
+  return {
+    supplied: toGrams(nb?.mp_supplied ?? nb?.cp_supplied),
+    requirement: toGrams(nb?.mp_requirement ?? nb?.cp_requirement),
+  };
 });
 
-const tdnProgressA = computed(() => {
+// NEL display values (Mcal/day — no conversion needed)
+const nelDisplayA = computed(() => {
   const nb = resultDataA.value.nutrient_balance;
-  if (!nb || !nb.tdn_requirement) return 0;
-  return nb.tdn_supplied / nb.tdn_requirement;
+  return {
+    supplied: (nb?.nel_supplied ?? nb?.tdn_supplied ?? 0).toFixed(1),
+    requirement: (nb?.nel_requirement ?? nb?.tdn_requirement ?? 0).toFixed(1),
+  };
+});
+const nelDisplayB = computed(() => {
+  const nb = resultDataB.value.nutrient_balance;
+  return {
+    supplied: (nb?.nel_supplied ?? nb?.tdn_supplied ?? 0).toFixed(1),
+    requirement: (nb?.nel_requirement ?? nb?.tdn_requirement ?? 0).toFixed(1),
+  };
+});
+
+// Ca display (kg → g)
+const caDisplayA = computed(() => {
+  const nb = resultDataA.value.nutrient_balance;
+  return { supplied: toGrams(nb?.ca_supplied), requirement: toGrams(nb?.ca_requirement) };
+});
+const caDisplayB = computed(() => {
+  const nb = resultDataB.value.nutrient_balance;
+  return { supplied: toGrams(nb?.ca_supplied), requirement: toGrams(nb?.ca_requirement) };
+});
+
+// P display (kg → g)
+const pDisplayA = computed(() => {
+  const nb = resultDataA.value.nutrient_balance;
+  return { supplied: toGrams(nb?.p_supplied), requirement: toGrams(nb?.p_requirement) };
+});
+const pDisplayB = computed(() => {
+  const nb = resultDataB.value.nutrient_balance;
+  return { supplied: toGrams(nb?.p_supplied), requirement: toGrams(nb?.p_requirement) };
+});
+
+// Whether Ca/P data exists in either diet
+const hasCaData = computed(() => {
+  const nbA = resultDataA.value.nutrient_balance;
+  const nbB = resultDataB.value.nutrient_balance;
+  return (nbA?.ca_supplied ?? 0) > 0 || (nbB?.ca_supplied ?? 0) > 0;
+});
+const hasPData = computed(() => {
+  const nbA = resultDataA.value.nutrient_balance;
+  const nbB = resultDataB.value.nutrient_balance;
+  return (nbA?.p_supplied ?? 0) > 0 || (nbB?.p_supplied ?? 0) > 0;
+});
+
+// Nutrient progress for diet A
+const mpProgressA = computed(() => {
+  const nb = resultDataA.value.nutrient_balance;
+  const req = nb?.mp_requirement ?? nb?.cp_requirement;
+  const sup = nb?.mp_supplied ?? nb?.cp_supplied;
+  if (!req) return 0;
+  return (sup ?? 0) / req;
+});
+
+const nelProgressA = computed(() => {
+  const nb = resultDataA.value.nutrient_balance;
+  const req = nb?.nel_requirement ?? nb?.tdn_requirement;
+  const sup = nb?.nel_supplied ?? nb?.tdn_supplied;
+  if (!req) return 0;
+  return (sup ?? 0) / req;
 });
 
 const dmProgressA = computed(() => {
@@ -418,23 +559,51 @@ const dmProgressA = computed(() => {
   return nb.dm_supplied / nb.dm_requirement;
 });
 
-// Nutrient progress for diet B
-const cpProgressB = computed(() => {
-  const nb = resultDataB.value.nutrient_balance;
-  if (!nb || !nb.cp_requirement) return 0;
-  return nb.cp_supplied / nb.cp_requirement;
+const caProgressA = computed(() => {
+  const nb = resultDataA.value.nutrient_balance;
+  if (!nb?.ca_requirement) return 0;
+  return (nb.ca_supplied ?? 0) / nb.ca_requirement;
 });
 
-const tdnProgressB = computed(() => {
+const pProgressA = computed(() => {
+  const nb = resultDataA.value.nutrient_balance;
+  if (!nb?.p_requirement) return 0;
+  return (nb.p_supplied ?? 0) / nb.p_requirement;
+});
+
+// Nutrient progress for diet B
+const mpProgressB = computed(() => {
   const nb = resultDataB.value.nutrient_balance;
-  if (!nb || !nb.tdn_requirement) return 0;
-  return nb.tdn_supplied / nb.tdn_requirement;
+  const req = nb?.mp_requirement ?? nb?.cp_requirement;
+  const sup = nb?.mp_supplied ?? nb?.cp_supplied;
+  if (!req) return 0;
+  return (sup ?? 0) / req;
+});
+
+const nelProgressB = computed(() => {
+  const nb = resultDataB.value.nutrient_balance;
+  const req = nb?.nel_requirement ?? nb?.tdn_requirement;
+  const sup = nb?.nel_supplied ?? nb?.tdn_supplied;
+  if (!req) return 0;
+  return (sup ?? 0) / req;
 });
 
 const dmProgressB = computed(() => {
   const nb = resultDataB.value.nutrient_balance;
   if (!nb || !nb.dm_requirement) return 0;
   return nb.dm_supplied / nb.dm_requirement;
+});
+
+const caProgressB = computed(() => {
+  const nb = resultDataB.value.nutrient_balance;
+  if (!nb?.ca_requirement) return 0;
+  return (nb.ca_supplied ?? 0) / nb.ca_requirement;
+});
+
+const pProgressB = computed(() => {
+  const nb = resultDataB.value.nutrient_balance;
+  if (!nb?.p_requirement) return 0;
+  return (nb.p_supplied ?? 0) / nb.p_requirement;
 });
 
 // All feeds: union of feeds from both diets for comparison
