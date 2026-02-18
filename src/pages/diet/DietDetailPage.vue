@@ -121,8 +121,8 @@
             <thead>
               <tr class="bg-grey-2">
                 <th>{{ $t('diet.ingredient') }}</th>
-                <th class="text-right">{{ $t('diet.quantity') }} ({{ $t('diet.kg') }})</th>
-                <th class="text-right">{{ $t('diet.cost') }}</th>
+                <th class="text-right">{{ $t('diet.quantity') }} (kg/day)</th>
+                <th class="text-right">{{ $t('diet.cost') }} /day</th>
               </tr>
             </thead>
             <tbody>
@@ -146,36 +146,60 @@
           <q-card-section>
             <div class="q-mb-md">
               <div class="row justify-between q-mb-xs">
-                <span>{{ $t('diet.crudeProteinCP') }}</span>
-                <span>{{ resultData.nutrient_balance?.cp_supplied?.toFixed(0) }} / {{ resultData.nutrient_balance?.cp_requirement?.toFixed(0) }}{{ $t('diet.g') }}</span>
+                <span>{{ $t('diet.dryMatterIntake') }}</span>
+                <span>{{ (resultData.nutrient_balance?.dm_supplied ?? 0).toFixed(2) }} / {{ (resultData.nutrient_balance?.dm_requirement ?? 0).toFixed(2) }} kg/day</span>
               </div>
               <q-linear-progress
-                :value="cpProgress"
-                :color="cpProgress >= 1 ? 'positive' : 'warning'"
+                :value="dmProgress"
+                :color="dmProgress >= 0.95 && dmProgress <= 1.05 ? 'positive' : 'warning'"
                 rounded
               />
             </div>
 
             <div class="q-mb-md">
               <div class="row justify-between q-mb-xs">
-                <span>{{ $t('diet.totalDigestibleNutrients') }}</span>
-                <span>{{ resultData.nutrient_balance?.tdn_supplied?.toFixed(0) }} / {{ resultData.nutrient_balance?.tdn_requirement?.toFixed(0) }}{{ $t('diet.g') }}</span>
+                <span>{{ $t('diet.metabolizableProtein') }}</span>
+                <span>{{ ((resultData.nutrient_balance?.mp_supplied || resultData.nutrient_balance?.cp_supplied || 0) * 1000).toFixed(0) }} / {{ ((resultData.nutrient_balance?.mp_requirement || resultData.nutrient_balance?.cp_requirement || 0) * 1000).toFixed(0) }} g/day</span>
               </div>
               <q-linear-progress
-                :value="tdnProgress"
-                :color="tdnProgress >= 1 ? 'positive' : 'warning'"
+                :value="mpProgress"
+                :color="mpProgress >= 0.95 ? 'positive' : 'warning'"
                 rounded
               />
             </div>
 
-            <div>
+            <div class="q-mb-md">
               <div class="row justify-between q-mb-xs">
-                <span>{{ $t('diet.dryMatterDM') }}</span>
-                <span>{{ resultData.nutrient_balance?.dm_supplied?.toFixed(2) }} / {{ resultData.nutrient_balance?.dm_requirement?.toFixed(2) }}{{ $t('diet.kg') }}</span>
+                <span>{{ $t('diet.netEnergyLactation') }}</span>
+                <span>{{ (resultData.nutrient_balance?.nel_supplied || resultData.nutrient_balance?.tdn_supplied || 0).toFixed(2) }} / {{ (resultData.nutrient_balance?.nel_requirement || resultData.nutrient_balance?.tdn_requirement || 0).toFixed(2) }} Mcal/day</span>
               </div>
               <q-linear-progress
-                :value="dmProgress"
-                :color="dmProgress >= 0.95 && dmProgress <= 1.05 ? 'positive' : 'warning'"
+                :value="nelProgress"
+                :color="nelProgress >= 0.95 ? 'positive' : 'warning'"
+                rounded
+              />
+            </div>
+
+            <div v-if="resultData.nutrient_balance?.ca_requirement" class="q-mb-md">
+              <div class="row justify-between q-mb-xs">
+                <span>{{ $t('diet.calcium') }}</span>
+                <span>{{ ((resultData.nutrient_balance?.ca_supplied ?? 0) * 1000).toFixed(0) }} / {{ ((resultData.nutrient_balance?.ca_requirement ?? 0) * 1000).toFixed(0) }} g/day</span>
+              </div>
+              <q-linear-progress
+                :value="resultData.nutrient_balance.ca_requirement ? resultData.nutrient_balance.ca_supplied / resultData.nutrient_balance.ca_requirement : 0"
+                :color="(resultData.nutrient_balance.ca_supplied / resultData.nutrient_balance.ca_requirement) >= 0.95 ? 'positive' : 'warning'"
+                rounded
+              />
+            </div>
+
+            <div v-if="resultData.nutrient_balance?.p_requirement">
+              <div class="row justify-between q-mb-xs">
+                <span>{{ $t('diet.phosphorus') }}</span>
+                <span>{{ ((resultData.nutrient_balance?.p_supplied ?? 0) * 1000).toFixed(0) }} / {{ ((resultData.nutrient_balance?.p_requirement ?? 0) * 1000).toFixed(0) }} g/day</span>
+              </div>
+              <q-linear-progress
+                :value="resultData.nutrient_balance.p_requirement ? resultData.nutrient_balance.p_supplied / resultData.nutrient_balance.p_requirement : 0"
+                :color="(resultData.nutrient_balance.p_supplied / resultData.nutrient_balance.p_requirement) >= 0.95 ? 'positive' : 'warning'"
                 rounded
               />
             </div>
@@ -438,12 +462,21 @@ interface DietResultFeed {
 }
 
 interface NutrientBalance {
-  cp_supplied: number;
-  cp_requirement: number;
-  tdn_supplied: number;
-  tdn_requirement: number;
+  mp_supplied: number;
+  mp_requirement: number;
+  nel_supplied: number;
+  nel_requirement: number;
   dm_supplied: number;
   dm_requirement: number;
+  ca_supplied: number;
+  ca_requirement: number;
+  p_supplied: number;
+  p_requirement: number;
+  // Legacy keys (may still exist in older cached data)
+  cp_supplied?: number;
+  cp_requirement?: number;
+  tdn_supplied?: number;
+  tdn_requirement?: number;
 }
 
 interface DietResultData {
@@ -471,16 +504,20 @@ const feedTotalKg = computed(() =>
   (resultData.value.feeds || []).reduce((sum, f) => sum + (f.amount_kg || 0), 0)
 );
 
-const cpProgress = computed(() => {
+const mpProgress = computed(() => {
   const nb = resultData.value.nutrient_balance;
   if (!nb) return 0;
-  return nb.cp_requirement ? nb.cp_supplied / nb.cp_requirement : 0;
+  const req = nb.mp_requirement || nb.cp_requirement || 0;
+  const sup = nb.mp_supplied || nb.cp_supplied || 0;
+  return req ? sup / req : 0;
 });
 
-const tdnProgress = computed(() => {
+const nelProgress = computed(() => {
   const nb = resultData.value.nutrient_balance;
   if (!nb) return 0;
-  return nb.tdn_requirement ? nb.tdn_supplied / nb.tdn_requirement : 0;
+  const req = nb.nel_requirement || nb.tdn_requirement || 0;
+  const sup = nb.nel_supplied || nb.tdn_supplied || 0;
+  return req ? sup / req : 0;
 });
 
 const dmProgress = computed(() => {
@@ -586,11 +623,37 @@ const showShareSheet = ref(false);
 function buildExportData(): DietExportData {
   const d = diet.value!;
   const rd = resultData.value;
+  const nb = rd.nutrient_balance;
   const goalLabels: Record<string, string> = {
     minimize_cost: t('diet.goals.minimizeCost'),
     maximize_milk: t('diet.goals.maximizeMilk'),
     balanced: t('diet.goals.balanced'),
   };
+
+  // Build nutrient rows for export
+  const nutrients: Array<{ label: string; supplied: string; requirement: string; unit: string }> = [];
+  if (nb) {
+    if (nb.dm_supplied || nb.dm_requirement) {
+      nutrients.push({ label: 'Dry Matter Intake', supplied: (nb.dm_supplied ?? 0).toFixed(2), requirement: (nb.dm_requirement ?? 0).toFixed(2), unit: 'kg/day' });
+    }
+    const mpSup = nb.mp_supplied || nb.cp_supplied || 0;
+    const mpReq = nb.mp_requirement || nb.cp_requirement || 0;
+    if (mpSup || mpReq) {
+      nutrients.push({ label: 'Metabolizable Protein', supplied: (mpSup * 1000).toFixed(0), requirement: (mpReq * 1000).toFixed(0), unit: 'g/day' });
+    }
+    const nelSup = nb.nel_supplied || nb.tdn_supplied || 0;
+    const nelReq = nb.nel_requirement || nb.tdn_requirement || 0;
+    if (nelSup || nelReq) {
+      nutrients.push({ label: 'Net Energy Lactation', supplied: nelSup.toFixed(2), requirement: nelReq.toFixed(2), unit: 'Mcal/day' });
+    }
+    if (nb.ca_supplied || nb.ca_requirement) {
+      nutrients.push({ label: 'Calcium', supplied: ((nb.ca_supplied ?? 0) * 1000).toFixed(0), requirement: ((nb.ca_requirement ?? 0) * 1000).toFixed(0), unit: 'g/day' });
+    }
+    if (nb.p_supplied || nb.p_requirement) {
+      nutrients.push({ label: 'Phosphorus', supplied: ((nb.p_supplied ?? 0) * 1000).toFixed(0), requirement: ((nb.p_requirement ?? 0) * 1000).toFixed(0), unit: 'g/day' });
+    }
+  }
+
   return {
     cowName: d.cow_name || t('diet.dietPlan'),
     date: formatDate(d.created_at),
@@ -603,6 +666,7 @@ function buildExportData(): DietExportData {
     totalCost: formatCurrency(d.total_cost ?? 0),
     dmIntake: Number(d.dm_intake?.toFixed(1) ?? 0),
     status: d.status,
+    nutrients,
   };
 }
 
@@ -633,10 +697,15 @@ async function handleCopy() {
 }
 
 async function handleSaveDiet() {
-  const success = await dietsStore.saveDiet(dietId.value);
-  if (success) {
-    diet.value = await dietsStore.getDiet(dietId.value);
+  const newId = await dietsStore.saveDiet(dietId.value);
+  if (newId) {
     $q.notify({ type: 'positive', message: t('diet.dietSaved') });
+    // Navigate to the new backend ID if it changed
+    if (newId !== dietId.value) {
+      router.replace(`/diet/${newId}`);
+    } else {
+      diet.value = await dietsStore.getDiet(newId);
+    }
   } else if (dietsStore.error) {
     $q.notify({ type: 'negative', message: dietsStore.error });
   }
