@@ -166,138 +166,169 @@
 
       <!-- Step 3: Select Feeds -->
       <q-step :name="3" :title="$t('diet.wizard.stepFeeds')" icon="grass" :done="step > 3">
-        <div class="text-subtitle1 q-mb-md">
-          {{ $t('diet.wizard.selectAvailableFeeds', { count: form.available_feeds.length }) }}
+        <div class="text-subtitle1 q-mb-sm">
+          {{ $t('diet.wizard.selectAvailableFeeds', { count: effectiveFeedIds.length }) }}
         </div>
 
-        <q-input
-          v-model="feedSearch"
-          outlined
-          dense
-          :placeholder="$t('diet.wizard.searchFeeds')"
+        <!-- Auto / Manual toggle -->
+        <q-option-group
+          v-model="feedSelectionMode"
+          :options="feedModeOptions"
+          color="primary"
+          inline
           class="q-mb-md"
-          clearable
-        >
-          <template #prepend>
-            <q-icon name="search" />
-          </template>
-        </q-input>
+        />
 
-        <div class="scroll-list scroll-list--300">
-          <!-- Flat list when searching (no accordions) -->
-          <q-list v-if="feedSearch" bordered separator class="rounded-borders">
-            <q-item v-if="filteredFeeds.length === 0" class="text-grey-6 text-center">
-              <q-item-section>{{ $t('common.noResults') }}</q-item-section>
-            </q-item>
-            <q-item
-              v-for="feed in filteredFeeds"
+        <!-- Auto mode: show chips -->
+        <template v-if="feedSelectionMode === 'auto'">
+          <div class="text-body2 text-grey-7 q-mb-sm">
+            {{ $t('diet.wizard.autoSelectDesc', { count: autoSelectedFeedIds.length }) }}
+          </div>
+          <div class="q-gutter-xs">
+            <q-chip
+              v-for="feed in autoSelectedFeeds"
               :key="feed.id"
-              v-ripple
-              tag="label"
-              dense
+              outline
+              size="sm"
+              icon="check"
+              color="primary"
             >
-              <q-item-section side>
-                <q-checkbox
-                  v-model="form.available_feeds"
-                  :val="feed.id"
-                  color="primary"
-                />
-              </q-item-section>
-              <q-item-section>
-                <q-item-label>{{ feed.name }}</q-item-label>
-                <q-item-label v-if="feed.fd_name && feed.fd_name !== feed.name" caption class="text-grey-7">
-                  {{ feed.fd_name }}
-                </q-item-label>
-                <q-item-label caption>
-                  {{ feed.category }} · {{ $t('diet.cpLabel') }}: {{ feed.cp_percentage != null ? feed.cp_percentage + '%' : '–' }} · {{ $t('diet.tdnLabel') }}: {{ feed.tdn_percentage != null ? feed.tdn_percentage + '%' : '–' }}
-                </q-item-label>
-              </q-item-section>
-              <q-item-section side>
-                <q-input
-                  v-if="form.available_feeds.includes(feed.id)"
-                  :model-value="feedPriceOverrides[feed.id] ?? feed.price_per_kg ?? ''"
-                  type="number"
-                  dense
-                  outlined
-                  :prefix="currencySymbol"
-                  :suffix="$t('units.perKg')"
-                  input-style="text-align: right; width: 50px"
-                  style="max-width: 110px"
-                  @update:model-value="(v: string | number | null) => setFeedPrice(feed.id, v)"
-                  @click.stop
-                />
-                <q-item-label v-else-if="feed.price_per_kg" caption>
-                  {{ formatCurrency(feed.price_per_kg) }}{{ $t('units.perKg') }}
-                </q-item-label>
-              </q-item-section>
-            </q-item>
-          </q-list>
+              {{ feed.name }}
+            </q-chip>
+          </div>
+        </template>
 
-          <!-- Category accordions when browsing (no search) -->
-          <template v-else>
-            <q-list
-              v-for="category in feedCategories"
-              :key="category.name"
-              bordered
-              separator
-              class="rounded-borders q-mb-sm"
-            >
-              <q-expansion-item
-                :label="category.name"
-                :caption="$t('diet.wizard.feedCategoryCount', { selected: countSelectedInCategory(category.feeds), total: category.feeds.length })"
-                :default-opened="category.feeds.some(f => form.available_feeds.includes(f.id))"
-                header-class="text-weight-medium"
+        <!-- Manual mode: existing search + accordion UI -->
+        <template v-else>
+          <q-input
+            v-model="feedSearch"
+            outlined
+            dense
+            :placeholder="$t('diet.wizard.searchFeeds')"
+            class="q-mb-md"
+            clearable
+          >
+            <template #prepend>
+              <q-icon name="search" />
+            </template>
+          </q-input>
+
+          <div class="scroll-list scroll-list--300">
+            <!-- Flat list when searching (no accordions) -->
+            <q-list v-if="feedSearch" bordered separator class="rounded-borders">
+              <q-item v-if="filteredFeeds.length === 0" class="text-grey-6 text-center">
+                <q-item-section>{{ $t('common.noResults') }}</q-item-section>
+              </q-item>
+              <q-item
+                v-for="feed in filteredFeeds"
+                :key="feed.id"
+                v-ripple
+                tag="label"
+                dense
               >
-                <q-item
-                  v-for="feed in category.feeds"
-                  :key="feed.id"
-                  v-ripple
-                  tag="label"
-                  dense
-                >
-                  <q-item-section side>
-                    <q-checkbox
-                      v-model="form.available_feeds"
-                      :val="feed.id"
-                      color="primary"
-                    />
-                  </q-item-section>
-                  <q-item-section>
-                    <q-item-label>{{ feed.name }}</q-item-label>
-                    <q-item-label v-if="feed.fd_name && feed.fd_name !== feed.name" caption class="text-grey-7">
-                      {{ feed.fd_name }}
-                    </q-item-label>
-                    <q-item-label caption>
-                      {{ $t('diet.cpLabel') }}: {{ feed.cp_percentage != null ? feed.cp_percentage + '%' : '–' }} · {{ $t('diet.tdnLabel') }}: {{ feed.tdn_percentage != null ? feed.tdn_percentage + '%' : '–' }}
-                    </q-item-label>
-                  </q-item-section>
-                  <q-item-section side>
-                    <q-input
-                      v-if="form.available_feeds.includes(feed.id)"
-                      :model-value="feedPriceOverrides[feed.id] ?? feed.price_per_kg ?? ''"
-                      type="number"
-                      dense
-                      outlined
-                      :prefix="currencySymbol"
-                      :suffix="$t('units.perKg')"
-                      input-style="text-align: right; width: 50px"
-                      style="max-width: 110px"
-                      @update:model-value="(v: string | number | null) => setFeedPrice(feed.id, v)"
-                      @click.stop
-                    />
-                    <q-item-label v-else-if="feed.price_per_kg" caption>
-                      {{ formatCurrency(feed.price_per_kg) }}{{ $t('units.perKg') }}
-                    </q-item-label>
-                  </q-item-section>
-                </q-item>
-              </q-expansion-item>
+                <q-item-section side>
+                  <q-checkbox
+                    v-model="form.available_feeds"
+                    :val="feed.id"
+                    color="primary"
+                  />
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label>{{ feed.name }}</q-item-label>
+                  <q-item-label v-if="feed.fd_name && feed.fd_name !== feed.name" caption class="text-grey-7">
+                    {{ feed.fd_name }}
+                  </q-item-label>
+                  <q-item-label caption>
+                    {{ feed.category }} · {{ $t('diet.cpLabel') }}: {{ feed.cp_percentage != null ? feed.cp_percentage + '%' : '–' }} · {{ $t('diet.tdnLabel') }}: {{ feed.tdn_percentage != null ? feed.tdn_percentage + '%' : '–' }}
+                  </q-item-label>
+                </q-item-section>
+                <q-item-section side>
+                  <q-input
+                    v-if="form.available_feeds.includes(feed.id)"
+                    :model-value="feedPriceOverrides[feed.id] ?? feed.price_per_kg ?? ''"
+                    type="number"
+                    dense
+                    outlined
+                    :prefix="currencySymbol"
+                    :suffix="$t('units.perKg')"
+                    input-style="text-align: right; width: 50px"
+                    style="max-width: 110px"
+                    @update:model-value="(v: string | number | null) => setFeedPrice(feed.id, v)"
+                    @click.stop
+                  />
+                  <q-item-label v-else-if="feed.price_per_kg" caption>
+                    {{ formatCurrency(feed.price_per_kg) }}{{ $t('units.perKg') }}
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
             </q-list>
-          </template>
-        </div>
 
-        <q-banner v-if="form.available_feeds.length < 3" class="bg-warning text-white q-mt-md" rounded>
-          {{ $t('diet.wizard.selectAtLeast3Feeds') }}
-        </q-banner>
+            <!-- Category accordions when browsing (no search) -->
+            <template v-else>
+              <q-list
+                v-for="category in feedCategories"
+                :key="category.name"
+                bordered
+                separator
+                class="rounded-borders q-mb-sm"
+              >
+                <q-expansion-item
+                  :label="category.name"
+                  :caption="$t('diet.wizard.feedCategoryCount', { selected: countSelectedInCategory(category.feeds), total: category.feeds.length })"
+                  :default-opened="category.feeds.some(f => form.available_feeds.includes(f.id))"
+                  header-class="text-weight-medium"
+                >
+                  <q-item
+                    v-for="feed in category.feeds"
+                    :key="feed.id"
+                    v-ripple
+                    tag="label"
+                    dense
+                  >
+                    <q-item-section side>
+                      <q-checkbox
+                        v-model="form.available_feeds"
+                        :val="feed.id"
+                        color="primary"
+                      />
+                    </q-item-section>
+                    <q-item-section>
+                      <q-item-label>{{ feed.name }}</q-item-label>
+                      <q-item-label v-if="feed.fd_name && feed.fd_name !== feed.name" caption class="text-grey-7">
+                        {{ feed.fd_name }}
+                      </q-item-label>
+                      <q-item-label caption>
+                        {{ $t('diet.cpLabel') }}: {{ feed.cp_percentage != null ? feed.cp_percentage + '%' : '–' }} · {{ $t('diet.tdnLabel') }}: {{ feed.tdn_percentage != null ? feed.tdn_percentage + '%' : '–' }}
+                      </q-item-label>
+                    </q-item-section>
+                    <q-item-section side>
+                      <q-input
+                        v-if="form.available_feeds.includes(feed.id)"
+                        :model-value="feedPriceOverrides[feed.id] ?? feed.price_per_kg ?? ''"
+                        type="number"
+                        dense
+                        outlined
+                        :prefix="currencySymbol"
+                        :suffix="$t('units.perKg')"
+                        input-style="text-align: right; width: 50px"
+                        style="max-width: 110px"
+                        @update:model-value="(v: string | number | null) => setFeedPrice(feed.id, v)"
+                        @click.stop
+                      />
+                      <q-item-label v-else-if="feed.price_per_kg" caption>
+                        {{ formatCurrency(feed.price_per_kg) }}{{ $t('units.perKg') }}
+                      </q-item-label>
+                    </q-item-section>
+                  </q-item>
+                </q-expansion-item>
+              </q-list>
+            </template>
+          </div>
+
+          <q-banner v-if="form.available_feeds.length < 3" class="bg-warning text-white q-mt-md" rounded>
+            {{ $t('diet.wizard.selectAtLeast3Feeds') }}
+          </q-banner>
+        </template>
       </q-step>
 
       <!-- Step 4: Optimization Goal -->
@@ -308,6 +339,7 @@
           v-model="form.optimization_goal"
           :options="goalOptions"
           color="primary"
+          @update:model-value="onGoalChanged"
         >
           <template #label="opt">
             <div class="row items-center">
@@ -320,15 +352,64 @@
           </template>
         </q-option-group>
 
-        <q-input
-          v-model.number="form.budget_per_day"
-          :label="$t('diet.wizard.dailyBudgetOptional')"
-          type="number"
-          outlined
-          :prefix="getCurrencySymbol()"
-          :hint="$t('diet.wizard.noBudgetLimit')"
-          class="q-mt-lg"
-        />
+        <!-- Minimize Cost → Budget chips -->
+        <div v-if="form.optimization_goal === 'minimize_cost'" class="q-mt-md">
+          <div class="text-body2 q-mb-sm">{{ $t('diet.wizard.selectBudget') }}</div>
+          <div class="q-gutter-sm">
+            <q-chip
+              v-for="opt in budgetOptions"
+              :key="opt.value"
+              :outline="selectedBudgetChip !== opt.value"
+              :color="selectedBudgetChip === opt.value ? 'primary' : undefined"
+              :text-color="selectedBudgetChip === opt.value ? 'white' : undefined"
+              clickable
+              @click="selectBudget(opt.value)"
+            >
+              {{ opt.label }}
+            </q-chip>
+          </div>
+          <q-input
+            v-if="selectedBudgetChip === 'custom'"
+            v-model.number="form.budget_per_day"
+            :label="$t('diet.wizard.dailyBudgetOptional')"
+            type="number"
+            outlined
+            dense
+            :prefix="getCurrencySymbol()"
+            class="q-mt-sm"
+            style="max-width: 200px"
+          />
+        </div>
+
+        <!-- Maximize Milk → Target milk yield chips -->
+        <div v-if="form.optimization_goal === 'maximize_milk'" class="q-mt-md">
+          <div class="text-body2 q-mb-sm">{{ $t('diet.wizard.targetMilkYield') }}</div>
+          <div class="q-gutter-sm">
+            <q-chip
+              v-for="opt in milkTargetOptions"
+              :key="opt.value"
+              :outline="selectedMilkTargetChip !== opt.value"
+              :color="selectedMilkTargetChip === opt.value ? 'primary' : undefined"
+              :text-color="selectedMilkTargetChip === opt.value ? 'white' : undefined"
+              clickable
+              @click="selectMilkTarget(opt.value)"
+            >
+              {{ opt.label }}
+            </q-chip>
+          </div>
+          <q-input
+            v-if="selectedMilkTargetChip === 'custom'"
+            v-model.number="form.target_milk_yield"
+            :label="$t('diet.wizard.targetMilkYield')"
+            type="number"
+            step="0.5"
+            outlined
+            dense
+            :suffix="$t('units.l') + '/' + $t('units.perDay').replace('/', '')"
+            class="q-mt-sm"
+            style="max-width: 200px"
+          />
+        </div>
       </q-step>
 
       <!-- Step 5: Review & Submit -->
@@ -358,7 +439,7 @@
             <q-item>
               <q-item-section>
                 <q-item-label caption>{{ $t('diet.wizard.selectedFeeds') }}</q-item-label>
-                <q-item-label>{{ $t('diet.wizard.feedsCount', { count: form.available_feeds.length }) }}</q-item-label>
+                <q-item-label>{{ $t('diet.wizard.feedsCount', { count: effectiveFeedIds.length }) }} {{ feedSelectionMode === 'auto' ? '(' + $t('diet.wizard.autoSelect') + ')' : '' }}</q-item-label>
               </q-item-section>
             </q-item>
             <q-item>
@@ -402,7 +483,7 @@
             color="primary"
             :label="$t('diet.wizard.generateDiet')"
             :loading="optimizing"
-            :disable="!isOnline || form.available_feeds.length < 2"
+            :disable="!isOnline || effectiveFeedIds.length < 2"
             @click="submitDiet"
           />
         </q-stepper-navigation>
@@ -424,6 +505,7 @@ import { isOnline } from 'src/boot/pwa';
 import { COW_ICON } from 'src/boot/icons';
 import { useCurrency } from 'src/composables/useCurrency';
 import { useHapticFeedback } from 'src/composables/useHapticFeedback';
+import { useAutoFeedSelection } from 'src/composables/useAutoFeedSelection';
 
 const { t } = useI18n();
 const { formatCurrency, getCurrencySymbol } = useCurrency();
@@ -449,6 +531,7 @@ const loadingFarmerCows = ref(false);
 
 const queryCowId = route.query.cow_id as string | undefined;
 const regenerateFromId = route.query.regenerateFrom as string | undefined;
+const queryAutoFeeds = route.query.autoFeeds === 'true';
 
 const form = reactive<DietInput>({
   cow_id: queryCowId,
@@ -465,11 +548,90 @@ const form = reactive<DietInput>({
   optimization_goal: 'balanced',
   available_feeds: [],
   budget_per_day: undefined,
+  target_milk_yield: undefined,
 });
 
 // Feed price overrides (user-editable prices per feed)
 const feedPriceOverrides = reactive<Record<string, number>>({});
 const currencySymbol = computed(() => getCurrencySymbol());
+
+// --- Auto / Manual feed selection ---
+const feedSelectionMode = ref<'auto' | 'manual'>(queryAutoFeeds ? 'auto' : 'auto');
+const { autoSelectedFeeds, autoSelectedFeedIds } = useAutoFeedSelection();
+
+const feedModeOptions = computed(() => [
+  { label: t('diet.wizard.autoSelect'), value: 'auto' },
+  { label: t('diet.wizard.chooseManually'), value: 'manual' },
+]);
+
+/** The feed IDs that will actually be sent — depends on mode */
+const effectiveFeedIds = computed(() =>
+  feedSelectionMode.value === 'auto' ? autoSelectedFeedIds.value : form.available_feeds
+);
+
+// --- Goal parameter chips ---
+const selectedBudgetChip = ref<number | 'custom'>(0);
+const selectedMilkTargetChip = ref<number | 'custom'>(0);
+
+const budgetOptions = computed(() => {
+  const symbol = getCurrencySymbol();
+  return [
+    { label: `${symbol}100`, value: 100 },
+    { label: `${symbol}150`, value: 150 },
+    { label: `${symbol}200`, value: 200 },
+    { label: `${symbol}250`, value: 250 },
+    { label: `${symbol}300`, value: 300 },
+    { label: t('diet.wizard.customValue'), value: 'custom' as const },
+  ];
+});
+
+const milkTargetOptions = computed(() => {
+  const current = form.milk_yield_liters || 10;
+  const pct20 = Math.round((current * 1.2) * 2) / 2;
+  const pct40 = Math.round((current * 1.4) * 2) / 2;
+  const pct60 = Math.round((current * 1.6) * 2) / 2;
+  return [
+    { label: t('diet.wizard.milkTarget', { liters: pct20, percent: 20 }), value: pct20 },
+    { label: t('diet.wizard.milkTarget', { liters: pct40, percent: 40 }), value: pct40 },
+    { label: t('diet.wizard.milkTarget', { liters: pct60, percent: 60 }), value: pct60 },
+    { label: t('diet.wizard.customValue'), value: 'custom' as const },
+  ];
+});
+
+function selectBudget(value: number | 'custom') {
+  selectedBudgetChip.value = value;
+  if (value !== 'custom') {
+    form.budget_per_day = value;
+  }
+}
+
+function selectMilkTarget(value: number | 'custom') {
+  selectedMilkTargetChip.value = value;
+  if (value !== 'custom') {
+    form.target_milk_yield = value;
+  }
+}
+
+function onGoalChanged() {
+  // Reset goal-specific params when switching
+  selectedBudgetChip.value = 0;
+  selectedMilkTargetChip.value = 0;
+  form.budget_per_day = undefined;
+  form.target_milk_yield = undefined;
+
+  // Auto-select a default budget based on cow weight for minimize_cost
+  if (form.optimization_goal === 'minimize_cost') {
+    const weight = form.weight_kg || 400;
+    const defaultBudget = weight < 350 ? 150 : weight <= 500 ? 200 : 250;
+    selectBudget(defaultBudget);
+  }
+  // Auto-select +20% for maximize_milk
+  if (form.optimization_goal === 'maximize_milk') {
+    const current = form.milk_yield_liters || 10;
+    const target = Math.round((current * 1.2) * 2) / 2;
+    selectMilkTarget(target);
+  }
+}
 
 function setFeedPrice(feedId: string, value: string | number | null) {
   if (value === null || value === '') {
@@ -588,7 +750,7 @@ const canProceed = computed(() => {
     case 2:
       return form.weight_kg > 0;
     case 3:
-      return form.available_feeds.length >= 2;
+      return effectiveFeedIds.value.length >= 2;
     case 4:
       return !!form.optimization_goal;
     default:
@@ -673,6 +835,8 @@ function onStepNext() {
 
 async function submitDiet() {
   medium(); // Haptic feedback on submit
+  // Use effective feed IDs (auto or manual)
+  form.available_feeds = [...effectiveFeedIds.value];
   // Attach any user price overrides to the form
   if (Object.keys(feedPriceOverrides).length > 0) {
     form.feed_price_overrides = { ...feedPriceOverrides };
@@ -734,6 +898,11 @@ onMounted(async () => {
     // Pre-select cow if from query
     inputMode.value = 'select';
     onCowSelected(queryCowId);
+  }
+
+  // Handle ?autoFeeds=true from failure retry flow
+  if (queryAutoFeeds) {
+    feedSelectionMode.value = 'auto';
   }
 });
 </script>

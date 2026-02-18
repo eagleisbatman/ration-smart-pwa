@@ -31,6 +31,7 @@ export interface DietInput {
   feed_price_overrides?: Record<string, number>; // Per-feed price overrides from user
   feed_constraints?: Record<string, { min?: number; max?: number }>;
   budget_per_day?: number;
+  target_milk_yield?: number;
 }
 
 export interface DietResult {
@@ -240,7 +241,7 @@ export const useDietsStore = defineStore('diets', () => {
           body_weight: input.weight_kg,
           breed: cow?.breed || 'Local Breed',
           lactating: lactationStage !== 'dry',
-          milk_production: input.milk_yield_liters,
+          milk_production: input.target_milk_yield || input.milk_yield_liters,
           days_in_milk: cow?._backend_days_in_milk ?? daysInMilkMap[lactationStage] ?? 150,
           parity: cow?._backend_parity ?? 2,
           days_of_pregnancy: input.is_pregnant ? (input.pregnancy_month ?? 0) * 30 : 0,

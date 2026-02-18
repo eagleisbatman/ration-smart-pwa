@@ -7,9 +7,9 @@
 
     <!-- Diet Details -->
     <template v-else-if="diet">
-      <!-- Status Banner -->
+      <!-- Status Banner (non-failed statuses) -->
       <q-banner
-        v-if="showBanner && !['completed', 'saved', 'following'].includes(diet.status)"
+        v-if="showBanner && !['completed', 'saved', 'following', 'failed'].includes(diet.status)"
         :class="`bg-${getStatusColor(diet.status)} text-white q-mb-md`"
         rounded
       >
@@ -19,24 +19,59 @@
         <template v-if="diet.status === 'processing'">
           {{ $t('diet.status.processing') }}
         </template>
-        <template v-else-if="diet.status === 'failed'">
-          {{ $t('diet.status.failed') }}
-        </template>
         <template v-else>
           {{ $t('diet.status.waiting') }}
         </template>
         <template #action>
-          <q-btn
-            v-if="diet.status === 'failed'"
-            flat
-            color="white"
-            :label="$t('diet.tryAgain')"
-            icon="refresh"
-            @click="regenerateDiet"
-          />
           <q-btn flat round dense icon="close" color="white" @click="showBanner = false" />
         </template>
       </q-banner>
+
+      <!-- Detailed Failure Card -->
+      <q-card v-if="diet.status === 'failed'" flat bordered class="q-mb-md">
+        <q-card-section>
+          <div class="row items-center q-mb-sm">
+            <q-icon name="error" color="negative" size="28px" class="q-mr-sm" />
+            <div class="text-h6 text-negative">{{ $t('diet.failedTitle') }}</div>
+          </div>
+
+          <div v-if="dietStatusSummary" class="text-body2 q-mb-md">
+            {{ dietStatusSummary }}
+          </div>
+
+          <q-list v-if="dietStatusMessages.length > 0" dense class="q-mb-md">
+            <q-item v-for="(msg, i) in dietStatusMessages" :key="i" dense>
+              <q-item-section avatar>
+                <q-icon name="warning_amber" color="warning" size="20px" />
+              </q-item-section>
+              <q-item-section class="text-body2">{{ msg }}</q-item-section>
+            </q-item>
+          </q-list>
+
+          <div v-if="dietStatusMessages.length === 0" class="text-body2 text-grey-7 q-mb-md">
+            {{ $t('diet.failedGenericAdvice') }}
+          </div>
+        </q-card-section>
+
+        <q-separator />
+
+        <q-card-actions align="left">
+          <q-btn
+            flat
+            color="primary"
+            icon="refresh"
+            :label="$t('diet.tryDifferentFeeds')"
+            @click="regenerateDiet"
+          />
+          <q-btn
+            flat
+            color="primary"
+            icon="auto_fix_high"
+            :label="$t('diet.tryAutoFeeds')"
+            @click="regenerateWithAutoFeeds"
+          />
+        </q-card-actions>
+      </q-card>
 
       <!-- Header -->
       <q-card flat bordered class="q-mb-md">
@@ -525,6 +560,26 @@ const dmProgress = computed(() => {
   if (!nb) return 0;
   return nb.dm_requirement ? nb.dm_supplied / nb.dm_requirement : 0;
 });
+
+// --- Failure detail computeds ---
+const dietStatusSummary = computed(() => {
+  const rd = resultData.value as Record<string, unknown>;
+  const ds = rd.diet_status as { summary?: string } | undefined;
+  return ds?.summary || '';
+});
+
+const dietStatusMessages = computed<string[]>(() => {
+  const rd = resultData.value as Record<string, unknown>;
+  const ds = rd.diet_status as { formatted_messages?: string[] } | undefined;
+  return ds?.formatted_messages || [];
+});
+
+function regenerateWithAutoFeeds() {
+  const cowId = diet.value?.cow_id;
+  const query: Record<string, string> = { autoFeeds: 'true' };
+  if (cowId) query.cow_id = cowId;
+  router.push({ path: '/diet/new', query });
+}
 
 function formatDate(dateStr: string): string {
   return format(new Date(dateStr), 'MMMM d, yyyy h:mm a');
