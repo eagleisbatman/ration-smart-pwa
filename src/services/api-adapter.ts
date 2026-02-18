@@ -371,23 +371,31 @@ function normalizeDietResultData(raw: Record<string, unknown> | undefined): Reco
   }));
 
   const nutrientBalance: Record<string, number> = {
-    cp_supplied: 0, cp_requirement: 0,
-    tdn_supplied: 0, tdn_requirement: 0,
+    mp_supplied: 0, mp_requirement: 0,
+    nel_supplied: 0, nel_requirement: 0,
     dm_supplied: 0, dm_requirement: 0,
+    ca_supplied: 0, ca_requirement: 0,
+    p_supplied: 0, p_requirement: 0,
   };
   for (const row of nutrientBalanceRaw || []) {
     const param = (row.parameter as string || '').toLowerCase();
     const req = row.requirement as number || 0;
     const sup = row.supply as number || 0;
-    if (param.includes('crude protein') || param === 'cp') {
-      nutrientBalance.cp_requirement = req;
-      nutrientBalance.cp_supplied = sup;
-    } else if (param.includes('tdn') || param.includes('total digestible')) {
-      nutrientBalance.tdn_requirement = req;
-      nutrientBalance.tdn_supplied = sup;
+    if (param.includes('metabolizable protein') || param.includes('crude protein') || param === 'cp' || param === 'mp') {
+      nutrientBalance.mp_requirement = req;
+      nutrientBalance.mp_supplied = sup;
+    } else if (param.includes('net energy') || param.includes('nel') || param.includes('tdn') || param.includes('total digestible')) {
+      nutrientBalance.nel_requirement = req;
+      nutrientBalance.nel_supplied = sup;
     } else if (param.includes('dry matter') || param === 'dm' || param === 'dmi') {
       nutrientBalance.dm_requirement = req;
       nutrientBalance.dm_supplied = sup;
+    } else if (param.includes('calcium') || param === 'ca') {
+      nutrientBalance.ca_requirement = req;
+      nutrientBalance.ca_supplied = sup;
+    } else if (param.includes('phosphorus') || param === 'p') {
+      nutrientBalance.p_requirement = req;
+      nutrientBalance.p_supplied = sup;
     }
   }
 
