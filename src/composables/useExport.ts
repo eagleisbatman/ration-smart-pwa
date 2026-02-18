@@ -51,6 +51,13 @@ function downloadAsFile(html: string, filename: string): void {
   URL.revokeObjectURL(url);
 }
 
+export interface NutrientExport {
+  label: string;
+  supplied: string;
+  requirement: string;
+  unit: string;
+}
+
 export interface DietExportData {
   cowName: string;
   date: string;
@@ -59,6 +66,7 @@ export interface DietExportData {
   totalCost: string;
   dmIntake: number;
   status: string;
+  nutrients?: NutrientExport[];
 }
 
 export function useExport() {
@@ -73,10 +81,16 @@ export function useExport() {
     text += `${t('export.goal')}: ${diet.goal}\n\n`;
     text += `${t('export.feeds')}:\n`;
     for (const feed of diet.feeds) {
-      text += `  - ${feed.name}: ${feed.amount}kg (${feed.cost})\n`;
+      text += `  - ${feed.name}: ${feed.amount} kg/day (${feed.cost})\n`;
     }
-    text += `\n${t('export.totalCost')}: ${diet.totalCost}`;
-    text += `\n${t('export.dmIntake')}: ${diet.dmIntake}kg`;
+    text += `\n${t('export.totalCost')}: ${diet.totalCost}/day`;
+    text += `\nDry Matter Intake: ${diet.dmIntake} kg/day`;
+    if (diet.nutrients && diet.nutrients.length > 0) {
+      text += `\n\n${t('diet.nutrientBalance')}:`;
+      for (const n of diet.nutrients) {
+        text += `\n  ${n.label}: ${n.supplied} / ${n.requirement} ${n.unit}`;
+      }
+    }
     text += `\n\n${t('export.generatedBy')}`;
     return text;
   }
@@ -269,8 +283,8 @@ export function useExport() {
       <div class="meta-value">${diet.totalCost}</div>
     </div>
     <div class="meta-item">
-      <div class="meta-label">${t('export.dmIntake')}</div>
-      <div class="meta-value">${diet.dmIntake} kg</div>
+      <div class="meta-label">Dry Matter Intake</div>
+      <div class="meta-value">${diet.dmIntake} kg/day</div>
     </div>
   </div>
 
@@ -287,6 +301,29 @@ export function useExport() {
       ${feedRows}
     </tbody>
   </table>
+
+  ${diet.nutrients && diet.nutrients.length > 0 ? `
+  <h2>${t('diet.nutrientBalance')}</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Nutrient</th>
+        <th>Supplied</th>
+        <th>Required</th>
+        <th>Unit</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${diet.nutrients.map((n, i) => `
+      <tr style="${i % 2 === 0 ? 'background-color: #f9f9f9;' : ''}">
+        <td style="padding: 8px 12px; border-bottom: 1px solid #e0e0e0;">${n.label}</td>
+        <td style="padding: 8px 12px; border-bottom: 1px solid #e0e0e0; text-align: right;">${n.supplied}</td>
+        <td style="padding: 8px 12px; border-bottom: 1px solid #e0e0e0; text-align: right;">${n.requirement}</td>
+        <td style="padding: 8px 12px; border-bottom: 1px solid #e0e0e0; text-align: right;">${n.unit}</td>
+      </tr>`).join('')}
+    </tbody>
+  </table>
+  ` : ''}
 
   <div class="footer">
     <p>${diet.date}</p>

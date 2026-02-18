@@ -325,11 +325,11 @@ export const useDietsStore = defineStore('diets', () => {
    * Save a locally-optimized diet to the backend (bot-diet-history).
    * Only locally-created diets (not yet synced) need saving.
    */
-  async function saveDiet(dietId: string): Promise<boolean> {
+  async function saveDiet(dietId: string): Promise<string | null> {
     const authStore = useAuthStore();
     if (!isOnline.value) {
       error.value = 'Saving a diet requires an internet connection';
-      return false;
+      return null;
     }
 
     loading.value = true;
@@ -339,7 +339,7 @@ export const useDietsStore = defineStore('diets', () => {
       const diet = diets.value.find((d) => d.id === dietId) || await db.diets.get(dietId);
       if (!diet) {
         error.value = 'Diet not found';
-        return false;
+        return null;
       }
 
       // Auto-generate a meaningful name
@@ -377,6 +377,7 @@ export const useDietsStore = defineStore('diets', () => {
         // Preserve the local result_data (already normalized)
         result_data: diet.result_data,
         _raw_backend_result: diet._raw_backend_result,
+        status: 'saved',
         _synced: true,
       };
 
@@ -396,10 +397,11 @@ export const useDietsStore = defineStore('diets', () => {
         currentDiet.value = savedDiet;
       }
 
-      return true;
+      // Return the new backend ID (may differ from local ID)
+      return savedDiet.id;
     } catch (err) {
       error.value = extractUserFriendlyError(err);
-      return false;
+      return null;
     } finally {
       loading.value = false;
     }
