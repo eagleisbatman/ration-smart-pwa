@@ -557,7 +557,8 @@ const currencySymbol = computed(() => getCurrencySymbol());
 
 // --- Auto / Manual feed selection ---
 const feedSelectionMode = ref<'auto' | 'manual'>(queryAutoFeeds ? 'auto' : 'auto');
-const { autoSelectedFeeds, autoSelectedFeedIds } = useAutoFeedSelection();
+const goalRef = computed(() => form.optimization_goal);
+const { autoSelectedFeeds, autoSelectedFeedIds } = useAutoFeedSelection(goalRef);
 
 const feedModeOptions = computed(() => [
   { label: t('diet.wizard.autoSelect'), value: 'auto' },
