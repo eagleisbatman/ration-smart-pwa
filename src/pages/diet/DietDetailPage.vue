@@ -293,7 +293,7 @@
       <div class="row q-col-gutter-sm q-mt-md">
         <div class="col-12 col-sm-6">
           <q-btn
-            v-if="['completed', 'following', 'saved'].includes(diet.status)"
+            v-if="['completed', 'following', 'saved', 'archived'].includes(diet.status)"
             :label="$t('diet.optimizeAgain')"
             icon="refresh"
             color="secondary"
@@ -324,7 +324,7 @@
       </div>
 
       <!-- Follow / Stop Following (only for saved/backend-persisted diets) -->
-      <div v-if="diet._synced && ['saved', 'following'].includes(diet.status)" class="q-mt-md">
+      <div v-if="diet._synced && ['saved', 'following', 'archived'].includes(diet.status)" class="q-mt-md">
         <q-btn
           v-if="!diet.is_active"
           :label="$t('diet.startFollowing')"
@@ -467,7 +467,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, watch, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useQuasar } from 'quasar';
 import { useI18n } from 'vue-i18n';
@@ -757,10 +757,11 @@ async function handleSaveDiet() {
   const newId = await dietsStore.saveDiet(dietId.value);
   if (newId) {
     $q.notify({ type: 'positive', message: t('diet.dietSaved') });
-    // Navigate to the new backend ID if it changed
     if (newId !== dietId.value) {
+      // Navigate to new backend ID — watcher will reload diet
       router.replace(`/diet/${newId}`);
     } else {
+      // Same ID — reload explicitly since watcher won't fire
       diet.value = await dietsStore.getDiet(newId);
     }
   } else if (dietsStore.error) {
@@ -802,6 +803,10 @@ function confirmDelete() {
     cancel: true,
     persistent: true,
   }).onOk(async () => {
+    // If diet is being followed, stop following first
+    if (diet.value?.is_active) {
+      await dietsStore.stopFollowingDiet(dietId.value);
+    }
     const success = await dietsStore.deleteDiet(dietId.value);
     if (success) {
       $q.notify({ type: 'positive', message: t('diet.dietDeleted') });
@@ -810,15 +815,22 @@ function confirmDelete() {
   });
 }
 
-onMounted(async () => {
+async function loadDiet(id: string) {
   loading.value = true;
-  diet.value = await dietsStore.getDiet(dietId.value);
+  diet.value = await dietsStore.getDiet(id);
   loading.value = false;
   refreshReminderStatus();
-
-  // Check for pending follow-ups
   await followUpsStore.checkPendingFollowUps();
-  hasPendingFollowUp.value = !!followUpsStore.getPendingForDiet(dietId.value);
+  hasPendingFollowUp.value = !!followUpsStore.getPendingForDiet(id);
+}
+
+// Reload diet when route param changes (e.g. after save assigns new backend ID)
+watch(dietId, (newId) => {
+  void loadDiet(newId);
+});
+
+onMounted(() => {
+  void loadDiet(dietId.value);
 });
 </script>
 

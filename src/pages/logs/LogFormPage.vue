@@ -101,15 +101,15 @@
         />
       </q-card>
 
-      <!-- No active diet nudge -->
+      <!-- No active diet — block milk logging -->
       <q-banner
-        v-if="form.cow_id && dietChecked && !activeDiet"
-        class="bg-info text-white q-mb-md"
+        v-if="needsActiveDiet"
+        class="bg-warning text-white q-mb-md"
         rounded
         dense
       >
         <template #avatar>
-          <q-icon name="info" />
+          <q-icon name="warning" />
         </template>
         {{ $t('dietImpact.noDietBanner') }}
         <template #action>
@@ -193,6 +193,7 @@
         size="lg"
         unelevated
         :loading="loading"
+        :disable="!!needsActiveDiet"
       />
 
       <!-- Delete Button (Edit mode only) -->
@@ -266,6 +267,11 @@ const loading = computed(() => milkLogsStore.loading);
 const error = computed(() => milkLogsStore.error);
 
 const totalLiters = computed(() => (form.morning_liters || 0) + (form.evening_liters || 0));
+
+/** Milk logging requires an active diet for the selected cow */
+const needsActiveDiet = computed(() =>
+  !isEditing.value && form.cow_id && dietChecked.value && !activeDiet.value
+);
 
 const cowOptions = computed(() => {
   const isEW = authStore.isExtensionWorker;

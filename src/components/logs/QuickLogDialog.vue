@@ -46,16 +46,27 @@
 
       <!-- Content -->
       <q-card-section class="q-pa-none scroll-fill">
+        <!-- Loading diets -->
+        <div v-if="loadingDiets" class="text-center q-pa-xl text-grey-6">
+          <q-spinner size="32px" class="q-mb-md" />
+        </div>
+
         <!-- No cows message -->
-        <div v-if="activeCows.length === 0" class="text-center q-pa-xl text-grey-6">
+        <div v-else-if="activeCows.length === 0" class="text-center q-pa-xl text-grey-6">
           <q-icon name="water_drop" size="64px" class="q-mb-md" />
           <div class="text-body1">{{ $t('logs.quickLog.noCows') }}</div>
+        </div>
+
+        <!-- All cows lack active diet -->
+        <div v-else-if="loggableCows.length === 0" class="text-center q-pa-xl text-grey-6">
+          <q-icon name="menu_book" size="64px" class="q-mb-md" />
+          <div class="text-body1">{{ $t('dietImpact.noDietBanner') }}</div>
         </div>
 
         <!-- Cow rows -->
         <q-list v-else separator>
           <q-item
-            v-for="cow in activeCows"
+            v-for="cow in loggableCows"
             :key="cow.id"
             :class="{ 'bg-grey-2': savedRows[cow.id] }"
             class="q-py-sm"
@@ -178,9 +189,10 @@ import { useQuasar } from 'quasar';
 import { format } from 'date-fns';
 import { useMilkLogsStore, MilkLogInput } from 'src/stores/milkLogs';
 import { useCowsStore } from 'src/stores/cows';
+import { useDietsStore } from 'src/stores/diets';
 import { COW_ICON } from 'src/boot/icons';
 import DatePickerPopup from 'src/components/ui/DatePickerPopup.vue';
-import type { Cow } from 'src/lib/offline/db';
+import type { Cow, Diet } from 'src/lib/offline/db';
 
 interface QuickLogEntry {
   morning: number | null;
@@ -200,6 +212,7 @@ const { t } = useI18n();
 const $q = useQuasar();
 const milkLogsStore = useMilkLogsStore();
 const cowsStore = useCowsStore();
+const dietsStore = useDietsStore();
 
 const datePickerRef = ref<InstanceType<typeof DatePickerPopup> | null>(null);
 const logDate = ref(format(new Date(), 'yyyy-MM-dd'));
@@ -207,8 +220,15 @@ const entries = reactive<Record<string, QuickLogEntry>>({});
 const savedRows = reactive<Record<string, boolean>>({});
 const savingRows = reactive<Record<string, boolean>>({});
 const savingAll = ref(false);
+const cowDiets = reactive<Record<string, Diet>>({});
+const loadingDiets = ref(false);
 
 const activeCows = computed(() => cowsStore.activeCows);
+
+/** Only cows with an actively followed diet can log milk */
+const loggableCows = computed(() =>
+  activeCows.value.filter((cow) => !!cowDiets[cow.id])
+);
 
 const dialogVisible = computed({
   get: () => props.modelValue,
@@ -216,7 +236,7 @@ const dialogVisible = computed({
 });
 
 const nothingToSave = computed(() => {
-  return activeCows.value.every(
+  return loggableCows.value.every(
     (cow) => savedRows[cow.id] || getRowTotal(cow.id) === 0
   );
 });
@@ -232,7 +252,7 @@ watch(
   { immediate: true }
 );
 
-function initEntries() {
+async function initEntries() {
   for (const cow of activeCows.value) {
     if (!entries[cow.id]) {
       entries[cow.id] = { morning: null, evening: null };
@@ -240,6 +260,18 @@ function initEntries() {
     savedRows[cow.id] = false;
     savingRows[cow.id] = false;
   }
+
+  // Fetch active diets for all cows
+  loadingDiets.value = true;
+  for (const cow of activeCows.value) {
+    const diet = await dietsStore.getActiveDietForCow(cow.id);
+    if (diet) {
+      cowDiets[cow.id] = diet;
+    } else {
+      delete cowDiets[cow.id];
+    }
+  }
+  loadingDiets.value = false;
 }
 
 function getRowTotal(cowId: string): number {
@@ -264,6 +296,7 @@ async function saveRow(cow: Cow) {
       log_date: logDate.value,
       morning_liters: entry.morning || 0,
       evening_liters: entry.evening || 0,
+      diet_history_id: cowDiets[cow.id]?.id,
     };
 
     let success: boolean;
@@ -298,7 +331,7 @@ async function saveRow(cow: Cow) {
 }
 
 async function saveAll() {
-  const cowsToSave = activeCows.value.filter(
+  const cowsToSave = loggableCows.value.filter(
     (cow) => !savedRows[cow.id] && getRowTotal(cow.id) > 0
   );
 
