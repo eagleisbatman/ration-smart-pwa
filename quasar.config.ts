@@ -44,7 +44,7 @@ export default defineConfig((/* ctx */) => {
           warning: '#FF9800',
         },
         notify: {
-          position: 'bottom',
+          position: 'top',
           timeout: 3000,
         },
         loading: {
