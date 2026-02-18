@@ -509,7 +509,9 @@
       "completed": "Completed",
       "processing": "Processing",
       "failed": "Failed",
-      "pending": "Pending"
+      "pending": "Pending",
+      "saved": "Saved",
+      "following": "Following"
     },
     "tdnLabel": "TDN",
     "dailyCost": "Daily Cost",
