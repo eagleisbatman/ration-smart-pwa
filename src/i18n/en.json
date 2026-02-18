@@ -663,7 +663,7 @@
     "noLogs": "No milk logs linked to this diet yet.",
     "noLogsCta": "Log daily milk yield to track impact.",
     "logMilk": "Log Milk",
-    "noDietBanner": "This cow has no active diet plan. Milk logs won't be linked to a diet for impact tracking.",
+    "noDietBanner": "This cow has no active diet plan. Generate and follow a diet to start logging milk.",
     "yieldUp": "Yield increasing",
     "yieldDown": "Yield decreasing",
     "yieldStable": "Yield stable",
