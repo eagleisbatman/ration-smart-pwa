@@ -10,6 +10,11 @@ import { isOnline } from 'src/boot/pwa';
 import { getCountryId } from 'src/services/api-adapter';
 import { extractUserFriendlyError } from 'src/lib/error-messages';
 
+/** Deep-clone a diet to strip Vue reactive Proxies before IndexedDB storage */
+function cloneForDb(diet: Diet | Record<string, unknown>): Diet {
+  return JSON.parse(JSON.stringify(diet)) as Diet;
+}
+
 export interface DietInput {
   cow_id?: string;
   cow_name?: string;
@@ -280,7 +285,7 @@ export const useDietsStore = defineStore('diets', () => {
       diets.value.unshift(serverDiet);
 
       // Save to local database — deep-clone to strip Vue reactive proxies
-      await db.diets.put(JSON.parse(JSON.stringify(serverDiet)) as Diet);
+      await db.diets.put(cloneForDb(serverDiet));
 
       currentDiet.value = serverDiet;
       return serverDiet;
@@ -373,9 +378,9 @@ export const useDietsStore = defineStore('diets', () => {
         user_id: diet.user_id || authStore.userId,
         cow_id: diet.cow_id,
         cow_name: diet.cow_name,
+        farmer_name: diet.farmer_name,
         optimization_goal: diet.optimization_goal,
         input_data: diet.input_data,
-        // Preserve the local result_data (already normalized)
         result_data: diet.result_data,
         _raw_backend_result: diet._raw_backend_result,
         status: 'saved',
@@ -385,7 +390,7 @@ export const useDietsStore = defineStore('diets', () => {
       // Replace the local-only diet with the backend-saved version
       const oldId = diet.id;
       await db.diets.delete(oldId);
-      await db.diets.put(savedDiet);
+      await db.diets.put(cloneForDb(savedDiet));
 
       const idx = diets.value.findIndex((d) => d.id === oldId);
       if (idx >= 0) {
@@ -477,7 +482,7 @@ export const useDietsStore = defineStore('diets', () => {
               d.status = 'archived';
               d.is_active = false;
               if (!d.followed_until) d.followed_until = now;
-              await db.diets.put({ ...d });
+              await db.diets.put(cloneForDb(d));
             }
           }
         }
@@ -485,7 +490,7 @@ export const useDietsStore = defineStore('diets', () => {
         diet.status = 'following';
         diet.is_active = true;
         if (!diet.followed_from) diet.followed_from = now;
-        await db.diets.put({ ...diet });
+        await db.diets.put(cloneForDb(diet));
 
         // Cache as active diet for this cow
         if (diet.cow_id) {
@@ -528,7 +533,7 @@ export const useDietsStore = defineStore('diets', () => {
         diet.status = 'archived';
         diet.is_active = false;
         if (diet.followed_from && !diet.followed_until) diet.followed_until = now;
-        await db.diets.put({ ...diet });
+        await db.diets.put(cloneForDb(diet));
 
         // Remove from active diets cache
         if (diet.cow_id && activeDiets.value[diet.cow_id]?.id === dietId) {
@@ -614,7 +619,7 @@ export const useDietsStore = defineStore('diets', () => {
       const diet = diets.value.find((d) => d.id === dietId);
       if (diet) {
         diet.name = name;
-        await db.diets.put({ ...diet });
+        await db.diets.put(cloneForDb(diet));
       }
       if (currentDiet.value?.id === dietId) {
         currentDiet.value = { ...currentDiet.value, name };
