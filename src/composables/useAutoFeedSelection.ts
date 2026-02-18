@@ -4,15 +4,19 @@ import type { Feed } from 'src/lib/offline/db';
 
 type Goal = 'minimize_cost' | 'maximize_milk' | 'balanced';
 
-/** Category quotas for auto-selection — how many feeds to pick per category */
-const CATEGORY_QUOTAS: Record<string, number> = {
-  'Green Fodder': 3,
-  'Dry Roughage': 2,
-  'Concentrate': 3,
-  'Oil Cake': 2,
-  'Mineral Supplement': 2,
+/**
+ * Quotas by fd_type (the backend's primary feed grouping).
+ * "Forage" = grasses, legumes, straws, fodders
+ * "Concentrate" = grains, oilseed meals, minerals, by-products
+ */
+const TYPE_QUOTAS: Record<string, number> = {
+  Forage: 6,
+  Concentrate: 7,
 };
-const DEFAULT_QUOTA = 1;
+const DEFAULT_TYPE_QUOTA = 1;
+
+/** Max feeds to pick from any single fd_category within a type */
+const MAX_PER_SUBCATEGORY = 2;
 
 /** Common feed names that get priority boost (case-insensitive partial match) */
 const PRIORITY_FEEDS = [
@@ -39,34 +43,27 @@ function isPriorityFeed(feed: Feed): boolean {
 }
 
 /**
- * Build a goal-aware sort function for feed ranking within a category.
- *
- * - minimize_cost: cheapest feeds first (low price_per_kg), then by nutrition
- * - maximize_milk: most nutritious feeds first (high CP + TDN), then by price
- * - balanced: score = nutrition / price (best value per rupee)
- *
- * Priority feeds always come first within each strategy.
+ * Goal-aware sort: ranks feeds within a subcategory.
+ * - minimize_cost: cheapest first, tie-break by nutrition
+ * - maximize_milk: highest nutrition first (CP + TDN)
+ * - balanced: best nutrition-per-rupee ratio
  */
 function buildSortFn(goal: Goal): (a: Feed, b: Feed) => number {
   switch (goal) {
     case 'minimize_cost':
       return (a, b) => {
-        // Feeds with price data first
         const aPrice = a.price_per_kg ?? Infinity;
         const bPrice = b.price_per_kg ?? Infinity;
-        if (aPrice !== bPrice) return aPrice - bPrice; // cheapest first
-        // Tie-break: higher nutrition
+        if (aPrice !== bPrice) return aPrice - bPrice;
         return ((b.cp_percentage ?? 0) + (b.tdn_percentage ?? 0)) -
                ((a.cp_percentage ?? 0) + (a.tdn_percentage ?? 0));
       };
 
     case 'maximize_milk':
       return (a, b) => {
-        // Highest nutrition first (CP + TDN as a combined score)
         const aNutrition = (a.cp_percentage ?? 0) + (a.tdn_percentage ?? 0);
         const bNutrition = (b.cp_percentage ?? 0) + (b.tdn_percentage ?? 0);
         if (bNutrition !== aNutrition) return bNutrition - aNutrition;
-        // Tie-break: prefer feeds with price data
         const aHasPrice = (a.price_per_kg ?? 0) > 0 ? 1 : 0;
         const bHasPrice = (b.price_per_kg ?? 0) > 0 ? 1 : 0;
         return bHasPrice - aHasPrice;
@@ -75,31 +72,68 @@ function buildSortFn(goal: Goal): (a: Feed, b: Feed) => number {
     case 'balanced':
     default:
       return (a, b) => {
-        // Best value: nutrition per unit cost
-        const aPrice = a.price_per_kg && a.price_per_kg > 0 ? a.price_per_kg : 10; // fallback
+        const aPrice = a.price_per_kg && a.price_per_kg > 0 ? a.price_per_kg : 10;
         const bPrice = b.price_per_kg && b.price_per_kg > 0 ? b.price_per_kg : 10;
         const aValue = ((a.cp_percentage ?? 0) + (a.tdn_percentage ?? 0)) / aPrice;
         const bValue = ((b.cp_percentage ?? 0) + (b.tdn_percentage ?? 0)) / bPrice;
-        return bValue - aValue; // highest value first
+        return bValue - aValue;
       };
   }
 }
 
-function selectFromCategory(feeds: Feed[], quota: number, goal: Goal): Feed[] {
-  const priority: Feed[] = [];
-  const rest: Feed[] = [];
-
+/**
+ * Select feeds from a single fd_type group, ensuring subcategory diversity.
+ *
+ * 1. Subgroup feeds by fd_category
+ * 2. From each subcategory, take up to MAX_PER_SUBCATEGORY (priority feeds first, then goal-sorted)
+ * 3. Combine and trim to the type quota
+ */
+function selectFromType(feeds: Feed[], quota: number, goal: Goal): Feed[] {
+  // Subgroup by fd_category
+  const subcategories: Record<string, Feed[]> = {};
   for (const f of feeds) {
-    if (isPriorityFeed(f)) priority.push(f);
-    else rest.push(f);
+    const cat = f.category || 'Other';
+    if (!subcategories[cat]) subcategories[cat] = [];
+    subcategories[cat].push(f);
   }
 
   const sortFn = buildSortFn(goal);
-  priority.sort(sortFn);
-  rest.sort(sortFn);
+  const picked: Feed[] = [];
 
-  const combined = [...priority, ...rest];
-  return combined.slice(0, quota);
+  // Round-robin: pick 1 from each subcategory, then repeat up to MAX_PER_SUBCATEGORY
+  const catEntries = Object.entries(subcategories);
+
+  // Sort each subcategory internally: priority first, then by goal
+  for (const [, catFeeds] of catEntries) {
+    const priority: Feed[] = [];
+    const rest: Feed[] = [];
+    for (const f of catFeeds) {
+      if (isPriorityFeed(f)) priority.push(f);
+      else rest.push(f);
+    }
+    priority.sort(sortFn);
+    rest.sort(sortFn);
+    catFeeds.length = 0;
+    catFeeds.push(...priority, ...rest);
+  }
+
+  // Sort subcategories so the ones with priority feeds come first
+  catEntries.sort((a, b) => {
+    const aHasPriority = a[1].some((f) => isPriorityFeed(f)) ? 0 : 1;
+    const bHasPriority = b[1].some((f) => isPriorityFeed(f)) ? 0 : 1;
+    return aHasPriority - bHasPriority;
+  });
+
+  for (let round = 0; round < MAX_PER_SUBCATEGORY && picked.length < quota; round++) {
+    for (const [, catFeeds] of catEntries) {
+      if (picked.length >= quota) break;
+      if (round < catFeeds.length) {
+        picked.push(catFeeds[round]);
+      }
+    }
+  }
+
+  return picked.slice(0, quota);
 }
 
 export function useAutoFeedSelection(goal: Ref<Goal>) {
@@ -111,19 +145,19 @@ export function useAutoFeedSelection(goal: Ref<Goal>) {
 
     const currentGoal = goal.value;
 
-    // Group by category
+    // Group by fd_type (primary grouping: "Forage" vs "Concentrate")
     const grouped: Record<string, Feed[]> = {};
     for (const feed of allFeeds) {
-      const cat = feed.category || 'Other';
-      if (!grouped[cat]) grouped[cat] = [];
-      grouped[cat].push(feed);
+      const type = feed.fd_type || 'Other';
+      if (!grouped[type]) grouped[type] = [];
+      grouped[type].push(feed);
     }
 
     const selected: Feed[] = [];
 
-    for (const [category, feeds] of Object.entries(grouped)) {
-      const quota = CATEGORY_QUOTAS[category] ?? DEFAULT_QUOTA;
-      selected.push(...selectFromCategory(feeds, quota, currentGoal));
+    for (const [type, feeds] of Object.entries(grouped)) {
+      const quota = TYPE_QUOTAS[type] ?? DEFAULT_TYPE_QUOTA;
+      selected.push(...selectFromType(feeds, quota, currentGoal));
     }
 
     return selected;

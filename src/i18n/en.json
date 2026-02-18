@@ -606,7 +606,7 @@
       "selectAtLeast3Feeds": "Select at least 3 feeds for better optimization results",
       "autoSelect": "Auto-select feeds (Recommended)",
       "chooseManually": "Choose manually",
-      "autoSelectDesc": "{count} feeds auto-selected for a balanced diet",
+      "autoSelectDesc": "{count} feeds auto-selected for your diet",
       "selectBudget": "What's your daily feed budget?",
       "targetMilkYield": "Target milk yield",
       "milkTarget": "{liters}L/day (+{percent}%)",
