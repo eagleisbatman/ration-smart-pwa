@@ -43,5 +43,9 @@ export default defineConfig({
       name: 'P4-nutritionist-kenya',
       testMatch: 'persona-nutritionist.spec.ts',
     },
+    {
+      name: 'P5-admin-india',
+      testMatch: 'persona-admin.spec.ts',
+    },
   ],
 });

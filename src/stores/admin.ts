@@ -107,7 +107,8 @@ export const useAdminStore = defineStore('admin', () => {
     error.value = null;
     try {
       const resp = await api.get('/api/v1/organizations');
-      orgs.value = (resp.data || []).map((o: Record<string, unknown>) => ({
+      const rawOrgs = resp.data?.organizations ?? resp.data ?? [];
+      orgs.value = (Array.isArray(rawOrgs) ? rawOrgs : []).map((o: Record<string, unknown>) => ({
         id: String(o.id),
         name: String(o.name || ''),
         type: o.type ? String(o.type) : null,
