@@ -231,9 +231,10 @@ const navItems = computed(() => {
     { to: '/yields', icon: 'analytics', label: t('nav.milkSummary') },
     { to: '/reports', icon: 'summarize', label: t('nav.reports') },
   ];
-  // Organization analytics only for extension workers / nutritionists / researchers
-  if (authStore.isExtensionWorker || authStore.isResearcher) {
+  // Admin section: analytics + admin panel for org_admin, country_admin, super_admin
+  if (authStore.isAnyAdmin) {
     items.push({ to: '/analytics', icon: 'insights', label: t('nav.analytics') });
+    items.push({ to: '/admin', icon: 'admin_panel_settings', label: t('nav.admin') });
   }
   items.push({ to: '/settings', icon: 'settings', label: t('nav.settings') });
   return items;

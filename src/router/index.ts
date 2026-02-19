@@ -60,6 +60,14 @@ export default route(function (/* { store, ssrContext } */) {
       }
     }
 
+    // Check if route requires admin privileges
+    if (to.matched.some((record) => record.meta.requiresAdmin)) {
+      if (!authStore.isAnyAdmin) {
+        next({ path: '/' });
+        return;
+      }
+    }
+
     // Check if route requires guest (non-authenticated)
     if (to.matched.some((record) => record.meta.requiresGuest)) {
       if (authStore.isAuthenticated) {

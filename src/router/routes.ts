@@ -209,12 +209,32 @@ const routes: RouteRecordRaw[] = [
         meta: { titleKey: 'yields.compare.title', showBack: true, hideFab: true },
       },
 
-      // Organization Analytics
+      // Organization Analytics (now admin-only)
       {
         path: 'analytics',
-        name: 'org-analytics',
-        component: () => import('pages/yields/OrgAnalyticsPage.vue'),
-        meta: { titleKey: 'nav.analytics', showBack: true, hideFab: true },
+        name: 'admin-analytics',
+        component: () => import('pages/admin/AdminAnalyticsPage.vue'),
+        meta: { titleKey: 'nav.analytics', showBack: true, hideFab: true, requiresAdmin: true },
+      },
+
+      // Admin Panel
+      {
+        path: 'admin',
+        name: 'admin-dashboard',
+        component: () => import('pages/admin/AdminDashboardPage.vue'),
+        meta: { titleKey: 'nav.admin', hideFab: true, requiresAdmin: true },
+      },
+      {
+        path: 'admin/users',
+        name: 'admin-users',
+        component: () => import('pages/admin/AdminUsersPage.vue'),
+        meta: { titleKey: 'admin.userManagement', showBack: true, hideFab: true, requiresAdmin: true },
+      },
+      {
+        path: 'admin/orgs',
+        name: 'admin-orgs',
+        component: () => import('pages/admin/AdminOrgsPage.vue'),
+        meta: { titleKey: 'admin.orgManagement', showBack: true, hideFab: true, requiresAdmin: true },
       },
 
       // Reports
