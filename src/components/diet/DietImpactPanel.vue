@@ -6,7 +6,7 @@
         <q-icon name="monitoring" color="primary" size="24px" class="q-mr-sm" />
         <div class="text-subtitle1 text-weight-medium col">{{ $t('dietImpact.title') }}</div>
         <q-chip v-if="daysSinceStart > 0" dense size="sm" outline>
-          {{ daysSinceStart }} {{ $t('dietImpact.days') }}
+          {{ daysSinceStart }} {{ $t('dietImpact.days', daysSinceStart) }}
         </q-chip>
       </div>
 
@@ -105,7 +105,7 @@
             />
           </svg>
           <div class="text-caption text-grey-6 text-center q-mt-xs">
-            {{ totalLogs }} {{ $t('dietImpact.days') }}
+            {{ totalLogs }} {{ $t('dietImpact.days', totalLogs) }}
           </div>
         </div>
       </template>

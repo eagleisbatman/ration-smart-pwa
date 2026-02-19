@@ -88,7 +88,7 @@ export const useDietsStore = defineStore('diets', () => {
 
   // Computed
   const completedDiets = computed(() =>
-    diets.value.filter((d) => d.status === 'completed')
+    diets.value.filter((d) => ['completed', 'saved'].includes(d.status))
   );
 
   const recentDiets = computed(() =>
@@ -498,6 +498,19 @@ export const useDietsStore = defineStore('diets', () => {
         if (diet.cow_id) {
           activeDiets.value[diet.cow_id] = diet;
         }
+      } else {
+        // Diet not in reactive array (e.g. navigated directly to detail page).
+        // Update IndexedDB directly so getDiet() returns fresh data.
+        const dbDiet = await db.diets.get(dietId);
+        if (dbDiet) {
+          dbDiet.status = 'following';
+          dbDiet.is_active = true;
+          if (!dbDiet.followed_from) dbDiet.followed_from = now;
+          await db.diets.put(cloneForDb(dbDiet));
+          if (dbDiet.cow_id) {
+            activeDiets.value[dbDiet.cow_id] = dbDiet;
+          }
+        }
       }
       if (currentDiet.value?.id === dietId) {
         currentDiet.value = { ...currentDiet.value, status: 'following', is_active: true, followed_from: currentDiet.value.followed_from || now };
@@ -540,6 +553,18 @@ export const useDietsStore = defineStore('diets', () => {
         // Remove from active diets cache
         if (diet.cow_id && activeDiets.value[diet.cow_id]?.id === dietId) {
           delete activeDiets.value[diet.cow_id];
+        }
+      } else {
+        // Diet not in reactive array — update IndexedDB directly
+        const dbDiet = await db.diets.get(dietId);
+        if (dbDiet) {
+          dbDiet.status = 'archived';
+          dbDiet.is_active = false;
+          if (dbDiet.followed_from && !dbDiet.followed_until) dbDiet.followed_until = now;
+          await db.diets.put(cloneForDb(dbDiet));
+          if (dbDiet.cow_id && activeDiets.value[dbDiet.cow_id]?.id === dietId) {
+            delete activeDiets.value[dbDiet.cow_id];
+          }
         }
       }
       if (currentDiet.value?.id === dietId) {

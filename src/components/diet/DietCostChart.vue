@@ -203,7 +203,7 @@ const cowNames = computed(() => {
 // Filtered and sorted chart data (most recent 15, chronological order)
 const chartData = computed(() => {
   let filtered = props.diets.filter(
-    (d) => d.status === 'completed' && d.total_cost != null && d.total_cost > 0
+    (d) => ['completed', 'saved'].includes(d.status) && d.total_cost != null && d.total_cost > 0
   );
 
   if (selectedCow.value !== null) {
