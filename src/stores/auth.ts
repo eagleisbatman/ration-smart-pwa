@@ -84,6 +84,7 @@ export const useAuthStore = defineStore('auth', () => {
   const userRole = ref<string>(localStorage.getItem('user_role') || 'farmer');
   const preferredLanguage = ref<string>(localStorage.getItem('preferred_language') || 'en');
   const selfFarmerProfileId = ref<string | null>(localStorage.getItem('self_farmer_profile_id'));
+  const adminLevel = ref<string | null>(localStorage.getItem('admin_level'));
   const onboardingSkipped = ref(sessionStorage.getItem('onboarding_skipped') === 'true');
   const profileImage = ref<string | null>(localStorage.getItem('profile_image'));
 
@@ -107,6 +108,12 @@ export const useAuthStore = defineStore('auth', () => {
     const role = userRole.value?.toLowerCase();
     return role === 'farmer' || role === 'feed_supplier' || role === 'other';
   });
+
+  // Admin hierarchy computed properties
+  const isOrgAdmin = computed(() => adminLevel.value === 'org_admin');
+  const isCountryAdmin = computed(() => adminLevel.value === 'country_admin');
+  const isSuperAdmin = computed(() => adminLevel.value === 'super_admin');
+  const isAnyAdmin = computed(() => !!adminLevel.value && ['org_admin', 'country_admin', 'super_admin'].includes(adminLevel.value));
 
   // Actions
 
@@ -312,6 +319,15 @@ export const useAuthStore = defineStore('auth', () => {
         localStorage.setItem('profile_image', userData.profile_image_url);
       }
 
+      // Restore admin_level from login response
+      const respAdminLevel = responseData.admin_level || userData?.admin_level || null;
+      adminLevel.value = respAdminLevel;
+      if (respAdminLevel) {
+        localStorage.setItem('admin_level', respAdminLevel);
+      } else {
+        localStorage.removeItem('admin_level');
+      }
+
       // If self_farmer_profile_id wasn't in login response, fetch full profile
       if (!selfFarmerProfileId.value && responseUserId) {
         await loadUserProfile();
@@ -365,6 +381,14 @@ export const useAuthStore = defineStore('auth', () => {
       if (normalizedData.profile_image_url) {
         profileImage.value = normalizedData.profile_image_url;
         localStorage.setItem('profile_image', normalizedData.profile_image_url);
+      }
+      // Restore admin_level from profile
+      const profileAdminLevel = normalizedData.admin_level || null;
+      adminLevel.value = profileAdminLevel;
+      if (profileAdminLevel) {
+        localStorage.setItem('admin_level', profileAdminLevel);
+      } else {
+        localStorage.removeItem('admin_level');
       }
 
       // If self_farmer_profile_id still not set, check via self-profile endpoint
@@ -588,6 +612,7 @@ export const useAuthStore = defineStore('auth', () => {
     userRole.value = savedRole;
     preferredLanguage.value = savedLang;
     selfFarmerProfileId.value = null;
+    adminLevel.value = null;
     onboardingSkipped.value = false;
     profileImage.value = null;
 
@@ -600,6 +625,7 @@ export const useAuthStore = defineStore('auth', () => {
     // Keep user_role, preferred_language, and last_country_code so they
     // survive session expiry and pre-fill the login page correctly
     localStorage.removeItem('self_farmer_profile_id');
+    localStorage.removeItem('admin_level');
     localStorage.removeItem('profile_image');
     sessionStorage.removeItem('onboarding_skipped');
   }
@@ -642,6 +668,7 @@ export const useAuthStore = defineStore('auth', () => {
     userRole,
     preferredLanguage,
     selfFarmerProfileId,
+    adminLevel,
     onboardingSkipped,
     profileImage,
     // Computed
@@ -652,6 +679,10 @@ export const useAuthStore = defineStore('auth', () => {
     isExtensionWorker,
     isResearcher,
     isFarmerRole,
+    isOrgAdmin,
+    isCountryAdmin,
+    isSuperAdmin,
+    isAnyAdmin,
     // Actions
     fetchCountries,
     ensureCountriesLoaded,

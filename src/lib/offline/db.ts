@@ -7,9 +7,11 @@ export interface User {
   phone?: string;
   name?: string;
   country_code: string;
+  country_id?: string;
   language: string;
   language_code?: string;
   user_role?: string;
+  admin_level?: string | null;
   organization_id?: string | null;
   self_farmer_profile_id?: string | null;
   profile_image_url?: string | null;
