@@ -9,7 +9,7 @@
     <template v-else-if="diet">
       <!-- Status Banner (non-failed statuses) -->
       <q-banner
-        v-if="showBanner && !['completed', 'saved', 'following', 'failed'].includes(diet.status)"
+        v-if="showBanner && !['completed', 'saved', 'following', 'failed', 'archived'].includes(diet.status)"
         :class="`bg-${getStatusColor(diet.status)} text-white q-mb-md`"
         rounded
       >
@@ -125,8 +125,8 @@
         :cow-id="diet.cow_id"
       />
 
-      <!-- Results (for completed/following/saved diets) -->
-      <template v-if="['completed', 'following', 'saved'].includes(diet.status) && diet.result_data">
+      <!-- Results (for completed/following/saved/archived diets) -->
+      <template v-if="['completed', 'following', 'saved', 'archived'].includes(diet.status) && diet.result_data">
         <!-- Summary Stats -->
         <div class="row q-col-gutter-sm q-mb-md">
           <div class="col-4">
@@ -367,7 +367,7 @@
       </div>
 
       <!-- Compare Button -->
-      <div v-if="['completed', 'following', 'saved'].includes(diet.status)" class="q-mt-sm">
+      <div v-if="['completed', 'following', 'saved', 'archived'].includes(diet.status)" class="q-mt-sm">
         <q-btn
           flat
           icon="compare_arrows"
@@ -391,9 +391,9 @@
       />
     </template>
 
-    <!-- Share FAB - visible for completed/following/saved diets -->
+    <!-- Share FAB - visible for completed/following/saved/archived diets -->
     <q-page-sticky
-      v-if="diet && ['completed', 'following', 'saved'].includes(diet.status) && diet.result_data"
+      v-if="diet && ['completed', 'following', 'saved', 'archived'].includes(diet.status) && diet.result_data"
       position="bottom-right"
       :offset="[18, 18]"
     >

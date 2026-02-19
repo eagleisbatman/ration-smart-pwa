@@ -165,7 +165,7 @@ const activeFilter = ref('all');
 const loading = computed(() => dietsStore.loading);
 const diets = computed(() => dietsStore.diets);
 const completedDietsWithCost = computed(() =>
-  diets.value.filter((d) => d.status === 'completed' && d.total_cost != null && d.total_cost > 0)
+  diets.value.filter((d) => ['completed', 'saved'].includes(d.status) && d.total_cost != null && d.total_cost > 0)
 );
 
 /** Build cow→farmer mapping from cows store */

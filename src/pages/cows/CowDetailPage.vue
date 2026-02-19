@@ -132,7 +132,7 @@
             <div class="text-caption text-grey-7">
               {{ formatCurrency(activeDiet.total_cost ?? 0) }}{{ $t('diet.perDay') }}
               <template v-if="activeDiet.followed_from">
-                · {{ $t('diet.followingSince', { days: followedDays }) }}
+                · {{ $t('diet.followingSince', followedDays) }}
               </template>
             </div>
             <div v-if="dietImpact.hasData.value" class="q-mt-xs">
