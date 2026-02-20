@@ -336,7 +336,7 @@ const farmerOptions = computed(() =>
   }))
 );
 
-const filteredFarmerOptions = ref(farmerOptions.value);
+const filteredFarmerOptions = ref<{ label: string; value: string }[]>([]);
 
 function filterFarmers(val: string, update: (fn: () => void) => void) {
   update(() => {
@@ -456,16 +456,15 @@ watch(selectedFarmer, () => {
 // Keep filtered options in sync when farmer list changes
 watch(farmerOptions, (opts) => {
   filteredFarmerOptions.value = opts;
+  // Auto-select self once options are available (fixes UUID display on initial load)
+  if (!selectedFarmer.value && authStore.selfFarmerProfileId && opts.some((o) => o.value === authStore.selfFarmerProfileId)) {
+    selectedFarmer.value = authStore.selfFarmerProfileId;
+  }
 });
 
 onMounted(async () => {
   await farmersStore.fetchFarmers();
   await cowsStore.fetchCows();
-
-  // Auto-select self if farmer
-  if (authStore.selfFarmerProfileId) {
-    selectedFarmer.value = authStore.selfFarmerProfileId;
-  }
 });
 </script>
 

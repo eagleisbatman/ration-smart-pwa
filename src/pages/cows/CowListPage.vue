@@ -2,7 +2,7 @@
   <q-page class="q-pa-md">
     <PullToRefresh @refresh="onRefresh">
       <!-- Search Bar & Selection Toggle -->
-      <div class="row items-center q-mb-md q-gutter-x-sm">
+      <div class="row items-center q-mb-sm q-gutter-x-sm">
         <q-input
           v-model="searchQuery"
           outlined
@@ -28,6 +28,22 @@
           no-caps
           @click="toggleSelectionMode"
         />
+      </div>
+
+      <!-- Filter Chips -->
+      <div v-if="cows.length > 0" class="row q-gutter-x-sm q-mb-md">
+        <q-chip
+          v-for="f in filterOptions"
+          :key="f.value"
+          :outline="filterStatus !== f.value"
+          :color="filterStatus === f.value ? 'primary' : undefined"
+          :text-color="filterStatus === f.value ? 'white' : undefined"
+          clickable
+          dense
+          @click="filterStatus = f.value"
+        >
+          {{ f.label }}
+        </q-chip>
       </div>
 
       <!-- Select All / Deselect All -->
@@ -229,23 +245,42 @@ const dietsStore = useDietsStore();
 const { success, error: hapticError, warning } = useHapticFeedback();
 
 const searchQuery = ref('');
+const filterStatus = ref<'all' | 'lactating' | 'dry'>('all');
 const selectionMode = ref(false);
 const selectedIds = ref<string[]>([]);
 
 const loading = computed(() => cowsStore.loading);
 const cows = computed(() => cowsStore.activeCows);
 
-const filteredCows = computed(() => {
-  if (!searchQuery.value) return cows.value;
+const filterOptions = computed(() => [
+  { label: t('cow.filterAll'), value: 'all' as const },
+  { label: t('cow.lactating'), value: 'lactating' as const },
+  { label: t('cow.dry'), value: 'dry' as const },
+]);
 
-  const query = searchQuery.value.toLowerCase();
-  return cows.value.filter(
-    (cow) =>
-      cow.name.toLowerCase().includes(query) ||
-      cow.breed.toLowerCase().includes(query) ||
-      (cow.tag_number && cow.tag_number.toLowerCase().includes(query)) ||
-      (cow.coat_color && cow.coat_color.toLowerCase().includes(query))
-  );
+const filteredCows = computed(() => {
+  let result = cows.value;
+
+  // Apply status filter
+  if (filterStatus.value === 'lactating') {
+    result = result.filter((cow) => cow.lactation_stage !== 'dry');
+  } else if (filterStatus.value === 'dry') {
+    result = result.filter((cow) => cow.lactation_stage === 'dry');
+  }
+
+  // Apply search filter
+  if (searchQuery.value) {
+    const query = searchQuery.value.toLowerCase();
+    result = result.filter(
+      (cow) =>
+        cow.name.toLowerCase().includes(query) ||
+        cow.breed.toLowerCase().includes(query) ||
+        (cow.tag_number && cow.tag_number.toLowerCase().includes(query)) ||
+        (cow.coat_color && cow.coat_color.toLowerCase().includes(query))
+    );
+  }
+
+  return result;
 });
 
 const allSelected = computed(

@@ -3,6 +3,7 @@
     <q-form class="q-gutter-md" @submit="onSubmit">
       <!-- Photo Section -->
       <PhotoUploadSection v-model="form.image_url" />
+      <div class="text-center text-caption text-grey-5" style="margin-top: -12px">{{ $t('cow.photoHelper') }}</div>
 
       <!-- Farmer Selection (only in create mode) -->
       <q-select

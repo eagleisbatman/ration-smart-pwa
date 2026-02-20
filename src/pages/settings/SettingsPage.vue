@@ -739,4 +739,10 @@ onMounted(async () => {
   border-radius: $radius-loose;
   overflow: hidden;
 }
+
+// Prevent q-item active/focus state from persisting on touch
+:deep(.q-item--active),
+:deep(.q-item.q-router-link--active) {
+  background: transparent;
+}
 </style>

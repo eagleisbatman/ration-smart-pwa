@@ -107,14 +107,17 @@ const router = useRouter();
 const authStore = useAuthStore();
 const { detectedCountry } = useGeoCountry();
 
+// Prefer saved country from a previous login/registration over geo-detection
+const savedCountry = localStorage.getItem('last_country_code');
+
 const form = reactive({
   phone: '',
-  country_code: detectedCountry.value,
+  country_code: savedCountry || detectedCountry.value,
 });
 
-// Update country when geo-detection resolves (only if user hasn't changed it)
+// Update country when geo-detection resolves (only if user hasn't changed it and no saved preference)
 watch(detectedCountry, (code) => {
-  if (form.country_code === 'IN' || !form.phone) {
+  if (!savedCountry && (form.country_code === 'IN' || !form.phone)) {
     form.country_code = code;
   }
 });

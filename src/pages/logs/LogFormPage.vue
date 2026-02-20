@@ -20,11 +20,11 @@
 
       <!-- Date (locked in edit mode) -->
       <q-input
-        v-model="form.log_date"
+        :model-value="displayDate"
         :label="$t('logs.date') + ' *'"
         outlined
         readonly
-        :rules="[(val) => !!val || $t('logs.form.dateRequired')]"
+        :rules="[() => !!form.log_date || $t('logs.form.dateRequired')]"
       >
         <template #prepend>
           <q-icon :name="isEditing ? 'lock' : 'calendar_today'" />
@@ -69,7 +69,7 @@
               :rules="[(val) => val >= 0 || $t('logs.form.cannotBeNegative')]"
             >
               <template #prepend>
-                <q-icon name="nightlight" color="primary" />
+                <q-icon name="nightlight" color="indigo" />
               </template>
             </q-input>
           </div>
@@ -261,6 +261,15 @@ const form = reactive<MilkLogInput>({
   notes: '',
   fed_diet: undefined,
   diet_history_id: undefined,
+});
+
+const displayDate = computed(() => {
+  if (!form.log_date) return '';
+  try {
+    return format(new Date(form.log_date + 'T00:00:00'), 'MMM d, yyyy');
+  } catch {
+    return form.log_date;
+  }
 });
 
 const loading = computed(() => milkLogsStore.loading);

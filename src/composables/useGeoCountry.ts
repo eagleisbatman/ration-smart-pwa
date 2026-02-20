@@ -56,6 +56,12 @@ async function detectCountry(): Promise<string> {
   const stored = readStoredCountry();
   if (stored) return stored;
 
+  // 1b. Check last-used country from login/registration (user preference over geo)
+  try {
+    const lastUsed = localStorage.getItem('last_country_code')?.toUpperCase();
+    if (lastUsed && SUPPORTED_COUNTRY_CODES.has(lastUsed)) return lastUsed;
+  } catch { /* storage blocked */ }
+
   // 2. Try primary provider: ipwho.is (free, HTTPS, no key, generous limits)
   const primary = await tryProvider(
     'https://ipwho.is/',

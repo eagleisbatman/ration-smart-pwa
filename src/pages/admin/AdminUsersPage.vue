@@ -27,8 +27,9 @@
           <q-item-section>
             <q-item-label>{{ u.name }}</q-item-label>
             <q-item-label caption>
+              <q-icon v-if="!u.email && u.phone_number" name="phone" size="12px" class="q-mr-xs" />
               {{ u.email || u.phone_number || '—' }}
-              <span v-if="u.user_role" class="q-ml-sm">· {{ u.user_role }}</span>
+              <span v-if="u.user_role" class="q-ml-sm">· {{ formatRole(u.user_role) }}</span>
             </q-item-label>
           </q-item-section>
 
@@ -78,6 +79,7 @@ const availableLevels = computed(() => {
     levels.push(
       { label: t('admin.orgAdmin'), value: 'org_admin' },
       { label: t('admin.countryAdmin'), value: 'country_admin' },
+      { label: t('admin.superAdmin'), value: 'super_admin', disable: true },
     );
   } else if (authStore.isCountryAdmin) {
     levels.push(
@@ -86,6 +88,11 @@ const availableLevels = computed(() => {
   }
   return levels;
 });
+
+function formatRole(role: string | null): string {
+  if (!role) return '';
+  return role.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+}
 
 function debouncedFetch() {
   if (debounceTimer) clearTimeout(debounceTimer);

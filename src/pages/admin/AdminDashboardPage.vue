@@ -17,7 +17,10 @@
               <q-icon name="group" size="32px" color="primary" class="q-mr-md" />
               <div>
                 <div class="text-subtitle1 text-weight-medium">{{ $t('admin.manageUsers') }}</div>
-                <div class="text-caption text-grey-7">{{ $t('admin.setAdminLevel') }}</div>
+                <div class="text-caption text-grey-7">
+                  <template v-if="userCount > 0">{{ userCount }} {{ $t('admin.users') }}</template>
+                  <template v-else>{{ $t('admin.setAdminLevel') }}</template>
+                </div>
               </div>
             </div>
           </q-card-section>
@@ -31,7 +34,10 @@
               <q-icon name="business" size="32px" color="primary" class="q-mr-md" />
               <div>
                 <div class="text-subtitle1 text-weight-medium">{{ $t('admin.manageOrgs') }}</div>
-                <div class="text-caption text-grey-7">{{ $t('admin.orgManagement') }}</div>
+                <div class="text-caption text-grey-7">
+                  <template v-if="orgCount > 0">{{ orgCount }} {{ $t('admin.organizations') }}</template>
+                  <template v-else>{{ $t('admin.orgManagement') }}</template>
+                </div>
               </div>
             </div>
           </q-card-section>
@@ -56,14 +62,19 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from 'src/stores/auth';
+import { useAdminStore } from 'src/stores/admin';
 import { useI18n } from 'vue-i18n';
 
 const router = useRouter();
 const authStore = useAuthStore();
+const adminStore = useAdminStore();
 const { t } = useI18n();
+
+const userCount = ref(0);
+const orgCount = ref(0);
 
 const adminLevelLabel = computed(() => {
   switch (authStore.adminLevel) {
@@ -72,5 +83,14 @@ const adminLevelLabel = computed(() => {
     case 'org_admin': return t('admin.orgAdmin');
     default: return t('admin.user');
   }
+});
+
+onMounted(async () => {
+  const [usersResult, orgsResult] = await Promise.all([
+    adminStore.fetchAllUsers(1, 1),
+    adminStore.fetchOrgs(),
+  ]);
+  userCount.value = usersResult.total;
+  orgCount.value = orgsResult.length;
 });
 </script>

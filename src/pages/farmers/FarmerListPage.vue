@@ -112,7 +112,7 @@
               <q-item-label v-if="farmer.phone" caption class="text-grey-6">
                 <q-icon name="phone" size="12px" class="q-mr-xs" />{{ farmer.phone }}
               </q-item-label>
-              <q-item-label caption>
+              <q-item-label v-if="farmer.village || farmer.district" caption>
                 <q-icon name="location_on" size="12px" class="q-mr-xs" />
                 <span v-if="farmer.village">{{ farmer.village }}</span>
                 <span v-if="farmer.village && farmer.district">, </span>
@@ -175,7 +175,7 @@ const filterType = ref<'all' | 'dairy' | 'mixed' | 'beef' | 'other'>('all');
 
 const loading = computed(() => farmersStore.loading);
 const farmers = computed(() => farmersStore.activeFarmers);
-const farmerCount = computed(() => farmersStore.activeFarmerCount);
+const farmerCount = computed(() => farmersStore.activeFarmers.length);
 
 const filterChips = computed(() => [
   { label: `${t('farmer.filter.all')} (${farmerCount.value})`, value: 'all' as const },

@@ -1,6 +1,6 @@
 <template>
   <div class="role-select-page">
-    <OnboardingProgress :current-step="1" :total-steps="2" />
+    <OnboardingProgress :current-step="1" :total-steps="3" />
 
     <div class="text-center q-mb-xl">
       <div class="text-h5 text-weight-medium q-mb-sm">{{ $t('onboarding.chooseRole') }}</div>
