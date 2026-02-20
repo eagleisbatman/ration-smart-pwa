@@ -221,46 +221,55 @@ export const useNotificationsStore = defineStore('notifications', () => {
     }
 
     // 5. Low milk yield warning (>20% decrease vs previous log)
+    // Batch-load all milk logs once to avoid N+1 IndexedDB queries
     try {
       const activeCows = cowsStore.activeCows;
+      const allLogs = await db.milkLogs.filter((log) => !log._deleted).sortBy('log_date');
+      // Group logs by cow_id
+      const logsByCow = new Map<string, typeof allLogs>();
+      for (const log of allLogs) {
+        const existing = logsByCow.get(log.cow_id);
+        if (existing) {
+          existing.push(log);
+        } else {
+          logsByCow.set(log.cow_id, [log]);
+        }
+      }
+
       for (const cow of activeCows) {
-        const cowLogs = await db.milkLogs
-          .where({ cow_id: cow.id })
-          .filter((log) => !log._deleted)
-          .reverse()
-          .sortBy('log_date');
+        const cowLogs = logsByCow.get(cow.id);
+        if (!cowLogs || cowLogs.length < 2) continue;
 
-        if (cowLogs.length >= 2) {
-          const latest = cowLogs[0];
-          const previous = cowLogs[1];
+        // Logs are sorted ascending by log_date; take last two
+        const previous = cowLogs[cowLogs.length - 2];
+        const latest = cowLogs[cowLogs.length - 1];
 
-          if (previous.total_liters > 0 && latest.total_liters > 0) {
-            const decrease =
-              ((previous.total_liters - latest.total_liters) /
-                previous.total_liters) *
-              100;
+        if (previous.total_liters > 0 && latest.total_liters > 0) {
+          const decrease =
+            ((previous.total_liters - latest.total_liters) /
+              previous.total_liters) *
+            100;
 
-            if (decrease > 20) {
-              const notifId = `low_yield_${cow.id}_${latest.log_date}`;
-              if (!dismissed.has(notifId)) {
-                newNotifications.push({
-                  id: notifId,
-                  type: 'alert',
-                  icon: 'trending_down',
-                  title: 'notifications.lowYield',
-                  message: 'notifications.lowYieldMessage',
-                  params: {
-                    cowName: cow.name,
-                    percent: Math.round(decrease),
-                  },
-                  action: {
-                    route: `cow-detail`,
-                    label: 'notifications.viewCow',
-                  },
-                  read: false,
-                  createdAt: new Date().toISOString(),
-                });
-              }
+          if (decrease > 20) {
+            const notifId = `low_yield_${cow.id}_${latest.log_date}`;
+            if (!dismissed.has(notifId)) {
+              newNotifications.push({
+                id: notifId,
+                type: 'alert',
+                icon: 'trending_down',
+                title: 'notifications.lowYield',
+                message: 'notifications.lowYieldMessage',
+                params: {
+                  cowName: cow.name,
+                  percent: Math.round(decrease),
+                },
+                action: {
+                  route: `cow-detail`,
+                  label: 'notifications.viewCow',
+                },
+                read: false,
+                createdAt: new Date().toISOString(),
+              });
             }
           }
         }

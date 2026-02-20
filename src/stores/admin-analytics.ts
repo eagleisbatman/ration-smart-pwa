@@ -59,9 +59,8 @@ export const useAdminAnalyticsStore = defineStore('admin-analytics', () => {
   const currentOrgName = ref<string>('');
   const currentCountryName = ref<string>('');
 
-  const authStore = useAuthStore();
-
   async function fetchOrgAnalytics(orgId: string): Promise<void> {
+    const authStore = useAuthStore();
     loading.value = true;
     error.value = null;
     try {
@@ -80,6 +79,7 @@ export const useAdminAnalyticsStore = defineStore('admin-analytics', () => {
   }
 
   async function fetchCountryAnalytics(countryId: string): Promise<void> {
+    const authStore = useAuthStore();
     loading.value = true;
     error.value = null;
     try {
@@ -98,6 +98,7 @@ export const useAdminAnalyticsStore = defineStore('admin-analytics', () => {
   }
 
   async function fetchGlobalAnalytics(): Promise<void> {
+    const authStore = useAuthStore();
     loading.value = true;
     error.value = null;
     try {

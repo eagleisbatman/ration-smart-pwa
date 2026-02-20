@@ -8,6 +8,14 @@
       {{ adminLevelLabel }}
     </q-chip>
 
+    <!-- Error state -->
+    <q-banner v-if="loadError" inline-actions class="bg-negative text-white q-mb-md" rounded>
+      {{ $t('errors.loadFailed') }}
+      <template #action>
+        <q-btn flat :label="$t('common.retry')" @click="$router.go(0)" />
+      </template>
+    </q-banner>
+
     <!-- Quick action cards -->
     <div class="row q-col-gutter-md q-mb-lg">
       <div class="col-12 col-sm-4">
@@ -75,6 +83,7 @@ const { t } = useI18n();
 
 const userCount = ref(0);
 const orgCount = ref(0);
+const loadError = ref(false);
 
 const adminLevelLabel = computed(() => {
   switch (authStore.adminLevel) {
@@ -86,11 +95,15 @@ const adminLevelLabel = computed(() => {
 });
 
 onMounted(async () => {
-  const [usersResult, orgsResult] = await Promise.all([
-    adminStore.fetchAllUsers(1, 1),
-    adminStore.fetchOrgs(),
-  ]);
-  userCount.value = usersResult.total;
-  orgCount.value = orgsResult.length;
+  try {
+    const [usersResult, orgsResult] = await Promise.all([
+      adminStore.fetchAllUsers(1, 1),
+      adminStore.fetchOrgs(),
+    ]);
+    userCount.value = usersResult.total;
+    orgCount.value = orgsResult.length;
+  } catch {
+    loadError.value = true;
+  }
 });
 </script>

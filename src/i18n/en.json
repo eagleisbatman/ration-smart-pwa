@@ -528,9 +528,9 @@
     "crudeProteinCP": "Crude Protein (CP)",
     "totalDigestibleNutrients": "Total Digestible Nutrients (TDN)",
     "dryMatterDM": "Dry Matter (DM)",
-    "dryMatterIntake": "Dry Matter Intake",
-    "metabolizableProtein": "Metabolizable Protein (MP)",
-    "netEnergyLactation": "Net Energy Lactation (NEL)",
+    "dryMatterIntake": "Feed Intake",
+    "metabolizableProtein": "Protein",
+    "netEnergyLactation": "Energy for Milk",
     "recommendations": "Recommendations",
     "warnings": "Warnings",
     "newDiet": "New Diet",
@@ -658,8 +658,8 @@
   "dietImpact": {
     "title": "Diet Impact",
     "avgYield": "Avg Yield",
-    "adherence": "Adherence",
-    "vsBaseline": "vs baseline",
+    "adherence": "Following Plan",
+    "vsBaseline": "Yield Change",
     "baseline": "Baseline",
     "now": "Now",
     "litersPerDay": "L/day",
@@ -1241,6 +1241,8 @@
       "vsYesterday": "vs yesterday",
       "vsLastWeek": "vs last week"
     },
+    "milkPriceNudge": "Set your milk price to see revenue estimates on your dashboard.",
+    "setMilkPrice": "Set Price",
     "onboardingWelcome": "Welcome to RationSmart! Here's how to get started:",
     "onboardingStep1": "Add your cows",
     "onboardingStep2": "Log daily milk production",
@@ -1325,6 +1327,7 @@
     "removePhoto": "Remove Photo",
     "validation": {
       "nameRequired": "Name is required",
+      "phoneInvalid": "Enter a valid phone number (5-15 digits)",
       "cannotBeNegative": "Cannot be negative"
     }
   },
@@ -1349,7 +1352,9 @@
       "skipped": "{count} skipped",
       "errors": "{count} errors",
       "requiredField": "Required field",
-      "noFile": "Please select a CSV file"
+      "noFile": "Please select a CSV file",
+      "fileTooLarge": "File too large. Maximum size is 5 MB.",
+      "tooManyRows": "Too many rows. Maximum is {max} rows."
     }
   },
   "errors": {
@@ -1368,7 +1373,8 @@
     "duplicateEntry": "This record already exists.",
     "pageNotFound": "Page Not Found",
     "pageNotFoundDescription": "Oops! The page you're looking for doesn't exist or has been moved.",
-    "goHome": "Go Home"
+    "goHome": "Go Home",
+    "loadFailed": "Failed to load data. Please try again."
   },
   "validation": {
     "required": "This field is required",
@@ -1705,6 +1711,8 @@
     "levelUpdated": "Admin level updated successfully",
     "levelUpdateFailed": "Failed to update admin level",
     "confirmLevelChange": "Change {name}'s admin level to {level}?",
-    "unauthorized": "You don't have permission to access this page"
+    "unauthorized": "You don't have permission to access this page",
+    "profileIncomplete": "Admin profile incomplete",
+    "profileIncompleteHint": "Your account is missing country or organization assignment. Please contact a super admin to complete your profile."
   }
 }

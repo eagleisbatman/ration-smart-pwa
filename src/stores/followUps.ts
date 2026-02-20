@@ -17,6 +17,7 @@ export interface FollowUpResponse {
 
 const FOLLOW_UP_STORAGE_KEY = 'rationSmart_followUpResponses';
 const FOLLOW_UP_INTERVAL_DAYS = 7;
+const MAX_STORED_RESPONSES = 200;
 
 export const useFollowUpsStore = defineStore('followUps', () => {
   const pendingFollowUps = ref<Diet[]>([]);
@@ -189,8 +190,12 @@ function getStoredResponses(): FollowUpResponse[] {
 }
 
 function saveLocalResponse(response: FollowUpResponse): void {
-  const responses = getStoredResponses();
+  let responses = getStoredResponses();
   responses.push(response);
+  // Prune oldest entries if over cap
+  if (responses.length > MAX_STORED_RESPONSES) {
+    responses = responses.slice(-MAX_STORED_RESPONSES);
+  }
   localStorage.setItem(FOLLOW_UP_STORAGE_KEY, JSON.stringify(responses));
 }
 

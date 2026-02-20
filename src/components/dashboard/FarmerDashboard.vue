@@ -98,6 +98,29 @@
       </q-card-section>
     </q-card>
 
+    <!-- Milk Price Nudge Banner -->
+    <q-banner
+      v-if="!settingsStore.milkPricePerLiter && cowCount > 0"
+      class="q-mb-md bg-amber-1 rounded-borders milk-price-nudge"
+      dense
+    >
+      <template #avatar>
+        <q-icon name="paid" color="amber-9" />
+      </template>
+      <span class="text-amber-10">{{ $t('dashboard.milkPriceNudge') }}</span>
+      <template #action>
+        <q-btn
+          flat
+          dense
+          no-caps
+          color="amber-10"
+          :label="$t('dashboard.setMilkPrice')"
+          icon-right="chevron_right"
+          @click="router.push({ name: 'settings' })"
+        />
+      </template>
+    </q-banner>
+
     <!-- M20: Notifications Section (hidden when embedded, EW dashboard shows its own) -->
     <div v-if="!embedded && notifications.length > 0" class="q-mb-lg">
       <div class="row items-center justify-between q-mb-sm">
@@ -343,6 +366,7 @@ import { useAuthStore } from 'src/stores/auth';
 import { useCowsStore } from 'src/stores/cows';
 import { useMilkLogsStore } from 'src/stores/milkLogs';
 import { useDietsStore } from 'src/stores/diets';
+import { useSettingsStore } from 'src/stores/settings';
 
 const props = withDefaults(defineProps<{
   /** Hide greeting when embedded inside ExtensionWorkerDashboard */
@@ -361,6 +385,7 @@ const cowsStore = useCowsStore();
 const milkLogsStore = useMilkLogsStore();
 const dietsStore = useDietsStore();
 const notificationsStore = useNotificationsStore();
+const settingsStore = useSettingsStore();
 
 const loadingLogs = ref(true);
 const showAllNotifications = ref(false);

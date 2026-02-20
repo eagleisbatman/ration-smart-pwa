@@ -85,9 +85,9 @@ export const useYieldsStore = defineStore('yields', () => {
           .equals(options.farmerProfileId)
           .delete();
 
-        for (const record of yieldRecords.value) {
-          await db.yieldData.put({ ...record, _synced: true, _deleted: false });
-        }
+        await db.yieldData.bulkPut(
+          yieldRecords.value.map((record) => ({ ...record, _synced: true, _deleted: false }))
+        );
       }
     } catch (err) {
       error.value = extractUserFriendlyError(err);
@@ -130,9 +130,9 @@ export const useYieldsStore = defineStore('yields', () => {
         .equals(farmerId)
         .delete();
 
-      for (const record of yieldRecords.value) {
-        await db.yieldData.put({ ...record, _synced: true, _deleted: false });
-      }
+      await db.yieldData.bulkPut(
+        yieldRecords.value.map((record) => ({ ...record, _synced: true, _deleted: false }))
+      );
     } catch (err) {
       error.value = extractUserFriendlyError(err);
 
@@ -172,9 +172,9 @@ export const useYieldsStore = defineStore('yields', () => {
         .equals(cowId)
         .delete();
 
-      for (const record of yieldRecords.value) {
-        await db.yieldData.put({ ...record, _synced: true, _deleted: false });
-      }
+      await db.yieldData.bulkPut(
+        yieldRecords.value.map((record) => ({ ...record, _synced: true, _deleted: false }))
+      );
     } catch (err) {
       error.value = extractUserFriendlyError(err);
 

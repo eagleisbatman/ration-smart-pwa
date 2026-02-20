@@ -38,11 +38,13 @@ export const useOrganizationsStore = defineStore('organizations', () => {
 
       organizations.value = response.data.organizations || [];
 
-      // Cache to IndexedDB
-      await db.organizations.clear();
-      for (const org of organizations.value) {
-        await db.organizations.put({ ...org, _synced: true });
-      }
+      // Cache to IndexedDB atomically
+      await db.transaction('rw', db.organizations, async () => {
+        await db.organizations.clear();
+        await db.organizations.bulkPut(
+          organizations.value.map((org) => ({ ...org, _synced: true }))
+        );
+      });
     } catch (err) {
       error.value = extractUserFriendlyError(err);
 

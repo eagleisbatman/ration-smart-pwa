@@ -39,6 +39,15 @@
       {{ store.error }}
     </div>
 
+    <!-- Config missing (admin without country/org assignment) -->
+    <div v-else-if="configMissing" class="text-center q-pa-xl">
+      <q-icon name="info" size="48px" color="warning" class="q-mb-md" />
+      <div class="text-subtitle1">{{ $t('admin.profileIncomplete') }}</div>
+      <div class="text-caption text-grey-7 q-mt-sm">
+        {{ $t('admin.profileIncompleteHint') }}
+      </div>
+    </div>
+
     <!-- Super Admin: Country list -->
     <template v-else-if="view === 'global'">
       <div class="text-subtitle1 text-weight-medium q-mb-sm">{{ $t('admin.perCountryBreakdown') }}</div>
@@ -151,6 +160,7 @@ interface Breadcrumb {
 
 const view = ref<ViewLevel>('org');
 const breadcrumbs = ref<Breadcrumb[]>([]);
+const configMissing = ref(false);
 
 const summaryCards = computed(() => {
   const s = store.summary;
@@ -214,6 +224,8 @@ onMounted(async () => {
       view.value = 'country';
       breadcrumbs.value = [{ label: t('admin.perOrgBreakdown'), level: 'country', id: countryId }];
       await store.fetchCountryAnalytics(countryId);
+    } else {
+      configMissing.value = true;
     }
   } else if (authStore.isOrgAdmin) {
     // Org admin sees their org's EW activity
@@ -222,6 +234,8 @@ onMounted(async () => {
       view.value = 'org';
       breadcrumbs.value = [{ label: t('admin.perEwBreakdown'), level: 'org', id: orgId }];
       await store.fetchOrgAnalytics(orgId);
+    } else {
+      configMissing.value = true;
     }
   }
 });

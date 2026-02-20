@@ -70,7 +70,7 @@ export interface Feed {
   currency?: string;
   image_url?: string;
   season?: string;
-  is_custom: boolean;
+  is_custom: number; // 0 = master feed, 1 = custom feed (Dexie indexes require number)
   user_id?: string;
   country_code?: string;
   created_at: string;

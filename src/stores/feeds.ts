@@ -138,7 +138,7 @@ export const useFeedsStore = defineStore('feeds', () => {
       if (authStore.userId) {
         customFeeds.value = await db.feeds
           .where({ user_id: authStore.userId })
-          .filter((f) => f.is_custom && !f._deleted)
+          .filter((f) => f.is_custom === 1 && !f._deleted)
           .toArray();
       }
 
@@ -251,7 +251,7 @@ export const useFeedsStore = defineStore('feeds', () => {
 
     try {
       const existingFeed = await db.feeds.get(id);
-      if (!existingFeed || !existingFeed.is_custom) {
+      if (!existingFeed || existingFeed.is_custom !== 1) {
         error.value = 'Feed not found or cannot be edited';
         return false;
       }
@@ -304,7 +304,7 @@ export const useFeedsStore = defineStore('feeds', () => {
 
     try {
       const existingFeed = await db.feeds.get(id);
-      if (!existingFeed || !existingFeed.is_custom) {
+      if (!existingFeed || existingFeed.is_custom !== 1) {
         error.value = 'Feed not found or cannot be deleted';
         return false;
       }

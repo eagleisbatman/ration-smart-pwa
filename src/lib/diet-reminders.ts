@@ -33,9 +33,20 @@ export function getDietReminders(): DietReminder[] {
   }
 }
 
-/** Persist the full list of reminders. */
+const MAX_REMINDERS = 200;
+
+/** Persist the full list of reminders, pruning old dismissed entries. */
 function saveReminders(reminders: DietReminder[]): void {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(reminders));
+  // Remove dismissed reminders older than 30 days
+  const thirtyDaysAgo = Date.now() - 30 * 24 * 60 * 60 * 1000;
+  let pruned = reminders.filter(
+    (r) => !r.dismissed || new Date(r.createdAt).getTime() > thirtyDaysAgo
+  );
+  // Hard cap
+  if (pruned.length > MAX_REMINDERS) {
+    pruned = pruned.slice(-MAX_REMINDERS);
+  }
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(pruned));
 }
 
 /** Generate a short unique id. */

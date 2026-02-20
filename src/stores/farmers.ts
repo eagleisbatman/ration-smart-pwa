@@ -85,11 +85,11 @@ export const useFarmersStore = defineStore('farmers', () => {
         }
       }
 
-      // Cache to IndexedDB
-      await db.farmerProfiles.clear();
-      for (const farmer of farmers.value) {
-        await db.farmerProfiles.put(farmer);
-      }
+      // Cache to IndexedDB (atomic replace via transaction)
+      await db.transaction('rw', db.farmerProfiles, async () => {
+        await db.farmerProfiles.clear();
+        await db.farmerProfiles.bulkPut(farmers.value);
+      });
     } catch (err) {
       error.value = extractUserFriendlyError(err);
 

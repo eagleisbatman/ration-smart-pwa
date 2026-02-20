@@ -402,14 +402,30 @@ function onFileDrop(event: DragEvent) {
   processFile(file);
 }
 
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
+const MAX_ROWS = 5000;
+
 async function processFile(file: File) {
   parseError.value = '';
+
+  if (file.size > MAX_FILE_SIZE) {
+    parseError.value = t('farmers.import.fileTooLarge');
+    parsedData.value = null;
+    return;
+  }
+
   try {
     const text = await readFileAsText(file);
     const result = parseCSV(text);
 
     if (result.headers.length === 0 || result.rows.length === 0) {
       parseError.value = t('farmers.import.noFile');
+      parsedData.value = null;
+      return;
+    }
+
+    if (result.rows.length > MAX_ROWS) {
+      parseError.value = t('farmers.import.tooManyRows', { max: MAX_ROWS });
       parsedData.value = null;
       return;
     }

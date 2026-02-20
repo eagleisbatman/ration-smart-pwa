@@ -29,11 +29,11 @@ export default route(function (/* { store, ssrContext } */) {
     const authStore = useAuthStore();
     const isOnboardingRoute = to.matched.some((record) => record.meta.isOnboarding);
 
-    // Initialize auth store once per session (loads user profile from IndexedDB + API)
+    // Initialize auth store once per session (loads user profile from IndexedDB + API).
+    // Must await to ensure selfFarmerProfileId is loaded before onboarding checks.
     if (!authInitialized && authStore.isAuthenticated) {
       authInitialized = true;
-      // Don't block navigation — fire and forget so the page loads fast
-      authStore.initialize();
+      await authStore.initialize();
     }
 
     // Check if route requires authentication
