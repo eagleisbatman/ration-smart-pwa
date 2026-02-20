@@ -258,7 +258,7 @@ test('Multi-User Integration: 4 actors, 8 phases', async ({ browser }) => {
   // PHASE 2: Data Isolation Verification
   // ═══════════════════════════════════════════
 
-  await test.step('P2-01 Alice: sees only her farmers', async () => {
+  await test.step('P2-01 Alice: sees only her farmers with correct details', async () => {
     const p = alice.page;
     await goto(p, '/farmers');
     await waitForLoading(p);
@@ -269,10 +269,16 @@ test('Multi-User Integration: 4 actors, 8 phases', async ({ browser }) => {
     // Bob's farmers absent
     expect(content).not.toContain('Sunita Kumari');
     expect(content).not.toContain('Harish Patel');
+    // UI data: village names, farming types, cattle badges
+    expect(content).toContain('Mathura');    // Meera's village
+    expect(content).toContain('Vrindavan');  // Gopal's village
+    expect(content).toContain('Dairy');      // Meera's farming type
+    expect(content).toContain('Mixed');      // Gopal's farming type
+    expect(content).toContain('cattle');     // at least one cattle badge
     await snap(alice, 'P2-01-farmers');
   });
 
-  await test.step('P2-02 Bob: sees only his farmers', async () => {
+  await test.step('P2-02 Bob: sees only his farmers with correct details', async () => {
     const p = bob.page;
     await goto(p, '/farmers');
     await waitForLoading(p);
@@ -283,10 +289,14 @@ test('Multi-User Integration: 4 actors, 8 phases', async ({ browser }) => {
     // Alice's farmers absent
     expect(content).not.toContain('Meera Devi');
     expect(content).not.toContain('Gopal Singh');
+    // UI data: village names, farming type
+    expect(content).toContain('Jaipur');     // Sunita's village
+    expect(content).toContain('Udaipur');    // Harish's village
+    expect(content).toContain('Dairy');      // farming type
     await snap(bob, 'P2-02-farmers');
   });
 
-  await test.step('P2-03 Alice: sees only her cows', async () => {
+  await test.step('P2-03 Alice: sees only her cows with breed/weight/yield', async () => {
     const p = alice.page;
     await goto(p, '/cows');
     await waitForLoading(p);
@@ -296,10 +306,22 @@ test('Multi-User Integration: 4 actors, 8 phases', async ({ browser }) => {
     expect(content).not.toContain('Sundari');
     expect(content).not.toContain('Champa');
     expect(content).not.toContain('Nandi');
+    // UI data: scoped per cow item (breed, weight, yield, status chip)
+    const lakshmiItem = p.locator('.q-item:has-text("Lakshmi")').first();
+    const lakshmiText = await lakshmiItem.textContent() || '';
+    expect(lakshmiText).toContain('Holstein Friesian');
+    expect(lakshmiText).toContain('350');     // weight_kg
+    expect(lakshmiText).toContain('12');      // milk_yield_liters
+    expect(lakshmiText).toContain('Lactating');
+
+    const gauriItem = p.locator('.q-item:has-text("Gauri")').first();
+    const gauriText = await gauriItem.textContent() || '';
+    expect(gauriText).toContain('Gir');
+    expect(gauriText).toContain('280');
     await snap(alice, 'P2-03-cows');
   });
 
-  await test.step('P2-04 Bob: sees only his cows', async () => {
+  await test.step('P2-04 Bob: sees only his cows with breed/weight/yield', async () => {
     const p = bob.page;
     await goto(p, '/cows');
     await waitForLoading(p);
@@ -309,10 +331,20 @@ test('Multi-User Integration: 4 actors, 8 phases', async ({ browser }) => {
     expect(content).not.toContain('Lakshmi');
     expect(content).not.toContain('Gauri');
     expect(content).not.toContain('Nandi');
+    // UI data: scoped per cow item
+    const sundariItem = p.locator('.q-item:has-text("Sundari")').first();
+    const sundariText = await sundariItem.textContent() || '';
+    expect(sundariText).toContain('Sahiwal');
+    expect(sundariText).toContain('300');
+
+    const champaItem = p.locator('.q-item:has-text("Champa")').first();
+    const champaText = await champaItem.textContent() || '';
+    expect(champaText).toContain('Holstein Friesian');
+    expect(champaText).toContain('320');
     await snap(bob, 'P2-04-cows');
   });
 
-  await test.step('P2-05 Raj: sees only his cow', async () => {
+  await test.step('P2-05 Raj: sees only his cow with breed/weight/yield', async () => {
     const p = raj.page;
     await goto(p, '/cows');
     await waitForLoading(p);
@@ -320,7 +352,76 @@ test('Multi-User Integration: 4 actors, 8 phases', async ({ browser }) => {
     expect(content).toContain('Nandi');
     expect(content).not.toContain('Lakshmi');
     expect(content).not.toContain('Sundari');
+    // UI data: scoped cow item
+    const nandiItem = p.locator('.q-item:has-text("Nandi")').first();
+    const nandiText = await nandiItem.textContent() || '';
+    expect(nandiText).toContain('Jersey');
+    expect(nandiText).toContain('330');
     await snap(raj, 'P2-05-cows');
+  });
+
+  // ═══════════════════════════════════════════
+  // PHASE 2b: Dashboard Stats (pre-diet/milk)
+  // ═══════════════════════════════════════════
+
+  await test.step('P2b-01 Alice: EW Dashboard stats (pre-diet)', async () => {
+    const p = alice.page;
+    await goto(p, '/');
+    await waitForLoading(p);
+    await p.waitForTimeout(3000); // let stores load
+
+    const content = await p.locator('.q-page').textContent() || '';
+    // Stat cards: Farmers Managed, Total Cows, Cows on Diet
+    const statCards = p.locator('.stat-card__value');
+    const statCount = await statCards.count();
+    if (statCount >= 3) {
+      expect((await statCards.nth(0).textContent())?.trim()).toBe('2');  // 2 farmers
+      expect((await statCards.nth(1).textContent())?.trim()).toBe('2');  // 2 cows
+      expect((await statCards.nth(2).textContent())?.trim()).toBe('0');  // 0 on diet
+    }
+    // Farmer list on dashboard
+    expect(content).toContain('Meera Devi');
+    expect(content).toContain('Gopal Singh');
+    expect(content).toContain('Mathura');
+    // Data isolation
+    expect(content).not.toContain('Sunita Kumari');
+    expect(content).not.toContain('Harish Patel');
+    await snap(alice, 'P2b-01-ew-dashboard');
+  });
+
+  await test.step('P2b-02 Bob: EW Dashboard stats (pre-diet)', async () => {
+    const p = bob.page;
+    await goto(p, '/');
+    await waitForLoading(p);
+    await p.waitForTimeout(3000);
+
+    const content = await p.locator('.q-page').textContent() || '';
+    const statCards = p.locator('.stat-card__value');
+    const statCount = await statCards.count();
+    if (statCount >= 3) {
+      expect((await statCards.nth(0).textContent())?.trim()).toBe('2');  // 2 farmers
+      expect((await statCards.nth(1).textContent())?.trim()).toBe('2');  // 2 cows
+      expect((await statCards.nth(2).textContent())?.trim()).toBe('0');  // 0 on diet
+    }
+    expect(content).toContain('Sunita Kumari');
+    expect(content).toContain('Harish Patel');
+    expect(content).not.toContain('Meera Devi');
+    await snap(bob, 'P2b-02-ew-dashboard');
+  });
+
+  await test.step('P2b-03 Raj: Farmer Dashboard stats (pre-diet)', async () => {
+    const p = raj.page;
+    await goto(p, '/');
+    await waitForLoading(p);
+    await p.waitForTimeout(3000);
+
+    const content = await p.locator('.q-page').textContent() || '';
+    // Farmer dashboard shows: Active Cows, Today's Milk, Cows on Diet
+    expect(content).toContain('Active Cows');
+    expect(content).toContain('Cows on Diet');
+    // Today's milk = 0.0L (no logs yet)
+    expect(content).toContain('0.0');
+    await snap(raj, 'P2b-03-farmer-dashboard');
   });
 
   // ═══════════════════════════════════════════
@@ -389,14 +490,27 @@ test('Multi-User Integration: 4 actors, 8 phases', async ({ browser }) => {
       (async () => {
         await requestDiet(alice.page, 'Lakshmi');
         await snap(alice, 'P3a-alice-diet-lakshmi');
+        // Verify diet detail page content
+        const dc = await alice.page.locator('.q-page').textContent() || '';
+        expect(dc).toContain('Lakshmi');
+        expect(dc).toContain('Following');
+        expect(dc).toContain('kg/day');  // feed table column header
       })(),
       (async () => {
         await requestDiet(bob.page, 'Sundari');
         await snap(bob, 'P3a-bob-diet-sundari');
+        const dc = await bob.page.locator('.q-page').textContent() || '';
+        expect(dc).toContain('Sundari');
+        expect(dc).toContain('Following');
+        expect(dc).toContain('kg/day');
       })(),
       (async () => {
         await requestDiet(raj.page, 'Nandi');
         await snap(raj, 'P3a-raj-diet-nandi');
+        const dc = await raj.page.locator('.q-page').textContent() || '';
+        expect(dc).toContain('Nandi');
+        expect(dc).toContain('Following');
+        expect(dc).toContain('kg/day');
       })(),
     ]);
   });
@@ -488,13 +602,13 @@ test('Multi-User Integration: 4 actors, 8 phases', async ({ browser }) => {
     await snap(sa, 'P4-04-org-breakdown');
   });
 
-  await test.step('P4-05 SA: Verify data counts are reasonable', async () => {
+  await test.step('P4-05 SA: Verify data counts reference India', async () => {
     const p = sa.page;
     const content = await p.locator('.q-page').textContent() || '';
-    // We created at least 4 farmers (2 Alice + 2 Bob) and 5 cows total
-    // The analytics page should show some numbers
-    // This is a soft check — analytics may aggregate differently
-    expect(content.length).toBeGreaterThan(50); // Page has meaningful content
+    // All test data was created in India
+    expect(content).toContain('India');
+    // The analytics page should show meaningful content with actual data
+    expect(content.length).toBeGreaterThan(100);
     await snap(sa, 'P4-05-counts');
   });
 
@@ -509,7 +623,7 @@ test('Multi-User Integration: 4 actors, 8 phases', async ({ browser }) => {
   // PHASE 5: Milk/Diet Isolation
   // ═══════════════════════════════════════════
 
-  await test.step('P5-01 Alice: milk logs show only her cows', async () => {
+  await test.step('P5-01 Alice: milk logs show only her cows with correct values', async () => {
     const p = alice.page;
     await goto(p, '/logs');
     await waitForLoading(p);
@@ -519,10 +633,14 @@ test('Multi-User Integration: 4 actors, 8 phases', async ({ browser }) => {
     // Bob's cow logs should be absent
     expect(content).not.toContain('Sundari');
     expect(content).not.toContain('Nandi');
+    // UI data: today total, morning/evening abbreviated labels
+    expect(content).toContain('11.0');     // todayTotal: 6+5=11.0
+    expect(content).toContain('M:');       // morning label (abbreviated)
+    expect(content).toContain('E:');       // evening label (abbreviated)
     await snap(alice, 'P5-01-milk-isolation');
   });
 
-  await test.step('P5-02 Bob: milk logs show only his cows', async () => {
+  await test.step('P5-02 Bob: milk logs show only his cows with correct values', async () => {
     const p = bob.page;
     await goto(p, '/logs');
     await waitForLoading(p);
@@ -530,28 +648,107 @@ test('Multi-User Integration: 4 actors, 8 phases', async ({ browser }) => {
     expect(content).toContain('Sundari');
     expect(content).not.toContain('Lakshmi');
     expect(content).not.toContain('Nandi');
+    // UI data: today total, morning/evening values
+    expect(content).toContain('9.0');      // todayTotal: 5+4=9.0
+    expect(content).toContain('M:');       // morning label
+    expect(content).toContain('E:');       // evening label
     await snap(bob, 'P5-02-milk-isolation');
   });
 
-  await test.step('P5-03 Alice: diet history shows only her diets', async () => {
+  await test.step('P5-03 Alice: diet history shows only her diets with status', async () => {
     const p = alice.page;
     await goto(p, '/diet');
     await waitForLoading(p);
     const content = await p.locator('.q-page').textContent() || '';
     // Should see Lakshmi diet, not Sundari or Nandi
+    expect(content).toContain('Lakshmi');
     expect(content).not.toContain('Sundari');
     expect(content).not.toContain('Nandi');
+    // UI data: Following status chip
+    expect(content).toContain('Following');
     await snap(alice, 'P5-03-diet-isolation');
   });
 
-  await test.step('P5-04 Bob: diet history shows only his diets', async () => {
+  await test.step('P5-04 Bob: diet history shows only his diets with status', async () => {
     const p = bob.page;
     await goto(p, '/diet');
     await waitForLoading(p);
     const content = await p.locator('.q-page').textContent() || '';
+    expect(content).toContain('Sundari');
     expect(content).not.toContain('Lakshmi');
     expect(content).not.toContain('Nandi');
+    // UI data: Following status chip
+    expect(content).toContain('Following');
     await snap(bob, 'P5-04-diet-isolation');
+  });
+
+  // ═══════════════════════════════════════════
+  // PHASE 5b: Post-Data Dashboard + Detail Verification
+  // ═══════════════════════════════════════════
+
+  await test.step('P5b-01 Alice: EW Dashboard stats with diet data', async () => {
+    const p = alice.page;
+    await goto(p, '/');
+    await waitForLoading(p);
+    await p.waitForTimeout(3000);
+
+    const content = await p.locator('.q-page').textContent() || '';
+    // Stat cards should now show: 2 farmers, 2 cows, 1 on diet
+    const statCards = p.locator('.stat-card__value');
+    const statCount = await statCards.count();
+    if (statCount >= 3) {
+      expect((await statCards.nth(0).textContent())?.trim()).toBe('2');  // 2 farmers
+      expect((await statCards.nth(1).textContent())?.trim()).toBe('2');  // 2 cows
+      expect((await statCards.nth(2).textContent())?.trim()).toBe('1');  // 1 on diet (Lakshmi)
+    }
+    // "on diet" badge on Meera's farmer entry
+    expect(content).toContain('on diet');
+    await snap(alice, 'P5b-01-ew-dashboard-post');
+
+    // Also verify cow list shows "On Diet" chip
+    await goto(p, '/cows');
+    await waitForLoading(p);
+    const cowContent = await p.locator('.q-page').textContent() || '';
+    expect(cowContent).toContain('On Diet');
+    await snap(alice, 'P5b-01-cow-on-diet');
+  });
+
+  await test.step('P5b-02 Raj: Farmer Dashboard with milk data', async () => {
+    const p = raj.page;
+    await goto(p, '/');
+    await waitForLoading(p);
+    await p.waitForTimeout(3000);
+
+    const content = await p.locator('.q-page').textContent() || '';
+    // Today's milk = 10.5L (5.5 morning + 5.0 evening)
+    expect(content).toContain('10.5');
+    // Today's log should show Nandi
+    expect(content).toContain('Nandi');
+    await snap(raj, 'P5b-02-farmer-dashboard-post');
+
+    // Cow list should show "On Diet" chip on Nandi
+    await goto(p, '/cows');
+    await waitForLoading(p);
+    const cowContent = await p.locator('.q-page').textContent() || '';
+    expect(cowContent).toContain('On Diet');
+    await snap(raj, 'P5b-02-cow-on-diet');
+  });
+
+  await test.step('P5b-03 Alice: Cow detail page for Lakshmi', async () => {
+    const p = alice.page;
+    await goto(p, '/cows');
+    await waitForLoading(p);
+    // Click into Lakshmi detail
+    await p.locator('.q-item:has-text("Lakshmi")').first().click();
+    await waitForLoading(p);
+    await p.waitForTimeout(2000);
+
+    const content = await p.locator('.q-page').textContent() || '';
+    expect(content).toContain('Lakshmi');
+    expect(content).toContain('Holstein Friesian');
+    expect(content).toContain('350');   // weight_kg
+    expect(content).toContain('12');    // milk_yield_liters
+    await snap(alice, 'P5b-03-lakshmi-detail');
   });
 
   // ═══════════════════════════════════════════
