@@ -60,3 +60,11 @@ docs/user-flows/
 e2e/test-results/
 e2e/test-reports/
 e2e/node_modules/
+e2e/screenshots-*/
+test-results/
+
+# Playwright CLI artifacts
+.playwright-cli/
+
+# Scratch files
+a.md
