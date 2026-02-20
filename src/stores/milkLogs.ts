@@ -373,11 +373,11 @@ export const useMilkLogsStore = defineStore('milkLogs', () => {
   }
 
   async function getLogsForCow(cowId: string): Promise<MilkLog[]> {
-    return db.milkLogs
+    const logs = await db.milkLogs
       .where({ cow_id: cowId })
       .filter((log) => !log._deleted)
-      .reverse()
       .sortBy('log_date');
+    return logs.reverse(); // Most recent first
   }
 
   async function getLogByDate(cowId: string, date: string): Promise<MilkLog | null> {
@@ -398,19 +398,17 @@ export const useMilkLogsStore = defineStore('milkLogs', () => {
   }
 
   async function getLogsForFarmer(cowIds: string[], options?: { startDate?: string; endDate?: string }): Promise<MilkLog[]> {
-    const allLogs: MilkLog[] = [];
-    for (const cowId of cowIds) {
-      const cowLogs = await db.milkLogs
-        .where({ cow_id: cowId })
-        .filter((log) => {
-          if (log._deleted) return false;
-          if (options?.startDate && log.log_date < options.startDate) return false;
-          if (options?.endDate && log.log_date > options.endDate) return false;
-          return true;
-        })
-        .toArray();
-      allLogs.push(...cowLogs);
-    }
+    if (cowIds.length === 0) return [];
+    const allLogs = await db.milkLogs
+      .where('cow_id')
+      .anyOf(cowIds)
+      .filter((log) => {
+        if (log._deleted) return false;
+        if (options?.startDate && log.log_date < options.startDate) return false;
+        if (options?.endDate && log.log_date > options.endDate) return false;
+        return true;
+      })
+      .toArray();
     return allLogs.sort((a, b) => b.log_date.localeCompare(a.log_date));
   }
 

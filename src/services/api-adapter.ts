@@ -231,6 +231,13 @@ export function getCountryId(countryCode: string): string | undefined {
 }
 
 /**
+ * Clear the country cache (call on logout to prevent stale data for next user)
+ */
+export function clearCountryCache(): void {
+  countryCache = null;
+}
+
+/**
  * Set country cache directly (for when countries are fetched elsewhere)
  */
 export function setCountryCache(countries: Array<{ id: string; country_code: string }>): void {

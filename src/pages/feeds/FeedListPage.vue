@@ -129,7 +129,7 @@
                   {{ feed.fd_name }}
                 </q-item-label>
                 <q-item-label caption>
-                  {{ $t('feed.labels.cpPercentShort') }}: {{ feed.cp_percentage != null ? feed.cp_percentage + '%' : '–' }} · {{ $t('feed.labels.tdnPercentShort') }}: {{ feed.tdn_percentage != null ? feed.tdn_percentage + '%' : '–' }} · {{ $t('feed.labels.dmPercentShort') }}: {{ feed.dm_percentage != null ? feed.dm_percentage + '%' : '–' }}
+                  {{ $t('feed.labels.cpPercentShort') }}: {{ feed.cp_percentage != null ? feed.cp_percentage + '%' : '–' }} · {{ $t('feed.labels.tdnPercentShort') }}: {{ feed.tdn_percentage != null ? feed.tdn_percentage + '%' : '–' }} · {{ $t('feed.labels.dmPercentShort') }}: {{ feed.dm_percentage != null ? feed.dm_percentage + '%' : '–' }}<template v-if="feed.price_per_kg"> · {{ formatCurrency(feed.price_per_kg) }}{{ $t('units.perKg') }}</template>
                 </q-item-label>
               </q-item-section>
 

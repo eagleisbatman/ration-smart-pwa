@@ -103,7 +103,11 @@ export const useReportsStore = defineStore('reports', () => {
   ): Promise<{ queued: boolean; report?: Report }> {
     const authStore = useAuthStore();
     const userId = authStore.userId;
-    const farmerProfileId = authStore.selfFarmerProfileId;
+    // Use target farmer's profile if provided (EW generating for managed farmer),
+    // otherwise fall back to the logged-in user's own profile.
+    const farmerProfileId =
+      (parameters.farmer_profile_id as string | undefined) ||
+      authStore.selfFarmerProfileId;
 
     if (!userId || !farmerProfileId) {
       // Can't generate without auth context — queue for later
@@ -154,9 +158,8 @@ export const useReportsStore = defineStore('reports', () => {
 
     const authStore = useAuthStore();
     const userId = authStore.userId;
-    const farmerProfileId = authStore.selfFarmerProfileId;
 
-    if (!userId || !farmerProfileId) {
+    if (!userId) {
       return { processed: 0, failed: 0 };
     }
 
@@ -167,6 +170,17 @@ export const useReportsStore = defineStore('reports', () => {
     for (const item of queuedItems) {
       try {
         await db.updateReportQueueItem(item.id!, { status: 'processing' });
+
+        // Use target farmer's profile from queued parameters, or fallback to own
+        const farmerProfileId =
+          (item.parameters.farmer_profile_id as string | undefined) ||
+          authStore.selfFarmerProfileId;
+
+        if (!farmerProfileId) {
+          failed++;
+          await db.updateReportQueueItem(item.id!, { status: 'failed' });
+          continue;
+        }
 
         const payload = buildBackendPayload(farmerProfileId, item.parameters);
         const response = await api.post(
@@ -197,7 +211,10 @@ export const useReportsStore = defineStore('reports', () => {
     return { processed, failed };
   }
 
+  let onlineListenerRegistered = false;
   function setupOnlineListener(): void {
+    if (onlineListenerRegistered) return;
+    onlineListenerRegistered = true;
     window.addEventListener('online', async () => {
       if (pendingReportCount.value > 0) {
         await processReportQueue();

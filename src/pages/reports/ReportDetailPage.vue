@@ -22,7 +22,7 @@
           <div v-if="reportData.cow_details" class="text-caption text-grey-7 q-mb-sm">{{ reportData.cow_details }}</div>
           <div v-if="reportData.total_cost_daily || reportData.total_dm_kg" class="row q-col-gutter-sm q-mt-xs">
             <div v-if="reportData.total_cost_daily" class="col">
-              <div class="text-h6 text-primary">Rs. {{ Math.round(reportData.total_cost_daily) }}</div>
+              <div class="text-h6 text-primary">{{ formatCurrencyWhole(reportData.total_cost_daily) }}</div>
               <div class="text-caption text-grey-7">{{ $t('reports.dailyCost') }}</div>
             </div>
             <div v-if="reportData.total_dm_kg" class="col">
@@ -52,7 +52,7 @@
               <tr v-for="(feed, idx) in reportData.diet_feeds" :key="idx">
                 <td>{{ feed.feed_name }}</td>
                 <td class="text-right text-weight-medium">{{ feed.amount_kg?.toFixed(2) }} kg</td>
-                <td class="text-right text-weight-medium">Rs. {{ Math.round(feed.cost || 0) }}</td>
+                <td class="text-right text-weight-medium">{{ formatCurrencyWhole(feed.cost || 0) }}</td>
               </tr>
             </tbody>
           </q-markup-table>
@@ -172,6 +172,7 @@ import { useI18n } from 'vue-i18n';
 import { api } from 'src/lib/api';
 import { useDateFormat } from 'src/composables/useDateFormat';
 import { useExport } from 'src/composables/useExport';
+import { useCurrency } from 'src/composables/useCurrency';
 import SkeletonCard from 'src/components/ui/SkeletonCard.vue';
 import EmptyState from 'src/components/ui/EmptyState.vue';
 
@@ -214,6 +215,7 @@ const router = useRouter();
 const { t } = useI18n();
 const { formatDate } = useDateFormat();
 const { shareContent, shareViaWhatsApp } = useExport();
+const { formatCurrencyWhole, getCurrencySymbol } = useCurrency();
 
 const reportId = computed(() => route.params.id as string);
 const reportData = ref<ReportData | null>(null);
@@ -249,7 +251,7 @@ function buildReportSummaryText(): string {
       text += `  ${feed.feed_name}: ${feed.amount_kg?.toFixed(2)} kg\n`;
     }
   }
-  if (r.total_cost_daily) text += `\n${t('reports.dailyCost')}: Rs. ${Math.round(r.total_cost_daily)}`;
+  if (r.total_cost_daily) text += `\n${t('reports.dailyCost')}: ${getCurrencySymbol()}${Math.round(r.total_cost_daily)}`;
   if (r.total_dm_kg) text += `\n${t('reports.dmIntake')}: ${r.total_dm_kg} kg`;
   text += `\n\n${t('export.generatedBy')}`;
   return text;

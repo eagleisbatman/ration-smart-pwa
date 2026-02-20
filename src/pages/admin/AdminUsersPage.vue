@@ -35,7 +35,7 @@
 
           <q-item-section side>
             <q-select
-              v-model="u.admin_level"
+              :model-value="u.admin_level"
               :options="availableLevels"
               dense
               outlined
@@ -108,6 +108,8 @@ async function fetchUsers() {
 }
 
 async function onLevelChange(user: AdminUser, newLevel: string) {
+  if (newLevel === user.admin_level) return; // No change
+
   $q.dialog({
     title: t('admin.setAdminLevel'),
     message: t('admin.confirmLevelChange', { name: user.name, level: newLevel }),
@@ -116,16 +118,14 @@ async function onLevelChange(user: AdminUser, newLevel: string) {
   }).onOk(async () => {
     const success = await adminStore.setAdminLevel(user.id, newLevel);
     if (success) {
+      // Update local state only after API success
+      user.admin_level = newLevel;
       $q.notify({ type: 'positive', message: t('admin.levelUpdated') });
     } else {
       $q.notify({ type: 'negative', message: t('admin.levelUpdateFailed') });
-      // Revert by re-fetching
-      await fetchUsers();
     }
-  }).onCancel(() => {
-    // Revert the select by re-fetching
-    fetchUsers();
   });
+  // onCancel: no action needed — :model-value is read-only, store unchanged
 }
 
 onMounted(fetchUsers);

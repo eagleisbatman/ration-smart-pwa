@@ -17,7 +17,7 @@ export const hasConflicts = computed(() => conflictCount.value > 0);
 // Computed
 export const hasPendingChanges = computed(() => pendingCount.value > 0);
 
-// API endpoint mapping
+// API endpoint mapping for CREATE/LIST operations.
 // These must use the frontend path convention (/api/v1/...) so the
 // api-adapter request interceptor can map them to backend paths.
 const API_ENDPOINTS: Record<SyncQueueItem['entity_type'], string> = {
@@ -30,6 +30,29 @@ const API_ENDPOINTS: Record<SyncQueueItem['entity_type'], string> = {
   health_event: '/api/v1/health-events',
 };
 
+/**
+ * Get the correct URL for read/update/delete operations on a specific entity.
+ * Some entity types use different paths than the base endpoint + /{id}
+ * (e.g., cows use /cows/update/:id for PUT, diets use /diet/:id for transforms).
+ */
+function getEntityUrl(
+  entityType: SyncQueueItem['entity_type'],
+  entityId: string,
+  operation: 'read' | 'update' | 'delete',
+): string {
+  if (entityType === 'cow') {
+    if (operation === 'update') return `/api/v1/cows/update/${entityId}`;
+    if (operation === 'delete') return `/api/v1/cows/delete/${entityId}`;
+    return `/api/v1/cows/${entityId}`;
+  }
+  if (entityType === 'diet') {
+    // /api/v1/diet/:id has request+response transforms;
+    // /api/v1/diet/history/:id only has response transform
+    return `/api/v1/diet/${entityId}`;
+  }
+  return `${API_ENDPOINTS[entityType]}/${entityId}`;
+}
+
 // Update pending count
 async function updatePendingCount(): Promise<void> {
   pendingCount.value = await db.syncQueue.count();
@@ -40,6 +63,9 @@ export async function updateConflictCount(): Promise<void> {
   const conflicts = await db.getSyncConflicts();
   conflictCount.value = conflicts.length;
 }
+
+// Guard against duplicate online event listeners (e.g. HMR re-init)
+let onlineListenerRegistered = false;
 
 // Initialize sync manager
 export async function initSyncManager(): Promise<void> {
@@ -53,10 +79,13 @@ export async function initSyncManager(): Promise<void> {
     console.warn('Failed to prune sync history:', e);
   }
 
-  // Listen for online events to trigger sync
-  window.addEventListener('online', () => {
-    syncPendingChanges();
-  });
+  // Listen for online events to trigger sync (only once)
+  if (!onlineListenerRegistered) {
+    onlineListenerRegistered = true;
+    window.addEventListener('online', () => {
+      syncPendingChanges();
+    });
+  }
 
   // Initial sync if online
   if (isOnline.value) {
@@ -152,26 +181,28 @@ export async function syncPendingChanges(): Promise<boolean> {
 
 // Sync a single item (returns true if synced, false if conflict detected)
 async function syncItem(item: SyncQueueItem): Promise<boolean> {
-  const endpoint = API_ENDPOINTS[item.entity_type];
-
   switch (item.operation) {
     case 'create':
-      await api.post(endpoint, item.data);
+      await api.post(API_ENDPOINTS[item.entity_type], item.data);
       break;
 
     case 'update': {
-      // Check for conflicts before pushing update
-      const hasConflict = await checkForConflict(item, endpoint);
+      // Check for conflicts before pushing update (read from GET detail endpoint)
+      const readUrl = getEntityUrl(item.entity_type, item.entity_id, 'read');
+      const hasConflict = await checkForConflict(item, readUrl);
       if (hasConflict) {
         return false;
       }
-      await api.put(`${endpoint}/${item.entity_id}`, item.data);
+      const updateUrl = getEntityUrl(item.entity_type, item.entity_id, 'update');
+      await api.put(updateUrl, item.data);
       break;
     }
 
-    case 'delete':
-      await api.delete(`${endpoint}/${item.entity_id}`);
+    case 'delete': {
+      const deleteUrl = getEntityUrl(item.entity_type, item.entity_id, 'delete');
+      await api.delete(deleteUrl);
       break;
+    }
   }
 
   // Mark local entity as synced
@@ -182,10 +213,10 @@ async function syncItem(item: SyncQueueItem): Promise<boolean> {
 // Check for conflict on update operations
 async function checkForConflict(
   item: SyncQueueItem,
-  endpoint: string
+  readUrl: string
 ): Promise<boolean> {
   try {
-    const response = await api.get(`${endpoint}/${item.entity_id}`);
+    const response = await api.get(readUrl);
     const serverData = response.data as Record<string, unknown>;
 
     // Compare updated_at timestamps
@@ -226,11 +257,10 @@ export async function resolveConflict(
   const conflict = await db.syncConflicts.get(conflictId);
   if (!conflict) return;
 
-  const endpoint = API_ENDPOINTS[conflict.entity_type];
-
   if (choice === 'local') {
-    // Push local data to server
-    await api.put(`${endpoint}/${conflict.entity_id}`, conflict.local_data);
+    // Push local data to server using the correct update URL
+    const updateUrl = getEntityUrl(conflict.entity_type, conflict.entity_id, 'update');
+    await api.put(updateUrl, conflict.local_data);
   } else {
     // Update local IndexedDB with server data
     const table = getTableForEntityType(conflict.entity_type);

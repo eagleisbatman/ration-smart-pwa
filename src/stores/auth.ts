@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import { api } from 'src/lib/api';
 import { db, User } from 'src/lib/offline/db';
-import { fetchAndCacheCountries, setCountryCache, toAlpha2 } from 'src/services/api-adapter';
+import { fetchAndCacheCountries, setCountryCache, clearCountryCache, toAlpha2 } from 'src/services/api-adapter';
 import { extractUserFriendlyError } from 'src/lib/error-messages';
 import { setLocale } from 'src/boot/i18n';
 
@@ -319,6 +319,13 @@ export const useAuthStore = defineStore('auth', () => {
         localStorage.setItem('profile_image', userData.profile_image_url);
       }
 
+      // Sync milk price from backend to local settings store
+      if (userData?.milk_price_per_liter != null) {
+        const { useSettingsStore } = await import('./settings');
+        const settingsStore = useSettingsStore();
+        settingsStore.loadFromUserProfile(userData.milk_price_per_liter);
+      }
+
       // Restore admin_level from login response
       const respAdminLevel = responseData.admin_level || userData?.admin_level || null;
       adminLevel.value = respAdminLevel;
@@ -424,8 +431,9 @@ export const useAuthStore = defineStore('auth', () => {
 
     try {
       const response = await api.put(`/api/v1/users/${userId.value}`, data);
-      user.value = response.data;
-      await db.users.put(response.data);
+      const normalized = normalizeUser(response.data);
+      user.value = normalized;
+      await db.users.put(normalized);
       return true;
     } catch (err) {
       error.value = extractUserFriendlyError(err);
@@ -486,9 +494,10 @@ export const useAuthStore = defineStore('auth', () => {
         localStorage.setItem('preferred_language', settings.language_code);
       }
 
-      // Update user object if returned
+      // Update user object if returned (normalize to PWA field names)
       if (response.data) {
-        user.value = { ...user.value, ...response.data };
+        const normalized = normalizeUser(response.data);
+        user.value = { ...user.value, ...normalized };
         await db.users.put(user.value as User);
       }
 
@@ -628,6 +637,9 @@ export const useAuthStore = defineStore('auth', () => {
     localStorage.removeItem('admin_level');
     localStorage.removeItem('profile_image');
     sessionStorage.removeItem('onboarding_skipped');
+
+    // Clear module-level caches to prevent stale data for next user
+    clearCountryCache();
   }
 
   async function logout(): Promise<void> {

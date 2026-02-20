@@ -55,19 +55,21 @@
 
         <q-separator />
 
-        <q-card-actions align="left">
+        <q-card-actions align="left" class="q-pa-md q-gutter-sm">
           <q-btn
-            flat
+            outline
             color="primary"
             icon="refresh"
             :label="$t('diet.tryDifferentFeeds')"
+            no-caps
             @click="regenerateDiet"
           />
           <q-btn
-            flat
+            unelevated
             color="primary"
             icon="auto_fix_high"
             :label="$t('diet.tryAutoFeeds')"
+            no-caps
             @click="regenerateWithAutoFeeds"
           />
         </q-card-actions>

@@ -20,6 +20,9 @@
         outlined
         type="tel"
         :hint="$t('farmer.phoneHint')"
+        :rules="[
+          (val) => !val || /^\d{5,15}$/.test(val.replace(/[\s\-()]/g, '')) || $t('farmer.validation.phoneInvalid'),
+        ]"
       >
         <template #prepend>
           <span class="text-body2 text-grey-8">{{ dialCodePrefix }}</span>

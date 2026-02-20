@@ -28,9 +28,8 @@ export const useAdminStore = defineStore('admin', () => {
   const loading = ref(false);
   const error = ref<string | null>(null);
 
-  const authStore = useAuthStore();
-
   async function fetchOrgUsers(orgId: string): Promise<AdminUser[]> {
+    const authStore = useAuthStore();
     loading.value = true;
     error.value = null;
     try {
@@ -49,6 +48,7 @@ export const useAdminStore = defineStore('admin', () => {
   }
 
   async function fetchAllUsers(page = 1, pageSize = 50, search?: string): Promise<{ users: AdminUser[]; total: number }> {
+    const authStore = useAuthStore();
     loading.value = true;
     error.value = null;
     try {
@@ -82,6 +82,7 @@ export const useAdminStore = defineStore('admin', () => {
   }
 
   async function setAdminLevel(userId: string, level: string | null): Promise<boolean> {
+    const authStore = useAuthStore();
     error.value = null;
     try {
       await api.put(`/api/v1/admin/users/${userId}/set-admin-level`, {

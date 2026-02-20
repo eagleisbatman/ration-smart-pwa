@@ -611,6 +611,8 @@ async function changeRole(role: string) {
       message: t('settings.roleUpdated'),
       position: 'bottom',
     });
+    // Redirect to home so dashboard reloads with role-appropriate content
+    router.replace('/');
   }
 
   showRoleDialog.value = false;
