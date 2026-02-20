@@ -157,7 +157,7 @@ const summaryCards = computed(() => {
   if (!s) return [];
   const cards: { label: string; value: number }[] = [];
 
-  if (s.total_countries !== undefined) cards.push({ label: t('admin.countryName'), value: s.total_countries });
+  if (s.total_countries !== undefined) cards.push({ label: s.total_countries === 1 ? t('admin.countryName') : t('admin.totalCountries'), value: s.total_countries });
   if (s.total_orgs !== undefined) cards.push({ label: t('admin.totalOrgs'), value: s.total_orgs });
   if (s.total_ews !== undefined) cards.push({ label: t('admin.totalEws'), value: s.total_ews });
   if (s.total_users !== undefined) cards.push({ label: t('admin.totalUsers'), value: s.total_users });

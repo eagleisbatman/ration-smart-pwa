@@ -217,7 +217,7 @@
     <!-- Quick Actions -->
     <div class="section-label">{{ $t('dashboard.quickActions') }}</div>
     <div class="action-row q-mb-md">
-      <button v-if="cowsOnDietCount > 0" class="action-row__btn" @click="router.push({ name: 'log-new' })">
+      <button v-if="cowCount > 0" class="action-row__btn" @click="router.push({ name: 'log-new' })">
         <q-icon name="water_drop" />
         {{ $t('logs.logMilk') }}
       </button>
@@ -550,9 +550,16 @@ const milkTrend = computed(() => {
 
 const greeting = computed(() => {
   const hour = new Date().getHours();
-  if (hour < 12) return t('dashboard.greetingMorning');
-  if (hour < 17) return t('dashboard.greetingAfternoon');
-  return t('dashboard.greetingEvening');
+  let base: string;
+  if (hour < 12) base = t('dashboard.greetingMorning');
+  else if (hour < 17) base = t('dashboard.greetingAfternoon');
+  else base = t('dashboard.greetingEvening');
+
+  // Append cow/milk summary if data available
+  if (cowCount.value > 0 && yesterdayMilk.value > 0) {
+    return `${base} ${t('dashboard.greetingSummary', { cows: cowCount.value, liters: yesterdayMilk.value.toFixed(1) })}`;
+  }
+  return base;
 });
 
 function formatDate(dateStr: string): string {

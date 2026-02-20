@@ -120,7 +120,9 @@
           :icon="tab.icon"
           :label="tab.label"
           :exact="tab.to === '/'"
-        />
+        >
+          <q-badge v-if="tab.badge" floating rounded color="warning" :label="tab.badge" />
+        </q-route-tab>
       </q-tabs>
     </q-footer>
 
@@ -243,7 +245,7 @@ const navItems = computed(() => {
 const bottomNavItems = computed(() => [
   { to: '/', icon: 'home', label: t('nav.home') },
   { to: '/cows', icon: COW_ICON, label: t('nav.cows') },
-  { to: '/logs', icon: 'water_drop', label: t('nav.milkLogs') },
+  { to: '/logs', icon: 'water_drop', label: t('nav.milkLogs'), badge: pendingCount.value > 0 ? pendingCount.value : undefined },
   { to: '/diet', icon: 'menu_book', label: t('nav.diet') },
 ]);
 

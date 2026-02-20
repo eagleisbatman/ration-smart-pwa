@@ -94,6 +94,7 @@ const routes: RouteRecordRaw[] = [
       // Diet
       {
         path: 'diet',
+        alias: 'diets',
         name: 'diet',
         component: () => import('pages/diet/DietListPage.vue'),
         meta: { titleKey: 'nav.diet', hideFab: true },
@@ -146,6 +147,7 @@ const routes: RouteRecordRaw[] = [
       // Milk Logs
       {
         path: 'logs',
+        alias: 'milk-logs',
         name: 'logs',
         component: () => import('pages/logs/LogListPage.vue'),
         meta: { titleKey: 'nav.milkLogs', hideFab: true },
@@ -212,6 +214,7 @@ const routes: RouteRecordRaw[] = [
       // Organization Analytics (now admin-only)
       {
         path: 'analytics',
+        alias: 'admin/analytics',
         name: 'admin-analytics',
         component: () => import('pages/admin/AdminAnalyticsPage.vue'),
         meta: { titleKey: 'nav.analytics', showBack: true, hideFab: true, requiresAdmin: true },

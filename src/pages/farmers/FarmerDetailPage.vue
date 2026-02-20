@@ -111,22 +111,24 @@
           <q-card-section>
             <div class="text-subtitle1 text-weight-medium q-mb-sm">{{ $t('farmer.farmDetails') }}</div>
             <q-list dense>
-              <q-item v-if="farmer.farming_type">
+              <q-item>
                 <q-item-section avatar>
                   <q-icon name="agriculture" color="grey-6" />
                 </q-item-section>
                 <q-item-section>
                   <q-item-label caption>{{ $t('farmer.farmingType') }}</q-item-label>
-                  <q-item-label class="text-capitalize">{{ $t(`farmer.farmingTypes.${farmer.farming_type}`) }}</q-item-label>
+                  <q-item-label v-if="farmer.farming_type" class="text-capitalize">{{ $t(`farmer.farmingTypes.${farmer.farming_type}`) }}</q-item-label>
+                  <q-item-label v-else class="text-grey-5">{{ $t('common.notSet') }}</q-item-label>
                 </q-item-section>
               </q-item>
-              <q-item v-if="farmer.land_acres">
+              <q-item>
                 <q-item-section avatar>
                   <q-icon name="landscape" color="grey-6" />
                 </q-item-section>
                 <q-item-section>
                   <q-item-label caption>{{ $t('farmer.landArea') }}</q-item-label>
-                  <q-item-label>{{ farmer.land_acres }} {{ $t('farmer.acres') }}</q-item-label>
+                  <q-item-label v-if="farmer.land_acres">{{ farmer.land_acres }} {{ $t('farmer.acres') }}</q-item-label>
+                  <q-item-label v-else class="text-grey-5">{{ $t('common.notSet') }}</q-item-label>
                 </q-item-section>
               </q-item>
               <q-item>

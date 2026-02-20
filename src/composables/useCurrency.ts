@@ -18,6 +18,15 @@ const COUNTRY_CURRENCY_MAP: Record<string, CurrencyConfig> = {
   NP: { code: 'NPR', symbol: '₨', locale: 'ne-NP' },
   BD: { code: 'BDT', symbol: '৳', locale: 'bn-BD' },
   VN: { code: 'VND', symbol: '₫', locale: 'vi-VN' },
+  PH: { code: 'PHP', symbol: '₱', locale: 'en-PH' },
+  TZ: { code: 'TZS', symbol: 'TSh', locale: 'sw-TZ' },
+  UG: { code: 'UGX', symbol: 'USh', locale: 'en-UG' },
+  RW: { code: 'RWF', symbol: 'FRw', locale: 'rw-RW' },
+  GH: { code: 'GHS', symbol: 'GH₵', locale: 'en-GH' },
+  NG: { code: 'NGN', symbol: '₦', locale: 'en-NG' },
+  PK: { code: 'PKR', symbol: '₨', locale: 'ur-PK' },
+  MM: { code: 'MMK', symbol: 'K', locale: 'my-MM' },
+  LK: { code: 'LKR', symbol: 'Rs', locale: 'si-LK' },
 };
 
 // Default to Indian Rupee if country not found
