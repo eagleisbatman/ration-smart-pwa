@@ -71,7 +71,7 @@ export const useAdminStore = defineStore('admin', () => {
         is_active: u.is_active ?? true,
         created_at: u.created_at,
       }));
-      return { users: users.value, total: data.total || users.value.length };
+      return { users: users.value, total: data.total_count || data.total || users.value.length };
     } catch (err) {
       error.value = 'Failed to fetch users';
       console.error('[admin] fetchAllUsers error:', err);
