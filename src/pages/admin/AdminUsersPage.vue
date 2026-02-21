@@ -20,16 +20,29 @@
       <q-spinner color="primary" size="32px" />
     </div>
 
+    <!-- Error -->
+    <q-banner v-else-if="adminStore.error" class="bg-negative text-white q-mb-md" rounded>
+      {{ adminStore.error }}
+      <template #action>
+        <q-btn flat label="Retry" @click="fetchUsers" />
+      </template>
+    </q-banner>
+
     <!-- User list -->
     <template v-else>
       <q-list separator>
         <q-item v-for="u in adminStore.users" :key="u.id" class="q-py-sm">
           <q-item-section>
-            <q-item-label>{{ u.name }}</q-item-label>
+            <q-item-label>{{ u.name || u.phone_number || u.email || '—' }}</q-item-label>
             <q-item-label caption>
-              <q-icon v-if="!u.email && u.phone_number" name="phone" size="12px" class="q-mr-xs" />
-              {{ u.email || u.phone_number || '—' }}
-              <span v-if="u.user_role" class="q-ml-sm">· {{ formatRole(u.user_role) }}</span>
+              <template v-if="u.name">
+                <q-icon v-if="!u.email && u.phone_number" name="phone" size="12px" class="q-mr-xs" />
+                {{ u.email || u.phone_number || '—' }}
+              </template>
+              <template v-else-if="u.email">
+                {{ u.email }}
+              </template>
+              <span v-if="u.user_role" :class="{ 'q-ml-sm': u.name || u.email || u.phone_number }">{{ u.name || u.email ? '· ' : '' }}{{ formatRole(u.user_role) }}</span>
             </q-item-label>
           </q-item-section>
 
@@ -137,7 +150,7 @@ async function onLevelChange(user: AdminUser, newLevel: string) {
 
   $q.dialog({
     title: t('admin.setAdminLevel'),
-    message: t('admin.confirmLevelChange', { name: user.name, level: newLevel }),
+    message: t('admin.confirmLevelChange', { name: user.name || user.phone_number || user.email || user.id, level: newLevel }),
     ok: { label: t('common.confirm'), color: 'primary', flat: true },
     cancel: { label: t('common.cancel'), flat: true },
   }).onOk(async () => {

@@ -22,11 +22,33 @@ export interface AdminOrg {
   is_active: boolean;
 }
 
+export interface CreateOrgPayload {
+  name: string;
+  type?: string;
+  country_id?: string;
+  contact_email?: string;
+  contact_phone?: string;
+  description?: string;
+}
+
 export const useAdminStore = defineStore('admin', () => {
   const users = ref<AdminUser[]>([]);
   const orgs = ref<AdminOrg[]>([]);
   const loading = ref(false);
   const error = ref<string | null>(null);
+
+  function _normalizeUser(u: Record<string, unknown>): AdminUser {
+    return {
+      id: String(u.id || u.user_id || ''),
+      name: String(u.name || ''),
+      email: (u.email || u.email_id || null) as string | null,
+      phone_number: (u.phone_number || null) as string | null,
+      user_role: (u.user_role || null) as string | null,
+      admin_level: (u.admin_level as string) || 'user',
+      is_active: (u.is_active ?? true) as boolean,
+      created_at: u.created_at ? String(u.created_at) : null,
+    };
+  }
 
   async function fetchOrgUsers(orgId: string): Promise<AdminUser[]> {
     const authStore = useAuthStore();
@@ -36,16 +58,7 @@ export const useAdminStore = defineStore('admin', () => {
       const resp = await api.get(`/api/v1/admin/users/org/${orgId}`, {
         params: { admin_user_id: authStore.userId },
       });
-      users.value = (resp.data.users || []).map((u: Record<string, unknown>) => ({
-        id: String(u.id || u.user_id || ''),
-        name: String(u.name || ''),
-        email: u.email || u.email_id || null,
-        phone_number: u.phone_number || null,
-        user_role: u.user_role || null,
-        admin_level: (u.admin_level as string) || 'user',
-        is_active: u.is_active ?? true,
-        created_at: u.created_at ? String(u.created_at) : null,
-      })) as AdminUser[];
+      users.value = (resp.data.users || []).map(_normalizeUser);
       return users.value;
     } catch (err) {
       error.value = 'Failed to fetch users';
@@ -70,16 +83,7 @@ export const useAdminStore = defineStore('admin', () => {
 
       const resp = await api.get('/api/v1/admin/users', { params });
       const data = resp.data;
-      users.value = (data.users || []).map((u: Record<string, unknown>) => ({
-        id: String(u.id || u.user_id || ''),
-        name: String(u.name || ''),
-        email: u.email || u.email_id || null,
-        phone_number: u.phone_number || null,
-        user_role: u.user_role || null,
-        admin_level: (u.admin_level as string) || 'user',
-        is_active: u.is_active ?? true,
-        created_at: u.created_at ? String(u.created_at) : null,
-      })) as AdminUser[];
+      users.value = (data.users || []).map(_normalizeUser);
       return { users: users.value, total: data.total_count || data.total || users.value.length };
     } catch (err) {
       error.value = 'Failed to fetch users';
@@ -116,7 +120,15 @@ export const useAdminStore = defineStore('admin', () => {
     loading.value = true;
     error.value = null;
     try {
-      const resp = await api.get('/api/v1/organizations');
+      // Backend auto-scopes country_admin to their country;
+      // pass country_id as defense-in-depth for other roles
+      const authStore = useAuthStore();
+      const params: Record<string, string> = {};
+      if (authStore.isCountryAdmin && authStore.user?.country_id) {
+        params.country_id = authStore.user.country_id;
+      }
+
+      const resp = await api.get('/api/v1/organizations', { params });
       const data = resp.data;
       const rawOrgs = data?.organizations ?? data ?? [];
       orgs.value = (Array.isArray(rawOrgs) ? rawOrgs : []).map((o: Record<string, unknown>) => ({
@@ -124,7 +136,7 @@ export const useAdminStore = defineStore('admin', () => {
         name: String(o.name || ''),
         type: o.type ? String(o.type) : null,
         country_id: o.country_id ? String(o.country_id) : null,
-        is_active: o.is_active ?? true,
+        is_active: (o.is_active ?? true) as boolean,
       }));
       const total = data?.count ?? data?.total_count ?? orgs.value.length;
       return { orgs: orgs.value, total };
@@ -137,6 +149,18 @@ export const useAdminStore = defineStore('admin', () => {
     }
   }
 
+  async function createOrg(payload: CreateOrgPayload): Promise<boolean> {
+    error.value = null;
+    try {
+      await api.post('/api/v1/organizations/', payload);
+      return true;
+    } catch (err) {
+      error.value = 'Failed to create organization';
+      console.error('[admin] createOrg error:', err);
+      return false;
+    }
+  }
+
   return {
     users,
     orgs,
@@ -146,5 +170,6 @@ export const useAdminStore = defineStore('admin', () => {
     fetchAllUsers,
     setAdminLevel,
     fetchOrgs,
+    createOrg,
   };
 });
