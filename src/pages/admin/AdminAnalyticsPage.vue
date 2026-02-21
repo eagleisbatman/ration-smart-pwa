@@ -141,10 +141,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { useAdminAnalyticsStore } from 'src/stores/admin-analytics';
 import { useAuthStore } from 'src/stores/auth';
 import { useI18n } from 'vue-i18n';
+import { backOverride } from 'src/lib/back-override';
 
 const store = useAdminAnalyticsStore();
 const authStore = useAuthStore();
@@ -238,5 +239,18 @@ onMounted(async () => {
       configMissing.value = true;
     }
   }
+});
+
+// Let the header back button navigate up the breadcrumb chain before leaving the page
+backOverride.value = () => {
+  if (breadcrumbs.value.length > 1) {
+    const parent = breadcrumbs.value[breadcrumbs.value.length - 2];
+    navigateTo(parent);
+    return true; // handled — don't router.back()
+  }
+  return false; // at root level — let router.back() take over
+};
+onUnmounted(() => {
+  backOverride.value = null;
 });
 </script>
