@@ -82,9 +82,9 @@
       <q-list separator>
         <q-item
           v-for="o in store.orgBreakdowns"
-          :key="o.organization_id"
-          clickable
-          @click="drillIntoOrg(o.organization_id, o.organization_name)"
+          :key="o.organization_id || 'unaffiliated'"
+          :clickable="!!o.organization_id"
+          @click="o.organization_id && drillIntoOrg(o.organization_id, o.organization_name)"
         >
           <q-item-section>
             <q-item-label>{{ o.organization_name }}</q-item-label>
@@ -95,7 +95,7 @@
               {{ o.diet_count }} {{ $t('admin.dietCount') }}
             </q-item-label>
           </q-item-section>
-          <q-item-section side>
+          <q-item-section v-if="o.organization_id" side>
             <q-icon name="chevron_right" />
           </q-item-section>
         </q-item>
