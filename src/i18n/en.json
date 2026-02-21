@@ -37,6 +37,7 @@
     "notSet": "Not set",
     "noData": "No data available",
     "noResults": "No results found",
+    "tooLong": "Value is too long",
     "offline": "You are offline",
     "online": "Back online",
     "syncPending": "Changes pending sync",
@@ -1718,6 +1719,16 @@
     "confirmLevelChange": "Change {name}'s admin level to {level}?",
     "unauthorized": "You don't have permission to access this page",
     "profileIncomplete": "Admin profile incomplete",
-    "profileIncompleteHint": "Your account is missing country or organization assignment. Please contact a super admin to complete your profile."
+    "profileIncompleteHint": "Your account is missing country or organization assignment. Please contact a super admin to complete your profile.",
+    "createOrg": "Create Organization",
+    "orgCreated": "Organization created successfully",
+    "orgCreateFailed": "Failed to create organization",
+    "orgDescription": "Description",
+    "orgTypeUniversity": "University",
+    "orgTypeGovernment": "Government",
+    "orgTypeNgo": "NGO",
+    "orgTypeCooperative": "Cooperative",
+    "orgTypeResearch": "Research",
+    "orgTypeOther": "Other"
   }
 }
