@@ -31,9 +31,13 @@ export default route(function (/* { store, ssrContext } */) {
 
     // Initialize auth store once per session (loads user profile from IndexedDB + API).
     // Must await to ensure selfFarmerProfileId is loaded before onboarding checks.
+    // Timeout after 5s to prevent blocking navigation on slow/offline networks.
     if (!authInitialized && authStore.isAuthenticated) {
       authInitialized = true;
-      await authStore.initialize();
+      await Promise.race([
+        authStore.initialize(),
+        new Promise<void>((resolve) => setTimeout(resolve, 5000)),
+      ]);
     }
 
     // Check if route requires authentication
