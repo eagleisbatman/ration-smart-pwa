@@ -225,7 +225,8 @@ const showFab = computed(() => !route.meta?.hideFab && isAuthenticated.value);
 const navItems = computed(() => {
   const items = [
     { to: '/', icon: 'home', label: t('nav.home') },
-    { to: '/farmers', icon: 'people', label: t('nav.farmers') },
+    // Only show Farmers nav for EWs / users managing farmers (not pure farmer role)
+    ...(!authStore.isFarmerRole ? [{ to: '/farmers', icon: 'people', label: t('nav.farmers') }] : []),
     { to: '/cows', icon: COW_ICON, label: t('nav.myCows') },
     { to: '/diet', icon: 'menu_book', label: t('nav.diet') },
     { to: '/feeds', icon: 'grass', label: t('nav.feeds') },

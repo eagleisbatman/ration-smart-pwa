@@ -130,7 +130,10 @@ function getDateFnsLocaleSync(): Locale | undefined {
 }
 
 /**
- * Parse a date input into a Date object
+ * Parse a date input into a Date object.
+ * Backend stores timestamps as naive UTC (no timezone suffix).
+ * If the string looks like an ISO datetime without timezone info, append 'Z'
+ * so it's correctly interpreted as UTC rather than local time.
  */
 function parseDate(date: Date | string | number): Date {
   if (date instanceof Date) {
@@ -139,8 +142,18 @@ function parseDate(date: Date | string | number): Date {
   if (typeof date === 'number') {
     return new Date(date);
   }
+  // If the string looks like an ISO datetime without timezone info (no Z, +, or -)
+  // and contains a 'T' (datetime, not just date), treat it as UTC
+  let dateStr = date;
+  if (
+    dateStr.includes('T') &&
+    !dateStr.endsWith('Z') &&
+    !/[+-]\d{2}:\d{2}$/.test(dateStr)
+  ) {
+    dateStr = dateStr + 'Z';
+  }
   // Try ISO string parsing first
-  const parsed = parseISO(date);
+  const parsed = parseISO(dateStr);
   if (isValid(parsed)) {
     return parsed;
   }

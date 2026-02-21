@@ -101,7 +101,7 @@ onMounted(async () => {
       adminStore.fetchOrgs(),
     ]);
     userCount.value = usersResult.total;
-    orgCount.value = orgsResult.length;
+    orgCount.value = orgsResult.total;
   } catch {
     loadError.value = true;
   }

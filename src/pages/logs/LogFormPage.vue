@@ -427,9 +427,15 @@ onMounted(async () => {
     allCowsMap.value.set(cow.id, cow);
   }
 
-  // Pre-fill cow name and fetch active diet if cow_id from query
+  // Pre-fill cow from query param or auto-select if only 1 cow
   if (queryCowId) {
     await onCowSelected(queryCowId);
+  } else if (!isEditing.value) {
+    const selectable = cowOptions.value.filter((o) => !o.disable);
+    if (selectable.length === 1) {
+      form.cow_id = selectable[0].value;
+      await onCowSelected(selectable[0].value);
+    }
   }
 
   if (isEditing.value) {

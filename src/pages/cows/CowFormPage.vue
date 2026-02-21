@@ -5,9 +5,9 @@
       <PhotoUploadSection v-model="form.image_url" />
       <div class="text-center text-caption text-grey-5" style="margin-top: -12px">{{ $t('cow.photoHelper') }}</div>
 
-      <!-- Farmer Selection (only in create mode) -->
+      <!-- Farmer Selection (only in create mode, hide for farmer-role users who can only add to their own profile) -->
       <q-select
-        v-if="!isEditing"
+        v-if="!isEditing && farmerOptions.length > 1"
         v-model="selectedFarmerId"
         :label="$t('cow.selectFarmer')"
         outlined

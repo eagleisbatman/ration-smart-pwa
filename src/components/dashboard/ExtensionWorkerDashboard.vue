@@ -475,12 +475,12 @@ async function loadRecentActivities() {
     const activities: Activity[] = [];
 
     // 1. Milk logs - get recent from IndexedDB
-    const recentMilkLogs = await db.milkLogs
+    const recentMilkLogsSorted = await db.milkLogs
       .where('user_id')
       .equals(authStore.userId)
       .filter((log: MilkLog) => !log._deleted)
-      .reverse()
       .sortBy('created_at');
+    const recentMilkLogs = recentMilkLogsSorted.reverse();
 
     for (const log of recentMilkLogs.slice(0, 15)) {
       const cowInfo = cowMap.get(log.cow_id);
@@ -502,11 +502,11 @@ async function loadRecentActivities() {
     }
 
     // 2. Diet plans - get recent from IndexedDB
-    const recentDiets = await db.diets
+    const recentDietsSorted = await db.diets
       .where('user_id')
       .equals(authStore.userId)
-      .reverse()
       .sortBy('created_at');
+    const recentDiets = recentDietsSorted.reverse();
 
     for (const diet of recentDiets.slice(0, 15)) {
       const cowInfo = diet.cow_id ? cowMap.get(diet.cow_id) : null;

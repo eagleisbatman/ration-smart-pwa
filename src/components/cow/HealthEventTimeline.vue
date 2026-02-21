@@ -298,17 +298,12 @@ async function loadEvents() {
     }
 
     // Load from local database
-    events.value = await db.healthEvents
+    const sortedEvents = await db.healthEvents
       .where('cow_id')
       .equals(props.cowId)
       .filter((e) => !e._deleted)
-      .reverse()
       .sortBy('event_date');
-
-    // Sort descending by event_date
-    events.value.sort((a, b) => {
-      return new Date(b.event_date).getTime() - new Date(a.event_date).getTime();
-    });
+    events.value = sortedEvents.reverse();
   } catch (err) {
     console.error('[HealthEventTimeline] Failed to load events:', err);
     events.value = [];

@@ -803,6 +803,31 @@ const ENDPOINT_MAP: Record<string, EndpointMapping> = {
   },
 
   // ============================================================================
+  // ADMIN ENDPOINTS
+  // ============================================================================
+  '/api/v1/admin/users': {
+    path: '/admin/users',
+  },
+  '/api/v1/admin/users/org/:orgId': {
+    path: '/admin/users/org/:orgId',
+  },
+  '/api/v1/admin/users/:userId/set-admin-level': {
+    path: '/admin/users/:userId/set-admin-level',
+  },
+  '/api/v1/admin/analytics/global': {
+    path: '/admin/analytics/global',
+  },
+  '/api/v1/admin/analytics/country/:countryId': {
+    path: '/admin/analytics/country/:countryId',
+  },
+  '/api/v1/admin/analytics/org/:orgId': {
+    path: '/admin/analytics/org/:orgId',
+  },
+  '/api/v1/user-delete-account': {
+    path: '/user-delete-account',
+  },
+
+  // ============================================================================
   // COW PROFILE ENDPOINTS
   // ============================================================================
   // List cows — store passes userId in URL

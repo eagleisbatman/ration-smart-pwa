@@ -132,10 +132,10 @@ export const useDietsStore = defineStore('diets', () => {
       // Load from local database (userId may have been cleared by 401 interceptor)
       if (!authStore.userId) return;
 
-      const allDiets = await db.diets
+      const allDietsSorted = await db.diets
         .where({ user_id: authStore.userId })
-        .reverse()
         .sortBy('created_at');
+      const allDiets = allDietsSorted.reverse();
       diets.value = sortWithActiveFirst(allDiets);
 
       // Rebuild activeDiets cache (clear stale entries first)
@@ -148,11 +148,10 @@ export const useDietsStore = defineStore('diets', () => {
     } catch (err) {
       // Fallback to local data (userId may have been cleared by 401 interceptor)
       if (authStore.userId) {
-        const allDiets = await db.diets
+        const fallbackSorted = await db.diets
           .where({ user_id: authStore.userId })
-          .reverse()
           .sortBy('created_at');
-        diets.value = sortWithActiveFirst(allDiets);
+        diets.value = sortWithActiveFirst(fallbackSorted.reverse());
       }
 
       if (diets.value.length === 0 && authStore.userId) {
@@ -448,10 +447,10 @@ export const useDietsStore = defineStore('diets', () => {
   }
 
   async function getDietsForCow(cowId: string): Promise<Diet[]> {
-    return db.diets
+    const sorted = await db.diets
       .where({ cow_id: cowId })
-      .reverse()
       .sortBy('created_at');
+    return sorted.reverse();
   }
 
   /**

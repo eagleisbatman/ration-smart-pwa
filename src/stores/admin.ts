@@ -36,7 +36,16 @@ export const useAdminStore = defineStore('admin', () => {
       const resp = await api.get(`/api/v1/admin/users/org/${orgId}`, {
         params: { admin_user_id: authStore.userId },
       });
-      users.value = resp.data.users || [];
+      users.value = (resp.data.users || []).map((u: Record<string, unknown>) => ({
+        id: String(u.id || u.user_id || ''),
+        name: String(u.name || ''),
+        email: u.email || u.email_id || null,
+        phone_number: u.phone_number || null,
+        user_role: u.user_role || null,
+        admin_level: (u.admin_level as string) || 'user',
+        is_active: u.is_active ?? true,
+        created_at: u.created_at ? String(u.created_at) : null,
+      })) as AdminUser[];
       return users.value;
     } catch (err) {
       error.value = 'Failed to fetch users';
@@ -103,12 +112,13 @@ export const useAdminStore = defineStore('admin', () => {
     }
   }
 
-  async function fetchOrgs(): Promise<AdminOrg[]> {
+  async function fetchOrgs(): Promise<{ orgs: AdminOrg[]; total: number }> {
     loading.value = true;
     error.value = null;
     try {
       const resp = await api.get('/api/v1/organizations');
-      const rawOrgs = resp.data?.organizations ?? resp.data ?? [];
+      const data = resp.data;
+      const rawOrgs = data?.organizations ?? data ?? [];
       orgs.value = (Array.isArray(rawOrgs) ? rawOrgs : []).map((o: Record<string, unknown>) => ({
         id: String(o.id),
         name: String(o.name || ''),
@@ -116,11 +126,12 @@ export const useAdminStore = defineStore('admin', () => {
         country_id: o.country_id ? String(o.country_id) : null,
         is_active: o.is_active ?? true,
       }));
-      return orgs.value;
+      const total = data?.count ?? data?.total_count ?? orgs.value.length;
+      return { orgs: orgs.value, total };
     } catch (err) {
       error.value = 'Failed to fetch organizations';
       console.error('[admin] fetchOrgs error:', err);
-      return [];
+      return { orgs: [], total: 0 };
     } finally {
       loading.value = false;
     }

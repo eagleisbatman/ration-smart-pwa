@@ -105,7 +105,10 @@ export const useAdminAnalyticsStore = defineStore('admin-analytics', () => {
       const resp = await api.get('/api/v1/admin/analytics/global', {
         params: { admin_user_id: authStore.userId },
       });
-      countryBreakdowns.value = resp.data.countries || [];
+      // Filter out countries with no activity (0 orgs, 0 users, 0 farmers, 0 cows)
+      countryBreakdowns.value = (resp.data.countries || []).filter(
+        (c: CountryBreakdown) => c.org_count > 0 || c.user_count > 0 || c.farmer_count > 0 || c.cow_count > 0
+      );
       summary.value = resp.data.summary || null;
     } catch (err) {
       error.value = 'Failed to fetch global analytics';

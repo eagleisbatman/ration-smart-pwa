@@ -52,7 +52,7 @@
               <tr v-for="(feed, idx) in reportData.diet_feeds" :key="idx">
                 <td>{{ feed.feed_name }}</td>
                 <td class="text-right text-weight-medium">{{ feed.amount_kg?.toFixed(2) }} kg</td>
-                <td class="text-right text-weight-medium">{{ formatCurrencyWhole(feed.cost || 0) }}</td>
+                <td class="text-right text-weight-medium">{{ formatCurrencyValue(feed.cost || 0) }}</td>
               </tr>
             </tbody>
           </q-markup-table>
@@ -71,9 +71,9 @@
               <q-item-section side>
                 <q-item-label>
                   <span :class="nb.supply >= nb.requirement * 0.95 ? 'text-positive' : 'text-negative'">
-                    {{ nb.supply?.toFixed(1) }}
+                    {{ formatNutrientValue(nb.supply) }}
                   </span>
-                  / {{ nb.requirement?.toFixed(1) }} {{ nb.unit }}
+                  / {{ formatNutrientValue(nb.requirement) }} {{ nb.unit }}
                 </q-item-label>
               </q-item-section>
             </q-item>
@@ -97,7 +97,7 @@
               <tr v-for="(row, idx) in reportData.yield_history" :key="idx">
                 <td>{{ row.date }}</td>
                 <td class="text-right text-weight-medium">{{ row.milk_liters?.toFixed(1) }} L</td>
-                <td class="text-right">{{ row.fat_pct }}%</td>
+                <td class="text-right">{{ row.fat_pct != null && row.fat_pct !== '' ? `${row.fat_pct}%` : '—' }}</td>
               </tr>
             </tbody>
           </q-markup-table>
@@ -215,7 +215,19 @@ const router = useRouter();
 const { t } = useI18n();
 const { formatDate } = useDateFormat();
 const { shareContent, shareViaWhatsApp } = useExport();
-const { formatCurrencyWhole, getCurrencySymbol } = useCurrency();
+const { formatCurrency, formatCurrencyWhole, getCurrencySymbol } = useCurrency();
+
+/** Format currency with up to 2 decimal places (not rounded to whole) */
+const formatCurrencyValue = (amount: number) => formatCurrency(amount);
+
+/** Format nutrient values smartly: use more decimals for small values */
+function formatNutrientValue(val: number | null | undefined): string {
+  if (val == null) return '—';
+  if (val === 0) return '0';
+  if (Math.abs(val) < 0.1) return val.toFixed(2);
+  if (Math.abs(val) < 1) return val.toFixed(1);
+  return val.toFixed(1);
+}
 
 const reportId = computed(() => route.params.id as string);
 const reportData = ref<ReportData | null>(null);

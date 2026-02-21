@@ -169,7 +169,7 @@ const barChartData = computed((): ChartData<'bar'> => {
       {
         label: 'Morning',
         data: data.map((d) => d.morning),
-        backgroundColor: c.primary,
+        backgroundColor: c.morningBar,
         borderRadius: { topLeft: 0, topRight: 0, bottomLeft: 2, bottomRight: 2 },
         barPercentage: 0.7,
         categoryPercentage: 0.8,
@@ -177,7 +177,7 @@ const barChartData = computed((): ChartData<'bar'> => {
       {
         label: 'Evening',
         data: data.map((d) => d.evening),
-        backgroundColor: c.primary + '80', // 50% opacity
+        backgroundColor: c.eveningBar,
         borderRadius: { topLeft: 2, topRight: 2, bottomLeft: 0, bottomRight: 0 },
         barPercentage: 0.7,
         categoryPercentage: 0.8,
