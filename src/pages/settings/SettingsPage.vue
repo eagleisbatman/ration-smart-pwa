@@ -738,6 +738,7 @@ async function deleteAccount() {
       pin: deletePin.value,
     });
     showDeleteAccountDialog.value = false;
+    deletePin.value = '';
     await db.clearUserData();
     await authStore.logout();
     router.push('/auth/login');

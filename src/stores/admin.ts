@@ -71,15 +71,15 @@ export const useAdminStore = defineStore('admin', () => {
       const resp = await api.get('/api/v1/admin/users', { params });
       const data = resp.data;
       users.value = (data.users || []).map((u: Record<string, unknown>) => ({
-        id: u.id || u.user_id,
-        name: u.name,
-        email: u.email || u.email_id,
-        phone_number: u.phone_number,
-        user_role: u.user_role,
-        admin_level: u.admin_level || 'user',
+        id: String(u.id || u.user_id || ''),
+        name: String(u.name || ''),
+        email: u.email || u.email_id || null,
+        phone_number: u.phone_number || null,
+        user_role: u.user_role || null,
+        admin_level: (u.admin_level as string) || 'user',
         is_active: u.is_active ?? true,
-        created_at: u.created_at,
-      }));
+        created_at: u.created_at ? String(u.created_at) : null,
+      })) as AdminUser[];
       return { users: users.value, total: data.total_count || data.total || users.value.length };
     } catch (err) {
       error.value = 'Failed to fetch users';
