@@ -189,6 +189,7 @@ import SyncStatusChip from 'src/components/ui/SyncStatusChip.vue';
 import SyncConflictDialog from 'src/components/pwa/SyncConflictDialog.vue';
 import { COW_ICON } from 'src/boot/icons';
 import { isRTL } from 'src/boot/i18n';
+import { backOverride } from 'src/lib/back-override';
 
 const $q = useQuasar();
 const router = useRouter();
@@ -256,6 +257,8 @@ function isActive(path: string): boolean {
 
 function goBack() {
   light(); // Haptic feedback on back navigation
+  // Let pages with in-page drill-down (e.g. analytics) handle back first
+  if (backOverride.value && backOverride.value()) return;
   router.back();
 }
 
