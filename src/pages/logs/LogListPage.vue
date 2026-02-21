@@ -129,7 +129,8 @@
                 </q-item-label>
                 <q-item-label caption>
                   <span v-if="log.morning_liters">{{ $t('logs.labels.morning') }}: {{ log.morning_liters }}L</span>
-                  <span v-if="log.evening_liters" class="q-ml-sm">{{ $t('logs.labels.evening') }}: {{ log.evening_liters }}L</span>
+                  <span v-if="log.morning_liters && log.evening_liters" class="q-mx-xs">·</span>
+                  <span v-if="log.evening_liters">{{ $t('logs.labels.evening') }}: {{ log.evening_liters }}L</span>
                 </q-item-label>
               </q-item-section>
 

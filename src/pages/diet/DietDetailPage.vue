@@ -131,19 +131,25 @@
       <template v-if="['completed', 'following', 'saved', 'archived'].includes(diet.status) && diet.result_data">
         <!-- Summary Stats -->
         <div class="row q-col-gutter-sm q-mb-md">
-          <div class="col-4">
+          <div class="col-6 col-sm-3">
             <q-card flat bordered class="text-center q-pa-sm">
               <div class="text-h6 text-primary">{{ formatCurrency(diet.total_cost ?? 0) }}</div>
               <div class="text-caption text-grey-7">{{ $t('diet.dailyCost') }}</div>
             </q-card>
           </div>
-          <div class="col-4">
+          <div class="col-6 col-sm-3">
+            <q-card flat bordered class="text-center q-pa-sm">
+              <div class="text-h6 text-secondary">{{ feedTotalKg.toFixed(1) }} kg</div>
+              <div class="text-caption text-grey-7">{{ $t('diet.totalFeed') }}</div>
+            </q-card>
+          </div>
+          <div class="col-6 col-sm-3">
             <q-card flat bordered class="text-center q-pa-sm">
               <div class="text-h6 text-secondary">{{ diet.dm_intake?.toFixed(1) }} kg</div>
               <div class="text-caption text-grey-7">{{ $t('diet.dryMatterIntake') }}</div>
             </q-card>
           </div>
-          <div class="col-4">
+          <div class="col-6 col-sm-3">
             <q-card flat bordered class="text-center q-pa-sm">
               <div class="text-h6 text-accent">{{ resultData.feeds?.length || 0 }}</div>
               <div class="text-caption text-grey-7">{{ $t('diet.feeds') }}</div>
@@ -220,11 +226,16 @@
             <div v-if="resultData.nutrient_balance?.ca_requirement" class="q-mb-md">
               <div class="row justify-between q-mb-xs">
                 <span>{{ $t('diet.calcium') }}</span>
-                <span>{{ ((resultData.nutrient_balance?.ca_supplied ?? 0) * 1000).toFixed(0) }} / {{ ((resultData.nutrient_balance?.ca_requirement ?? 0) * 1000).toFixed(0) }} g/day</span>
+                <span>
+                  {{ ((resultData.nutrient_balance?.ca_supplied ?? 0) * 1000).toFixed(0) }} / {{ ((resultData.nutrient_balance?.ca_requirement ?? 0) * 1000).toFixed(0) }} g/day
+                  <q-badge v-if="mineralRatio(resultData.nutrient_balance.ca_supplied, resultData.nutrient_balance.ca_requirement) > 1.5" color="orange-4" text-color="dark" dense class="q-ml-xs">
+                    {{ mineralRatio(resultData.nutrient_balance.ca_supplied, resultData.nutrient_balance.ca_requirement).toFixed(1) }}x
+                  </q-badge>
+                </span>
               </div>
               <q-linear-progress
-                :value="resultData.nutrient_balance.ca_requirement ? resultData.nutrient_balance.ca_supplied / resultData.nutrient_balance.ca_requirement : 0"
-                :color="(resultData.nutrient_balance.ca_supplied / resultData.nutrient_balance.ca_requirement) >= 0.95 ? 'positive' : 'warning'"
+                :value="Math.min(resultData.nutrient_balance.ca_requirement ? resultData.nutrient_balance.ca_supplied / resultData.nutrient_balance.ca_requirement : 0, 1)"
+                :color="mineralProgressColor(resultData.nutrient_balance.ca_supplied, resultData.nutrient_balance.ca_requirement)"
                 rounded
               />
             </div>
@@ -232,11 +243,16 @@
             <div v-if="resultData.nutrient_balance?.p_requirement">
               <div class="row justify-between q-mb-xs">
                 <span>{{ $t('diet.phosphorus') }}</span>
-                <span>{{ ((resultData.nutrient_balance?.p_supplied ?? 0) * 1000).toFixed(0) }} / {{ ((resultData.nutrient_balance?.p_requirement ?? 0) * 1000).toFixed(0) }} g/day</span>
+                <span>
+                  {{ ((resultData.nutrient_balance?.p_supplied ?? 0) * 1000).toFixed(0) }} / {{ ((resultData.nutrient_balance?.p_requirement ?? 0) * 1000).toFixed(0) }} g/day
+                  <q-badge v-if="mineralRatio(resultData.nutrient_balance.p_supplied, resultData.nutrient_balance.p_requirement) > 1.5" color="orange-4" text-color="dark" dense class="q-ml-xs">
+                    {{ mineralRatio(resultData.nutrient_balance.p_supplied, resultData.nutrient_balance.p_requirement).toFixed(1) }}x
+                  </q-badge>
+                </span>
               </div>
               <q-linear-progress
-                :value="resultData.nutrient_balance.p_requirement ? resultData.nutrient_balance.p_supplied / resultData.nutrient_balance.p_requirement : 0"
-                :color="(resultData.nutrient_balance.p_supplied / resultData.nutrient_balance.p_requirement) >= 0.95 ? 'positive' : 'warning'"
+                :value="Math.min(resultData.nutrient_balance.p_requirement ? resultData.nutrient_balance.p_supplied / resultData.nutrient_balance.p_requirement : 0, 1)"
+                :color="mineralProgressColor(resultData.nutrient_balance.p_supplied, resultData.nutrient_balance.p_requirement)"
                 rounded
               />
             </div>
@@ -599,6 +615,17 @@ function getStatusLabel(status: string): string {
     saved: t('diet.statusLabel.completed'),
   };
   return labels[status] || t('diet.statusLabel.pending');
+}
+
+function mineralRatio(supplied: number, requirement: number): number {
+  return requirement > 0 ? supplied / requirement : 0;
+}
+
+function mineralProgressColor(supplied: number, requirement: number): string {
+  const ratio = mineralRatio(supplied, requirement);
+  if (ratio >= 3) return 'orange';
+  if (ratio >= 0.95) return 'positive';
+  return 'warning';
 }
 
 function getStatusColor(status: string): string {

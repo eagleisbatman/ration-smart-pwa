@@ -258,6 +258,18 @@
           <q-item-label caption>{{ $t('settings.logoutDesc') }}</q-item-label>
         </q-item-section>
       </q-item>
+
+      <q-separator />
+
+      <q-item v-ripple clickable @click="showDeleteAccountDialog = true">
+        <q-item-section avatar>
+          <q-icon name="person_remove" color="negative" />
+        </q-item-section>
+        <q-item-section>
+          <q-item-label class="text-negative">{{ $t('settings.deleteAccount') }}</q-item-label>
+          <q-item-label caption>{{ $t('settings.deleteAccountDesc') }}</q-item-label>
+        </q-item-section>
+      </q-item>
     </q-list>
 
     <!-- Language Dialog -->
@@ -348,6 +360,40 @@
 
     <!-- Sync History Drawer -->
     <SyncHistoryDrawer v-model="showSyncHistory" />
+
+    <!-- Delete Account Dialog -->
+    <q-dialog v-model="showDeleteAccountDialog" persistent>
+      <q-card style="min-width: 320px">
+        <q-card-section>
+          <div class="text-h6 text-negative">{{ $t('settings.deleteAccount') }}</div>
+          <div class="text-body2 q-mt-sm">{{ $t('settings.deleteAccountWarning') }}</div>
+        </q-card-section>
+        <q-card-section class="q-pt-none">
+          <q-input
+            v-model="deletePin"
+            type="password"
+            :label="$t('settings.enterPin')"
+            outlined
+            mask="####"
+            maxlength="4"
+            :error="!!deletePinError"
+            :error-message="deletePinError"
+            autofocus
+          />
+        </q-card-section>
+        <q-card-actions align="right">
+          <q-btn v-close-popup flat :label="$t('common.cancel')" @click="deletePin = ''; deletePinError = ''" />
+          <q-btn
+            flat
+            color="negative"
+            :label="$t('settings.deleteAccount')"
+            :loading="deletingAccount"
+            :disable="deletePin.length !== 4"
+            @click="deleteAccount"
+          />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
 
     <!-- Organization Dialog -->
     <q-dialog v-model="showOrgDialog">
@@ -472,6 +518,10 @@ const settingsStore = useSettingsStore();
 const { formatCurrency, getCurrencySymbol } = useCurrency();
 
 const notifications = ref(false);
+const showDeleteAccountDialog = ref(false);
+const deletePin = ref('');
+const deletePinError = ref('');
+const deletingAccount = ref(false);
 const darkMode = ref($q.dark.isActive);
 
 // Milk price
@@ -676,6 +726,28 @@ function confirmClearCache() {
       message: t('settings.dataCleared'),
     });
   });
+}
+
+async function deleteAccount() {
+  if (deletePin.value.length !== 4) return;
+  deletePinError.value = '';
+  deletingAccount.value = true;
+  try {
+    await api.post('/api/v1/user-delete-account', {
+      user_id: authStore.userId,
+      pin: deletePin.value,
+    });
+    showDeleteAccountDialog.value = false;
+    await db.clearUserData();
+    await authStore.logout();
+    router.push('/auth/login');
+    $q.notify({ type: 'positive', message: t('settings.accountDeleted') });
+  } catch (err: unknown) {
+    const msg = (err as { response?: { data?: { detail?: string } } })?.response?.data?.detail;
+    deletePinError.value = msg || t('settings.deleteAccountFailed');
+  } finally {
+    deletingAccount.value = false;
+  }
 }
 
 function confirmLogout() {

@@ -33,9 +33,11 @@ const farmerDashboardRef = ref<InstanceType<typeof FarmerDashboard> | null>(null
 
 // Determine which dashboard to show
 // Show extension worker dashboard if:
-// 1. User has extension worker role, OR
-// 2. User is managing farmers (has created farmer profiles)
+// 1. User has extension worker role (EW, nutritionist), OR
+// 2. User is NOT a farmer role AND is managing farmers
+// Farmer-role users always see the farmer dashboard, even if they have managed farmers
 const showExtensionWorkerDashboard = computed(() => {
+  if (authStore.isFarmerRole) return false;
   return authStore.isExtensionWorker || farmersStore.isManagingFarmers;
 });
 

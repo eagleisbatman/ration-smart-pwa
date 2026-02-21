@@ -51,6 +51,18 @@
       <div v-if="adminStore.users.length === 0" class="text-center text-grey-6 q-pa-xl">
         {{ $t('admin.noData') }}
       </div>
+
+      <!-- Pagination -->
+      <div v-if="totalPages > 1" class="row justify-center q-mt-md">
+        <q-pagination
+          v-model="page"
+          :max="totalPages"
+          direction-links
+          boundary-links
+          :max-pages="5"
+          @update:model-value="fetchUsers"
+        />
+      </div>
     </template>
   </q-page>
 </template>
@@ -58,16 +70,23 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
 import { useQuasar } from 'quasar';
+import { useRoute } from 'vue-router';
 import { useAdminStore, type AdminUser } from 'src/stores/admin';
 import { useAuthStore } from 'src/stores/auth';
 import { useI18n } from 'vue-i18n';
 
 const $q = useQuasar();
+const route = useRoute();
 const adminStore = useAdminStore();
 const authStore = useAuthStore();
 const { t } = useI18n();
 
 const search = ref('');
+const page = ref(1);
+const totalUsers = ref(0);
+const pageSize = 25;
+const totalPages = computed(() => Math.max(1, Math.ceil(totalUsers.value / pageSize)));
+const orgFilter = computed(() => (route.query.org as string) || null);
 let debounceTimer: ReturnType<typeof setTimeout> | null = null;
 
 const availableLevels = computed(() => {
@@ -96,14 +115,20 @@ function formatRole(role: string | null): string {
 
 function debouncedFetch() {
   if (debounceTimer) clearTimeout(debounceTimer);
+  page.value = 1; // Reset to first page on search
   debounceTimer = setTimeout(() => fetchUsers(), 400);
 }
 
 async function fetchUsers() {
-  if (authStore.isOrgAdmin && authStore.user?.organization_id) {
+  if (orgFilter.value) {
+    await adminStore.fetchOrgUsers(orgFilter.value);
+    totalUsers.value = adminStore.users.length;
+  } else if (authStore.isOrgAdmin && authStore.user?.organization_id) {
     await adminStore.fetchOrgUsers(authStore.user.organization_id);
+    totalUsers.value = adminStore.users.length;
   } else {
-    await adminStore.fetchAllUsers(1, 50, search.value || undefined);
+    const result = await adminStore.fetchAllUsers(page.value, pageSize, search.value || undefined);
+    totalUsers.value = result.total;
   }
 }
 

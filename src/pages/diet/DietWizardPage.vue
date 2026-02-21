@@ -838,6 +838,10 @@ onMounted(async () => {
     // Pre-select cow if from query
     inputMode.value = 'select';
     onCowSelected(queryCowId);
+  } else if (cowOptions.value.length === 1) {
+    // Auto-select when user has only 1 cow
+    inputMode.value = 'select';
+    onCowSelected(cowOptions.value[0].value);
   }
 
   // Handle ?autoFeeds=true from failure retry flow
