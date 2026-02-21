@@ -824,7 +824,7 @@ const ENDPOINT_MAP: Record<string, EndpointMapping> = {
     path: '/admin/analytics/org/:orgId',
   },
   '/api/v1/user-delete-account': {
-    path: '/user-delete-account',
+    path: '/auth/user-delete-account',
   },
 
   // ============================================================================

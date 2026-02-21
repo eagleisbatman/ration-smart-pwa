@@ -489,8 +489,8 @@ import { ref, computed, watch, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useQuasar } from 'quasar';
 import { useI18n } from 'vue-i18n';
-import { format } from 'date-fns';
 import { useDietsStore } from 'src/stores/diets';
+import { useDateFormat } from 'src/composables/useDateFormat';
 import { Diet } from 'src/lib/offline/db';
 import SkeletonCard from 'src/components/ui/SkeletonCard.vue';
 import EmptyState from 'src/components/ui/EmptyState.vue';
@@ -601,8 +601,9 @@ function regenerateWithAutoFeeds() {
   router.push({ path: '/diet/new', query });
 }
 
+const { formatDate: _formatDate } = useDateFormat();
 function formatDate(dateStr: string): string {
-  return format(new Date(dateStr), 'MMMM d, yyyy h:mm a');
+  return _formatDate(dateStr, 'MMMM d, yyyy h:mm a');
 }
 
 function getStatusLabel(status: string): string {
