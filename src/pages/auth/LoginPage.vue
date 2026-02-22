@@ -293,7 +293,14 @@ async function onSubmit() {
     } else {
       // Redirect to intended page or home (validate to prevent open redirect)
       const redirect = route.query.redirect as string;
-      const safeRedirect = redirect && redirect.startsWith('/') && !redirect.startsWith('//') ? redirect : '/';
+      // Validate redirect: must start with '/' but not '//' or '/\' to prevent open redirect
+      const safeRedirect =
+        redirect &&
+        redirect.startsWith('/') &&
+        !redirect.startsWith('//') &&
+        !redirect.startsWith('/\\')
+          ? redirect
+          : '/';
       router.push(safeRedirect);
     }
   }

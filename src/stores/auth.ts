@@ -341,12 +341,6 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  /** @deprecated Backend has no /auth/verify-pin endpoint. Login returns token directly. */
-  async function verifyPin(_pin: string): Promise<boolean> {
-    console.warn('[auth] verifyPin: no backend endpoint exists');
-    return false;
-  }
-
   async function loadUserProfile(): Promise<void> {
     if (!userId.value) return;
 
@@ -689,7 +683,6 @@ export const useAuthStore = defineStore('auth', () => {
     ensureCountriesLoaded,
     register,
     login,
-    verifyPin,
     loadUserProfile,
     updateProfile,
     updateUserSettings,

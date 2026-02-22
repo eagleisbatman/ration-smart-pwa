@@ -291,7 +291,7 @@ watch(
 
 <style lang="scss" scoped>
 .main-header {
-  background: white;
+  background: var(--q-color-surface, white);
   color: #18181b;
 }
 
