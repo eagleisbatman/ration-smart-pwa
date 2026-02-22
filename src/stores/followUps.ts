@@ -200,8 +200,8 @@ function saveLocalResponse(response: FollowUpResponse): void {
 }
 
 /**
- * Merge local and backend responses, deduplicating by diet_id + responded_at.
+ * Get all locally stored follow-up responses.
  */
-async function getAllResponses(): Promise<FollowUpResponse[]> {
+function getAllResponses(): FollowUpResponse[] {
   return getStoredResponses();
 }

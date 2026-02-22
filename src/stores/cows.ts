@@ -320,22 +320,26 @@ export const useCowsStore = defineStore('cows', () => {
   }
 
   async function bulkDeleteCows(ids: string[]): Promise<number> {
+    // Process in batches of 5 to avoid overwhelming the backend
     let successCount = 0;
-
-    for (const id of ids) {
-      const result = await deleteCow(id);
-      if (result) successCount++;
+    const batchSize = 5;
+    for (let i = 0; i < ids.length; i += batchSize) {
+      const batch = ids.slice(i, i + batchSize);
+      const results = await Promise.allSettled(batch.map(id => deleteCow(id)));
+      successCount += results.filter(r => r.status === 'fulfilled' && r.value).length;
     }
-
     return successCount;
   }
 
   async function bulkArchiveCows(ids: string[]): Promise<number> {
     let successCount = 0;
-
-    for (const id of ids) {
-      const result = await updateCow(id, { is_active: false } as Partial<CowInput>);
-      if (result) successCount++;
+    const batchSize = 5;
+    for (let i = 0; i < ids.length; i += batchSize) {
+      const batch = ids.slice(i, i + batchSize);
+      const results = await Promise.allSettled(
+        batch.map(id => updateCow(id, { is_active: false } as Partial<CowInput>))
+      );
+      successCount += results.filter(r => r.status === 'fulfilled' && r.value).length;
     }
 
     return successCount;

@@ -83,7 +83,7 @@ export async function initSyncManager(): Promise<void> {
   if (!onlineListenerRegistered) {
     onlineListenerRegistered = true;
     window.addEventListener('online', () => {
-      syncPendingChanges();
+      syncPendingChanges().catch(err => console.error('[SyncManager] Online sync failed:', err));
     });
   }
 
