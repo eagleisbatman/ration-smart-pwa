@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { api } from 'src/lib/api';
 import { useAuthStore } from './auth';
+import { extractUserFriendlyError } from 'src/lib/error-messages';
 
 export interface AdminUser {
   id: string;
@@ -61,7 +62,7 @@ export const useAdminStore = defineStore('admin', () => {
       users.value = (resp.data.users || []).map(_normalizeUser);
       return users.value;
     } catch (err) {
-      error.value = 'Failed to fetch users';
+      error.value = extractUserFriendlyError(err);
       console.error('[admin] fetchOrgUsers error:', err);
       return [];
     } finally {
@@ -86,7 +87,7 @@ export const useAdminStore = defineStore('admin', () => {
       users.value = (data.users || []).map(_normalizeUser);
       return { users: users.value, total: data.total_count || data.total || users.value.length };
     } catch (err) {
-      error.value = 'Failed to fetch users';
+      error.value = extractUserFriendlyError(err);
       console.error('[admin] fetchAllUsers error:', err);
       return { users: [], total: 0 };
     } finally {
@@ -110,7 +111,7 @@ export const useAdminStore = defineStore('admin', () => {
       }
       return true;
     } catch (err) {
-      error.value = 'Failed to update admin level';
+      error.value = extractUserFriendlyError(err);
       console.error('[admin] setAdminLevel error:', err);
       return false;
     }
@@ -141,7 +142,7 @@ export const useAdminStore = defineStore('admin', () => {
       const total = data?.count ?? data?.total_count ?? orgs.value.length;
       return { orgs: orgs.value, total };
     } catch (err) {
-      error.value = 'Failed to fetch organizations';
+      error.value = extractUserFriendlyError(err);
       console.error('[admin] fetchOrgs error:', err);
       return { orgs: [], total: 0 };
     } finally {
@@ -155,7 +156,7 @@ export const useAdminStore = defineStore('admin', () => {
       await api.post('/api/v1/organizations/', payload);
       return true;
     } catch (err) {
-      error.value = 'Failed to create organization';
+      error.value = extractUserFriendlyError(err);
       console.error('[admin] createOrg error:', err);
       return false;
     }

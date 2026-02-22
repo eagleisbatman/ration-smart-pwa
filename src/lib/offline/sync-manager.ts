@@ -89,7 +89,7 @@ export async function initSyncManager(): Promise<void> {
 
   // Initial sync if online
   if (isOnline.value) {
-    syncPendingChanges();
+    syncPendingChanges().catch(err => console.error('[SyncManager] Initial sync failed:', err));
   }
 }
 
@@ -161,10 +161,20 @@ export async function syncPendingChanges(): Promise<boolean> {
           error_message: errorMessage,
         });
 
-        // If too many retries, skip this item for now
+        // If too many retries, permanently remove the item to avoid unbounded queue growth
         const updatedItem = await db.syncQueue.get(item.id!);
         if (updatedItem && updatedItem.retry_count >= 5) {
-          console.warn(`Item ${item.id} exceeded retry limit, skipping`);
+          console.warn(`Item ${item.id} exceeded retry limit — removing from queue`);
+          await db.removeFromSyncQueue(item.id!);
+          await logSyncHistoryEntry({
+            operation: 'push',
+            entity_type: item.entity_type,
+            entity_id: item.entity_id,
+            entity_name: entityName,
+            action: item.operation,
+            status: 'failed',
+            error_message: 'Exceeded retry limit — item removed from queue',
+          });
         }
       }
     }
@@ -328,7 +338,7 @@ export async function queueCreate(
 
   // Try to sync immediately if online
   if (isOnline.value) {
-    syncPendingChanges();
+    syncPendingChanges().catch(err => console.error('[SyncManager] Sync after create failed:', err));
   }
 }
 
@@ -366,7 +376,7 @@ export async function queueUpdate(
 
   // Try to sync immediately if online
   if (isOnline.value) {
-    syncPendingChanges();
+    syncPendingChanges().catch(err => console.error('[SyncManager] Sync after update failed:', err));
   }
 }
 
@@ -398,7 +408,7 @@ export async function queueDelete(
 
   // Try to sync immediately if online
   if (isOnline.value) {
-    syncPendingChanges();
+    syncPendingChanges().catch(err => console.error('[SyncManager] Sync after delete failed:', err));
   }
 }
 

@@ -243,7 +243,7 @@ async function downloadReport() {
     const html = resp.data as string;
     const blob = new Blob([html], { type: 'text/html' });
     const url = URL.createObjectURL(blob);
-    window.open(url, '_blank', 'noopener');
+    window.open(url, '_blank', 'noopener,noreferrer');
     setTimeout(() => URL.revokeObjectURL(url), 10000);
   } catch {
     // silent

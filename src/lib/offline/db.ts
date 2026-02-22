@@ -545,12 +545,15 @@ class RationSmartDB extends Dexie {
     await this.syncQueue.delete(id);
   }
 
-  // Update sync queue item retry count
+  // Update sync queue item retry count (atomic increment via modify)
   async updateSyncQueueRetry(id: number, error: string): Promise<void> {
-    await this.syncQueue.update(id, {
-      retry_count: ((await this.syncQueue.get(id))?.retry_count ?? 0) + 1,
-      last_error: error,
-    });
+    await this.syncQueue
+      .where(':id')
+      .equals(id)
+      .modify((item) => {
+        item.retry_count = (item.retry_count ?? 0) + 1;
+        item.last_error = error;
+      });
   }
 
   // Add a sync history entry

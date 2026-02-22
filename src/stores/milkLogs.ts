@@ -149,14 +149,28 @@ export const useMilkLogsStore = defineStore('milkLogs', () => {
             _deleted: false,
           }));
 
-        // Replace local database (clear stale data, then store fresh)
-        // Keep unsynced local logs that haven't been pushed yet
+        // Merge server logs with local data. Keep unsynced local logs.
+        // Avoid destructive clear+bulkPut which would lose data if the operation
+        // is interrupted mid-write.
         const unsyncedLogs = await db.milkLogs
           .where({ user_id: authStore.userId! })
           .filter((l) => !l._synced)
           .toArray();
-        await db.milkLogs.where({ user_id: authStore.userId! }).delete();
-        await db.milkLogs.bulkPut([...serverLogs, ...unsyncedLogs]);
+        const unsyncedIds = new Set(unsyncedLogs.map((l) => l.id));
+        // Remove server entries that conflict with unsynced local writes
+        const logsToWrite = serverLogs.filter((l: MilkLog) => !unsyncedIds.has(l.id));
+        // Delete stale server-synced logs no longer returned by the server
+        const serverIds = new Set(serverLogs.map((l: MilkLog) => l.id));
+        const stale = await db.milkLogs
+          .where({ user_id: authStore.userId! })
+          .filter((l) => l._synced && !serverIds.has(l.id))
+          .toArray();
+        if (stale.length > 0) {
+          await db.milkLogs.bulkDelete(stale.map((l) => l.id));
+        }
+        if (logsToWrite.length > 0) {
+          await db.milkLogs.bulkPut(logsToWrite);
+        }
       }
 
       // Load from local database (userId may have been cleared by 401 interceptor)

@@ -120,13 +120,26 @@ export const useDietsStore = defineStore('diets', () => {
           _synced: true,
         }));
 
-        // Preserve unsynced local diets, then replace with server data
+        // Merge server diets with local data. Keep unsynced local diets.
+        // Avoid destructive clear+bulkPut which would lose data if interrupted.
         const unsyncedDiets = await db.diets
           .where({ user_id: authStore.userId! })
           .filter((d) => !d._synced)
           .toArray();
-        await db.diets.where({ user_id: authStore.userId! }).delete();
-        await db.diets.bulkPut([...serverDiets, ...unsyncedDiets]);
+        const unsyncedIds = new Set(unsyncedDiets.map((d) => d.id));
+        const dietsToWrite = serverDiets.filter((d: Diet) => !unsyncedIds.has(d.id));
+        // Delete stale server-synced diets no longer returned by the server
+        const serverIds = new Set(serverDiets.map((d: Diet) => d.id));
+        const staleDiets = await db.diets
+          .where({ user_id: authStore.userId! })
+          .filter((d) => d._synced && !serverIds.has(d.id))
+          .toArray();
+        if (staleDiets.length > 0) {
+          await db.diets.bulkDelete(staleDiets.map((d) => d.id));
+        }
+        if (dietsToWrite.length > 0) {
+          await db.diets.bulkPut(dietsToWrite);
+        }
       }
 
       // Load from local database (userId may have been cleared by 401 interceptor)
@@ -301,31 +314,6 @@ export const useDietsStore = defineStore('diets', () => {
     }
   }
 
-  async function evaluateDiet(
-    dietId: string,
-    actualFeeds: Array<{ feed_id: string; amount_kg: number }>
-  ): Promise<Record<string, unknown> | null> {
-    if (!isOnline.value) {
-      error.value = 'Diet evaluation requires an internet connection';
-      return null;
-    }
-
-    loading.value = true;
-    error.value = null;
-
-    try {
-      const response = await api.post(`/api/v1/diet/${dietId}/evaluate`, {
-        actual_feeds: actualFeeds,
-      });
-      return response.data;
-    } catch (err) {
-      error.value = extractUserFriendlyError(err);
-      return null;
-    } finally {
-      loading.value = false;
-    }
-  }
-
   /**
    * Save a locally-optimized diet to the backend (bot-diet-history).
    * Only locally-created diets (not yet synced) need saving.
@@ -367,7 +355,8 @@ export const useDietsStore = defineStore('diets', () => {
         input_data: diet.input_data,
         result_data: diet._raw_backend_result ?? diet.result_data,
         total_cost: diet.total_cost,
-        currency: 'INR',
+        // Currency is determined by the backend based on the user's country;
+        // do not hardcode here to avoid incorrect values for non-INR countries.
         simulation_id: diet.id,
       };
 
@@ -702,7 +691,6 @@ export const useDietsStore = defineStore('diets', () => {
     fetchDiets,
     getDiet,
     optimizeDiet,
-    evaluateDiet,
     saveDiet,
     deleteDiet,
     getDietsForCow,

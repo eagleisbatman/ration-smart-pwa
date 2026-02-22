@@ -355,6 +355,44 @@ function mapCowToBackend(input: Record<string, unknown>): Record<string, unknown
 }
 
 /**
+ * Parse a backend nutrient_balance array into the flat PWA nutrient_balance object.
+ * Shared between the optimize-response transform and normalizeDietResultData.
+ */
+function parseNutrientBalance(
+  rows: Array<Record<string, unknown>> | undefined
+): Record<string, number> {
+  const nutrientBalance: Record<string, number> = {
+    mp_supplied: 0, mp_requirement: 0,
+    nel_supplied: 0, nel_requirement: 0,
+    dm_supplied: 0, dm_requirement: 0,
+    ca_supplied: 0, ca_requirement: 0,
+    p_supplied: 0, p_requirement: 0,
+  };
+  for (const row of rows || []) {
+    const param = (row.parameter as string || '').toLowerCase();
+    const req = row.requirement as number || 0;
+    const sup = row.supply as number || 0;
+    if (param.includes('metabolizable protein') || param.includes('crude protein') || param === 'cp' || param === 'mp') {
+      nutrientBalance.mp_requirement = req;
+      nutrientBalance.mp_supplied = sup;
+    } else if (param.includes('net energy') || param.includes('nel') || param.includes('tdn') || param.includes('total digestible')) {
+      nutrientBalance.nel_requirement = req;
+      nutrientBalance.nel_supplied = sup;
+    } else if (param.includes('dry matter') || param === 'dm' || param === 'dmi') {
+      nutrientBalance.dm_requirement = req;
+      nutrientBalance.dm_supplied = sup;
+    } else if (param.includes('calcium') || param === 'ca') {
+      nutrientBalance.ca_requirement = req;
+      nutrientBalance.ca_supplied = sup;
+    } else if (param.includes('phosphorus') || param === 'p') {
+      nutrientBalance.p_requirement = req;
+      nutrientBalance.p_supplied = sup;
+    }
+  }
+  return nutrientBalance;
+}
+
+/**
  * Normalize a raw backend diet result into the PWA result_data shape.
  * Handles both already-normalized data (from optimize transform) and
  * raw backend responses (from full_result stored in bot-diet-history).
@@ -381,38 +419,9 @@ function normalizeDietResultData(raw: Record<string, unknown> | undefined): Reco
     price_per_kg: f.price_per_kg as number || 0,
   }));
 
-  const nutrientBalance: Record<string, number> = {
-    mp_supplied: 0, mp_requirement: 0,
-    nel_supplied: 0, nel_requirement: 0,
-    dm_supplied: 0, dm_requirement: 0,
-    ca_supplied: 0, ca_requirement: 0,
-    p_supplied: 0, p_requirement: 0,
-  };
-  for (const row of nutrientBalanceRaw || []) {
-    const param = (row.parameter as string || '').toLowerCase();
-    const req = row.requirement as number || 0;
-    const sup = row.supply as number || 0;
-    if (param.includes('metabolizable protein') || param.includes('crude protein') || param === 'cp' || param === 'mp') {
-      nutrientBalance.mp_requirement = req;
-      nutrientBalance.mp_supplied = sup;
-    } else if (param.includes('net energy') || param.includes('nel') || param.includes('tdn') || param.includes('total digestible')) {
-      nutrientBalance.nel_requirement = req;
-      nutrientBalance.nel_supplied = sup;
-    } else if (param.includes('dry matter') || param === 'dm' || param === 'dmi') {
-      nutrientBalance.dm_requirement = req;
-      nutrientBalance.dm_supplied = sup;
-    } else if (param.includes('calcium') || param === 'ca') {
-      nutrientBalance.ca_requirement = req;
-      nutrientBalance.ca_supplied = sup;
-    } else if (param.includes('phosphorus') || param === 'p') {
-      nutrientBalance.p_requirement = req;
-      nutrientBalance.p_supplied = sup;
-    }
-  }
-
   return {
     feeds,
-    nutrient_balance: nutrientBalance,
+    nutrient_balance: parseNutrientBalance(nutrientBalanceRaw),
     recommendations: (additionalInfo?.recommendations as string[]) || [],
     warnings: (additionalInfo?.warnings as string[]) || [],
     diet_status: raw.diet_status || {},
@@ -993,34 +1002,7 @@ const ENDPOINT_MAP: Record<string, EndpointMapping> = {
         // Map nutrient balance: array of { parameter, requirement, supply, balance } → object
         // NASEM engine returns: "Metabolizable Protein (MP)", "Net Energy Lactation (NEL)",
         // "Dry Matter Intake", "Calcium", "Phosphorus"
-        const nutrientBalance: Record<string, number> = {
-          mp_supplied: 0, mp_requirement: 0,
-          nel_supplied: 0, nel_requirement: 0,
-          dm_supplied: 0, dm_requirement: 0,
-          ca_supplied: 0, ca_requirement: 0,
-          p_supplied: 0, p_requirement: 0,
-        };
-        for (const row of nutrientBalanceRaw || []) {
-          const param = (row.parameter as string || '').toLowerCase();
-          const req = row.requirement as number || 0;
-          const sup = row.supply as number || 0;
-          if (param.includes('metabolizable protein') || param.includes('crude protein') || param === 'cp' || param === 'mp') {
-            nutrientBalance.mp_requirement = req;
-            nutrientBalance.mp_supplied = sup;
-          } else if (param.includes('net energy') || param.includes('nel') || param.includes('tdn') || param.includes('total digestible')) {
-            nutrientBalance.nel_requirement = req;
-            nutrientBalance.nel_supplied = sup;
-          } else if (param.includes('dry matter') || param === 'dm' || param === 'dmi') {
-            nutrientBalance.dm_requirement = req;
-            nutrientBalance.dm_supplied = sup;
-          } else if (param.includes('calcium') || param === 'ca') {
-            nutrientBalance.ca_requirement = req;
-            nutrientBalance.ca_supplied = sup;
-          } else if (param.includes('phosphorus') || param === 'p') {
-            nutrientBalance.p_requirement = req;
-            nutrientBalance.p_supplied = sup;
-          }
-        }
+        const nutrientBalance = parseNutrientBalance(nutrientBalanceRaw);
 
         const isValid = dietStatus?.is_valid as boolean ?? (feeds.length > 0);
 
