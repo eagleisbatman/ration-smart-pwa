@@ -224,7 +224,13 @@ export const useNotificationsStore = defineStore('notifications', () => {
     // Batch-load all milk logs once to avoid N+1 IndexedDB queries
     try {
       const activeCows = cowsStore.activeCows;
-      const allLogs = await db.milkLogs.filter((log) => !log._deleted).sortBy('log_date');
+      // Only fetch logs from the last 14 days to avoid a full-table scan
+      const fourteenDaysAgo = new Date();
+      fourteenDaysAgo.setDate(fourteenDaysAgo.getDate() - 14);
+      const cutoffDate = fourteenDaysAgo.toISOString().split('T')[0]; // YYYY-MM-DD
+      const allLogs = await db.milkLogs
+        .filter((log) => !log._deleted && log.log_date >= cutoffDate)
+        .sortBy('log_date');
       // Group logs by cow_id
       const logsByCow = new Map<string, typeof allLogs>();
       for (const log of allLogs) {

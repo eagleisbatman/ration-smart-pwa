@@ -291,9 +291,10 @@ async function onSubmit() {
     if (authStore.needsOnboarding) {
       router.push('/auth/role');
     } else {
-      // Redirect to intended page or home
+      // Redirect to intended page or home (validate to prevent open redirect)
       const redirect = route.query.redirect as string;
-      router.push(redirect || '/');
+      const safeRedirect = redirect && redirect.startsWith('/') && !redirect.startsWith('//') ? redirect : '/';
+      router.push(safeRedirect);
     }
   }
 }

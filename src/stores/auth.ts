@@ -90,7 +90,9 @@ export const useAuthStore = defineStore('auth', () => {
 
   // Computed
   const isAuthenticated = computed(() => !!token.value && !!userId.value);
-  const userCountry = computed(() => user.value?.country_code || 'IN');
+  const userCountry = computed(
+    () => user.value?.country_code || localStorage.getItem('last_country_code') || 'IN'
+  );
   const userLanguage = computed(() => user.value?.language_code || preferredLanguage.value || 'en');
   const needsOnboarding = computed(() => isAuthenticated.value && !selfFarmerProfileId.value && !onboardingSkipped.value);
 
@@ -152,21 +154,11 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   /**
-   * Fetch and cache countries for country_code to country_id UUID lookup
-   * This must be called before registration to ensure proper mapping
+   * Ensure countries are loaded for country_code to country_id UUID lookup.
+   * Delegates to fetchCountries which populates both the store and api-adapter cache.
    */
   async function ensureCountriesLoaded(): Promise<void> {
-    try {
-      // Fetch countries from backend
-      const response = await api.get('/api/v1/countries');
-      const countries = response.data as Array<{ id: string; country_code: string }>;
-      // Cache them in the api-adapter for use during registration
-      setCountryCache(countries);
-    } catch (err) {
-      console.warn('[Auth] Failed to pre-load countries, will attempt during registration:', err);
-      // Try the async fallback
-      await fetchAndCacheCountries();
-    }
+    await fetchCountries();
   }
 
   async function register(data: {
@@ -349,12 +341,9 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  async function verifyPin(pin: string): Promise<boolean> {
-    // NOTE: Backend does not have a verify-pin endpoint.
-    // Login already returns a token directly. This function is a no-op stub
-    // until a dedicated verify-pin endpoint is added to the backend.
-    console.warn('[auth] verifyPin called but backend has no /auth/verify-pin endpoint');
-    error.value = 'PIN verification is not available';
+  /** @deprecated Backend has no /auth/verify-pin endpoint. Login returns token directly. */
+  async function verifyPin(_pin: string): Promise<boolean> {
+    console.warn('[auth] verifyPin: no backend endpoint exists');
     return false;
   }
 
@@ -479,7 +468,7 @@ export const useAuthStore = defineStore('auth', () => {
       const params = new URLSearchParams();
       if (settings.user_role) params.append('user_role', settings.user_role);
       if (settings.language_code) params.append('language_code', settings.language_code);
-      if (settings.organization_id) params.append('organization_id', settings.organization_id);
+      if (settings.organization_id !== undefined) params.append('organization_id', settings.organization_id || '');
       const queryString = params.toString();
       const settingsUrl = `/api/v1/users/${userId.value}/settings${queryString ? '?' + queryString : ''}`;
       const response = await api.put(settingsUrl);
@@ -495,7 +484,7 @@ export const useAuthStore = defineStore('auth', () => {
       }
 
       // Update user object if returned (normalize to PWA field names)
-      if (response.data) {
+      if (response.data && user.value) {
         const normalized = normalizeUser(response.data);
         user.value = { ...user.value, ...normalized };
         await db.users.put(user.value as User);

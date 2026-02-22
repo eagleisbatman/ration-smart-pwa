@@ -262,8 +262,12 @@ export function formatPhoneE164(phone: string, countryCode: string): string {
     return cleaned;
   }
 
-  // Get dial code for country (case-insensitive)
-  const dialCode = getDialCode(countryCode) || '+1';
+  // Get dial code for country (case-insensitive) — no silent fallback
+  const dialCode = getDialCode(countryCode);
+  if (!dialCode) {
+    console.error(`[api-adapter] No dial code found for country: ${countryCode}`);
+    throw new Error(`Unsupported country code: ${countryCode}. Cannot format phone number.`);
+  }
 
   // Remove leading zero if present (common in some countries)
   const phoneWithoutLeadingZero = cleaned.startsWith('0') ? cleaned.slice(1) : cleaned;
@@ -1086,9 +1090,7 @@ const ENDPOINT_MAP: Record<string, EndpointMapping> = {
       response: (data: unknown) => mapDietFromBackend(data as Record<string, unknown>),
     },
   },
-  '/api/v1/diet/:id/evaluate': {
-    path: '/bot-diet-history/:id/evaluate',
-  },
+  // NOTE: /api/v1/diet/:id/evaluate removed — no backend endpoint exists
   '/api/v1/diet/:id/archive': {
     path: '/bot-diet-history/:id/archive',
   },

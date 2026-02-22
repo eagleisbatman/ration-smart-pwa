@@ -252,6 +252,7 @@ const bottomNavItems = computed(() => [
 ]);
 
 function isActive(path: string): boolean {
+  if (path === '/') return route.path === '/';
   return route.path === path || route.path.startsWith(path + '/');
 }
 
