@@ -81,9 +81,17 @@
       <SkeletonList :count="3" />
     </template>
     <template v-else-if="reports.length === 0">
-      <q-card flat bordered class="text-center q-pa-lg">
-        <q-icon name="assessment" size="48px" color="grey-4" />
-        <div class="text-body2 text-grey-7 q-mt-sm">{{ $t('reports.noReportsYet') }}</div>
+      <q-card flat bordered class="text-center q-pa-xl">
+        <q-icon name="summarize" size="52px" color="grey-4" />
+        <div class="text-subtitle1 q-mt-md">{{ $t('reports.noReportsYet') }}</div>
+        <div class="text-body2 text-grey-6 q-mt-xs q-mb-lg">{{ $t('reports.noReportsDesc') }}</div>
+        <q-btn
+          unelevated
+          color="primary"
+          :label="$t('reports.generateDietReport')"
+          icon="add"
+          @click="openGenerateDialog"
+        />
       </q-card>
     </template>
     <template v-else>

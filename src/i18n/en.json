@@ -1012,6 +1012,7 @@
     "endDate": "End Date",
     "recentReports": "Recent Reports",
     "noReportsYet": "No reports generated yet",
+    "noReportsDesc": "Generate a diet report to track your cattle's nutritional performance and feed costs.",
     "selectCow": "Select Cow",
     "cowRequired": "Please select a cow",
     "noDietAvailable": "No diet recommendation found for this cow. Generate a diet first.",
