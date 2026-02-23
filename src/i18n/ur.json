@@ -341,7 +341,7 @@
     },
     "ageFormatYears": "{count} سال",
     "ageFormatYearsPlural": "{count} سال",
-    "ageFormatYearsAndMonths": "{years} {months}",
+    "ageFormatYearsAndMonths": "{years} سال {months} ماہ",
     "ageFormatMonth": "{count} مہینہ",
     "ageFormatMonthPlural": "{count} مہینے",
     "validation": {
@@ -1397,7 +1397,17 @@
     "ewOnboardingStep1": "اپنے کسانوں کو شامل کریں",
     "ewOnboardingStep2": "ان کے مویشیوں کا اندراج کریں",
     "ewOnboardingStep3": "دودھ کا ریکارڈ رکھیں اور خوراک کے منصوبے پائیں",
-    "adminOnboardingWelcome": "ریشن سمارٹ کا استعمال شروع کریں:"
+    "adminOnboardingWelcome": "ریشن سمارٹ کا استعمال شروع کریں:",
+    "greetingMorningAdmin": "صبح بخیر! آپ کے علاقے کی ایک جھلک۔",
+    "greetingAfternoonAdmin": "دوپہر بخیر! آپ کے علاقے کا جائزہ۔",
+    "greetingEveningAdmin": "شام بخیر! اپنے علاقے کا جائزہ لینے کا وقت ہے۔",
+    "adminOnboardingStep1": "اپنے علاقے کے کسانوں کو تلاش کریں",
+    "adminOnboardingStep2": "مویشیوں کی صحت کا ڈیٹا دیکھیں",
+    "adminOnboardingStep3": "تجزیات اور رپورٹس تک رسائی حاصل کریں",
+    "territoryFarmers": "علاقائی کسان",
+    "territory": "علاقہ",
+    "viewAnalytics": "تجزیات دیکھیں",
+    "adminPanel": "ایڈمن پینل"
   },
   "farmers": {
     "import": {

@@ -19,7 +19,7 @@
     "info": "Thông tin",
     "yes": "Có",
     "no": "Không",
-    "ok": "OK",
+    "ok": "Đồng ý",
     "retry": "Thử lại",
     "refresh": "Làm mới",
     "search": "Tìm kiếm",
@@ -1397,7 +1397,17 @@
     "ewOnboardingStep1": "Thêm các hộ nông dân bạn hỗ trợ",
     "ewOnboardingStep2": "Đăng ký đàn gia súc của họ",
     "ewOnboardingStep3": "Theo dõi sản lượng sữa & nhận khẩu phần ăn",
-    "adminOnboardingWelcome": "Bắt đầu với RationSmart:"
+    "adminOnboardingWelcome": "Bắt đầu với RationSmart:",
+    "greetingMorningAdmin": "Chào buổi sáng! Đây là tổng quan khu vực của bạn.",
+    "greetingAfternoonAdmin": "Chào buổi chiều! Đây là tổng quan khu vực của bạn.",
+    "greetingEveningAdmin": "Chào buổi tối! Đã đến lúc xem lại khu vực của bạn.",
+    "adminOnboardingStep1": "Khám phá nông dân trong khu vực của bạn",
+    "adminOnboardingStep2": "Xem dữ liệu sức khỏe gia súc",
+    "adminOnboardingStep3": "Truy cập phân tích và báo cáo",
+    "territoryFarmers": "Nông dân trong khu vực",
+    "territory": "Khu vực",
+    "viewAnalytics": "Xem phân tích",
+    "adminPanel": "Bảng điều khiển quản trị"
   },
   "farmers": {
     "import": {

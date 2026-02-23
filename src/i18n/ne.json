@@ -1397,7 +1397,17 @@
     "ewOnboardingStep1": "तपाईंले सहयोग गर्ने किसानहरू थप्नुहोस्",
     "ewOnboardingStep2": "उनीहरूका पशुहरू दर्ता गर्नुहोस्",
     "ewOnboardingStep3": "दूधको रेकर्ड राख्नुहोस् र आहारा योजना पाउनुहोस्",
-    "adminOnboardingWelcome": "RationSmart को प्रयोग सुरु गर्नुहोस्:"
+    "adminOnboardingWelcome": "RationSmart को प्रयोग सुरु गर्नुहोस्:",
+    "greetingMorningAdmin": "शुभ प्रभात! यहाँ तपाईंको क्षेत्रको द्रुत जानकारी छ।",
+    "greetingAfternoonAdmin": "शुभ दिउँसो! यहाँ तपाईंको क्षेत्रको समग्र जानकारी छ।",
+    "greetingEveningAdmin": "शुभ साँझ! अब तपाईंको क्षेत्रको समीक्षा गर्ने समय हो।",
+    "adminOnboardingStep1": "तपाईंको क्षेत्रका किसानहरू अन्वेषण गर्नुहोस्",
+    "adminOnboardingStep2": "गाईवस्तुको स्वास्थ्य डेटा हेर्नुहोस्",
+    "adminOnboardingStep3": "विश्लेषण र रिपोर्टहरू पहुँच गर्नुहोस्",
+    "territoryFarmers": "क्षेत्रका किसानहरू",
+    "territory": "क्षेत्र",
+    "viewAnalytics": "विश्लेषण हेर्नुहोस्",
+    "adminPanel": "प्रशासक प्यानल"
   },
   "farmers": {
     "import": {

@@ -97,7 +97,7 @@
     "register": "পঞ্জীয়ন",
     "email": "ইমেইল",
     "phone": "ফোন নম্বৰ",
-    "pin": "PIN",
+    "pin": "পিন",
     "createPin": "4-অংকৰ PIN সৃষ্টি কৰক",
     "confirmPin": "PIN নিশ্চিত কৰক",
     "enterPin": "আপোনাৰ PIN দিয়ক",
@@ -1397,7 +1397,17 @@
     "ewOnboardingStep1": "আপুনি সহায় কৰা কৃষকসকলক যোগ কৰক",
     "ewOnboardingStep2": "তেওঁলোকৰ পশুধন পঞ্জীয়ন কৰক",
     "ewOnboardingStep3": "গাখীৰৰ হিচাপ ৰাখক আৰু খাদ্যৰ তালিকা লওক",
-    "adminOnboardingWelcome": "ৰেচনস্মাৰ্টৰ সৈতে আৰম্ভ কৰক:"
+    "adminOnboardingWelcome": "ৰেচনস্মাৰ্টৰ সৈতে আৰম্ভ কৰক:",
+    "greetingMorningAdmin": "শুভ ৰাতিপুৱা! এয়া আপোনাৰ এলেকাৰ এক নজৰ।",
+    "greetingAfternoonAdmin": "শুভ দুপৰীয়া! এয়া আপোনাৰ এলেকাৰ এক নজৰ।",
+    "greetingEveningAdmin": "শুভ সন্ধ্যা! এতিয়া আপোনাৰ এলেকা পুনৰীক্ষা কৰাৰ সময়।",
+    "adminOnboardingStep1": "আপোনাৰ এলেকাৰ কৃষকসকলক অন্বেষণ কৰক",
+    "adminOnboardingStep2": "গৰুৰ স্বাস্থ্যৰ তথ্য চাওক",
+    "adminOnboardingStep3": "বিশ্লেষণ আৰু প্ৰতিবেদনসমূহ চাওক",
+    "territoryFarmers": "এলাকাৰ কৃষক",
+    "territory": "এলাকা",
+    "viewAnalytics": "বিশ্লেষণ চাওক",
+    "adminPanel": "এডমিন প্যানেল"
   },
   "farmers": {
     "import": {

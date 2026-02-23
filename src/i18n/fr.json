@@ -1400,7 +1400,17 @@
     "ewOnboardingStep1": "Ajoutez les éleveurs que vous soutenez",
     "ewOnboardingStep2": "Enregistrez leur bétail",
     "ewOnboardingStep3": "Suivez le lait et obtenez des plans alimentaires",
-    "adminOnboardingWelcome": "Commencez avec RationSmart :"
+    "adminOnboardingWelcome": "Commencez avec RationSmart :",
+    "greetingMorningAdmin": "Bonjour ! Voici un aperçu de votre territoire.",
+    "greetingAfternoonAdmin": "Bon après-midi ! Voici un aperçu de votre territoire.",
+    "greetingEveningAdmin": "Bonsoir ! Il est temps de revoir votre territoire.",
+    "adminOnboardingStep1": "Explorer les éleveurs de votre territoire",
+    "adminOnboardingStep2": "Consulter les données de santé du bétail",
+    "adminOnboardingStep3": "Accéder aux analyses et rapports",
+    "territoryFarmers": "Éleveurs du territoire",
+    "territory": "Territoire",
+    "viewAnalytics": "Voir les analyses",
+    "adminPanel": "Panneau d'administration"
   },
   "farmers": {
     "import": {
@@ -1706,7 +1716,7 @@
     "user": "Utilisateur régulier",
     "orgAdmin": "Admin d'Org.",
     "countryAdmin": "Admin de Pays",
-    "superAdmin": "Super Admin",
+    "superAdmin": "Super administrateur",
     "role": "Rôle",
     "status": "Statut",
     "active": "Actif",

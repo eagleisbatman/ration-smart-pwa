@@ -1397,7 +1397,17 @@
     "ewOnboardingStep1": "तुम्ही मदत करत असलेले शेतकरी जोडा",
     "ewOnboardingStep2": "त्यांच्या पशुधनाची नोंदणी करा",
     "ewOnboardingStep3": "दुधाचा मागोवा घ्या आणि आहार योजना मिळवा",
-    "adminOnboardingWelcome": "RationSmart सह सुरुवात करा:"
+    "adminOnboardingWelcome": "RationSmart सह सुरुवात करा:",
+    "greetingMorningAdmin": "शुभ प्रभात! तुमच्या कार्यक्षेत्राची माहिती इथे आहे.",
+    "greetingAfternoonAdmin": "शुभ दुपार! तुमच्या कार्यक्षेत्राची माहिती इथे आहे.",
+    "greetingEveningAdmin": "शुभ संध्याकाळ! तुमच्या कार्यक्षेत्राची माहिती तपासण्याची वेळ झाली आहे.",
+    "adminOnboardingStep1": "तुमच्या कार्यक्षेत्रातील शेतकरी शोधा",
+    "adminOnboardingStep2": "गुरांची आरोग्यविषयक माहिती पहा",
+    "adminOnboardingStep3": "विश्लेषण आणि अहवाल मिळवा",
+    "territoryFarmers": "कार्यक्षेत्रातील शेतकरी",
+    "territory": "कार्यक्षेत्र",
+    "viewAnalytics": "विश्लेषण पहा",
+    "adminPanel": "अ‍ॅडमिन पॅनेल"
   },
   "farmers": {
     "import": {
