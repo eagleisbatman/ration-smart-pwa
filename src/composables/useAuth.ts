@@ -24,8 +24,7 @@ export function useAuth() {
   }
 
   async function register(data: {
-    email?: string;
-    phone?: string;
+    phone: string;
     pin: string;
     country_code: string;
     language?: string;
