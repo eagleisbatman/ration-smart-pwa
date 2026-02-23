@@ -1262,6 +1262,7 @@
     "adminOnboardingWelcome": "Get started with RationSmart:"
   },
   "farmer": {
+    "farmer": "Farmer",
     "farmers": "Farmers",
     "managedFarmers": "Farmers I Support",
     "addFarmer": "Add Farmer",
