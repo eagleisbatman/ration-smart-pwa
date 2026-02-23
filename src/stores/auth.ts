@@ -91,7 +91,7 @@ export const useAuthStore = defineStore('auth', () => {
   // Computed
   const isAuthenticated = computed(() => !!token.value && !!userId.value);
   const userCountry = computed(
-    () => user.value?.country_code || localStorage.getItem('last_country_code') || 'IN'
+    () => user.value?.country_code || localStorage.getItem('last_country_code') || ''
   );
   const userLanguage = computed(() => user.value?.language_code || preferredLanguage.value || 'en');
   const needsOnboarding = computed(() => isAuthenticated.value && !selfFarmerProfileId.value && !onboardingSkipped.value);
@@ -162,8 +162,7 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function register(data: {
-    email?: string;
-    phone?: string;
+    phone: string;
     pin: string;
     country_code: string;
     language?: string;
