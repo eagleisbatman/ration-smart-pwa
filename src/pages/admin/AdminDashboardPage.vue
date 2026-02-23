@@ -1,12 +1,18 @@
 <template>
   <q-page padding>
-    <div class="text-h6 q-mb-md">{{ $t('admin.dashboard') }}</div>
-
-    <!-- Admin level badge -->
-    <q-chip dense outline class="q-mb-lg">
-      <q-icon name="verified_user" size="16px" class="q-mr-xs" />
-      {{ adminLevelLabel }}
-    </q-chip>
+    <!-- Welcome header with role badge -->
+    <div class="row items-center justify-between q-mb-lg">
+      <div>
+        <div class="text-h6 text-weight-medium">
+          {{ $t('dashboard.welcome', { name: authStore.user?.name || '' }) }}
+        </div>
+        <div class="text-caption text-grey-6">{{ $t('admin.managingSystem') }}</div>
+      </div>
+      <q-chip dense outline>
+        <q-icon name="verified_user" size="16px" class="q-mr-xs" />
+        {{ adminLevelLabel }}
+      </q-chip>
+    </div>
 
     <!-- Error state -->
     <q-banner v-if="loadError" inline-actions class="bg-negative text-white q-mb-md" rounded>
