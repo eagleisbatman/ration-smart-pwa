@@ -1195,6 +1195,9 @@
     "greetingMorning": "Good morning! Ready to check on your farmers?",
     "greetingAfternoon": "Good afternoon! How are your farmers doing today?",
     "greetingEvening": "Good evening! Time to review the day.",
+    "greetingMorningAdmin": "Good morning! Here's your territory at a glance.",
+    "greetingAfternoonAdmin": "Good afternoon! Here's your territory overview.",
+    "greetingEveningAdmin": "Good evening! Time to review your territory.",
     "greetingSummary": "Your {cows} cows produced {liters}L yesterday.",
     "farmersManaged": "Farmers Managed",
     "totalCows": "Total Cows",
@@ -1259,7 +1262,14 @@
     "ewOnboardingStep1": "Add farmers you support",
     "ewOnboardingStep2": "Register their cattle",
     "ewOnboardingStep3": "Track milk & get diet plans",
-    "adminOnboardingWelcome": "Get started with RationSmart:"
+    "adminOnboardingWelcome": "Get started with RationSmart:",
+    "adminOnboardingStep1": "Explore farmers in your territory",
+    "adminOnboardingStep2": "View cattle health data",
+    "adminOnboardingStep3": "Access analytics and reports",
+    "territoryFarmers": "Territory Farmers",
+    "territory": "Territory",
+    "viewAnalytics": "View Analytics",
+    "adminPanel": "Admin Panel"
   },
   "farmer": {
     "farmer": "Farmer",
