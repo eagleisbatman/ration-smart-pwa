@@ -1257,53 +1257,53 @@
   },
   "help": {
     "title": "મદદ અને સપોર્ટ",
-    "faqTitle": "Frequently Asked Questions",
-    "contactTitle": "Contact Support",
-    "contactDescription": "Can't find what you're looking for? Reach out to our support team.",
-    "emailSupport": "Email Support",
-    "reportBugTitle": "Report a Bug",
-    "reportBugDescription": "Found something that isn't working right? Let us know so we can fix it.",
-    "reportBug": "Report a Bug",
-    "appInfoTitle": "App Information",
-    "version": "Version",
-    "buildWith": "Built with care by Digital Green",
+    "faqTitle": "વારંવાર પૂછાતા પ્રશ્નો",
+    "contactTitle": "સપોર્ટનો સંપર્ક કરો",
+    "contactDescription": "તમે જે શોધી રહ્યા છો તે મળતું નથી? અમારી સપોર્ટ ટીમનો સંપર્ક કરો.",
+    "emailSupport": "ઈમેલ સપોર્ટ",
+    "reportBugTitle": "બગની જાણ કરો",
+    "reportBugDescription": "કંઈક યોગ્ય રીતે કામ નથી કરતું? અમને જણાવો જેથી અમે તેને ઠીક કરી શકીએ.",
+    "reportBug": "બગની જાણ કરો",
+    "appInfoTitle": "એપ્લિકેશન માહિતી",
+    "version": "વર્ઝન",
+    "buildWith": "ડિજિટલ ગ્રીન દ્વારા કાળજીપૂર્વક બનાવેલ છે",
     "faq": {
       "addCow": {
-        "question": "How do I add a cow?",
-        "answer": "Go to the \"My Cows\" section from the home page or bottom navigation, then tap the \"+\" button. Fill in the cow's details such as name, breed, weight, and milk production, then tap Save."
+        "question": "હું ગાય કેવી રીતે ઉમેરી શકું?",
+        "answer": "હોમ પેજ અથવા નીચેના નેવિગેશનમાંથી \"મારી ગાયો\" વિભાગમાં જાઓ, પછી \"+\" બટન દબાવો. ગાયની વિગતો જેમ કે નામ, નસલ, વજન અને દૂધ ઉત્પાદન ભરો, પછી સેવ દબાવો."
       },
       "logMilk": {
-        "question": "How do I log milk production?",
-        "answer": "Navigate to \"Milk Logs\" from the bottom navigation, tap the \"+\" button, select a cow, enter the morning and/or evening milk yield in liters, and save the entry."
+        "question": "હું દૂધ ઉત્પાદન કેવી રીતે લોગ કરી શકું?",
+        "answer": "નીચેના નેવિગેશનમાંથી \"દૂધ લોગ્સ\" પર જાઓ, \"+\" બટન દબાવો, એક ગાય પસંદ કરો, સવાર અને/અથવા સાંજનું દૂધ ઉત્પાદન લિટરમાં દાખલ કરો, અને એન્ટ્રી સેવ કરો."
       },
       "dietOptimizer": {
-        "question": "How does the diet optimizer work?",
-        "answer": "The diet optimizer uses your cow's weight, milk production, and available feeds to calculate the most cost-effective or highest-yield diet. Go to \"Diet Plans\", create a new plan, select a cow and available feeds, choose your optimization goal, and the system will generate a recommended diet."
+        "question": "ડાયટ ઓપ્ટિમાઈઝર કેવી રીતે કામ કરે છે?",
+        "answer": "આહાર ઑપ્ટિમાઇઝર તમારી ગાયનું વજન, દૂધ ઉત્પાદન અને ઉપલબ્ધ ખોરાકનો ઉપયોગ કરીને સૌથી સસ્તો અથવા સૌથી વધુ ઉપજ આપતો આહાર નક્કી કરે છે. \"આહાર યોજનાઓ\" પર જાઓ, નવી યોજના બનાવો, ગાય અને ઉપલબ્ધ ખોરાક પસંદ કરો, તમારો ઑપ્ટિમાઇઝેશન ધ્યેય પસંદ કરો, અને સિસ્ટમ ભલામણ કરેલ આહાર બનાવશે."
       },
       "offlineUse": {
-        "question": "Can I use the app offline?",
-        "answer": "Yes! You can view your cows, milk logs, and diet plans while offline. Any changes you make will be saved locally and automatically synced when you reconnect to the internet. Diet optimization requires an internet connection."
+        "question": "શું હું ઍપનો ઑફલાઇન ઉપયોગ કરી શકું છું?",
+        "answer": "હા! તમે ઑફલાઇન હોય ત્યારે પણ તમારી ગાયો, દૂધના લોગ અને આહાર યોજનાઓ જોઈ શકો છો. તમે જે પણ ફેરફારો કરશો તે સ્થાનિક રીતે સેવ થશે અને જ્યારે તમે ઇન્ટરનેટથી કનેક્ટ થશો ત્યારે આપમેળે સિંક થઈ જશે. આહાર ઑપ્ટિમાઇઝેશન માટે ઇન્ટરનેટ કનેક્શન જરૂરી છે."
       },
       "changeLanguage": {
-        "question": "How do I change my language?",
-        "answer": "Go to Settings and tap on \"Language\". Select your preferred language from the list. The app supports over 20 languages across multiple regions."
+        "question": "હું મારી ભાષા કેવી રીતે બદલી શકું?",
+        "answer": "સેટિંગ્સમાં જાઓ અને \"ભાષા\" પર ટૅપ કરો. સૂચિમાંથી તમારી પસંદગીની ભાષા પસંદ કરો. ઍપ બહુવિધ પ્રદેશોમાં 20 થી વધુ ભાષાઓને સપોર્ટ કરે છે."
       },
       "dataSync": {
-        "question": "How do I sync my data?",
-        "answer": "Your data syncs automatically when you are connected to the internet. You can also manually trigger a sync from Settings under \"Data & Sync\" by tapping the sync button."
+        "question": "હું મારા ડેટાને કેવી રીતે સિંક કરી શકું?",
+        "answer": "જ્યારે તમે ઇન્ટરનેટથી કનેક્ટ થાઓ છો ત્યારે તમારો ડેટા આપમેળે સિંક થાય છે. તમે સેટિંગ્સમાં \"ડેટા અને સિંક\" હેઠળ સિંક બટનને ટૅપ કરીને મેન્યુઅલી સિંક પણ શરૂ કરી શકો છો."
       }
     }
   },
   "privacy": {
-    "title": "Privacy Policy",
-    "lastUpdated": "Last updated: {date}",
-    "dataCollection": "Data We Collect",
-    "dataCollectionDesc": "We collect the following information to provide and improve our services:",
+    "title": "ગોપનીયતા નીતિ",
+    "lastUpdated": "છેલ્લે અપડેટ કરેલ: {date}",
+    "dataCollection": "અમે એકત્રિત કરીએ છીએ તે ડેટા",
+    "dataCollectionDesc": "અમે અમારી સેવાઓ પ્રદાન કરવા અને સુધારવા માટે નીચેની માહિતી એકત્રિત કરીએ છીએ:",
     "dataCollected": {
-      "name": "Name and profile information",
-      "email": "Email address",
-      "phone": "Phone number",
-      "location": "Location (region and country)",
+      "name": "નામ અને પ્રોફાઇલ માહિતી",
+      "email": "ઇમેઇલ સરનામું",
+      "phone": "ફોન નંબર",
+      "location": "સ્થાન (પ્રદેશ અને દેશ)",
       "cowData": "ગાયની વિગતો (જાતિ, વજન, ઉંમર, દૂધ ઉત્પાદનનો તબક્કો)",
       "milkData": "દૂધ ઉત્પાદનના રેકોર્ડ"
     },
@@ -1397,7 +1397,17 @@
     "ewOnboardingStep1": "તમે જે ખેડૂતોને મદદ કરો છો તેમને ઉમેરો",
     "ewOnboardingStep2": "તેમના પશુઓની નોંધણી કરો",
     "ewOnboardingStep3": "દૂધ ટ્રેક કરો અને આહાર યોજનાઓ મેળવો",
-    "adminOnboardingWelcome": "RationSmart સાથે શરૂઆત કરો:"
+    "adminOnboardingWelcome": "RationSmart સાથે શરૂઆત કરો:",
+    "greetingMorningAdmin": "શુભ સવાર! અહીં તમારા પ્રદેશની એક ઝલક છે.",
+    "greetingAfternoonAdmin": "શુભ બપોર! અહીં તમારા પ્રદેશની ઝાંખી છે.",
+    "greetingEveningAdmin": "શુભ સાંજ! તમારા પ્રદેશની સમીક્ષા કરવાનો સમય છે.",
+    "adminOnboardingStep1": "તમારા પ્રદેશના ખેડૂતોનું અન્વેષણ કરો",
+    "adminOnboardingStep2": "પશુ આરોગ્ય ડેટા જુઓ",
+    "adminOnboardingStep3": "એનાલિટિક્સ અને રિપોર્ટ્સ ઍક્સેસ કરો",
+    "territoryFarmers": "પ્રદેશના ખેડૂતો",
+    "territory": "પ્રદેશ",
+    "viewAnalytics": "એનાલિટિક્સ જુઓ",
+    "adminPanel": "એડમિન પેનલ"
   },
   "farmers": {
     "import": {

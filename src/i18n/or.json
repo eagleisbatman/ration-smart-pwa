@@ -1397,7 +1397,17 @@
     "ewOnboardingStep1": "ଆପଣ ସାହାଯ୍ୟ କରୁଥିବା ଚାଷୀଙ୍କୁ ଯୋଡ଼ନ୍ତୁ",
     "ewOnboardingStep2": "ସେମାନଙ୍କ ଗୋରୁଗାଈ ପଞ୍ଜିକରଣ କରନ୍ତୁ",
     "ewOnboardingStep3": "କ୍ଷୀର ଉତ୍ପାଦନ ଉପରେ ନଜର ରଖନ୍ତୁ ଏବଂ ଖାଦ୍ୟ ଯୋଜନା ପାଆନ୍ତୁ",
-    "adminOnboardingWelcome": "RationSmart ସହିତ ଆରମ୍ଭ କରନ୍ତୁ:"
+    "adminOnboardingWelcome": "RationSmart ସହିତ ଆରମ୍ଭ କରନ୍ତୁ:",
+    "greetingMorningAdmin": "ସୁପ୍ରଭାତ! ଏହା ଆପଣଙ୍କ ଅଞ୍ଚଳର ଏକ ସଂକ୍ଷିପ୍ତ ବିବରଣୀ।",
+    "greetingAfternoonAdmin": "ଶୁଭ ଅପରାହ୍ନ! ଏହା ଆପଣଙ୍କ ଅଞ୍ଚଳର ସମୀକ୍ଷା।",
+    "greetingEveningAdmin": "ଶୁଭ ସନ୍ଧ୍ୟା! ଆପଣଙ୍କ ଅଞ୍ଚଳର ସମୀକ୍ଷା କରିବାର ସମୟ।",
+    "adminOnboardingStep1": "ଆପଣଙ୍କ ଅଞ୍ଚଳର ଚାଷୀମାନଙ୍କୁ ଦେଖନ୍ତୁ",
+    "adminOnboardingStep2": "ଗୋରୁଙ୍କ ସ୍ୱାସ୍ଥ୍ୟ ତଥ୍ୟ ଦେଖନ୍ତୁ",
+    "adminOnboardingStep3": "ବିଶ୍ଳେଷଣ ଏବଂ ରିପୋର୍ଟ ଦେଖନ୍ତୁ",
+    "territoryFarmers": "ଅଞ୍ଚଳର ଚାଷୀମାନେ",
+    "territory": "ଅଞ୍ଚଳ",
+    "viewAnalytics": "ବିଶ୍ଳେଷଣ ଦେଖନ୍ତୁ",
+    "adminPanel": "ଆଡମିନ୍ ପ୍ୟାନେଲ୍"
   },
   "farmers": {
     "import": {
