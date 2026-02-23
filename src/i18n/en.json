@@ -1257,7 +1257,8 @@
     "ewOnboardingWelcome": "Get started as an Extension Worker:",
     "ewOnboardingStep1": "Add farmers you support",
     "ewOnboardingStep2": "Register their cattle",
-    "ewOnboardingStep3": "Track milk & get diet plans"
+    "ewOnboardingStep3": "Track milk & get diet plans",
+    "adminOnboardingWelcome": "Get started with RationSmart:"
   },
   "farmer": {
     "farmers": "Farmers",
@@ -1667,6 +1668,7 @@
   },
   "admin": {
     "dashboard": "Admin Dashboard",
+    "managingSystem": "Managing your territory",
     "userManagement": "User Management",
     "orgManagement": "Organizations",
     "analytics": "Admin Analytics",

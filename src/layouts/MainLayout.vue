@@ -61,6 +61,10 @@
           </q-avatar>
           <div class="q-mt-sm text-subtitle1">{{ userName }}</div>
           <div class="text-caption text-grey-6">{{ userEmail }}</div>
+          <q-chip v-if="authStore.isAnyAdmin" dense outline size="sm" class="q-mt-xs q-ml-none">
+            <q-icon name="verified_user" size="12px" class="q-mr-xs" />
+            {{ adminLevelLabel }}
+          </q-chip>
         </div>
 
         <!-- Navigation -->
@@ -203,6 +207,16 @@ const { light, medium } = useHapticFeedback();
 const leftDrawerOpen = ref(false);
 const activeTab = ref('/');
 const a2hsRef = ref<InstanceType<typeof AddToHomeScreen> | null>(null);
+
+// Admin level label for drawer badge
+const adminLevelLabel = computed(() => {
+  switch (authStore.adminLevel) {
+    case 'super_admin': return t('admin.superAdmin');
+    case 'country_admin': return t('admin.countryAdmin');
+    case 'org_admin': return t('admin.orgAdmin');
+    default: return '';
+  }
+});
 
 // User info
 const isAuthenticated = computed(() => authStore.isAuthenticated);

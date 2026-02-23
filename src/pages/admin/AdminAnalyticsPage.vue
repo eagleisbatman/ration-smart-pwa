@@ -18,8 +18,8 @@
     </div>
 
     <!-- Summary cards -->
-    <div v-if="store.summary" class="row q-col-gutter-sm q-mb-lg">
-      <div v-for="stat in summaryCards" :key="stat.label" class="col-6 col-sm-3">
+    <div v-if="store.summary" class="row q-col-gutter-sm q-mb-lg justify-center">
+      <div v-for="stat in summaryCards" :key="stat.label" class="col-6 col-sm-4">
         <q-card flat bordered>
           <q-card-section class="text-center q-py-sm">
             <div class="text-h5 text-primary">{{ stat.value }}</div>

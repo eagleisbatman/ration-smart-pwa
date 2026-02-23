@@ -91,7 +91,11 @@
         class="q-mb-lg onboarding-card"
       >
         <q-card-section>
-          <div class="text-subtitle1 q-mb-sm">{{ $t('dashboard.ewOnboardingWelcome') }}</div>
+          <div class="text-subtitle1 q-mb-sm">
+            {{ authStore.isAnyAdmin
+              ? $t('dashboard.adminOnboardingWelcome')
+              : $t('dashboard.ewOnboardingWelcome') }}
+          </div>
           <q-list dense>
             <q-item>
               <q-item-section avatar>
