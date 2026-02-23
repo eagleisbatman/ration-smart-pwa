@@ -12,7 +12,7 @@
         color="white"
         text-color="primary"
         :options="[
-          { label: $t('dashboard.myFarmers'), value: 'managed', icon: 'groups' },
+          { label: authStore.isAnyAdmin ? $t('dashboard.territory') : $t('dashboard.myFarmers'), value: 'managed', icon: 'groups' },
           { label: $t('dashboard.personal'), value: 'personal', icon: 'home' },
         ]"
       />
@@ -100,11 +100,11 @@
             <q-item>
               <q-item-section avatar>
                 <q-avatar size="36px" color="grey-2">
-                  <q-icon name="person_add" size="20px" color="grey-8" />
+                  <q-icon :name="authStore.isAnyAdmin ? 'travel_explore' : 'person_add'" size="20px" color="grey-8" />
                 </q-avatar>
               </q-item-section>
               <q-item-section>
-                <q-item-label>{{ $t('dashboard.ewOnboardingStep1') }}</q-item-label>
+                <q-item-label>{{ authStore.isAnyAdmin ? $t('dashboard.adminOnboardingStep1') : $t('dashboard.ewOnboardingStep1') }}</q-item-label>
               </q-item-section>
             </q-item>
             <q-item>
@@ -114,17 +114,17 @@
                 </q-avatar>
               </q-item-section>
               <q-item-section>
-                <q-item-label>{{ $t('dashboard.ewOnboardingStep2') }}</q-item-label>
+                <q-item-label>{{ authStore.isAnyAdmin ? $t('dashboard.adminOnboardingStep2') : $t('dashboard.ewOnboardingStep2') }}</q-item-label>
               </q-item-section>
             </q-item>
             <q-item>
               <q-item-section avatar>
                 <q-avatar size="36px" color="grey-2">
-                  <q-icon name="menu_book" size="20px" color="grey-8" />
+                  <q-icon :name="authStore.isAnyAdmin ? 'insights' : 'menu_book'" size="20px" color="grey-8" />
                 </q-avatar>
               </q-item-section>
               <q-item-section>
-                <q-item-label>{{ $t('dashboard.ewOnboardingStep3') }}</q-item-label>
+                <q-item-label>{{ authStore.isAnyAdmin ? $t('dashboard.adminOnboardingStep3') : $t('dashboard.ewOnboardingStep3') }}</q-item-label>
               </q-item-section>
             </q-item>
           </q-list>
@@ -171,23 +171,39 @@
       <!-- Quick Actions -->
       <div class="section-label">{{ $t('dashboard.quickActions') }}</div>
       <div class="action-row q-mb-lg">
-        <button class="action-row__btn" @click="router.push('/farmers/new')">
-          <q-icon name="person_add" />
-          {{ $t('farmer.addFarmer') }}
-        </button>
-        <button class="action-row__btn" @click="router.push({ name: 'log-new' })">
-          <q-icon name="water_drop" />
-          {{ $t('logs.logMilk') }}
-        </button>
-        <button class="action-row__btn" @click="router.push({ name: 'farmer-import' })">
-          <q-icon name="upload_file" />
-          {{ $t('dashboard.importCSV') }}
-        </button>
+        <template v-if="authStore.isAnyAdmin">
+          <button class="action-row__btn" @click="router.push('/analytics')">
+            <q-icon name="insights" />
+            {{ $t('dashboard.viewAnalytics') }}
+          </button>
+          <button class="action-row__btn" @click="router.push('/admin')">
+            <q-icon name="admin_panel_settings" />
+            {{ $t('dashboard.adminPanel') }}
+          </button>
+          <button class="action-row__btn" @click="router.push('/farmers/new')">
+            <q-icon name="person_add" />
+            {{ $t('farmer.addFarmer') }}
+          </button>
+        </template>
+        <template v-else>
+          <button class="action-row__btn" @click="router.push('/farmers/new')">
+            <q-icon name="person_add" />
+            {{ $t('farmer.addFarmer') }}
+          </button>
+          <button class="action-row__btn" @click="router.push({ name: 'log-new' })">
+            <q-icon name="water_drop" />
+            {{ $t('logs.logMilk') }}
+          </button>
+          <button class="action-row__btn" @click="router.push({ name: 'farmer-import' })">
+            <q-icon name="upload_file" />
+            {{ $t('dashboard.importCSV') }}
+          </button>
+        </template>
       </div>
 
       <!-- Farmers List -->
       <div class="row items-center q-mb-sm">
-        <div class="text-subtitle1 text-weight-medium">{{ $t('farmer.managedFarmers') }}</div>
+        <div class="text-subtitle1 text-weight-medium">{{ authStore.isAnyAdmin ? $t('dashboard.territoryFarmers') : $t('farmer.managedFarmers') }}</div>
         <q-space />
         <q-btn
           flat
@@ -563,6 +579,11 @@ async function loadRecentActivities() {
 
 const greeting = computed(() => {
   const hour = new Date().getHours();
+  if (authStore.isAnyAdmin) {
+    if (hour < 12) return t('dashboard.greetingMorningAdmin');
+    if (hour < 17) return t('dashboard.greetingAfternoonAdmin');
+    return t('dashboard.greetingEveningAdmin');
+  }
   if (hour < 12) return t('dashboard.greetingMorning');
   if (hour < 17) return t('dashboard.greetingAfternoon');
   return t('dashboard.greetingEvening');
