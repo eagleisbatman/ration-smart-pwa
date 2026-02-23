@@ -181,8 +181,10 @@ export const COUNTRY_LANGUAGE_MAP: Record<string, string[]> = {
   TH: ['th', 'en'],
 };
 
-// Cache for country code to UUID mapping
+// Cache for country code to UUID mapping (expires after 1 hour so newly activated countries appear)
 let countryCache: Record<string, string> | null = null;
+let countryCacheTime: number | null = null;
+const COUNTRY_CACHE_TTL_MS = 60 * 60 * 1000; // 1 hour
 
 // Lazy reference to the Axios instance, set by the boot file to break the circular dependency.
 // api-adapter.ts is imported BY axios.ts (for interceptors), so we can't import axios.ts here.
@@ -199,7 +201,8 @@ export function setApiRef(api: { get: (url: string) => Promise<{ data: unknown }
  * Fetch countries from backend and cache them
  */
 export async function fetchAndCacheCountries(): Promise<Record<string, string>> {
-  if (countryCache) {
+  const expired = countryCacheTime === null || (Date.now() - countryCacheTime) > COUNTRY_CACHE_TTL_MS;
+  if (countryCache && !expired) {
     return countryCache;
   }
 
@@ -213,6 +216,7 @@ export async function fetchAndCacheCountries(): Promise<Record<string, string>> 
     const countries = response.data as Array<{ id: string; country_code: string }>;
 
     countryCache = {};
+    countryCacheTime = Date.now();
     for (const country of countries) {
       countryCache[country.country_code] = country.id;
     }
@@ -235,6 +239,7 @@ export function getCountryId(countryCode: string): string | undefined {
  */
 export function clearCountryCache(): void {
   countryCache = null;
+  countryCacheTime = null;
 }
 
 /**
@@ -242,6 +247,7 @@ export function clearCountryCache(): void {
  */
 export function setCountryCache(countries: Array<{ id: string; country_code: string }>): void {
   countryCache = {};
+  countryCacheTime = Date.now();
   for (const country of countries) {
     countryCache[country.country_code] = country.id;
   }
