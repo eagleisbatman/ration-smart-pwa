@@ -25,15 +25,30 @@ const IMAGE_CACHE = 'image-cache-v2';
 const STATIC_CACHE = 'static-cache-v1';
 
 // Background sync queue for mutations
+// NOTE: Only network failures re-queue a request. HTTP 4xx errors (like 409
+// Conflict) are NOT retried — retrying a conflict will never succeed and would
+// loop for the full 24-hour retention window.
 const bgSyncPlugin = new BackgroundSyncPlugin('mutations-queue', {
   maxRetentionTime: 24 * 60, // Retry for max of 24 hours (specified in minutes)
   onSync: async ({ queue }) => {
     let entry;
     while ((entry = await queue.shiftRequest())) {
       try {
-        await fetch(entry.request);
+        const response = await fetch(entry.request.clone());
+        // Only re-queue if the request truly failed to reach the server (network
+        // error). Server-side errors (4xx/5xx) are final for offline mutations.
+        if (!response.ok && response.status < 500) {
+          // 4xx: client error — retrying will not help; discard silently.
+          console.warn(
+            'BGSync: discarding non-retriable response',
+            response.status,
+            entry.request.url
+          );
+        }
+        // 5xx errors: swallow and continue (server may recover by next sync)
       } catch (error) {
-        console.error('Replay failed for request', entry.request.url, error);
+        // Network failure — put back so it retries on the next sync event
+        console.error('BGSync replay failed (network error)', entry.request.url, error);
         await queue.unshiftRequest(entry);
         throw error;
       }
