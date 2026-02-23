@@ -52,6 +52,11 @@ export default boot(() => {
     navigator.serviceWorker.ready.then((reg) => {
       registration.value = reg;
 
+      // If a new SW is already waiting (e.g. user postponed last session), surface the prompt again
+      if (reg.waiting && navigator.serviceWorker.controller) {
+        updateAvailable.value = true;
+      }
+
       // Check for updates periodically (every 5 minutes, only when visible and online)
       setInterval(() => {
         if (document.visibilityState === 'visible' && navigator.onLine) {
@@ -65,7 +70,7 @@ export default boot(() => {
         if (newWorker) {
           newWorker.addEventListener('statechange', () => {
             if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-              // New content available
+              // New content available — wait for user to confirm before reloading
               updateAvailable.value = true;
             }
           });

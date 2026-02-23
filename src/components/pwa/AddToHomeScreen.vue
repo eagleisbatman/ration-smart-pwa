@@ -128,6 +128,9 @@ async function install() {
   installing.value = false;
 
   if (success) {
+    // Mark as installed so prompt never reappears in a browser tab
+    await db.setSetting('a2hs_dismissed', true);
+    await db.setSetting('a2hs_dismissed_at', new Date().toISOString());
     showPrompt.value = false;
     showBanner.value = false;
   }

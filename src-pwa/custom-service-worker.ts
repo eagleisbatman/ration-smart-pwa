@@ -165,10 +165,7 @@ const navigationRoute = new NavigationRoute(
 );
 registerRoute(navigationRoute);
 
-// Auto-activate new service worker immediately (don't wait for user action)
-self.skipWaiting();
-
-// Also handle explicit SKIP_WAITING message for backwards compatibility
+// Only skip waiting when explicitly requested by the user via the update prompt
 self.addEventListener('message', (event) => {
   if (event.data && event.data.type === 'SKIP_WAITING') {
     self.skipWaiting();
