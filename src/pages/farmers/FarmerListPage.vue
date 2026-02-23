@@ -19,7 +19,7 @@
           </q-input>
         </div>
         <div class="col-auto row items-center q-gutter-xs">
-          <q-badge color="primary" :label="`${farmerCount} ${t('farmer.farmers')}`" />
+          <q-badge color="primary" :label="`${farmerCount} ${farmerCount === 1 ? t('farmer.farmer') : t('farmer.farmers')}`" />
           <q-btn
             flat
             dense
