@@ -43,7 +43,7 @@
           </q-item-section>
           <q-item-section>
             <q-item-label>{{ org.name }}</q-item-label>
-            <q-item-label caption class="text-capitalize">{{ org.type || '—' }}</q-item-label>
+            <q-item-label caption>{{ orgTypeLabel(org.type) }}</q-item-label>
           </q-item-section>
           <q-item-section side>
             <q-icon name="chevron_right" />
@@ -172,6 +172,11 @@ const filteredOrgs = computed(() => {
       (org.type && org.type.toLowerCase().includes(query)),
   );
 });
+
+function orgTypeLabel(type: string | null): string {
+  if (!type) return '—';
+  return orgTypeOptions.value.find((o) => o.value === type)?.label ?? type;
+}
 
 function getOrgTypeColor(type: string | null): string {
   const colors: Record<string, string> = {
