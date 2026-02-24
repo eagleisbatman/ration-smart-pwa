@@ -111,6 +111,19 @@ export default boot(({ app, router }) => {
   // Make axios available globally
   app.config.globalProperties.$axios = axios;
   app.config.globalProperties.$api = api;
+
+  // Global Vue error handler — catches unhandled component errors that would
+  // otherwise be silently swallowed in production (Quasar/Vue3 default).
+  // Logs to console and shows a Notify so users know something went wrong.
+  app.config.errorHandler = (err, _instance, info) => {
+    console.error('[Vue] Unhandled component error:', err, 'info:', info);
+    Notify.create({
+      type: 'negative',
+      message: 'An unexpected error occurred. Please refresh the page.',
+      position: 'top',
+      timeout: 5000,
+    });
+  };
 });
 
 // Re-export for backward compatibility (prefer importing from 'src/lib/api')

@@ -161,20 +161,12 @@ export async function syncPendingChanges(): Promise<boolean> {
           error_message: errorMessage,
         });
 
-        // If too many retries, permanently remove the item to avoid unbounded queue growth
+        // If too many retries, permanently remove the item to avoid unbounded queue growth.
+        // The failure was already logged above; update the message to reflect removal.
         const updatedItem = await db.syncQueue.get(item.id!);
         if (updatedItem && updatedItem.retry_count >= 5) {
           console.warn(`Item ${item.id} exceeded retry limit — removing from queue`);
           await db.removeFromSyncQueue(item.id!);
-          await logSyncHistoryEntry({
-            operation: 'push',
-            entity_type: item.entity_type,
-            entity_id: item.entity_id,
-            entity_name: entityName,
-            action: item.operation,
-            status: 'failed',
-            error_message: 'Exceeded retry limit — item removed from queue',
-          });
         }
       }
     }
