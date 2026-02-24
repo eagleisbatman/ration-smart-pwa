@@ -81,7 +81,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, onUnmounted, computed } from 'vue';
 import { useQuasar } from 'quasar';
 import { useRoute } from 'vue-router';
 import { useAdminStore, type AdminUser } from 'src/stores/admin';
@@ -167,4 +167,11 @@ async function onLevelChange(user: AdminUser, newLevel: string) {
 }
 
 onMounted(fetchUsers);
+
+onUnmounted(() => {
+  if (debounceTimer) {
+    clearTimeout(debounceTimer);
+    debounceTimer = null;
+  }
+});
 </script>
