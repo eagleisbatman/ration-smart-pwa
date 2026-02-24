@@ -71,8 +71,8 @@
             type="number"
             outlined
             :rules="[
-              (val: number) => val > 0 || $t('cow.validation.weightPositive'),
-              (val: number) => val <= 1500 || $t('cow.validation.weightTooHigh'),
+              (val: number) => val >= 100 || $t('cow.validation.weightPositive'),
+              (val: number) => val <= 1000 || $t('cow.validation.weightTooHigh'),
             ]"
           />
         </div>
