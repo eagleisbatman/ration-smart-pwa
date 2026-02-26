@@ -78,17 +78,18 @@ api.interceptors.response.use(
       status === 401 ||
       (status === 403 && /invalid|expired|token/i.test(detail));
 
-    if (isAuthFailure) {
-      // Only show notification if user was previously authenticated
-      if (authStore.isAuthenticated) {
-        Notify.create({
-          type: 'warning',
-          message: 'Session expired. Please log in again.',
-          icon: 'lock_clock',
-          position: 'top',
-          timeout: 4000,
-        });
-      }
+    if (isAuthFailure && authStore.isAuthenticated) {
+      // Only act on 401/403 when the user has an active session.
+      // A 401 on a login attempt (unauthenticated user, wrong credentials) must NOT
+      // trigger logout — that would clear the country cache and break subsequent
+      // register-phone calls (country_id becomes undefined → Pydantic 422).
+      Notify.create({
+        type: 'warning',
+        message: 'Session expired. Please log in again.',
+        icon: 'lock_clock',
+        position: 'top',
+        timeout: 4000,
+      });
       // Use logout() (not clearAuth()) so IndexedDB user data is also wiped,
       // preventing a second user on the same device from seeing stale cached data.
       void authStore.logout();
