@@ -278,6 +278,12 @@ export function formatPhoneE164(phone: string, countryCode: string): string {
   // Remove leading zero if present (common in some countries)
   const phoneWithoutLeadingZero = cleaned.startsWith('0') ? cleaned.slice(1) : cleaned;
 
+  // Minimum 7 digits — ITU-T E.164 international minimum for any national number.
+  // Guards against short inputs (e.g. "1") causing silent 400 errors from backend.
+  if (phoneWithoutLeadingZero.length < 7) {
+    throw new Error(`Phone number too short for ${countryCode}: "${phoneWithoutLeadingZero}" (minimum 7 digits).`);
+  }
+
   return `${dialCode}${phoneWithoutLeadingZero}`;
 }
 

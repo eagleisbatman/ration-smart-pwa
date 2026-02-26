@@ -89,7 +89,9 @@ api.interceptors.response.use(
           timeout: 4000,
         });
       }
-      authStore.clearAuth();
+      // Use logout() (not clearAuth()) so IndexedDB user data is also wiped,
+      // preventing a second user on the same device from seeing stale cached data.
+      void authStore.logout();
       // Redirect to login immediately (avoid stale page state)
       if (appRouter && appRouter.currentRoute.value.path !== '/auth/login') {
         appRouter.push('/auth/login');
