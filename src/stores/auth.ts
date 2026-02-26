@@ -124,8 +124,13 @@ export const useAuthStore = defineStore('auth', () => {
    * Caches the result in localStorage for offline fallback.
    */
   async function fetchCountries(): Promise<void> {
-    // If already loaded, skip
-    if (countries.value.length > 0) return;
+    // If already loaded, ensure the api-adapter cache is seeded and return.
+    // clearAuth() clears countryCache (module-level) but NOT countries.value,
+    // so we must re-seed here to avoid country_id → undefined on next register/login.
+    if (countries.value.length > 0) {
+      setCountryCache(countries.value as Array<{ id: string; country_code: string }>);
+      return;
+    }
 
     countriesLoading.value = true;
     try {
