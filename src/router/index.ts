@@ -21,8 +21,11 @@ export default route(function (/* { store, ssrContext } */) {
     history: createHistory(process.env.VUE_ROUTER_BASE),
   });
 
-  // Track whether auth store has been initialized this session
-  let authInitialized = false;
+  // Promise-based guard: set once and reused by concurrent navigations.
+  // Using a Promise (not a boolean) ensures that if two navigations race before
+  // initialize() completes, the second one awaits the SAME promise rather than
+  // skipping init and running guards against partially-loaded store state.
+  let initPromise: Promise<void> | null = null;
 
   // Navigation guards
   Router.beforeEach(async (to, _from, next) => {
@@ -32,12 +35,14 @@ export default route(function (/* { store, ssrContext } */) {
     // Initialize auth store once per session (loads user profile from IndexedDB + API).
     // Must await to ensure selfFarmerProfileId is loaded before onboarding checks.
     // Timeout after 5s to prevent blocking navigation on slow/offline networks.
-    if (!authInitialized && authStore.isAuthenticated) {
-      authInitialized = true;
-      await Promise.race([
+    if (!initPromise && authStore.isAuthenticated) {
+      initPromise = Promise.race([
         authStore.initialize(),
         new Promise<void>((resolve) => setTimeout(resolve, 5000)),
       ]);
+    }
+    if (initPromise) {
+      await initPromise;
     }
 
     // Check if route requires authentication
