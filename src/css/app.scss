@@ -713,14 +713,9 @@ body {
 // ============================================
 
 .body--dark {
-  // shadcn zinc: primary flips to zinc-200 (not pure white — softer contrast)
-  // !important is REQUIRED: Quasar sets brand colors as inline styles on <body>
-  // which beat stylesheet rules. !important overrides inline styles.
-  --q-primary: #E4E4E7 !important;
-  --q-secondary: #A1A1AA !important;
-  --q-accent: #E4E4E7 !important;
-  --q-dark: #18181B !important;
-  --q-info: #A1A1AA !important;
+  // Brand colors (--q-primary, --q-secondary, etc.) are now set dynamically
+  // by applyTheme() in src/lib/themes.ts via Quasar's setCssVar().
+  // Do NOT hardcode them here — they vary by selected theme.
 
   // Links: default browser blue is low contrast; use primary for consistency
   a {
@@ -919,6 +914,16 @@ body {
   // MilkPriceCard
   .milk-price-card {
     background: rgba(255, 255, 255, 0.04) !important;
+  }
+
+  // CowDetailPage avatar
+  .cow-avatar {
+    background: rgba(255, 255, 255, 0.12) !important;
+  }
+
+  // EW Dashboard empty state icon
+  .empty-state-icon {
+    background: rgba(255, 255, 255, 0.06) !important;
   }
 
   // EW view toggle button (white bg in light mode)

@@ -1109,6 +1109,9 @@
     "milkPricePositive": "Price must be greater than 0",
     "orgFetchError": "Could not load organizations. Please try again later.",
     "languageSaveError": "Language changed locally but could not be saved to server.",
+    "theme": "Theme",
+    "themeDesc": "Choose your color theme",
+    "chooseTheme": "Choose Theme",
     "orgTypes": {
       "university": "University",
       "government": "Government",
@@ -1116,6 +1119,13 @@
       "cooperative": "Cooperative",
       "research": "Research Institute"
     }
+  },
+  "theme": {
+    "zinc": "Zinc",
+    "earthy": "Earthy",
+    "ocean": "Ocean",
+    "vibrant": "Vibrant",
+    "sunset": "Sunset"
   },
   "help": {
     "title": "Help & Support",

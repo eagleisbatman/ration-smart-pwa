@@ -136,6 +136,32 @@
 
       <q-separator />
 
+      <!-- Theme -->
+      <q-item v-ripple clickable @click="showThemeDialog = true">
+        <q-item-section avatar>
+          <q-icon name="palette" />
+        </q-item-section>
+        <q-item-section>
+          <q-item-label>{{ $t('settings.theme') }}</q-item-label>
+          <q-item-label caption>
+            <span class="row items-center no-wrap" style="gap: 6px">
+              <span
+                v-for="(color, idx) in currentThemeSwatches"
+                :key="idx"
+                class="theme-swatch-dot"
+                :style="{ background: color }"
+              />
+              {{ $t(currentThemeNameKey) }}
+            </span>
+          </q-item-label>
+        </q-item-section>
+        <q-item-section side>
+          <q-icon name="chevron_right" />
+        </q-item-section>
+      </q-item>
+
+      <q-separator />
+
       <q-item v-ripple clickable @click="showInstallPrompt">
         <q-item-section avatar>
           <q-icon name="install_mobile" />
@@ -395,6 +421,49 @@
       </q-card>
     </q-dialog>
 
+    <!-- Theme Picker Dialog -->
+    <q-dialog v-model="showThemeDialog">
+      <q-card style="min-width: 320px; max-width: 400px">
+        <q-card-section>
+          <div class="text-h6">{{ $t('settings.chooseTheme') }}</div>
+        </q-card-section>
+        <q-card-section class="q-pt-none">
+          <div class="row q-gutter-sm justify-start">
+            <div
+              v-for="tid in themeIds"
+              :key="tid"
+              class="theme-card"
+              :class="{ 'theme-card--active': tid === selectedThemeId }"
+              @click="selectTheme(tid)"
+            >
+              <div class="row justify-center" style="gap: 6px">
+                <span
+                  v-for="(color, idx) in themes[tid].swatches"
+                  :key="idx"
+                  class="theme-swatch"
+                  :style="{ background: color }"
+                />
+              </div>
+              <div class="text-caption text-center q-mt-xs">
+                {{ $t(themes[tid].nameKey) }}
+              </div>
+              <div class="text-center" style="height: 18px">
+                <q-icon
+                  v-if="tid === selectedThemeId"
+                  name="check_circle"
+                  color="primary"
+                  size="16px"
+                />
+              </div>
+            </div>
+          </div>
+        </q-card-section>
+        <q-card-actions align="right">
+          <q-btn v-close-popup flat :label="$t('common.close')" />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+
     <!-- Organization Dialog -->
     <q-dialog v-model="showOrgDialog">
       <q-card class="scroll-list--80vh">
@@ -493,6 +562,12 @@ import {
   unsubscribeFromPush,
   initPushState,
 } from 'src/services/push-notifications';
+import {
+  THEMES,
+  THEME_IDS,
+  currentThemeId,
+  applyTheme,
+} from 'src/lib/themes';
 
 interface Organization {
   id: string;
@@ -535,6 +610,19 @@ function saveMilkPrice(): void {
   }
   showMilkPriceDialog.value = false;
 }
+// Theme
+const showThemeDialog = ref(false);
+const themes = THEMES;
+const themeIds = THEME_IDS;
+const selectedThemeId = currentThemeId;
+const currentThemeSwatches = computed(() => THEMES[currentThemeId.value]?.swatches || THEMES.zinc.swatches);
+const currentThemeNameKey = computed(() => THEMES[currentThemeId.value]?.nameKey || 'theme.zinc');
+
+function selectTheme(id: string): void {
+  applyTheme(id, $q.dark.isActive);
+  showThemeDialog.value = false;
+}
+
 const pushSupported = isPushSupported();
 const showSyncHistory = ref(false);
 const profileImage = computed(() => authStore.profileImage);
@@ -763,10 +851,11 @@ function confirmLogout() {
   });
 }
 
-// Watch dark mode toggle
+// Watch dark mode toggle — also re-apply theme with new dark state
 watch(darkMode, (val) => {
   $q.dark.set(val);
   localStorage.setItem('darkMode', val ? '1' : '0');
+  applyTheme(currentThemeId.value, val);
 });
 
 // Watch notification toggle to subscribe/unsubscribe
@@ -819,5 +908,37 @@ onMounted(async () => {
 :deep(.q-item--active),
 :deep(.q-item.q-router-link--active) {
   background: transparent;
+}
+
+// Theme swatch dots in the settings row
+.theme-swatch-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+// Theme picker card
+.theme-card {
+  width: 90px;
+  padding: 12px 8px 8px;
+  border-radius: 8px;
+  border: 2px solid rgba(128, 128, 128, 0.2);
+  cursor: pointer;
+  transition: border-color 0.15s;
+
+  &:hover {
+    border-color: rgba(128, 128, 128, 0.45);
+  }
+
+  &--active {
+    border-color: var(--q-primary);
+  }
+}
+
+.theme-swatch {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
 }
 </style>

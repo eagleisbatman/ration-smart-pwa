@@ -191,8 +191,9 @@ const dietAnnotations = computed(() => {
   if (!props.dietPeriods?.length || chartData.value.length === 0) return {};
   const data = chartData.value;
   const labels = data.map((d) => d.date); // yyyy-MM-dd
-  const bandColors = ['rgba(76, 175, 80, 0.08)', 'rgba(33, 150, 243, 0.08)', 'rgba(255, 152, 0, 0.08)'];
-  const borderColors = ['rgba(76, 175, 80, 0.4)', 'rgba(33, 150, 243, 0.4)', 'rgba(255, 152, 0, 0.4)'];
+  const bands = colors.value.dietBandColors;
+  const bandColors = bands.map(b => b.fill);
+  const borderColors = bands.map(b => b.border);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const annotations: Record<string, any> = {};
   props.dietPeriods.forEach((dp, idx) => {
@@ -243,7 +244,7 @@ const barChartOptions = computed((): ChartOptions<'bar'> => {
         annotations: dietAnnotations.value,
       },
       tooltip: {
-        backgroundColor: 'rgba(0,0,0,0.8)',
+        backgroundColor: c.tooltipBg,
         titleFont: { size: 11 },
         bodyFont: { size: 11 },
         padding: 8,

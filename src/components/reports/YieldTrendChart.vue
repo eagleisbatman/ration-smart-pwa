@@ -135,7 +135,7 @@ const chartJsOptions = computed((): ChartOptions<'line'> => {
     },
     plugins: {
       tooltip: {
-        backgroundColor: 'rgba(0,0,0,0.8)',
+        backgroundColor: c.tooltipBg,
         titleFont: { size: 12 },
         bodyFont: { size: 11 },
         padding: 8,

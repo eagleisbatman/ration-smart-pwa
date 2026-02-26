@@ -478,7 +478,7 @@ onMounted(async () => {
 }
 
 .cow-avatar {
-  background: #E4E4E7;
+  background: $grey-3;
 }
 
 </style>
