@@ -63,12 +63,12 @@ withDefaults(defineProps<{
 
   &--completed {
     background-color: var(--q-primary);
-    color: #fff;
+    color: white;
   }
 
   &--active {
     background-color: var(--q-primary);
-    color: #fff;
+    color: white;
     box-shadow: 0 0 0 4px rgba($primary, 0.18);
   }
 

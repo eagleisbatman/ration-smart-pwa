@@ -294,14 +294,13 @@ const farmerYieldData = ref<Map<string, MilkLog[]>>(new Map());
 
 // Color palette for farmers
 const colorPalette = ['primary', 'positive', 'orange', 'purple'] as const;
-const colorHexPalette = ['#1976d2', '#21ba45', '#ff9800', '#9c27b0'];
-
 function farmerColor(index: number): string {
   return colorPalette[index % colorPalette.length];
 }
 
 function farmerColorHex(index: number): string {
-  return colorHexPalette[index % colorHexPalette.length];
+  const palette = CHART.value.farmerColors;
+  return palette[index % palette.length];
 }
 
 const farmerOptions = computed(() =>

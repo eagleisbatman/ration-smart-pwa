@@ -159,7 +159,7 @@ defineExpose({ milkPrice });
 <style lang="scss" scoped>
 .milk-price-card {
   border-radius: $radius-loose;
-  background: #FAFAFA;
+  background: $grey-1;
 
   // Dark mode override is in app.scss (scoped :global() compiles incorrectly)
 }
