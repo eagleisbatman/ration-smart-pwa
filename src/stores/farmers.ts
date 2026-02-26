@@ -343,6 +343,38 @@ export const useFarmersStore = defineStore('farmers', () => {
     }
   }
 
+  async function getFarmerDiets(
+    id: string,
+    filters?: { status?: string; cow_profile_id?: string },
+  ): Promise<unknown[]> {
+    try {
+      const response = await api.get(`/api/v1/farmer-profiles/${id}/diets`, {
+        params: filters,
+      });
+      // api-adapter transforms the response to a plain array
+      return Array.isArray(response.data) ? response.data : [];
+    } catch (err) {
+      error.value = extractUserFriendlyError(err);
+      return [];
+    }
+  }
+
+  async function getFarmerMilkLogs(
+    id: string,
+    filters?: { cow_profile_id?: string; date_from?: string; date_to?: string },
+  ): Promise<unknown[]> {
+    try {
+      const response = await api.get(`/api/v1/farmer-profiles/${id}/milk-logs`, {
+        params: filters,
+      });
+      // api-adapter transforms the response to a plain array
+      return Array.isArray(response.data) ? response.data : [];
+    } catch (err) {
+      error.value = extractUserFriendlyError(err);
+      return [];
+    }
+  }
+
   function selectFarmer(farmer: FarmerProfile | null): void {
     currentFarmer.value = farmer;
   }
@@ -417,6 +449,8 @@ export const useFarmersStore = defineStore('farmers', () => {
     deleteFarmer,
     getFarmerSummary,
     getFarmerCows,
+    getFarmerDiets,
+    getFarmerMilkLogs,
     selectFarmer,
     syncCattleCounts,
     clearError,

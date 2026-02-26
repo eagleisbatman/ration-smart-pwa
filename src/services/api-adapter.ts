@@ -1216,6 +1216,26 @@ const ENDPOINT_MAP: Record<string, EndpointMapping> = {
   '/api/v1/farmer-profiles/:id/summary': {
     path: '/farmer-profiles/:id/summary',
   },
+  '/api/v1/farmer-profiles/:id/diets': {
+    path: '/farmer-profiles/:id/diets',
+    transform: {
+      response: (data: unknown) => {
+        const resp = data as { diets?: Record<string, unknown>[] };
+        const diets = resp.diets || (Array.isArray(data) ? data as Record<string, unknown>[] : []);
+        return diets.map(mapDietFromBackend);
+      },
+    },
+  },
+  '/api/v1/farmer-profiles/:id/milk-logs': {
+    path: '/farmer-profiles/:id/milk-logs',
+    transform: {
+      response: (data: unknown) => {
+        const resp = data as { logs?: Record<string, unknown>[] };
+        const logs = resp.logs || (Array.isArray(data) ? data as Record<string, unknown>[] : []);
+        return logs.map(mapMilkLogFromBackend);
+      },
+    },
+  },
 
   // ============================================================================
   // REPORT ENDPOINTS
