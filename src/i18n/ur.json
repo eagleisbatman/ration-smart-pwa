@@ -1025,7 +1025,10 @@
     "milkPriceSaved": "دودھ کی قیمت اپ ڈیٹ کر دی گئی",
     "milkPricePositive": "قیمت 0 سے زیادہ ہونی چاہیے",
     "orgFetchError": "تنظیموں کی معلومات لوڈ نہیں ہو سکیں۔ براہ کرم بعد میں کوشش کریں۔",
-    "languageSaveError": "زبان مقامی طور پر تبدیل ہو گئی ہے لیکن سرور پر محفوظ نہیں ہو سکی۔"
+    "languageSaveError": "زبان مقامی طور پر تبدیل ہو گئی ہے لیکن سرور پر محفوظ نہیں ہو سکی۔",
+    "theme": "تھیم",
+    "themeDesc": "اپنی رنگین تھیم منتخب کریں",
+    "chooseTheme": "تھیم منتخب کریں"
   },
   "farmer": {
     "farmers": "کسان",
@@ -1755,5 +1758,12 @@
     "orgTypeCooperative": "کوآپریٹو",
     "orgTypeResearch": "تحقیقاتی",
     "orgTypeOther": "دیگر"
+  },
+  "theme": {
+    "zinc": "زنک",
+    "earthy": "ارضی",
+    "ocean": "سمندر",
+    "vibrant": "شاندار",
+    "sunset": "غروب آفتاب"
   }
 }

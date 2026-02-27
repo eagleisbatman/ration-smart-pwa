@@ -160,7 +160,7 @@
         <!-- Feed Breakdown (table format per wireframe) -->
         <div class="text-subtitle1 q-mb-sm">{{ $t('diet.recommendedFeeds') }}</div>
         <q-card flat bordered class="q-mb-md chart-scroll-wrapper">
-          <q-markup-table flat bordered dense class="text-left">
+          <q-markup-table flat bordered dense>
             <thead>
               <tr class="bg-grey-2">
                 <th>{{ $t('diet.ingredient') }}</th>
@@ -412,7 +412,7 @@
     <!-- Share FAB - visible for completed/following/saved/archived diets -->
     <q-page-sticky
       v-if="diet && ['completed', 'following', 'saved', 'archived'].includes(diet.status) && diet.result_data"
-      position="bottom-right"
+      :position="rtl ? 'bottom-left' : 'bottom-right'"
       :offset="[18, 18]"
     >
       <q-btn
@@ -489,6 +489,7 @@ import { ref, computed, watch, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useQuasar } from 'quasar';
 import { useI18n } from 'vue-i18n';
+import { isRTL } from 'src/boot/i18n';
 import { useDietsStore } from 'src/stores/diets';
 import { useDateFormat } from 'src/composables/useDateFormat';
 import { Diet } from 'src/lib/offline/db';
@@ -502,7 +503,8 @@ import { useCurrency } from 'src/composables/useCurrency';
 import { useExport, DietExportData } from 'src/composables/useExport';
 import { hasActiveReminder } from 'src/lib/diet-reminders';
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
+const rtl = computed(() => isRTL(locale.value as string));
 const { formatCurrency } = useCurrency();
 const { formatDietText, shareContent, shareViaWhatsApp, copyToClipboard, printDiet } = useExport();
 

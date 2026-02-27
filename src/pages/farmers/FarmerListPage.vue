@@ -149,7 +149,7 @@
     </PullToRefresh>
 
     <!-- FAB for adding new farmer -->
-    <q-page-sticky position="bottom-right" :offset="[16, 72]">
+    <q-page-sticky :position="rtl ? 'bottom-left' : 'bottom-right'" :offset="[16, 72]">
       <q-btn fab icon="person_add" color="primary" @click="router.push('/farmers/new')" />
     </q-page-sticky>
   </q-page>
@@ -159,6 +159,7 @@
 import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
+import { isRTL } from 'src/boot/i18n';
 import { useFarmersStore } from 'src/stores/farmers';
 import { useCowsStore } from 'src/stores/cows';
 import PullToRefresh from 'src/components/ui/PullToRefresh.vue';
@@ -166,7 +167,8 @@ import SkeletonList from 'src/components/ui/SkeletonList.vue';
 import EmptyState from 'src/components/ui/EmptyState.vue';
 
 const router = useRouter();
-const { t } = useI18n();
+const { t, locale } = useI18n();
+const rtl = computed(() => isRTL(locale.value as string));
 const farmersStore = useFarmersStore();
 const cowsStore = useCowsStore();
 

@@ -294,7 +294,7 @@
       </template>
 
       <!-- Edit FAB -->
-      <q-page-sticky position="bottom-right" :offset="[16, 72]">
+      <q-page-sticky :position="rtl ? 'bottom-left' : 'bottom-right'" :offset="[16, 72]">
         <q-btn
           fab
           icon="edit"
@@ -322,9 +322,11 @@
 import { ref, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
+import { isRTL } from 'src/boot/i18n';
 
 const router = useRouter();
-const { t } = useI18n();
+const { t, locale } = useI18n();
+const rtl = computed(() => isRTL(locale.value as string));
 import { format, subDays, startOfWeek, endOfWeek, parseISO, differenceInDays } from 'date-fns';
 import { useCowsStore } from 'src/stores/cows';
 import { useMilkLogsStore } from 'src/stores/milkLogs';
@@ -474,7 +476,7 @@ onMounted(async () => {
 
 .active-diet-card {
   border-radius: $radius-loose;
-  border-left: 4px solid var(--q-positive);
+  border-inline-start: 4px solid var(--q-positive);
 }
 
 .cow-avatar {

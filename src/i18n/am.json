@@ -1025,7 +1025,10 @@
     "milkPriceSaved": "የወተት ዋጋ ተሻሽሏል",
     "milkPricePositive": "ዋጋ ከ0 በላይ መሆን አለበት",
     "orgFetchError": "ድርጅቶችን መጫን አልተቻለም። እባክዎ በኋላ እንደገና ይሞክሩ።",
-    "languageSaveError": "ቋንቋው በአካባቢው ተቀይሯል ነገር ግን በሰርቨር ላይ ማስቀመጥ አልተቻለም።"
+    "languageSaveError": "ቋንቋው በአካባቢው ተቀይሯል ነገር ግን በሰርቨር ላይ ማስቀመጥ አልተቻለም።",
+    "theme": "ገጽታ",
+    "themeDesc": "የቀለም ገጽታዎን ይምረጡ",
+    "chooseTheme": "ገጽታ ይምረጡ"
   },
   "farmer": {
     "farmers": "ገበሬዎች",
@@ -1754,5 +1757,12 @@
     "orgTypeCooperative": "ህብረት ስራ ማህበር",
     "orgTypeResearch": "ምርምር",
     "orgTypeOther": "ሌላ"
+  },
+  "theme": {
+    "zinc": "ዚንክ",
+    "earthy": "የምድር",
+    "ocean": "ውቅያኖስ",
+    "vibrant": "ደማቅ",
+    "sunset": "ፀሐይ ስትጠልቅ"
   }
 }

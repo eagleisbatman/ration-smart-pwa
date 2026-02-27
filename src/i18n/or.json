@@ -1025,7 +1025,10 @@
     "milkPriceSaved": "କ୍ଷୀର ଦର ଅପଡେଟ୍ ହୋଇଛି",
     "milkPricePositive": "ଦର ୦ ରୁ ଅଧିକ ହେବା ଉଚିତ",
     "orgFetchError": "ସଂଗଠନଗୁଡ଼ିକ ଲୋଡ୍ କରିହେଲା ନାହିଁ। ଦୟାକରି ପରେ ଚେଷ୍ଟା କରନ୍ତୁ।",
-    "languageSaveError": "ଭାଷା ବଦଳିଛି, କିନ୍ତୁ ସର୍ଭରରେ ସେଭ୍ ହୋଇପାରିଲା ନାହିଁ।"
+    "languageSaveError": "ଭାଷା ବଦଳିଛି, କିନ୍ତୁ ସର୍ଭରରେ ସେଭ୍ ହୋଇପାରିଲା ନାହିଁ।",
+    "theme": "ଥିମ୍",
+    "themeDesc": "ଆପଣଙ୍କ ରଙ୍ଗ ଥିମ୍ ବାଛନ୍ତୁ",
+    "chooseTheme": "ଥିମ୍ ବାଛନ୍ତୁ"
   },
   "farmer": {
     "farmers": "କୃଷକ",
@@ -1755,5 +1758,12 @@
     "orgTypeCooperative": "ସମବାୟ",
     "orgTypeResearch": "ଗବେଷଣା",
     "orgTypeOther": "ଅନ୍ୟାନ୍ୟ"
+  },
+  "theme": {
+    "zinc": "ଜିଙ୍କ୍",
+    "earthy": "ଆର୍ଥି",
+    "ocean": "ଓସିଆନ୍",
+    "vibrant": "ଭାଇବ୍ରାଣ୍ଟ୍",
+    "sunset": "ସନ୍‌ସେଟ୍"
   }
 }

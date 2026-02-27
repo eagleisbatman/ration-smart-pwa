@@ -19,10 +19,10 @@
         <!-- iOS Instructions -->
         <div v-if="isIOS" class="ios-instructions">
           <p class="text-body2 text-grey-7 q-mb-sm">{{ $t('pwa.iosInstructions') }}</p>
-          <ol class="text-left text-body2">
+          <ol class="text-body2" style="text-align: start">
             <li>
               {{ $t('pwa.iosTapShare') }}
-              <q-icon name="ios_share" size="18px" class="q-ml-xs" />
+              <q-icon name="ios_share" size="18px" style="margin-inline-start: 4px" />
             </li>
             <li>{{ $t('pwa.iosAddToHomeScreen') }}</li>
             <li>{{ $t('pwa.iosTapAdd') }}</li>
@@ -192,8 +192,7 @@ defineExpose({
   left: 16px;
   right: 16px;
   max-width: 480px;
-  margin-left: auto;
-  margin-right: auto;
+  margin-inline: auto;
   background: $primary;
   color: white;
   padding: 12px 16px;

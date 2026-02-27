@@ -1025,7 +1025,10 @@
     "milkPriceSaved": "গাখীৰৰ দাম আপডেট কৰা হ’ল",
     "milkPricePositive": "দাম ০ তকৈ বেছি হ’ব লাগিব",
     "orgFetchError": "সংস্থাসমূহ লোড কৰিব পৰা নগ’ল। অনুগ্ৰহ কৰি পিছত পুনৰ চেষ্টা কৰক।",
-    "languageSaveError": "ভাষা স্থানীয়ভাৱে সলনি হ’ল কিন্তু চাৰ্ভাৰত চেভ কৰিব পৰা নগ’ল।"
+    "languageSaveError": "ভাষা স্থানীয়ভাৱে সলনি হ’ল কিন্তু চাৰ্ভাৰত চেভ কৰিব পৰা নগ’ল।",
+    "theme": "থীম",
+    "themeDesc": "আপোনাৰ ৰংৰ থীম বাছক",
+    "chooseTheme": "থীম বাছক"
   },
   "farmer": {
     "farmers": "কৃষক",
@@ -1755,5 +1758,12 @@
     "orgTypeCooperative": "সমবায়",
     "orgTypeResearch": "গৱেষণা",
     "orgTypeOther": "অন্যান্য"
+  },
+  "theme": {
+    "zinc": "জিংক",
+    "earthy": "মাটিৰঙা",
+    "ocean": "সাগৰীয়া",
+    "vibrant": "উজ্জ্বল",
+    "sunset": "সূৰ্যাস্ত"
   }
 }

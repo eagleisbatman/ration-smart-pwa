@@ -1025,7 +1025,10 @@
     "milkPriceSaved": "Đã cập nhật giá sữa",
     "milkPricePositive": "Giá sữa phải lớn hơn 0",
     "orgFetchError": "Không thể tải danh sách tổ chức. Vui lòng thử lại sau.",
-    "languageSaveError": "Đã đổi ngôn ngữ trên máy nhưng không thể lưu lên hệ thống."
+    "languageSaveError": "Đã đổi ngôn ngữ trên máy nhưng không thể lưu lên hệ thống.",
+    "theme": "Chủ đề",
+    "themeDesc": "Chọn chủ đề màu sắc của bạn",
+    "chooseTheme": "Chọn Chủ đề"
   },
   "farmer": {
     "farmers": "Nông dân",
@@ -1755,5 +1758,12 @@
     "orgTypeCooperative": "Hợp tác xã",
     "orgTypeResearch": "Viện nghiên cứu",
     "orgTypeOther": "Khác"
+  },
+  "theme": {
+    "zinc": "Kẽm",
+    "earthy": "Đất",
+    "ocean": "Đại dương",
+    "vibrant": "Sống động",
+    "sunset": "Hoàng hôn"
   }
 }

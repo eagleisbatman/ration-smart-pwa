@@ -1028,7 +1028,10 @@
     "milkPriceSaved": "Prix du lait mis à jour",
     "milkPricePositive": "Le prix doit être supérieur à 0",
     "orgFetchError": "Impossible de charger les organisations. Veuillez réessayer plus tard.",
-    "languageSaveError": "La langue a été modifiée localement mais n'a pas pu être enregistrée sur le serveur."
+    "languageSaveError": "La langue a été modifiée localement mais n'a pas pu être enregistrée sur le serveur.",
+    "theme": "Thème",
+    "themeDesc": "Choisissez votre thème de couleurs",
+    "chooseTheme": "Choisir le thème"
   },
   "farmer": {
     "farmers": "Éleveurs",
@@ -1758,5 +1761,12 @@
     "orgTypeCooperative": "Coopérative",
     "orgTypeResearch": "Recherche",
     "orgTypeOther": "Autre"
+  },
+  "theme": {
+    "zinc": "Zinc",
+    "earthy": "Terreux",
+    "ocean": "Océan",
+    "vibrant": "Vibrant",
+    "sunset": "Coucher de soleil"
   }
 }

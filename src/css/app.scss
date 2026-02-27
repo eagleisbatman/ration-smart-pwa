@@ -38,8 +38,7 @@ body {
 // Constrain main content width on desktop for readability
 .q-page > * {
   max-width: 960px;
-  margin-left: auto;
-  margin-right: auto;
+  margin-inline: auto;
 }
 
 // Opt-out class for pages that need full width (compare pages, tables)
@@ -49,17 +48,14 @@ body {
 
 // Responsive horizontal padding scale
 .q-page {
-  padding-left: 16px;
-  padding-right: 16px;
+  padding-inline: 16px;
 
   @media screen and (min-width: 600px) {
-    padding-left: 24px;
-    padding-right: 24px;
+    padding-inline: 24px;
   }
 
   @media screen and (min-width: 1024px) {
-    padding-left: 32px;
-    padding-right: 32px;
+    padding-inline: 32px;
   }
 }
 
@@ -119,8 +115,7 @@ body {
 .q-form {
   @media screen and (min-width: 600px) {
     max-width: 560px;
-    margin-left: auto;
-    margin-right: auto;
+    margin-inline: auto;
   }
 }
 
@@ -260,12 +255,10 @@ body {
 
 .q-chip {
   border-radius: $radius-default;
-  padding-left: 12px;
-  padding-right: 12px;
+  padding-inline: 12px;
 
   &--dense {
-    padding-left: 8px;
-    padding-right: 8px;
+    padding-inline: 8px;
   }
 }
 
@@ -654,8 +647,7 @@ body {
 // ============================================
 
 .text-constrain {
-  margin-left: auto;
-  margin-right: auto;
+  margin-inline: auto;
 }
 
 .text-constrain--sm {

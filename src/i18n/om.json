@@ -1025,7 +1025,10 @@
     "milkPriceSaved": "Gatiin aannanii haaromfameera",
     "milkPricePositive": "Gatiin 0 irra guddaa ta'uu qaba",
     "orgFetchError": "Gurmaa’inaaleerraa odeeffannoo fe’uun hin danda’amne.  Booda irra deebii yaalaa.",
-    "languageSaveError": "Afaan naannoo keessatti jijjiirameera garuu gara serveriitti olkaasamuu hin dandeenye."
+    "languageSaveError": "Afaan naannoo keessatti jijjiirameera garuu gara serveriitti olkaasamuu hin dandeenye.",
+    "theme": "Baay’ina bifa",
+    "themeDesc": "Baay’ina bifa keessan filadhaa",
+    "chooseTheme": "Baay’ina bifa filadhaa"
   },
   "farmer": {
     "farmers": "Qonnaan Bultoota",
@@ -1754,5 +1757,12 @@
     "orgTypeCooperative": "Waldaa Hojii Gamtaa",
     "orgTypeResearch": "Qorannoo",
     "orgTypeOther": "Kan Biraa"
+  },
+  "theme": {
+    "zinc": "Zinc",
+    "earthy": "Biyyaa",
+    "ocean": "Garba",
+    "vibrant": "Ifaa",
+    "sunset": "Dhiha Biiftuu"
   }
 }
