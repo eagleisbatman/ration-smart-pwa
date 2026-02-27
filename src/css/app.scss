@@ -35,8 +35,11 @@ body {
 // Responsive Content Container
 // ============================================
 
-// Constrain main content width on desktop for readability
-.q-page > * {
+// Constrain main content width on desktop for readability.
+// [dir] boosts specificity to 0,2,0 so this beats postcss-rtlcss overrides
+// like [dir="rtl"] .q-gutter-md { margin-right: -16px } which would
+// otherwise override margin-inline: auto and break centering.
+[dir] .q-page > * {
   max-width: 960px;
   margin-inline: auto;
 }
