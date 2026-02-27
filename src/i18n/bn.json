@@ -1025,7 +1025,10 @@
     "milkPriceSaved": "দুধের দাম আপডেট করা হয়েছে",
     "milkPricePositive": "দাম ০-এর বেশি হতে হবে",
     "orgFetchError": "সংস্থাগুলি লোড করা যায়নি। অনুগ্রহ করে পরে আবার চেষ্টা করুন।",
-    "languageSaveError": "ভাষা স্থানীয়ভাবে পরিবর্তন করা হয়েছে কিন্তু সার্ভারে সংরক্ষণ করা যায়নি।"
+    "languageSaveError": "ভাষা স্থানীয়ভাবে পরিবর্তন করা হয়েছে কিন্তু সার্ভারে সংরক্ষণ করা যায়নি।",
+    "theme": "থিম",
+    "themeDesc": "আপনার রঙের থিম বেছে নিন",
+    "chooseTheme": "থিম বেছে নিন"
   },
   "farmer": {
     "farmers": "কৃষক",
@@ -1496,7 +1499,7 @@
     "updateNow": "এখনই আপডেট করুন",
     "later": "পরে",
     "updateBanner": "আপডেট উপলব্ধ",
-    "appName": "RationSmart"
+    "appName": "রেশনস্মার্ট"
   },
   "storage": {
     "quotaWarning": "স্টোরেজ {percent}% পূর্ণ ({quotaMB} MB এর মধ্যে {usageMB} MB)। স্থান খালি করতে পুরানো ডেটা সিঙ্ক ও পরিষ্কার করার কথা ভাবুন।"
@@ -1755,5 +1758,12 @@
     "orgTypeCooperative": "সমবায়",
     "orgTypeResearch": "গবেষণা",
     "orgTypeOther": "অন্যান্য"
+  },
+  "theme": {
+    "zinc": "জিঙ্ক",
+    "earthy": "আর্থি",
+    "ocean": "ওশান",
+    "vibrant": "ভাইব্রেন্ট",
+    "sunset": "সানসেট"
   }
 }

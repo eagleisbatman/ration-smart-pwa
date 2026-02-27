@@ -460,13 +460,13 @@
       "saved": "சேமிக்கப்பட்டது",
       "following": "பின்பற்றப்படுகிறது"
     },
-    "tdnLabel": "TDN",
+    "tdnLabel": "மொத்த செரிமான ஊட்டச்சத்து",
     "dailyCost": "தினசரி செலவு",
     "dmKg": "உலர் பொருள் உட்கொள்ளல் (கிலோ)",
     "feeds": "தீவனங்கள்",
     "recommendedFeeds": "பரிந்துரைக்கப்பட்ட தீவனங்கள்",
-    "dmLabel": "DM",
-    "cpLabel": "CP",
+    "dmLabel": "உலர் பொருள்",
+    "cpLabel": "கச்சா புரதம்",
     "nutrientBalance": "ஊட்டச்சத்து சமநிலை",
     "crudeProteinCP": "கச்சா புரதம் (CP)",
     "totalDigestibleNutrients": "மொத்த செரிமான சத்துக்கள் (TDN)",
@@ -638,22 +638,22 @@
     },
     "labels": {
       "dmPercent": "உலர்ந்த பொருள் (DM)",
-      "dmPercentShort": "DM",
+      "dmPercentShort": "உ.பொ.",
       "dmPercentInput": "உலர்ந்த பொருள் % *",
       "cpPercent": "கச்சா புரதம் (CP)",
-      "cpPercentShort": "CP",
+      "cpPercentShort": "க.பு.",
       "cpPercentInput": "கச்சா புரதம் % *",
       "tdnPercent": "மொத்த செரிமான சத்துக்கள் (TDN)",
-      "tdnPercentShort": "TDN",
-      "tdnPercentInput": "TDN % *",
+      "tdnPercentShort": "மொ.செ.ஊ.",
+      "tdnPercentInput": "மொ.செ.ஊ. % *",
       "ndfPercent": "நடுநிலை சவர்க்கார நார்ச்சத்து (NDF)",
-      "ndfPercentShort": "NDF",
-      "ndfPercentInput": "NDF %",
+      "ndfPercentShort": "நார்ச்சத்து",
+      "ndfPercentInput": "நார்ச்சத்து %",
       "caPercent": "கால்சியம் (Ca)",
-      "caPercentShort": "Ca",
+      "caPercentShort": "கால்சியம்",
       "caPercentInput": "கால்சியம் %",
       "pPercent": "பாஸ்பரஸ் (P)",
-      "pPercentShort": "P",
+      "pPercentShort": "பாஸ்பரஸ்",
       "pPercentInput": "பாஸ்பரஸ் %",
       "category": "வகை",
       "categoryRequired": "வகை *",
@@ -787,7 +787,7 @@
       "avgLPerDay": "சராசரி லி/நாள்",
       "avgFat": "சராசரி கொழுப்பு",
       "fat": "கொழுப்பு",
-      "snf": "SNF",
+      "snf": "திண்மப் பொருட்கள் கொழுப்பற்றது (SNF)",
       "pending": "நிலுவையில் உள்ளது",
       "yieldRecordNotFound": "பால் உற்பத்திப் பதிவு கிடைக்கவில்லை",
       "editYield": "பால் உற்பத்தியைத் திருத்து",
@@ -1025,7 +1025,10 @@
     "milkPriceSaved": "பால் விலை புதுப்பிக்கப்பட்டது",
     "milkPricePositive": "விலை 0 ஐ விட அதிகமாக இருக்க வேண்டும்",
     "orgFetchError": "நிறுவனங்களை ஏற்ற முடியவில்லை. பிறகு மீண்டும் முயற்சிக்கவும்.",
-    "languageSaveError": "மொழி உள்நாட்டில் மாற்றப்பட்டது ஆனால் சேவையகத்தில் சேமிக்க முடியவில்லை."
+    "languageSaveError": "மொழி உள்நாட்டில் மாற்றப்பட்டது ஆனால் சேவையகத்தில் சேமிக்க முடியவில்லை.",
+    "theme": "தீம்",
+    "themeDesc": "உங்கள் வண்ண தீம் தேர்வு செய்யவும்",
+    "chooseTheme": "தீம் தேர்வு செய்யவும்"
   },
   "farmer": {
     "farmers": "விவசாயிகள்",
@@ -1496,7 +1499,7 @@
     "updateNow": "இப்போதே புதுப்பிக்கவும்",
     "later": "பிறகு",
     "updateBanner": "புதுப்பிப்பு கிடைக்கிறது",
-    "appName": "RationSmart"
+    "appName": "ரேஷன்ஸ்மார்ட்"
   },
   "storage": {
     "quotaWarning": "சேமிப்பு {percent}% நிறைந்துள்ளது ({quotaMB} MB இல் {usageMB} MB). இடத்தை விடுவிக்க பழைய தரவை ஒத்திசைத்து அழிக்கவும்."
@@ -1516,7 +1519,7 @@
     "avgLPerDay": "சராசரி லி/நாள்",
     "avgFat": "சராசரி கொழுப்பு %",
     "fat": "கொழுப்பு",
-    "snf": "SNF",
+    "snf": "திண்மப் பொருட்கள் கொழுப்பற்றது (SNF)",
     "revenue": "வருவாய்",
     "totalRevenue": "மொத்தம்",
     "perDay": "ஒரு நாளைக்கு",
@@ -1624,7 +1627,7 @@
     "farmer": "விவசாயி",
     "yieldL": "உற்பத்தி (லி)",
     "fatPercent": "கொழுப்பு %",
-    "snfPercent": "SNF %",
+    "snfPercent": "திண்மப் பொருட்கள் கொழுப்பற்றது (SNF) %",
     "notes": "குறிப்புகள்",
     "yield": "மகசூல்",
     "generatedOn": "RationSmart மூலம் {date} அன்று உருவாக்கப்பட்டது"
@@ -1755,5 +1758,12 @@
     "orgTypeCooperative": "கூட்டுறவு",
     "orgTypeResearch": "ஆராய்ச்சி",
     "orgTypeOther": "மற்றவை"
+  },
+  "theme": {
+    "zinc": "துத்தநாகம்",
+    "earthy": "மண்",
+    "ocean": "கடல்",
+    "vibrant": "துடிப்பானது",
+    "sunset": "சூரிய அஸ்தமனம்"
   }
 }

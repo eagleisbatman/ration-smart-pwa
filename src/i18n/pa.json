@@ -1025,7 +1025,10 @@
     "milkPriceSaved": "ਦੁੱਧ ਦੀ ਕੀਮਤ ਅਪਡੇਟ ਕੀਤੀ ਗਈ",
     "milkPricePositive": "ਕੀਮਤ 0 ਤੋਂ ਵੱਧ ਹੋਣੀ ਚਾਹੀਦੀ ਹੈ",
     "orgFetchError": "ਸੰਗਠਨਾਂ ਨੂੰ ਲੋਡ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਿਆ। ਕਿਰਪਾ ਕਰਕੇ ਬਾਅਦ ਵਿੱਚ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",
-    "languageSaveError": "ਭਾਸ਼ਾ ਸਥਾਨਕ ਤੌਰ 'ਤੇ ਬਦਲ ਗਈ ਹੈ ਪਰ ਸਰਵਰ 'ਤੇ ਸੁਰੱਖਿਅਤ ਨਹੀਂ ਕੀਤੀ ਜਾ ਸਕੀ।"
+    "languageSaveError": "ਭਾਸ਼ਾ ਸਥਾਨਕ ਤੌਰ 'ਤੇ ਬਦਲ ਗਈ ਹੈ ਪਰ ਸਰਵਰ 'ਤੇ ਸੁਰੱਖਿਅਤ ਨਹੀਂ ਕੀਤੀ ਜਾ ਸਕੀ।",
+    "theme": "ਥੀਮ",
+    "themeDesc": "ਆਪਣੀ ਰੰਗ ਥੀਮ ਚੁਣੋ",
+    "chooseTheme": "ਥੀਮ ਚੁਣੋ"
   },
   "farmer": {
     "farmers": "ਕਿਸਾਨ",
@@ -1755,5 +1758,12 @@
     "orgTypeCooperative": "ਸਹਿਕਾਰੀ",
     "orgTypeResearch": "ਖੋਜ",
     "orgTypeOther": "ਹੋਰ"
+  },
+  "theme": {
+    "zinc": "ਜ਼ਿੰਕ",
+    "earthy": "ਧਰਤੀ",
+    "ocean": "ਸਮੁੰਦਰ",
+    "vibrant": "ਰੌਚਕ",
+    "sunset": "ਸੂਰਜ ਡੁੱਬਣਾ"
   }
 }

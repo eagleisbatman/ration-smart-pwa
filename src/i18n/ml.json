@@ -280,7 +280,7 @@
     },
     "breedRequired": "ഇനം *",
     "weight": "ഭാരം (kg) *",
-    "weightKg": "kg",
+    "weightKg": "കിലോ",
     "age": "പ്രായം",
     "ageMonths": "പ്രായം (മാസം)",
     "milkProductionSection": "പാൽ ഉത്പാദനം",
@@ -1025,7 +1025,10 @@
     "milkPriceSaved": "പാലിന്റെ വില അപ്ഡേറ്റ് ചെയ്തു",
     "milkPricePositive": "വില 0-ൽ കൂടുതലായിരിക്കണം",
     "orgFetchError": "സ്ഥാപനങ്ങളെ ലോഡ് ചെയ്യാൻ കഴിഞ്ഞില്ല. ദയവായി പിന്നീട് വീണ്ടും ശ്രമിക്കുക.",
-    "languageSaveError": "ഭാഷ പ്രാദേശികമായി മാറ്റി, പക്ഷേ സെർവറിൽ സംരക്ഷിക്കാൻ കഴിഞ്ഞില്ല."
+    "languageSaveError": "ഭാഷ പ്രാദേശികമായി മാറ്റി, പക്ഷേ സെർവറിൽ സംരക്ഷിക്കാൻ കഴിഞ്ഞില്ല.",
+    "theme": "തീം",
+    "themeDesc": "നിങ്ങളുടെ തീം തിരഞ്ഞെടുക്കുക",
+    "chooseTheme": "തീം തിരഞ്ഞെടുക്കുക"
   },
   "farmer": {
     "farmers": "കർഷകർ",
@@ -1755,5 +1758,12 @@
     "orgTypeCooperative": "സഹകരണ സംഘം",
     "orgTypeResearch": "ഗവേഷണം",
     "orgTypeOther": "മറ്റുള്ളവ"
+  },
+  "theme": {
+    "zinc": "സിങ്ക്",
+    "earthy": "എർത്തി",
+    "ocean": "ഓഷ്യൻ",
+    "vibrant": "വൈബ്രന്റ്",
+    "sunset": "സൺസെറ്റ്"
   }
 }

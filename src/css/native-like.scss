@@ -28,8 +28,8 @@ body {
   // Support for notched devices
   padding-top: env(safe-area-inset-top);
   padding-bottom: env(safe-area-inset-bottom);
-  padding-right: env(safe-area-inset-right);
-  padding-left: env(safe-area-inset-left);
+  padding-inline-end: env(safe-area-inset-right);
+  padding-inline-start: env(safe-area-inset-left);
 }
 
 // Header respects safe area
@@ -245,11 +245,11 @@ button,
 @media screen and (orientation: landscape) {
   // Adjust for landscape safe areas
   .q-drawer {
-    padding-left: env(safe-area-inset-left);
+    padding-inline-start: env(safe-area-inset-left);
   }
 
   .q-page {
-    padding-right: env(safe-area-inset-right);
+    padding-inline-end: env(safe-area-inset-right);
   }
 }
 

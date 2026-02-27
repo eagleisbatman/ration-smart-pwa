@@ -41,15 +41,15 @@
     "selectOrganization": "संस्था निवडा (ऐच्छिक)",
     "selectRole": "तुम्ही काय करता?",
     "notAffiliated": "कोणत्याही संस्थेशी संबंधित नाही",
-    "optionalSuffix": "(Optional)",
-    "notSet": "Not set",
-    "tooLong": "Value is too long",
-    "notAvailable": "N/A",
-    "tapToAddPhoto": "Tap to add photo",
-    "takePhoto": "Take Photo",
-    "chooseFromGallery": "Choose from Gallery",
-    "removePhoto": "Remove Photo",
-    "you": "You"
+    "optionalSuffix": "(ऐच्छिक)",
+    "notSet": "सेट केलेले नाही",
+    "tooLong": "मूल्य खूप लांब आहे",
+    "notAvailable": "उपलब्ध नाही",
+    "tapToAddPhoto": "फोटो जोडण्यासाठी टॅप करा",
+    "takePhoto": "फोटो काढा",
+    "chooseFromGallery": "गॅलरीमधून निवडा",
+    "removePhoto": "फोटो काढा",
+    "you": "तुम्ही"
   },
   "nav": {
     "home": "मुख्यपृष्ठ",
@@ -1025,7 +1025,10 @@
     "milkPriceSaved": "दुधाची किंमत अपडेट केली",
     "milkPricePositive": "किंमत 0 पेक्षा जास्त असावी",
     "orgFetchError": "संस्था लोड होऊ शकल्या नाहीत. कृपया नंतर पुन्हा प्रयत्न करा.",
-    "languageSaveError": "भाषा स्थानिकरित्या बदलली आहे, परंतु सर्व्हरवर सेव्ह करता आली नाही."
+    "languageSaveError": "भाषा स्थानिकरित्या बदलली आहे, परंतु सर्व्हरवर सेव्ह करता आली नाही.",
+    "theme": "थीम",
+    "themeDesc": "तुमचा रंग निवडा",
+    "chooseTheme": "थीम निवडा"
   },
   "farmer": {
     "farmers": "शेतकरी",
@@ -1156,30 +1159,30 @@
   },
   "app": {
     "name": "RationSmart",
-    "tagline": "Smarter feed, healthier cattle, better yields"
+    "tagline": "उत्तम चारा, निरोगी जनावरे, जास्त उत्पादन"
   },
   "countries": {
-    "IN": "India",
-    "KE": "Kenya",
-    "ET": "Ethiopia",
-    "NP": "Nepal",
-    "BD": "Bangladesh",
-    "VN": "Vietnam",
-    "MA": "Morocco",
-    "ID": "Indonesia",
-    "PK": "Pakistan",
-    "PH": "Philippines",
-    "TH": "Thailand",
-    "OTHER": "Other",
+    "IN": "भारत",
+    "KE": "केनिया",
+    "ET": "इथिओपिया",
+    "NP": "नेपाळ",
+    "BD": "बांगलादेश",
+    "VN": "व्हिएतनाम",
+    "MA": "मोरोक्को",
+    "ID": "इंडोनेशिया",
+    "PK": "पाकिस्तान",
+    "PH": "फिलिपिन्स",
+    "TH": "थायलंड",
+    "OTHER": "इतर",
     "withCode": {
-      "IN": "India (+91)",
-      "KE": "Kenya (+254)",
-      "ET": "Ethiopia (+251)",
-      "NP": "Nepal (+977)",
-      "BD": "Bangladesh (+880)",
-      "VN": "Vietnam (+84)",
-      "MA": "Morocco (+212)",
-      "ID": "Indonesia (+62)",
+      "IN": "भारत (+91)",
+      "KE": "केनिया (+254)",
+      "ET": "इथिओपिया (+251)",
+      "NP": "नेपाळ (+977)",
+      "BD": "बांगलादेश (+880)",
+      "VN": "व्हिएतनाम (+84)",
+      "MA": "मोरोक्को (+212)",
+      "ID": "इंडोनेशिया (+62)",
       "PK": "पाकिस्तान (+92)",
       "PH": "फिलिपिन्स (+63)",
       "TH": "थायलंड (+66)"
@@ -1496,7 +1499,7 @@
     "updateNow": "आता अद्यतनित करा",
     "later": "नंतर",
     "updateBanner": "अद्यतन उपलब्ध",
-    "appName": "RationSmart"
+    "appName": "रेशनस्मार्ट"
   },
   "storage": {
     "quotaWarning": "स्टोरेज {percent}% भरले आहे ({quotaMB} MB पैकी {usageMB} MB). जागा मोकळी करण्यासाठी जुना डेटा सिंक करून साफ ​​करण्याचा विचार करा."
@@ -1756,5 +1759,12 @@
     "orgTypeCooperative": "सहकारी संस्था",
     "orgTypeResearch": "संशोधन",
     "orgTypeOther": "इतर"
+  },
+  "theme": {
+    "zinc": "झिंक",
+    "earthy": "मातीचा",
+    "ocean": "महासागर",
+    "vibrant": "उत्साहपूर्ण",
+    "sunset": "सूर्यास्त"
   }
 }

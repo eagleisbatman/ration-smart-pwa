@@ -1025,7 +1025,10 @@
     "milkPriceSaved": "दूध का दाम अपडेट किया गया",
     "milkPricePositive": "मूल्य 0 से अधिक होना चाहिए",
     "orgFetchError": "संगठन लोड नहीं हो सके। कृपया बाद में पुनः प्रयास करें।",
-    "languageSaveError": "भाषा स्थानीय रूप से बदल दी गई है लेकिन सर्वर पर सहेजी नहीं जा सकी।"
+    "languageSaveError": "भाषा स्थानीय रूप से बदल दी गई है लेकिन सर्वर पर सहेजी नहीं जा सकी।",
+    "theme": "थीम",
+    "themeDesc": "अपना कलर थीम चुनें",
+    "chooseTheme": "थीम चुनें"
   },
   "farmer": {
     "farmers": "किसान",
@@ -1755,5 +1758,12 @@
     "orgTypeCooperative": "सहकारी",
     "orgTypeResearch": "अनुसंधान",
     "orgTypeOther": "अन्य"
+  },
+  "theme": {
+    "zinc": "ज़िंक",
+    "earthy": "अर्थी",
+    "ocean": "ओशन",
+    "vibrant": "वाइब्रेंट",
+    "sunset": "सनसेट"
   }
 }

@@ -341,7 +341,7 @@
     },
     "ageFormatYears": "{count} سنة",
     "ageFormatYearsPlural": "{count} سنوات",
-    "ageFormatYearsAndMonths": "{years} {months}",
+    "ageFormatYearsAndMonths": "{years} سنة {months} شهر",
     "ageFormatMonth": "{count} شهر",
     "ageFormatMonthPlural": "{count} أشهر",
     "validation": {
@@ -1025,7 +1025,10 @@
     "milkPriceSaved": "تم تحديث سعر الحليب",
     "milkPricePositive": "يجب أن يكون السعر أكبر من 0",
     "orgFetchError": "تعذر تحميل المنظمات. يرجى المحاولة مرة أخرى لاحقًا.",
-    "languageSaveError": "تم تغيير اللغة محليًا ولكن تعذر حفظها على الخادم."
+    "languageSaveError": "تم تغيير اللغة محليًا ولكن تعذر حفظها على الخادم.",
+    "theme": "السمة",
+    "themeDesc": "اختر سمة الألوان",
+    "chooseTheme": "اختر السمة"
   },
   "farmer": {
     "farmers": "المزارعون",
@@ -1755,5 +1758,12 @@
     "orgTypeCooperative": "تعاونية",
     "orgTypeResearch": "بحثي",
     "orgTypeOther": "أخرى"
+  },
+  "theme": {
+    "zinc": "زنك",
+    "earthy": "ترابي",
+    "ocean": "المحيط",
+    "vibrant": "حيوي",
+    "sunset": "غروب الشمس"
   }
 }

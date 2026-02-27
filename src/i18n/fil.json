@@ -601,7 +601,7 @@
     "silage": "Silage",
     "pricePerKg": "Presyo kada kg",
     "availability": "Pagkakaroon",
-    "available": "Available",
+    "available": "Magagamit",
     "unavailable": "Hindi Available",
     "seasonal": "Pana-panahon",
     "dryMatter": "Dry Matter (%)",
@@ -1025,7 +1025,10 @@
     "milkPriceSaved": "Na-update ang presyo ng gatas",
     "milkPricePositive": "Ang presyo ay dapat mas mataas sa 0",
     "orgFetchError": "Hindi ma-load ang mga organisasyon. Pakisubukan muli mamaya.",
-    "languageSaveError": "Na-local change ang wika pero hindi na-save sa server."
+    "languageSaveError": "Na-local change ang wika pero hindi na-save sa server.",
+    "theme": "Tema",
+    "themeDesc": "Piliin ang iyong tema ng kulay",
+    "chooseTheme": "Pumili ng Tema"
   },
   "farmer": {
     "farmers": "Mga Magsasaka",
@@ -1517,7 +1520,7 @@
     "fat": "Taba",
     "snf": "SNF",
     "revenue": "Kita",
-    "totalRevenue": "Total",
+    "totalRevenue": "Kabuuang Kita",
     "perDay": "Bawat Araw",
     "actualsVsProjected": "Aktwal vs Diet Plan",
     "baseline": "Baseline",
@@ -1754,5 +1757,12 @@
     "orgTypeCooperative": "Kooperatiba",
     "orgTypeResearch": "Pananaliksik",
     "orgTypeOther": "Iba pa"
+  },
+  "theme": {
+    "zinc": "Zinc",
+    "earthy": "Lupa",
+    "ocean": "Karagatan",
+    "vibrant": "Buhay na Buhay",
+    "sunset": "Takip-silim"
   }
 }

@@ -1025,7 +1025,10 @@
     "milkPriceSaved": "દૂધનો ભાવ અપડેટ થયો",
     "milkPricePositive": "ભાવ 0 કરતા વધારે હોવો જોઈએ",
     "orgFetchError": "સંસ્થાઓ લોડ કરી શકાઈ નથી. કૃપા કરીને પછીથી ફરી પ્રયાસ કરો.",
-    "languageSaveError": "ભાષા સ્થાનિક રીતે બદલાઈ ગઈ છે પરંતુ સર્વર પર સાચવી શકાઈ નથી."
+    "languageSaveError": "ભાષા સ્થાનિક રીતે બદલાઈ ગઈ છે પરંતુ સર્વર પર સાચવી શકાઈ નથી.",
+    "theme": "થીમ",
+    "themeDesc": "તમારી કલર થીમ પસંદ કરો",
+    "chooseTheme": "થીમ પસંદ કરો"
   },
   "farmer": {
     "farmers": "ખેડૂતો",
@@ -1751,9 +1754,16 @@
     "orgDescription": "વર્ણન",
     "orgTypeUniversity": "યુનિવર્સિટી",
     "orgTypeGovernment": "સરકાર",
-    "orgTypeNgo": "NGO",
+    "orgTypeNgo": "એનજીઓ",
     "orgTypeCooperative": "સહકારી",
     "orgTypeResearch": "સંશોધન",
     "orgTypeOther": "અન્ય"
+  },
+  "theme": {
+    "zinc": "ઝીંક",
+    "earthy": "અર્થી",
+    "ocean": "ઓશન",
+    "vibrant": "વાઇબ્રન્ટ",
+    "sunset": "સનસેટ"
   }
 }

@@ -23,7 +23,7 @@
     "retry": "Coba Lagi",
     "refresh": "Segarkan",
     "search": "Cari",
-    "filter": "Filter",
+    "filter": "Saring",
     "sort": "Urutkan",
     "all": "Semua",
     "none": "Tidak Ada",
@@ -1025,7 +1025,10 @@
     "milkPriceSaved": "Harga susu diperbarui",
     "milkPricePositive": "Harga harus lebih besar dari 0",
     "orgFetchError": "Tidak dapat memuat organisasi. Silakan coba lagi nanti.",
-    "languageSaveError": "Bahasa diubah secara lokal tetapi tidak dapat disimpan ke server."
+    "languageSaveError": "Bahasa diubah secara lokal tetapi tidak dapat disimpan ke server.",
+    "theme": "Tema",
+    "themeDesc": "Pilih tema warna Anda",
+    "chooseTheme": "Pilih Tema"
   },
   "farmer": {
     "farmers": "Peternak",
@@ -1754,5 +1757,12 @@
     "orgTypeCooperative": "Koperasi",
     "orgTypeResearch": "Penelitian",
     "orgTypeOther": "Lainnya"
+  },
+  "theme": {
+    "zinc": "Zinc",
+    "earthy": "Earthy",
+    "ocean": "Ocean",
+    "vibrant": "Vibrant",
+    "sunset": "Sunset"
   }
 }
