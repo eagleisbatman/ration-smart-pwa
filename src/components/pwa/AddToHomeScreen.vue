@@ -193,7 +193,7 @@ defineExpose({
   right: 16px;
   max-width: 480px;
   margin-inline: auto;
-  background: $primary;
+  background: var(--q-primary);
   color: white;
   padding: 12px 16px;
   border-radius: $radius-loose;

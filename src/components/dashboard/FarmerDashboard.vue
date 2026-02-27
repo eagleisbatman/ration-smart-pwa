@@ -647,7 +647,7 @@ defineExpose({ refresh });
 
 /* M19: Onboarding welcome card */
 .onboarding-card {
-  border-color: $primary;
+  border-color: var(--q-primary);
   background: rgba(0, 0, 0, 0.02);
 }
 

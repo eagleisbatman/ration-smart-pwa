@@ -583,7 +583,7 @@
       "ageMonthsValue": "{months} महिना",
       "bcsAndAge": "BCS / उमेर",
       "notSpecified": "नखुलाइएको",
-      "ageDisclaimer": "Age is recorded for your reference but is not used in diet calculations."
+      "ageDisclaimer": "उमेर तपाईको जानकारीका लागि मात्र राखिएको हो, यसको प्रयोग आहार गणनामा गरिँदैन।"
     }
   },
   "feed": {
@@ -662,8 +662,8 @@
       "nutritionalComposition": "पोषक तत्वको बनावट",
       "pricing": "मूल्य",
       "season": "मौसम",
-      "type": "Type",
-      "typeRequired": "Type *"
+      "type": "प्रकार",
+      "typeRequired": "प्रकार *"
     },
     "seasons": {
       "allYear": "वर्षैभरी",
@@ -693,7 +693,7 @@
       "required": "अनिवार्य",
       "cannotBeNegative": "शून्य भन्दा कम हुन सक्दैन",
       "maxPercent": "बढीमा १००%",
-      "typeRequired": "Type is required"
+      "typeRequired": "प्रकार आवश्यक छ"
     },
     "notifications": {
       "feedUpdated": "दानाको विवरण अपडेट भयो",
@@ -720,8 +720,8 @@
     "noPriceHistory": "अहिलेसम्म कुनै मूल्य इतिहास छैन",
     "priceChange": "मूल्यमा परिवर्तन",
     "types": {
-      "forage": "Forage",
-      "concentrate": "Concentrate"
+      "forage": "घाँस दाना",
+      "concentrate": "दाना"
     }
   },
   "logs": {

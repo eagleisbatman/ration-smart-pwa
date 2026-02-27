@@ -304,7 +304,7 @@ watch(
 <style lang="scss" scoped>
 .main-header {
   background: var(--q-color-surface, white);
-  color: $primary;
+  color: var(--q-primary);
 }
 
 .drawer-header {

@@ -583,7 +583,7 @@
       "ageMonthsValue": "{months} മാസം",
       "bcsAndAge": "BCS / പ്രായം",
       "notSpecified": "നൽകിയിട്ടില്ല",
-      "ageDisclaimer": "Age is recorded for your reference but is not used in diet calculations."
+      "ageDisclaimer": "വയസ്സ് നിങ്ങളുടെ റെഫറൻസിനായി രേഖപ്പെടുത്തിയിട്ടുണ്ട്, എന്നാൽ തീറ്റ കണക്കുകളിൽ ഇത് ഉപയോഗിക്കുന്നില്ല."
     }
   },
   "feed": {
@@ -662,8 +662,8 @@
       "nutritionalComposition": "പോഷക ഘടന",
       "pricing": "വിലനിർണ്ണയം",
       "season": "കാലാവസ്ഥ",
-      "type": "Type",
-      "typeRequired": "Type *"
+      "type": "തരം",
+      "typeRequired": "തരം *"
     },
     "seasons": {
       "allYear": "എല്ലാ വർഷവും",
@@ -693,7 +693,7 @@
       "required": "ആവശ്യമാണ്",
       "cannotBeNegative": "നെഗറ്റീവ് ആകാൻ കഴിയില്ല",
       "maxPercent": "പരമാവധി 100%",
-      "typeRequired": "Type is required"
+      "typeRequired": "തരം ആവശ്യമാണ്"
     },
     "notifications": {
       "feedUpdated": "തീറ്റ അപ്ഡേറ്റ് ചെയ്തു",
@@ -720,8 +720,8 @@
     "noPriceHistory": "വില ചരിത്രമൊന്നും ഇതുവരെയില്ല",
     "priceChange": "വില മാറ്റം",
     "types": {
-      "forage": "Forage",
-      "concentrate": "Concentrate"
+      "forage": "പരുഷാഹാരം",
+      "concentrate": "സാന്ദ്രീകൃതാഹാരം"
     }
   },
   "logs": {

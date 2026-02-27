@@ -69,7 +69,7 @@ withDefaults(defineProps<{
   &--active {
     background-color: var(--q-primary);
     color: white;
-    box-shadow: 0 0 0 4px rgba($primary, 0.18);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--q-primary) 18%, transparent);
   }
 
   &--upcoming {

@@ -102,7 +102,7 @@ function postpone() {
   top: 0;
   left: 0;
   right: 0;
-  background: $primary;
+  background: var(--q-primary);
   color: white;
   padding: 8px 16px;
   display: flex;

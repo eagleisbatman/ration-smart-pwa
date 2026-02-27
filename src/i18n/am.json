@@ -583,7 +583,7 @@
       "ageMonthsValue": "{months} ወራት",
       "bcsAndAge": "BCS / ዕድሜ",
       "notSpecified": "አልተገለጸም",
-      "ageDisclaimer": "Age is recorded for your reference but is not used in diet calculations."
+      "ageDisclaimer": "ዕድሜው ለመረጃዎ ተመዝግቧል ነገር ግን በአመጋገብ ስሌት ውስጥ ጥቅም ላይ አይውልም።"
     }
   },
   "feed": {
@@ -662,8 +662,8 @@
       "nutritionalComposition": "የምግብነት ይዘት",
       "pricing": "ዋጋ",
       "season": "ወቅት",
-      "type": "Type",
-      "typeRequired": "Type *"
+      "type": "አይነት",
+      "typeRequired": "አይነት *"
     },
     "seasons": {
       "allYear": "ዓመቱን ሙሉ",
@@ -693,7 +693,7 @@
       "required": "ያስፈልጋል",
       "cannotBeNegative": "ከዜሮ በታች መሆን አይችልም",
       "maxPercent": "ከፍተኛ 100%",
-      "typeRequired": "Type is required"
+      "typeRequired": "አይነት ያስፈልጋል"
     },
     "notifications": {
       "feedUpdated": "መኖ ተሻሽሏል",
@@ -720,8 +720,8 @@
     "noPriceHistory": "እስካሁን የዋጋ ታሪክ የለም",
     "priceChange": "የዋጋ ለውጥ",
     "types": {
-      "forage": "Forage",
-      "concentrate": "Concentrate"
+      "forage": "መኖ",
+      "concentrate": "ማዕድናት"
     }
   },
   "logs": {

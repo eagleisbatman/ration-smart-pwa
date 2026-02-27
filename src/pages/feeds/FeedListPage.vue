@@ -281,7 +281,7 @@ onMounted(() => {
 
 .view-toggle {
   .q-btn-toggle {
-    border: 1px solid $primary;
+    border: 1px solid var(--q-primary);
     border-radius: $radius-default;
     overflow: hidden;
   }
