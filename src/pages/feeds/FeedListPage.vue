@@ -154,7 +154,7 @@
     </PullToRefresh>
 
     <!-- FAB for adding custom feed -->
-    <q-page-sticky v-if="activeTab === 'custom' && !compareMode" :position="rtl ? 'bottom-left' : 'bottom-right'" :offset="[16, 72]">
+    <q-page-sticky v-if="activeTab === 'custom' && !compareMode" position="bottom-right" :offset="[16, 72]">
       <q-btn fab icon="add" color="primary" @click="router.push('/feeds/new')" />
     </q-page-sticky>
 
@@ -171,12 +171,10 @@
 import { ref, computed, onMounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
-import { isRTL } from 'src/boot/i18n';
 import { useFeedsStore } from 'src/stores/feeds';
 import { useCurrency } from 'src/composables/useCurrency';
 
-const { t, locale } = useI18n();
-const rtl = computed(() => isRTL(locale.value as string));
+const { t } = useI18n();
 
 const CATEGORY_I18N_MAP: Record<string, string> = {
   Concentrate: 'feed.categories.concentrate',

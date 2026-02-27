@@ -22,7 +22,7 @@
     </q-list>
 
     <!-- Preferences Section -->
-    <div class="text-subtitle2 text-grey-7 q-mb-sm q-ml-sm">{{ $t('settings.preferences') }}</div>
+    <div class="text-subtitle2 text-grey-7 q-mb-sm">{{ $t('settings.preferences') }}</div>
     <q-list bordered class="rounded-borders q-mb-md">
       <!-- Language -->
       <q-item v-ripple clickable @click="showLanguageDialog = true">
@@ -93,7 +93,7 @@
     </q-list>
 
     <!-- App Settings -->
-    <div class="text-subtitle2 text-grey-7 q-mb-sm q-ml-sm">{{ $t('settings.appSettings') }}</div>
+    <div class="text-subtitle2 text-grey-7 q-mb-sm">{{ $t('settings.appSettings') }}</div>
     <q-list bordered class="rounded-borders q-mb-md">
       <q-item>
         <q-item-section avatar>
@@ -180,7 +180,7 @@
     </q-list>
 
     <!-- Data & Sync -->
-    <div class="text-subtitle2 text-grey-7 q-mb-sm q-ml-sm">{{ $t('settings.dataSync') }}</div>
+    <div class="text-subtitle2 text-grey-7 q-mb-sm">{{ $t('settings.dataSync') }}</div>
     <q-list bordered class="rounded-borders q-mb-md">
       <q-item>
         <q-item-section avatar>
@@ -231,7 +231,7 @@
     </q-list>
 
     <!-- About -->
-    <div class="text-subtitle2 text-grey-7 q-mb-sm q-ml-sm">{{ $t('settings.about') }}</div>
+    <div class="text-subtitle2 text-grey-7 q-mb-sm">{{ $t('settings.about') }}</div>
     <q-list bordered class="rounded-borders q-mb-md">
       <q-item>
         <q-item-section avatar>
@@ -273,7 +273,7 @@
     </q-list>
 
     <!-- Account -->
-    <div class="text-subtitle2 text-grey-7 q-mb-sm q-ml-sm">{{ $t('settings.account') }}</div>
+    <div class="text-subtitle2 text-grey-7 q-mb-sm">{{ $t('settings.account') }}</div>
     <q-list bordered class="rounded-borders q-mb-md">
       <q-item v-ripple clickable @click="confirmLogout">
         <q-item-section avatar>

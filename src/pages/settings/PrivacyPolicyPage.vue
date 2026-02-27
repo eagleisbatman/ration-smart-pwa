@@ -5,7 +5,7 @@
     </div>
 
     <!-- Data Collection -->
-    <div class="text-subtitle2 text-grey-7 q-mb-sm q-ml-sm">{{ $t('privacy.dataCollection') }}</div>
+    <div class="text-subtitle2 text-grey-7 q-mb-sm">{{ $t('privacy.dataCollection') }}</div>
     <q-list bordered class="rounded-borders q-mb-md">
       <q-item>
         <q-item-section>
@@ -22,7 +22,7 @@
     </q-list>
 
     <!-- How Data is Used -->
-    <div class="text-subtitle2 text-grey-7 q-mb-sm q-ml-sm">{{ $t('privacy.dataUsage') }}</div>
+    <div class="text-subtitle2 text-grey-7 q-mb-sm">{{ $t('privacy.dataUsage') }}</div>
     <q-list bordered class="rounded-borders q-mb-md">
       <q-item>
         <q-item-section>
@@ -39,7 +39,7 @@
     </q-list>
 
     <!-- Data Storage -->
-    <div class="text-subtitle2 text-grey-7 q-mb-sm q-ml-sm">{{ $t('privacy.dataStorage') }}</div>
+    <div class="text-subtitle2 text-grey-7 q-mb-sm">{{ $t('privacy.dataStorage') }}</div>
     <q-list bordered class="rounded-borders q-mb-md">
       <q-item>
         <q-item-section>
@@ -49,7 +49,7 @@
     </q-list>
 
     <!-- Data Sharing -->
-    <div class="text-subtitle2 text-grey-7 q-mb-sm q-ml-sm">{{ $t('privacy.dataSharing') }}</div>
+    <div class="text-subtitle2 text-grey-7 q-mb-sm">{{ $t('privacy.dataSharing') }}</div>
     <q-list bordered class="rounded-borders q-mb-md">
       <q-item>
         <q-item-section>
@@ -59,7 +59,7 @@
     </q-list>
 
     <!-- Your Rights -->
-    <div class="text-subtitle2 text-grey-7 q-mb-sm q-ml-sm">{{ $t('privacy.yourRights') }}</div>
+    <div class="text-subtitle2 text-grey-7 q-mb-sm">{{ $t('privacy.yourRights') }}</div>
     <q-list bordered class="rounded-borders q-mb-md">
       <q-item>
         <q-item-section>
@@ -76,7 +76,7 @@
     </q-list>
 
     <!-- Contact -->
-    <div class="text-subtitle2 text-grey-7 q-mb-sm q-ml-sm">{{ $t('privacy.contact') }}</div>
+    <div class="text-subtitle2 text-grey-7 q-mb-sm">{{ $t('privacy.contact') }}</div>
     <q-list bordered class="rounded-borders q-mb-md">
       <q-item v-ripple clickable tag="a" href="mailto:privacy@rationsmart.app">
         <q-item-section avatar>

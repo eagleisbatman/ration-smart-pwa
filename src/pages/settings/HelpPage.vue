@@ -1,7 +1,7 @@
 <template>
   <q-page class="q-pa-md">
     <!-- FAQ Section -->
-    <div class="text-subtitle2 text-grey-7 q-mb-sm q-ml-sm">{{ $t('help.faqTitle') }}</div>
+    <div class="text-subtitle2 text-grey-7 q-mb-sm">{{ $t('help.faqTitle') }}</div>
     <q-list bordered class="rounded-borders q-mb-md">
       <q-expansion-item
         v-for="(faqKey, index) in faqKeys"
@@ -20,7 +20,7 @@
     </q-list>
 
     <!-- Contact Support -->
-    <div class="text-subtitle2 text-grey-7 q-mb-sm q-ml-sm">{{ $t('help.contactTitle') }}</div>
+    <div class="text-subtitle2 text-grey-7 q-mb-sm">{{ $t('help.contactTitle') }}</div>
     <q-list bordered class="rounded-borders q-mb-md">
       <q-item>
         <q-item-section>
@@ -45,7 +45,7 @@
     </q-list>
 
     <!-- Report a Bug -->
-    <div class="text-subtitle2 text-grey-7 q-mb-sm q-ml-sm">{{ $t('help.reportBugTitle') }}</div>
+    <div class="text-subtitle2 text-grey-7 q-mb-sm">{{ $t('help.reportBugTitle') }}</div>
     <q-list bordered class="rounded-borders q-mb-md">
       <q-item>
         <q-item-section>
@@ -70,7 +70,7 @@
     </q-list>
 
     <!-- App Information -->
-    <div class="text-subtitle2 text-grey-7 q-mb-sm q-ml-sm">{{ $t('help.appInfoTitle') }}</div>
+    <div class="text-subtitle2 text-grey-7 q-mb-sm">{{ $t('help.appInfoTitle') }}</div>
     <q-list bordered class="rounded-borders q-mb-md">
       <q-item>
         <q-item-section avatar>
