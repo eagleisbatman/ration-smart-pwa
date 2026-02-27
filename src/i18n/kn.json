@@ -582,7 +582,8 @@
       "ageMonthsHint": "ತಿಳಿದಿಲ್ಲದಿದ್ದರೆ ಖಾಲಿ ಬಿಡಿ",
       "ageMonthsValue": "{months} ತಿಂಗಳುಗಳು",
       "bcsAndAge": "BCS / ವಯಸ್ಸು",
-      "notSpecified": "ನಿರ್ದಿಷ್ಟಪಡಿಸಲಾಗಿಲ್ಲ"
+      "notSpecified": "ನಿರ್ದಿಷ್ಟಪಡಿಸಲಾಗಿಲ್ಲ",
+      "ageDisclaimer": "Age is recorded for your reference but is not used in diet calculations."
     }
   },
   "feed": {
@@ -660,7 +661,9 @@
       "nutritionalValues": "ಪೌಷ್ಟಿಕಾಂಶದ ಮೌಲ್ಯಗಳು",
       "nutritionalComposition": "ಪೌಷ್ಟಿಕಾಂಶದ ಸಂಯೋಜನೆ",
       "pricing": "ಬೆಲೆ ನಿರ್ಧಾರ",
-      "season": "ಋತು"
+      "season": "ಋತು",
+      "type": "Type",
+      "typeRequired": "Type *"
     },
     "seasons": {
       "allYear": "ವರ್ಷವಿಡೀ",
@@ -689,7 +692,8 @@
       "categoryRequired": "ವರ್ಗ ಕಡ್ಡಾಯವಾಗಿದೆ",
       "required": "ಕಡ್ಡಾಯವಾಗಿದೆ",
       "cannotBeNegative": "ಋಣಾತ್ಮಕವಾಗಿರಲು ಸಾಧ್ಯವಿಲ್ಲ",
-      "maxPercent": "ಗರಿಷ್ಠ 100%"
+      "maxPercent": "ಗರಿಷ್ಠ 100%",
+      "typeRequired": "Type is required"
     },
     "notifications": {
       "feedUpdated": "ಮೇವು ನವೀಕರಿಸಲಾಗಿದೆ",
@@ -714,7 +718,11 @@
     "maxPrice": "ಗರಿಷ್ಠ",
     "avgPrice": "ಸರಾಸರಿ",
     "noPriceHistory": "ಇನ್ನೂ ಬೆಲೆ ಇತಿಹಾಸವಿಲ್ಲ",
-    "priceChange": "ಬೆಲೆ ಬದಲಾವಣೆ"
+    "priceChange": "ಬೆಲೆ ಬದಲಾವಣೆ",
+    "types": {
+      "forage": "Forage",
+      "concentrate": "Concentrate"
+    }
   },
   "logs": {
     "dailyLog": "ದೈನಿಕ ಲಾಗ್",

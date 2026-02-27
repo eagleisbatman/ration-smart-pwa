@@ -638,6 +638,7 @@
       "bodyConditionScore": "Body Condition Score",
       "ageMonths": "Age (months)",
       "ageMonthsHint": "Leave empty if unknown",
+      "ageDisclaimer": "Age is recorded for your reference but is not used in diet calculations.",
       "ageMonthsValue": "{months} months",
       "bcsAndAge": "BCS / Age",
       "notSpecified": "Not specified"
@@ -726,6 +727,10 @@
       "master": "Master Feeds",
       "custom": "My Feeds"
     },
+    "types": {
+      "forage": "Forage",
+      "concentrate": "Concentrate"
+    },
     "categories": {
       "concentrate": "Concentrate",
       "roughage": "Roughage",
@@ -755,6 +760,8 @@
       "pPercent": "Phosphorus (P)",
       "pPercentShort": "P",
       "pPercentInput": "Phosphorus %",
+      "type": "Type",
+      "typeRequired": "Type *",
       "category": "Category",
       "categoryRequired": "Category *",
       "nutritionalValues": "Nutritional Values",
@@ -786,6 +793,7 @@
     },
     "validation": {
       "nameRequired": "Name is required",
+      "typeRequired": "Type is required",
       "categoryRequired": "Category is required",
       "required": "Required",
       "cannotBeNegative": "Cannot be negative",

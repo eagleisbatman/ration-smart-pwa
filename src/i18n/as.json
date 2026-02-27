@@ -582,7 +582,8 @@
       "ageMonthsHint": "জনা নাথাকিলে খালী ৰাখক",
       "ageMonthsValue": "{months} মাহ",
       "bcsAndAge": "বি.চি.এছ (BCS) / বয়স",
-      "notSpecified": "উল্লেখ কৰা নাই"
+      "notSpecified": "উল্লেখ কৰা নাই",
+      "ageDisclaimer": "Age is recorded for your reference but is not used in diet calculations."
     }
   },
   "feed": {
@@ -660,7 +661,9 @@
       "nutritionalValues": "পুষ্টিগুণ",
       "nutritionalComposition": "পুষ্টিৰ গঠন",
       "pricing": "মূল্য",
-      "season": "ঋতু"
+      "season": "ঋতু",
+      "type": "Type",
+      "typeRequired": "Type *"
     },
     "seasons": {
       "allYear": "গোটেই বছৰ",
@@ -689,7 +692,8 @@
       "categoryRequired": "বিভাগ বাচনি কৰাটো প্ৰয়োজনীয়",
       "required": "প্ৰয়োজনীয়",
       "cannotBeNegative": "সংখ্যাটো ঋণাত্মক হ'ব নোৱাৰে",
-      "maxPercent": "সৰ্বাধিক ১০০%"
+      "maxPercent": "সৰ্বাধিক ১০০%",
+      "typeRequired": "Type is required"
     },
     "notifications": {
       "feedUpdated": "খাদ্যৰ তথ্য আপডেট কৰা হ'ল",
@@ -714,7 +718,11 @@
     "maxPrice": "সৰ্বোচ্চ",
     "avgPrice": "গড়",
     "noPriceHistory": "এতিয়ালৈকে কোনো মূল্যৰ ইতিহাস নাই",
-    "priceChange": "মূল্যৰ পৰিৱৰ্তন"
+    "priceChange": "মূল্যৰ পৰিৱৰ্তন",
+    "types": {
+      "forage": "Forage",
+      "concentrate": "Concentrate"
+    }
   },
   "logs": {
     "dailyLog": "দৈনিক লগ",

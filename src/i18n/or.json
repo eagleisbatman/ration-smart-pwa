@@ -582,7 +582,8 @@
       "ageMonthsHint": "ଜଣା ନଥିଲେ ଖାଲି ଛାଡନ୍ତୁ",
       "ageMonthsValue": "{months} ମାସ",
       "bcsAndAge": "BCS / ବୟସ",
-      "notSpecified": "ଉଲ୍ଲେଖ କରାଯାଇ ନାହିଁ"
+      "notSpecified": "ଉଲ୍ଲେଖ କରାଯାଇ ନାହିଁ",
+      "ageDisclaimer": "Age is recorded for your reference but is not used in diet calculations."
     }
   },
   "feed": {
@@ -660,7 +661,9 @@
       "nutritionalValues": "ଖାଦ୍ୟସାର ମୂଲ୍ୟ",
       "nutritionalComposition": "ଖାଦ୍ୟସାରର ପରିମାଣ",
       "pricing": "ମୂଲ୍ୟ",
-      "season": "ଋତୁ"
+      "season": "ଋତୁ",
+      "type": "Type",
+      "typeRequired": "Type *"
     },
     "seasons": {
       "allYear": "ସାରା ବର୍ଷ",
@@ -689,7 +692,8 @@
       "categoryRequired": "ଶ୍ରେଣୀ ଆବଶ୍ୟକ",
       "required": "ଆବଶ୍ୟକ",
       "cannotBeNegative": "ଶୂନରୁ କମ୍ ହୋଇପାରିବ ନାହିଁ",
-      "maxPercent": "ସର୍ବାଧିକ ୧୦୦%"
+      "maxPercent": "ସର୍ବାଧିକ ୧୦୦%",
+      "typeRequired": "Type is required"
     },
     "notifications": {
       "feedUpdated": "ଖାଦ୍ୟ ଅପଡେଟ୍ ହୋଇଛି",
@@ -714,7 +718,11 @@
     "maxPrice": "ସର୍ବାଧିକ",
     "avgPrice": "ହାରାହାରି",
     "noPriceHistory": "ଏପର୍ଯ୍ୟନ୍ତ କୌଣସି ଦର ଇତିହାସ ନାହିଁ",
-    "priceChange": "ଦର ପରିବର୍ତ୍ତନ"
+    "priceChange": "ଦର ପରିବର୍ତ୍ତନ",
+    "types": {
+      "forage": "Forage",
+      "concentrate": "Concentrate"
+    }
   },
   "logs": {
     "dailyLog": "ଦୈନିକ ଲଗ୍",

@@ -13,6 +13,17 @@
       />
 
       <q-select
+        v-model="form.fd_type"
+        :label="$t('feed.labels.typeRequired')"
+        outlined
+        :options="typeOptions"
+        :rules="[(val) => !!val || t('feed.validation.typeRequired')]"
+        emit-value
+        map-options
+        @update:model-value="onTypeChanged"
+      />
+
+      <q-select
         v-model="form.category"
         :label="$t('feed.labels.categoryRequired')"
         outlined
@@ -184,6 +195,7 @@ const isEditing = computed(() => !!feedId.value);
 
 const form = reactive<FeedInput>({
   name: '',
+  fd_type: 'Concentrate',
   category: 'Concentrate',
   dm_percentage: 90,
   cp_percentage: 10,
@@ -199,20 +211,44 @@ const form = reactive<FeedInput>({
 const loading = computed(() => feedsStore.loading);
 const error = computed(() => feedsStore.error);
 
-const CATEGORY_VALUES = [
-  { value: 'Concentrate', key: 'feed.categories.concentrate' },
-  { value: 'Roughage', key: 'feed.categories.roughage' },
-  { value: 'Green Fodder', key: 'feed.categories.greenFodder' },
-  { value: 'Dry Fodder', key: 'feed.categories.dryFodder' },
-  { value: 'Silage', key: 'feed.categories.silage' },
-  { value: 'By-product', key: 'feed.categories.byProduct' },
-  { value: 'Mineral Mix', key: 'feed.categories.mineralMix' },
-  { value: 'Other', key: 'feed.categories.other' },
+const TYPE_VALUES = [
+  { value: 'Forage', key: 'feed.types.forage' },
+  { value: 'Concentrate', key: 'feed.types.concentrate' },
 ];
 
-const categoryOptions = computed(() =>
-  CATEGORY_VALUES.map((c) => ({ label: t(c.key), value: c.value }))
+const typeOptions = computed(() =>
+  TYPE_VALUES.map((tp) => ({ label: t(tp.key), value: tp.value }))
 );
+
+// Categories grouped by type (UCD hierarchy)
+const CATEGORIES_BY_TYPE: Record<string, { value: string; key: string }[]> = {
+  Forage: [
+    { value: 'Roughage', key: 'feed.categories.roughage' },
+    { value: 'Green Fodder', key: 'feed.categories.greenFodder' },
+    { value: 'Dry Fodder', key: 'feed.categories.dryFodder' },
+    { value: 'Silage', key: 'feed.categories.silage' },
+    { value: 'Other', key: 'feed.categories.other' },
+  ],
+  Concentrate: [
+    { value: 'Concentrate', key: 'feed.categories.concentrate' },
+    { value: 'By-product', key: 'feed.categories.byProduct' },
+    { value: 'Mineral Mix', key: 'feed.categories.mineralMix' },
+    { value: 'Other', key: 'feed.categories.other' },
+  ],
+};
+
+const categoryOptions = computed(() => {
+  const cats = CATEGORIES_BY_TYPE[form.fd_type || 'Concentrate'] || [];
+  return cats.map((c) => ({ label: t(c.key), value: c.value }));
+});
+
+function onTypeChanged() {
+  // Reset category when type changes (old category may not be valid for new type)
+  const validValues = (CATEGORIES_BY_TYPE[form.fd_type || 'Concentrate'] || []).map((c) => c.value);
+  if (!validValues.includes(form.category)) {
+    form.category = validValues[0] || '';
+  }
+}
 
 const SEASON_VALUES = [
   { value: 'all_year', key: 'feed.seasons.allYear' },
@@ -293,6 +329,7 @@ onMounted(async () => {
       originalPricePerKg.value = feed.price_per_kg;
       Object.assign(form, {
         name: feed.name,
+        fd_type: feed.fd_type || 'Concentrate',
         category: feed.category,
         dm_percentage: feed.dm_percentage,
         cp_percentage: feed.cp_percentage,

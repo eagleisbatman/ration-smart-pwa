@@ -582,7 +582,8 @@
       "ageMonthsHint": "தெரியவில்லை என்றால் காலியாக விடவும்",
       "ageMonthsValue": "{months} மாதங்கள்",
       "bcsAndAge": "BCS / வயது",
-      "notSpecified": "குறிப்பிடப்படவில்லை"
+      "notSpecified": "குறிப்பிடப்படவில்லை",
+      "ageDisclaimer": "Age is recorded for your reference but is not used in diet calculations."
     }
   },
   "feed": {
@@ -660,7 +661,9 @@
       "nutritionalValues": "ஊட்டச்சத்து மதிப்புகள்",
       "nutritionalComposition": "ஊட்டச்சத்து கலவை",
       "pricing": "விலை",
-      "season": "பருவம்"
+      "season": "பருவம்",
+      "type": "Type",
+      "typeRequired": "Type *"
     },
     "seasons": {
       "allYear": "வருடம் முழுவதும்",
@@ -689,7 +692,8 @@
       "categoryRequired": "வகை தேவை",
       "required": "தேவை",
       "cannotBeNegative": "எதிர்மறையாக இருக்க முடியாது",
-      "maxPercent": "அதிகபட்சம் 100%"
+      "maxPercent": "அதிகபட்சம் 100%",
+      "typeRequired": "Type is required"
     },
     "notifications": {
       "feedUpdated": "தீவனம் புதுப்பிக்கப்பட்டது",
@@ -714,7 +718,11 @@
     "maxPrice": "அதிகபட்ச",
     "avgPrice": "சராசரி",
     "noPriceHistory": "விலை வரலாறு இன்னும் இல்லை",
-    "priceChange": "விலை மாற்றம்"
+    "priceChange": "விலை மாற்றம்",
+    "types": {
+      "forage": "Forage",
+      "concentrate": "Concentrate"
+    }
   },
   "logs": {
     "dailyLog": "தினசரி பதிவு",
