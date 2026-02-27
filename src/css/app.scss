@@ -186,7 +186,7 @@ body {
 
     .q-icon {
       font-size: 20px;
-      color: $primary;
+      color: var(--q-primary);
     }
   }
 }
@@ -554,12 +554,12 @@ body {
   height: 0;
 }
 
-// Semantic legend color helpers
-.legend-color--primary { background: $chart-primary; }
-.legend-color--warning { background: $chart-warning; }
-.legend-color--success { background: $chart-success; }
-.legend-dashed--warning { border-color: $chart-warning; }
-.legend-dashed--success { border-color: $chart-success; }
+// Semantic legend color helpers (use runtime CSS vars for theme support)
+.legend-color--primary { background: var(--q-primary); }
+.legend-color--warning { background: var(--q-warning); }
+.legend-color--success { background: var(--q-positive); }
+.legend-dashed--warning { border-color: var(--q-warning); }
+.legend-dashed--success { border-color: var(--q-positive); }
 
 // Scrollable chart wrapper (horizontal scroll on mobile)
 .chart-scroll-wrapper {

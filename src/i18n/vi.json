@@ -583,7 +583,7 @@
       "ageMonthsValue": "{months} tháng",
       "bcsAndAge": "BCS / Tuổi",
       "notSpecified": "Chưa xác định",
-      "ageDisclaimer": "Age is recorded for your reference but is not used in diet calculations."
+      "ageDisclaimer": "Tuổi được ghi lại để bạn tham khảo nhưng không được sử dụng trong tính toán khẩu phần ăn."
     }
   },
   "feed": {
@@ -662,8 +662,8 @@
       "nutritionalComposition": "Thành phần dinh dưỡng",
       "pricing": "Giá cả",
       "season": "Mùa vụ",
-      "type": "Type",
-      "typeRequired": "Type *"
+      "type": "Loại",
+      "typeRequired": "Loại *"
     },
     "seasons": {
       "allYear": "Quanh năm",
@@ -693,7 +693,7 @@
       "required": "Bắt buộc",
       "cannotBeNegative": "Không được là số âm",
       "maxPercent": "Tối đa 100%",
-      "typeRequired": "Type is required"
+      "typeRequired": "Loại là bắt buộc"
     },
     "notifications": {
       "feedUpdated": "Đã cập nhật thức ăn",
@@ -720,8 +720,8 @@
     "noPriceHistory": "Chưa có lịch sử giá",
     "priceChange": "Thay đổi giá",
     "types": {
-      "forage": "Forage",
-      "concentrate": "Concentrate"
+      "forage": "Thức ăn thô",
+      "concentrate": "Thức ăn tinh"
     }
   },
   "logs": {

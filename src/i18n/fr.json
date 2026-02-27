@@ -586,7 +586,7 @@
       "ageMonthsValue": "{months} mois",
       "bcsAndAge": "NEC / Âge",
       "notSpecified": "Non spécifié",
-      "ageDisclaimer": "Age is recorded for your reference but is not used in diet calculations."
+      "ageDisclaimer": "L'âge est enregistré à titre indicatif et n'est pas utilisé dans le calcul des rations."
     }
   },
   "feed": {
@@ -696,7 +696,7 @@
       "required": "Requis",
       "cannotBeNegative": "Ne peut pas être négatif",
       "maxPercent": "Max 100%",
-      "typeRequired": "Type is required"
+      "typeRequired": "Le type est requis"
     },
     "notifications": {
       "feedUpdated": "Aliment mis à jour",
@@ -723,8 +723,8 @@
     "noPriceHistory": "Pas encore d'historique des prix",
     "priceChange": "Changement de prix",
     "types": {
-      "forage": "Forage",
-      "concentrate": "Concentrate"
+      "forage": "Fourrage",
+      "concentrate": "Concentré"
     }
   },
   "logs": {
@@ -1005,7 +1005,7 @@
     "helpSupport": "Aide et support",
     "privacyPolicy": "Politique de confidentialité",
     "termsOfService": "Conditions d'utilisation",
-    "support": "Support",
+    "support": "Assistance",
     "contactUs": "Nous contacter",
     "logout": "Déconnexion",
     "logoutConfirm": "Êtes-vous sûr de vouloir vous déconnecter ?",

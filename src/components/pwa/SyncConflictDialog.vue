@@ -244,12 +244,12 @@ onMounted(async () => {
 }
 
 .conflict-local {
-  background: rgba($primary, 0.05);
-  border-inline-start: 3px solid $primary;
+  background: color-mix(in srgb, var(--q-primary) 5%, transparent);
+  border-inline-start: 3px solid var(--q-primary);
 }
 
 .conflict-server {
-  background: rgba($secondary, 0.05);
-  border-inline-start: 3px solid $secondary;
+  background: color-mix(in srgb, var(--q-secondary) 5%, transparent);
+  border-inline-start: 3px solid var(--q-secondary);
 }
 </style>

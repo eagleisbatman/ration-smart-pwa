@@ -583,7 +583,7 @@
       "ageMonthsValue": "{months} મહિના",
       "bcsAndAge": "BCS / ઉંમર",
       "notSpecified": "ઉલ્લેખ નથી",
-      "ageDisclaimer": "Age is recorded for your reference but is not used in diet calculations."
+      "ageDisclaimer": "ઉંમર તમારી જાણકારી માટે રેકોર્ડ કરવામાં આવે છે, પરંતુ તેનો આહારની ગણતરીમાં ઉપયોગ થતો નથી."
     }
   },
   "feed": {
@@ -662,8 +662,8 @@
       "nutritionalComposition": "પોષક રચના",
       "pricing": "ભાવ",
       "season": "ઋતુ",
-      "type": "Type",
-      "typeRequired": "Type *"
+      "type": "પ્રકાર",
+      "typeRequired": "પ્રકાર *"
     },
     "seasons": {
       "allYear": "આખું વર્ષ",
@@ -693,7 +693,7 @@
       "required": "જરૂરી",
       "cannotBeNegative": "નકારાત્મક હોઈ શકે નહીં",
       "maxPercent": "મહત્તમ 100%",
-      "typeRequired": "Type is required"
+      "typeRequired": "પ્રકાર આવશ્યક છે"
     },
     "notifications": {
       "feedUpdated": "ઘાસચારો અપડેટ થયો",
@@ -720,8 +720,8 @@
     "noPriceHistory": "હજુ સુધી ભાવ ઇતિહાસ નથી",
     "priceChange": "ભાવમાં ફેરફાર",
     "types": {
-      "forage": "Forage",
-      "concentrate": "Concentrate"
+      "forage": "ચારા",
+      "concentrate": "દાણ"
     }
   },
   "logs": {

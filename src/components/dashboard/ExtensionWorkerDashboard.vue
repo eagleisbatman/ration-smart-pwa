@@ -637,7 +637,7 @@ defineExpose({ viewMode, refresh });
 
 .view-toggle {
   .q-btn-toggle {
-    border: 1px solid $primary;
+    border: 1px solid var(--q-primary);
     border-radius: $radius-default;
     overflow: hidden;
   }
@@ -676,15 +676,15 @@ defineExpose({ viewMode, refresh });
 }
 
 .stat-card--primary .stat-card__value {
-  color: $primary;
+  color: var(--q-primary);
 }
 
 .stat-card--secondary .stat-card__value {
-  color: $secondary;
+  color: var(--q-secondary);
 }
 
 .stat-card--accent .stat-card__value {
-  color: $info;
+  color: var(--q-info);
 }
 
 .stat-card__footer {

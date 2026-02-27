@@ -583,7 +583,7 @@
       "ageMonthsValue": "{months} महिने",
       "bcsAndAge": "BCS / वय",
       "notSpecified": "नमूद केलेले नाही",
-      "ageDisclaimer": "Age is recorded for your reference but is not used in diet calculations."
+      "ageDisclaimer": "वय तुमच्या माहितीसाठी नोंदवले जाते, पण ते आहाराच्या गणनेत वापरले जात नाही."
     }
   },
   "feed": {
@@ -662,8 +662,8 @@
       "nutritionalComposition": "पौष्टिक रचना",
       "pricing": "किंमत",
       "season": "हंगाम",
-      "type": "Type",
-      "typeRequired": "Type *"
+      "type": "प्रकार",
+      "typeRequired": "प्रकार *"
     },
     "seasons": {
       "allYear": "वर्षभर",
@@ -693,7 +693,7 @@
       "required": "आवश्यक",
       "cannotBeNegative": "ऋणात्मक असू शकत नाही",
       "maxPercent": "जास्तीत जास्त 100%",
-      "typeRequired": "Type is required"
+      "typeRequired": "प्रकार आवश्यक आहे"
     },
     "notifications": {
       "feedUpdated": "चारा अद्ययावत केला",
@@ -720,8 +720,8 @@
     "noPriceHistory": "अद्याप किंमतीचा इतिहास नाही",
     "priceChange": "किंमतीतील बदल",
     "types": {
-      "forage": "Forage",
-      "concentrate": "Concentrate"
+      "forage": "चारा",
+      "concentrate": "पशुखाद्य"
     }
   },
   "logs": {

@@ -3,7 +3,7 @@
     "save": "Simpan",
     "cancel": "Batal",
     "delete": "Hapus",
-    "edit": "Edit",
+    "edit": "Ubah",
     "add": "Tambah",
     "close": "Tutup",
     "back": "Kembali",
@@ -583,7 +583,7 @@
       "ageMonthsValue": "{months} bulan",
       "bcsAndAge": "BCS / Umur",
       "notSpecified": "Tidak ditentukan",
-      "ageDisclaimer": "Age is recorded for your reference but is not used in diet calculations."
+      "ageDisclaimer": "Umur dicatat untuk referensi Anda tetapi tidak digunakan dalam perhitungan pakan."
     }
   },
   "feed": {
@@ -662,8 +662,8 @@
       "nutritionalComposition": "Komposisi Nutrisi",
       "pricing": "Harga",
       "season": "Musim",
-      "type": "Type",
-      "typeRequired": "Type *"
+      "type": "Jenis",
+      "typeRequired": "Jenis *"
     },
     "seasons": {
       "allYear": "Sepanjang Tahun",
@@ -693,7 +693,7 @@
       "required": "Wajib diisi",
       "cannotBeNegative": "Tidak boleh negatif",
       "maxPercent": "Maksimal 100%",
-      "typeRequired": "Type is required"
+      "typeRequired": "Jenis wajib diisi"
     },
     "notifications": {
       "feedUpdated": "Pakan diperbarui",
@@ -720,8 +720,8 @@
     "noPriceHistory": "Belum ada riwayat harga",
     "priceChange": "Perubahan Harga",
     "types": {
-      "forage": "Forage",
-      "concentrate": "Concentrate"
+      "forage": "Hijauan",
+      "concentrate": "Konsentrat"
     }
   },
   "logs": {
@@ -1767,10 +1767,10 @@
     "orgTypeOther": "Lainnya"
   },
   "theme": {
-    "zinc": "Zinc",
-    "earthy": "Earthy",
-    "ocean": "Ocean",
-    "vibrant": "Vibrant",
-    "sunset": "Sunset"
+    "zinc": "Seng",
+    "earthy": "Tanah",
+    "ocean": "Laut",
+    "vibrant": "Cerah",
+    "sunset": "Matahari Terbenam"
   }
 }

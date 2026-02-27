@@ -583,7 +583,7 @@
       "ageMonthsValue": "{months} ਮਹੀਨੇ",
       "bcsAndAge": "BCS / ਉਮਰ",
       "notSpecified": "ਨਿਰਧਾਰਤ ਨਹੀਂ",
-      "ageDisclaimer": "Age is recorded for your reference but is not used in diet calculations."
+      "ageDisclaimer": "ਉਮਰ ਤੁਹਾਡੇ ਸੰਦਰਭ ਲਈ ਦਰਜ ਕੀਤੀ ਗਈ ਹੈ ਪਰ ਖੁਰਾਕ ਦੀ ਗਣਨਾ ਵਿੱਚ ਵਰਤੀ ਨਹੀਂ ਜਾਂਦੀ।"
     }
   },
   "feed": {
@@ -662,8 +662,8 @@
       "nutritionalComposition": "ਪੌਸ਼ਟਿਕ ਬਣਤਰ",
       "pricing": "ਕੀਮਤ",
       "season": "ਮੌਸਮ",
-      "type": "Type",
-      "typeRequired": "Type *"
+      "type": "ਕਿਸਮ",
+      "typeRequired": "ਕਿਸਮ *"
     },
     "seasons": {
       "allYear": "ਸਾਰਾ ਸਾਲ",
@@ -693,7 +693,7 @@
       "required": "ਜ਼ਰੂਰੀ",
       "cannotBeNegative": "ਨਕਾਰਾਤਮਕ ਨਹੀਂ ਹੋ ਸਕਦਾ",
       "maxPercent": "ਵੱਧ ਤੋਂ ਵੱਧ 100%",
-      "typeRequired": "Type is required"
+      "typeRequired": "ਕਿਸਮ ਲੋੜੀਂਦੀ ਹੈ"
     },
     "notifications": {
       "feedUpdated": "ਚਾਰਾ ਅੱਪਡੇਟ ਕੀਤਾ ਗਿਆ",
@@ -720,8 +720,8 @@
     "noPriceHistory": "ਕੀਮਤ ਦਾ ਕੋਈ ਇਤਿਹਾਸ ਨਹੀਂ",
     "priceChange": "ਕੀਮਤ ਵਿੱਚ ਬਦਲਾਅ",
     "types": {
-      "forage": "Forage",
-      "concentrate": "Concentrate"
+      "forage": "ਚਾਰਾ",
+      "concentrate": "ਸੰਘਣਾ"
     }
   },
   "logs": {

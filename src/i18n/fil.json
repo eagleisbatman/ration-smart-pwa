@@ -583,7 +583,7 @@
       "ageMonthsValue": "{months} buwan",
       "bcsAndAge": "BCS / Edad",
       "notSpecified": "Hindi tinukoy",
-      "ageDisclaimer": "Age is recorded for your reference but is not used in diet calculations."
+      "ageDisclaimer": "Nakalagay ang edad para sa iyong impormasyon ngunit hindi ginagamit sa pagtutuos ng rasyon."
     }
   },
   "feed": {
@@ -662,8 +662,8 @@
       "nutritionalComposition": "Nutrisyonal na Komposisyon",
       "pricing": "Pagpepresyo",
       "season": "Panahon",
-      "type": "Type",
-      "typeRequired": "Type *"
+      "type": "Uri",
+      "typeRequired": "Uri *"
     },
     "seasons": {
       "allYear": "Buong Taon",
@@ -693,7 +693,7 @@
       "required": "Kinakailangan",
       "cannotBeNegative": "Hindi maaaring negatibo",
       "maxPercent": "Max 100%",
-      "typeRequired": "Type is required"
+      "typeRequired": "Kailangan ang Uri"
     },
     "notifications": {
       "feedUpdated": "Na-update ang pagkain",
@@ -1719,7 +1719,7 @@
     "setAdminLevel": "Itakda ang Admin Level",
     "users": "mga gumagamit",
     "organizations": "mga organisasyon",
-    "adminLevel": "Admin Level",
+    "adminLevel": "Antas ng Admin",
     "user": "Regular na Gumagamit",
     "orgAdmin": "Org Admin",
     "countryAdmin": "Country Admin",

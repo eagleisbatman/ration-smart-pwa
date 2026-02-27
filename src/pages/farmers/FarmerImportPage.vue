@@ -576,8 +576,8 @@ function formatFileSize(bytes: number): string {
   cursor: pointer;
 
   &--active {
-    border-color: $primary;
-    background: rgba($primary, 0.05);
+    border-color: var(--q-primary);
+    background: color-mix(in srgb, var(--q-primary) 5%, transparent);
   }
 }
 
