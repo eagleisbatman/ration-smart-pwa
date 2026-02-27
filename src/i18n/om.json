@@ -582,7 +582,8 @@
       "ageMonthsHint": "Yoo hin beekamne duwwaa dhiisi",
       "ageMonthsValue": "Ji'a {months}",
       "bcsAndAge": "BCS / Umrii",
-      "notSpecified": "Hin ibsamne"
+      "notSpecified": "Hin ibsamne",
+      "ageDisclaimer": "Age is recorded for your reference but is not used in diet calculations."
     }
   },
   "feed": {
@@ -660,7 +661,9 @@
       "nutritionalValues": "Faayidaa Nyaataa",
       "nutritionalComposition": "Qabiyyee Nyaataa",
       "pricing": "Gatii",
-      "season": "Yeroo"
+      "season": "Yeroo",
+      "type": "Type",
+      "typeRequired": "Type *"
     },
     "seasons": {
       "allYear": "Yeroo Hundumaa",
@@ -689,7 +692,8 @@
       "categoryRequired": "Ramaddiin barbaachisaadha",
       "required": "Barbaachisaadha",
       "cannotBeNegative": "Hundee irra gadi hin ta'uu",
-      "maxPercent": "Dhibbeentaa guddaan 100%"
+      "maxPercent": "Dhibbeentaa guddaan 100%",
+      "typeRequired": "Type is required"
     },
     "notifications": {
       "feedUpdated": "Nyaanni haaromfameera",
@@ -714,7 +718,11 @@
     "maxPrice": "Gatii Guddaa",
     "avgPrice": "Gatii Giddugaleessaa",
     "noPriceHistory": "Seenaan gatii ammayyuu hin jiru",
-    "priceChange": "Jijjiirama Gatii"
+    "priceChange": "Jijjiirama Gatii",
+    "types": {
+      "forage": "Forage",
+      "concentrate": "Concentrate"
+    }
   },
   "logs": {
     "dailyLog": "Galmeessa Guyyaa",

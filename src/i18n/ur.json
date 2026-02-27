@@ -582,7 +582,8 @@
       "ageMonthsHint": "اگر معلوم نہ ہو تو خالی چھوڑ دیں",
       "ageMonthsValue": "{months} ماہ",
       "bcsAndAge": "صحت کی حالت / عمر",
-      "notSpecified": "درج نہیں کیا گیا"
+      "notSpecified": "درج نہیں کیا گیا",
+      "ageDisclaimer": "Age is recorded for your reference but is not used in diet calculations."
     }
   },
   "feed": {
@@ -660,7 +661,9 @@
       "nutritionalValues": "غذائی اجزاء",
       "nutritionalComposition": "غذائی ساخت",
       "pricing": "قیمت",
-      "season": "موسم"
+      "season": "موسم",
+      "type": "Type",
+      "typeRequired": "Type *"
     },
     "seasons": {
       "allYear": "پورا سال",
@@ -689,7 +692,8 @@
       "categoryRequired": "کیٹیگری کا انتخاب ضروری ہے",
       "required": "ضروری ہے",
       "cannotBeNegative": "منفی نہیں ہو سکتا",
-      "maxPercent": "زیادہ سے زیادہ 100%"
+      "maxPercent": "زیادہ سے زیادہ 100%",
+      "typeRequired": "Type is required"
     },
     "notifications": {
       "feedUpdated": "خوراک کی معلومات اپ ڈیٹ ہو گئیں",
@@ -714,7 +718,11 @@
     "maxPrice": "زیادہ سے زیادہ",
     "avgPrice": "اوسط",
     "noPriceHistory": "ابھی قیمتوں کا کوئی ریکارڈ موجود نہیں",
-    "priceChange": "قیمت میں تبدیلی"
+    "priceChange": "قیمت میں تبدیلی",
+    "types": {
+      "forage": "Forage",
+      "concentrate": "Concentrate"
+    }
   },
   "logs": {
     "dailyLog": "یومیہ لاگ",

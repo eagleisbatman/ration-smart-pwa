@@ -582,7 +582,8 @@
       "ageMonthsHint": "اتركه فارغًا إذا كان غير معروف",
       "ageMonthsValue": "{months} شهر",
       "bcsAndAge": "درجة حالة الجسم / العمر",
-      "notSpecified": "غير محدد"
+      "notSpecified": "غير محدد",
+      "ageDisclaimer": "Age is recorded for your reference but is not used in diet calculations."
     }
   },
   "feed": {
@@ -660,7 +661,9 @@
       "nutritionalValues": "القيم الغذائية",
       "nutritionalComposition": "التركيب الغذائي",
       "pricing": "التسعير",
-      "season": "الموسم"
+      "season": "الموسم",
+      "type": "Type",
+      "typeRequired": "Type *"
     },
     "seasons": {
       "allYear": "طوال العام",
@@ -689,7 +692,8 @@
       "categoryRequired": "الفئة مطلوبة",
       "required": "مطلوب",
       "cannotBeNegative": "لا يمكن أن يكون سالبًا",
-      "maxPercent": "الحد الأقصى 100%"
+      "maxPercent": "الحد الأقصى 100%",
+      "typeRequired": "Type is required"
     },
     "notifications": {
       "feedUpdated": "تم تحديث العلف",
@@ -714,7 +718,11 @@
     "maxPrice": "الحد الأقصى",
     "avgPrice": "المتوسط",
     "noPriceHistory": "لا يوجد تاريخ أسعار بعد",
-    "priceChange": "تغير السعر"
+    "priceChange": "تغير السعر",
+    "types": {
+      "forage": "Forage",
+      "concentrate": "Concentrate"
+    }
   },
   "logs": {
     "dailyLog": "السجل اليومي",

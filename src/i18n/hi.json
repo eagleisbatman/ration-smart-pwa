@@ -582,7 +582,8 @@
       "ageMonthsHint": "यदि अज्ञात हो तो खाली छोड़ दें",
       "ageMonthsValue": "{months} महीने",
       "bcsAndAge": "BCS / उम्र",
-      "notSpecified": "निर्दिष्ट नहीं"
+      "notSpecified": "निर्दिष्ट नहीं",
+      "ageDisclaimer": "Age is recorded for your reference but is not used in diet calculations."
     }
   },
   "feed": {
@@ -660,7 +661,9 @@
       "nutritionalValues": "पोषक तत्व मान",
       "nutritionalComposition": "पोषक संरचना",
       "pricing": "कीमत",
-      "season": "मौसम"
+      "season": "मौसम",
+      "type": "Type",
+      "typeRequired": "Type *"
     },
     "seasons": {
       "allYear": "पूरे साल",
@@ -689,7 +692,8 @@
       "categoryRequired": "श्रेणी आवश्यक है",
       "required": "आवश्यक",
       "cannotBeNegative": "ऋणात्मक नहीं हो सकता",
-      "maxPercent": "अधिकतम 100%"
+      "maxPercent": "अधिकतम 100%",
+      "typeRequired": "Type is required"
     },
     "notifications": {
       "feedUpdated": "चारा अपडेट किया गया",
@@ -714,7 +718,11 @@
     "maxPrice": "अधिकतम",
     "avgPrice": "औसत",
     "noPriceHistory": "अभी तक कीमत का कोई इतिहास नहीं",
-    "priceChange": "कीमत में बदलाव"
+    "priceChange": "कीमत में बदलाव",
+    "types": {
+      "forage": "Forage",
+      "concentrate": "Concentrate"
+    }
   },
   "logs": {
     "dailyLog": "दैनिक लॉग",

@@ -272,6 +272,8 @@ export const useDietsStore = defineStore('diets', () => {
           bc_score: input.body_condition_score ?? 3.0,
         },
         feed_selection: feedSelection,
+        optimization_goal: input.optimization_goal || 'balanced',
+        budget_per_day: input.budget_per_day || undefined,
       };
 
       // Call optimization API (longer timeout — optimization engine can take 30-60s)

@@ -28,6 +28,19 @@
   - Phone length guard in formatPhoneE164()
   - auth.py valid_roles: removed misleading 'admin' occupation
 - [x] **PWA Visual Polish** — AdminDashboard welcome row, EWDashboard admin-conditional title, AdminAnalytics 3+2 layout, MainLayout drawer admin chip, i18n keys in all 22 locales
+- [x] **Data Association Gaps** — 4 fixes deployed (migration 0043):
+  - Auto-link cows to user's self-profile on creation
+  - Enhanced cow query: farmers see EW-created cows linked via farmer profile
+  - Farmer-level aggregation endpoints: GET /{farmer_id}/diets and /milk-logs
+  - yield_data.diet_recommendation_id → UUID FK with referential integrity
+  - Backfilled orphan cow_profiles.farmer_profile_id
+- [x] **Multi-theme system** — 5 themes (Zinc, Earthy, Ocean, Vibrant, Sunset), light+dark mode, theme picker in Settings, persisted to localStorage
+- [x] **RTL support for Arabic & Urdu** — `postcss-rtlcss` generates RTL CSS overrides, CSS logical properties, RTL-aware FAB positioning (7 pages), backend reports RTL, all translations updated
+- [x] **RTL bug fixes** — 4 issues resolved:
+  - Added `Lang.set({rtl: true})` so Quasar's layout system (q-layout/q-drawer) properly mirrors in RTL
+  - Removed `q-ml-sm` from Settings/Help/Privacy section titles (broke `margin-inline: auto` centering)
+  - Removed manual FAB RTL position overrides from 9 files (double-flipped with postcss-rtlcss)
+  - Verified "Remember Me" login feature works correctly (dual localStorage/sessionStorage)
 
 ## Pending
 

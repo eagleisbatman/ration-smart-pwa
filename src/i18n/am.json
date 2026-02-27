@@ -582,7 +582,8 @@
       "ageMonthsHint": "የማይታወቅ ከሆነ ባዶ ይተውት",
       "ageMonthsValue": "{months} ወራት",
       "bcsAndAge": "BCS / ዕድሜ",
-      "notSpecified": "አልተገለጸም"
+      "notSpecified": "አልተገለጸም",
+      "ageDisclaimer": "Age is recorded for your reference but is not used in diet calculations."
     }
   },
   "feed": {
@@ -660,7 +661,9 @@
       "nutritionalValues": "የምግብነት ዋጋዎች",
       "nutritionalComposition": "የምግብነት ይዘት",
       "pricing": "ዋጋ",
-      "season": "ወቅት"
+      "season": "ወቅት",
+      "type": "Type",
+      "typeRequired": "Type *"
     },
     "seasons": {
       "allYear": "ዓመቱን ሙሉ",
@@ -689,7 +692,8 @@
       "categoryRequired": "ምድብ ያስፈልጋል",
       "required": "ያስፈልጋል",
       "cannotBeNegative": "ከዜሮ በታች መሆን አይችልም",
-      "maxPercent": "ከፍተኛ 100%"
+      "maxPercent": "ከፍተኛ 100%",
+      "typeRequired": "Type is required"
     },
     "notifications": {
       "feedUpdated": "መኖ ተሻሽሏል",
@@ -714,7 +718,11 @@
     "maxPrice": "ከፍተኛ",
     "avgPrice": "አማካይ",
     "noPriceHistory": "እስካሁን የዋጋ ታሪክ የለም",
-    "priceChange": "የዋጋ ለውጥ"
+    "priceChange": "የዋጋ ለውጥ",
+    "types": {
+      "forage": "Forage",
+      "concentrate": "Concentrate"
+    }
   },
   "logs": {
     "dailyLog": "ዕለታዊ ምዝገባ",

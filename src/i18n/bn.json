@@ -582,7 +582,8 @@
       "ageMonthsHint": "জানা না থাকলে খালি রাখুন",
       "ageMonthsValue": "{months} মাস",
       "bcsAndAge": "বিসিএস / বয়স",
-      "notSpecified": "উল্লেখ করা হয়নি"
+      "notSpecified": "উল্লেখ করা হয়নি",
+      "ageDisclaimer": "Age is recorded for your reference but is not used in diet calculations."
     }
   },
   "feed": {
@@ -660,7 +661,9 @@
       "nutritionalValues": "পুষ্টিগুণ",
       "nutritionalComposition": "পুষ্টির গঠন",
       "pricing": "মূল্য নির্ধারণ",
-      "season": "ঋতু"
+      "season": "ঋতু",
+      "type": "Type",
+      "typeRequired": "Type *"
     },
     "seasons": {
       "allYear": "সারা বছর",
@@ -689,7 +692,8 @@
       "categoryRequired": "বিভাগ আবশ্যক",
       "required": "আবশ্যক",
       "cannotBeNegative": "নেতিবাচক হতে পারে না",
-      "maxPercent": "সর্বোচ্চ ১০০%"
+      "maxPercent": "সর্বোচ্চ ১০০%",
+      "typeRequired": "Type is required"
     },
     "notifications": {
       "feedUpdated": "খাবার আপডেট হয়েছে",
@@ -714,7 +718,11 @@
     "maxPrice": "সর্বোচ্চ",
     "avgPrice": "গড়",
     "noPriceHistory": "এখনও কোনো দামের ইতিহাস নেই",
-    "priceChange": "দামের পরিবর্তন"
+    "priceChange": "দামের পরিবর্তন",
+    "types": {
+      "forage": "Forage",
+      "concentrate": "Concentrate"
+    }
   },
   "logs": {
     "dailyLog": "দৈনিক লগ",

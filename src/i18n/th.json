@@ -582,7 +582,8 @@
       "ageMonthsHint": "เว้นว่างไว้หากไม่ทราบ",
       "ageMonthsValue": "{months} เดือน",
       "bcsAndAge": "BCS / อายุ",
-      "notSpecified": "ไม่ได้ระบุ"
+      "notSpecified": "ไม่ได้ระบุ",
+      "ageDisclaimer": "Age is recorded for your reference but is not used in diet calculations."
     }
   },
   "feed": {
@@ -660,7 +661,9 @@
       "nutritionalValues": "ค่าทางโภชนาการ",
       "nutritionalComposition": "องค์ประกอบทางโภชนาการ",
       "pricing": "ราคา",
-      "season": "ฤดูกาล"
+      "season": "ฤดูกาล",
+      "type": "Type",
+      "typeRequired": "Type *"
     },
     "seasons": {
       "allYear": "ตลอดปี",
@@ -689,7 +692,8 @@
       "categoryRequired": "ต้องระบุหมวดหมู่",
       "required": "จำเป็น",
       "cannotBeNegative": "ไม่สามารถเป็นค่าลบได้",
-      "maxPercent": "สูงสุด 100%"
+      "maxPercent": "สูงสุด 100%",
+      "typeRequired": "Type is required"
     },
     "notifications": {
       "feedUpdated": "อัปเดตอาหารแล้ว",
@@ -714,7 +718,11 @@
     "maxPrice": "สูงสุด",
     "avgPrice": "เฉลี่ย",
     "noPriceHistory": "ยังไม่มีประวัติราคา",
-    "priceChange": "การเปลี่ยนแปลงราคา"
+    "priceChange": "การเปลี่ยนแปลงราคา",
+    "types": {
+      "forage": "Forage",
+      "concentrate": "Concentrate"
+    }
   },
   "logs": {
     "dailyLog": "บันทึกประจำวัน",

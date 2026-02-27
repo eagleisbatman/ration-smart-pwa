@@ -160,6 +160,9 @@
               outlined
               :hint="$t('diet.wizard.ageMonthsHint')"
             />
+            <div class="text-caption text-grey-6 q-mt-xs">
+              {{ $t('diet.wizard.ageDisclaimer') }}
+            </div>
           </div>
         </div>
       </q-step>
@@ -847,6 +850,10 @@ onMounted(async () => {
   // Handle ?autoFeeds=true from failure retry flow
   if (queryAutoFeeds) {
     feedSelectionMode.value = 'auto';
+    // Auto-advance to Review step if cow data is already filled (retry flow)
+    if (form.cow_id && form.weight_kg > 0) {
+      step.value = 5;
+    }
   }
 });
 </script>

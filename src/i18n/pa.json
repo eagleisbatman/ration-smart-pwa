@@ -582,7 +582,8 @@
       "ageMonthsHint": "ਜੇਕਰ ਅਣਜਾਣ ਹੈ ਤਾਂ ਖਾਲੀ ਛੱਡੋ",
       "ageMonthsValue": "{months} ਮਹੀਨੇ",
       "bcsAndAge": "BCS / ਉਮਰ",
-      "notSpecified": "ਨਿਰਧਾਰਤ ਨਹੀਂ"
+      "notSpecified": "ਨਿਰਧਾਰਤ ਨਹੀਂ",
+      "ageDisclaimer": "Age is recorded for your reference but is not used in diet calculations."
     }
   },
   "feed": {
@@ -660,7 +661,9 @@
       "nutritionalValues": "ਪੌਸ਼ਟਿਕ ਮੁੱਲ",
       "nutritionalComposition": "ਪੌਸ਼ਟਿਕ ਬਣਤਰ",
       "pricing": "ਕੀਮਤ",
-      "season": "ਮੌਸਮ"
+      "season": "ਮੌਸਮ",
+      "type": "Type",
+      "typeRequired": "Type *"
     },
     "seasons": {
       "allYear": "ਸਾਰਾ ਸਾਲ",
@@ -689,7 +692,8 @@
       "categoryRequired": "ਸ਼੍ਰੇਣੀ ਜ਼ਰੂਰੀ ਹੈ",
       "required": "ਜ਼ਰੂਰੀ",
       "cannotBeNegative": "ਨਕਾਰਾਤਮਕ ਨਹੀਂ ਹੋ ਸਕਦਾ",
-      "maxPercent": "ਵੱਧ ਤੋਂ ਵੱਧ 100%"
+      "maxPercent": "ਵੱਧ ਤੋਂ ਵੱਧ 100%",
+      "typeRequired": "Type is required"
     },
     "notifications": {
       "feedUpdated": "ਚਾਰਾ ਅੱਪਡੇਟ ਕੀਤਾ ਗਿਆ",
@@ -714,7 +718,11 @@
     "maxPrice": "ਵੱਧੋ-ਵੱਧ",
     "avgPrice": "ਔਸਤ",
     "noPriceHistory": "ਕੀਮਤ ਦਾ ਕੋਈ ਇਤਿਹਾਸ ਨਹੀਂ",
-    "priceChange": "ਕੀਮਤ ਵਿੱਚ ਬਦਲਾਅ"
+    "priceChange": "ਕੀਮਤ ਵਿੱਚ ਬਦਲਾਅ",
+    "types": {
+      "forage": "Forage",
+      "concentrate": "Concentrate"
+    }
   },
   "logs": {
     "dailyLog": "ਰੋਜ਼ਾਨਾ ਲੌਗ",

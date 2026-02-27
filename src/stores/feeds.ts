@@ -11,6 +11,7 @@ import { extractUserFriendlyError } from 'src/lib/error-messages';
 
 export interface FeedInput {
   name: string;
+  fd_type?: string;
   category: string;
   dm_percentage: number;
   cp_percentage: number;

@@ -582,7 +582,8 @@
       "ageMonthsHint": "माहित नसल्यास रिकामे सोडा",
       "ageMonthsValue": "{months} महिने",
       "bcsAndAge": "BCS / वय",
-      "notSpecified": "नमूद केलेले नाही"
+      "notSpecified": "नमूद केलेले नाही",
+      "ageDisclaimer": "Age is recorded for your reference but is not used in diet calculations."
     }
   },
   "feed": {
@@ -660,7 +661,9 @@
       "nutritionalValues": "पौष्टिक मूल्ये",
       "nutritionalComposition": "पौष्टिक रचना",
       "pricing": "किंमत",
-      "season": "हंगाम"
+      "season": "हंगाम",
+      "type": "Type",
+      "typeRequired": "Type *"
     },
     "seasons": {
       "allYear": "वर्षभर",
@@ -689,7 +692,8 @@
       "categoryRequired": "श्रेणी आवश्यक आहे",
       "required": "आवश्यक",
       "cannotBeNegative": "ऋणात्मक असू शकत नाही",
-      "maxPercent": "जास्तीत जास्त 100%"
+      "maxPercent": "जास्तीत जास्त 100%",
+      "typeRequired": "Type is required"
     },
     "notifications": {
       "feedUpdated": "चारा अद्ययावत केला",
@@ -714,7 +718,11 @@
     "maxPrice": "कमाल",
     "avgPrice": "सरासरी",
     "noPriceHistory": "अद्याप किंमतीचा इतिहास नाही",
-    "priceChange": "किंमतीतील बदल"
+    "priceChange": "किंमतीतील बदल",
+    "types": {
+      "forage": "Forage",
+      "concentrate": "Concentrate"
+    }
   },
   "logs": {
     "dailyLog": "दैनिक लॉग",

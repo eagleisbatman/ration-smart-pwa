@@ -582,7 +582,8 @@
       "ageMonthsHint": "Biarkan kosong jika tidak diketahui",
       "ageMonthsValue": "{months} bulan",
       "bcsAndAge": "BCS / Umur",
-      "notSpecified": "Tidak ditentukan"
+      "notSpecified": "Tidak ditentukan",
+      "ageDisclaimer": "Age is recorded for your reference but is not used in diet calculations."
     }
   },
   "feed": {
@@ -660,7 +661,9 @@
       "nutritionalValues": "Nilai Nutrisi",
       "nutritionalComposition": "Komposisi Nutrisi",
       "pricing": "Harga",
-      "season": "Musim"
+      "season": "Musim",
+      "type": "Type",
+      "typeRequired": "Type *"
     },
     "seasons": {
       "allYear": "Sepanjang Tahun",
@@ -689,7 +692,8 @@
       "categoryRequired": "Kategori wajib diisi",
       "required": "Wajib diisi",
       "cannotBeNegative": "Tidak boleh negatif",
-      "maxPercent": "Maksimal 100%"
+      "maxPercent": "Maksimal 100%",
+      "typeRequired": "Type is required"
     },
     "notifications": {
       "feedUpdated": "Pakan diperbarui",
@@ -714,7 +718,11 @@
     "maxPrice": "Maks",
     "avgPrice": "Rata-rata",
     "noPriceHistory": "Belum ada riwayat harga",
-    "priceChange": "Perubahan Harga"
+    "priceChange": "Perubahan Harga",
+    "types": {
+      "forage": "Forage",
+      "concentrate": "Concentrate"
+    }
   },
   "logs": {
     "dailyLog": "Log Harian",

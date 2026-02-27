@@ -582,7 +582,8 @@
       "ageMonthsHint": "తెలియకపోతే ఖాళీగా ఉంచండి",
       "ageMonthsValue": "{months} నెలలు",
       "bcsAndAge": "BCS / వయస్సు",
-      "notSpecified": "పేర్కొనబడలేదు"
+      "notSpecified": "పేర్కొనబడలేదు",
+      "ageDisclaimer": "Age is recorded for your reference but is not used in diet calculations."
     }
   },
   "feed": {
@@ -660,7 +661,9 @@
       "nutritionalValues": "పోషక విలువలు",
       "nutritionalComposition": "పోషక కూర్పు",
       "pricing": "ధర",
-      "season": "సీజన్"
+      "season": "సీజన్",
+      "type": "Type",
+      "typeRequired": "Type *"
     },
     "seasons": {
       "allYear": "సంవత్సరం పొడవునా",
@@ -689,7 +692,8 @@
       "categoryRequired": "వర్గం తప్పనిసరి",
       "required": "తప్పనిసరి",
       "cannotBeNegative": "ప్రతికూలంగా ఉండకూడదు",
-      "maxPercent": "గరిష్టంగా 100%"
+      "maxPercent": "గరిష్టంగా 100%",
+      "typeRequired": "Type is required"
     },
     "notifications": {
       "feedUpdated": "ఫీడ్ అప్‌డేట్ చేయబడింది",
@@ -714,7 +718,11 @@
     "maxPrice": "గరిష్ట",
     "avgPrice": "సగటు",
     "noPriceHistory": "ఇంకా ధర చరిత్ర లేదు",
-    "priceChange": "ధర మార్పు"
+    "priceChange": "ధర మార్పు",
+    "types": {
+      "forage": "Forage",
+      "concentrate": "Concentrate"
+    }
   },
   "logs": {
     "dailyLog": "రోజువారీ లాగ్",
