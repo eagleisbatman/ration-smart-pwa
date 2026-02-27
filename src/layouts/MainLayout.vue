@@ -137,20 +137,20 @@
     <SyncConflictDialog v-if="isAuthenticated" />
 
     <!-- FAB for quick actions -->
-    <q-page-sticky v-if="showFab" :position="rtl ? 'bottom-left' : 'bottom-right'" :offset="[16, 72]">
+    <q-page-sticky v-if="showFab" position="bottom-right" :offset="[16, 72]">
       <q-fab
         icon="add"
         direction="up"
         color="primary"
         padding="sm"
-        :vertical-actions-align="rtl ? 'left' : 'right'"
+        vertical-actions-align="right"
         @click="medium()"
       >
         <q-fab-action
           color="primary"
           :icon="COW_ICON"
           :label="$t('nav.addCow')"
-          :label-position="rtl ? 'right' : 'left'"
+          label-position="left"
           external-label
           padding="xs"
           @click="onFabAction('/cows/new')"
@@ -159,7 +159,7 @@
           color="primary"
           icon="water_drop"
           :label="$t('nav.logMilk')"
-          :label-position="rtl ? 'right' : 'left'"
+          label-position="left"
           external-label
           padding="xs"
           @click="onFabAction('/logs/new')"
@@ -168,7 +168,7 @@
           color="primary"
           icon="menu_book"
           :label="$t('nav.getDiet')"
-          :label-position="rtl ? 'right' : 'left'"
+          label-position="left"
           external-label
           padding="xs"
           @click="onFabAction('/diet/new')"
@@ -192,14 +192,12 @@ import AddToHomeScreen from 'src/components/pwa/AddToHomeScreen.vue';
 import SyncStatusChip from 'src/components/ui/SyncStatusChip.vue';
 import SyncConflictDialog from 'src/components/pwa/SyncConflictDialog.vue';
 import { COW_ICON } from 'src/boot/icons';
-import { isRTL } from 'src/boot/i18n';
 import { backOverride } from 'src/lib/back-override';
 
 const $q = useQuasar();
 const router = useRouter();
 const route = useRoute();
-const { t, locale } = useI18n();
-const rtl = computed(() => isRTL(locale.value));
+const { t } = useI18n();
 const authStore = useAuthStore();
 const { pendingCount } = useOfflineSync();
 const { light, medium } = useHapticFeedback();

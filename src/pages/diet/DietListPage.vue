@@ -130,7 +130,7 @@
     </PullToRefresh>
 
     <!-- FAB for new diet -->
-    <q-page-sticky :position="rtl ? 'bottom-left' : 'bottom-right'" :offset="[16, 72]">
+    <q-page-sticky position="bottom-right" :offset="[16, 72]">
       <q-btn fab icon="add" color="primary" @click="router.push('/diet/new')" />
     </q-page-sticky>
   </q-page>
@@ -140,7 +140,6 @@
 import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
-import { isRTL } from 'src/boot/i18n';
 import { format } from 'date-fns';
 import { useDietsStore } from 'src/stores/diets';
 import { useCowsStore } from 'src/stores/cows';
@@ -150,8 +149,7 @@ import { Diet } from 'src/lib/offline/db';
 import { useCurrency } from 'src/composables/useCurrency';
 
 const router = useRouter();
-const { t, locale } = useI18n();
-const rtl = computed(() => isRTL(locale.value as string));
+const { t } = useI18n();
 const { formatCurrency } = useCurrency();
 import PullToRefresh from 'src/components/ui/PullToRefresh.vue';
 import SkeletonCard from 'src/components/ui/SkeletonCard.vue';

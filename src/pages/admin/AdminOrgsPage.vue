@@ -57,7 +57,7 @@
     </template>
 
     <!-- Create Org FAB -->
-    <q-page-sticky v-if="canCreateOrg" :position="rtl ? 'bottom-left' : 'bottom-right'" :offset="[16, 16]">
+    <q-page-sticky v-if="canCreateOrg" position="bottom-right" :offset="[16, 16]">
       <q-btn fab icon="add" color="primary" @click="showCreateDialog = true" />
     </q-page-sticky>
 
@@ -134,14 +134,12 @@ import { useQuasar } from 'quasar';
 import { useAdminStore, type CreateOrgPayload } from 'src/stores/admin';
 import { useAuthStore } from 'src/stores/auth';
 import { useI18n } from 'vue-i18n';
-import { isRTL } from 'src/boot/i18n';
 
 const router = useRouter();
 const $q = useQuasar();
 const adminStore = useAdminStore();
 const authStore = useAuthStore();
-const { t, locale } = useI18n();
-const rtl = computed(() => isRTL(locale.value as string));
+const { t } = useI18n();
 
 const searchQuery = ref('');
 const showCreateDialog = ref(false);

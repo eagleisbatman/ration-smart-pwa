@@ -218,7 +218,7 @@
     </q-page-sticky>
 
     <!-- FAB for adding new cow (hidden during selection) -->
-    <q-page-sticky v-if="!selectionMode" :position="rtl ? 'bottom-left' : 'bottom-right'" :offset="[16, 72]">
+    <q-page-sticky v-if="!selectionMode" position="bottom-right" :offset="[16, 72]">
       <q-btn fab icon="add" color="primary" @click="router.push('/cows/new')" />
     </q-page-sticky>
   </q-page>
@@ -229,7 +229,6 @@ import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useQuasar } from 'quasar';
 import { useI18n } from 'vue-i18n';
-import { isRTL } from 'src/boot/i18n';
 import { useCowsStore } from 'src/stores/cows';
 import { useDietsStore } from 'src/stores/diets';
 import { useHapticFeedback } from 'src/composables/useHapticFeedback';
@@ -240,12 +239,10 @@ import { COW_ICON } from 'src/boot/icons';
 
 const router = useRouter();
 const $q = useQuasar();
-const { t, locale } = useI18n();
+const { t } = useI18n();
 const cowsStore = useCowsStore();
 const dietsStore = useDietsStore();
 const { success, error: hapticError, warning } = useHapticFeedback();
-
-const rtl = computed(() => isRTL(locale.value as string));
 
 const searchQuery = ref('');
 const filterStatus = ref<'all' | 'lactating' | 'dry'>('all');

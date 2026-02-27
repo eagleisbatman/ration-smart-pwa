@@ -412,7 +412,7 @@
     <!-- Share FAB - visible for completed/following/saved/archived diets -->
     <q-page-sticky
       v-if="diet && ['completed', 'following', 'saved', 'archived'].includes(diet.status) && diet.result_data"
-      :position="rtl ? 'bottom-left' : 'bottom-right'"
+      position="bottom-right"
       :offset="[18, 18]"
     >
       <q-btn
@@ -489,7 +489,6 @@ import { ref, computed, watch, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useQuasar } from 'quasar';
 import { useI18n } from 'vue-i18n';
-import { isRTL } from 'src/boot/i18n';
 import { useDietsStore } from 'src/stores/diets';
 import { useDateFormat } from 'src/composables/useDateFormat';
 import { Diet } from 'src/lib/offline/db';
@@ -503,8 +502,7 @@ import { useCurrency } from 'src/composables/useCurrency';
 import { useExport, DietExportData } from 'src/composables/useExport';
 import { hasActiveReminder } from 'src/lib/diet-reminders';
 
-const { t, locale } = useI18n();
-const rtl = computed(() => isRTL(locale.value as string));
+const { t } = useI18n();
 const { formatCurrency } = useCurrency();
 const { formatDietText, shareContent, shareViaWhatsApp, copyToClipboard, printDiet } = useExport();
 

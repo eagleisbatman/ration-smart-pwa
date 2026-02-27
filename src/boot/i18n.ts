@@ -17,6 +17,7 @@
  */
 
 import { boot } from 'quasar/wrappers';
+import { Lang } from 'quasar';
 import { createI18n } from 'vue-i18n';
 import messages from 'src/i18n';
 
@@ -67,8 +68,16 @@ export const i18n = createI18n<[MessageSchema], SupportedLocale>({
 });
 
 function applyDirection(locale: string): void {
+  const rtl = isRTL(locale);
   document.documentElement.setAttribute('lang', locale);
-  document.documentElement.setAttribute('dir', isRTL(locale) ? 'rtl' : 'ltr');
+  document.documentElement.setAttribute('dir', rtl ? 'rtl' : 'ltr');
+
+  // Tell Quasar's layout system about RTL state.
+  // Without this, q-layout/q-drawer don't mirror in RTL — header overlaps drawer,
+  // gap appears where drawer used to be, etc.
+  const langPack = Object.assign({}, Lang.props);
+  langPack.rtl = rtl;
+  Lang.set(langPack);
 }
 
 export default boot(({ app }) => {
