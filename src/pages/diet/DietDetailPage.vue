@@ -135,28 +135,28 @@
         <!-- Summary Stats -->
         <div class="row q-col-gutter-sm q-mb-md">
           <div class="col-6 col-sm-3">
-            <q-card flat bordered class="text-center q-pa-sm">
+            <div class="stat-inline">
               <div class="text-h6 text-primary">{{ formatCurrency(diet.total_cost ?? 0) }}</div>
               <div class="text-caption text-grey-7">{{ $t('diet.dailyCost') }}</div>
-            </q-card>
+            </div>
           </div>
           <div class="col-6 col-sm-3">
-            <q-card flat bordered class="text-center q-pa-sm">
-              <div class="text-h6 text-secondary">{{ feedTotalKg.toFixed(1) }} kg</div>
+            <div class="stat-inline">
+              <div class="text-h6 text-primary">{{ feedTotalKg.toFixed(1) }} kg</div>
               <div class="text-caption text-grey-7">{{ $t('diet.totalFeed') }}</div>
-            </q-card>
+            </div>
           </div>
           <div class="col-6 col-sm-3">
-            <q-card flat bordered class="text-center q-pa-sm">
-              <div class="text-h6 text-secondary">{{ diet.dm_intake?.toFixed(1) }} kg</div>
+            <div class="stat-inline">
+              <div class="text-h6 text-primary">{{ diet.dm_intake?.toFixed(1) }} kg</div>
               <div class="text-caption text-grey-7">{{ $t('diet.dryMatterIntake') }}</div>
-            </q-card>
+            </div>
           </div>
           <div class="col-6 col-sm-3">
-            <q-card flat bordered class="text-center q-pa-sm">
-              <div class="text-h6 text-accent">{{ resultData.feeds?.length || 0 }}</div>
+            <div class="stat-inline">
+              <div class="text-h6 text-primary">{{ resultData.feeds?.length || 0 }}</div>
               <div class="text-caption text-grey-7">{{ $t('diet.feeds') }}</div>
-            </q-card>
+            </div>
           </div>
         </div>
 
@@ -190,50 +190,90 @@
         <div class="text-subtitle1 q-mb-sm">{{ $t('diet.nutrientBalance') }}</div>
         <q-card flat bordered class="q-mb-md">
           <q-card-section>
+            <!-- Dry Matter -->
             <div class="q-mb-md">
-              <div class="row justify-between q-mb-xs">
-                <span>{{ $t('diet.dryMatterIntake') }}</span>
-                <span>{{ (resultData.nutrient_balance?.dm_supplied ?? 0).toFixed(2) }} / {{ (resultData.nutrient_balance?.dm_requirement ?? 0).toFixed(2) }} kg/day</span>
+              <div class="row justify-between items-center q-mb-xs">
+                <span class="text-body2">{{ $t('diet.dryMatterIntake') }}</span>
+                <span class="text-body2 text-weight-medium">
+                  {{ (resultData.nutrient_balance?.dm_supplied ?? 0).toFixed(2) }} kg/day
+                  <q-icon
+                    :name="nutrientPercent(resultData.nutrient_balance?.dm_supplied ?? 0, resultData.nutrient_balance?.dm_requirement ?? 0) >= 95 ? 'check_circle' : 'warning'"
+                    :color="nutrientPercent(resultData.nutrient_balance?.dm_supplied ?? 0, resultData.nutrient_balance?.dm_requirement ?? 0) >= 95 ? 'positive' : 'warning'"
+                    size="16px" class="q-ml-xs"
+                  />
+                </span>
               </div>
               <q-linear-progress
                 :value="dmProgress"
                 :color="dmProgress >= 0.95 && dmProgress <= 1.05 ? 'positive' : 'warning'"
                 rounded
               />
+              <div class="text-caption text-grey-6 q-mt-xs">
+                {{ nutrientPercent(resultData.nutrient_balance?.dm_supplied ?? 0, resultData.nutrient_balance?.dm_requirement ?? 0) }}% {{ $t('diet.ofNeeded') }}
+                <template v-if="nutrientPercent(resultData.nutrient_balance?.dm_supplied ?? 0, resultData.nutrient_balance?.dm_requirement ?? 0) < 95">
+                  &middot; {{ $t('diet.needsMore', { amount: ((resultData.nutrient_balance?.dm_requirement ?? 0) - (resultData.nutrient_balance?.dm_supplied ?? 0)).toFixed(2), unit: 'kg' }) }}
+                </template>
+              </div>
             </div>
 
+            <!-- Protein -->
             <div class="q-mb-md">
-              <div class="row justify-between q-mb-xs">
-                <span>{{ $t('diet.metabolizableProtein') }}</span>
-                <span>{{ ((resultData.nutrient_balance?.mp_supplied || resultData.nutrient_balance?.cp_supplied || 0) * 1000).toFixed(0) }} / {{ ((resultData.nutrient_balance?.mp_requirement || resultData.nutrient_balance?.cp_requirement || 0) * 1000).toFixed(0) }} g/day</span>
+              <div class="row justify-between items-center q-mb-xs">
+                <span class="text-body2">{{ $t('diet.metabolizableProtein') }}</span>
+                <span class="text-body2 text-weight-medium">
+                  {{ ((resultData.nutrient_balance?.mp_supplied || resultData.nutrient_balance?.cp_supplied || 0) * 1000).toFixed(0) }} g/day
+                  <q-icon
+                    :name="nutrientPercent((resultData.nutrient_balance?.mp_supplied || resultData.nutrient_balance?.cp_supplied || 0), (resultData.nutrient_balance?.mp_requirement || resultData.nutrient_balance?.cp_requirement || 0)) >= 95 ? 'check_circle' : 'warning'"
+                    :color="nutrientPercent((resultData.nutrient_balance?.mp_supplied || resultData.nutrient_balance?.cp_supplied || 0), (resultData.nutrient_balance?.mp_requirement || resultData.nutrient_balance?.cp_requirement || 0)) >= 95 ? 'positive' : 'warning'"
+                    size="16px" class="q-ml-xs"
+                  />
+                </span>
               </div>
               <q-linear-progress
                 :value="mpProgress"
                 :color="mpProgress >= 0.95 ? 'positive' : 'warning'"
                 rounded
               />
+              <div class="text-caption text-grey-6 q-mt-xs">
+                {{ nutrientPercent((resultData.nutrient_balance?.mp_supplied || resultData.nutrient_balance?.cp_supplied || 0), (resultData.nutrient_balance?.mp_requirement || resultData.nutrient_balance?.cp_requirement || 0)) }}% {{ $t('diet.ofNeeded') }}
+                <template v-if="nutrientPercent((resultData.nutrient_balance?.mp_supplied || resultData.nutrient_balance?.cp_supplied || 0), (resultData.nutrient_balance?.mp_requirement || resultData.nutrient_balance?.cp_requirement || 0)) < 95">
+                  &middot; {{ $t('diet.needsMore', { amount: (((resultData.nutrient_balance?.mp_requirement || resultData.nutrient_balance?.cp_requirement || 0) - (resultData.nutrient_balance?.mp_supplied || resultData.nutrient_balance?.cp_supplied || 0)) * 1000).toFixed(0), unit: 'g' }) }}
+                </template>
+              </div>
             </div>
 
+            <!-- Energy -->
             <div class="q-mb-md">
-              <div class="row justify-between q-mb-xs">
-                <span>{{ $t('diet.netEnergyLactation') }}</span>
-                <span>{{ (resultData.nutrient_balance?.nel_supplied || resultData.nutrient_balance?.tdn_supplied || 0).toFixed(2) }} / {{ (resultData.nutrient_balance?.nel_requirement || resultData.nutrient_balance?.tdn_requirement || 0).toFixed(2) }} Mcal/day</span>
+              <div class="row justify-between items-center q-mb-xs">
+                <span class="text-body2">{{ $t('diet.netEnergyLactation') }}</span>
+                <span class="text-body2 text-weight-medium">
+                  {{ (resultData.nutrient_balance?.nel_supplied || resultData.nutrient_balance?.tdn_supplied || 0).toFixed(2) }} Mcal/day
+                  <q-icon
+                    :name="nutrientPercent((resultData.nutrient_balance?.nel_supplied || resultData.nutrient_balance?.tdn_supplied || 0), (resultData.nutrient_balance?.nel_requirement || resultData.nutrient_balance?.tdn_requirement || 0)) >= 95 ? 'check_circle' : 'warning'"
+                    :color="nutrientPercent((resultData.nutrient_balance?.nel_supplied || resultData.nutrient_balance?.tdn_supplied || 0), (resultData.nutrient_balance?.nel_requirement || resultData.nutrient_balance?.tdn_requirement || 0)) >= 95 ? 'positive' : 'warning'"
+                    size="16px" class="q-ml-xs"
+                  />
+                </span>
               </div>
               <q-linear-progress
                 :value="nelProgress"
                 :color="nelProgress >= 0.95 ? 'positive' : 'warning'"
                 rounded
               />
+              <div class="text-caption text-grey-6 q-mt-xs">
+                {{ nutrientPercent((resultData.nutrient_balance?.nel_supplied || resultData.nutrient_balance?.tdn_supplied || 0), (resultData.nutrient_balance?.nel_requirement || resultData.nutrient_balance?.tdn_requirement || 0)) }}% {{ $t('diet.ofNeeded') }}
+                <template v-if="nutrientPercent((resultData.nutrient_balance?.nel_supplied || resultData.nutrient_balance?.tdn_supplied || 0), (resultData.nutrient_balance?.nel_requirement || resultData.nutrient_balance?.tdn_requirement || 0)) < 95">
+                  &middot; {{ $t('diet.needsMore', { amount: ((resultData.nutrient_balance?.nel_requirement || resultData.nutrient_balance?.tdn_requirement || 0) - (resultData.nutrient_balance?.nel_supplied || resultData.nutrient_balance?.tdn_supplied || 0)).toFixed(2), unit: 'Mcal' }) }}
+                </template>
+              </div>
             </div>
 
+            <!-- Calcium -->
             <div v-if="resultData.nutrient_balance?.ca_requirement" class="q-mb-md">
-              <div class="row justify-between q-mb-xs">
-                <span>{{ $t('diet.calcium') }}</span>
-                <span>
-                  {{ ((resultData.nutrient_balance?.ca_supplied ?? 0) * 1000).toFixed(0) }} / {{ ((resultData.nutrient_balance?.ca_requirement ?? 0) * 1000).toFixed(0) }} g/day
-                  <q-badge v-if="mineralRatio(resultData.nutrient_balance.ca_supplied, resultData.nutrient_balance.ca_requirement) > 1.5" color="orange-4" text-color="dark" dense class="q-ml-xs">
-                    {{ mineralRatio(resultData.nutrient_balance.ca_supplied, resultData.nutrient_balance.ca_requirement).toFixed(1) }}x
-                  </q-badge>
+              <div class="row justify-between items-center q-mb-xs">
+                <span class="text-body2">{{ $t('diet.calcium') }}</span>
+                <span class="text-body2 text-weight-medium">
+                  {{ ((resultData.nutrient_balance?.ca_supplied ?? 0) * 1000).toFixed(0) }} g/day
                 </span>
               </div>
               <q-linear-progress
@@ -241,20 +281,26 @@
                 :color="mineralProgressColor(resultData.nutrient_balance.ca_supplied, resultData.nutrient_balance.ca_requirement)"
                 rounded
               />
+              <div class="text-caption text-grey-6 q-mt-xs">
+                <template v-if="mineralRatio(resultData.nutrient_balance.ca_supplied, resultData.nutrient_balance.ca_requirement) > 1.05">
+                  {{ $t('diet.overNeeded', { ratio: mineralRatio(resultData.nutrient_balance.ca_supplied, resultData.nutrient_balance.ca_requirement).toFixed(1) }) }}
+                </template>
+                <template v-else>
+                  {{ nutrientPercent(resultData.nutrient_balance.ca_supplied, resultData.nutrient_balance.ca_requirement) }}% {{ $t('diet.ofNeeded') }}
+                </template>
+              </div>
               <div v-if="mineralRatio(resultData.nutrient_balance.ca_supplied, resultData.nutrient_balance.ca_requirement) > 3" class="text-caption text-orange-8 q-mt-xs">
                 <q-icon name="info" size="14px" class="q-mr-xs" />
                 {{ $t('diet.nutrientExcessWarning', { nutrient: $t('diet.calcium'), ratio: mineralRatio(resultData.nutrient_balance.ca_supplied, resultData.nutrient_balance.ca_requirement).toFixed(1) }) }}
               </div>
             </div>
 
+            <!-- Phosphorus -->
             <div v-if="resultData.nutrient_balance?.p_requirement">
-              <div class="row justify-between q-mb-xs">
-                <span>{{ $t('diet.phosphorus') }}</span>
-                <span>
-                  {{ ((resultData.nutrient_balance?.p_supplied ?? 0) * 1000).toFixed(0) }} / {{ ((resultData.nutrient_balance?.p_requirement ?? 0) * 1000).toFixed(0) }} g/day
-                  <q-badge v-if="mineralRatio(resultData.nutrient_balance.p_supplied, resultData.nutrient_balance.p_requirement) > 1.5" color="orange-4" text-color="dark" dense class="q-ml-xs">
-                    {{ mineralRatio(resultData.nutrient_balance.p_supplied, resultData.nutrient_balance.p_requirement).toFixed(1) }}x
-                  </q-badge>
+              <div class="row justify-between items-center q-mb-xs">
+                <span class="text-body2">{{ $t('diet.phosphorus') }}</span>
+                <span class="text-body2 text-weight-medium">
+                  {{ ((resultData.nutrient_balance?.p_supplied ?? 0) * 1000).toFixed(0) }} g/day
                 </span>
               </div>
               <q-linear-progress
@@ -262,6 +308,14 @@
                 :color="mineralProgressColor(resultData.nutrient_balance.p_supplied, resultData.nutrient_balance.p_requirement)"
                 rounded
               />
+              <div class="text-caption text-grey-6 q-mt-xs">
+                <template v-if="mineralRatio(resultData.nutrient_balance.p_supplied, resultData.nutrient_balance.p_requirement) > 1.05">
+                  {{ $t('diet.overNeeded', { ratio: mineralRatio(resultData.nutrient_balance.p_supplied, resultData.nutrient_balance.p_requirement).toFixed(1) }) }}
+                </template>
+                <template v-else>
+                  {{ nutrientPercent(resultData.nutrient_balance.p_supplied, resultData.nutrient_balance.p_requirement) }}% {{ $t('diet.ofNeeded') }}
+                </template>
+              </div>
               <div v-if="mineralRatio(resultData.nutrient_balance.p_supplied, resultData.nutrient_balance.p_requirement) > 3" class="text-caption text-orange-8 q-mt-xs">
                 <q-icon name="info" size="14px" class="q-mr-xs" />
                 {{ $t('diet.nutrientExcessWarning', { nutrient: $t('diet.phosphorus'), ratio: mineralRatio(resultData.nutrient_balance.p_supplied, resultData.nutrient_balance.p_requirement).toFixed(1) }) }}
@@ -653,6 +707,10 @@ function formatGoal(goal: string): string {
   return goals[goal] || goal;
 }
 
+function nutrientPercent(supplied: number, requirement: number): number {
+  return requirement > 0 ? Math.round((supplied / requirement) * 100) : 0;
+}
+
 function mineralRatio(supplied: number, requirement: number): number {
   return requirement > 0 ? supplied / requirement : 0;
 }
@@ -757,7 +815,7 @@ function buildExportData(): DietExportData | null {
   const nutrients: Array<{ label: string; supplied: string; requirement: string; unit: string }> = [];
   if (nb) {
     if (nb.dm_supplied || nb.dm_requirement) {
-      nutrients.push({ label: 'Dry Matter Intake', supplied: (nb.dm_supplied ?? 0).toFixed(2), requirement: (nb.dm_requirement ?? 0).toFixed(2), unit: 'kg/day' });
+      nutrients.push({ label: 'Dry Matter', supplied: (nb.dm_supplied ?? 0).toFixed(2), requirement: (nb.dm_requirement ?? 0).toFixed(2), unit: 'kg/day' });
     }
     const mpSup = nb.mp_supplied || nb.cp_supplied || 0;
     const mpReq = nb.mp_requirement || nb.cp_requirement || 0;
@@ -767,7 +825,7 @@ function buildExportData(): DietExportData | null {
     const nelSup = nb.nel_supplied || nb.tdn_supplied || 0;
     const nelReq = nb.nel_requirement || nb.tdn_requirement || 0;
     if (nelSup || nelReq) {
-      nutrients.push({ label: 'Net Energy Lactation', supplied: nelSup.toFixed(2), requirement: nelReq.toFixed(2), unit: 'Mcal/day' });
+      nutrients.push({ label: 'Energy', supplied: nelSup.toFixed(2), requirement: nelReq.toFixed(2), unit: 'Mcal/day' });
     }
     if (nb.ca_supplied || nb.ca_requirement) {
       nutrients.push({ label: 'Calcium', supplied: ((nb.ca_supplied ?? 0) * 1000).toFixed(0), requirement: ((nb.ca_requirement ?? 0) * 1000).toFixed(0), unit: 'g/day' });
