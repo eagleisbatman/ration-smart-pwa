@@ -124,17 +124,17 @@
               </q-item-section>
 
               <q-item-section>
-                <q-item-label>{{ feed.name }}</q-item-label>
-                <q-item-label v-if="feed.fd_name && feed.fd_name !== feed.name" caption class="text-grey-5 text-italic">
-                  {{ feed.fd_name }}
+                <q-item-label>{{ getFeedDisplayName(feed, locale) }}</q-item-label>
+                <q-item-label v-if="getFeedSecondaryName(feed, locale)" caption class="text-grey-5 text-italic">
+                  {{ getFeedSecondaryName(feed, locale) }}
                 </q-item-label>
                 <q-item-label caption>
-                  {{ $t('feed.labels.cpPercentShort') }}: {{ feed.cp_percentage != null ? feed.cp_percentage + '%' : '–' }} · {{ $t('feed.labels.tdnPercentShort') }}: {{ feed.tdn_percentage != null ? feed.tdn_percentage + '%' : '–' }} · {{ $t('feed.labels.dmPercentShort') }}: {{ feed.dm_percentage != null ? feed.dm_percentage + '%' : '–' }}<template v-if="feed.price_per_kg"> · {{ formatCurrency(feed.price_per_kg) }}{{ $t('units.perKg') }}</template>
+                  {{ $t('feed.labels.cpPercentShort') }}: {{ feed.cp_percentage != null ? feed.cp_percentage + '%' : '–' }} · {{ $t('feed.labels.tdnPercentShort') }}: {{ feed.tdn_percentage != null ? feed.tdn_percentage + '%' : '–' }} · {{ $t('feed.labels.dmPercentShort') }}: {{ feed.dm_percentage != null ? feed.dm_percentage + '%' : '–' }}
                 </q-item-label>
               </q-item-section>
 
               <q-item-section side>
-                <q-item-label v-if="feed.price_per_kg">{{ formatCurrency(feed.price_per_kg) }}{{ $t('units.perKg') }}</q-item-label>
+                <q-item-label v-if="feed.price_per_kg" class="text-weight-medium">{{ formatCurrency(feed.price_per_kg) }}{{ $t('units.perKg') }}</q-item-label>
                 <q-chip v-if="feed.is_custom" size="sm" color="secondary" text-color="white" dense>
                   {{ $t('feed.custom') }}
                 </q-chip>
@@ -173,8 +173,9 @@ import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useFeedsStore } from 'src/stores/feeds';
 import { useCurrency } from 'src/composables/useCurrency';
+import { getFeedDisplayName, getFeedSecondaryName } from 'src/composables/useFeedDisplayName';
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
 
 const CATEGORY_I18N_MAP: Record<string, string> = {
   Concentrate: 'feed.categories.concentrate',
@@ -243,6 +244,8 @@ const filteredFeeds = computed(() => {
   return feeds.value.filter(
     (f) =>
       f.name.toLowerCase().includes(query) ||
+      (f.fd_name && f.fd_name.toLowerCase().includes(query)) ||
+      (f.local_name && f.local_name.toLowerCase().includes(query)) ||
       f.category.toLowerCase().includes(query) ||
       translateCategory(f.category).toLowerCase().includes(query)
   );
@@ -269,7 +272,7 @@ watch(activeTab, () => {
 });
 
 onMounted(() => {
-  feedsStore.fetchAllFeeds();
+  void feedsStore.fetchAllFeeds();
 });
 </script>
 

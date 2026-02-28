@@ -37,6 +37,7 @@ export interface DietInput {
   feed_constraints?: Record<string, { min?: number; max?: number }>;
   budget_per_day?: number;
   target_milk_yield?: number;
+  diet_name?: string;
 }
 
 export interface DietResult {
@@ -216,6 +217,7 @@ export const useDietsStore = defineStore('diets', () => {
       user_id: authStore.userId,
       cow_id: input.cow_id,
       cow_name: input.cow_name,
+      name: input.diet_name,
       farmer_profile_id: input.farmer_profile_id,
       farmer_name: input.farmer_name,
       optimization_goal: input.optimization_goal,
@@ -285,6 +287,7 @@ export const useDietsStore = defineStore('diets', () => {
         user_id: authStore.userId,
         cow_id: input.cow_id,
         cow_name: input.cow_name,
+        name: input.diet_name || response.data.name,
         farmer_profile_id: input.farmer_profile_id,
         farmer_name: input.farmer_name,
         optimization_goal: input.optimization_goal,

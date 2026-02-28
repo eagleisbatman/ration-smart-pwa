@@ -234,7 +234,11 @@ function formatGoal(goal: string): string {
 }
 
 function getDietTitle(diet: Diet): string {
-  return diet.name || diet.cow_name || t('diet.dietPlan');
+  if (diet.name) return diet.name;
+  // Build a contextual title from cow name + goal
+  const goalLabel = formatGoal(diet.optimization_goal);
+  if (diet.cow_name) return `${diet.cow_name} — ${goalLabel}`;
+  return goalLabel || t('diet.dietPlan');
 }
 
 function getDietSubtitle(diet: Diet): string | null {

@@ -570,6 +570,24 @@ body {
   }
 }
 
+// Feed table horizontal scroll wrapper with scroll shadow indicators
+.feed-table-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  background:
+    linear-gradient(to right, white 30%, transparent),
+    linear-gradient(to left, white 30%, transparent) 100% 0,
+    radial-gradient(farthest-side at 0 50%, rgba(0, 0, 0, 0.12), transparent),
+    radial-gradient(farthest-side at 100% 50%, rgba(0, 0, 0, 0.12), transparent) 100% 0;
+  background-repeat: no-repeat;
+  background-size: 40px 100%, 40px 100%, 14px 100%, 14px 100%;
+  background-attachment: local, local, scroll, scroll;
+
+  > .q-markup-table {
+    min-width: 420px;
+  }
+}
+
 // ============================================
 // Photo Avatar (shared by PhotoUploadSection, detail pages)
 // ============================================
@@ -1311,6 +1329,18 @@ body {
   // CowDetailPage: default avatar — slightly lighter than page bg for contrast
   .cow-avatar {
     background: rgba(255, 255, 255, 0.15) !important;
+  }
+
+  // Feed table scroll shadows on dark surfaces
+  .feed-table-wrapper {
+    background:
+      linear-gradient(to right, var(--q-dark-page, #121212) 30%, transparent),
+      linear-gradient(to left, var(--q-dark-page, #121212) 30%, transparent) 100% 0,
+      radial-gradient(farthest-side at 0 50%, rgba(255, 255, 255, 0.12), transparent),
+      radial-gradient(farthest-side at 100% 50%, rgba(255, 255, 255, 0.12), transparent) 100% 0;
+    background-repeat: no-repeat;
+    background-size: 40px 100%, 40px 100%, 14px 100%, 14px 100%;
+    background-attachment: local, local, scroll, scroll;
   }
 
   // Scrollbar — light thumb on dark background
