@@ -57,7 +57,7 @@
   <!-- Mini banner for later prompting -->
   <transition name="slide-up">
     <div
-      v-if="showBanner && !showPrompt"
+      v-if="showBanner && !showPrompt && !isWizardFlow"
       class="a2hs-banner"
       @click="showPrompt = true"
     >
@@ -78,8 +78,12 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
 import { canInstall, isInstalled, installPWA, updateAvailable } from 'src/boot/pwa';
 import { db } from 'src/lib/offline/db';
+
+const route = useRoute();
+const isWizardFlow = computed(() => route.path === '/diet/new');
 
 const showPrompt = ref(false);
 const showBanner = ref(false);

@@ -97,6 +97,9 @@
                 {{ diet.name || diet.cow_name || $t('diet.dietPlan') }}
                 <q-icon name="edit" size="16px" class="q-ml-xs text-grey-5" />
               </div>
+              <div v-if="dietContextLine" class="text-caption text-grey-7">
+                {{ dietContextLine }}
+              </div>
               <div v-if="diet.farmer_name" class="text-caption text-grey-6">
                 {{ $t('diet.forFarmer', { name: diet.farmer_name }) }}
               </div>
@@ -159,7 +162,7 @@
 
         <!-- Feed Breakdown (table format per wireframe) -->
         <div class="text-subtitle1 q-mb-sm">{{ $t('diet.recommendedFeeds') }}</div>
-        <q-card flat bordered class="q-mb-md chart-scroll-wrapper">
+        <q-card flat bordered class="q-mb-md feed-table-wrapper">
           <q-markup-table flat bordered dense>
             <thead>
               <tr class="bg-grey-2">
@@ -234,10 +237,14 @@
                 </span>
               </div>
               <q-linear-progress
-                :value="Math.min(resultData.nutrient_balance.ca_requirement ? resultData.nutrient_balance.ca_supplied / resultData.nutrient_balance.ca_requirement : 0, 1)"
+                :value="Math.min(mineralRatio(resultData.nutrient_balance.ca_supplied, resultData.nutrient_balance.ca_requirement), 1)"
                 :color="mineralProgressColor(resultData.nutrient_balance.ca_supplied, resultData.nutrient_balance.ca_requirement)"
                 rounded
               />
+              <div v-if="mineralRatio(resultData.nutrient_balance.ca_supplied, resultData.nutrient_balance.ca_requirement) > 3" class="text-caption text-orange-8 q-mt-xs">
+                <q-icon name="info" size="14px" class="q-mr-xs" />
+                {{ $t('diet.nutrientExcessWarning', { nutrient: $t('diet.calcium'), ratio: mineralRatio(resultData.nutrient_balance.ca_supplied, resultData.nutrient_balance.ca_requirement).toFixed(1) }) }}
+              </div>
             </div>
 
             <div v-if="resultData.nutrient_balance?.p_requirement">
@@ -251,10 +258,14 @@
                 </span>
               </div>
               <q-linear-progress
-                :value="Math.min(resultData.nutrient_balance.p_requirement ? resultData.nutrient_balance.p_supplied / resultData.nutrient_balance.p_requirement : 0, 1)"
+                :value="Math.min(mineralRatio(resultData.nutrient_balance.p_supplied, resultData.nutrient_balance.p_requirement), 1)"
                 :color="mineralProgressColor(resultData.nutrient_balance.p_supplied, resultData.nutrient_balance.p_requirement)"
                 rounded
               />
+              <div v-if="mineralRatio(resultData.nutrient_balance.p_supplied, resultData.nutrient_balance.p_requirement) > 3" class="text-caption text-orange-8 q-mt-xs">
+                <q-icon name="info" size="14px" class="q-mr-xs" />
+                {{ $t('diet.nutrientExcessWarning', { nutrient: $t('diet.phosphorus'), ratio: mineralRatio(resultData.nutrient_balance.p_supplied, resultData.nutrient_balance.p_requirement).toFixed(1) }) }}
+              </div>
             </div>
           </q-card-section>
         </q-card>
@@ -395,6 +406,9 @@
           @click="router.push({ name: 'diet-compare', query: { diet1: dietId } })"
         />
       </div>
+
+      <!-- Bottom spacer to prevent FAB / bottom nav overlap -->
+      <div style="height: 80px" aria-hidden="true" />
     </template>
 
     <!-- Not Found -->
@@ -413,7 +427,7 @@
     <q-page-sticky
       v-if="diet && ['completed', 'following', 'saved', 'archived'].includes(diet.status) && diet.result_data"
       position="bottom-right"
-      :offset="[18, 18]"
+      :offset="[16, 72]"
     >
       <q-btn
         fab
@@ -559,6 +573,18 @@ const showBanner = ref(true);
 
 const resultData = computed<DietResultData>(() => (diet.value?.result_data as DietResultData) || {});
 
+/** Cow context line shown below diet name: weight · milk · goal */
+const dietContextLine = computed(() => {
+  const d = diet.value;
+  if (!d) return '';
+  const inputData = d.input_data as { weight_kg?: number; milk_yield_liters?: number } | undefined;
+  const parts: string[] = [];
+  if (inputData?.weight_kg) parts.push(`${inputData.weight_kg}kg`);
+  if (inputData?.milk_yield_liters) parts.push(`${inputData.milk_yield_liters}L/day`);
+  if (d.optimization_goal) parts.push(formatGoal(d.optimization_goal));
+  return parts.join(' · ');
+});
+
 const feedTotalKg = computed(() =>
   (resultData.value.feeds || []).reduce((sum, f) => sum + (f.amount_kg || 0), 0)
 );
@@ -616,6 +642,15 @@ function getStatusLabel(status: string): string {
     saved: t('diet.statusLabel.completed'),
   };
   return labels[status] || t('diet.statusLabel.pending');
+}
+
+function formatGoal(goal: string): string {
+  const goals: Record<string, string> = {
+    minimize_cost: t('diet.goals.minimizeCost'),
+    maximize_milk: t('diet.goals.maximizeMilk'),
+    balanced: t('diet.goals.balanced'),
+  };
+  return goals[goal] || goal;
 }
 
 function mineralRatio(supplied: number, requirement: number): number {
@@ -707,8 +742,9 @@ function onReminderSaved(): void {
 // --- Share / Export ---
 const showShareSheet = ref(false);
 
-function buildExportData(): DietExportData {
-  const d = diet.value!;
+function buildExportData(): DietExportData | null {
+  const d = diet.value;
+  if (!d) return null;
   const rd = resultData.value;
   const nb = rd.nutrient_balance;
   const goalLabels: Record<string, string> = {
@@ -759,23 +795,27 @@ function buildExportData(): DietExportData {
 
 function handleShare() {
   const exportData = buildExportData();
+  if (!exportData) return;
   const text = formatDietText(exportData);
   shareContent(t('export.shareDiet'), text);
 }
 
 function handleWhatsApp() {
   const exportData = buildExportData();
+  if (!exportData) return;
   const text = formatDietText(exportData);
   shareViaWhatsApp(text);
 }
 
 function handlePrint() {
   const exportData = buildExportData();
+  if (!exportData) return;
   printDiet(exportData);
 }
 
 async function handleCopy() {
   const exportData = buildExportData();
+  if (!exportData) return;
   const text = formatDietText(exportData);
   const success = await copyToClipboard(text);
   if (success) {

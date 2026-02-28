@@ -43,6 +43,7 @@
     "syncPending": "Changes pending sync",
     "syncing": "Syncing...",
     "syncComplete": "Sync complete",
+    "clearAll": "Clear all",
     "selectLanguage": "Select Language",
     "selectCountry": "Select Country",
     "selectOrganization": "Select Organization (Optional)",
@@ -353,7 +354,7 @@
     "noLogsYet": "No logs yet",
     "morning": "M",
     "evening": "E",
-    "bcsValue": "{score} / 5",
+    "bcsValue": "{score} out of 5",
     "bcsHint": "1 (very thin) to 5 (very fat)",
     "bcs1": "1 - Very Thin",
     "bcs2": "2 - Thin",
@@ -535,6 +536,7 @@
     "netEnergyLactation": "Energy for Milk",
     "recommendations": "Recommendations",
     "warnings": "Warnings",
+    "nutrientExcessWarning": "{nutrient} is {ratio}x above requirement. This may be caused by mineral supplements.",
     "newDiet": "New Diet",
     "tryAgain": "Try Again",
     "failedTitle": "Diet Could Not Be Generated",
@@ -641,7 +643,9 @@
       "ageDisclaimer": "Age is recorded for your reference but is not used in diet calculations.",
       "ageMonthsValue": "{months} months",
       "bcsAndAge": "BCS / Age",
-      "notSpecified": "Not specified"
+      "notSpecified": "Not specified",
+      "autoSelectExplain": "{count} feeds auto-selected — optimized for {goal} with a balanced mix of forages and concentrates",
+      "feedsSelected": "feeds selected"
     }
   },
   "followUp": {

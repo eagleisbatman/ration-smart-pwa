@@ -1,5 +1,5 @@
 <template>
-  <q-page :class="$q.screen.lt.sm ? 'q-pa-none' : 'q-pa-md'">
+  <q-page :class="$q.screen.lt.md ? 'q-pa-none' : 'q-pa-md'">
     <!-- Stepper -->
     <q-stepper
       ref="stepper"
@@ -7,9 +7,9 @@
       color="primary"
       animated
       flat
-      :bordered="!$q.screen.lt.sm"
-      :vertical="$q.screen.lt.sm"
-      :alternative-labels="!$q.screen.lt.sm"
+      :bordered="!$q.screen.lt.md"
+      :vertical="$q.screen.lt.md"
+      :alternative-labels="!$q.screen.lt.md"
       class="diet-stepper"
     >
       <!-- Step 1: Select Cow -->
@@ -178,10 +178,10 @@
           @update:model-value="onGoalChanged"
         >
           <template #label="opt">
-            <div class="row items-center">
-              <q-icon :name="opt.icon" size="24px" class="q-mr-sm" :color="opt.color" />
-              <div>
-                <div>{{ opt.label }}</div>
+            <div class="row items-start no-wrap q-gutter-x-sm">
+              <q-icon :name="opt.icon" size="24px" class="q-mt-xs" :color="opt.color" />
+              <div class="col">
+                <div class="text-body2">{{ opt.label }}</div>
                 <div class="text-caption text-grey-7">{{ opt.description }}</div>
               </div>
             </div>
@@ -264,7 +264,7 @@
         <!-- Auto mode: show selected feed chips -->
         <template v-if="feedSelectionMode === 'auto'">
           <div class="text-body2 text-grey-7 q-mb-sm">
-            {{ $t('diet.wizard.autoSelectDesc', { count: autoSelectedFeeds.length }) }}
+            {{ $t('diet.wizard.autoSelectExplain', { count: autoSelectedFeeds.length, goal: formatGoal(form.optimization_goal) }) }}
           </div>
           <div class="q-gutter-sm">
             <q-chip
@@ -274,13 +274,34 @@
               outline
               color="primary"
             >
-              {{ feed.name }}
+              {{ getFeedDisplayName(feed, locale) }}
+              <span v-if="feed.price_per_kg" class="text-caption q-ml-xs">
+                {{ formatCurrency(feed.price_per_kg) }}/kg
+              </span>
             </q-chip>
           </div>
         </template>
 
         <!-- Manual mode: search + category accordions -->
         <template v-else>
+          <div class="row items-center q-mb-sm">
+            <q-badge v-if="form.available_feeds.length > 0" color="primary" class="q-mr-sm">
+              {{ form.available_feeds.length }} {{ $t('diet.wizard.feedsSelected') }}
+            </q-badge>
+            <q-space />
+            <q-btn
+              v-if="form.available_feeds.length > 0"
+              flat
+              dense
+              size="sm"
+              color="negative"
+              :label="$t('common.clearAll')"
+              icon="clear_all"
+              no-caps
+              @click="form.available_feeds = []"
+            />
+          </div>
+
           <q-input
             v-model="feedSearch"
             :label="$t('diet.wizard.searchFeeds')"
@@ -311,10 +332,12 @@
                         <q-checkbox v-model="form.available_feeds" :val="feed.id" color="primary" />
                       </q-item-section>
                       <q-item-section>
-                        <q-item-label>{{ feed.name }}</q-item-label>
-                        <q-item-label caption>
-                          {{ feed.fd_name || '' }}
-                          <template v-if="feed.price_per_kg"> · {{ formatCurrency(feed.price_per_kg) }}/kg</template>
+                        <q-item-label>{{ getFeedDisplayName(feed, locale) }}</q-item-label>
+                        <q-item-label v-if="getFeedSecondaryName(feed, locale)" caption class="text-italic">
+                          {{ getFeedSecondaryName(feed, locale) }}
+                        </q-item-label>
+                        <q-item-label v-if="feed.price_per_kg" caption>
+                          {{ formatCurrency(feed.price_per_kg) }}/kg
                         </q-item-label>
                       </q-item-section>
                       <q-item-section v-if="form.available_feeds.includes(feed.id)" side>
@@ -345,30 +368,60 @@
         <q-card flat bordered class="q-mb-md">
           <q-list>
             <q-item>
+              <q-item-section avatar>
+                <q-avatar color="primary" text-color="white" size="36px">
+                  <q-icon :name="COW_ICON" size="20px" />
+                </q-avatar>
+              </q-item-section>
               <q-item-section>
                 <q-item-label caption>{{ $t('diet.wizard.cow') }}</q-item-label>
                 <q-item-label>{{ form.cow_name || $t('diet.wizard.manualEntry') }}</q-item-label>
               </q-item-section>
             </q-item>
             <q-item>
+              <q-item-section avatar>
+                <q-avatar color="grey-3" text-color="grey-8" size="36px">
+                  <q-icon name="monitor_weight" size="20px" />
+                </q-avatar>
+              </q-item-section>
               <q-item-section>
                 <q-item-label caption>{{ $t('diet.wizard.weightMilkYield') }}</q-item-label>
-                <q-item-label>{{ form.weight_kg }} {{ $t('diet.kg') }} / {{ form.milk_yield_liters }} {{ $t('units.l') }}/{{ $t('units.perDay').replace('/', '') }}</q-item-label>
+                <q-item-label>{{ form.weight_kg }} {{ $t('diet.kg') }} · {{ form.milk_yield_liters }} {{ $t('units.l') }}/{{ $t('units.perDay').replace('/', '') }}</q-item-label>
               </q-item-section>
             </q-item>
             <q-item>
+              <q-item-section avatar>
+                <q-avatar color="grey-3" text-color="grey-8" size="36px">
+                  <q-icon name="straighten" size="20px" />
+                </q-avatar>
+              </q-item-section>
               <q-item-section>
                 <q-item-label caption>{{ $t('diet.wizard.bcsAndAge') }}</q-item-label>
                 <q-item-label>{{ $t('cow.bcsValue', { score: form.body_condition_score }) }} · {{ form.age_months ? $t('diet.wizard.ageMonthsValue', { months: form.age_months }) : $t('diet.wizard.notSpecified') }}</q-item-label>
               </q-item-section>
             </q-item>
             <q-item>
+              <q-item-section avatar>
+                <q-avatar color="grey-3" text-color="grey-8" size="36px">
+                  <q-icon name="grass" size="20px" />
+                </q-avatar>
+              </q-item-section>
               <q-item-section>
                 <q-item-label caption>{{ $t('diet.wizard.selectedFeeds') }}</q-item-label>
-                <q-item-label>{{ $t('diet.wizard.feedsCount', { count: effectiveFeedIds.length }) }} {{ feedSelectionMode === 'auto' ? '(' + $t('diet.wizard.autoSelect') + ')' : '' }}</q-item-label>
+                <q-item-label>
+                  {{ effectiveFeedIds.length }} {{ $t('diet.wizard.feedsSelected') }}
+                  <q-badge v-if="feedSelectionMode === 'auto'" color="primary" class="q-ml-xs">
+                    {{ $t('diet.wizard.autoSelect') }}
+                  </q-badge>
+                </q-item-label>
               </q-item-section>
             </q-item>
             <q-item>
+              <q-item-section avatar>
+                <q-avatar :color="reviewGoalColor" text-color="white" size="36px">
+                  <q-icon :name="reviewGoalIcon" size="20px" />
+                </q-avatar>
+              </q-item-section>
               <q-item-section>
                 <q-item-label caption>{{ $t('diet.wizard.optimizationGoal') }}</q-item-label>
                 <q-item-label class="text-capitalize">{{ formatGoal(form.optimization_goal) }}</q-item-label>
@@ -402,6 +455,7 @@
             color="primary"
             :label="$t('diet.wizard.continue')"
             :disable="!canProceed"
+            :style="!canProceed ? 'opacity: 0.4' : undefined"
             @click="onStepNext"
           />
           <q-btn
@@ -432,8 +486,9 @@ import { COW_ICON } from 'src/boot/icons';
 import { useCurrency } from 'src/composables/useCurrency';
 import { useHapticFeedback } from 'src/composables/useHapticFeedback';
 import { useAutoFeedSelection } from 'src/composables/useAutoFeedSelection';
+import { getFeedDisplayName, getFeedSecondaryName } from 'src/composables/useFeedDisplayName';
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
 const { formatCurrency, getCurrencySymbol } = useCurrency();
 const { success, error: hapticError, light, medium } = useHapticFeedback();
 
@@ -462,6 +517,7 @@ const queryAutoFeeds = route.query.autoFeeds === 'true';
 const form = reactive<DietInput>({
   cow_id: queryCowId,
   cow_name: '',
+  diet_name: undefined,
   weight_kg: 400,
   milk_yield_liters: 10,
   milk_fat_percentage: 4.0,
@@ -564,7 +620,11 @@ function setFeedPrice(feedId: string, value: string | number | null) {
   if (value === null || value === '') {
     delete feedPriceOverrides[feedId];
   } else {
-    feedPriceOverrides[feedId] = Number(value);
+    const num = Number(value);
+    // Ignore negative or unreasonably large prices
+    if (num >= 0 && num <= 100000) {
+      feedPriceOverrides[feedId] = num;
+    }
   }
 }
 
@@ -612,6 +672,7 @@ const filteredFeeds = computed(() => {
     (f) =>
       f.name.toLowerCase().includes(query) ||
       (f.fd_name && f.fd_name.toLowerCase().includes(query)) ||
+      (f.local_name && f.local_name.toLowerCase().includes(query)) ||
       f.category.toLowerCase().includes(query)
   );
 });
@@ -667,6 +728,16 @@ const goalOptions = computed(() => [
     description: t('diet.goals.balancedDesc'),
   },
 ]);
+
+/** Goal icon/color for the review step */
+const reviewGoalIcon = computed(() => {
+  const opt = goalOptions.value.find((g) => g.value === form.optimization_goal);
+  return opt?.icon || 'flag';
+});
+const reviewGoalColor = computed(() => {
+  const opt = goalOptions.value.find((g) => g.value === form.optimization_goal);
+  return opt?.color || 'primary';
+});
 
 const canProceed = computed(() => {
   switch (step.value) {
@@ -762,6 +833,18 @@ function onStepNext() {
 
 async function submitDiet() {
   medium(); // Haptic feedback on submit
+
+  // Auto-generate a meaningful name if none set
+  if (!form.diet_name) {
+    const goalLabel = formatGoal(form.optimization_goal);
+    if (form.cow_name) {
+      form.diet_name = `${form.cow_name} — ${goalLabel}`;
+    } else {
+      const dateStr = new Date().toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+      form.diet_name = `${goalLabel} — ${dateStr}`;
+    }
+  }
+
   // Use effective feed IDs (auto or manual)
   form.available_feeds = [...effectiveFeedIds.value];
   // Attach any user price overrides to the form
@@ -796,9 +879,11 @@ async function submitDiet() {
 }
 
 onMounted(async () => {
-  await cowsStore.fetchCows();
-  await feedsStore.fetchAllFeeds();
-  await farmersStore.fetchFarmers();
+  await Promise.all([
+    cowsStore.fetchCows(),
+    feedsStore.fetchAllFeeds(),
+    farmersStore.fetchFarmers(),
+  ]);
 
   // Pre-fill from previous diet for regeneration
   if (regenerateFromId) {
@@ -862,8 +947,8 @@ onMounted(async () => {
 .diet-stepper {
   border-radius: $radius-loose;
 
-  // On mobile vertical mode: full-width content
-  @media (max-width: 599px) {
+  // On vertical mode (mobile + tablet): full-width content
+  @media (max-width: 1023px) {
     border-radius: 0;
 
     // Hide the vertical connector line between steps — it steals horizontal space
@@ -887,6 +972,13 @@ onMounted(async () => {
     :deep(.q-stepper__nav) {
       padding: 16px 12px 8px;
     }
+  }
+}
+
+// Desktop: prevent empty space below wizard content
+@media (min-width: 1024px) {
+  :deep(.q-stepper__content) {
+    min-height: 50vh;
   }
 }
 
