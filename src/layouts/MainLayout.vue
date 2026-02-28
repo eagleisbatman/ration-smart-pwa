@@ -7,7 +7,7 @@
     <UpdatePrompt />
 
     <!-- Header -->
-    <q-header bordered class="main-header">
+    <q-header bordered class="main-header bg-primary text-white">
       <q-toolbar>
         <q-btn
           v-if="showBackButton"
@@ -15,6 +15,7 @@
           dense
           round
           icon="arrow_back"
+          color="white"
           @click="goBack"
         />
         <q-btn
@@ -23,6 +24,7 @@
           dense
           round
           icon="menu"
+          color="white"
           @click="leftDrawerOpen = !leftDrawerOpen"
         />
 
@@ -32,7 +34,7 @@
 
         <SyncStatusChip v-if="isAuthenticated" />
 
-        <q-btn v-if="showMenu" flat round dense icon="more_vert">
+        <q-btn v-if="showMenu" flat round dense icon="more_vert" color="white">
           <q-menu>
             <q-list class="user-menu-list">
               <slot name="menu-items" />
@@ -303,8 +305,9 @@ watch(
 
 <style lang="scss" scoped>
 .main-header {
-  background: var(--q-color-surface, white);
-  color: var(--q-primary);
+  // bg-primary + text-white set in template; this just overrides Quasar's
+  // default header border with a subtle same-tone separator.
+  border-color: rgba(0, 0, 0, 0.15) !important;
 }
 
 .drawer-header {
@@ -325,6 +328,13 @@ watch(
 .q-footer {
   background: white;
   padding-bottom: env(safe-area-inset-bottom);
+  // Active tab gets a subtle primary top-border indicator
+  :deep(.q-tab.q-tab--active) {
+    border-top: 2px solid var(--q-primary);
+  }
+  :deep(.q-tab) {
+    border-top: 2px solid transparent;
+  }
 }
 
 .user-menu-list {

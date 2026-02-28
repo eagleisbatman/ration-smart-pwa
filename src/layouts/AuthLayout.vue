@@ -48,7 +48,7 @@ const isOnboarding = computed(() =>
 
 <style lang="scss" scoped>
 .auth-layout {
-  background: #18181B;
+  background: var(--q-primary);
   min-height: 100vh;
 }
 
