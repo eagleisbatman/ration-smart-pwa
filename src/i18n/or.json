@@ -49,7 +49,8 @@
     "takePhoto": "ଫଟୋ ଉଠାନ୍ତୁ",
     "chooseFromGallery": "ଗ୍ୟାଲେରୀରୁ ବାଛନ୍ତୁ",
     "removePhoto": "ଫଟୋ ହଟାନ୍ତୁ",
-    "you": "ଆପଣ"
+    "you": "ଆପଣ",
+    "clearAll": "ସବୁ ଛାଡ଼ିଦିଅ"
   },
   "nav": {
     "home": "ହୋମ୍",
@@ -458,7 +459,8 @@
       "failed": "ବିଫଳ",
       "pending": "ବାକି ଅଛି",
       "saved": "ସଞ୍ଚିତ",
-      "following": "ଅନୁସରଣ କରୁଛନ୍ତି"
+      "following": "ଅନୁସରଣ କରୁଛନ୍ତି",
+      "archived": "ଆର୍କାଇଭ୍ ହୋଇଛି"
     },
     "tdnLabel": "TDN",
     "dailyCost": "ଦୈନିକ ଖର୍ଚ୍ଚ",
@@ -583,8 +585,14 @@
       "ageMonthsValue": "{months} ମାସ",
       "bcsAndAge": "BCS / ବୟସ",
       "notSpecified": "ଉଲ୍ଲେଖ କରାଯାଇ ନାହିଁ",
-      "ageDisclaimer": "ଆପଣଙ୍କ ସୂଚନା ପାଇଁ ବୟସ ରେକର୍ଡ କରାଯାଇଛି କିନ୍ତୁ ଏହା ଡାଏଟ୍ ଗଣନାରେ ବ୍ୟବହୃତ ହୁଏନାହିଁ।"
-    }
+      "ageDisclaimer": "ଆପଣଙ୍କ ସୂଚନା ପାଇଁ ବୟସ ରେକର୍ଡ କରାଯାଇଛି କିନ୍ତୁ ଏହା ଡାଏଟ୍ ଗଣନାରେ ବ୍ୟବହୃତ ହୁଏନାହିଁ।",
+      "autoSelectExplain": "{count} ଫିଡ୍ ସ୍ୱୟଂଚାଳିତ ଭାବରେ ଚୟନ କରାଯାଇଛି — ଫରେଜ୍ ଏବଂ କନ୍ସେଣ୍ଟ୍ରେଟ୍‌ର ସନ୍ତୁଳିତ ମିଶ୍ରଣ ସହିତ {goal} ପାଇଁ ଅପ୍ଟିମାଇଜ୍ କରାଯାଇଛି",
+      "feedsSelected": "ଫିଡ୍ ଚୟନ କରାଯାଇଛି"
+    },
+    "ofNeeded": "ଆବଶ୍ୟକରୁ",
+    "needsMore": "{amount} {unit} ଆହୁରି ଦରକାର",
+    "overNeeded": "ଆବଶ୍ୟକତା ଠାରୁ {ratio}x ଅଧିକ",
+    "nutrientExcessWarning": "{nutrient} ଆବଶ୍ୟକତା ଠାରୁ {ratio}x ଅଧିକ ଅଛି। ଏହା ମିନେରାଲ୍ ସପ୍ଲିମେଣ୍ଟ ଯୋଗୁଁ ହୋଇପାରେ।"
   },
   "feed": {
     "feeds": "ଖାଦ୍ୟ",
@@ -907,7 +915,7 @@
     }
   },
   "reports": {
-    "reports": "ରିପୋର୍ଟ",
+    "reports": "ରିପୋର୍ଟଗୁଡ଼ିକ",
     "generateReport": "ରିପୋର୍ଟ ସୃଷ୍ଟି କରନ୍ତୁ",
     "downloadReport": "ରିପୋର୍ଟ ଡାଉନଲୋଡ୍",
     "shareReport": "ରିପୋର୍ଟ ସେୟାର୍",
@@ -961,7 +969,38 @@
     "date": "ତାରିଖ",
     "milk": "କ୍ଷୀର",
     "fatPct": "ଫ୍ୟାଟ୍ %",
-    "noReportsDesc": "ଆପଣଙ୍କ ଗୋରୁଙ୍କ ପୁଷ୍ଟିକର ପ୍ରଦର୍ଶନ ଏବଂ ଖାଦ୍ୟ ଖର୍ଚ୍ଚ ଟ୍ରାକ୍ କରିବା ପାଇଁ ଏକ ଡାଏଟ୍ ରିପୋର୍ଟ ତିଆରି କରନ୍ତୁ।"
+    "noReportsDesc": "ଆପଣଙ୍କ ଗୋରୁଙ୍କ ପୁଷ୍ଟିକର ପ୍ରଦର୍ଶନ ଏବଂ ଖାଦ୍ୟ ଖର୍ଚ୍ଚ ଟ୍ରାକ୍ କରିବା ପାଇଁ ଏକ ଡାଏଟ୍ ରିପୋର୍ଟ ତିଆରି କରନ୍ତୁ।",
+    "summary": "ସାରାଂଶ",
+    "preview": {
+      "totalMilk": "ମୋଟ କ୍ଷୀର",
+      "avgDaily": "ସର୍ବନିମ୍ନ ଦୈନିକ",
+      "avgFat": "ସର୍ବନିମ୍ନ ଫ୍ୟାଟ୍ %",
+      "cowCount": "ଗାଈ ସଂଖ୍ୟା",
+      "dietsGenerated": "ଆହାର ତିଆରି ହୋଇଛି",
+      "avgDailyCost": "ସର୍ବନିମ୍ନ ଦୈନିକ ଖର୍ଚ୍ଚ",
+      "farmers": "ଚାଷୀ",
+      "totalCows": "ମୋଟ ଗାଈ",
+      "noPreview": "ଏହି ରିପୋର୍ଟ ପ୍ରକାର ପାଇଁ ପୂର୍ବାବଲୋକନ ଉପଲବ୍ଧ ନାହିଁ"
+    },
+    "templates": {
+      "title": "ରିପୋର୍ଟ ଟେମ୍ପଲେଟ୍‌ଗୁଡ଼ିକ",
+      "noTemplates": "କୌଣସି ସଂରକ୍ଷିତ ଟେମ୍ପଲେଟ୍ ନାହିଁ",
+      "noTemplatesHint": "ଶୀଘ୍ର ପୁନଃ ବ୍ୟବହାର ପାଇଁ ରିପୋର୍ଟ ସେଟିଂସକୁ ଏକ ଟେମ୍ପଲେଟ୍ ଭାବରେ ସେଭ୍ କରନ୍ତୁ",
+      "useTemplate": "ବ୍ୟବହାର କରନ୍ତୁ",
+      "deleteTemplate": "ଟେମ୍ପଲେଟ୍ ଡିଲିଟ୍ କରନ୍ତୁ",
+      "deleteConfirm": "ଆପଣ ନିଶ୍ଚିତ କି ଏହି ଟେମ୍ପଲେଟ୍ ଡିଲିଟ୍ କରିବାକୁ ଚାହୁଁଛନ୍ତି?",
+      "deleted": "ଟେମ୍ପଲେଟ୍ ଡିଲିଟ୍ ହୋଇଛି",
+      "saveTemplate": "ଟେମ୍ପଲେଟ୍ ଭାବରେ ସେଭ୍ କରନ୍ତୁ",
+      "namePlaceholder": "ଉଦାହରଣ: ମାସିକ କ୍ଷୀର ରିପୋର୍ଟ",
+      "saved": "ଟେମ୍ପଲେଟ୍ ସେଭ୍ ହୋଇଛି",
+      "templateName": "ଟେମ୍ପଲେଟ୍ ନାମ"
+    },
+    "reportTypes": {
+      "milkProduction": "କ୍ଷୀର ଉତ୍ପାଦନ",
+      "feedConsumption": "ଖାଦ୍ୟ ଖର୍ଚ୍ଚ",
+      "cowPerformance": "ଗାଈର କାର୍ଯ୍ୟଦକ୍ଷତା",
+      "costAnalysis": "ଖର୍ଚ୍ଚ ବିଶ୍ଳେଷଣ"
+    }
   },
   "settings": {
     "settings": "ସେଟିଂସ୍",
@@ -1638,7 +1677,11 @@
     "snfPercent": "SNF %",
     "notes": "ଟିପ୍ପଣୀ",
     "yield": "ଉତ୍ପାଦନ",
-    "generatedOn": "RationSmart ଦ୍ୱାରା {date} ରେ ପ୍ରସ୍ତୁତ"
+    "generatedOn": "RationSmart ଦ୍ୱାରା {date} ରେ ପ୍ରସ୍ତୁତ",
+    "nutrient": "ପୁଷ୍ଟିକର",
+    "statusMet": "ପୂରଣ ହୋଇଛି",
+    "statusLow": "କମ୍",
+    "statusExcess": "ଅଧିକ"
   },
   "syncHistory": {
     "title": "ସିଙ୍କ୍ ଇତିହାସ",

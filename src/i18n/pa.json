@@ -49,7 +49,8 @@
     "takePhoto": "ਫੋਟੋ ਲਓ",
     "chooseFromGallery": "ਗੈਲਰੀ ਵਿੱਚੋਂ ਚੁਣੋ",
     "removePhoto": "ਫੋਟੋ ਹਟਾਓ",
-    "you": "ਤੁਸੀਂ"
+    "you": "ਤੁਸੀਂ",
+    "clearAll": "ਸਭ ਸਾਫ਼ ਕਰੋ"
   },
   "nav": {
     "home": "ਹੋਮ",
@@ -458,7 +459,8 @@
       "failed": "ਅਸਫਲ",
       "pending": "ਬਕਾਇਆ",
       "saved": "ਸੁਰੱਖਿਅਤ ਕੀਤਾ ਗਿਆ",
-      "following": "ਪਾਲਣਾ ਕਰ ਰਿਹਾ ਹੈ"
+      "following": "ਪਾਲਣਾ ਕਰ ਰਿਹਾ ਹੈ",
+      "archived": "ਪੁਰਾਲੇਖਬੱਧ"
     },
     "tdnLabel": "TDN",
     "dailyCost": "ਰੋਜ਼ਾਨਾ ਲਾਗਤ",
@@ -583,8 +585,14 @@
       "ageMonthsValue": "{months} ਮਹੀਨੇ",
       "bcsAndAge": "BCS / ਉਮਰ",
       "notSpecified": "ਨਿਰਧਾਰਤ ਨਹੀਂ",
-      "ageDisclaimer": "ਉਮਰ ਤੁਹਾਡੇ ਸੰਦਰਭ ਲਈ ਦਰਜ ਕੀਤੀ ਗਈ ਹੈ ਪਰ ਖੁਰਾਕ ਦੀ ਗਣਨਾ ਵਿੱਚ ਵਰਤੀ ਨਹੀਂ ਜਾਂਦੀ।"
-    }
+      "ageDisclaimer": "ਉਮਰ ਤੁਹਾਡੇ ਸੰਦਰਭ ਲਈ ਦਰਜ ਕੀਤੀ ਗਈ ਹੈ ਪਰ ਖੁਰਾਕ ਦੀ ਗਣਨਾ ਵਿੱਚ ਵਰਤੀ ਨਹੀਂ ਜਾਂਦੀ।",
+      "autoSelectExplain": "{count} ਚਾਰੇ ਆਪਣੇ-ਆਪ ਚੁਣੇ ਗਏ ਹਨ — ਫੋਰੇਜ ਅਤੇ ਇਕਾਗਰਤਾ ਦੇ ਸੰਤੁਲਿਤ ਮਿਸ਼ਰਣ ਨਾਲ {goal} ਲਈ ਅਨੁਕੂਲਿਤ",
+      "feedsSelected": "ਚਾਰੇ ਚੁਣੇ ਗਏ"
+    },
+    "ofNeeded": "ਲੋੜੀਂਦੇ ਵਿੱਚੋਂ",
+    "needsMore": "{amount} {unit} ਹੋਰ ਚਾਹੀਦਾ ਹੈ",
+    "overNeeded": "ਲੋੜ ਤੋਂ {ratio} ਗੁਣਾ ਵੱਧ",
+    "nutrientExcessWarning": "{nutrient} ਲੋੜ ਤੋਂ {ratio} ਗੁਣਾ ਵੱਧ ਹੈ। ਇਹ ਖਣਿਜ ਪੂਰਕਾਂ ਕਰਕੇ ਹੋ ਸਕਦਾ ਹੈ।"
   },
   "feed": {
     "feeds": "ਚਾਰਾ",
@@ -961,7 +969,38 @@
     "date": "ਤਾਰੀਖ",
     "milk": "ਦੁੱਧ",
     "fatPct": "ਚਰਬੀ %",
-    "noReportsDesc": "ਆਪਣੇ ਪਸ਼ੂਆਂ ਦੀ ਪੋਸ਼ਣ ਸੰਬੰਧੀ ਕਾਰਗੁਜ਼ਾਰੀ ਅਤੇ ਚਾਰੇ ਦੇ ਖਰਚਿਆਂ ਨੂੰ ਟਰੈਕ ਕਰਨ ਲਈ ਇੱਕ ਖੁਰਾਕ ਰਿਪੋਰਟ ਬਣਾਓ।"
+    "noReportsDesc": "ਆਪਣੇ ਪਸ਼ੂਆਂ ਦੀ ਪੋਸ਼ਣ ਸੰਬੰਧੀ ਕਾਰਗੁਜ਼ਾਰੀ ਅਤੇ ਚਾਰੇ ਦੇ ਖਰਚਿਆਂ ਨੂੰ ਟਰੈਕ ਕਰਨ ਲਈ ਇੱਕ ਖੁਰਾਕ ਰਿਪੋਰਟ ਬਣਾਓ।",
+    "summary": "ਸਾਰੰਸ਼",
+    "preview": {
+      "totalMilk": "ਕੁੱਲ ਦੁੱਧ",
+      "avgDaily": "ਔਸਤ ਰੋਜ਼ਾਨਾ",
+      "avgFat": "ਔਸਤ ਫੈਟ %",
+      "cowCount": "ਗਾਵਾਂ",
+      "dietsGenerated": "ਖੁਰਾਕਾਂ ਤਿਆਰ ਕੀਤੀਆਂ",
+      "avgDailyCost": "ਔਸਤ ਰੋਜ਼ਾਨਾ ਲਾਗਤ",
+      "farmers": "ਕਿਸਾਨ",
+      "totalCows": "ਕੁੱਲ ਗਾਵਾਂ",
+      "noPreview": "ਇਸ ਰਿਪੋਰਟ ਕਿਸਮ ਲਈ ਪ੍ਰੀਵਿਊ ਉਪਲਬਧ ਨਹੀਂ ਹੈ"
+    },
+    "templates": {
+      "title": "ਰਿਪੋਰਟ ਟੈਂਪਲੇਟਸ",
+      "noTemplates": "ਕੋਈ ਸੁਰੱਖਿਅਤ ਟੈਂਪਲੇਟ ਨਹੀਂ",
+      "noTemplatesHint": "ਤੁਰੰਤ ਮੁੜ ਵਰਤੋਂ ਲਈ ਰਿਪੋਰਟ ਸੈਟਿੰਗਾਂ ਨੂੰ ਟੈਂਪਲੇਟ ਵਜੋਂ ਸੁਰੱਖਿਅਤ ਕਰੋ",
+      "useTemplate": "ਵਰਤੋਂ",
+      "deleteTemplate": "ਟੈਂਪਲੇਟ ਮਿਟਾਓ",
+      "deleteConfirm": "ਕੀ ਤੁਸੀਂ ਯਕੀਨੀ ਹੋ ਕਿ ਤੁਸੀਂ ਇਸ ਟੈਂਪਲੇਟ ਨੂੰ ਮਿਟਾਉਣਾ ਚਾਹੁੰਦੇ ਹੋ?",
+      "deleted": "ਟੈਂਪਲੇਟ ਹਟਾਇਆ ਗਿਆ",
+      "saveTemplate": "ਟੈਂਪਲੇਟ ਵਜੋਂ ਸੁਰੱਖਿਅਤ ਕਰੋ",
+      "templateName": "ਟੈਂਪਲੇਟ ਦਾ ਨਾਮ",
+      "namePlaceholder": "ਜਿਵੇਂ: ਮਾਸਿਕ ਦੁੱਧ ਰਿਪੋਰਟ",
+      "saved": "ਟੈਂਪਲੇਟ ਸੁਰੱਖਿਅਤ ਕੀਤਾ ਗਿਆ"
+    },
+    "reportTypes": {
+      "milkProduction": "ਦੁੱਧ ਉਤਪਾਦਨ",
+      "feedConsumption": "ਚਾਰੇ ਦੀ ਖਪਤ",
+      "cowPerformance": "ਗਾਂ ਦਾ ਪ੍ਰਦਰਸ਼ਨ",
+      "costAnalysis": "ਲਾਗਤ ਵਿਸ਼ਲੇਸ਼ਣ"
+    }
   },
   "settings": {
     "settings": "ਸੈਟਿੰਗਾਂ",
@@ -1638,7 +1677,11 @@
     "snfPercent": "ਐੱਸ.ਐੱਨ.ਐੱਫ. %",
     "notes": "ਨੋਟਸ",
     "yield": "ਉਪਜ",
-    "generatedOn": "RationSmart ਦੁਆਰਾ {date} ਨੂੰ ਤਿਆਰ ਕੀਤਾ ਗਿਆ"
+    "generatedOn": "RationSmart ਦੁਆਰਾ {date} ਨੂੰ ਤਿਆਰ ਕੀਤਾ ਗਿਆ",
+    "nutrient": "ਪੋਸ਼ਕ ਤੱਤ",
+    "statusMet": "ਪੂਰਾ",
+    "statusLow": "ਘੱਟ",
+    "statusExcess": "ਵੱਧ"
   },
   "syncHistory": {
     "title": "ਸਿੰਕ ਇਤਿਹਾਸ",

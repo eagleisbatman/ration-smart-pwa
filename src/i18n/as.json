@@ -49,7 +49,8 @@
     "takePhoto": "ফটো তোলক",
     "chooseFromGallery": "গেলেৰীৰ পৰা বাছনি কৰক",
     "removePhoto": "ফটো আঁতৰাওক",
-    "you": "আপুনি"
+    "you": "আপুনি",
+    "clearAll": "সকলো মচক"
   },
   "nav": {
     "home": "হোম",
@@ -458,7 +459,8 @@
       "failed": "ব্যৰ্থ হ’ল",
       "pending": "বাকী আছে",
       "saved": "সংৰক্ষিত",
-      "following": "অনুসৰণ কৰি থকা হৈছে"
+      "following": "অনুসৰণ কৰি থকা হৈছে",
+      "archived": "আৰ্কাইভ কৰা হৈছে"
     },
     "tdnLabel": "TDN",
     "dailyCost": "দৈনিক খৰচ",
@@ -583,8 +585,14 @@
       "ageMonthsValue": "{months} মাহ",
       "bcsAndAge": "বি.চি.এছ (BCS) / বয়স",
       "notSpecified": "উল্লেখ কৰা নাই",
-      "ageDisclaimer": "আপোনাৰ তথ্যৰ বাবে বয়স লিপিবদ্ধ কৰা হৈছে কিন্তু খাদ্য গণনাৰ বাবে ব্যৱহাৰ কৰা নহয়।"
-    }
+      "ageDisclaimer": "আপোনাৰ তথ্যৰ বাবে বয়স লিপিবদ্ধ কৰা হৈছে কিন্তু খাদ্য গণনাৰ বাবে ব্যৱহাৰ কৰা নহয়।",
+      "autoSelectExplain": "{count} টা খাদ্য নিজে বাছনি কৰা হৈছে — ঘাঁহ আৰু ঘনত্বৰ সুষম মিশ্ৰণৰ সৈতে {goal} ৰ বাবে অনুকূলিত",
+      "feedsSelected": "খাদ্য বাছনি কৰা হ'ল"
+    },
+    "ofNeeded": "প্ৰয়োজনীয়ৰ",
+    "needsMore": "আৰু {amount} {unit} লাগে",
+    "overNeeded": "প্ৰয়োজনীয়তকৈ {ratio} গুণ বেছি",
+    "nutrientExcessWarning": "{nutrient} প্ৰয়োজনীয়তকৈ {ratio} গুণ বেছি। ই খনিজ পদাৰ্থৰ পৰিপূৰকৰ বাবে হ'ব পাৰে।"
   },
   "feed": {
     "feeds": "খাদ্য",
@@ -961,7 +969,38 @@
     "date": "তাৰিখ",
     "milk": "গাখীৰ",
     "fatPct": "ফেট %",
-    "noReportsDesc": "আপোনাৰ গৰুৰ পুষ্টিগত প্ৰদৰ্শন আৰু খাদ্যৰ খৰচ ট্ৰেক কৰিবলৈ এটা খাদ্য প্ৰতিবেদন বনাওক।"
+    "noReportsDesc": "আপোনাৰ গৰুৰ পুষ্টিগত প্ৰদৰ্শন আৰু খাদ্যৰ খৰচ ট্ৰেক কৰিবলৈ এটা খাদ্য প্ৰতিবেদন বনাওক।",
+    "summary": "সাঁৰাংশ",
+    "preview": {
+      "totalMilk": "মুঠ গাখীৰ",
+      "avgDaily": "দৈনিক গড়",
+      "avgFat": "গড় চৰ্বি %",
+      "cowCount": "গাইগৰু",
+      "dietsGenerated": "আহাৰ প্ৰস্তুত কৰা হ’ল",
+      "avgDailyCost": "দৈনিক গড় খৰচ",
+      "farmers": "খেতিয়কসকল",
+      "totalCows": "মুঠ গাইগৰু",
+      "noPreview": "এই প্ৰতিবেদনৰ বাবে পূৰ্বদৰ্শন উপলব্ধ নহয়"
+    },
+    "templates": {
+      "title": "প্ৰতিবেদনৰ টেমপ্লেটসমূহ",
+      "noTemplates": "সংৰক্ষিত টেমপ্লেট নাই",
+      "noTemplatesHint": "শীঘ্ৰে পুনৰ ব্যৱহাৰৰ বাবে প্ৰতিবেদনৰ ছেটিংছসমূহ এটা টেমপ্লেট হিচাপে সংৰক্ষণ কৰক",
+      "useTemplate": "ব্যৱহাৰ কৰক",
+      "deleteTemplate": "টেমপ্লেট মচক",
+      "deleteConfirm": "আপুনি নিশ্চিতনে যে আপুনি এই টেমপ্লেটটো মচিব বিচাৰে?",
+      "deleted": "টেমপ্লেট মচা হ’ল",
+      "saveTemplate": "টেমপ্লেট হিচাপে সংৰক্ষণ কৰক",
+      "templateName": "টেমপ্লেটৰ নাম",
+      "namePlaceholder": "যেনে: মাহেকীয়া গাখীৰৰ প্ৰতিবেদন",
+      "saved": "টেমপ্লেট সংৰক্ষিত হ'ল"
+    },
+    "reportTypes": {
+      "milkProduction": "গাখীৰ উৎপাদন",
+      "feedConsumption": "খাদ্যৰ ব্যৱহাৰ",
+      "cowPerformance": "গৰুৰ কাৰ্যক্ষমতা",
+      "costAnalysis": "খৰচ বিশ্লেষণ"
+    }
   },
   "settings": {
     "settings": "ছেটিংছ",
@@ -1507,7 +1546,7 @@
     "updateNow": "এতিয়াই আপডেট কৰক",
     "later": "পাছত",
     "updateBanner": "আপডেট উপলব্ধ",
-    "appName": "RationSmart"
+    "appName": "ৰেচনস্মাৰ্ট"
   },
   "storage": {
     "quotaWarning": "ষ্ট’ৰেজ {percent}% ভৰি গৈছে ({quotaMB} MB-ৰ ভিতৰত {usageMB} MB)। ঠাই খালী কৰিবলৈ পুৰণি তথ্যবোৰ চিন্ক (Sync) কৰি মচি দিয়ক।"
@@ -1638,7 +1677,11 @@
     "snfPercent": "SNF %",
     "notes": "টোকা",
     "yield": "উৎপাদন",
-    "generatedOn": "RationSmart-ৰ দ্বাৰা {date} তাৰিখে প্ৰস্তুত কৰা হৈছে"
+    "generatedOn": "RationSmart-ৰ দ্বাৰা {date} তাৰিখে প্ৰস্তুত কৰা হৈছে",
+    "nutrient": "পুষ্টিকৰ উপাদান",
+    "statusMet": "পূৰণ হৈছে",
+    "statusLow": "কম",
+    "statusExcess": "অতিৰিক্ত"
   },
   "syncHistory": {
     "title": "ছিঙ্কৰ ইতিহাস",

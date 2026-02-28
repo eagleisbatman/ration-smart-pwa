@@ -49,7 +49,8 @@
     "takePhoto": "Chụp ảnh",
     "chooseFromGallery": "Chọn từ thư viện",
     "removePhoto": "Xóa ảnh",
-    "you": "Bạn"
+    "you": "Bạn",
+    "clearAll": "Xóa tất cả"
   },
   "nav": {
     "home": "Trang chủ",
@@ -458,7 +459,8 @@
       "failed": "Thất bại",
       "pending": "Đang chờ",
       "saved": "Đã lưu",
-      "following": "Đang áp dụng"
+      "following": "Đang áp dụng",
+      "archived": "Đã lưu trữ"
     },
     "tdnLabel": "TDN",
     "dailyCost": "Chi phí hàng ngày",
@@ -583,8 +585,14 @@
       "ageMonthsValue": "{months} tháng",
       "bcsAndAge": "BCS / Tuổi",
       "notSpecified": "Chưa xác định",
-      "ageDisclaimer": "Tuổi được ghi lại để bạn tham khảo nhưng không được sử dụng trong tính toán khẩu phần ăn."
-    }
+      "ageDisclaimer": "Tuổi được ghi lại để bạn tham khảo nhưng không được sử dụng trong tính toán khẩu phần ăn.",
+      "autoSelectExplain": "Đã tự động chọn {count} loại thức ăn — tối ưu cho {goal} với hỗn hợp cân bằng giữa thức ăn thô xanh và thức ăn tinh",
+      "feedsSelected": "đã chọn loại thức ăn"
+    },
+    "ofNeeded": "trên nhu cầu",
+    "needsMore": "cần thêm {amount} {unit}",
+    "overNeeded": "{ratio}x vượt nhu cầu",
+    "nutrientExcessWarning": "{nutrient} cao hơn yêu cầu {ratio}x. Điều này có thể do bổ sung khoáng chất."
   },
   "feed": {
     "feeds": "Thức ăn",
@@ -961,7 +969,38 @@
     "date": "Ngày",
     "milk": "Sữa",
     "fatPct": "Tỷ lệ béo (%)",
-    "noReportsDesc": "Tạo báo cáo khẩu phần ăn để theo dõi hiệu suất dinh dưỡng và chi phí thức ăn cho gia súc của bạn."
+    "noReportsDesc": "Tạo báo cáo khẩu phần ăn để theo dõi hiệu suất dinh dưỡng và chi phí thức ăn cho gia súc của bạn.",
+    "summary": "Tóm tắt",
+    "preview": {
+      "totalMilk": "Tổng lượng sữa",
+      "avgDaily": "Trung bình hàng ngày",
+      "avgFat": "Trung bình béo %",
+      "cowCount": "Số bò",
+      "dietsGenerated": "Khẩu phần đã tạo",
+      "avgDailyCost": "Chi phí trung bình hàng ngày",
+      "farmers": "Nông dân",
+      "totalCows": "Tổng số bò",
+      "noPreview": "Không có bản xem trước cho loại báo cáo này"
+    },
+    "templates": {
+      "title": "Mẫu báo cáo",
+      "noTemplates": "Không có mẫu đã lưu",
+      "noTemplatesHint": "Lưu cài đặt báo cáo làm mẫu để sử dụng nhanh chóng",
+      "useTemplate": "Sử dụng",
+      "deleteTemplate": "Xóa mẫu",
+      "deleteConfirm": "Bạn có chắc chắn muốn xóa mẫu này không?",
+      "deleted": "Mẫu đã xóa",
+      "saveTemplate": "Lưu làm mẫu",
+      "templateName": "Tên mẫu",
+      "namePlaceholder": "Ví dụ: Báo cáo sữa hàng tháng",
+      "saved": "Mẫu đã lưu"
+    },
+    "reportTypes": {
+      "milkProduction": "Sản lượng sữa",
+      "feedConsumption": "Tiêu thụ thức ăn",
+      "cowPerformance": "Năng suất bò",
+      "costAnalysis": "Phân tích chi phí"
+    }
   },
   "settings": {
     "settings": "Cài đặt",
@@ -1638,7 +1677,11 @@
     "snfPercent": "% SNF",
     "notes": "Ghi chú",
     "yield": "Sản lượng",
-    "generatedOn": "Được tạo bởi RationSmart vào {date}"
+    "generatedOn": "Được tạo bởi RationSmart vào {date}",
+    "nutrient": "Chất dinh dưỡng",
+    "statusMet": "Đạt",
+    "statusLow": "Thấp",
+    "statusExcess": "Thừa"
   },
   "syncHistory": {
     "title": "Lịch sử đồng bộ",

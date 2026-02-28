@@ -49,7 +49,8 @@
     "takePhoto": "फोटो लें",
     "chooseFromGallery": "गैलरी से चुनें",
     "removePhoto": "फोटो हटाएँ",
-    "you": "आप"
+    "you": "आप",
+    "clearAll": "सभी साफ करें"
   },
   "nav": {
     "home": "होम",
@@ -458,7 +459,8 @@
       "failed": "असफल",
       "pending": "लंबित",
       "saved": "सहेजा गया",
-      "following": "अनुसरण कर रहा है"
+      "following": "अनुसरण कर रहा है",
+      "archived": "पुराना"
     },
     "tdnLabel": "TDN",
     "dailyCost": "दैनिक लागत",
@@ -583,8 +585,14 @@
       "ageMonthsValue": "{months} महीने",
       "bcsAndAge": "BCS / उम्र",
       "notSpecified": "निर्दिष्ट नहीं",
-      "ageDisclaimer": "उम्र आपकी जानकारी के लिए दर्ज की गई है, लेकिन इसका इस्तेमाल आहार गणना में नहीं किया जाता है।"
-    }
+      "ageDisclaimer": "उम्र आपकी जानकारी के लिए दर्ज की गई है, लेकिन इसका इस्तेमाल आहार गणना में नहीं किया जाता है।",
+      "autoSelectExplain": "{count} फीड अपने आप चुने गए — चारे और दाने के संतुलित मिश्रण के साथ {goal} के लिए अनुकूलित",
+      "feedsSelected": "फीड चुने गए"
+    },
+    "ofNeeded": "आवश्यक का",
+    "needsMore": "और {amount} {unit} चाहिए",
+    "overNeeded": "आवश्यकता से {ratio}x अधिक",
+    "nutrientExcessWarning": "{nutrient} आवश्यकता से {ratio}x ऊपर है। यह मिनरल सप्लीमेंट्स के कारण हो सकता है।"
   },
   "feed": {
     "feeds": "चारा",
@@ -961,7 +969,38 @@
     "date": "दिनांक",
     "milk": "दूध",
     "fatPct": "वसा %",
-    "noReportsDesc": "अपने पशुओं के पोषण प्रदर्शन और चारे की लागत को ट्रैक करने के लिए आहार रिपोर्ट बनाएँ।"
+    "noReportsDesc": "अपने पशुओं के पोषण प्रदर्शन और चारे की लागत को ट्रैक करने के लिए आहार रिपोर्ट बनाएँ।",
+    "summary": "सारांश",
+    "preview": {
+      "totalMilk": "कुल दूध",
+      "avgDaily": "औसत दैनिक",
+      "avgFat": "औसत वसा %",
+      "cowCount": "गाय",
+      "dietsGenerated": "आहार तैयार",
+      "avgDailyCost": "औसत दैनिक लागत",
+      "farmers": "किसान",
+      "totalCows": "कुल गायें",
+      "noPreview": "इस रिपोर्ट के लिए प्रीव्यू उपलब्ध नहीं है"
+    },
+    "templates": {
+      "title": "रिपोर्ट टेम्पलेट्स",
+      "noTemplates": "कोई टेम्पलेट सहेजा नहीं गया",
+      "noTemplatesHint": "जल्दी उपयोग के लिए रिपोर्ट सेटिंग्स को टेम्पलेट के रूप में सहेजें",
+      "useTemplate": "उपयोग करें",
+      "deleteTemplate": "टेम्पलेट मिटाएँ",
+      "deleteConfirm": "क्या आप वाकई इस टेम्पलेट को मिटाना चाहते हैं?",
+      "deleted": "टेम्पलेट मिटा दिया गया",
+      "saveTemplate": "टेम्पलेट के रूप में सहेजें",
+      "templateName": "टेम्पलेट का नाम",
+      "namePlaceholder": "उदाहरण: मासिक दूध रिपोर्ट",
+      "saved": "टेम्पलेट सहेजा गया"
+    },
+    "reportTypes": {
+      "milkProduction": "दूध उत्पादन",
+      "feedConsumption": "चारा खपत",
+      "cowPerformance": "गायों का प्रदर्शन",
+      "costAnalysis": "लागत विश्लेषण"
+    }
   },
   "settings": {
     "settings": "सेटिंग्स",
@@ -1566,7 +1605,7 @@
     "milkYield": "दूध की उपज",
     "fatPercent": "वसा %",
     "average": "औसत",
-    "liters": "L",
+    "liters": "लीटर",
     "noChartData": "चार्ट दिखाने के लिए पर्याप्त डेटा नहीं है"
   },
   "notifications": {
@@ -1638,7 +1677,11 @@
     "snfPercent": "SNF %",
     "notes": "टिप्पणियाँ",
     "yield": "उपज",
-    "generatedOn": "RationSmart द्वारा {date} को बनाया गया"
+    "generatedOn": "RationSmart द्वारा {date} को बनाया गया",
+    "nutrient": "पोषक तत्व",
+    "statusMet": "पूरा",
+    "statusLow": "कम",
+    "statusExcess": "अधिक"
   },
   "syncHistory": {
     "title": "सिंक इतिहास",
