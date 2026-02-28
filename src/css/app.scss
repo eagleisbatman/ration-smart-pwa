@@ -717,8 +717,10 @@ body {
     color: var(--q-primary);
   }
 
-  // Header: keep primary bg in dark mode too; border adapts to theme
+  // Header: bg-primary flips to a light tint in dark mode — override with
+  // the deep saturated shade so white text stays readable.
   .main-header {
+    background-color: var(--q-dark) !important;
     border-color: rgba(255, 255, 255, 0.1) !important;
   }
 
@@ -1177,6 +1179,7 @@ body {
   // ---- bg-primary containers: use theme dark color so text-white stays visible ----
   // bg-primary flips to light tints in dark mode; containers using
   // bg-primary as a "branded fill" with white text become unreadable.
+  .q-header.bg-primary,
   .q-toolbar.bg-primary {
     background: var(--q-dark) !important;
     color: #FAFAFA !important;
