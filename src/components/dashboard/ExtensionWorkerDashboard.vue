@@ -645,6 +645,7 @@ defineExpose({ viewMode, refresh });
 
 /* shadcn-inspired stat cards */
 .stat-card {
+  height: 100%;
   border-radius: $radius-loose;
   border: 1px solid rgba(0, 0, 0, 0.08);
   transition: box-shadow 0.2s ease;
@@ -673,18 +674,7 @@ defineExpose({ viewMode, refresh });
   line-height: 1.2;
   letter-spacing: -0.02em;
   font-variant-numeric: tabular-nums;
-}
-
-.stat-card--primary .stat-card__value {
   color: var(--q-primary);
-}
-
-.stat-card--secondary .stat-card__value {
-  color: var(--q-secondary);
-}
-
-.stat-card--accent .stat-card__value {
-  color: var(--q-info);
 }
 
 .stat-card__footer {

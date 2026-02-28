@@ -128,6 +128,7 @@ body {
 // Compact number + label — no heavy card wrapping
 
 .stat-inline {
+  height: 100%;
   text-align: center;
   padding: 12px 8px;
   background: #fff;
@@ -764,7 +765,7 @@ body {
 
   // Section labels: light text on dark bg
   .section-label {
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.45) !important;
   }
 
   // Action row buttons: dark surface with light border
@@ -921,9 +922,6 @@ body {
 
   .stat-card__value {
     color: var(--q-primary) !important; // $primary compiles to #18181B → invisible on dark
-  }
-  .stat-card--secondary .stat-card__value {
-    color: var(--q-secondary) !important;
   }
 
   .stat-card__label {
@@ -1329,6 +1327,12 @@ body {
   // CowDetailPage: default avatar — slightly lighter than page bg for contrast
   .cow-avatar {
     background: rgba(255, 255, 255, 0.15) !important;
+  }
+
+  // DietWizardPage goal selection active state
+  .goal-option--active {
+    border-color: var(--q-primary) !important;
+    background: rgba(255, 255, 255, 0.06) !important;
   }
 
   // Feed table scroll shadows on dark surfaces
