@@ -68,3 +68,13 @@ test-results/
 
 # Scratch files
 a.md
+
+# Utility scripts (one-off tooling)
+scripts/
+
+# Screenshots from visual audits
+theme-test-screenshots/
+ux-audit/
+
+# Generated review docs
+RATIONSMART_PWA_PRODUCTION_READINESS_REVIEW.md
