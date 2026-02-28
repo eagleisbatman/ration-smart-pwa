@@ -11,7 +11,7 @@
               <span v-if="milkPrice !== null" class="text-body2 text-weight-medium">
                 {{ formatCurrency(milkPrice) }}/{{ $t('units.l') }}
               </span>
-              <span v-else class="text-caption text-grey-5 text-italic">
+              <span v-else class="text-caption text-grey-6 text-italic">
                 {{ $t('logs.price.notSet') }}
               </span>
             </div>
