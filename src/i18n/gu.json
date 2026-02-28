@@ -49,7 +49,8 @@
     "takePhoto": "ફોટો પાડો",
     "chooseFromGallery": "ગેલેરીમાંથી પસંદ કરો",
     "removePhoto": "ફોટો કાઢી નાખો",
-    "you": "તમે"
+    "you": "તમે",
+    "clearAll": "બધું સાફ કરો"
   },
   "nav": {
     "home": "હોમ",
@@ -458,7 +459,8 @@
       "failed": "નિષ્ફળ",
       "pending": "બાકી",
       "saved": "સાચવેલ",
-      "following": "અનુસરી રહ્યું છે"
+      "following": "અનુસરી રહ્યું છે",
+      "archived": "આર્કાઇવ કરેલ"
     },
     "tdnLabel": "TDN",
     "dailyCost": "દૈનિક ખર્ચ",
@@ -583,8 +585,14 @@
       "ageMonthsValue": "{months} મહિના",
       "bcsAndAge": "BCS / ઉંમર",
       "notSpecified": "ઉલ્લેખ નથી",
-      "ageDisclaimer": "ઉંમર તમારી જાણકારી માટે રેકોર્ડ કરવામાં આવે છે, પરંતુ તેનો આહારની ગણતરીમાં ઉપયોગ થતો નથી."
-    }
+      "ageDisclaimer": "ઉંમર તમારી જાણકારી માટે રેકોર્ડ કરવામાં આવે છે, પરંતુ તેનો આહારની ગણતરીમાં ઉપયોગ થતો નથી.",
+      "autoSelectExplain": "{count} ફીડ્સ આપમેળે પસંદ કરાયા — ફોરેજ અને કોન્સન્ટ્રેટ્સના સંતુલિત મિશ્રણ સાથે {goal} માટે શ્રેષ્ઠ બનાવવામાં આવ્યા છે",
+      "feedsSelected": "પસંદ કરેલા ફીડ્સ"
+    },
+    "ofNeeded": "જરૂરીમાંથી",
+    "needsMore": "{amount} {unit} વધુ જોઈએ છે",
+    "overNeeded": "{ratio}x જરૂરી કરતાં વધુ",
+    "nutrientExcessWarning": "{nutrient} જરૂરિયાત કરતાં {ratio}x વધારે છે. આ મિનરલ સપ્લિમેન્ટ્સને કારણે હોઈ શકે છે."
   },
   "feed": {
     "feeds": "ખોરાક",
@@ -961,7 +969,38 @@
     "date": "તારીખ",
     "milk": "દૂધ",
     "fatPct": "ચરબી %",
-    "noReportsDesc": "તમારા પશુઓના પોષણ પ્રદર્શન અને ચારાના ખર્ચને ટ્રૅક કરવા માટે આહાર રિપોર્ટ બનાવો."
+    "noReportsDesc": "તમારા પશુઓના પોષણ પ્રદર્શન અને ચારાના ખર્ચને ટ્રૅક કરવા માટે આહાર રિપોર્ટ બનાવો.",
+    "summary": "સારાંશ",
+    "preview": {
+      "totalMilk": "કુલ દૂધ",
+      "avgDaily": "રોજની સરેરાશ",
+      "avgFat": "સરેરાશ ફેટ %",
+      "cowCount": "ગાયો",
+      "dietsGenerated": "આહાર બનાવ્યા",
+      "avgDailyCost": "રોજનો સરેરાશ ખર્ચ",
+      "farmers": "ખેડૂતો",
+      "totalCows": "કુલ ગાયો",
+      "noPreview": "આ રિપોર્ટ પ્રકાર માટે પૂર્વાવલોકન ઉપલબ્ધ નથી"
+    },
+    "templates": {
+      "title": "રિપોર્ટ નમૂનાઓ",
+      "noTemplates": "કોઈ નમૂના સાચવેલા નથી",
+      "noTemplatesHint": "ઝડપી પુનઃઉપયોગ માટે રિપોર્ટ સેટિંગ્સને નમૂના તરીકે સાચવો",
+      "useTemplate": "વાપરો",
+      "deleteTemplate": "નમૂનો કાઢી નાખો",
+      "deleteConfirm": "શું તમે ખરેખર આ નમૂનો કાઢી નાખવા માંગો છો?",
+      "deleted": "ટેમ્પલેટ કાઢી નાખવામાં આવ્યું",
+      "saveTemplate": "ટેમ્પલેટ તરીકે સાચવો",
+      "templateName": "ટેમ્પલેટનું નામ",
+      "namePlaceholder": "દા.ત. માસિક દૂધનો રિપોર્ટ",
+      "saved": "ટેમ્પલેટ સાચવવામાં આવ્યું"
+    },
+    "reportTypes": {
+      "milkProduction": "દૂધ ઉત્પાદન",
+      "feedConsumption": "ચારો વપરાશ",
+      "cowPerformance": "ગાયની કામગીરી",
+      "costAnalysis": "ખર્ચ વિશ્લેષણ"
+    }
   },
   "settings": {
     "settings": "સેટિંગ્સ",
@@ -1638,7 +1677,11 @@
     "snfPercent": "એસએનએફ %",
     "notes": "નોંધો",
     "yield": "ઉત્પાદન",
-    "generatedOn": "{date} ના રોજ રેશનસ્માર્ટ દ્વારા જનરેટ કરાયું"
+    "generatedOn": "{date} ના રોજ રેશનસ્માર્ટ દ્વારા જનરેટ કરાયું",
+    "nutrient": "પોષકતત્વ",
+    "statusMet": "પૂરા થયા",
+    "statusLow": "ઓછા",
+    "statusExcess": "વધારાના"
   },
   "syncHistory": {
     "title": "સિંક હિસ્ટ્રી",

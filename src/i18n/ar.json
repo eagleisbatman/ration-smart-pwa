@@ -49,7 +49,8 @@
     "takePhoto": "التقط صورة",
     "chooseFromGallery": "اختر من المعرض",
     "removePhoto": "إزالة الصورة",
-    "you": "أنت"
+    "you": "أنت",
+    "clearAll": "مسح الكل"
   },
   "nav": {
     "home": "الرئيسية",
@@ -458,15 +459,16 @@
       "failed": "فشل",
       "pending": "معلق",
       "saved": "محفوظ",
-      "following": "متابع"
+      "following": "متابع",
+      "archived": "مؤرشفة"
     },
-    "tdnLabel": "TDN",
+    "tdnLabel": "إجمالي المغذيات القابلة للهضم",
     "dailyCost": "التكلفة اليومية",
     "dmKg": "المدخول من المادة الجافة (كجم)",
     "feeds": "الأعلاف",
     "recommendedFeeds": "الأعلاف الموصى بها",
-    "dmLabel": "DM",
-    "cpLabel": "CP",
+    "dmLabel": "المادة الجافة",
+    "cpLabel": "بروتين خام",
     "nutrientBalance": "توازن المغذيات",
     "crudeProteinCP": "البروتين الخام (CP)",
     "totalDigestibleNutrients": "إجمالي المغذيات المهضومة (TDN)",
@@ -583,8 +585,14 @@
       "ageMonthsValue": "{months} شهر",
       "bcsAndAge": "درجة حالة الجسم / العمر",
       "notSpecified": "غير محدد",
-      "ageDisclaimer": "يتم تسجيل العمر كمرجع لك ولا يُستخدم في حسابات العلف."
-    }
+      "ageDisclaimer": "يتم تسجيل العمر كمرجع لك ولا يُستخدم في حسابات العلف.",
+      "autoSelectExplain": "تم اختيار {count} علف تلقائيًا — مُحسّن لـ {goal} بمزيج متوازن من الأعلاف الخضراء والمركزة",
+      "feedsSelected": "تم اختيار الأعلاف"
+    },
+    "ofNeeded": "من المطلوب",
+    "needsMore": "يحتاج {amount} {unit} أكثر",
+    "overNeeded": "{ratio}x فوق المطلوب",
+    "nutrientExcessWarning": "{nutrient} أعلى من المتطلبات بـ {ratio} مرة. قد يكون هذا بسبب المكملات المعدنية."
   },
   "feed": {
     "feeds": "الأعلاف",
@@ -645,10 +653,10 @@
       "cpPercentShort": "بروتين",
       "cpPercentInput": "نسبة البروتين الخام % *",
       "tdnPercent": "إجمالي المغذيات المهضومة (TDN)",
-      "tdnPercentShort": "TDN",
+      "tdnPercentShort": "إ.م.ق.هـ",
       "tdnPercentInput": "نسبة TDN % *",
       "ndfPercent": "الألياف المتعادلة المنظفة (NDF)",
-      "ndfPercentShort": "NDF",
+      "ndfPercentShort": "ألياف متعادلة منظفة",
       "ndfPercentInput": "نسبة NDF %",
       "caPercent": "الكالسيوم (Ca)",
       "caPercentShort": "كالسيوم",
@@ -961,7 +969,38 @@
     "yieldHistory": "سجل الإنتاج",
     "date": "التاريخ",
     "milk": "الحليب",
-    "fatPct": "نسبة الدهن %"
+    "fatPct": "نسبة الدهن %",
+    "summary": "ملخص",
+    "preview": {
+      "totalMilk": "إجمالي الحليب",
+      "avgDaily": "المتوسط اليومي",
+      "avgFat": "متوسط نسبة الدهن %",
+      "cowCount": "الأبقار",
+      "dietsGenerated": "العلائق المولّدة",
+      "avgDailyCost": "متوسط التكلفة اليومية",
+      "farmers": "المزارعون",
+      "totalCows": "إجمالي الأبقار",
+      "noPreview": "المعاينة غير متاحة لهذا النوع من التقارير"
+    },
+    "templates": {
+      "title": "قوالب التقارير",
+      "noTemplates": "لا توجد قوالب محفوظة",
+      "noTemplatesHint": "احفظ إعدادات التقرير كقالب لإعادة الاستخدام السريع",
+      "useTemplate": "استخدام",
+      "deleteTemplate": "حذف القالب",
+      "deleteConfirm": "هل أنت متأكد أنك تريد حذف هذا القالب؟",
+      "deleted": "تم حذف القالب",
+      "saveTemplate": "حفظ كقالب",
+      "templateName": "اسم القالب",
+      "namePlaceholder": "مثال: تقرير الحليب الشهري",
+      "saved": "تم حفظ القالب"
+    },
+    "reportTypes": {
+      "milkProduction": "إنتاج الحليب",
+      "feedConsumption": "استهلاك العلف",
+      "cowPerformance": "أداء الأبقار",
+      "costAnalysis": "تحليل التكلفة"
+    }
   },
   "settings": {
     "settings": "الإعدادات",
@@ -1638,7 +1677,11 @@
     "snfPercent": "نسبة المواد الصلبة غير الدهنية %",
     "notes": "ملاحظات",
     "yield": "الإنتاج",
-    "generatedOn": "تم الإنشاء بواسطة RationSmart في {date}"
+    "generatedOn": "تم الإنشاء بواسطة RationSmart في {date}",
+    "nutrient": "عنصر غذائي",
+    "statusMet": "استوفى",
+    "statusLow": "منخفض",
+    "statusExcess": "زائد"
   },
   "syncHistory": {
     "title": "سجل المزامنة",

@@ -49,7 +49,8 @@
     "takePhoto": "Ambil Foto",
     "chooseFromGallery": "Pilih dari Galeri",
     "removePhoto": "Hapus Foto",
-    "you": "Anda"
+    "you": "Anda",
+    "clearAll": "Hapus semua"
   },
   "nav": {
     "home": "Beranda",
@@ -335,7 +336,7 @@
       "jersey": "Jersey",
       "sahiwal": "Sahiwal",
       "gir": "Gir",
-      "redSindhi": "Red Sindhi",
+      "redSindhi": "Sapi Merah Sindhi",
       "crossbreed": "Silangan",
       "other": "Lainnya"
     },
@@ -458,7 +459,8 @@
       "failed": "Gagal",
       "pending": "Tertunda",
       "saved": "Tersimpan",
-      "following": "Mengikuti"
+      "following": "Mengikuti",
+      "archived": "Diarsipkan"
     },
     "tdnLabel": "TDN",
     "dailyCost": "Biaya Harian",
@@ -583,8 +585,14 @@
       "ageMonthsValue": "{months} bulan",
       "bcsAndAge": "BCS / Umur",
       "notSpecified": "Tidak ditentukan",
-      "ageDisclaimer": "Umur dicatat untuk referensi Anda tetapi tidak digunakan dalam perhitungan pakan."
-    }
+      "ageDisclaimer": "Umur dicatat untuk referensi Anda tetapi tidak digunakan dalam perhitungan pakan.",
+      "autoSelectExplain": "{count} pakan dipilih otomatis — dioptimalkan untuk {goal} dengan campuran hijauan dan konsentrat yang seimbang",
+      "feedsSelected": "pakan terpilih"
+    },
+    "ofNeeded": "dari yang dibutuhkan",
+    "needsMore": "butuh {amount} {unit} lagi",
+    "overNeeded": "{ratio}x lebih dari yang dibutuhkan",
+    "nutrientExcessWarning": "{nutrient} {ratio}x di atas kebutuhan. Ini mungkin disebabkan oleh suplemen mineral."
   },
   "feed": {
     "feeds": "Pakan",
@@ -961,7 +969,38 @@
     "yieldHistory": "Riwayat Hasil Susu",
     "date": "Tanggal",
     "milk": "Susu",
-    "fatPct": "Lemak %"
+    "fatPct": "Lemak %",
+    "summary": "Ringkasan",
+    "preview": {
+      "totalMilk": "Total Susu",
+      "avgDaily": "Rata-rata Harian",
+      "avgFat": "Rata-rata Lemak %",
+      "cowCount": "Sapi",
+      "dietsGenerated": "Ransum Dibuat",
+      "avgDailyCost": "Rata-rata Biaya Harian",
+      "farmers": "Peternak",
+      "totalCows": "Total Sapi",
+      "noPreview": "Pratinjau tidak tersedia untuk jenis laporan ini"
+    },
+    "templates": {
+      "title": "Template Laporan",
+      "noTemplates": "Tidak ada template yang tersimpan",
+      "noTemplatesHint": "Simpan pengaturan laporan sebagai template untuk digunakan kembali dengan cepat",
+      "useTemplate": "Gunakan",
+      "deleteTemplate": "Hapus Template",
+      "deleteConfirm": "Anda yakin ingin menghapus template ini?",
+      "deleted": "Template terhapus",
+      "saveTemplate": "Simpan sebagai Template",
+      "templateName": "Nama Template",
+      "namePlaceholder": "contoh: Laporan Susu Bulanan",
+      "saved": "Template tersimpan"
+    },
+    "reportTypes": {
+      "milkProduction": "Produksi Susu",
+      "feedConsumption": "Konsumsi Pakan",
+      "cowPerformance": "Performa Sapi",
+      "costAnalysis": "Analisis Biaya"
+    }
   },
   "settings": {
     "settings": "Pengaturan",
@@ -1637,7 +1676,11 @@
     "snfPercent": "SNF %",
     "notes": "Catatan",
     "yield": "Hasil Susu",
-    "generatedOn": "Dibuat oleh RationSmart pada {date}"
+    "generatedOn": "Dibuat oleh RationSmart pada {date}",
+    "nutrient": "Nutrien",
+    "statusMet": "Terpenuhi",
+    "statusLow": "Kurang",
+    "statusExcess": "Lebih"
   },
   "syncHistory": {
     "title": "Riwayat Sinkronisasi",

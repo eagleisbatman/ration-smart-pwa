@@ -84,11 +84,14 @@ export function useExport() {
       text += `  - ${feed.name}: ${feed.amount} kg/day (${feed.cost})\n`;
     }
     text += `\n${t('export.totalCost')}: ${diet.totalCost}/day`;
-    text += `\nDry Matter Intake: ${diet.dmIntake} kg/day`;
+    text += `\n${t('export.dmIntake')}: ${diet.dmIntake} kg/day`;
     if (diet.nutrients && diet.nutrients.length > 0) {
       text += `\n\n${t('diet.nutrientBalance')}:`;
       for (const n of diet.nutrients) {
-        text += `\n  ${n.label}: ${n.supplied} / ${n.requirement} ${n.unit}`;
+        const req = parseFloat(n.requirement);
+        const sup = parseFloat(n.supplied);
+        const pct = req > 0 ? Math.round((sup / req) * 100) : 0;
+        text += `\n  ${n.label}: ${n.supplied} ${n.unit} (${pct}% ${t('diet.ofNeeded')})`;
       }
     }
     text += `\n\n${t('export.generatedBy')}`;
@@ -283,7 +286,7 @@ export function useExport() {
       <div class="meta-value">${diet.totalCost}</div>
     </div>
     <div class="meta-item">
-      <div class="meta-label">Dry Matter Intake</div>
+      <div class="meta-label">${t('export.dmIntake')}</div>
       <div class="meta-value">${diet.dmIntake} kg/day</div>
     </div>
   </div>
@@ -307,20 +310,27 @@ export function useExport() {
   <table>
     <thead>
       <tr>
-        <th>Nutrient</th>
-        <th>Supplied</th>
-        <th>Required</th>
-        <th>Unit</th>
+        <th>${t('export.nutrient')}</th>
+        <th>${t('export.amount')}</th>
+        <th>% ${t('diet.ofNeeded')}</th>
+        <th>${t('admin.status')}</th>
       </tr>
     </thead>
     <tbody>
-      ${diet.nutrients.map((n, i) => `
+      ${diet.nutrients.map((n, i) => {
+        const req = parseFloat(n.requirement);
+        const sup = parseFloat(n.supplied);
+        const pct = req > 0 ? Math.round((sup / req) * 100) : 0;
+        const status = pct >= 95 && pct <= 150 ? t('export.statusMet') : pct < 95 ? t('export.statusLow') : t('export.statusExcess');
+        const statusColor = status === 'Met' ? '#4CAF50' : status === 'Low' ? '#FF9800' : '#FF5722';
+        return `
       <tr style="${i % 2 === 0 ? 'background-color: #f9f9f9;' : ''}">
         <td style="padding: 8px 12px; border-bottom: 1px solid #e0e0e0;">${n.label}</td>
-        <td style="padding: 8px 12px; border-bottom: 1px solid #e0e0e0; text-align: right;">${n.supplied}</td>
-        <td style="padding: 8px 12px; border-bottom: 1px solid #e0e0e0; text-align: right;">${n.requirement}</td>
-        <td style="padding: 8px 12px; border-bottom: 1px solid #e0e0e0; text-align: right;">${n.unit}</td>
-      </tr>`).join('')}
+        <td style="padding: 8px 12px; border-bottom: 1px solid #e0e0e0; text-align: right;">${n.supplied} ${n.unit}</td>
+        <td style="padding: 8px 12px; border-bottom: 1px solid #e0e0e0; text-align: right;">${pct}%</td>
+        <td style="padding: 8px 12px; border-bottom: 1px solid #e0e0e0; text-align: right; color: ${statusColor}; font-weight: 500;">${status}</td>
+      </tr>`;
+      }).join('')}
     </tbody>
   </table>
   ` : ''}

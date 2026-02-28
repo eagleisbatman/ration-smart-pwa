@@ -49,7 +49,8 @@
     "takePhoto": "Suuraa Kaasi",
     "chooseFromGallery": "Galarii keessaa Filadhu",
     "removePhoto": "Suuraa Irraa Buusi",
-    "you": "Ati"
+    "you": "Ati",
+    "clearAll": "Hunda haqi"
   },
   "nav": {
     "home": "Mana",
@@ -331,11 +332,11 @@
     "bcs4": "4 - Furdaa",
     "bcs5": "5 - Baay'ee Furdaa",
     "breeds": {
-      "holsteinFriesian": "Holstein Friesian",
-      "jersey": "Jersey",
-      "sahiwal": "Sahiwal",
-      "gir": "Gir",
-      "redSindhi": "Red Sindhi",
+      "holsteinFriesian": "Hoolistaayin Fireeshiyaan",
+      "jersey": "Jeersii",
+      "sahiwal": "Saahiwaal",
+      "gir": "Giir",
+      "redSindhi": "Diimtuu Sindi",
       "crossbreed": "Walmakaa",
       "other": "Kan Biraa"
     },
@@ -458,7 +459,8 @@
       "failed": "Kufee jira",
       "pending": "Eeggachaa jira",
       "saved": "Olfameera",
-      "following": "Hordofamaa jira"
+      "following": "Hordofamaa jira",
+      "archived": "Kuufame"
     },
     "tdnLabel": "TDN",
     "dailyCost": "Baasii Guyyaa",
@@ -583,8 +585,14 @@
       "ageMonthsValue": "Ji'a {months}",
       "bcsAndAge": "BCS / Umrii",
       "notSpecified": "Hin ibsamne",
-      "ageDisclaimer": "Umuriin sa’a isinitti galuuf kaa'ame malee, haala nyaata herreguu keessatti hin fayyadamu."
-    }
+      "ageDisclaimer": "Umuriin sa’a isinitti galuuf kaa'ame malee, haala nyaata herreguu keessatti hin fayyadamu.",
+      "autoSelectExplain": "Nyaanni {count} ofumaan filatame — kaayyoof {goal} filatameefi nyaata baalaafi kan biroo walmadaalaa qabu",
+      "feedsSelected": "nyaanni filatame"
+    },
+    "ofNeeded": "isa barbaachisu irraa",
+    "needsMore": "{amount} {unit} caalaa barbaada",
+    "overNeeded": "isa barbaachisu irraa {ratio}x caala",
+    "nutrientExcessWarning": "{nutrient} barbaachisummaa isaa {ratio}x oli. Kun dabalata albuudaa irraa kan ka'e ta'uu danda'a."
   },
   "feed": {
     "feeds": "Nyaata",
@@ -961,7 +969,38 @@
     "yieldHistory": "Seenaa Baasii",
     "date": "Guyyaa",
     "milk": "Aannaan",
-    "fatPct": "Cooma %"
+    "fatPct": "Cooma %",
+    "summary": "Cuunfaa",
+    "preview": {
+      "totalMilk": "Walumaa gala Aannanii",
+      "avgDaily": "Ida'amuu guyyaa",
+      "avgFat": "Ida'amuu Cooma %",
+      "cowCount": "Saawwan",
+      "dietsGenerated": "Nyaata Qophaa'e",
+      "avgDailyCost": "Ida'amuu Baasii Guyyaa",
+      "farmers": "Qonnaan Bulaa",
+      "totalCows": "Walumaa gala Saawwan",
+      "noPreview": "Gosti gabaasa kanaaf duraa-lakkiin hin jiru"
+    },
+    "templates": {
+      "title": "Qaajeelcha Gabaasaa",
+      "noTemplates": "Qaajeelcha hin quufamne",
+      "noTemplatesHint": "Qindaa'ina gabaasaa akka teemleetii deebi'ee saffisaan fayyadamuuf ol kaa'i.",
+      "useTemplate": "Fayyadamuu",
+      "deleteTemplate": "Teemleetii Haqi",
+      "deleteConfirm": "Dhuguma teemleetii kana haquu barbaaddaa?",
+      "deleted": "Teemleetii haqameera",
+      "saveTemplate": "Akka Teemleetiitti Ol Kaa'i",
+      "templateName": "Maqaa Teemleetii",
+      "namePlaceholder": "Fkn: Gabaasa Aannanii Ji'aa",
+      "saved": "Teemleetii ol ka'ameera"
+    },
+    "reportTypes": {
+      "milkProduction": "Omisha Aannanii",
+      "feedConsumption": "Nyaata Horii",
+      "cowPerformance": "Raawwii Saa'aa",
+      "costAnalysis": "Xiinxala Baasii"
+    }
   },
   "settings": {
     "settings": "Qindaa'ina",
@@ -1637,7 +1676,11 @@
     "snfPercent": "SNF %",
     "notes": "Yaadannoo",
     "yield": "Oomisha",
-    "generatedOn": "RationSmart’n {date} irratti kan qophaa’e"
+    "generatedOn": "RationSmart’n {date} irratti kan qophaa’e",
+    "nutrient": "Nyaata",
+    "statusMet": "Ga'eera",
+    "statusLow": "Gadi bu'aa",
+    "statusExcess": "Baay'ee"
   },
   "syncHistory": {
     "title": "Seenaa Wal-simannaa",

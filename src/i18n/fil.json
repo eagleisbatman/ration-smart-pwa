@@ -49,7 +49,8 @@
     "takePhoto": "Kuhanan ng Larawan",
     "chooseFromGallery": "Pumili mula sa Gallery",
     "removePhoto": "Alisin ang Larawan",
-    "you": "Ikaw"
+    "you": "Ikaw",
+    "clearAll": "I-clear lahat"
   },
   "nav": {
     "home": "Home",
@@ -458,7 +459,8 @@
       "failed": "Nabigo",
       "pending": "Nakabinbin",
       "saved": "Naka-save",
-      "following": "Sinusundan"
+      "following": "Sinusundan",
+      "archived": "Na-archive"
     },
     "tdnLabel": "TDN",
     "dailyCost": "Pang-araw-araw na Gastos",
@@ -558,7 +560,7 @@
       "selectBudget": "Magkano ang iyong pang-araw-araw na budget sa pakain?",
       "targetMilkYield": "Target na ani ng gatas",
       "milkTarget": "{liters}L/araw (+{percent}%)",
-      "customValue": "Custom",
+      "customValue": "Sariling Halaga",
       "whatToOptimize": "Ano ang gusto mong i-optimize?",
       "dailyBudgetOptional": "Pang-araw-araw na Budget (opsyonal)",
       "noBudgetLimit": "Iwanang walang laman kung walang limitasyon sa budget",
@@ -583,8 +585,14 @@
       "ageMonthsValue": "{months} buwan",
       "bcsAndAge": "BCS / Edad",
       "notSpecified": "Hindi tinukoy",
-      "ageDisclaimer": "Nakalagay ang edad para sa iyong impormasyon ngunit hindi ginagamit sa pagtutuos ng rasyon."
-    }
+      "ageDisclaimer": "Nakalagay ang edad para sa iyong impormasyon ngunit hindi ginagamit sa pagtutuos ng rasyon.",
+      "autoSelectExplain": "{count} na pakain ang awtomatikong napili — naka-optimize para sa {goal} na may balanseng halo ng forages at concentrates",
+      "feedsSelected": "na pakain ang napili"
+    },
+    "ofNeeded": "sa kailangan",
+    "needsMore": "kailangan pa ng {amount} {unit}",
+    "overNeeded": "{ratio}x na lampas sa kailangan",
+    "nutrientExcessWarning": "Ang {nutrient} ay {ratio}x na lampas sa kailangan. Maaaring dulot ito ng mga mineral supplement."
   },
   "feed": {
     "feeds": "Mga Pagkain",
@@ -594,8 +602,8 @@
     "editFeed": "I-edit ang Pagkain",
     "feedName": "Pangalan ng Pagkain",
     "feedType": "Uri ng Pagkain",
-    "roughage": "Roughage",
-    "concentrate": "Concentrate",
+    "roughage": "Masabsab",
+    "concentrate": "Konsentrado",
     "mineral": "Mineral",
     "green": "Berdeng Damo",
     "dry": "Tuyong Damo",
@@ -629,12 +637,12 @@
     },
     "categories": {
       "concentrate": "Konsentrado",
-      "roughage": "Roughage",
-      "greenFodder": "Green Fodder",
-      "dryFodder": "Dry Fodder",
+      "roughage": "Masabsab",
+      "greenFodder": "Berde na Fodder",
+      "dryFodder": "Tuyong Fodder",
       "silage": "Silage",
       "byProduct": "By-product",
-      "mineralMix": "Mineral Mix",
+      "mineralMix": "Halo ng Mineral",
       "other": "Iba pa"
     },
     "labels": {
@@ -653,7 +661,7 @@
       "caPercent": "Calcium (Ca)",
       "caPercentShort": "Ca",
       "caPercentInput": "Calcium %",
-      "pPercent": "Phosphorus (P)",
+      "pPercent": "Posporus (P)",
       "pPercentShort": "P",
       "pPercentInput": "Porsyento ng Phosphorus",
       "category": "Kategorya",
@@ -720,8 +728,8 @@
     "noPriceHistory": "Wala pang kasaysayan ng presyo",
     "priceChange": "Pagbabago ng Presyo",
     "types": {
-      "forage": "Forage",
-      "concentrate": "Concentrate"
+      "forage": "Kumpay",
+      "concentrate": "Konsentrado"
     }
   },
   "logs": {
@@ -961,7 +969,38 @@
     "yieldHistory": "Kasaysayan ng Ani",
     "date": "Petsa",
     "milk": "Gatas",
-    "fatPct": "Taba %"
+    "fatPct": "Taba %",
+    "summary": "Buod",
+    "preview": {
+      "totalMilk": "Kabuuang Gatas",
+      "avgDaily": "Average Kada Araw",
+      "avgFat": "Average Taba %",
+      "cowCount": "Bilang ng Baka",
+      "dietsGenerated": "Ginawang Diet",
+      "avgDailyCost": "Average na Gastos Kada Araw",
+      "farmers": "Magsasaka",
+      "totalCows": "Kabuuang Baka",
+      "noPreview": "Walang preview para sa uri ng ulat na ito"
+    },
+    "templates": {
+      "title": "Mga Template ng Ulat",
+      "noTemplates": "Walang nakasave na template",
+      "noTemplatesHint": "I-save ang mga setting ng ulat bilang template para mabilis na magamit muli",
+      "useTemplate": "Gamitin",
+      "deleteTemplate": "Burahin ang Template",
+      "deleteConfirm": "Sigurado ka bang gusto mong burahin ang template na ito?",
+      "deleted": "Nabura ang Template",
+      "saveTemplate": "I-save bilang Template",
+      "templateName": "Pangalan ng Template",
+      "namePlaceholder": "hal. Buwanang Ulat ng Gatas",
+      "saved": "Nai-save ang Template"
+    },
+    "reportTypes": {
+      "milkProduction": "Produksyon ng Gatas",
+      "feedConsumption": "Konsumo ng Pakain",
+      "cowPerformance": "Pagganap ng Baka",
+      "costAnalysis": "Pagsusuri ng Gastos"
+    }
   },
   "settings": {
     "settings": "Mga Setting",
@@ -1357,7 +1396,7 @@
     "selectFarmer": "Pumili ng Magsasaka",
     "myFarm": "Aking Bukid",
     "myFarmers": "Aking mga Magsasaka",
-    "personal": "Personal",
+    "personal": "Pang-personal",
     "managedFarmers": "Pinangangasiwaang Magsasaka",
     "pendingYields": "Nakabinbing Ani",
     "recordYield": "Itala ang Ani",
@@ -1543,7 +1582,7 @@
       "selectFarmers": "Pumili ng mga magsasaka na ikukumpara",
       "avgDailyYield": "Avg Pang-araw-araw na Ani",
       "avgFat": "Avg Taba %",
-      "avgSnf": "Avg SNF %",
+      "avgSnf": "Average SNF %",
       "totalMilk": "Total Gatas",
       "records": "Mga Rekord",
       "noFarmersSelected": "Pumili ng 2-4 magsasaka sa itaas upang ihambing ang kanilang data ng ani",
@@ -1622,7 +1661,7 @@
     "goal": "Layunin",
     "feeds": "Pagkain",
     "totalCost": "Kabuuang Gastos",
-    "dmIntake": "Dry Matter Intake",
+    "dmIntake": "Pagkonsumo ng Dry Matter",
     "generatedBy": "Gawa ng RationSmart",
     "amount": "Dami",
     "cost": "Halaga",
@@ -1637,7 +1676,11 @@
     "snfPercent": "SNF %",
     "notes": "Mga Tala",
     "yield": "Produksyon",
-    "generatedOn": "Gawa ng RationSmart noong {date}"
+    "generatedOn": "Gawa ng RationSmart noong {date}",
+    "nutrient": "Nutrisyon",
+    "statusMet": "Naabot",
+    "statusLow": "Mababa",
+    "statusExcess": "Sobrang Dami"
   },
   "syncHistory": {
     "title": "Kasaysayan ng Pag-sync",
@@ -1684,7 +1727,7 @@
     "foggy": "Maulap (Foggy)",
     "drizzle": "Ambon",
     "rain": "Ulan",
-    "snow": "Snow",
+    "snow": "Niyebe",
     "showers": "Pag-ulan",
     "thunderstorm": "Bagyo",
     "locationNeeded": "I-enable ang lokasyon para sa panahon",
@@ -1743,7 +1786,7 @@
     "drillDown": "Tingnan ang Detalye",
     "back": "Bumalik",
     "ewCount": "EWs",
-    "orgCount": "Orgs",
+    "orgCount": "Mga Organisasyon",
     "userCount": "Gumagamit",
     "countryName": "Bansa",
     "totalCountries": "Mga Bansa",

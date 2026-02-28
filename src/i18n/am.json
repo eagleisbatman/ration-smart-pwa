@@ -49,7 +49,8 @@
     "takePhoto": "ፎቶ ያንሱ",
     "chooseFromGallery": "ከጋለሪ ይምረጡ",
     "removePhoto": "ፎቶ ያስወግዱ",
-    "you": "እርስዎ"
+    "you": "እርስዎ",
+    "clearAll": "ሁሉንም አጥፋ"
   },
   "nav": {
     "home": "መነሻ",
@@ -458,7 +459,8 @@
       "failed": "ከሽፏል",
       "pending": "በመጠባበቅ ላይ",
       "saved": "ተቀምጧል",
-      "following": "እየተከተለ ነው"
+      "following": "እየተከተለ ነው",
+      "archived": "ማህደር"
     },
     "tdnLabel": "TDN",
     "dailyCost": "ዕለታዊ ወጪ",
@@ -583,8 +585,14 @@
       "ageMonthsValue": "{months} ወራት",
       "bcsAndAge": "BCS / ዕድሜ",
       "notSpecified": "አልተገለጸም",
-      "ageDisclaimer": "ዕድሜው ለመረጃዎ ተመዝግቧል ነገር ግን በአመጋገብ ስሌት ውስጥ ጥቅም ላይ አይውልም።"
-    }
+      "ageDisclaimer": "ዕድሜው ለመረጃዎ ተመዝግቧል ነገር ግን በአመጋገብ ስሌት ውስጥ ጥቅም ላይ አይውልም።",
+      "autoSelectExplain": "{count} ምግቦች በራስ-ሰር ተመርጠዋል — ለ{goal} የተመቻቹ እና የተመጣጠነ የሳርና የደረቅ መኖ ቅልቅል ያላቸው",
+      "feedsSelected": "ምግቦች ተመርጠዋል"
+    },
+    "ofNeeded": "ከሚያስፈልገው",
+    "needsMore": "ተጨማሪ {amount} {unit} ያስፈልገዋል",
+    "overNeeded": "ከሚያስፈልገው {ratio}x በላይ",
+    "nutrientExcessWarning": "{nutrient} ከሚያስፈልገው {ratio}x ከፍ ያለ ነው። ይህም በማዕድን ተጨማሪዎች ምክንያት ሊሆን ይችላል።"
   },
   "feed": {
     "feeds": "መኖዎች",
@@ -961,7 +969,38 @@
     "yieldHistory": "የምርት ታሪክ",
     "date": "ቀን",
     "milk": "ወተት",
-    "fatPct": "ስብ %"
+    "fatPct": "ስብ %",
+    "summary": "ማጠቃለያ",
+    "preview": {
+      "totalMilk": "ጠቅላላ ወተት",
+      "avgDaily": "አማካይ ዕለታዊ",
+      "avgFat": "አማካይ ቅባት %",
+      "cowCount": "ላሞች",
+      "dietsGenerated": "የተዘጋጁ የምግብ አይነቶች",
+      "avgDailyCost": "አማካይ ዕለታዊ ወጪ",
+      "farmers": "ገበሬዎች",
+      "totalCows": "ጠቅላላ ላሞች",
+      "noPreview": "ለዚህ የሪፖርት አይነት ቅድመ እይታ አይገኝም"
+    },
+    "templates": {
+      "title": "የሪፖርት አብነቶች",
+      "noTemplates": "ምንም የተቀመጡ አብነቶች የሉም",
+      "noTemplatesHint": "የሪፖርት ቅንብሮችን በፍጥነት ለመጠቀም እንደ አብነት ያስቀምጡ",
+      "useTemplate": "ተጠቀም",
+      "deleteTemplate": "አብነት ሰርዝ",
+      "deleteConfirm": "ይህን አብነት መሰረዝ እንደሚፈልጉ እርግጠኛ ነዎት?",
+      "deleted": "አብነት ተሰርዟል",
+      "saveTemplate": "እንደ አብነት አስቀምጥ",
+      "templateName": "የአብነት ስም",
+      "namePlaceholder": "ለምሳሌ ወርሃዊ የወተት ሪፖርት",
+      "saved": "አብነት ተቀምጧል"
+    },
+    "reportTypes": {
+      "milkProduction": "የወተት ምርት",
+      "feedConsumption": "የመኖ ፍጆታ",
+      "cowPerformance": "የከብት አፈጻጸም",
+      "costAnalysis": "የወጪ ትንተና"
+    }
   },
   "settings": {
     "settings": "ቅንብሮች",
@@ -1506,7 +1545,7 @@
     "updateNow": "አሁን አዘምን",
     "later": "በኋላ",
     "updateBanner": "አዲስ ስሪት አለ",
-    "appName": "RationSmart"
+    "appName": "ራሽንስማርት"
   },
   "storage": {
     "quotaWarning": "ማከማቻው {percent}% ሞልቷል ({usageMB} ሜባ ከ {quotaMB} ሜባ)። ቦታ ለማስለቀቅ የቆዩ መረጃዎችን ማመሳሰል እና ማጽዳትን ያስቡበት።"
@@ -1637,7 +1676,11 @@
     "snfPercent": "ኤስኤንኤፍ %",
     "notes": "ማስታወሻዎች",
     "yield": "ምርት",
-    "generatedOn": "በRationSmart የተፈጠረ {date}"
+    "generatedOn": "በRationSmart የተፈጠረ {date}",
+    "nutrient": "አስፈላጊ ንጥረ ነገር",
+    "statusMet": "በቂ",
+    "statusLow": "አነስተኛ",
+    "statusExcess": "ከመጠን በላይ"
   },
   "syncHistory": {
     "title": "የማመሳሰል ታሪክ",

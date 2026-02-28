@@ -49,7 +49,8 @@
     "takePhoto": "تصویر کھینچیں",
     "chooseFromGallery": "گیلری سے منتخب کریں",
     "removePhoto": "تصویر ہٹائیں",
-    "you": "آپ"
+    "you": "آپ",
+    "clearAll": "سب صاف کریں"
   },
   "nav": {
     "home": "ہوم",
@@ -458,7 +459,8 @@
       "failed": "ناکام",
       "pending": "باقی ہے",
       "saved": "محفوظ",
-      "following": "پیروی کر رہے ہیں"
+      "following": "پیروی کر رہے ہیں",
+      "archived": "آرکائیو شدہ"
     },
     "tdnLabel": "TDN",
     "dailyCost": "روزانہ کی لاگت",
@@ -583,8 +585,14 @@
       "ageMonthsValue": "{months} ماہ",
       "bcsAndAge": "صحت کی حالت / عمر",
       "notSpecified": "درج نہیں کیا گیا",
-      "ageDisclaimer": "عمر صرف آپ کی معلومات کے لیے درج کی گئی ہے، اسے خوراک کے حساب میں استعمال نہیں کیا جاتا۔"
-    }
+      "ageDisclaimer": "عمر صرف آپ کی معلومات کے لیے درج کی گئی ہے، اسے خوراک کے حساب میں استعمال نہیں کیا جاتا۔",
+      "autoSelectExplain": "{count} فیڈز خود بخود منتخب ہو گئیں — چارے اور دانے کے متوازن امتزاج کے ساتھ {goal} کے لیے بہترین",
+      "feedsSelected": "فیڈز منتخب ہو گئیں"
+    },
+    "ofNeeded": "مطلوبہ کا",
+    "needsMore": "مزید {amount} {unit} درکار ہیں",
+    "overNeeded": "مطلوبہ سے {ratio} گنا زیادہ",
+    "nutrientExcessWarning": "{nutrient} مطلوبہ مقدار سے {ratio} گنا زیادہ ہے۔ یہ معدنی سپلیمنٹس کی وجہ سے ہو سکتا ہے۔"
   },
   "feed": {
     "feeds": "چارہ",
@@ -961,7 +969,38 @@
     "date": "تاریخ",
     "milk": "دودھ",
     "fatPct": "فیٹ %",
-    "noReportsDesc": "اپنی گایوں کی غذائی کارکردگی اور چارے کی لاگت کو ٹریک کرنے کے لیے ڈائٹ رپورٹ بنائیں۔"
+    "noReportsDesc": "اپنی گایوں کی غذائی کارکردگی اور چارے کی لاگت کو ٹریک کرنے کے لیے ڈائٹ رپورٹ بنائیں۔",
+    "summary": "خلاصہ",
+    "preview": {
+      "totalMilk": "کل دودھ",
+      "avgDaily": "اوسط روزانہ",
+      "avgFat": "اوسط چربی %",
+      "cowCount": "گائیں",
+      "dietsGenerated": "تیار کردہ خوراکیں",
+      "avgDailyCost": "اوسط روزانہ لاگت",
+      "farmers": "کاشتکار",
+      "totalCows": "کل گائیں",
+      "noPreview": "اس قسم کی رپورٹ کا پیش منظر دستیاب نہیں"
+    },
+    "templates": {
+      "title": "رپورٹ کے سانچے",
+      "noTemplates": "کوئی سانچہ محفوظ نہیں",
+      "noTemplatesHint": "فوری استعمال کے لیے رپورٹ کی ترتیبات کو سانچے کے طور پر محفوظ کریں",
+      "useTemplate": "استعمال کریں",
+      "deleteTemplate": "سانچہ حذف کریں",
+      "deleteConfirm": "کیا آپ واقعی اس سانچے کو حذف کرنا چاہتے ہیں؟",
+      "deleted": "سانچہ حذف کر دیا گیا",
+      "saveTemplate": "سانچے کے طور پر محفوظ کریں",
+      "templateName": "سانچے کا نام",
+      "namePlaceholder": "مثال کے طور پر: ماہانہ دودھ کی رپورٹ",
+      "saved": "سانچہ محفوظ ہو گیا"
+    },
+    "reportTypes": {
+      "milkProduction": "دودھ کی پیداوار",
+      "feedConsumption": "خوراک کا استعمال",
+      "cowPerformance": "گائے کی کارکردگی",
+      "costAnalysis": "اخراجات کا تجزیہ"
+    }
   },
   "settings": {
     "settings": "ترتیبات",
@@ -1638,7 +1677,11 @@
     "snfPercent": "ایس این ایف %",
     "notes": "نوٹ",
     "yield": "پیداوار",
-    "generatedOn": "راشن سمارٹ کی طرف سے {date} کو تیار کیا گیا"
+    "generatedOn": "راشن سمارٹ کی طرف سے {date} کو تیار کیا گیا",
+    "nutrient": "غذائی اجزاء",
+    "statusMet": "پورا ہوا",
+    "statusLow": "کم",
+    "statusExcess": "اضافی"
   },
   "syncHistory": {
     "title": "سنک ہسٹری",

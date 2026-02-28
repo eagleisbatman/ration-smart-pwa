@@ -49,7 +49,8 @@
     "takePhoto": "ছবি তুলুন",
     "chooseFromGallery": "গ্যালারি থেকে নির্বাচন করুন",
     "removePhoto": "ছবি সরান",
-    "you": "আপনি"
+    "you": "আপনি",
+    "clearAll": "সব মুছুন"
   },
   "nav": {
     "home": "হোম",
@@ -458,7 +459,8 @@
       "failed": "ব্যর্থ হয়েছে",
       "pending": "বিচারাধীন",
       "saved": "সংরক্ষিত",
-      "following": "অনুসরণ করা হচ্ছে"
+      "following": "অনুসরণ করা হচ্ছে",
+      "archived": "সংরক্ষিত"
     },
     "tdnLabel": "TDN",
     "dailyCost": "দৈনিক খরচ",
@@ -583,8 +585,14 @@
       "ageMonthsValue": "{months} মাস",
       "bcsAndAge": "বিসিএস / বয়স",
       "notSpecified": "উল্লেখ করা হয়নি",
-      "ageDisclaimer": "বয়স আপনার সুবিধার জন্য রেকর্ড করা হয় কিন্তু ডায়েট গণনায় ব্যবহার করা হয় না।"
-    }
+      "ageDisclaimer": "বয়স আপনার সুবিধার জন্য রেকর্ড করা হয় কিন্তু ডায়েট গণনায় ব্যবহার করা হয় না।",
+      "autoSelectExplain": "{count} টি খাদ্য স্বয়ংক্রিয়ভাবে নির্বাচন করা হয়েছে — ফোরেজ এবং কনসেনট্রেটের সুষম মিশ্রণ সহ {goal} এর জন্য অপ্টিমাইজ করা হয়েছে",
+      "feedsSelected": "খাদ্য নির্বাচিত"
+    },
+    "ofNeeded": "প্রয়োজনীয়",
+    "needsMore": "আরও {amount} {unit} প্রয়োজন",
+    "overNeeded": "প্রয়োজনের {ratio} গুণ বেশি",
+    "nutrientExcessWarning": "{nutrient} প্রয়োজনীয়তার {ratio} গুণ বেশি। এটি খনিজ পরিপূরক দ্বারা হতে পারে।"
   },
   "feed": {
     "feeds": "খাদ্য",
@@ -961,7 +969,38 @@
     "date": "তারিখ",
     "milk": "দুধ",
     "fatPct": "চর্বি %",
-    "noReportsDesc": "আপনার পশুর পুষ্টির কার্যকারিতা এবং খাবারের খরচ ট্র্যাক করতে একটি খাদ্য তালিকা রিপোর্ট তৈরি করুন।"
+    "noReportsDesc": "আপনার পশুর পুষ্টির কার্যকারিতা এবং খাবারের খরচ ট্র্যাক করতে একটি খাদ্য তালিকা রিপোর্ট তৈরি করুন।",
+    "summary": "সারাংশ",
+    "preview": {
+      "totalMilk": "মোট দুধ",
+      "avgDaily": "দৈনিক গড়",
+      "avgFat": "গড় ফ্যাট %",
+      "cowCount": "গরু",
+      "dietsGenerated": "তৈরি করা ডায়েট",
+      "avgDailyCost": "দৈনিক গড় খরচ",
+      "farmers": "কৃষক",
+      "totalCows": "মোট গরু",
+      "noPreview": "এই রিপোর্টের জন্য প্রিভিউ উপলব্ধ নয়"
+    },
+    "templates": {
+      "title": "রিপোর্ট টেমপ্লেট",
+      "noTemplates": "কোনো টেমপ্লেট সেভ করা হয়নি",
+      "noTemplatesHint": "দ্রুত পুনরায় ব্যবহারের জন্য রিপোর্টের সেটিংস টেমপ্লেট হিসেবে সংরক্ষণ করুন",
+      "useTemplate": "ব্যবহার করুন",
+      "deleteTemplate": "টেমপ্লেট মুছুন",
+      "deleteConfirm": "আপনি কি নিশ্চিত এই টেমপ্লেটটি মুছে ফেলতে চান?",
+      "deleted": "টেমপ্লেট মুছে ফেলা হয়েছে",
+      "saveTemplate": "টেমপ্লেট হিসেবে সংরক্ষণ করুন",
+      "templateName": "টেমপ্লেটের নাম",
+      "namePlaceholder": "যেমন: মাসিক দুধের রিপোর্ট",
+      "saved": "টেমপ্লেট সেভ করা হয়েছে"
+    },
+    "reportTypes": {
+      "milkProduction": "দুধ উৎপাদন",
+      "feedConsumption": "খাদ্য খরচ",
+      "cowPerformance": "গরুর কর্মক্ষমতা",
+      "costAnalysis": "খরচ বিশ্লেষণ"
+    }
   },
   "settings": {
     "settings": "সেটিংস",
@@ -1638,7 +1677,11 @@
     "snfPercent": "এসএনএফ %",
     "notes": "নোট",
     "yield": "উৎপাদন",
-    "generatedOn": "{date} তারিখে RationSmart দ্বারা তৈরি"
+    "generatedOn": "{date} তারিখে RationSmart দ্বারা তৈরি",
+    "nutrient": "পুষ্টি",
+    "statusMet": "পূরণ হয়েছে",
+    "statusLow": "কম",
+    "statusExcess": "বেশি"
   },
   "syncHistory": {
     "title": "সিঙ্ক ইতিহাস",

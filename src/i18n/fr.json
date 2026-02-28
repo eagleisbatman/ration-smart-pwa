@@ -49,7 +49,8 @@
     "takePhoto": "Prendre une photo",
     "chooseFromGallery": "Choisir dans la galerie",
     "removePhoto": "Supprimer la photo",
-    "you": "Vous"
+    "you": "Vous",
+    "clearAll": "Tout effacer"
   },
   "nav": {
     "home": "Accueil",
@@ -331,7 +332,7 @@
     "bcs4": "4 - Gras",
     "bcs5": "5 - Très gras",
     "breeds": {
-      "holsteinFriesian": "Holstein Friesian",
+      "holsteinFriesian": "Holstein Frisonne",
       "jersey": "Jersey",
       "sahiwal": "Sahiwal",
       "gir": "Gir",
@@ -461,7 +462,8 @@
       "failed": "Échec",
       "pending": "En attente",
       "saved": "Enregistré",
-      "following": "Suivant"
+      "following": "Suivant",
+      "archived": "Archivée"
     },
     "tdnLabel": "TDN",
     "dailyCost": "Coût journalier",
@@ -586,8 +588,14 @@
       "ageMonthsValue": "{months} mois",
       "bcsAndAge": "NEC / Âge",
       "notSpecified": "Non spécifié",
-      "ageDisclaimer": "L'âge est enregistré à titre indicatif et n'est pas utilisé dans le calcul des rations."
-    }
+      "ageDisclaimer": "L'âge est enregistré à titre indicatif et n'est pas utilisé dans le calcul des rations.",
+      "autoSelectExplain": "{count} aliments présélectionnés — optimisés pour {goal} avec un mélange équilibré de fourrages et de concentrés",
+      "feedsSelected": "aliments sélectionnés"
+    },
+    "ofNeeded": "du besoin",
+    "needsMore": "il faut {amount} {unit} de plus",
+    "overNeeded": "{ratio}x au-dessus du besoin",
+    "nutrientExcessWarning": "Le {nutrient} est {ratio}x au-dessus du besoin. Cela peut être dû à des suppléments minéraux."
   },
   "feed": {
     "feeds": "Aliments",
@@ -695,7 +703,7 @@
       "categoryRequired": "La catégorie est requise",
       "required": "Requis",
       "cannotBeNegative": "Ne peut pas être négatif",
-      "maxPercent": "Max 100%",
+      "maxPercent": "Max 100 %",
       "typeRequired": "Le type est requis"
     },
     "notifications": {
@@ -780,7 +788,7 @@
       "cannotBeNegative": "Ne peut pas être négatif",
       "fatPercent": "% de matière grasse",
       "snfPercent": "% d'extrait sec non gras",
-      "maxPercent": "Max 15%",
+      "maxPercent": "Max 15 %",
       "linkedToDiet": "Lié au régime actif pour {name}",
       "notesLabel": "Notes",
       "notesHint": "Facultatif - toute observation",
@@ -964,7 +972,38 @@
     "yieldHistory": "Historique de production",
     "date": "Date",
     "milk": "Lait",
-    "fatPct": "Matière grasse %"
+    "fatPct": "Matière grasse %",
+    "summary": "Résumé",
+    "preview": {
+      "totalMilk": "Lait total",
+      "avgDaily": "Moyenne/jour",
+      "avgFat": "Moyenne Matière grasse %",
+      "cowCount": "Vaches",
+      "dietsGenerated": "Régimes Générés",
+      "avgDailyCost": "Coût Quotidien Moyen",
+      "farmers": "Éleveurs",
+      "totalCows": "Nombre total de vaches",
+      "noPreview": "Aperçu non disponible pour ce type de rapport"
+    },
+    "templates": {
+      "title": "Modèles de Rapports",
+      "noTemplates": "Aucun modèle enregistré",
+      "noTemplatesHint": "Enregistrez les paramètres de rapport comme modèle pour une réutilisation rapide",
+      "useTemplate": "Utiliser",
+      "deleteTemplate": "Supprimer le modèle",
+      "deleteConfirm": "Voulez-vous vraiment supprimer ce modèle ?",
+      "deleted": "Modèle supprimé",
+      "saveTemplate": "Enregistrer comme modèle",
+      "templateName": "Nom du modèle",
+      "namePlaceholder": "Ex: Rapport Mensuel de Lait",
+      "saved": "Modèle enregistré"
+    },
+    "reportTypes": {
+      "milkProduction": "Production de lait",
+      "feedConsumption": "Consommation d'aliments",
+      "cowPerformance": "Performance des vaches",
+      "costAnalysis": "Analyse des coûts"
+    }
   },
   "settings": {
     "settings": "Paramètres",
@@ -1641,7 +1680,11 @@
     "snfPercent": "% MSNT",
     "notes": "Notes",
     "yield": "Production",
-    "generatedOn": "Généré par RationSmart le {date}"
+    "generatedOn": "Généré par RationSmart le {date}",
+    "nutrient": "Nutriment",
+    "statusMet": "Atteint",
+    "statusLow": "Faible",
+    "statusExcess": "Excès"
   },
   "syncHistory": {
     "title": "Historique de synchronisation",
