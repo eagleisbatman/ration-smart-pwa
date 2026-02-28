@@ -171,22 +171,35 @@
       <q-step :name="3" :title="$t('diet.wizard.stepGoal')" icon="flag" :done="step > 3">
         <div class="text-subtitle1 q-mb-md">{{ $t('diet.wizard.whatToOptimize') }}</div>
 
-        <q-option-group
-          v-model="form.optimization_goal"
-          :options="goalOptions"
-          color="primary"
-          @update:model-value="onGoalChanged"
-        >
-          <template #label="opt">
-            <div class="row items-start no-wrap q-gutter-x-sm">
-              <q-icon :name="opt.icon" size="24px" class="q-mt-xs" :color="opt.color" />
+        <div class="q-gutter-y-sm">
+          <q-card
+            v-for="opt in goalOptions"
+            :key="opt.value"
+            flat
+            bordered
+            :class="[
+              'goal-option cursor-pointer',
+              form.optimization_goal === opt.value ? 'goal-option--active' : ''
+            ]"
+            @click="form.optimization_goal = opt.value; onGoalChanged()"
+          >
+            <q-card-section class="row items-center no-wrap q-pa-sm">
+              <q-radio
+                :model-value="form.optimization_goal"
+                :val="opt.value"
+                dense
+                class="q-mr-sm"
+              />
+              <q-avatar :color="opt.color + '-1'" size="36px" class="q-mr-sm">
+                <q-icon :name="opt.icon" :color="opt.color" size="20px" />
+              </q-avatar>
               <div class="col">
-                <div class="text-body2">{{ opt.label }}</div>
+                <div class="text-body2 text-weight-medium">{{ opt.label }}</div>
                 <div class="text-caption text-grey-7">{{ opt.description }}</div>
               </div>
-            </div>
-          </template>
-        </q-option-group>
+            </q-card-section>
+          </q-card>
+        </div>
 
         <!-- Minimize Cost → Budget chips -->
         <div v-if="form.optimization_goal === 'minimize_cost'" class="q-mt-md">
@@ -985,5 +998,16 @@ onMounted(async () => {
 .rounded-borders {
   border-radius: $radius-loose;
   overflow: hidden;
+}
+
+// Goal option cards (Step 3)
+// Dark mode override for .goal-option--active lives in app.scss (.body--dark block)
+// because scoped :global(.body--dark) compiles incorrectly in Vue/Quasar.
+.goal-option {
+  transition: border-color 0.2s, background 0.2s;
+}
+.goal-option--active {
+  border-color: var(--q-primary);
+  background: color-mix(in srgb, var(--q-primary) 4%, transparent);
 }
 </style>

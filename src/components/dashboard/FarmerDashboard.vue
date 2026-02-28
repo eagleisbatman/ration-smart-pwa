@@ -189,7 +189,7 @@
       </div>
       <div class="col-4">
         <div class="stat-inline">
-          <div class="text-h5 text-secondary">{{ todayMilk.toFixed(1) }}{{ $t('units.l') }}</div>
+          <div class="text-h5 text-primary">{{ todayMilk.toFixed(1) }}{{ $t('units.l') }}</div>
           <div class="text-caption text-grey-7">{{ $t('dashboard.todaysMilk') }}</div>
           <div v-if="milkTrend" class="trend-indicator q-mt-xs">
             <q-icon
@@ -206,7 +206,7 @@
       </div>
       <div class="col-4">
         <div class="stat-inline">
-          <div class="text-h5 text-accent">{{ cowsOnDietCount }}</div>
+          <div class="text-h5 text-primary">{{ cowsOnDietCount }}</div>
           <div class="text-caption text-grey-7">{{ $t('dashboard.cowsOnDiet') }}</div>
         </div>
       </div>
