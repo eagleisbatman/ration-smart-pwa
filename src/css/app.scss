@@ -355,7 +355,7 @@ body {
     &.q-tab--active {
       background: white;
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-      color: #09090B; // zinc-950 foreground
+      color: var(--q-primary);
     }
   }
 }
@@ -717,15 +717,13 @@ body {
     color: var(--q-primary);
   }
 
-  // Header and drawer adapt
+  // Header: keep primary bg in dark mode too; border adapts to theme
   .main-header {
-    background: #18181B !important;
-    color: #FAFAFA !important;
-    border-color: #27272A !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
   }
 
   .drawer-header {
-    border-color: #27272A !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
   }
 
   // Section labels: light text on dark bg
@@ -751,7 +749,7 @@ body {
     background: rgba(255, 255, 255, 0.06);
 
     .q-tab.q-tab--active {
-      background: #27272A; // zinc-800 — matches shadcn accent
+      background: rgba(255, 255, 255, 0.12);
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
       color: #FAFAFA;
     }
@@ -759,7 +757,7 @@ body {
 
   // Bottom navigation: distinct from pill-style tabs above
   .q-footer {
-    background: #18181B !important;
+    background: var(--q-dark) !important;
     border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
 
     .q-tabs {
@@ -782,7 +780,7 @@ body {
   // Active/primary chips: dark text on light bg (since --q-primary flips to light)
   .q-chip--selected,
   .q-chip[class*="bg-primary"] {
-    color: #18181B !important;
+    color: var(--q-dark-page) !important;
   }
 
   // Outline chips: ensure text + border are visible on dark surface
@@ -792,9 +790,9 @@ body {
     color: rgba(255, 255, 255, 0.7) !important;
   }
   // Restore semantic colors for outline chips that DO have meaningful color
-  .q-chip--outline.text-positive { color: #66BB6A !important; }
-  .q-chip--outline.text-negative { color: #EF5350 !important; }
-  .q-chip--outline.text-warning { color: #FFA726 !important; }
+  .q-chip--outline.text-positive { color: var(--q-positive) !important; }
+  .q-chip--outline.text-negative { color: var(--q-negative) !important; }
+  .q-chip--outline.text-warning { color: var(--q-warning) !important; }
 
   // Grey-background chips: light grey bg nearly invisible on dark surface
   // Used in: CowDetailPage (coat color), DietCostChart (cow filter),
@@ -957,16 +955,16 @@ body {
 
   // FAB needs dark text on light primary bg
   .q-fab > .q-btn--fab {
-    color: #18181B !important;
+    color: var(--q-dark-page) !important;
   }
 
   // ---- Primary bg: text must be dark since --q-primary flips to light ----
   // Covers submit buttons, unelevated primary buttons, badges, toggles
   .q-btn.bg-primary {
-    color: #18181B !important;
+    color: var(--q-dark-page) !important;
   }
   .q-badge.bg-primary {
-    color: #18181B !important;
+    color: var(--q-dark-page) !important;
   }
 
   // ---- btn-toggle: inactive buttons adapt to dark surface ----
@@ -978,7 +976,7 @@ body {
   // Quasar may keep .bg-white on the active button alongside .bg-primary
   .q-btn-toggle .q-btn.bg-primary {
     background-color: var(--q-primary) !important;
-    color: #18181B !important;
+    color: var(--q-dark-page) !important;
   }
 
   // ---- Grey text: brighten for dark background readability ----
@@ -1025,7 +1023,7 @@ body {
 
   // ---- Checkbox: dark check on light primary bg ----
   .q-checkbox__inner--truthy .q-checkbox__bg {
-    color: #18181B !important;
+    color: var(--q-dark-page) !important;
   }
 
   // ---- Additional grey text overrides ----
@@ -1088,12 +1086,12 @@ body {
     background: rgba(255, 255, 255, 0.06) !important;
   }
   .conflict-local {
-    background: rgba(228, 228, 231, 0.08) !important;
-    border-inline-start-color: var(--q-primary) !important; // $primary compiles to #18181B → invisible
+    background: color-mix(in srgb, var(--q-primary) 8%, transparent) !important;
+    border-inline-start-color: var(--q-primary) !important;
   }
   .conflict-server {
-    background: rgba(161, 161, 170, 0.08) !important;
-    border-inline-start-color: var(--q-secondary) !important; // $secondary compiles to #71717A → low contrast
+    background: color-mix(in srgb, var(--q-secondary) 8%, transparent) !important;
+    border-inline-start-color: var(--q-secondary) !important;
   }
 
   // OnboardingProgress: upcoming step + connector track
@@ -1108,10 +1106,10 @@ body {
   // + hardcoded white text → invisible. Flip text to dark.
   .progress-circle--completed,
   .progress-circle--active {
-    color: #18181B !important;
+    color: var(--q-dark-page) !important;
   }
   .progress-circle--active {
-    box-shadow: 0 0 0 4px rgba(228, 228, 231, 0.25) !important; // $primary shadow doesn't flip
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--q-primary) 25%, transparent) !important;
   }
 
   // AddToHomeScreen iOS instructions
@@ -1126,7 +1124,7 @@ body {
   }
   .upload-zone--active {
     border-color: var(--q-primary) !important; // $primary doesn't flip
-    background: rgba(228, 228, 231, 0.06) !important;
+    background: color-mix(in srgb, var(--q-primary) 6%, transparent) !important;
   }
 
   // MilkTrendsPanel: empty bar fill + hover rows
@@ -1157,50 +1155,49 @@ body {
   }
 
   // ---- Auth layout ----
-  // Page bg darker than card for visual separation (zinc-950 vs zinc-900)
+  // Page bg darker than card for visual separation
   .auth-layout {
-    background: #09090B !important;
+    background: var(--q-dark-page) !important;
   }
 
   .auth-logo {
-    border-color: #27272A; // zinc-800 — subtle ring between dark surfaces
-    // Avatar bg-primary flips to light (#E4E4E7) but cow icon is inverted to white
-    // → white on light = invisible. Keep avatar dark so inverted cow shows.
+    border-color: rgba(255, 255, 255, 0.12);
+    // Avatar bg-primary flips to light in dark mode; keep avatar dark so inverted cow shows.
     &.bg-primary {
-      background: #27272A !important;
+      background: rgba(255, 255, 255, 0.1) !important;
     }
   }
 
   .auth-container {
-    background: #18181B !important;
+    background: var(--q-dark) !important;
     border: 1px solid rgba(255, 255, 255, 0.08);
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3), 0 12px 40px rgba(0, 0, 0, 0.4) !important;
   }
 
-  // ---- bg-primary containers: keep dark bg so text-white stays visible ----
-  // bg-primary flips to light (#E4E4E7) in dark mode; containers using
+  // ---- bg-primary containers: use theme dark color so text-white stays visible ----
+  // bg-primary flips to light tints in dark mode; containers using
   // bg-primary as a "branded fill" with white text become unreadable.
   .q-toolbar.bg-primary {
-    background: #27272A !important;
+    background: var(--q-dark) !important;
     color: #FAFAFA !important;
   }
   .q-card.bg-primary {
-    background: #27272A !important;
+    background: var(--q-dark) !important;
     color: #FAFAFA !important;
   }
 
   // ---- Primary avatars: keep dark bg for cow icons (filter:invert) and text ----
   .q-avatar.bg-primary {
-    background: #27272A !important;
+    background: var(--q-dark) !important;
     color: #FAFAFA !important;
   }
 
-  // ---- PWA banners: $primary bg (#18181B) nearly invisible against dark page ----
+  // ---- PWA banners ----
   .update-banner {
-    background: #27272A !important;
+    background: var(--q-dark) !important;
   }
   .a2hs-banner {
-    background: #27272A !important;
+    background: var(--q-dark) !important;
   }
 
   // ---- Teal self-profile indicators: adapt for dark monochrome theme ----
@@ -1281,20 +1278,20 @@ body {
     background: rgba(255, 255, 255, 0.12) !important;
   }
 
-  // ---- q-date picker: header bg uses --q-primary which flips to light ----
+  // ---- q-date picker: header uses theme dark color ----
   .q-date__header {
-    background: #27272A !important;
+    background: var(--q-dark) !important;
     color: #FAFAFA !important;
   }
 
   // Selected date button: text must be dark on light primary bg
   .q-date__calendar-item .q-btn.bg-primary {
-    color: #18181B !important;
+    color: var(--q-dark-page) !important;
   }
 
-  // CowDetailPage: default avatar — lighter bg so inverted (white) cow icon is visible
+  // CowDetailPage: default avatar — slightly lighter than page bg for contrast
   .cow-avatar {
-    background: #3F3F46 !important; // zinc-700 — lighter than page bg
+    background: rgba(255, 255, 255, 0.15) !important;
   }
 
   // Scrollbar — light thumb on dark background
