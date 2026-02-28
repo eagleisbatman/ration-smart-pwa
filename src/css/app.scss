@@ -726,6 +726,22 @@ body {
 
   .drawer-header {
     border-color: rgba(255, 255, 255, 0.12) !important;
+    color: #fff !important;
+  }
+
+  // Sidebar nav: white text/icons on dark bg
+  .q-drawer .q-item {
+    color: #fff !important;
+  }
+  .q-drawer .q-item .q-icon {
+    color: #fff !important;
+  }
+  // Active sidebar item: keep primary highlight
+  .q-drawer .q-item.q-router-link--active {
+    color: var(--q-primary) !important;
+  }
+  .q-drawer .q-item.q-router-link--active .q-icon {
+    color: var(--q-primary) !important;
   }
 
   // Section labels: light text on dark bg
@@ -767,13 +783,13 @@ body {
     }
 
     .q-tab {
-      color: rgba(255, 255, 255, 0.5) !important; // Inactive tabs visible but muted
+      color: #fff !important;
     }
 
     .q-tab.q-tab--active {
       background: transparent !important;
       box-shadow: none !important;
-      color: var(--q-primary) !important; // Active tab uses primary
+      color: var(--q-primary) !important;
     }
   }
 
@@ -1031,11 +1047,11 @@ body {
   // ---- Additional grey text overrides ----
   // grey-6 (#757575) on zinc-900 = 3.9:1 — borderline, brighten
   .text-grey-6 {
-    color: rgba(255, 255, 255, 0.5) !important;
+    color: rgba(255, 255, 255, 0.7) !important;
   }
   // grey-9 (#212121) on zinc-900 = 1.1:1 — invisible
   .text-grey-9 {
-    color: rgba(255, 255, 255, 0.7) !important;
+    color: rgba(255, 255, 255, 0.85) !important;
   }
 
   // ---- Additional background overrides ----

@@ -114,7 +114,7 @@
     <q-footer v-if="showBottomNav" bordered>
       <q-tabs
         v-model="activeTab"
-        class="text-grey-7"
+        class="text-dark"
         active-color="primary"
         indicator-color="transparent"
         dense
