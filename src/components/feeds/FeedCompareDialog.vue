@@ -15,15 +15,15 @@
             <q-avatar color="primary" text-color="white" size="36px" class="q-mb-xs">
               <q-icon name="grass" />
             </q-avatar>
-            <div class="text-subtitle2 ellipsis">{{ feedA.name }}</div>
-            <div class="text-caption text-grey-6">{{ feedA.category }}</div>
+            <div class="text-subtitle2 ellipsis">{{ getFeedDisplayName(feedA, locale) }}</div>
+            <div class="text-caption text-grey-6">{{ translateCategory(feedA.category, t) }}</div>
           </div>
           <div class="col-4">
             <q-avatar color="secondary" text-color="white" size="36px" class="q-mb-xs">
               <q-icon name="grass" />
             </q-avatar>
-            <div class="text-subtitle2 ellipsis">{{ feedB.name }}</div>
-            <div class="text-caption text-grey-6">{{ feedB.category }}</div>
+            <div class="text-subtitle2 ellipsis">{{ getFeedDisplayName(feedB, locale) }}</div>
+            <div class="text-caption text-grey-6">{{ translateCategory(feedB.category, t) }}</div>
           </div>
         </div>
 
@@ -74,8 +74,10 @@ import { useI18n } from 'vue-i18n';
 import { Feed } from 'src/lib/offline/db';
 import { useCurrency } from 'src/composables/useCurrency';
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
 const { formatCurrency } = useCurrency();
+
+import { getFeedDisplayName, translateCategory } from 'src/composables/useFeedDisplayName';
 
 const props = defineProps<{
   modelValue: boolean;
