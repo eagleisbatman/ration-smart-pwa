@@ -28,8 +28,9 @@
               <q-icon v-else name="grass" size="32px" />
             </q-avatar>
             <div class="q-ml-md">
-              <div class="text-h6">{{ feed.name }}</div>
-              <div class="text-body2 text-grey-7">{{ translateCategory(feed.category) }}</div>
+              <div class="text-h6">{{ getFeedDisplayName(feed, locale) }}</div>
+              <div v-if="getFeedSecondaryName(feed, locale)" class="text-body2 text-grey-5 text-italic">{{ getFeedSecondaryName(feed, locale) }}</div>
+              <div class="text-body2 text-grey-7">{{ translateCategory(feed.category, t) }}</div>
               <q-chip v-if="feed.is_custom" size="sm" color="secondary" text-color="white" class="q-mt-xs">
                 {{ $t('feed.customFeed') }}
               </q-chip>
@@ -162,23 +163,9 @@ import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 
 const router = useRouter();
-const { t } = useI18n();
+const { t, locale } = useI18n();
 
-const CATEGORY_I18N_MAP: Record<string, string> = {
-  Concentrate: 'feed.categories.concentrate',
-  Roughage: 'feed.categories.roughage',
-  'Green Fodder': 'feed.categories.greenFodder',
-  'Dry Fodder': 'feed.categories.dryFodder',
-  Silage: 'feed.categories.silage',
-  'By-product': 'feed.categories.byProduct',
-  'Mineral Mix': 'feed.categories.mineralMix',
-  Other: 'feed.categories.other',
-};
-
-function translateCategory(category: string): string {
-  const key = CATEGORY_I18N_MAP[category];
-  return key ? t(key) : category;
-}
+import { getFeedDisplayName, getFeedSecondaryName, translateCategory } from 'src/composables/useFeedDisplayName';
 
 const SEASON_I18N_MAP: Record<string, string> = {
   all_year: 'feed.seasons.allYear',

@@ -94,7 +94,7 @@
       <!-- Feed List grouped by category -->
       <template v-else>
         <div v-for="(categoryFeeds, category) in groupedFeeds" :key="category" class="q-mb-md">
-          <div class="text-subtitle2 text-grey-7 q-mb-xs">{{ translateCategory(String(category)) }}</div>
+          <div class="text-subtitle2 text-grey-7 q-mb-xs">{{ translateCategory(String(category), t) }}</div>
           <q-list bordered separator class="rounded-borders">
             <q-item
               v-for="feed in categoryFeeds"
@@ -173,25 +173,9 @@ import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useFeedsStore } from 'src/stores/feeds';
 import { useCurrency } from 'src/composables/useCurrency';
-import { getFeedDisplayName, getFeedSecondaryName } from 'src/composables/useFeedDisplayName';
+import { getFeedDisplayName, getFeedSecondaryName, translateCategory } from 'src/composables/useFeedDisplayName';
 
 const { t, locale } = useI18n();
-
-const CATEGORY_I18N_MAP: Record<string, string> = {
-  Concentrate: 'feed.categories.concentrate',
-  Roughage: 'feed.categories.roughage',
-  'Green Fodder': 'feed.categories.greenFodder',
-  'Dry Fodder': 'feed.categories.dryFodder',
-  Silage: 'feed.categories.silage',
-  'By-product': 'feed.categories.byProduct',
-  'Mineral Mix': 'feed.categories.mineralMix',
-  Other: 'feed.categories.other',
-};
-
-function translateCategory(category: string): string {
-  const key = CATEGORY_I18N_MAP[category];
-  return key ? t(key) : category;
-}
 
 const router = useRouter();
 const { formatCurrency } = useCurrency();
@@ -247,7 +231,7 @@ const filteredFeeds = computed(() => {
       (f.fd_name && f.fd_name.toLowerCase().includes(query)) ||
       (f.local_name && f.local_name.toLowerCase().includes(query)) ||
       f.category.toLowerCase().includes(query) ||
-      translateCategory(f.category).toLowerCase().includes(query)
+      translateCategory(f.category, t).toLowerCase().includes(query)
   );
 });
 

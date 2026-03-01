@@ -643,7 +643,36 @@
       "silage": "સાઇલેજ",
       "byProduct": "આડ-પેદાશ",
       "mineralMix": "મિનરલ મિક્સ",
-      "other": "અન્ય"
+      "other": "અન્ય",
+      "additive": "એડિટિવ",
+      "animalProtein": "પ્રાણી પ્રોટીન",
+      "aquatic": "જલીય",
+      "cerealHay": "ધાન્ય ઘાસચારો",
+      "cerealStover": "ધાન્યના દાંડા",
+      "cerealStraw": "ધાન્ય પરાળ",
+      "energySource": "ઊર્જાનો સ્ત્રોત",
+      "forage": "ઘાસચારો",
+      "grain": "અનાજ",
+      "grainCropForage": "અનાજનો ઘાસચારો",
+      "grainSubstitute": "અનાજનો વિકલ્પ / આડપેદાશ",
+      "grass": "ઘાસ",
+      "grassHay": "ઘાસનો ઘાસચારો",
+      "grassLegumeForage": "ઘાસ/કઠોળનો ઘાસચારો",
+      "legume": "કઠોળ",
+      "legumeHay": "કઠોળનો ઘાસચારો",
+      "legumeStraw": "કઠોળ પરાળ",
+      "minerals": "ખનીજ",
+      "mixedForage": "મિશ્ર ઘાસચારો",
+      "nonProteinNitrogen": "નોન-પ્રોટીન નાઇટ્રોજન",
+      "oilseedMeal": "તેલીબિયાંનો ખોળ",
+      "oilseedStraw": "તેલીબિયાં પરાળ",
+      "plantProtein": "વનસ્પતિ પ્રોટીન",
+      "proteinSupplement": "પ્રોટીન પૂરક",
+      "shrub": "ઝાડી",
+      "stover": "દાંડા",
+      "straw": "ઘાસચારો",
+      "succulent": "રસદાર",
+      "treeLeaves": "વૃક્ષના પાન"
     },
     "labels": {
       "dmPercent": "શુષ્ક પદાર્થ (DM)",
@@ -1546,7 +1575,7 @@
     "updateNow": "હવે અપડેટ કરો",
     "later": "પછી",
     "updateBanner": "અપડેટ ઉપલબ્ધ છે",
-    "appName": "RationSmart"
+    "appName": "રાશનસ્માર્ટ"
   },
   "storage": {
     "quotaWarning": "સ્ટોરેજ {percent}% ભરાઈ ગયું છે ({quotaMB} MB માંથી {usageMB} MB). જગ્યા ખાલી કરવા માટે જૂનો ડેટા સિંક અને ક્લિયર કરવાનું વિચારો."
