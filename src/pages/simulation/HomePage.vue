@@ -128,18 +128,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, inject } from 'vue';
 import { useRouter } from 'vue-router';
 import { useQuasar } from 'quasar';
 import { useI18n } from 'vue-i18n';
 import { useSimulationStore } from 'src/stores/simulation';
 import { useAuthStore } from 'src/stores/auth';
+import { openHistoryKey } from 'src/lib/injection-keys';
 const router = useRouter();
 const $q = useQuasar();
 const { t } = useI18n();
 const store = useSimulationStore();
 const authStore = useAuthStore();
 
+const openHistoryCounter = inject(openHistoryKey, ref(0));
 const loading = ref(false);
 const restoring = ref(false);
 

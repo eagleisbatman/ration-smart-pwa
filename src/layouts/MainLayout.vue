@@ -152,7 +152,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, provide } from 'vue';
+import { ref, computed, provide, watch } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useAuthStore } from 'src/stores/auth';
@@ -209,9 +209,13 @@ function goBack() {
 
 const showHistoryDialog = ref(false);
 
+// Open history dialog when child pages increment the counter (e.g. HomePage "View All")
+watch(openHistoryCounter, () => {
+  showHistoryDialog.value = true;
+});
+
 function openSimulationHistory() {
   leftDrawerOpen.value = false;
-  showHistoryDialog.value = true;
   openHistoryCounter.value++;
 }
 
