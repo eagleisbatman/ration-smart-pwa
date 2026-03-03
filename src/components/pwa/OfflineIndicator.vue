@@ -3,17 +3,14 @@
     <div v-if="!isOnline" class="offline-indicator">
       <q-icon name="cloud_off" class="q-mr-sm" />
       <span>{{ $t('offline.youAreOffline') }}</span>
-      <span v-if="hasPendingChanges" class="q-ml-sm pending-text">
-        ({{ $t('offline.pending', { count: pendingCount }) }})
-      </span>
     </div>
   </transition>
 </template>
 
 <script setup lang="ts">
-import { useOfflineSync } from 'src/composables/useOfflineSync';
+import { useNetworkStatus } from 'src/composables/useNetworkStatus';
 
-const { isOnline, hasPendingChanges, pendingCount } = useOfflineSync();
+const { isOnline } = useNetworkStatus();
 </script>
 
 <style lang="scss" scoped>
@@ -31,11 +28,6 @@ const { isOnline, hasPendingChanges, pendingCount } = useOfflineSync();
   z-index: 2001;
   font-size: 14px;
   padding-top: calc(8px + env(safe-area-inset-top));
-}
-
-.pending-text {
-  color: $warning;
-  font-weight: 500;
 }
 
 .slide-down-enter-active,

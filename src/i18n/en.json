@@ -50,11 +50,17 @@
     "selectRole": "What best describes you?",
     "notAffiliated": "Not affiliated with any organization",
     "notAvailable": "N/A",
+    "unknown": "Unknown",
     "tapToAddPhoto": "Tap to add photo",
     "takePhoto": "Take Photo",
     "chooseFromGallery": "Choose from Gallery",
     "removePhoto": "Remove Photo",
-    "you": "You"
+    "you": "You",
+    "units": {
+      "kg": "kg",
+      "litersPerDay": "L/d",
+      "liters": "L"
+    }
   },
   "countries": {
     "IN": "India",
@@ -1161,6 +1167,7 @@
     "about": "About",
     "version": "Version",
     "helpSupport": "Help & Support",
+    "feedback": "Feedback",
     "privacyPolicy": "Privacy Policy",
     "termsOfService": "Terms of Service",
     "support": "Support",
@@ -1216,29 +1223,29 @@
     "version": "Version",
     "buildWith": "Built with care by Digital Green",
     "faq": {
-      "addCow": {
-        "question": "How do I add a cow?",
-        "answer": "Go to the \"My Cows\" section from the home page or bottom navigation, then tap the \"+\" button. Fill in the cow's details such as name, breed, weight, and milk production, then tap Save."
+      "runSimulation": {
+        "question": "How do I run a simulation?",
+        "answer": "From the home page, tap \"Start New Simulation\". Enter your cattle's characteristics (breed, weight, milk production, etc.), then tap Continue. Select available feeds, and choose either \"Get Recommendation\" for an optimized diet or \"Evaluate Diet\" if you have specific quantities."
       },
-      "logMilk": {
-        "question": "How do I log milk production?",
-        "answer": "Navigate to \"Milk Logs\" from the bottom navigation, tap the \"+\" button, select a cow, enter the morning and/or evening milk yield in liters, and save the entry."
+      "feedCatalog": {
+        "question": "Where can I browse feeds?",
+        "answer": "Open the side menu and tap \"Feeds\" to browse the complete feed catalog. You can filter by type (Forage or Concentrate), search by name, and view detailed nutritional information for each feed."
       },
-      "dietOptimizer": {
-        "question": "How does the diet optimizer work?",
-        "answer": "The diet optimizer uses your cow's weight, milk production, and available feeds to calculate the most cost-effective or highest-yield diet. Go to \"Diet Plans\", create a new plan, select a cow and available feeds, choose your optimization goal, and the system will generate a recommended diet."
+      "editPrices": {
+        "question": "Can I edit feed prices?",
+        "answer": "Yes! When selecting feeds for a simulation, each selected feed shows a price field that you can edit. Enter your local prices to get more accurate cost estimates in the recommendation report."
       },
       "offlineUse": {
         "question": "Can I use the app offline?",
-        "answer": "Yes! You can view your cows, milk logs, and diet plans while offline. Any changes you make will be saved locally and automatically synced when you reconnect to the internet. Diet optimization requires an internet connection."
+        "answer": "The feed catalog is cached locally for offline browsing. However, running simulations (recommendations and evaluations) requires an internet connection as they are processed on the server."
       },
       "changeLanguage": {
         "question": "How do I change my language?",
         "answer": "Go to Settings and tap on \"Language\". Select your preferred language from the list. The app supports over 20 languages across multiple regions."
       },
-      "dataSync": {
-        "question": "How do I sync my data?",
-        "answer": "Your data syncs automatically when you are connected to the internet. You can also manually trigger a sync from Settings under \"Data & Sync\" by tapping the sync button."
+      "viewHistory": {
+        "question": "How do I view past simulations?",
+        "answer": "Your recent simulations appear on the home page. Tap \"View All\" to see your complete simulation history. You can tap any past simulation to restore its inputs and re-run it with different feeds or settings."
       }
     }
   },
@@ -1472,7 +1479,8 @@
     "serverError": "Server error. Please try again later.",
     "timeout": "The request timed out. Please try again.",
     "offlineAction": "This action requires an internet connection.",
-    "unexpectedError": "An unexpected error occurred.",
+    "sessionExpired": "Session expired. Please log in again.",
+    "unexpectedError": "An unexpected error occurred. Please refresh the page.",
     "phoneAlreadyRegistered": "This phone number is already registered.",
     "emailAlreadyRegistered": "This email is already registered.",
     "duplicateEntry": "This record already exists.",
@@ -1497,7 +1505,8 @@
     "pinMismatch": "PINs do not match",
     "pinStrengthWeak": "Weak PIN - easy to guess",
     "pinStrengthModerate": "Moderate",
-    "pinStrengthStrong": "Strong"
+    "pinStrengthStrong": "Strong",
+    "phoneTooShort": "Phone number is too short"
   },
   "units": {
     "kg": "kg",
@@ -1834,5 +1843,211 @@
     "orgTypeCooperative": "Cooperative",
     "orgTypeResearch": "Research",
     "orgTypeOther": "Other"
+  },
+  "feedback": {
+    "type": "Feedback Type",
+    "rating": "Overall Rating",
+    "message": "Your Feedback",
+    "submit": "Submit Feedback",
+    "thankYou": "Thank you for your feedback!",
+    "error": "Failed to submit feedback. Please try again.",
+    "tooLong": "Feedback must be 1000 characters or less",
+    "typeGeneral": "General",
+    "typeDefect": "Report a Bug",
+    "typeFeature": "Feature Request"
+  },
+  "simulation": {
+    "title": "New Simulation",
+    "cattleInfo": "Cattle Information",
+    "feedSelection": "Feed Selection",
+    "evaluationReport": "Evaluation Report",
+    "recommendationReport": "Recommendation Report",
+    "continue": "Continue",
+    "newCase": "New Case",
+    "history": "Simulation History",
+    "historyEmpty": "No simulations yet",
+    "historyEmptyDesc": "Run a simulation to see it here.",
+    "restoring": "Restoring simulation...",
+    "generating": "Generating report...",
+    "generatingDesc": "This may take up to 90 seconds.",
+    "sections": {
+      "animalCharacteristics": "Animal Characteristics",
+      "milkProduction": "Milk Production",
+      "reproductiveData": "Reproductive Data",
+      "environment": "Environment"
+    },
+    "fields": {
+      "bodyWeight": "Body Weight (kg)",
+      "breed": "Breed",
+      "bcScore": "Body Condition Score",
+      "lactating": "Currently Lactating",
+      "daysInMilk": "Days in Milk",
+      "milkProduction": "Milk Production (L/day)",
+      "fatMilk": "Milk Fat (%)",
+      "tpMilk": "Milk True Protein (%)",
+      "parity": "Parity (Lactation Number)",
+      "daysOfPregnancy": "Days of Pregnancy",
+      "calvingInterval": "Calving Interval (days)",
+      "temperature": "Temperature (°C)",
+      "topography": "Topography",
+      "distance": "Walking Distance (km)",
+      "grazing": "Grazing",
+      "bwGain": "Body Weight Gain (kg/day)"
+    },
+    "topographyOptions": {
+      "flat": "Flat",
+      "hilly": "Hilly",
+      "mountainous": "Mountainous"
+    },
+    "validation": {
+      "breedRequired": "Breed is required",
+      "bodyWeightMin": "Body weight must be at least 100 kg",
+      "bodyWeightMax": "Body weight must not exceed 1200 kg",
+      "milkProductionMin": "Milk production must be at least 0",
+      "milkProductionMax": "Milk production must not exceed 80 L/day",
+      "minZero": "Value must be 0 or greater",
+      "daysInMilkMax": "Days in milk must not exceed 700",
+      "fatMilkMin": "Milk fat must be at least 1%",
+      "fatMilkMax": "Milk fat must not exceed 8%",
+      "tpMilkMin": "Milk protein must be at least 1%",
+      "tpMilkMax": "Milk protein must not exceed 6%",
+      "parityMax": "Parity must not exceed 15",
+      "daysOfPregnancyMax": "Days of pregnancy must not exceed 290",
+      "calvingIntervalMin": "Calving interval must be at least 300 days",
+      "calvingIntervalMax": "Calving interval must not exceed 600 days",
+      "temperatureMin": "Temperature must be at least -20\u00b0C",
+      "temperatureMax": "Temperature must not exceed 50\u00b0C",
+      "distanceMax": "Walking distance must not exceed 50 km",
+      "bwGainMin": "Body weight gain must be at least -1 kg/day",
+      "bwGainMax": "Body weight gain must not exceed 2 kg/day",
+      "priceMin": "Price must be greater than 0",
+      "milkOverrideMin": "Milk production must be at least 1 L/day",
+      "milkOverrideMax": "Milk production must not exceed 60 L/day",
+      "constraintMin": "Value must be 0 or greater",
+      "constraintMax": "Value must not exceed 100",
+      "required": "This field is required",
+      "lactatingLatePregnancy": "Cow is lactating with {days} days of pregnancy. Cows are typically dried off after 210-220 days. Continue anyway?",
+      "notLactatingCleared": "Milk production fields were cleared since animal is not lactating."
+    },
+    "historyItem": {
+      "evaluation": "Diet Evaluation",
+      "recommendation": "Diet Recommendation",
+      "breed": "Breed",
+      "weight": "Weight",
+      "milk": "Milk"
+    },
+    "feedSelect": {
+      "title": "Select Feeds",
+      "filterAll": "All",
+      "filterForage": "Forage",
+      "filterConcentrate": "Concentrate",
+      "category": "Category",
+      "allCategories": "All Categories",
+      "selectedFeeds": "Selected Feeds",
+      "noFeedsSelected": "No feeds selected",
+      "selectAtLeast": "Select at least one feed to continue",
+      "pricePerKg": "Price/kg",
+      "quantityKg": "Quantity (kg/day)",
+      "quantityOptional": "Quantity (optional)",
+      "customLimits": "Custom Diet Limits",
+      "withQuantities": "Evaluate Diet",
+      "withoutQuantities": "Get Recommendation",
+      "priceRequired": "All feeds must have a price greater than zero",
+      "quantityRequired": "All feeds must have a quantity greater than zero for evaluation",
+      "maxFeedsReached": "Maximum of {max} feeds can be selected"
+    },
+    "constraints": {
+      "title": "Custom Diet Limits",
+      "fiberNdf": "Fiber NDF (% of DM)",
+      "starch": "Starch (% of DM)",
+      "fatEe": "Fat / EE (% of DM)",
+      "ash": "Ash (% of DM)",
+      "resetDefaults": "Reset to Defaults",
+      "hintRange": "{min} – {max}"
+    },
+    "evaluation": {
+      "title": "Diet Evaluation Report",
+      "overallStatus": "Overall Status",
+      "milkAnalysis": "Milk Production Analysis",
+      "targetMilk": "Target Milk",
+      "supportedByEnergy": "Supported by Energy",
+      "supportedByProtein": "Supported by Protein",
+      "limitingNutrient": "Limiting Nutrient",
+      "intakeEvaluation": "Intake Evaluation",
+      "actualIntake": "Actual Intake",
+      "targetIntake": "Target Intake",
+      "costAnalysis": "Cost Analysis",
+      "totalCost": "Total Cost/Day",
+      "costPerKgMilk": "Cost/kg Milk",
+      "nutrientBalance": "Nutrient Balance",
+      "generateRecommendation": "Generate Recommendation",
+      "generateRecommendationDesc": "Generate an optimized diet recommendation based on these feeds",
+      "milkOverride": "Target Milk Production (L/day)",
+      "milkOverrideHint": "1 – 60 L/day",
+      "useCurrentMilk": "Use current milk production",
+      "noData": "No evaluation data available"
+    },
+    "recommendation": {
+      "title": "Diet Recommendation Report",
+      "reportInfo": "Report Information",
+      "reportId": "Report ID",
+      "simulationId": "Simulation ID",
+      "date": "Date",
+      "solutionSummary": "Solution Summary",
+      "dailyCost": "Daily Cost",
+      "dmIntake": "DM Intake",
+      "milkProduction": "Milk Production",
+      "feedBreakdown": "Feed Breakdown",
+      "feedName": "Feed",
+      "quantity": "Qty (kg)",
+      "cost": "Cost",
+      "percentage": "% of DM",
+      "totalCost": "Total Cost",
+      "dietStatus": "Diet Status",
+      "warnings": "Warnings",
+      "recommendations": "Recommendations",
+      "saveReport": "Save Report",
+      "reportSaved": "Report saved successfully",
+      "noData": "No recommendation data available",
+      "infeasible": "No feasible diet found",
+      "infeasibleDetail": "The selected feeds cannot meet the nutritional requirements for this animal. The optimizer could not find a balanced diet.",
+      "infeasibleHint": "Try adding more feed variety — include forages, protein-rich concentrates (e.g. oilseed meals), and a mineral supplement.",
+      "tryAgain": "Change Feeds"
+    },
+    "methane": {
+      "title": "Environmental Impact",
+      "production": "Methane Production",
+      "yield": "Methane Yield",
+      "intensity": "Methane Intensity",
+      "conversionRate": "Energy Conversion Rate",
+      "gPerDay": "g/day",
+      "gPerKgDmi": "g/kg DMI",
+      "gPerKgMilk": "g/kg milk",
+      "percent": "%"
+    },
+    "animalSummary": {
+      "title": "Animal Characteristics"
+    },
+    "status": {
+      "perfect": "Perfect",
+      "good": "Good",
+      "adequate": "Adequate",
+      "marginal": "Marginal",
+      "deficient": "Deficient",
+      "excess": "Excess",
+      "infeasible": "Infeasible"
+    },
+    "home": {
+      "welcome": "Welcome, {name}",
+      "goodMorning": "Good morning",
+      "goodAfternoon": "Good afternoon",
+      "goodEvening": "Good evening",
+      "startSimulation": "Start New Simulation",
+      "startSimulationDesc": "Configure cattle info and feeds to get a diet recommendation",
+      "recentSimulations": "Recent Simulations",
+      "noSimulations": "No simulations yet",
+      "noSimulationsDesc": "Run your first simulation to see it here",
+      "viewAll": "View All"
+    }
   }
 }

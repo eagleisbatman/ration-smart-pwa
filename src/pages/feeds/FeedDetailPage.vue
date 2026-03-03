@@ -70,7 +70,7 @@
             </q-item-section>
           </q-item>
 
-          <q-item v-if="feed.ndf_percentage">
+          <q-item v-if="feed.ndf_percentage != null">
             <q-item-section>
               <q-item-label>{{ $t('feed.labels.ndfPercent') }}</q-item-label>
             </q-item-section>
@@ -79,7 +79,7 @@
             </q-item-section>
           </q-item>
 
-          <q-item v-if="feed.ca_percentage">
+          <q-item v-if="feed.ca_percentage != null">
             <q-item-section>
               <q-item-label>{{ $t('feed.labels.caPercent') }}</q-item-label>
             </q-item-section>
@@ -88,7 +88,7 @@
             </q-item-section>
           </q-item>
 
-          <q-item v-if="feed.p_percentage">
+          <q-item v-if="feed.p_percentage != null">
             <q-item-section>
               <q-item-label>{{ $t('feed.labels.pPercent') }}</q-item-label>
             </q-item-section>
@@ -119,7 +119,7 @@
       </template>
 
       <!-- Price -->
-      <template v-if="feed.price_per_kg">
+      <template v-if="feed.price_per_kg != null">
         <div class="text-subtitle1 q-mb-sm">{{ $t('feed.labels.pricing') }}</div>
         <q-card flat bordered class="q-mb-md">
           <q-card-section class="text-center">
@@ -132,16 +132,6 @@
       <!-- Price History -->
       <FeedPriceHistoryChart :feed-id="feedId" class="q-mb-md" />
 
-      <!-- Edit button for custom feeds -->
-      <q-btn
-        v-if="feed.is_custom"
-        :label="$t('feed.editFeed')"
-        icon="edit"
-        color="primary"
-        class="full-width"
-        unelevated
-        @click="router.push(`/feeds/${feed.id}/edit`)"
-      />
     </template>
 
     <template v-else>

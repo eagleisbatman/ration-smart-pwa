@@ -97,16 +97,16 @@
 </template>
 
 <script setup lang="ts">
+import { version as appVersion } from '../../../package.json';
+
 const faqKeys = [
-  'addCow',
-  'logMilk',
-  'dietOptimizer',
+  'runSimulation',
+  'feedCatalog',
+  'editPrices',
   'offlineUse',
   'changeLanguage',
-  'dataSync',
+  'viewHistory',
 ];
-
-const appVersion = '1.0.0';
 </script>
 
 <style lang="scss" scoped>

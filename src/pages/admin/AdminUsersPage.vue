@@ -24,7 +24,7 @@
     <q-banner v-else-if="adminStore.error" class="bg-negative text-white q-mb-md" rounded>
       {{ adminStore.error }}
       <template #action>
-        <q-btn flat label="Retry" @click="fetchUsers" />
+        <q-btn flat :label="$t('common.retry')" @click="fetchUsers" />
       </template>
     </q-banner>
 

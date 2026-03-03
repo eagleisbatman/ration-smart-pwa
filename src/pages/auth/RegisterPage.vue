@@ -84,7 +84,10 @@
             type="tel"
             outlined
             :mask="selectedPhoneMask"
-            :rules="[(val) => !!val || $t('validation.required')]"
+            :rules="[
+              (val: string) => !!val || $t('validation.required'),
+              (val: string) => val.replace(/\D/g, '').length >= 7 || $t('validation.phoneTooShort'),
+            ]"
           >
             <template #prepend>
               <img :src="flagUrl(form.country_code)" width="20" height="15" class="q-mr-xs flag-img" />
@@ -221,7 +224,6 @@ import { ref, reactive, computed, onMounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useAuthStore } from 'src/stores/auth';
-import { setOnboardingItem } from 'src/lib/onboarding-storage';
 import { getDialCode, getPhoneMask, FALLBACK_COUNTRIES, SUPPORTED_COUNTRY_CODES, COUNTRY_LANGUAGE_MAP } from 'src/services/api-adapter';
 import { useGeoCountry } from 'src/composables/useGeoCountry';
 import { availableLocales, setLocale } from 'src/boot/i18n';
@@ -358,11 +360,23 @@ async function onSubmit() {
   const success = await authStore.register(data);
 
   if (success) {
-    // Store country and language for onboarding flow
-    setOnboardingItem('selected_country', form.country_code);
-    setOnboardingItem('onboarding_language', selectedLanguage.value);
-    // Skip language step — already selected during registration
-    router.push('/auth/role');
+    // Auto-set role and create self-profile, then go to simulation home.
+    // These are best-effort — registration already succeeded, so we proceed
+    // to home even if they fail (profile can be completed later).
+    try {
+      await authStore.updateUserSettings({
+        user_role: 'farmer',
+        language_code: selectedLanguage.value,
+      });
+    } catch {
+      console.warn('[Register] Failed to set user settings post-registration');
+    }
+    try {
+      await authStore.createSelfProfile({ name: form.name });
+    } catch {
+      console.warn('[Register] Failed to create self-profile post-registration');
+    }
+    router.push('/');
   }
 }
 </script>

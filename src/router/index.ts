@@ -22,18 +22,13 @@ export default route(function (/* { store, ssrContext } */) {
   });
 
   // Promise-based guard: set once and reused by concurrent navigations.
-  // Using a Promise (not a boolean) ensures that if two navigations race before
-  // initialize() completes, the second one awaits the SAME promise rather than
-  // skipping init and running guards against partially-loaded store state.
   let initPromise: Promise<void> | null = null;
 
   // Navigation guards
   Router.beforeEach(async (to, _from, next) => {
     const authStore = useAuthStore();
-    const isOnboardingRoute = to.matched.some((record) => record.meta.isOnboarding);
 
     // Initialize auth store once per session (loads user profile from IndexedDB + API).
-    // Must await to ensure selfFarmerProfileId is loaded before onboarding checks.
     // Timeout after 5s to prevent blocking navigation on slow/offline networks.
     if (!initPromise && authStore.isAuthenticated) {
       initPromise = Promise.race([
@@ -53,18 +48,10 @@ export default route(function (/* { store, ssrContext } */) {
           next({ name: 'offline' });
           return;
         }
-        // Redirect to login with return URL
         next({
           path: '/auth/login',
           query: { redirect: to.fullPath },
         });
-        return;
-      }
-
-      // Check if authenticated user needs to complete onboarding
-      if (authStore.needsOnboarding && !isOnboardingRoute) {
-        // Redirect to onboarding flow
-        next({ path: '/auth/role' });
         return;
       }
     }
@@ -80,12 +67,7 @@ export default route(function (/* { store, ssrContext } */) {
     // Check if route requires guest (non-authenticated)
     if (to.matched.some((record) => record.meta.requiresGuest)) {
       if (authStore.isAuthenticated) {
-        // Check if user needs onboarding before going to home
-        if (authStore.needsOnboarding) {
-          next({ path: '/auth/role' });
-        } else {
-          next({ path: '/' });
-        }
+        next({ path: '/' });
         return;
       }
     }

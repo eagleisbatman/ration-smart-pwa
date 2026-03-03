@@ -19,7 +19,7 @@
           @click="goBack"
         />
         <q-btn
-          v-else-if="!hideDrawerToggle"
+          v-else
           flat
           dense
           round
@@ -31,16 +31,6 @@
         <q-toolbar-title>
           {{ pageTitle || 'RationSmart' }}
         </q-toolbar-title>
-
-        <SyncStatusChip v-if="isAuthenticated" />
-
-        <q-btn v-if="showMenu" flat round dense icon="more_vert" color="white">
-          <q-menu>
-            <q-list class="user-menu-list">
-              <slot name="menu-items" />
-            </q-list>
-          </q-menu>
-        </q-btn>
       </q-toolbar>
     </q-header>
 
@@ -62,7 +52,7 @@
             <q-icon name="person" size="32px" />
           </q-avatar>
           <div class="q-mt-sm text-subtitle1">{{ userName }}</div>
-          <div class="text-caption text-grey-6">{{ userEmail }}</div>
+          <div class="text-caption text-grey-6">{{ userPhone }}</div>
           <q-chip v-if="authStore.isAnyAdmin" dense outline size="sm" class="q-mt-xs q-ml-none">
             <q-icon name="verified_user" size="12px" class="q-mr-xs" />
             {{ adminLevelLabel }}
@@ -71,23 +61,56 @@
 
         <!-- Navigation -->
         <q-list padding>
-          <q-item
-            v-for="item in navItems"
-            :key="item.to"
-            v-ripple
-            :to="item.to"
-            clickable
-            :active="isActive(item.to)"
-            active-class="text-primary bg-grey-2"
-          >
+          <q-item v-ripple clickable @click="openSimulationHistory">
             <q-item-section avatar>
-              <q-icon :name="item.icon" />
+              <q-icon name="history" />
             </q-item-section>
-            <q-item-section>{{ item.label }}</q-item-section>
-            <q-item-section v-if="item.badge" side>
-              <q-badge :label="item.badge" color="primary" />
-            </q-item-section>
+            <q-item-section>{{ $t('simulation.history') }}</q-item-section>
           </q-item>
+
+          <q-item v-ripple clickable to="/settings/profile" active-class="text-primary bg-grey-2">
+            <q-item-section avatar>
+              <q-icon name="person" />
+            </q-item-section>
+            <q-item-section>{{ $t('settings.profile') }}</q-item-section>
+          </q-item>
+
+          <q-item v-ripple clickable to="/feeds" active-class="text-primary bg-grey-2">
+            <q-item-section avatar>
+              <q-icon name="grass" />
+            </q-item-section>
+            <q-item-section>{{ $t('nav.feeds') }}</q-item-section>
+          </q-item>
+
+          <q-item v-ripple clickable to="/settings/help" active-class="text-primary bg-grey-2">
+            <q-item-section avatar>
+              <q-icon name="help_outline" />
+            </q-item-section>
+            <q-item-section>{{ $t('settings.helpSupport') }}</q-item-section>
+          </q-item>
+
+          <q-item v-ripple clickable to="/settings/feedback" active-class="text-primary bg-grey-2">
+            <q-item-section avatar>
+              <q-icon name="feedback" />
+            </q-item-section>
+            <q-item-section>{{ $t('settings.feedback') }}</q-item-section>
+          </q-item>
+
+          <q-item v-ripple clickable to="/settings/privacy" active-class="text-primary bg-grey-2">
+            <q-item-section avatar>
+              <q-icon name="gavel" />
+            </q-item-section>
+            <q-item-section>{{ $t('settings.privacyPolicy') }}</q-item-section>
+          </q-item>
+
+          <template v-if="authStore.isAnyAdmin">
+            <q-item v-ripple clickable to="/admin" active-class="text-primary bg-grey-2">
+              <q-item-section avatar>
+                <q-icon name="admin_panel_settings" />
+              </q-item-section>
+              <q-item-section>{{ $t('nav.admin') }}</q-item-section>
+            </q-item>
+          </template>
 
           <q-separator class="q-my-md" />
 
@@ -110,103 +133,35 @@
       </router-view>
     </q-page-container>
 
-    <!-- Bottom Navigation (Mobile) -->
-    <q-footer v-if="showBottomNav" bordered>
-      <q-tabs
-        v-model="activeTab"
-        class="text-dark"
-        active-color="primary"
-        indicator-color="transparent"
-        dense
-      >
-        <q-route-tab
-          v-for="tab in bottomNavItems"
-          :key="tab.to"
-          :to="tab.to"
-          :icon="tab.icon"
-          :label="tab.label"
-          :exact="tab.to === '/'"
-        >
-          <q-badge v-if="tab.badge" floating rounded color="warning" :label="tab.badge" />
-        </q-route-tab>
-      </q-tabs>
-    </q-footer>
-
     <!-- Add to Home Screen -->
     <AddToHomeScreen ref="a2hsRef" />
-
-    <!-- Sync Conflict Dialog (global) -->
-    <SyncConflictDialog v-if="isAuthenticated" />
-
-    <!-- FAB for quick actions -->
-    <q-page-sticky v-if="showFab" position="bottom-right" :offset="[16, 72]">
-      <q-fab
-        icon="add"
-        direction="up"
-        color="primary"
-        padding="sm"
-        vertical-actions-align="right"
-        @click="medium()"
-      >
-        <q-fab-action
-          color="primary"
-          :icon="COW_ICON"
-          :label="$t('nav.addCow')"
-          label-position="left"
-          external-label
-          padding="xs"
-          @click="onFabAction('/cows/new')"
-        />
-        <q-fab-action
-          color="primary"
-          icon="water_drop"
-          :label="$t('nav.logMilk')"
-          label-position="left"
-          external-label
-          padding="xs"
-          @click="onFabAction('/logs/new')"
-        />
-        <q-fab-action
-          color="primary"
-          icon="menu_book"
-          :label="$t('nav.getDiet')"
-          label-position="left"
-          external-label
-          padding="xs"
-          @click="onFabAction('/diet/new')"
-        />
-      </q-fab>
-    </q-page-sticky>
   </q-layout>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
+import { ref, computed, provide } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import { useQuasar } from 'quasar';
 import { useI18n } from 'vue-i18n';
 import { useAuthStore } from 'src/stores/auth';
-import { useOfflineSync } from 'src/composables/useOfflineSync';
 import { useHapticFeedback } from 'src/composables/useHapticFeedback';
 import OfflineIndicator from 'src/components/pwa/OfflineIndicator.vue';
 import UpdatePrompt from 'src/components/pwa/UpdatePrompt.vue';
 import AddToHomeScreen from 'src/components/pwa/AddToHomeScreen.vue';
-import SyncStatusChip from 'src/components/ui/SyncStatusChip.vue';
-import SyncConflictDialog from 'src/components/pwa/SyncConflictDialog.vue';
-import { COW_ICON } from 'src/boot/icons';
 import { backOverride } from 'src/lib/back-override';
+import { openHistoryKey } from 'src/lib/injection-keys';
 
-const $q = useQuasar();
 const router = useRouter();
 const route = useRoute();
 const { t } = useI18n();
 const authStore = useAuthStore();
-const { pendingCount } = useOfflineSync();
 const { light, medium } = useHapticFeedback();
 
 const leftDrawerOpen = ref(false);
-const activeTab = ref('/');
 const a2hsRef = ref<InstanceType<typeof AddToHomeScreen> | null>(null);
+
+// Provide a reactive counter for simulation history dialog trigger
+const openHistoryCounter = ref(0);
+provide(openHistoryKey, openHistoryCounter);
 
 // Admin level label for drawer badge
 const adminLevelLabel = computed(() => {
@@ -219,9 +174,8 @@ const adminLevelLabel = computed(() => {
 });
 
 // User info
-const isAuthenticated = computed(() => authStore.isAuthenticated);
 const userName = computed(() => authStore.user?.name || 'User');
-const userEmail = computed(() => authStore.user?.email || authStore.user?.phone || '');
+const userPhone = computed(() => authStore.user?.phone || '');
 
 // Page title from route meta (supports i18n titleKey or plain title)
 const pageTitle = computed(() => {
@@ -232,81 +186,27 @@ const pageTitle = computed(() => {
 
 // Navigation configuration
 const showBackButton = computed(() => !!route.meta?.showBack);
-const hideDrawerToggle = computed(() => !!route.meta?.hideDrawer);
-const showMenu = computed(() => !!route.meta?.showMenu);
-const showBottomNav = computed(() => $q.screen.xs && !route.meta?.hideBottomNav);
-const showFab = computed(() => !route.meta?.hideFab && isAuthenticated.value);
-
-const navItems = computed(() => {
-  const items = [
-    { to: '/', icon: 'home', label: t('nav.home') },
-    // Only show Farmers nav for EWs / users managing farmers (not pure farmer role)
-    ...(!authStore.isFarmerRole ? [{ to: '/farmers', icon: 'people', label: t('nav.farmers') }] : []),
-    { to: '/cows', icon: COW_ICON, label: t('nav.myCows') },
-    { to: '/diet', icon: 'menu_book', label: t('nav.diet') },
-    { to: '/feeds', icon: 'grass', label: t('nav.feeds') },
-    { to: '/logs', icon: 'water_drop', label: t('nav.milkLogs'), badge: pendingCount.value > 0 ? pendingCount.value : undefined },
-    { to: '/yields', icon: 'analytics', label: t('nav.milkSummary') },
-    { to: '/reports', icon: 'summarize', label: t('nav.reports') },
-  ];
-  // Admin section: analytics + admin panel for org_admin, country_admin, super_admin
-  if (authStore.isAnyAdmin) {
-    items.push({ to: '/analytics', icon: 'insights', label: t('nav.analytics') });
-    items.push({ to: '/admin', icon: 'admin_panel_settings', label: t('nav.admin') });
-  }
-  items.push({ to: '/settings', icon: 'settings', label: t('nav.settings') });
-  return items;
-});
-
-const bottomNavItems = computed(() => [
-  { to: '/', icon: 'home', label: t('nav.home') },
-  { to: '/cows', icon: COW_ICON, label: t('nav.cows') },
-  { to: '/logs', icon: 'water_drop', label: t('nav.milkLogs'), badge: pendingCount.value > 0 ? pendingCount.value : undefined },
-  { to: '/diet', icon: 'menu_book', label: t('nav.diet') },
-]);
-
-function isActive(path: string): boolean {
-  if (path === '/') return route.path === '/';
-  return route.path === path || route.path.startsWith(path + '/');
-}
 
 function goBack() {
-  light(); // Haptic feedback on back navigation
-  // Let pages with in-page drill-down (e.g. analytics) handle back first
+  light();
   if (backOverride.value && backOverride.value()) return;
   router.back();
 }
 
-function onFabAction(path: string) {
-  medium(); // Haptic feedback on FAB action
-  router.push(path);
+function openSimulationHistory() {
+  leftDrawerOpen.value = false;
+  openHistoryCounter.value++;
 }
 
 async function logout() {
-  medium(); // Haptic feedback on logout action
+  medium();
   await authStore.logout();
   router.push('/auth/login');
 }
-
-// Sync active tab with route
-watch(
-  () => route.path,
-  (path) => {
-    const matchingTab = bottomNavItems.value.find(
-      (item) => path === item.to || path.startsWith(item.to + '/')
-    );
-    if (matchingTab) {
-      activeTab.value = matchingTab.to;
-    }
-  },
-  { immediate: true }
-);
 </script>
 
 <style lang="scss" scoped>
 .main-header {
-  // bg-primary + text-white set in template; this just overrides Quasar's
-  // default header border with a subtle same-tone separator.
   border-color: rgba(0, 0, 0, 0.15) !important;
 }
 
@@ -323,21 +223,5 @@ watch(
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
-}
-
-.q-footer {
-  background: white;
-  padding-bottom: env(safe-area-inset-bottom);
-  // Active tab gets a subtle primary top-border indicator
-  :deep(.q-tab.q-tab--active) {
-    border-top: 2px solid var(--q-primary);
-  }
-  :deep(.q-tab) {
-    border-top: 2px solid transparent;
-  }
-}
-
-.user-menu-list {
-  min-width: 150px;
 }
 </style>

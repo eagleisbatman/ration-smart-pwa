@@ -7,7 +7,7 @@ import type { Feed } from 'src/lib/offline/db';
  * `feed.fd_name` (the English scientific/standard name) is preferred.
  */
 const LOCAL_LOCALES = new Set([
-  'hi', 'bn', 'sw', 'mr', 'te', 'ta', 'kn', 'gu', 'pa', 'or',
+  'hi', 'bn', 'sw', 'mr', 'te', 'ta', 'kn', 'gu', 'pa', 'or', 'ml', 'as',
   'ar', 'ur', // RTL locales also use local names
 ]);
 

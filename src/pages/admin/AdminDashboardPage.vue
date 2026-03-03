@@ -18,7 +18,7 @@
     <q-banner v-if="loadError" inline-actions class="bg-negative text-white q-mb-md" rounded>
       {{ $t('errors.loadFailed') }}
       <template #action>
-        <q-btn flat :label="$t('common.retry')" @click="$router.go(0)" />
+        <q-btn flat :label="$t('common.retry')" @click="retryLoad" />
       </template>
     </q-banner>
 
@@ -32,7 +32,10 @@
               <div>
                 <div class="text-subtitle1 text-weight-medium">{{ $t('admin.manageUsers') }}</div>
                 <div class="text-caption text-grey-7">
-                  <template v-if="userCount > 0">{{ userCount }} {{ $t('admin.users') }}</template>
+                  <template v-if="loading">
+                    <q-spinner size="12px" class="q-mr-xs" />
+                  </template>
+                  <template v-else-if="userCount > 0">{{ userCount }} {{ $t('admin.users') }}</template>
                   <template v-else>{{ $t('admin.setAdminLevel') }}</template>
                 </div>
               </div>
@@ -41,36 +44,7 @@
         </q-card>
       </div>
 
-      <div v-if="authStore.isCountryAdmin || authStore.isSuperAdmin" class="col-12 col-sm-4">
-        <q-card flat bordered class="cursor-pointer" @click="router.push('/admin/orgs')">
-          <q-card-section>
-            <div class="row items-center no-wrap">
-              <q-icon name="business" size="32px" color="primary" class="q-mr-md" />
-              <div>
-                <div class="text-subtitle1 text-weight-medium">{{ $t('admin.manageOrgs') }}</div>
-                <div class="text-caption text-grey-7">
-                  <template v-if="orgCount > 0">{{ orgCount }} {{ $t('admin.organizations') }}</template>
-                  <template v-else>{{ $t('admin.orgManagement') }}</template>
-                </div>
-              </div>
-            </div>
-          </q-card-section>
-        </q-card>
-      </div>
-
-      <div class="col-12 col-sm-4">
-        <q-card flat bordered class="cursor-pointer" @click="router.push('/analytics')">
-          <q-card-section>
-            <div class="row items-center no-wrap">
-              <q-icon name="insights" size="32px" color="primary" class="q-mr-md" />
-              <div>
-                <div class="text-subtitle1 text-weight-medium">{{ $t('admin.viewAnalytics') }}</div>
-                <div class="text-caption text-grey-7">{{ $t('admin.analytics') }}</div>
-              </div>
-            </div>
-          </q-card-section>
-        </q-card>
-      </div>
+      <!-- Orgs and Analytics cards removed — routes not available in app-lite -->
     </div>
   </q-page>
 </template>
@@ -88,8 +62,8 @@ const adminStore = useAdminStore();
 const { t } = useI18n();
 
 const userCount = ref(0);
-const orgCount = ref(0);
 const loadError = ref(false);
+const loading = ref(true);
 
 const adminLevelLabel = computed(() => {
   switch (authStore.adminLevel) {
@@ -100,16 +74,18 @@ const adminLevelLabel = computed(() => {
   }
 });
 
-onMounted(async () => {
+async function retryLoad() {
+  loadError.value = false;
+  loading.value = true;
   try {
-    const [usersResult, orgsResult] = await Promise.all([
-      adminStore.fetchAllUsers(1, 1),
-      adminStore.fetchOrgs(),
-    ]);
+    const usersResult = await adminStore.fetchAllUsers(1, 1);
     userCount.value = usersResult.total;
-    orgCount.value = orgsResult.total;
   } catch {
     loadError.value = true;
+  } finally {
+    loading.value = false;
   }
-});
+}
+
+onMounted(retryLoad);
 </script>

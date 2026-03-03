@@ -2,10 +2,14 @@
   <q-page class="q-pa-md">
     <q-form class="q-gutter-md" @submit="onSubmit">
       <!-- Avatar -->
-      <PhotoUploadSection
-        :model-value="profileImage ?? undefined"
-        @update:model-value="onProfileImageChange"
-      />
+      <div class="flex justify-center q-mb-md">
+        <q-avatar v-if="profileImage" size="80px">
+          <q-img :src="profileImage" :ratio="1" />
+        </q-avatar>
+        <q-avatar v-else size="80px" color="primary" text-color="white">
+          <q-icon name="person" size="40px" />
+        </q-avatar>
+      </div>
 
       <!-- Name -->
       <q-input
@@ -168,7 +172,6 @@ import { useI18n } from 'vue-i18n';
 import { useAuthStore } from 'src/stores/auth';
 import { availableLocales } from 'src/boot/i18n';
 import ChangeContactDialog from 'src/components/settings/ChangeContactDialog.vue';
-import PhotoUploadSection from 'src/components/shared/PhotoUploadSection.vue';
 
 const $q = useQuasar();
 const { t } = useI18n();
@@ -200,11 +203,6 @@ function onContactChanged() {
         : t('profile.phone'),
     }),
   });
-}
-
-function onProfileImageChange(value: string | undefined) {
-  profileImage.value = value ?? null;
-  authStore.setProfileImage(value ?? null);
 }
 
 const form = reactive({

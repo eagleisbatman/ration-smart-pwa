@@ -6,6 +6,7 @@ import type { Router } from 'vue-router';
 import { useAuthStore } from 'src/stores/auth';
 import { handleRequestInterceptor, handleResponseInterceptor, setApiRef } from 'src/services/api-adapter';
 import { api } from 'src/lib/api';
+import { i18n } from 'src/boot/i18n';
 
 // Router instance set during boot, used by the 401 interceptor to redirect
 let appRouter: Router | null = null;
@@ -85,7 +86,7 @@ api.interceptors.response.use(
       // register-phone calls (country_id becomes undefined → Pydantic 422).
       Notify.create({
         type: 'warning',
-        message: 'Session expired. Please log in again.',
+        message: i18n.global.t('errors.sessionExpired'),
         icon: 'lock_clock',
         position: 'top',
         timeout: 4000,
@@ -122,7 +123,7 @@ export default boot(({ app, router }) => {
     console.error('[Vue] Unhandled component error:', err, 'info:', info);
     Notify.create({
       type: 'negative',
-      message: 'An unexpected error occurred. Please refresh the page.',
+      message: i18n.global.t('errors.unexpectedError'),
       position: 'top',
       timeout: 5000,
     });
