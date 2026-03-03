@@ -33,6 +33,14 @@ const COUNTRY_CURRENCY_MAP: Record<string, CurrencyConfig> = {
 const DEFAULT_CURRENCY: CurrencyConfig = COUNTRY_CURRENCY_MAP.IN;
 
 /**
+ * Standalone helper to get ISO 4217 currency code from alpha-2 country code.
+ * Can be used outside Vue components (e.g., in Pinia stores).
+ */
+export function getCurrencyCodeForCountry(countryCode: string): string {
+  return COUNTRY_CURRENCY_MAP[countryCode]?.code || 'INR';
+}
+
+/**
  * Composable for currency formatting based on user's country
  *
  * @example

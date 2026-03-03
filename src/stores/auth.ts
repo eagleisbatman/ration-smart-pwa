@@ -94,7 +94,7 @@ export const useAuthStore = defineStore('auth', () => {
     () => user.value?.country_code || localStorage.getItem('last_country_code') || ''
   );
   const userLanguage = computed(() => user.value?.language_code || preferredLanguage.value || 'en');
-  const needsOnboarding = computed(() => isAuthenticated.value && !selfFarmerProfileId.value && !onboardingSkipped.value);
+  const needsOnboarding = computed(() => false);
 
   // Role-based computed properties
   const isExtensionWorker = computed(() => {
@@ -636,17 +636,8 @@ export const useAuthStore = defineStore('auth', () => {
 
     // Clear in-memory state of data stores to prevent stale data leaking to
     // the next user session on shared-device scenarios.
-    // Lazy imports avoid circular dependency (auth ← store ← auth).
     try {
-      const { useCowsStore } = await import('./cows');
-      const { useDietsStore } = await import('./diets');
-      const { useMilkLogsStore } = await import('./milkLogs');
-      const { useFarmersStore } = await import('./farmers');
       const { useFeedsStore } = await import('./feeds');
-      useCowsStore().$patch({ cows: [] });
-      useDietsStore().$patch({ diets: [] });
-      useMilkLogsStore().$patch({ logs: [] });
-      useFarmersStore().$patch({ farmers: [] });
       useFeedsStore().$patch({ masterFeeds: [], customFeeds: [] });
     } catch {
       // Non-critical: stores may not be initialized if user logs out before loading data

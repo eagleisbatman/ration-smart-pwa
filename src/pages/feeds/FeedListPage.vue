@@ -79,9 +79,6 @@
           icon="grass"
           :title="$t('feed.empty.customTitle')"
           :description="$t('feed.empty.customDescription')"
-          :action-label="$t('feed.addFeed')"
-          action-icon="add"
-          @action="router.push('/feeds/new')"
         />
         <EmptyState
           v-else
@@ -152,11 +149,6 @@
         </div>
       </template>
     </PullToRefresh>
-
-    <!-- FAB for adding custom feed -->
-    <q-page-sticky v-if="activeTab === 'custom' && !compareMode" position="bottom-right" :offset="[16, 72]">
-      <q-btn fab icon="add" color="primary" @click="router.push('/feeds/new')" />
-    </q-page-sticky>
 
     <!-- Feed Compare Dialog -->
     <FeedCompareDialog

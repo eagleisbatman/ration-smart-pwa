@@ -24,234 +24,61 @@ const routes: RouteRecordRaw[] = [
         component: () => import('pages/auth/ForgotPinPage.vue'),
         meta: { requiresGuest: true },
       },
-      // Onboarding flow
-      {
-        path: 'language',
-        name: 'language-select',
-        component: () => import('pages/auth/LanguageSelectPage.vue'),
-        meta: { requiresAuth: true, isOnboarding: true },
-      },
-      {
-        path: 'role',
-        name: 'role-select',
-        component: () => import('pages/auth/RoleSelectPage.vue'),
-        meta: { requiresAuth: true, isOnboarding: true },
-      },
-      {
-        path: 'organization',
-        name: 'org-select',
-        component: () => import('pages/auth/OrgSelectPage.vue'),
-        meta: { requiresAuth: true, isOnboarding: true },
-      },
-      {
-        path: 'profile-setup',
-        name: 'profile-setup',
-        component: () => import('pages/auth/MyProfileSetupPage.vue'),
-        meta: { requiresAuth: true, isOnboarding: true },
-      },
     ],
   },
 
-  // Main app routes
+  // Main app routes (simulation flow)
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     meta: { requiresAuth: true },
     children: [
+      // Home dashboard
       {
         path: '',
         name: 'home',
-        component: () => import('pages/HomePage.vue'),
+        component: () => import('pages/simulation/HomePage.vue'),
         meta: { title: 'RationSmart' },
       },
 
-      // Cows
+      // Simulation flow
       {
-        path: 'cows',
-        name: 'cows',
-        component: () => import('pages/cows/CowListPage.vue'),
-        meta: { titleKey: 'nav.myCows', hideFab: true },
+        path: 'cattle-info',
+        name: 'cattle-info',
+        component: () => import('pages/simulation/CattleInfoPage.vue'),
+        meta: { titleKey: 'simulation.cattleInfo', showBack: true },
       },
       {
-        path: 'cows/new',
-        name: 'cow-new',
-        component: () => import('pages/cows/CowFormPage.vue'),
-        meta: { titleKey: 'cow.addCow', showBack: true, hideBottomNav: true, hideFab: true },
+        path: 'feed-selection',
+        name: 'feed-selection',
+        component: () => import('pages/simulation/FeedSelectionPage.vue'),
+        meta: { titleKey: 'simulation.feedSelection', showBack: true },
       },
       {
-        path: 'cows/:id',
-        name: 'cow-detail',
-        component: () => import('pages/cows/CowDetailPage.vue'),
-        meta: { titleKey: 'cow.cowDetails', showBack: true, hideFab: true },
+        path: 'evaluation-report',
+        name: 'evaluation-report',
+        component: () => import('pages/simulation/EvaluationReportPage.vue'),
+        meta: { titleKey: 'simulation.evaluationReport', showBack: true },
       },
       {
-        path: 'cows/:id/edit',
-        name: 'cow-edit',
-        component: () => import('pages/cows/CowFormPage.vue'),
-        meta: { titleKey: 'cow.editCow', showBack: true, hideBottomNav: true, hideFab: true },
-      },
-
-      // Diet
-      {
-        path: 'diet',
-        alias: 'diets',
-        name: 'diet',
-        component: () => import('pages/diet/DietListPage.vue'),
-        meta: { titleKey: 'nav.diet', hideFab: true },
-      },
-      {
-        path: 'diet/new',
-        name: 'diet-new',
-        component: () => import('pages/diet/DietWizardPage.vue'),
-        meta: { titleKey: 'diet.newDietPlan', showBack: true, hideBottomNav: true, hideFab: true },
-      },
-      {
-        path: 'diet/compare',
-        name: 'diet-compare',
-        component: () => import('pages/diet/DietComparePage.vue'),
-        meta: { titleKey: 'diet.compare', showBack: true, hideFab: true },
-      },
-      {
-        path: 'diet/:id',
-        name: 'diet-detail',
-        component: () => import('pages/diet/DietDetailPage.vue'),
-        meta: { titleKey: 'diet.dietDetails', showBack: true, hideFab: true },
+        path: 'recommendation-report',
+        name: 'recommendation-report',
+        component: () => import('pages/simulation/RecommendationReportPage.vue'),
+        meta: { titleKey: 'simulation.recommendationReport', showBack: true },
       },
 
-      // Feeds
+      // Feeds catalog
       {
         path: 'feeds',
         name: 'feeds',
         component: () => import('pages/feeds/FeedListPage.vue'),
-        meta: { titleKey: 'nav.feeds', hideFab: true },
-      },
-      {
-        path: 'feeds/new',
-        name: 'feed-new',
-        component: () => import('pages/feeds/FeedFormPage.vue'),
-        meta: { titleKey: 'feed.addCustomFeed', showBack: true, hideBottomNav: true, hideFab: true },
+        meta: { titleKey: 'nav.feeds' },
       },
       {
         path: 'feeds/:id',
         name: 'feed-detail',
         component: () => import('pages/feeds/FeedDetailPage.vue'),
-        meta: { titleKey: 'feed.feedDetails', showBack: true, hideFab: true },
-      },
-      {
-        path: 'feeds/:id/edit',
-        name: 'feed-edit',
-        component: () => import('pages/feeds/FeedFormPage.vue'),
-        meta: { titleKey: 'feed.editFeed', showBack: true, hideBottomNav: true, hideFab: true },
-      },
-
-      // Milk Logs
-      {
-        path: 'logs',
-        alias: 'milk-logs',
-        name: 'logs',
-        component: () => import('pages/logs/LogListPage.vue'),
-        meta: { titleKey: 'nav.milkLogs', hideFab: true },
-      },
-      {
-        path: 'logs/new',
-        name: 'log-new',
-        component: () => import('pages/logs/LogFormPage.vue'),
-        meta: { titleKey: 'logs.form.title.new', showBack: true, hideBottomNav: true, hideFab: true },
-      },
-      {
-        path: 'logs/:id/edit',
-        name: 'log-edit',
-        component: () => import('pages/logs/LogFormPage.vue'),
-        meta: { titleKey: 'logs.form.title.edit', showBack: true, hideBottomNav: true, hideFab: true },
-      },
-
-      // Farmers
-      {
-        path: 'farmers',
-        name: 'farmers',
-        component: () => import('pages/farmers/FarmerListPage.vue'),
-        meta: { titleKey: 'farmer.farmers', hideFab: true },
-      },
-      {
-        path: 'farmers/new',
-        name: 'farmer-new',
-        component: () => import('pages/farmers/FarmerFormPage.vue'),
-        meta: { titleKey: 'farmer.addFarmer', showBack: true, hideBottomNav: true, hideFab: true },
-      },
-      {
-        path: 'farmers/import',
-        name: 'farmer-import',
-        component: () => import('pages/farmers/FarmerImportPage.vue'),
-        meta: { titleKey: 'farmers.import.title', showBack: true, hideBottomNav: true, hideFab: true },
-      },
-      {
-        path: 'farmers/:id',
-        name: 'farmer-detail',
-        component: () => import('pages/farmers/FarmerDetailPage.vue'),
-        meta: { titleKey: 'farmer.farmerDetails', showBack: true, hideFab: true },
-      },
-      {
-        path: 'farmers/:id/edit',
-        name: 'farmer-edit',
-        component: () => import('pages/farmers/FarmerFormPage.vue'),
-        meta: { titleKey: 'farmer.editFarmer', showBack: true, hideBottomNav: true, hideFab: true },
-      },
-
-      // Milk Summary (aggregated from milk logs)
-      {
-        path: 'yields',
-        name: 'milk-summary',
-        component: () => import('pages/yields/YieldHistoryPage.vue'),
-        meta: { titleKey: 'nav.milkSummary', hideFab: true },
-      },
-      {
-        path: 'yields/compare-farmers',
-        name: 'yield-farmer-compare',
-        component: () => import('pages/yields/FarmerYieldComparePage.vue'),
-        meta: { titleKey: 'yields.compare.title', showBack: true, hideFab: true },
-      },
-
-      // Organization Analytics (now admin-only)
-      {
-        path: 'analytics',
-        alias: 'admin/analytics',
-        name: 'admin-analytics',
-        component: () => import('pages/admin/AdminAnalyticsPage.vue'),
-        meta: { titleKey: 'nav.analytics', showBack: true, hideFab: true, requiresAdmin: true },
-      },
-
-      // Admin Panel
-      {
-        path: 'admin',
-        name: 'admin-dashboard',
-        component: () => import('pages/admin/AdminDashboardPage.vue'),
-        meta: { titleKey: 'nav.admin', hideFab: true, requiresAdmin: true },
-      },
-      {
-        path: 'admin/users',
-        name: 'admin-users',
-        component: () => import('pages/admin/AdminUsersPage.vue'),
-        meta: { titleKey: 'admin.userManagement', showBack: true, hideFab: true, requiresAdmin: true },
-      },
-      {
-        path: 'admin/orgs',
-        name: 'admin-orgs',
-        component: () => import('pages/admin/AdminOrgsPage.vue'),
-        meta: { titleKey: 'admin.orgManagement', showBack: true, hideFab: true, requiresAdmin: true },
-      },
-
-      // Reports
-      {
-        path: 'reports',
-        name: 'reports',
-        component: () => import('pages/reports/ReportListPage.vue'),
-        meta: { titleKey: 'nav.reports', hideFab: true },
-      },
-      {
-        path: 'reports/:id',
-        name: 'report-detail',
-        component: () => import('pages/reports/ReportDetailPage.vue'),
-        meta: { titleKey: 'reports.reportDetail', showBack: true, hideFab: true },
+        meta: { titleKey: 'feed.feedDetails', showBack: true },
       },
 
       // Settings
@@ -259,25 +86,45 @@ const routes: RouteRecordRaw[] = [
         path: 'settings',
         name: 'settings',
         component: () => import('pages/settings/SettingsPage.vue'),
-        meta: { titleKey: 'nav.settings', hideFab: true },
+        meta: { titleKey: 'nav.settings' },
       },
       {
         path: 'settings/profile',
         name: 'profile',
         component: () => import('pages/settings/ProfilePage.vue'),
-        meta: { titleKey: 'settings.profile', showBack: true, hideFab: true },
+        meta: { titleKey: 'settings.profile', showBack: true },
       },
       {
         path: 'settings/help',
         name: 'help',
         component: () => import('pages/settings/HelpPage.vue'),
-        meta: { titleKey: 'help.title', showBack: true, hideFab: true },
+        meta: { titleKey: 'help.title', showBack: true },
       },
       {
         path: 'settings/privacy',
         name: 'privacy',
         component: () => import('pages/settings/PrivacyPolicyPage.vue'),
-        meta: { titleKey: 'privacy.title', showBack: true, hideFab: true },
+        meta: { titleKey: 'privacy.title', showBack: true },
+      },
+      {
+        path: 'settings/feedback',
+        name: 'feedback',
+        component: () => import('pages/settings/FeedbackPage.vue'),
+        meta: { titleKey: 'settings.feedback', showBack: true },
+      },
+
+      // Admin
+      {
+        path: 'admin',
+        name: 'admin-dashboard',
+        component: () => import('pages/admin/AdminDashboardPage.vue'),
+        meta: { titleKey: 'nav.admin', requiresAdmin: true },
+      },
+      {
+        path: 'admin/users',
+        name: 'admin-users',
+        component: () => import('pages/admin/AdminUsersPage.vue'),
+        meta: { titleKey: 'admin.userManagement', showBack: true, requiresAdmin: true },
       },
     ],
   },
@@ -287,7 +134,6 @@ const routes: RouteRecordRaw[] = [
     path: '/offline',
     name: 'offline',
     component: () => import('pages/OfflinePage.vue'),
-    meta: { hideBottomNav: true },
   },
 
   // 404 - Catch all

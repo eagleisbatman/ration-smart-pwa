@@ -19,8 +19,8 @@ export async function goto(page: Page, path: string) {
   await page.waitForTimeout(1000);
 }
 
-export async function waitForRoute(page: Page, path: string) {
-  await page.waitForURL(`**${path}`, { timeout: 15_000 });
+export async function waitForRoute(page: Page, path: string, timeout = 15_000) {
+  await page.waitForURL(`**${path}`, { timeout });
 }
 
 // --------------- Form helpers ---------------

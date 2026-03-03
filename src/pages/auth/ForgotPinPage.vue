@@ -55,7 +55,10 @@
           type="tel"
           outlined
           :mask="selectedPhoneMask"
-          :rules="[(val) => !!val || $t('validation.required')]"
+          :rules="[
+            (val: string) => !!val || $t('validation.required'),
+            (val: string) => val.replace(/\D/g, '').length >= 7 || $t('validation.phoneTooShort'),
+          ]"
         >
           <template #prepend>
             <img :src="flagUrl(form.country_code)" width="20" height="15" class="q-mr-xs flag-img" />

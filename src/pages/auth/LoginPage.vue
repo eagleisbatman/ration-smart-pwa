@@ -72,7 +72,10 @@
             type="tel"
             outlined
             :mask="selectedPhoneMask"
-            :rules="[(val) => !!val || $t('validation.required')]"
+            :rules="[
+              (val: string) => !!val || $t('validation.required'),
+              (val: string) => val.replace(/\D/g, '').length >= 7 || $t('validation.phoneTooShort'),
+            ]"
           >
             <template #prepend>
               <img :src="flagUrl(form.country_code)" width="20" height="15" class="q-mr-xs flag-img" />
@@ -284,25 +287,18 @@ async function onSubmit() {
   const success = await authStore.login(credentials);
 
   if (success) {
-    // Load user profile to check onboarding status
     await authStore.loadUserProfile();
 
-    // Check if user needs to complete onboarding
-    if (authStore.needsOnboarding) {
-      router.push('/auth/role');
-    } else {
-      // Redirect to intended page or home (validate to prevent open redirect)
-      const redirect = route.query.redirect as string;
-      // Validate redirect: must start with '/' but not '//' or '/\' to prevent open redirect
-      const safeRedirect =
-        redirect &&
-        redirect.startsWith('/') &&
-        !redirect.startsWith('//') &&
-        !redirect.startsWith('/\\')
-          ? redirect
-          : '/';
-      router.push(safeRedirect);
-    }
+    // Redirect to intended page or home (validate to prevent open redirect)
+    const redirect = route.query.redirect as string;
+    const safeRedirect =
+      redirect &&
+      redirect.startsWith('/') &&
+      !redirect.startsWith('//') &&
+      !redirect.startsWith('/\\')
+        ? redirect
+        : '/';
+    router.push(safeRedirect);
   }
 }
 </script>

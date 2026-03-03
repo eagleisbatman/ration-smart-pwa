@@ -6,7 +6,7 @@
           <!-- Logo floating above the card -->
           <div class="auth-logo-section">
             <q-avatar size="72px" color="primary" text-color="white" class="auth-logo">
-              <q-icon :name="cowIcon" size="40px" />
+              <q-icon name="nutrition" size="40px" />
             </q-avatar>
           </div>
 
@@ -34,16 +34,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-import { useRoute } from 'vue-router';
-import { useCowIcon } from 'src/composables/useCowIcon';
-
-const route = useRoute();
-const { cowIcon } = useCowIcon();
-
-const isOnboarding = computed(() =>
-  route.matched.some((record) => record.meta.isOnboarding)
-);
+const isOnboarding = false;
 </script>
 
 <style lang="scss" scoped>
