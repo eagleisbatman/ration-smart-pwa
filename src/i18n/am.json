@@ -1104,7 +1104,8 @@
     "languageSaveError": "ቋንቋው በአካባቢው ተቀይሯል ነገር ግን በሰርቨር ላይ ማስቀመጥ አልተቻለም።",
     "theme": "ገጽታ",
     "themeDesc": "የቀለም ገጽታዎን ይምረጡ",
-    "chooseTheme": "ገጽታ ይምረጡ"
+    "chooseTheme": "ገጽታ ይምረጡ",
+    "feedback": "አስተያየት"
   },
   "farmer": {
     "farmers": "ገበሬዎች",

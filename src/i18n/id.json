@@ -1104,7 +1104,8 @@
     "languageSaveError": "Bahasa diubah secara lokal tetapi tidak dapat disimpan ke server.",
     "theme": "Tema",
     "themeDesc": "Pilih tema warna Anda",
-    "chooseTheme": "Pilih Tema"
+    "chooseTheme": "Pilih Tema",
+    "feedback": "Umpan Balik"
   },
   "farmer": {
     "farmers": "Peternak",

@@ -1104,7 +1104,8 @@
     "languageSaveError": "Đã đổi ngôn ngữ trên máy nhưng không thể lưu lên hệ thống.",
     "theme": "Chủ đề",
     "themeDesc": "Chọn chủ đề màu sắc của bạn",
-    "chooseTheme": "Chọn Chủ đề"
+    "chooseTheme": "Chọn Chủ đề",
+    "feedback": "Phản hồi"
   },
   "farmer": {
     "farmers": "Nông dân",

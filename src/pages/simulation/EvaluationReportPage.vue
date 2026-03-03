@@ -59,11 +59,11 @@
           <div class="text-subtitle2 q-mb-sm">{{ $t('simulation.evaluation.costAnalysis') }}</div>
           <div class="row q-gutter-md">
             <div class="col text-center">
-              <div class="text-h5 text-primary">{{ formatCurrency(costAnalysis.total_cost ?? 0) }}</div>
+              <div class="text-h5 text-weight-bold">{{ formatCurrency(costAnalysis.total_cost ?? 0) }}</div>
               <div class="text-caption text-grey-6">{{ $t('simulation.evaluation.totalCost') }}</div>
             </div>
             <div v-if="costAnalysis.cost_per_kg_milk" class="col text-center">
-              <div class="text-h5 text-secondary">{{ formatCurrency(costAnalysis.cost_per_kg_milk) }}</div>
+              <div class="text-h5 text-weight-bold">{{ formatCurrency(costAnalysis.cost_per_kg_milk) }}</div>
               <div class="text-caption text-grey-6">{{ $t('simulation.evaluation.costPerKgMilk') }}</div>
             </div>
           </div>

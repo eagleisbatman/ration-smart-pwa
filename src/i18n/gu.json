@@ -1104,7 +1104,8 @@
     "languageSaveError": "ભાષા સ્થાનિક રીતે બદલાઈ ગઈ છે પરંતુ સર્વર પર સાચવી શકાઈ નથી.",
     "theme": "થીમ",
     "themeDesc": "તમારી કલર થીમ પસંદ કરો",
-    "chooseTheme": "થીમ પસંદ કરો"
+    "chooseTheme": "થીમ પસંદ કરો",
+    "feedback": "પ્રતિસાદ"
   },
   "farmer": {
     "farmers": "ખેડૂતો",

@@ -1104,7 +1104,8 @@
     "languageSaveError": "ভাষা স্থানীয়ভাৱে সলনি হ’ল কিন্তু চাৰ্ভাৰত চেভ কৰিব পৰা নগ’ল।",
     "theme": "থীম",
     "themeDesc": "আপোনাৰ ৰংৰ থীম বাছক",
-    "chooseTheme": "থীম বাছক"
+    "chooseTheme": "থীম বাছক",
+    "feedback": "মতামত"
   },
   "farmer": {
     "farmers": "কৃষক",

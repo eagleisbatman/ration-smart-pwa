@@ -1104,7 +1104,8 @@
     "languageSaveError": "ଭାଷା ବଦଳିଛି, କିନ୍ତୁ ସର୍ଭରରେ ସେଭ୍ ହୋଇପାରିଲା ନାହିଁ।",
     "theme": "ଥିମ୍",
     "themeDesc": "ଆପଣଙ୍କ ରଙ୍ଗ ଥିମ୍ ବାଛନ୍ତୁ",
-    "chooseTheme": "ଥିମ୍ ବାଛନ୍ତୁ"
+    "chooseTheme": "ଥିମ୍ ବାଛନ୍ତୁ",
+    "feedback": "ମତାମତ"
   },
   "farmer": {
     "farmers": "କୃଷକ",

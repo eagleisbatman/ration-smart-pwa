@@ -1104,7 +1104,8 @@
     "languageSaveError": "भाषा स्थानीय रूप से बदल दी गई है लेकिन सर्वर पर सहेजी नहीं जा सकी।",
     "theme": "थीम",
     "themeDesc": "अपना कलर थीम चुनें",
-    "chooseTheme": "थीम चुनें"
+    "chooseTheme": "थीम चुनें",
+    "feedback": "प्रतिक्रिया"
   },
   "farmer": {
     "farmers": "किसान",

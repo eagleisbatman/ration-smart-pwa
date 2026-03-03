@@ -1104,7 +1104,8 @@
     "languageSaveError": "Afaan naannoo keessatti jijjiirameera garuu gara serveriitti olkaasamuu hin dandeenye.",
     "theme": "Baay’ina bifa",
     "themeDesc": "Baay’ina bifa keessan filadhaa",
-    "chooseTheme": "Baay’ina bifa filadhaa"
+    "chooseTheme": "Baay’ina bifa filadhaa",
+    "feedback": "Yaada"
   },
   "farmer": {
     "farmers": "Qonnaan Bultoota",
