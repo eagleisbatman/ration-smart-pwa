@@ -36,11 +36,8 @@ body {
 // ============================================
 
 // Content fills available width on all screen sizes.
-// Individual components (forms, dialogs) apply their own max-width constraints.
-// [dir] boosts specificity to 0,2,0 so this beats postcss-rtlcss overrides.
-[dir] .q-page > * {
-  max-width: 100%;
-}
+// No global max-width constraint — individual components (forms, dialogs)
+// apply their own constraints (e.g. .q-form { max-width: 560px }).
 
 // Responsive horizontal padding scale
 .q-page {
