@@ -1,10 +1,9 @@
 <template>
   <q-dialog
     :model-value="modelValue"
-    position="bottom"
     @update:model-value="$emit('update:modelValue', $event)"
   >
-    <q-card style="width: 100%; max-width: 500px; max-height: 80vh">
+    <q-card style="width: 100%; max-width: 500px; min-height: 300px; max-height: 80vh">
       <q-card-section class="row items-center q-pb-none">
         <q-icon name="history" size="sm" color="primary" class="q-mr-sm" />
         <div class="text-h6">{{ $t('simulation.history') }}</div>
@@ -12,7 +11,7 @@
         <q-btn flat round dense icon="close" v-close-popup />
       </q-card-section>
 
-      <q-card-section class="q-pt-sm" style="overflow-y: auto; max-height: 60vh">
+      <q-card-section class="q-pt-sm" style="overflow-y: auto; max-height: 65vh">
         <!-- Loading -->
         <template v-if="loading">
           <q-skeleton v-for="i in 4" :key="i" height="60px" class="q-mb-sm rounded-borders" />

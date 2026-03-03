@@ -50,7 +50,13 @@
     "chooseFromGallery": "Chọn từ thư viện",
     "removePhoto": "Xóa ảnh",
     "you": "Bạn",
-    "clearAll": "Xóa tất cả"
+    "clearAll": "Xóa tất cả",
+    "unknown": "Không rõ",
+    "units": {
+      "kg": "kg",
+      "litersPerDay": "L/ngày",
+      "liters": "L"
+    }
   },
   "nav": {
     "home": "Trang chủ",
@@ -1203,7 +1209,8 @@
     "pageNotFound": "Không tìm thấy trang",
     "pageNotFoundDescription": "Rất tiếc! Trang bạn đang tìm kiếm không tồn tại hoặc đã được di chuyển.",
     "goHome": "Quay về trang chủ",
-    "loadFailed": "Tải dữ liệu thất bại. Vui lòng thử lại."
+    "loadFailed": "Tải dữ liệu thất bại. Vui lòng thử lại.",
+    "sessionExpired": "Phiên làm việc đã hết hạn. Vui lòng đăng nhập lại."
   },
   "validation": {
     "required": "Trường này là bắt buộc",
@@ -1221,7 +1228,8 @@
     "pinMismatch": "Mã PIN không khớp",
     "pinStrengthWeak": "Mã PIN yếu - dễ bị đoán",
     "pinStrengthModerate": "Trung bình",
-    "pinStrengthStrong": "Mạnh"
+    "pinStrengthStrong": "Mạnh",
+    "phoneTooShort": "Số điện thoại quá ngắn"
   },
   "units": {
     "kg": "kg",
@@ -1371,6 +1379,22 @@
       "dataSync": {
         "question": "Làm thế nào để đồng bộ dữ liệu?",
         "answer": "Dữ liệu của bạn sẽ tự động đồng bộ khi có kết nối mạng. Bạn cũng có thể tự thực hiện đồng bộ trong phần Cài đặt, mục \"Dữ liệu & Đồng bộ\" bằng cách nhấn vào nút đồng bộ."
+      },
+      "runSimulation": {
+        "question": "Làm cách nào để chạy mô phỏng?",
+        "answer": "Từ trang chủ, chạm vào \"Bắt đầu mô phỏng mới\". Nhập các đặc điểm của bò (giống, cân nặng, sản lượng sữa, v.v.), sau đó chạm vào Tiếp tục. Chọn thức ăn có sẵn và chọn \"Nhận gợi ý\" để có khẩu phần ăn tối ưu hoặc \"Đánh giá khẩu phần\" nếu bạn có số lượng cụ thể."
+      },
+      "feedCatalog": {
+        "question": "Tôi có thể xem các loại thức ăn ở đâu?",
+        "answer": "Mở menu bên cạnh và chạm vào \"Thức ăn\" để duyệt qua danh mục thức ăn hoàn chỉnh. Bạn có thể lọc theo loại (Thức ăn thô xanh hoặc Thức ăn tinh), tìm kiếm theo tên và xem thông tin dinh dưỡng chi tiết cho từng loại thức ăn."
+      },
+      "editPrices": {
+        "question": "Tôi có thể chỉnh sửa giá thức ăn không?",
+        "answer": "Có! Khi chọn thức ăn cho mô phỏng, mỗi loại thức ăn được chọn sẽ hiển thị trường giá mà bạn có thể chỉnh sửa. Nhập giá địa phương của bạn để nhận được ước tính chi phí chính xác hơn trong báo cáo khuyến nghị."
+      },
+      "viewHistory": {
+        "question": "Làm cách nào để xem các mô phỏng trước đây?",
+        "answer": "Các mô phỏng gần đây của bạn xuất hiện trên trang chủ. Chạm vào \"Xem tất cả\" để xem toàn bộ lịch sử mô phỏng của bạn. Bạn có thể chạm vào bất kỳ mô phỏng nào trong quá khứ để khôi phục các đầu vào của nó và chạy lại với các loại thức ăn hoặc cài đặt khác nhau."
       }
     }
   },
@@ -1846,5 +1870,212 @@
     "ocean": "Đại dương",
     "vibrant": "Sống động",
     "sunset": "Hoàng hôn"
+  },
+  "feedback": {
+    "type": "Loại phản hồi",
+    "rating": "Đánh giá chung",
+    "message": "Phản hồi của bạn",
+    "submit": "Gửi phản hồi",
+    "thankYou": "Cảm ơn quý vị đã gửi phản hồi!",
+    "error": "Gửi phản hồi không thành công. Vui lòng thử lại.",
+    "tooLong": "Phản hồi phải từ 1000 ký tự trở xuống",
+    "typeGeneral": "Chung",
+    "typeDefect": "Báo cáo lỗi",
+    "typeFeature": "Yêu cầu tính năng"
+  },
+  "simulation": {
+    "title": "Mô phỏng mới",
+    "cattleInfo": "Thông tin gia súc",
+    "feedSelection": "Lựa chọn thức ăn",
+    "evaluationReport": "Báo cáo đánh giá",
+    "recommendationReport": "Báo cáo khuyến nghị",
+    "continue": "Tiếp tục",
+    "newCase": "Trường hợp mới",
+    "history": "Lịch sử mô phỏng",
+    "historyEmpty": "Chưa có mô phỏng nào",
+    "historyEmptyDesc": "Chạy một mô phỏng để xem kết quả tại đây.",
+    "restoring": "Đang khôi phục mô phỏng...",
+    "generating": "Đang tạo báo cáo...",
+    "generatingDesc": "Việc này có thể mất đến 90 giây.",
+    "sections": {
+      "animalCharacteristics": "Đặc điểm động vật",
+      "milkProduction": "Sản lượng sữa",
+      "reproductiveData": "Dữ liệu sinh sản",
+      "environment": "Môi trường"
+    },
+    "fields": {
+      "bodyWeight": "Cân nặng (kg)",
+      "breed": "Giống",
+      "bcScore": "Điểm thể trạng",
+      "lactating": "Đang tiết sữa",
+      "daysInMilk": "Số ngày tiết sữa",
+      "milkProduction": "Sản lượng sữa (Lít/ngày)",
+      "fatMilk": "Mỡ sữa (%)",
+      "tpMilk": "Đạm sữa thật (%)",
+      "parity": "Số lứa đẻ (Chu kỳ cho sữa)",
+      "daysOfPregnancy": "Số ngày mang thai",
+      "calvingInterval": "Khoảng cách sinh sản (ngày)",
+      "temperature": "Nhiệt độ (°C)",
+      "topography": "Địa hình",
+      "distance": "Khoảng cách đi bộ (km)",
+      "grazing": "Chăn thả",
+      "bwGain": "Tăng trọng cơ thể (kg/ngày)"
+    },
+    "topographyOptions": {
+      "flat": "Đồng bằng",
+      "hilly": "Đồi núi",
+      "mountainous": "Vùng núi cao"
+    },
+    "validation": {
+      "breedRequired": "Giống vật nuôi là bắt buộc",
+      "bodyWeightMin": "Trọng lượng cơ thể phải ít nhất 100 kg",
+      "bodyWeightMax": "Trọng lượng cơ thể không được vượt quá 1200 kg",
+      "milkProductionMin": "Sản lượng sữa phải ít nhất 0",
+      "milkProductionMax": "Sản lượng sữa không được vượt quá 80 L/ngày",
+      "minZero": "Giá trị phải từ 0 trở lên",
+      "daysInMilkMax": "Số ngày cho sữa không được vượt quá 700",
+      "fatMilkMin": "Mỡ sữa phải ít nhất 1%",
+      "fatMilkMax": "Mỡ sữa không được vượt quá 8%",
+      "tpMilkMin": "Đạm sữa phải ít nhất 1%",
+      "tpMilkMax": "Đạm sữa không được vượt quá 6%",
+      "parityMax": "Số lứa đẻ không được vượt quá 15",
+      "daysOfPregnancyMax": "Số ngày mang thai không được vượt quá 290",
+      "calvingIntervalMin": "Khoảng cách sinh sản phải ít nhất 300 ngày",
+      "calvingIntervalMax": "Khoảng cách sinh sản không được vượt quá 600 ngày",
+      "temperatureMin": "Nhiệt độ phải ít nhất -20°C",
+      "temperatureMax": "Nhiệt độ không được vượt quá 50°C",
+      "distanceMax": "Khoảng cách đi bộ không được vượt quá 50 km",
+      "bwGainMin": "Tăng trọng cơ thể phải ít nhất -1 kg/ngày",
+      "bwGainMax": "Tăng trọng cơ thể không được vượt quá 2 kg/ngày",
+      "priceMin": "Giá phải lớn hơn 0",
+      "milkOverrideMin": "Sản lượng sữa phải ít nhất 1 L/ngày",
+      "milkOverrideMax": "Sản lượng sữa không được vượt quá 60 L/ngày",
+      "constraintMin": "Giá trị phải từ 0 trở lên",
+      "constraintMax": "Giá trị không được vượt quá 100",
+      "required": "Trường này là bắt buộc",
+      "lactatingLatePregnancy": "Bò đang vắt sữa với {days} ngày mang thai. Bò thường được ngừng vắt sữa sau 210-220 ngày. Tiếp tục chứ?",
+      "notLactatingCleared": "Các trường sản lượng sữa đã được xóa vì vật nuôi không vắt sữa."
+    },
+    "historyItem": {
+      "evaluation": "Đánh giá khẩu phần",
+      "recommendation": "Đề xuất khẩu phần",
+      "breed": "Giống",
+      "weight": "Cân nặng",
+      "milk": "Sữa"
+    },
+    "feedSelect": {
+      "title": "Chọn Thức ăn",
+      "filterAll": "Tất cả",
+      "filterForage": "Thức ăn thô xanh",
+      "filterConcentrate": "Thức ăn tinh",
+      "category": "Danh mục",
+      "allCategories": "Tất cả Danh mục",
+      "selectedFeeds": "Thức ăn đã chọn",
+      "noFeedsSelected": "Chưa chọn thức ăn nào",
+      "selectAtLeast": "Chọn ít nhất một loại thức ăn để tiếp tục",
+      "pricePerKg": "Giá/kg",
+      "quantityKg": "Số lượng (kg/ngày)",
+      "quantityOptional": "Số lượng (tùy chọn)",
+      "customLimits": "Giới hạn khẩu phần tùy chỉnh",
+      "withQuantities": "Đánh giá khẩu phần",
+      "withoutQuantities": "Nhận Khuyến nghị",
+      "priceRequired": "Tất cả các loại thức ăn phải có giá lớn hơn 0",
+      "quantityRequired": "Tất cả các loại thức ăn phải có số lượng lớn hơn 0 để đánh giá",
+      "maxFeedsReached": "Có thể chọn tối đa {max} loại thức ăn"
+    },
+    "constraints": {
+      "title": "Giới hạn Khẩu phần Ăn Tùy chỉnh",
+      "fiberNdf": "Xơ NDF (% chất khô)",
+      "starch": "Tinh bột (% chất khô)",
+      "fatEe": "Béo / EE (% chất khô)",
+      "ash": "Tro (% chất khô)",
+      "resetDefaults": "Đặt lại Mặc định",
+      "hintRange": "{min} – {max}"
+    },
+    "evaluation": {
+      "title": "Báo cáo Đánh giá Khẩu phần Ăn",
+      "overallStatus": "Trạng thái Tổng thể",
+      "milkAnalysis": "Phân tích Sản lượng Sữa",
+      "targetMilk": "Sản lượng Sữa Mục tiêu",
+      "supportedByEnergy": "Được hỗ trợ bởi Năng lượng",
+      "supportedByProtein": "Được hỗ trợ bởi Protein",
+      "limitingNutrient": "Dinh dưỡng Hạn chế",
+      "intakeEvaluation": "Đánh giá Lượng ăn vào",
+      "actualIntake": "Lượng ăn vào Thực tế",
+      "targetIntake": "Lượng ăn vào Mục tiêu",
+      "costAnalysis": "Phân tích Chi phí",
+      "totalCost": "Tổng Chi phí/Ngày",
+      "costPerKgMilk": "Chi phí/kg Sữa",
+      "nutrientBalance": "Cân bằng Dinh dưỡng",
+      "generateRecommendation": "Tạo Khuyến nghị",
+      "generateRecommendationDesc": "Tạo khuyến nghị khẩu phần ăn tối ưu dựa trên các loại thức ăn này",
+      "milkOverride": "Sản lượng Sữa Mục tiêu (L/ngày)",
+      "milkOverrideHint": "1 – 60 L/ngày",
+      "useCurrentMilk": "Sử dụng sản lượng sữa hiện tại",
+      "noData": "Không có dữ liệu đánh giá"
+    },
+    "recommendation": {
+      "title": "Báo cáo khuyến nghị khẩu phần ăn",
+      "reportInfo": "Thông tin báo cáo",
+      "reportId": "Mã báo cáo",
+      "simulationId": "Mã mô phỏng",
+      "date": "Ngày",
+      "solutionSummary": "Tóm tắt giải pháp",
+      "dailyCost": "Chi phí hàng ngày",
+      "dmIntake": "Lượng vật chất khô ăn vào",
+      "milkProduction": "Sản lượng sữa",
+      "feedBreakdown": "Phân tích thức ăn",
+      "feedName": "Thức ăn",
+      "quantity": "Số lượng (kg)",
+      "cost": "Chi phí",
+      "percentage": "% vật chất khô",
+      "totalCost": "Tổng chi phí",
+      "dietStatus": "Tình trạng khẩu phần ăn",
+      "warnings": "Cảnh báo",
+      "recommendations": "Khuyến nghị",
+      "saveReport": "Lưu báo cáo",
+      "reportSaved": "Đã lưu báo cáo thành công",
+      "noData": "Không có dữ liệu khuyến nghị",
+      "infeasible": "Không tìm thấy khẩu phần ăn khả thi",
+      "infeasibleDetail": "Các loại thức ăn đã chọn không thể đáp ứng nhu cầu dinh dưỡng cho con vật này. Bộ tối ưu hóa không tìm được khẩu phần ăn cân bằng.",
+      "infeasibleHint": "Hãy thử bổ sung thêm các loại thức ăn đa dạng hơn — bao gồm thức ăn thô xanh, thức ăn tinh giàu protein (ví dụ: khô dầu hạt) và bổ sung khoáng chất.",
+      "tryAgain": "Thay đổi thức ăn"
+    },
+    "methane": {
+      "title": "Tác động môi trường",
+      "production": "Lượng khí mêtan thải ra",
+      "yield": "Năng suất mêtan",
+      "intensity": "Cường độ mêtan",
+      "conversionRate": "Tỷ lệ chuyển đổi năng lượng",
+      "gPerDay": "g/ngày",
+      "gPerKgDmi": "g/kg DMI",
+      "gPerKgMilk": "g/kg sữa",
+      "percent": "%"
+    },
+    "animalSummary": {
+      "title": "Đặc điểm vật nuôi"
+    },
+    "status": {
+      "optimal": "Tối ưu",
+      "perfect": "Hoàn hảo",
+      "good": "Tốt",
+      "adequate": "Đầy đủ",
+      "marginal": "Trung bình",
+      "deficient": "Thiếu hụt",
+      "excess": "Thừa",
+      "infeasible": "Không khả thi"
+    },
+    "home": {
+      "welcome": "Chào mừng, {name}",
+      "goodMorning": "Chào buổi sáng",
+      "goodAfternoon": "Chào buổi chiều",
+      "goodEvening": "Chào buổi tối",
+      "startSimulation": "Bắt đầu mô phỏng mới",
+      "startSimulationDesc": "Cấu hình thông tin bò và thức ăn để nhận khuyến nghị khẩu phần",
+      "recentSimulations": "Các mô phỏng gần đây",
+      "noSimulations": "Chưa có mô phỏng nào",
+      "noSimulationsDesc": "Chạy mô phỏng đầu tiên của bạn để xem tại đây",
+      "viewAll": "Xem tất cả"
+    }
   }
 }

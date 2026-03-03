@@ -50,7 +50,13 @@
     "chooseFromGallery": "Pilih dari Galeri",
     "removePhoto": "Hapus Foto",
     "you": "Anda",
-    "clearAll": "Hapus semua"
+    "clearAll": "Hapus semua",
+    "unknown": "Tidak Dikenal",
+    "units": {
+      "kg": "kg",
+      "litersPerDay": "L/hari",
+      "liters": "L"
+    }
   },
   "nav": {
     "home": "Beranda",
@@ -1203,7 +1209,8 @@
     "pageNotFound": "Halaman Tidak Ditemukan",
     "pageNotFoundDescription": "Ups! Halaman yang Anda cari tidak ada atau sudah dipindahkan.",
     "goHome": "Kembali ke Beranda",
-    "loadFailed": "Gagal memuat data. Silakan coba lagi."
+    "loadFailed": "Gagal memuat data. Silakan coba lagi.",
+    "sessionExpired": "Sesi berakhir. Silakan masuk kembali."
   },
   "validation": {
     "required": "Kolom ini wajib diisi",
@@ -1221,7 +1228,8 @@
     "pinMismatch": "PIN tidak cocok",
     "pinStrengthWeak": "PIN Lemah - mudah ditebak",
     "pinStrengthModerate": "Sedang",
-    "pinStrengthStrong": "Kuat"
+    "pinStrengthStrong": "Kuat",
+    "phoneTooShort": "Nomor telepon terlalu pendek"
   },
   "units": {
     "kg": "kg",
@@ -1370,6 +1378,22 @@
       "dataSync": {
         "question": "Bagaimana cara menyinkronkan data saya?",
         "answer": "Data Anda otomatis tersinkron saat Anda terhubung ke internet. Anda juga bisa memicu sinkronisasi secara manual dari Pengaturan di bawah \"Data & Sinkronisasi\" dengan mengetuk tombol sinkronisasi."
+      },
+      "runSimulation": {
+        "question": "Bagaimana cara menjalankan simulasi?",
+        "answer": "Dari halaman beranda, ketuk \"Mulai Simulasi Baru\". Masukkan karakteristik ternak Anda (ras, berat, produksi susu, dll.), lalu ketuk Lanjutkan. Pilih pakan yang tersedia, dan pilih \"Dapatkan Rekomendasi\" untuk pakan yang dioptimalkan atau \"Evaluasi Pakan\" jika Anda memiliki kuantitas tertentu."
+      },
+      "feedCatalog": {
+        "question": "Di mana saya bisa melihat katalog pakan?",
+        "answer": "Buka menu samping dan ketuk \"Pakan\" untuk melihat katalog pakan lengkap. Anda bisa menyaring berdasarkan jenis (Hijauan atau Konsentrat), mencari berdasarkan nama, dan melihat informasi nutrisi detail untuk setiap pakan."
+      },
+      "editPrices": {
+        "question": "Bisakah saya mengubah harga pakan?",
+        "answer": "Ya! Saat memilih pakan untuk simulasi, setiap pakan yang dipilih akan menampilkan kolom harga yang dapat Anda ubah. Masukkan harga lokal Anda untuk mendapatkan perkiraan biaya yang lebih akurat dalam laporan rekomendasi."
+      },
+      "viewHistory": {
+        "question": "Bagaimana cara melihat simulasi sebelumnya?",
+        "answer": "Simulasi terbaru Anda muncul di halaman beranda. Ketuk \"Lihat Semua\" untuk melihat riwayat simulasi lengkap Anda. Anda dapat mengetuk simulasi sebelumnya untuk mengembalikan inputnya dan menjalankannya kembali dengan pakan atau pengaturan yang berbeda."
       }
     }
   },
@@ -1845,5 +1869,212 @@
     "ocean": "Laut",
     "vibrant": "Cerah",
     "sunset": "Matahari Terbenam"
+  },
+  "feedback": {
+    "type": "Jenis Masukan",
+    "rating": "Penilaian Keseluruhan",
+    "message": "Masukan Anda",
+    "submit": "Kirim Masukan",
+    "thankYou": "Terima kasih atas masukan Anda!",
+    "error": "Gagal mengirim masukan. Mohon coba lagi.",
+    "tooLong": "Masukan harus 1000 karakter atau kurang",
+    "typeGeneral": "Umum",
+    "typeDefect": "Laporkan Bug",
+    "typeFeature": "Permintaan Fitur"
+  },
+  "simulation": {
+    "title": "Simulasi Baru",
+    "cattleInfo": "Informasi Ternak",
+    "feedSelection": "Pilihan Pakan",
+    "evaluationReport": "Laporan Evaluasi",
+    "recommendationReport": "Laporan Rekomendasi",
+    "continue": "Lanjutkan",
+    "newCase": "Kasus Baru",
+    "history": "Riwayat Simulasi",
+    "historyEmpty": "Belum ada simulasi",
+    "historyEmptyDesc": "Jalankan simulasi untuk melihatnya di sini.",
+    "restoring": "Memulihkan simulasi...",
+    "generating": "Membuat laporan...",
+    "generatingDesc": "Ini mungkin memakan waktu hingga 90 detik.",
+    "sections": {
+      "animalCharacteristics": "Karakteristik Hewan",
+      "milkProduction": "Produksi Susu",
+      "reproductiveData": "Data Reproduksi",
+      "environment": "Lingkungan"
+    },
+    "fields": {
+      "bodyWeight": "Berat Badan (kg)",
+      "breed": "Ras",
+      "bcScore": "Skor Kondisi Tubuh",
+      "lactating": "Sedang Laktasi",
+      "daysInMilk": "Hari Laktasi",
+      "milkProduction": "Produksi Susu (L/hari)",
+      "fatMilk": "Lemak Susu (%)",
+      "tpMilk": "Protein Sejati Susu (%)",
+      "parity": "Paritas (Jumlah Laktasi)",
+      "daysOfPregnancy": "Hari Kebuntingan",
+      "calvingInterval": "Jeda Beranak (hari)",
+      "temperature": "Suhu (°C)",
+      "topography": "Topografi",
+      "distance": "Jarak Berjalan (km)",
+      "grazing": "Merumput",
+      "bwGain": "Penambahan Bobot Badan (kg/hari)"
+    },
+    "topographyOptions": {
+      "flat": "Datar",
+      "hilly": "Berbukit",
+      "mountainous": "Pegunungan"
+    },
+    "validation": {
+      "breedRequired": "Ras harus diisi",
+      "bodyWeightMin": "Bobot badan minimal 100 kg",
+      "bodyWeightMax": "Bobot badan maksimal 1200 kg",
+      "milkProductionMin": "Produksi susu minimal 0",
+      "milkProductionMax": "Produksi susu maksimal 80 L/hari",
+      "minZero": "Nilai harus 0 atau lebih besar",
+      "daysInMilkMax": "Hari laktasi maksimal 700",
+      "fatMilkMin": "Lemak susu minimal 1%",
+      "fatMilkMax": "Lemak susu maksimal 8%",
+      "tpMilkMin": "Protein susu minimal 1%",
+      "tpMilkMax": "Protein susu maksimal 6%",
+      "parityMax": "Paritas maksimal 15",
+      "daysOfPregnancyMax": "Hari kebuntingan maksimal 290",
+      "calvingIntervalMin": "Jarak beranak minimal 300 hari",
+      "calvingIntervalMax": "Jarak beranak maksimal 600 hari",
+      "temperatureMin": "Suhu minimal -20°C",
+      "temperatureMax": "Suhu maksimal 50°C",
+      "distanceMax": "Jarak jalan kaki maksimal 50 km",
+      "bwGainMin": "Penambahan bobot badan minimal -1 kg/hari",
+      "bwGainMax": "Penambahan bobot badan maksimal 2 kg/hari",
+      "priceMin": "Harga harus lebih besar dari 0",
+      "milkOverrideMin": "Produksi susu minimal 1 L/hari",
+      "milkOverrideMax": "Produksi susu maksimal 60 L/hari",
+      "constraintMin": "Nilai harus 0 atau lebih besar",
+      "constraintMax": "Nilai tidak boleh melebihi 100",
+      "required": "Kolom ini wajib diisi",
+      "lactatingLatePregnancy": "Sapi sedang laktasi dengan kebuntingan {days} hari. Sapi biasanya dikeringkan setelah 210-220 hari. Lanjutkan?",
+      "notLactatingCleared": "Kolom produksi susu dikosongkan karena hewan tidak sedang laktasi."
+    },
+    "historyItem": {
+      "evaluation": "Evaluasi Pakan",
+      "recommendation": "Rekomendasi Pakan",
+      "breed": "Jenis Sapi",
+      "weight": "Berat",
+      "milk": "Susu"
+    },
+    "feedSelect": {
+      "title": "Pilih Pakan",
+      "filterAll": "Semua",
+      "filterForage": "Hijauan",
+      "filterConcentrate": "Konsentrat",
+      "category": "Kategori",
+      "allCategories": "Semua Kategori",
+      "selectedFeeds": "Pakan Terpilih",
+      "noFeedsSelected": "Tidak ada pakan terpilih",
+      "selectAtLeast": "Pilih setidaknya satu pakan untuk melanjutkan",
+      "pricePerKg": "Harga/kg",
+      "quantityKg": "Jumlah (kg/hari)",
+      "quantityOptional": "Jumlah (opsional)",
+      "customLimits": "Batasan Diet Khusus",
+      "withQuantities": "Evaluasi Pakan",
+      "withoutQuantities": "Dapatkan Rekomendasi",
+      "priceRequired": "Semua pakan harus memiliki harga lebih dari nol",
+      "quantityRequired": "Semua pakan harus memiliki jumlah lebih dari nol untuk evaluasi",
+      "maxFeedsReached": "Maksimal {max} pakan bisa dipilih"
+    },
+    "constraints": {
+      "title": "Batasan Diet Khusus",
+      "fiberNdf": "Serat NDF (% dari BK)",
+      "starch": "Pati (% dari BK)",
+      "fatEe": "Lemak / EE (% dari BK)",
+      "ash": "Abu (% dari BK)",
+      "resetDefaults": "Setel Ulang ke Standar",
+      "hintRange": "{min} – {max}"
+    },
+    "evaluation": {
+      "title": "Laporan Evaluasi Ransum",
+      "overallStatus": "Status Keseluruhan",
+      "milkAnalysis": "Analisis Produksi Susu",
+      "targetMilk": "Target Susu",
+      "supportedByEnergy": "Didukung oleh Energi",
+      "supportedByProtein": "Didukung oleh Protein",
+      "limitingNutrient": "Nutrien Pembatas",
+      "intakeEvaluation": "Evaluasi Asupan",
+      "actualIntake": "Asupan Sebenarnya",
+      "targetIntake": "Target Asupan",
+      "costAnalysis": "Analisis Biaya",
+      "totalCost": "Total Biaya/Hari",
+      "costPerKgMilk": "Biaya/kg Susu",
+      "nutrientBalance": "Keseimbangan Nutrien",
+      "generateRecommendation": "Hasilkan Rekomendasi",
+      "generateRecommendationDesc": "Hasilkan rekomendasi ransum yang dioptimalkan berdasarkan pakan ini",
+      "milkOverride": "Target Produksi Susu (L/hari)",
+      "milkOverrideHint": "1 – 60 L/hari",
+      "useCurrentMilk": "Gunakan produksi susu saat ini",
+      "noData": "Tidak ada data evaluasi yang tersedia"
+    },
+    "recommendation": {
+      "title": "Laporan Rekomendasi Ransum",
+      "reportInfo": "Informasi Laporan",
+      "reportId": "ID Laporan",
+      "simulationId": "ID Simulasi",
+      "date": "Tanggal",
+      "solutionSummary": "Ringkasan Solusi",
+      "dailyCost": "Biaya Harian",
+      "dmIntake": "Asupan BK",
+      "milkProduction": "Produksi Susu",
+      "feedBreakdown": "Rincian Pakan",
+      "feedName": "Pakan",
+      "quantity": "Jumlah (kg)",
+      "cost": "Biaya",
+      "percentage": "% BK",
+      "totalCost": "Total Biaya",
+      "dietStatus": "Status Pakan",
+      "warnings": "Peringatan",
+      "recommendations": "Rekomendasi",
+      "saveReport": "Simpan Laporan",
+      "reportSaved": "Laporan berhasil disimpan",
+      "noData": "Tidak ada data rekomendasi tersedia",
+      "infeasible": "Pakan yang sesuai tidak ditemukan",
+      "infeasibleDetail": "Pakan yang dipilih tidak dapat memenuhi kebutuhan nutrisi untuk hewan ini. Sistem tidak dapat menemukan pakan yang seimbang.",
+      "infeasibleHint": "Coba tambahkan variasi pakan — masukkan hijauan, konsentrat kaya protein (misalnya bungkil biji minyak), dan suplemen mineral.",
+      "tryAgain": "Ubah Pakan"
+    },
+    "methane": {
+      "title": "Dampak Lingkungan",
+      "production": "Produksi Metana",
+      "yield": "Hasil Metana",
+      "intensity": "Intensitas Metana",
+      "conversionRate": "Tingkat Konversi Energi",
+      "gPerDay": "g/hari",
+      "gPerKgDmi": "g/kg Asupan BK",
+      "gPerKgMilk": "g/kg susu",
+      "percent": "%"
+    },
+    "animalSummary": {
+      "title": "Karakteristik Hewan"
+    },
+    "status": {
+      "optimal": "Optimal",
+      "perfect": "Sempurna",
+      "good": "Baik",
+      "adequate": "Cukup",
+      "marginal": "Kurang Baik",
+      "deficient": "Kurang",
+      "excess": "Berlebih",
+      "infeasible": "Tidak Memungkinkan"
+    },
+    "home": {
+      "welcome": "Selamat datang, {name}",
+      "goodMorning": "Selamat pagi",
+      "goodAfternoon": "Selamat siang",
+      "goodEvening": "Selamat malam",
+      "startSimulation": "Mulai Simulasi Baru",
+      "startSimulationDesc": "Atur info sapi dan pakan untuk mendapatkan rekomendasi diet",
+      "recentSimulations": "Simulasi Terbaru",
+      "noSimulations": "Belum ada simulasi",
+      "noSimulationsDesc": "Jalankan simulasi pertama Anda untuk melihatnya di sini",
+      "viewAll": "Lihat Semua"
+    }
   }
 }

@@ -50,10 +50,16 @@
     "chooseFromGallery": "Pumili mula sa Gallery",
     "removePhoto": "Alisin ang Larawan",
     "you": "Ikaw",
-    "clearAll": "I-clear lahat"
+    "clearAll": "I-clear lahat",
+    "unknown": "Hindi Alam",
+    "units": {
+      "kg": "kg",
+      "litersPerDay": "L/araw",
+      "liters": "L"
+    }
   },
   "nav": {
-    "home": "Home",
+    "home": "Tahanan",
     "myProfile": "Aking Profile",
     "myCows": "Aking mga Baka",
     "managedFarmers": "Mga Magsasaka na Sinusuportahan Ko",
@@ -613,7 +619,7 @@
     "available": "Magagamit",
     "unavailable": "Hindi Available",
     "seasonal": "Pana-panahon",
-    "dryMatter": "Dry Matter (%)",
+    "dryMatter": "Tuyong Materya (%)",
     "customFeed": "Custom na Pagkain",
     "masterFeed": "Standard na Pagkain",
     "feedAdded": "Matagumpay na naidagdag ang pagkain",
@@ -644,7 +650,7 @@
       "byProduct": "By-product",
       "mineralMix": "Halo ng Mineral",
       "other": "Iba pa",
-      "additive": "Additive",
+      "additive": "Additibo",
       "animalProtein": "Protina mula sa Hayop",
       "aquatic": "Tubig",
       "cerealHay": "Dayami ng Cereal",
@@ -669,14 +675,14 @@
       "plantProtein": "Protina mula sa Halaman",
       "proteinSupplement": "Karagdagang Protina",
       "shrub": "Palumpong",
-      "stover": "Stover",
+      "stover": "Dayami",
       "straw": "Dayami",
       "succulent": "Makatas",
       "treeLeaves": "Dahon ng Puno"
     },
     "labels": {
       "dmPercent": "Tuyo (DM)",
-      "dmPercentShort": "DM",
+      "dmPercentShort": "TM",
       "dmPercentInput": "Porsyento ng Dry Matter (DM) *",
       "cpPercent": "Crude Protein (CP)",
       "cpPercentShort": "CP",
@@ -1203,7 +1209,8 @@
     "pageNotFound": "Hindi Nakita ang Pahina",
     "pageNotFoundDescription": "Oops! Mukhang wala o inilipat ang pahinang hinahanap mo.",
     "goHome": "Umuwi",
-    "loadFailed": "Hindi ma-load ang data. Paki-ulit."
+    "loadFailed": "Hindi ma-load ang data. Paki-ulit.",
+    "sessionExpired": "Session expired. Please log in again."
   },
   "validation": {
     "required": "Kinakailangan ang field na ito",
@@ -1221,7 +1228,8 @@
     "pinMismatch": "Hindi tugma ang mga PIN",
     "pinStrengthWeak": "Mahina ang PIN - madaling hulaan",
     "pinStrengthModerate": "Katamtaman",
-    "pinStrengthStrong": "Malakas"
+    "pinStrengthStrong": "Malakas",
+    "phoneTooShort": "Phone number is too short"
   },
   "units": {
     "kg": "kg",
@@ -1370,6 +1378,22 @@
       "dataSync": {
         "question": "Paano ko isi-sync ang aking data?",
         "answer": "Awtomatikong magsi-sync ang iyong data kapag nakakonekta ka sa internet. Maaari mo ring manu-manong i-trigger ang sync mula sa Settings sa ilalim ng \"Data & Sync\" sa pamamagitan ng pag-tap sa sync button."
+      },
+      "runSimulation": {
+        "question": "Paano magpatakbo ng simulation?",
+        "answer": "Mula sa home page, i-tap ang \"Start New Simulation\". Ilagay ang mga katangian ng iyong baka (lahi, timbang, produksyon ng gatas, atbp.), pagkatapos i-tap ang Continue. Piliin ang magagamit na mga pagkain, at pumili ng \"Get Recommendation\" para sa isang optimized na diyeta o \"Evaluate Diet\" kung mayroon kang partikular na dami."
+      },
+      "feedCatalog": {
+        "question": "Saan ko makikita ang mga feed?",
+        "answer": "Open the side menu and tap \"Feeds\" to browse the complete feed catalog. You can filter by type (Forage or Concentrate), search by name, and view detailed nutritional information for each feed."
+      },
+      "editPrices": {
+        "question": "Can I edit feed prices?",
+        "answer": "Yes! When selecting feeds for a simulation, each selected feed shows a price field that you can edit. Enter your local prices to get more accurate cost estimates in the recommendation report."
+      },
+      "viewHistory": {
+        "question": "How do I view past simulations?",
+        "answer": "Your recent simulations appear on the home page. Tap \"View All\" to see your complete simulation history. You can tap any past simulation to restore its inputs and re-run it with different feeds or settings."
       }
     }
   },
@@ -1808,14 +1832,14 @@
     "farmerCount": "Magsasaka",
     "cowCount": "Baka",
     "dietCount": "Diet",
-    "milkLogCount": "Milk Logs",
+    "milkLogCount": "Mga Tala ng Gatas",
     "noData": "Walang available na data",
     "perEwBreakdown": "Aktibidad ng Extension Worker",
     "perOrgBreakdown": "Pagsira ng Organisasyon",
     "perCountryBreakdown": "Pagsira ng Bansa",
     "drillDown": "Tingnan ang Detalye",
     "back": "Bumalik",
-    "ewCount": "EWs",
+    "ewCount": "Mga EW",
     "orgCount": "Mga Organisasyon",
     "userCount": "Gumagamit",
     "countryName": "Bansa",
@@ -1845,5 +1869,212 @@
     "ocean": "Karagatan",
     "vibrant": "Buhay na Buhay",
     "sunset": "Takip-silim"
+  },
+  "feedback": {
+    "type": "Uri ng Puna",
+    "rating": "Pangkalahatang Marka",
+    "message": "Ang Iyong Puna",
+    "submit": "Isumite ang Puna",
+    "thankYou": "Salamat sa iyong puna!",
+    "error": "Hindi naisumite ang puna. Pakisubukan muli.",
+    "tooLong": "Ang puna ay dapat na 1000 karakter o mas kaunti",
+    "typeGeneral": "Pangkalahatan",
+    "typeDefect": "Mag-ulat ng Bug",
+    "typeFeature": "Kahilingan sa Feature"
+  },
+  "simulation": {
+    "title": "Bagong Simula",
+    "cattleInfo": "Impormasyon ng Baka",
+    "feedSelection": "Pagpili ng Pakain",
+    "evaluationReport": "Ulat ng Pagsusuri",
+    "recommendationReport": "Ulat ng Rekomendasyon",
+    "continue": "Magpatuloy",
+    "newCase": "Bagong Kaso",
+    "history": "Kasaysayan ng Simula",
+    "historyEmpty": "Wala pang mga simula",
+    "historyEmptyDesc": "Magsimula ng simulasyon para makita ito rito.",
+    "restoring": "Ibabalik ang simulasyon...",
+    "generating": "Bumabuo ng ulat...",
+    "generatingDesc": "Maaaring tumagal ito ng hanggang 90 segundo.",
+    "sections": {
+      "animalCharacteristics": "Mga Katangian ng Hayop",
+      "milkProduction": "Produksyon ng Gatas",
+      "reproductiveData": "Data ng Reproduksyon",
+      "environment": "Kapaligiran"
+    },
+    "fields": {
+      "bodyWeight": "Timbang ng Katawan (kg)",
+      "breed": "Lahi",
+      "bcScore": "Body Condition Score",
+      "lactating": "Nagpapasuso Kasalukuyan",
+      "daysInMilk": "Araw ng Pagpapasuso",
+      "milkProduction": "Produksyon ng Gatas (L/araw)",
+      "fatMilk": "Taba ng Gatas (%)",
+      "tpMilk": "Totoong Protina ng Gatas (%)",
+      "parity": "Parity (Bilang ng Pagpapasuso)",
+      "daysOfPregnancy": "Araw ng Pagbubuntis",
+      "calvingInterval": "Pagitan ng Pag-anak (araw)",
+      "temperature": "Temperatura (°C)",
+      "topography": "Topograpiya",
+      "distance": "Layo ng Lakad (km)",
+      "grazing": "Pangangaso",
+      "bwGain": "Pagtaas ng Timbang ng Katawan (kg/araw)"
+    },
+    "topographyOptions": {
+      "flat": "Patag",
+      "hilly": "Maburol",
+      "mountainous": "Mabundok"
+    },
+    "validation": {
+      "breedRequired": "Kinakailangan ang lahi",
+      "bodyWeightMin": "Ang timbang ng katawan ay dapat hindi bababa sa 100 kg",
+      "bodyWeightMax": "Ang timbang ng katawan ay hindi dapat lumampas sa 1200 kg",
+      "milkProductionMin": "Ang produksyon ng gatas ay dapat hindi bababa sa 0",
+      "milkProductionMax": "Ang produksyon ng gatas ay hindi dapat lumampas sa 80 L/araw",
+      "minZero": "Ang halaga ay dapat 0 o mas mataas",
+      "daysInMilkMax": "Ang araw ng pagpapasuso ay hindi dapat lumampas sa 700",
+      "fatMilkMin": "Ang taba ng gatas ay dapat hindi bababa sa 1%",
+      "fatMilkMax": "Ang taba ng gatas ay hindi dapat lumampas sa 8%",
+      "tpMilkMin": "Ang protina ng gatas ay dapat hindi bababa sa 1%",
+      "tpMilkMax": "Ang protina ng gatas ay hindi dapat lumampas sa 6%",
+      "parityMax": "Ang parity ay hindi dapat lumampas sa 15",
+      "daysOfPregnancyMax": "Ang araw ng pagbubuntis ay hindi dapat lumampas sa 290",
+      "calvingIntervalMin": "Ang pagitan ng panganganak ay dapat hindi bababa sa 300 araw",
+      "calvingIntervalMax": "Ang pagitan ng panganganak ay hindi dapat lumampas sa 600 araw",
+      "temperatureMin": "Ang temperatura ay dapat hindi bababa sa -20°C",
+      "temperatureMax": "Ang temperatura ay hindi dapat lumampas sa 50°C",
+      "distanceMax": "Ang distansya ng paglalakad ay hindi dapat lumampas sa 50 km",
+      "bwGainMin": "Ang pagtaas ng timbang ng katawan ay dapat hindi bababa sa -1 kg/araw",
+      "bwGainMax": "Ang pagtaas ng timbang ng katawan ay hindi dapat lumampas sa 2 kg/araw",
+      "priceMin": "Ang presyo ay dapat mas mataas sa 0",
+      "milkOverrideMin": "Ang produksyon ng gatas ay dapat hindi bababa sa 1 L/araw",
+      "milkOverrideMax": "Ang produksyon ng gatas ay hindi dapat lumampas sa 60 L/araw",
+      "constraintMin": "Ang halaga ay dapat 0 o mas mataas",
+      "constraintMax": "Ang halaga ay hindi dapat lumampas sa 100",
+      "required": "Kailangan ang field na ito",
+      "lactatingLatePregnancy": "Ang baka ay nagpapasuso na may {days} araw ng pagbubuntis. Karaniwang pinatitigil ang pagpapasuso matapos ang 210-220 araw. Tuloy pa rin?",
+      "notLactatingCleared": "Na-clear ang mga field ng produksyon ng gatas dahil ang hayop ay hindi nagpapasuso."
+    },
+    "historyItem": {
+      "evaluation": "Pagsusuri ng Diyeta",
+      "recommendation": "Rekomendasyon ng Diyeta",
+      "breed": "Lahi",
+      "weight": "Timbang",
+      "milk": "Gatas"
+    },
+    "feedSelect": {
+      "title": "Pumili ng mga Pakain",
+      "filterAll": "Lahat",
+      "filterForage": "Damuhan",
+      "filterConcentrate": "Concentrate",
+      "category": "Kategorya",
+      "allCategories": "Lahat ng Kategorya",
+      "selectedFeeds": "Napiling Pakain",
+      "noFeedsSelected": "Walang napiling pakain",
+      "selectAtLeast": "Pumili ng kahit isang pakain para makapagpatuloy",
+      "pricePerKg": "Presyo/kg",
+      "quantityKg": "Dami (kg/araw)",
+      "quantityOptional": "Dami (opsyonal)",
+      "customLimits": "Pasadyang Limitasyon ng Diyeta",
+      "withQuantities": "Suriin ang Diyeta",
+      "withoutQuantities": "Kumuha ng Rekomendasyon",
+      "priceRequired": "Lahat ng pakain ay dapat may presyo na mas mataas sa zero",
+      "quantityRequired": "Lahat ng pakain ay dapat may dami na mas mataas sa zero para masuri",
+      "maxFeedsReached": "Maximum na {max} na pakain lang ang maaaring mapili"
+    },
+    "constraints": {
+      "title": "Pasadyang Limitasyon ng Diyeta",
+      "fiberNdf": "Fiber NDF (% ng DM)",
+      "starch": "Starch (% ng DM)",
+      "fatEe": "Taba / EE (% ng DM)",
+      "ash": "Abo (% ng DM)",
+      "resetDefaults": "Ibalik sa Default",
+      "hintRange": "{min} – {max}"
+    },
+    "evaluation": {
+      "title": "Ulat ng Pagsusuri sa Diyeta",
+      "overallStatus": "Pangkalahatang Katayuan",
+      "milkAnalysis": "Pagsusuri sa Produksyon ng Gatas",
+      "targetMilk": "Target na Gatas",
+      "supportedByEnergy": "Sinuportahan ng Enerhiya",
+      "supportedByProtein": "Sinuportahan ng Protina",
+      "limitingNutrient": "Nutrisyong Naglilimita",
+      "intakeEvaluation": "Pagsusuri sa Pagkonsumo",
+      "actualIntake": "Aktwal na Pagkonsumo",
+      "targetIntake": "Target na Pagkonsumo",
+      "costAnalysis": "Pagsusuri sa Gastos",
+      "totalCost": "Kabuuang Gastos/Araw",
+      "costPerKgMilk": "Gastos/kg Gatas",
+      "nutrientBalance": "Balanse ng Nutrisyon",
+      "generateRecommendation": "Gumawa ng Rekomendasyon",
+      "generateRecommendationDesc": "Gumawa ng na-optimize na rekomendasyon ng pagkain batay sa mga pakain na ito",
+      "milkOverride": "Target na Produksyon ng Gatas (L/araw)",
+      "milkOverrideHint": "1 – 60 L/araw",
+      "useCurrentMilk": "Gamitin ang kasalukuyang produksyon ng gatas",
+      "noData": "Walang available na data para sa pagsusuri"
+    },
+    "recommendation": {
+      "title": "Ulat ng Rekomendasyon sa Pagkain",
+      "reportInfo": "Impormasyon ng Ulat",
+      "reportId": "Report ID",
+      "simulationId": "Simulation ID",
+      "date": "Petsa",
+      "solutionSummary": "Buod ng Solusyon",
+      "dailyCost": "Pang-araw-araw na Gastos",
+      "dmIntake": "DM Intake",
+      "milkProduction": "Produksyon ng Gatas",
+      "feedBreakdown": "Pagkasira ng Pakain",
+      "feedName": "Pakain",
+      "quantity": "Dami (kg)",
+      "cost": "Gastos",
+      "percentage": "% ng DM",
+      "totalCost": "Kabuuang Gastos",
+      "dietStatus": "Status ng Pagkain",
+      "warnings": "Mga Babala",
+      "recommendations": "Mga Rekomendasyon",
+      "saveReport": "I-save ang Ulat",
+      "reportSaved": "Matagumpay na na-save ang ulat",
+      "noData": "Walang available na data para sa rekomendasyon",
+      "infeasible": "Walang nahanap na posibleng pagkain",
+      "infeasibleDetail": "Ang napiling pakain ay hindi sapat para sa pangangailangan ng hayop. Hindi makahanap ang optimizer ng balanseng pagkain.",
+      "infeasibleHint": "Subukang magdagdag ng iba't ibang pakain — isama ang forages, konsentradong mayaman sa protina (hal. oilseed meals), at mineral supplement.",
+      "tryAgain": "Baguhin ang Pakain"
+    },
+    "methane": {
+      "title": "Epekto sa Kapaligiran",
+      "production": "Produksyon ng Methane",
+      "yield": "Dami ng Methane",
+      "intensity": "Lakas ng Methane",
+      "conversionRate": "Rate ng Pagbabago ng Enerhiya",
+      "gPerDay": "g/araw",
+      "gPerKgDmi": "g/kg DMI",
+      "gPerKgMilk": "g/kg gatas",
+      "percent": "%"
+    },
+    "animalSummary": {
+      "title": "Katangian ng Hayop"
+    },
+    "status": {
+      "optimal": "Mainam",
+      "perfect": "Perpekto",
+      "good": "Maganda",
+      "adequate": "Sapat",
+      "marginal": "Limitado",
+      "deficient": "Kulang",
+      "excess": "Sobra",
+      "infeasible": "Hindi Magagawa"
+    },
+    "home": {
+      "welcome": "Kumusta, {name}",
+      "goodMorning": "Magandang umaga",
+      "goodAfternoon": "Magandang hapon",
+      "goodEvening": "Magandang gabi",
+      "startSimulation": "Simulan ang Bagong Simulation",
+      "startSimulationDesc": "I-configure ang impormasyon ng baka at pakain upang makakuha ng rekomendasyon sa diyeta",
+      "recentSimulations": "Mga Nakaraang Simulation",
+      "noSimulations": "Wala pang simulation",
+      "noSimulationsDesc": "Patakbuhin ang iyong unang simulation para makita dito",
+      "viewAll": "Tingnan Lahat"
+    }
   }
 }

@@ -50,7 +50,13 @@
     "chooseFromGallery": "Choisir dans la galerie",
     "removePhoto": "Supprimer la photo",
     "you": "Vous",
-    "clearAll": "Tout effacer"
+    "clearAll": "Tout effacer",
+    "unknown": "Inconnu",
+    "units": {
+      "kg": "kg",
+      "litersPerDay": "L/j",
+      "liters": "L"
+    }
   },
   "nav": {
     "home": "Accueil",
@@ -322,7 +328,7 @@
     "viewDiets": "Rations",
     "recentMilkLogs": "Enregistrements de lait récents",
     "noLogsYet": "Aucun enregistrement pour l'instant",
-    "morning": "M",
+    "morning": "Matin",
     "evening": "S",
     "bcsValue": "{score} / 5",
     "bcsHint": "1 (très maigre) à 5 (très gras)",
@@ -655,7 +661,7 @@
       "cerealStraw": "Paille de céréale",
       "energySource": "Source d'énergie",
       "forage": "Fourrage",
-      "grain": "Grain",
+      "grain": "Céréales",
       "grainCropForage": "Fourrage de céréale",
       "grainSubstitute": "Substitut/Sous-produit de grain",
       "grass": "Herbe",
@@ -868,7 +874,7 @@
       "action": "Enregistrer le lait"
     },
     "labels": {
-      "morning": "M",
+      "morning": "Matin",
       "evening": "S",
       "morningLabel": "Matin",
       "eveningLabel": "Soir",
@@ -1206,7 +1212,8 @@
     "pageNotFound": "Page non trouvée",
     "pageNotFoundDescription": "Oups ! La page que vous recherchez n'existe pas ou a été déplacée.",
     "goHome": "Retour à l'accueil",
-    "loadFailed": "Échec du chargement des données. Veuillez réessayer."
+    "loadFailed": "Échec du chargement des données. Veuillez réessayer.",
+    "sessionExpired": "Session expirée. Veuillez vous reconnecter."
   },
   "validation": {
     "required": "Ce champ est requis",
@@ -1224,7 +1231,8 @@
     "pinMismatch": "Les codes PIN ne correspondent pas",
     "pinStrengthWeak": "Code PIN faible - facile à deviner",
     "pinStrengthModerate": "Moyen",
-    "pinStrengthStrong": "Fort"
+    "pinStrengthStrong": "Fort",
+    "phoneTooShort": "Numéro de téléphone trop court"
   },
   "units": {
     "kg": "kg",
@@ -1374,6 +1382,22 @@
       "dataSync": {
         "question": "Comment synchroniser mes données ?",
         "answer": "Vos données se synchronisent automatiquement lorsque vous êtes connecté à Internet. Vous pouvez également déclencher manuellement une synchronisation depuis les Paramètres, sous « Données et Synchronisation », en appuyant sur le bouton de synchronisation."
+      },
+      "runSimulation": {
+        "question": "Comment lancer une simulation ?",
+        "answer": "Depuis la page d'accueil, appuyez sur « Démarrer une nouvelle simulation ». Saisissez les caractéristiques de votre bétail (race, poids, production laitière, etc.), puis appuyez sur Continuer. Sélectionnez les aliments disponibles et choisissez « Obtenir une recommandation » pour un régime optimisé ou « Évaluer le régime » si vous avez des quantités spécifiques."
+      },
+      "feedCatalog": {
+        "question": "Où puis-je consulter les aliments ?",
+        "answer": "Ouvrez le menu latéral et appuyez sur « Aliments » pour consulter le catalogue complet des aliments. Vous pouvez filtrer par type (Fourrage ou Concentré), rechercher par nom et afficher les informations nutritionnelles détaillées pour chaque aliment."
+      },
+      "editPrices": {
+        "question": "Puis-je modifier les prix des aliments ?",
+        "answer": "Oui ! Lors de la sélection des aliments pour une simulation, chaque aliment sélectionné affiche un champ de prix que vous pouvez modifier. Saisissez vos prix locaux pour obtenir des estimations de coûts plus précises dans le rapport de recommandation."
+      },
+      "viewHistory": {
+        "question": "Comment consulter les simulations passées ?",
+        "answer": "Vos simulations récentes apparaissent sur la page d'accueil. Appuyez sur « Voir tout » pour consulter l'historique complet de vos simulations. Vous pouvez appuyer sur n'importe quelle simulation passée pour restaurer ses entrées et la relancer avec des aliments ou des réglages différents."
       }
     }
   },
@@ -1849,5 +1873,212 @@
     "ocean": "Océan",
     "vibrant": "Vibrant",
     "sunset": "Coucher de soleil"
+  },
+  "feedback": {
+    "type": "Type de commentaire",
+    "rating": "Note globale",
+    "message": "Vos commentaires",
+    "submit": "Envoyer les commentaires",
+    "thankYou": "Merci pour vos commentaires !",
+    "error": "L'envoi des commentaires a échoué. Veuillez réessayer.",
+    "tooLong": "Les commentaires doivent contenir 1000 caractères ou moins",
+    "typeGeneral": "Général",
+    "typeDefect": "Signaler un bug",
+    "typeFeature": "Demande de fonctionnalité"
+  },
+  "simulation": {
+    "title": "Nouvelle simulation",
+    "cattleInfo": "Informations sur le bétail",
+    "feedSelection": "Sélection des aliments",
+    "evaluationReport": "Rapport d'évaluation",
+    "recommendationReport": "Rapport de recommandation",
+    "continue": "Continuer",
+    "newCase": "Nouveau cas",
+    "history": "Historique des simulations",
+    "historyEmpty": "Aucune simulation pour l'instant",
+    "historyEmptyDesc": "Lancez une simulation pour la voir ici.",
+    "restoring": "Restauration de la simulation...",
+    "generating": "Génération du rapport...",
+    "generatingDesc": "Cela peut prendre jusqu'à 90 secondes.",
+    "sections": {
+      "animalCharacteristics": "Caractéristiques de l'animal",
+      "milkProduction": "Production laitière",
+      "reproductiveData": "Données de reproduction",
+      "environment": "Environnement"
+    },
+    "fields": {
+      "bodyWeight": "Poids corporel (kg)",
+      "breed": "Race",
+      "bcScore": "Note d'état corporel",
+      "lactating": "Actuellement en lactation",
+      "daysInMilk": "Jours de lactation",
+      "milkProduction": "Production de lait (L/jour)",
+      "fatMilk": "Matière grasse du lait (%)",
+      "tpMilk": "Protéines réelles du lait (%)",
+      "parity": "Parité (numéro de lactation)",
+      "daysOfPregnancy": "Jours de gestation",
+      "calvingInterval": "Intervalle de vêlage (jours)",
+      "temperature": "Température (°C)",
+      "topography": "Topographie",
+      "distance": "Distance de marche (km)",
+      "grazing": "Pâturage",
+      "bwGain": "Gain de poids corporel (kg/jour)"
+    },
+    "topographyOptions": {
+      "flat": "Plat",
+      "hilly": "Vallonné",
+      "mountainous": "Montagneux"
+    },
+    "validation": {
+      "breedRequired": "La race est obligatoire",
+      "bodyWeightMin": "Le poids corporel doit être d'au moins 100 kg",
+      "bodyWeightMax": "Le poids corporel ne doit pas dépasser 1200 kg",
+      "milkProductionMin": "La production de lait doit être d'au moins 0",
+      "milkProductionMax": "La production de lait ne doit pas dépasser 80 L/jour",
+      "minZero": "La valeur doit être de 0 ou plus",
+      "daysInMilkMax": "Les jours de lactation ne doivent pas dépasser 700",
+      "fatMilkMin": "La matière grasse du lait doit être d'au moins 1%",
+      "fatMilkMax": "La matière grasse du lait ne doit pas dépasser 8%",
+      "tpMilkMin": "La protéine du lait doit être d'au moins 1%",
+      "tpMilkMax": "La protéine du lait ne doit pas dépasser 6%",
+      "parityMax": "La parité ne doit pas dépasser 15",
+      "daysOfPregnancyMax": "Le nombre de jours de gestation ne doit pas dépasser 290",
+      "calvingIntervalMin": "L'intervalle de vêlage doit être d'au moins 300 jours",
+      "calvingIntervalMax": "L'intervalle de vêlage ne doit pas dépasser 600 jours",
+      "temperatureMin": "La température doit être d'au moins -20°C",
+      "temperatureMax": "La température ne doit pas dépasser 50°C",
+      "distanceMax": "La distance de marche ne doit pas dépasser 50 km",
+      "bwGainMin": "Le gain de poids corporel doit être d'au moins -1 kg/jour",
+      "bwGainMax": "Le gain de poids corporel ne doit pas dépasser 2 kg/jour",
+      "priceMin": "Le prix doit être supérieur à 0",
+      "milkOverrideMin": "La production de lait doit être d'au moins 1 L/jour",
+      "milkOverrideMax": "La production de lait ne doit pas dépasser 60 L/jour",
+      "constraintMin": "La valeur doit être de 0 ou plus",
+      "constraintMax": "La valeur ne doit pas dépasser 100",
+      "required": "Ce champ est obligatoire",
+      "lactatingLatePregnancy": "La vache est en lactation avec {days} jours de gestation. Les vaches sont généralement taries après 210-220 jours. Voulez-vous continuer ?",
+      "notLactatingCleared": "Les champs de production laitière ont été effacés car l'animal n'est pas en lactation."
+    },
+    "historyItem": {
+      "evaluation": "Évaluation de la ration",
+      "recommendation": "Recommandation de ration",
+      "breed": "Race",
+      "weight": "Poids",
+      "milk": "Lait"
+    },
+    "feedSelect": {
+      "title": "Sélectionner les aliments",
+      "filterAll": "Tout",
+      "filterForage": "Fourrage",
+      "filterConcentrate": "Concentré",
+      "category": "Catégorie",
+      "allCategories": "Toutes les catégories",
+      "selectedFeeds": "Aliments sélectionnés",
+      "noFeedsSelected": "Aucun aliment sélectionné",
+      "selectAtLeast": "Sélectionnez au moins un aliment pour continuer",
+      "pricePerKg": "Prix/kg",
+      "quantityKg": "Quantité (kg/jour)",
+      "quantityOptional": "Quantité (facultatif)",
+      "customLimits": "Limites personnalisées pour la ration",
+      "withQuantities": "Évaluer la ration",
+      "withoutQuantities": "Obtenir une recommandation",
+      "priceRequired": "Tous les aliments doivent avoir un prix supérieur à zéro",
+      "quantityRequired": "Toutes les quantités d'aliments doivent être supérieures à zéro pour l'évaluation",
+      "maxFeedsReached": "Un maximum de {max} aliments peut être sélectionné"
+    },
+    "constraints": {
+      "title": "Limites personnalisées pour la ration",
+      "fiberNdf": "Fibre NDF (% de MS)",
+      "starch": "Amidon (% de MS)",
+      "fatEe": "Matière Grasse / EE (% de MS)",
+      "ash": "Cendres (% de MS)",
+      "resetDefaults": "Rétablir les valeurs par défaut",
+      "hintRange": "{min} – {max}"
+    },
+    "evaluation": {
+      "title": "Rapport d'évaluation de la ration",
+      "overallStatus": "État général",
+      "milkAnalysis": "Analyse de la production laitière",
+      "targetMilk": "Lait cible",
+      "supportedByEnergy": "Soutenu par l'énergie",
+      "supportedByProtein": "Soutenu par les protéines",
+      "limitingNutrient": "Nutriment limitant",
+      "intakeEvaluation": "Évaluation de l'ingestion",
+      "actualIntake": "Ingestion réelle",
+      "targetIntake": "Apport Cible",
+      "costAnalysis": "Analyse des Coûts",
+      "totalCost": "Coût Total/Jour",
+      "costPerKgMilk": "Coût/kg Lait",
+      "nutrientBalance": "Équilibre des Nutriments",
+      "generateRecommendation": "Générer une Recommandation",
+      "generateRecommendationDesc": "Générer une recommandation alimentaire optimisée basée sur ces aliments",
+      "milkOverride": "Production Laitière Cible (L/jour)",
+      "milkOverrideHint": "1 – 60 L/jour",
+      "useCurrentMilk": "Utiliser la production laitière actuelle",
+      "noData": "Aucune donnée d'évaluation disponible"
+    },
+    "recommendation": {
+      "title": "Rapport de Recommandation Alimentaire",
+      "reportInfo": "Informations du Rapport",
+      "reportId": "ID du Rapport",
+      "simulationId": "ID de la Simulation",
+      "date": "Date",
+      "solutionSummary": "Résumé de la Solution",
+      "dailyCost": "Coût Journalier",
+      "dmIntake": "Ingestion MS",
+      "milkProduction": "Production Laitière",
+      "feedBreakdown": "Répartition des Aliments",
+      "feedName": "Aliment",
+      "quantity": "Qté (kg)",
+      "cost": "Coût",
+      "percentage": "% de MS",
+      "totalCost": "Coût Total",
+      "dietStatus": "État du Régime",
+      "warnings": "Avertissements",
+      "recommendations": "Recommandations",
+      "saveReport": "Enregistrer le Rapport",
+      "reportSaved": "Rapport enregistré avec succès",
+      "noData": "Aucune donnée de recommandation disponible",
+      "infeasible": "Aucune ration réalisable trouvée",
+      "infeasibleDetail": "Les aliments sélectionnés ne peuvent pas satisfaire les besoins nutritionnels de cet animal. L'optimiseur n'a pas pu trouver une ration équilibrée.",
+      "infeasibleHint": "Essayez d'ajouter plus de variété d'aliments — incluez des fourrages, des concentrés riches en protéines (par exemple, des tourteaux oléagineux) et un supplément minéral.",
+      "tryAgain": "Changer les aliments"
+    },
+    "methane": {
+      "title": "Impact environnemental",
+      "production": "Production de méthane",
+      "yield": "Rendement en méthane",
+      "intensity": "Intensité du méthane",
+      "conversionRate": "Taux de conversion énergétique",
+      "gPerDay": "g/jour",
+      "gPerKgDmi": "g/kg MS",
+      "gPerKgMilk": "g/kg lait",
+      "percent": "%"
+    },
+    "animalSummary": {
+      "title": "Caractéristiques de l'animal"
+    },
+    "status": {
+      "optimal": "Optimal",
+      "perfect": "Parfait",
+      "good": "Bon",
+      "adequate": "Adéquat",
+      "marginal": "Marginal",
+      "deficient": "Déficient",
+      "excess": "Excès",
+      "infeasible": "Irréalisable"
+    },
+    "home": {
+      "welcome": "Bienvenue, {name}",
+      "goodMorning": "Bonjour",
+      "goodAfternoon": "Bon après-midi",
+      "goodEvening": "Bonsoir",
+      "startSimulation": "Démarrer une nouvelle simulation",
+      "startSimulationDesc": "Configurez les informations sur le bétail et les aliments pour obtenir une recommandation de ration",
+      "recentSimulations": "Simulations récentes",
+      "noSimulations": "Aucune simulation pour l'instant",
+      "noSimulationsDesc": "Lancez votre première simulation pour la voir ici",
+      "viewAll": "Tout voir"
+    }
   }
 }

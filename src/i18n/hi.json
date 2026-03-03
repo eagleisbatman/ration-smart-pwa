@@ -50,7 +50,13 @@
     "chooseFromGallery": "गैलरी से चुनें",
     "removePhoto": "फोटो हटाएँ",
     "you": "आप",
-    "clearAll": "सभी साफ करें"
+    "clearAll": "सभी साफ करें",
+    "unknown": "अज्ञात",
+    "units": {
+      "kg": "किलो",
+      "litersPerDay": "लीटर/दिन",
+      "liters": "लीटर"
+    }
   },
   "nav": {
     "home": "होम",
@@ -342,7 +348,7 @@
     },
     "ageFormatYears": "{count} साल",
     "ageFormatYearsPlural": "{count} साल",
-    "ageFormatYearsAndMonths": "{years} {months}",
+    "ageFormatYearsAndMonths": "{years} साल {months} महीने",
     "ageFormatMonth": "{count} महीना",
     "ageFormatMonthPlural": "{count} महीने",
     "validation": {
@@ -462,13 +468,13 @@
       "following": "अनुसरण कर रहा है",
       "archived": "पुराना"
     },
-    "tdnLabel": "TDN",
+    "tdnLabel": "टीडीएन",
     "dailyCost": "दैनिक लागत",
     "dmKg": "शुष्क पदार्थ सेवन (किग्रा)",
     "feeds": "चारा",
     "recommendedFeeds": "अनुशंसित चारा",
-    "dmLabel": "DM",
-    "cpLabel": "CP",
+    "dmLabel": "डीएम",
+    "cpLabel": "सीपी",
     "nutrientBalance": "पोषक तत्व संतुलन",
     "crudeProteinCP": "क्रूड प्रोटीन (CP)",
     "totalDigestibleNutrients": "कुल पचने योग्य पोषक तत्व (TDN)",
@@ -676,22 +682,22 @@
     },
     "labels": {
       "dmPercent": "शुष्क पदार्थ (DM)",
-      "dmPercentShort": "DM",
+      "dmPercentShort": "डीएम",
       "dmPercentInput": "शुष्क पदार्थ % *",
       "cpPercent": "क्रूड प्रोटीन (CP)",
-      "cpPercentShort": "CP",
+      "cpPercentShort": "सीपी",
       "cpPercentInput": "क्रूड प्रोटीन % *",
       "tdnPercent": "कुल पचने योग्य पोषक तत्व (TDN)",
-      "tdnPercentShort": "TDN",
-      "tdnPercentInput": "TDN % *",
+      "tdnPercentShort": "टीडीएन",
+      "tdnPercentInput": "टीडीएन % *",
       "ndfPercent": "न्यूट्रल डिटर्जेंट फाइबर (NDF)",
-      "ndfPercentShort": "NDF",
-      "ndfPercentInput": "NDF %",
+      "ndfPercentShort": "एनडीएफ",
+      "ndfPercentInput": "एनडीएफ %",
       "caPercent": "कैल्शियम (Ca)",
-      "caPercentShort": "Ca",
+      "caPercentShort": "कैल्शियम",
       "caPercentInput": "कैल्शियम %",
       "pPercent": "फॉस्फोरस (P)",
-      "pPercentShort": "P",
+      "pPercentShort": "फास्फोरस",
       "pPercentInput": "फॉस्फोरस %",
       "category": "श्रेणी",
       "categoryRequired": "श्रेणी *",
@@ -1203,7 +1209,8 @@
     "pageNotFound": "पेज नहीं मिला",
     "pageNotFoundDescription": "उफ़! आप जिस पेज को ढूंढ रहे हैं वह मौजूद नहीं है या उसे स्थानांतरित कर दिया गया है।",
     "goHome": "घर जाएँ",
-    "loadFailed": "डेटा लोड करने में विफल रहा। कृपया पुनः प्रयास करें।"
+    "loadFailed": "डेटा लोड करने में विफल रहा। कृपया पुनः प्रयास करें।",
+    "sessionExpired": "सत्र समाप्त हो गया है। कृपया फिर से लॉग इन करें।"
   },
   "validation": {
     "required": "यह फ़ील्ड आवश्यक है",
@@ -1221,7 +1228,8 @@
     "pinMismatch": "पिन मेल नहीं खाते",
     "pinStrengthWeak": "कमजोर पिन - अनुमान लगाना आसान है",
     "pinStrengthModerate": "मध्यम",
-    "pinStrengthStrong": "मजबूत"
+    "pinStrengthStrong": "मजबूत",
+    "phoneTooShort": "फ़ोन नंबर बहुत छोटा है"
   },
   "units": {
     "kg": "किग्रा",
@@ -1230,7 +1238,7 @@
     "ml": "मिली",
     "percent": "%",
     "rupees": "रु",
-    "dong": "VND",
+    "dong": "वीएनडी",
     "perDay": "/दिन",
     "perKg": "/किग्रा"
   },
@@ -1371,6 +1379,22 @@
       "dataSync": {
         "question": "मैं अपना डेटा कैसे सिंक करूँ?",
         "answer": "जब आप इंटरनेट से जुड़े होते हैं तो आपका डेटा स्वचालित रूप से सिंक हो जाता है। आप सेटिंग्स में \"डेटा और सिंक\" के तहत सिंक बटन पर टैप करके मैन्युअल रूप से भी सिंक कर सकते हैं।"
+      },
+      "runSimulation": {
+        "question": "मैं सिमुलेशन कैसे चलाऊं?",
+        "answer": "होम पेज से, \"नया सिमुलेशन शुरू करें\" पर टैप करें। अपने पशुओं की विशेषताएँ (नस्ल, वज़न, दूध उत्पादन आदि) दर्ज करें, फिर जारी रखें पर टैप करें। उपलब्ध चारे का चयन करें, और अनुकूलित आहार के लिए \"सिफारिश प्राप्त करें\" या यदि आपके पास विशिष्ट मात्राएँ हैं तो \"आहार का मूल्यांकन करें\" चुनें।"
+      },
+      "feedCatalog": {
+        "question": "मैं चारा कहाँ ब्राउज़ कर सकता हूँ?",
+        "answer": "साइड मेनू खोलें और पूरा चारा कैटलॉग देखने के लिए \"चारा\" पर टैप करें। आप प्रकार (चारा या सांद्रित) के अनुसार फ़िल्टर कर सकते हैं, नाम से खोज सकते हैं, और प्रत्येक चारे के लिए विस्तृत पोषण संबंधी जानकारी देख सकते हैं।"
+      },
+      "editPrices": {
+        "question": "क्या मैं चारे की कीमतें संपादित कर सकता हूँ?",
+        "answer": "हाँ! सिमुलेशन के लिए चारा चुनते समय, प्रत्येक चयनित चारे में एक मूल्य फ़ील्ड दिखाई देता है जिसे आप संपादित कर सकते हैं। सिफारिश रिपोर्ट में अधिक सटीक लागत अनुमान प्राप्त करने के लिए अपनी स्थानीय कीमतें दर्ज करें।"
+      },
+      "viewHistory": {
+        "question": "मैं पिछले सिमुलेशन कैसे देखूं?",
+        "answer": "आपके हाल के सिमुलेशन होम पेज पर दिखाई देते हैं। अपना पूरा सिमुलेशन इतिहास देखने के लिए \"सभी देखें\" पर टैप करें। आप किसी भी पिछले सिमुलेशन पर टैप करके उसके इनपुट को बहाल कर सकते हैं और उसे अलग-अलग चारे या सेटिंग्स के साथ फिर से चला सकते हैं।"
       }
     }
   },
@@ -1576,7 +1600,7 @@
     "updateNow": "अभी अपडेट करें",
     "later": "बाद में",
     "updateBanner": "अपडेट उपलब्ध है",
-    "appName": "RationSmart"
+    "appName": "रेशनस्मार्ट"
   },
   "storage": {
     "quotaWarning": "स्टोरेज {percent}% भरा हुआ है ({quotaMB} MB में से {usageMB} MB)। जगह खाली करने के लिए पुराने डेटा को सिंक और साफ़ करने पर विचार करें।"
@@ -1596,7 +1620,7 @@
     "avgLPerDay": "औसत लीटर/दिन",
     "avgFat": "औसत फैट %",
     "fat": "फैट",
-    "snf": "SNF",
+    "snf": "एसएनएफ",
     "revenue": "राजस्व",
     "totalRevenue": "कुल",
     "perDay": "प्रतिदिन",
@@ -1704,7 +1728,7 @@
     "farmer": "किसान",
     "yieldL": "दूध उत्पादन (लीटर)",
     "fatPercent": "वसा %",
-    "snfPercent": "SNF %",
+    "snfPercent": "एसएनएफ %",
     "notes": "टिप्पणियाँ",
     "yield": "उपज",
     "generatedOn": "RationSmart द्वारा {date} को बनाया गया",
@@ -1846,5 +1870,212 @@
     "ocean": "ओशन",
     "vibrant": "वाइब्रेंट",
     "sunset": "सनसेट"
+  },
+  "feedback": {
+    "type": "फीडबैक का प्रकार",
+    "rating": "कुल रेटिंग",
+    "message": "आपका फीडबैक",
+    "submit": "फीडबैक सबमिट करें",
+    "thankYou": "आपके फीडबैक के लिए धन्यवाद!",
+    "error": "फीडबैक सबमिट करने में विफल रहा। कृपया फिर से प्रयास करें।",
+    "tooLong": "फीडबैक 1000 अक्षरों या उससे कम होना चाहिए",
+    "typeGeneral": "सामान्य",
+    "typeDefect": "बग की रिपोर्ट करें",
+    "typeFeature": "नई सुविधा का अनुरोध"
+  },
+  "simulation": {
+    "title": "नया सिमुलेशन",
+    "cattleInfo": "पशु जानकारी",
+    "feedSelection": "चारा चयन",
+    "evaluationReport": "मूल्यांकन रिपोर्ट",
+    "recommendationReport": "सिफारिश रिपोर्ट",
+    "continue": "जारी रखें",
+    "newCase": "नया केस",
+    "history": "सिमुलेशन इतिहास",
+    "historyEmpty": "अभी कोई सिमुलेशन नहीं हुआ है",
+    "historyEmptyDesc": "यहां देखने के लिए एक सिमुलेशन चलाएं।",
+    "restoring": "सिमुलेशन बहाल किया जा रहा है...",
+    "generating": "रिपोर्ट तैयार की जा रही है...",
+    "generatingDesc": "इसमें 90 सेकंड तक लग सकते हैं।",
+    "sections": {
+      "animalCharacteristics": "पशु की विशेषताएं",
+      "milkProduction": "दूध उत्पादन",
+      "reproductiveData": "प्रजनन संबंधी डेटा",
+      "environment": "पर्यावरण"
+    },
+    "fields": {
+      "bodyWeight": "शरीर का वज़न (किग्रा)",
+      "breed": "नस्ल",
+      "bcScore": "शारीरिक स्थिति स्कोर",
+      "lactating": "वर्तमान में दूध दे रही है",
+      "daysInMilk": "दूध देने के दिन",
+      "milkProduction": "दूध उत्पादन (लीटर/दिन)",
+      "fatMilk": "दूध वसा (%)",
+      "tpMilk": "दूध प्रोटीन (%)",
+      "parity": "ब्यात संख्या (दूध देने का दौर)",
+      "daysOfPregnancy": "गर्भावस्था के दिन",
+      "calvingInterval": "ब्याने का अंतराल (दिन)",
+      "temperature": "तापमान (°C)",
+      "topography": "भूभाग",
+      "distance": "चलने की दूरी (किमी)",
+      "grazing": "चराई",
+      "bwGain": "शारीरिक वजन में वृद्धि (किग्रा/दिन)"
+    },
+    "topographyOptions": {
+      "flat": "समतल",
+      "hilly": "पहाड़ी",
+      "mountainous": "पर्वतीय"
+    },
+    "validation": {
+      "breedRequired": "नस्ल आवश्यक है",
+      "bodyWeightMin": "शरीर का वजन कम से कम 100 किग्रा होना चाहिए",
+      "bodyWeightMax": "शरीर का वजन 1200 किग्रा से अधिक नहीं होना चाहिए",
+      "milkProductionMin": "दूध उत्पादन कम से कम 0 होना चाहिए",
+      "milkProductionMax": "दूध उत्पादन 80 लीटर/दिन से अधिक नहीं होना चाहिए",
+      "minZero": "मान 0 या उससे अधिक होना चाहिए",
+      "daysInMilkMax": "दूध देने के दिन 700 से अधिक नहीं होने चाहिए",
+      "fatMilkMin": "दूध वसा कम से कम 1% होनी चाहिए",
+      "fatMilkMax": "दूध वसा 8% से अधिक नहीं होनी चाहिए",
+      "tpMilkMin": "दूध प्रोटीन कम से कम 1% होना चाहिए",
+      "tpMilkMax": "दूध प्रोटीन 6% से अधिक नहीं होना चाहिए",
+      "parityMax": "ब्यात संख्या 15 से अधिक नहीं होनी चाहिए",
+      "daysOfPregnancyMax": "गर्भावस्था के दिन 290 से अधिक नहीं होने चाहिए",
+      "calvingIntervalMin": "ब्याने का अंतराल कम से कम 300 दिन होना चाहिए",
+      "calvingIntervalMax": "ब्याने का अंतराल 600 दिन से ज़्यादा नहीं होना चाहिए",
+      "temperatureMin": "तापमान कम से कम -20°C होना चाहिए",
+      "temperatureMax": "तापमान 50°C से ज़्यादा नहीं होना चाहिए",
+      "distanceMax": "चलने की दूरी 50 किमी से ज़्यादा नहीं होनी चाहिए",
+      "bwGainMin": "शरीर का वज़न कम से कम -1 किग्रा/दिन बढ़ना चाहिए",
+      "bwGainMax": "शरीर का वज़न 2 किग्रा/दिन से ज़्यादा नहीं बढ़ना चाहिए",
+      "priceMin": "कीमत 0 से ज़्यादा होनी चाहिए",
+      "milkOverrideMin": "दूध उत्पादन कम से कम 1 लीटर/दिन होना चाहिए",
+      "milkOverrideMax": "दूध उत्पादन 60 लीटर/दिन से ज़्यादा नहीं होना चाहिए",
+      "constraintMin": "मान 0 या उससे ज़्यादा होना चाहिए",
+      "constraintMax": "मान 100 से ज़्यादा नहीं होना चाहिए",
+      "required": "यह फ़ील्ड भरना ज़रूरी है",
+      "lactatingLatePregnancy": "गाय {days} दिनों की गर्भाधान अवधि के साथ दूध दे रही है. गायों को आमतौर पर 210-220 दिनों के बाद दूध देना बंद करवा दिया जाता है. क्या आप जारी रखना चाहते हैं?",
+      "notLactatingCleared": "दूध उत्पादन वाले फ़ील्ड साफ़ कर दिए गए हैं क्योंकि जानवर दूध नहीं दे रहा है."
+    },
+    "historyItem": {
+      "evaluation": "आहार मूल्यांकन",
+      "recommendation": "आहार सुझाव",
+      "breed": "नस्ल",
+      "weight": "वज़न",
+      "milk": "दूध"
+    },
+    "feedSelect": {
+      "title": "चारा चुनें",
+      "filterAll": "सभी",
+      "filterForage": "चारा",
+      "filterConcentrate": "दानेदार चारा",
+      "category": "श्रेणी",
+      "allCategories": "सभी श्रेणियां",
+      "selectedFeeds": "चुने गए चारे",
+      "noFeedsSelected": "कोई चारा नहीं चुना गया है",
+      "selectAtLeast": "जारी रखने के लिए कम से कम एक चारा चुनें",
+      "pricePerKg": "कीमत/किग्रा",
+      "quantityKg": "मात्रा (किलो/दिन)",
+      "quantityOptional": "मात्रा (वैकल्पिक)",
+      "customLimits": "आहार की अपनी सीमाएँ",
+      "withQuantities": "आहार का मूल्यांकन करें",
+      "withoutQuantities": "सिफारिश प्राप्त करें",
+      "priceRequired": "सभी चारे की कीमत शून्य से अधिक होनी चाहिए",
+      "quantityRequired": "मूल्यांकन के लिए सभी चारे की मात्रा शून्य से अधिक होनी चाहिए",
+      "maxFeedsReached": "अधिकतम {max} चारे का चयन किया जा सकता है"
+    },
+    "constraints": {
+      "title": "आहार की अपनी सीमाएँ",
+      "fiberNdf": "फाइबर एनडीएफ (शुष्क पदार्थ का %)",
+      "starch": "स्टार्च (शुष्क पदार्थ का %)",
+      "fatEe": "वसा / ईई (शुष्क पदार्थ का %)",
+      "ash": "राख (शुष्क पदार्थ का %)",
+      "resetDefaults": "डिफ़ॉल्ट पर रीसेट करें",
+      "hintRange": "{min} – {max}"
+    },
+    "evaluation": {
+      "title": "आहार मूल्यांकन रिपोर्ट",
+      "overallStatus": "कुल स्थिति",
+      "milkAnalysis": "दूध उत्पादन विश्लेषण",
+      "targetMilk": "लक्ष्य दूध",
+      "supportedByEnergy": "ऊर्जा द्वारा समर्थित",
+      "supportedByProtein": "प्रोटीन द्वारा समर्थित",
+      "limitingNutrient": "सीमित करने वाला पोषक तत्व",
+      "intakeEvaluation": "खपत का मूल्यांकन",
+      "actualIntake": "वास्तविक खपत",
+      "targetIntake": "लक्ष्य खपत",
+      "costAnalysis": "लागत विश्लेषण",
+      "totalCost": "कुल लागत/दिन",
+      "costPerKgMilk": "लागत/किलो दूध",
+      "nutrientBalance": "पोषक तत्व संतुलन",
+      "generateRecommendation": "सिफारिश उत्पन्न करें",
+      "generateRecommendationDesc": "इन चारे के आधार पर अनुकूलित आहार की सिफारिश करें",
+      "milkOverride": "लक्ष्य दूध उत्पादन (लीटर/दिन)",
+      "milkOverrideHint": "1 – 60 लीटर/दिन",
+      "useCurrentMilk": "वर्तमान दूध उत्पादन का उपयोग करें",
+      "noData": "कोई मूल्यांकन डेटा उपलब्ध नहीं है"
+    },
+    "recommendation": {
+      "title": "आहार सिफारिश रिपोर्ट",
+      "reportInfo": "रिपोर्ट की जानकारी",
+      "reportId": "रिपोर्ट आईडी",
+      "simulationId": "सिमुलेशन आईडी",
+      "date": "दिनांक",
+      "solutionSummary": "समाधान सारांश",
+      "dailyCost": "दैनिक लागत",
+      "dmIntake": "DM सेवन",
+      "milkProduction": "दूध उत्पादन",
+      "feedBreakdown": "चारा वितरण",
+      "feedName": "चारा",
+      "quantity": "मात्रा (किलो)",
+      "cost": "लागत",
+      "percentage": "DM का %",
+      "totalCost": "कुल लागत",
+      "dietStatus": "आहार की स्थिति",
+      "warnings": "चेतावनी",
+      "recommendations": "सिफारिशें",
+      "saveReport": "रिपोर्ट सहेजें",
+      "reportSaved": "रिपोर्ट सफलतापूर्वक सहेजी गई",
+      "noData": "कोई सिफारिश डेटा उपलब्ध नहीं है",
+      "infeasible": "कोई व्यवहार्य आहार नहीं मिला",
+      "infeasibleDetail": "चयनित चारा इस जानवर की पोषण संबंधी आवश्यकताओं को पूरा नहीं कर सकता है। अनुकूलक एक संतुलित आहार नहीं ढूंढ सका।",
+      "infeasibleHint": "अधिक प्रकार के चारे को जोड़ने का प्रयास करें — इसमें हरा चारा, प्रोटीन युक्त दाना (जैसे तेलबीज का खली), और एक खनिज पूरक शामिल करें।",
+      "tryAgain": "चारा बदलें"
+    },
+    "methane": {
+      "title": "पर्यावरणीय प्रभाव",
+      "production": "मीथेन उत्पादन",
+      "yield": "मीथेन की मात्रा",
+      "intensity": "मीथेन की तीव्रता",
+      "conversionRate": "ऊर्जा रूपांतरण दर",
+      "gPerDay": "ग्राम/दिन",
+      "gPerKgDmi": "ग्राम/किग्रा सूखा पदार्थ",
+      "gPerKgMilk": "ग्राम/किग्रा दूध",
+      "percent": "%"
+    },
+    "animalSummary": {
+      "title": "पशु की विशेषताएँ"
+    },
+    "status": {
+      "optimal": "सबसे अच्छा",
+      "perfect": "उत्तम",
+      "good": "अच्छा",
+      "adequate": "पर्याप्त",
+      "marginal": "कम",
+      "deficient": "कमी",
+      "excess": "ज़्यादा",
+      "infeasible": "असंभव"
+    },
+    "home": {
+      "welcome": "स्वागत है, {name}",
+      "goodMorning": "सुप्रभात",
+      "goodAfternoon": "शुभ दोपहर",
+      "goodEvening": "शुभ संध्या",
+      "startSimulation": "नया सिमुलेशन शुरू करें",
+      "startSimulationDesc": "आहार की सलाह पाने के लिए पशु की जानकारी और चारे को सेट करें",
+      "recentSimulations": "हाल के सिमुलेशन",
+      "noSimulations": "अभी कोई सिमुलेशन नहीं",
+      "noSimulationsDesc": "अपना पहला सिमुलेशन चलाएँ ताकि आप इसे यहाँ देख सकें",
+      "viewAll": "सभी देखें"
+    }
   }
 }
