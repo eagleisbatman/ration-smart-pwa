@@ -6,7 +6,7 @@
 
 ```bash
 cd /Users/eagleisbatman/digitalgreen_projects/rationsmart/ration-smart-pwa
-npx quasar build
+npx quasar build -m pwa
 ```
 
 This catches:
@@ -42,7 +42,7 @@ If `package.json` dependencies changed, also run `bun install` so `bun.lock` sta
 ## Project Structure
 
 - Framework: Quasar v2 + Vue 3 Composition API + Pinia + TypeScript
-- Build: `npx quasar build` -> `dist/spa/`
+- Build: `npx quasar build -m pwa` -> `dist/pwa/`
 - Package manager: Bun (Railway uses `bun install --frozen-lockfile`)
 - Git repo root: this directory (`ration-smart-pwa/`)
 - Deployed on Railway (auto-deploys on push to main)
