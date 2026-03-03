@@ -315,7 +315,7 @@
     "pendingSync": "Nakabinbin ang pag-sync",
     "basicInfo": "Pangunahing Impormasyon",
     "healthStatus": "Kalusugan at Katayuan",
-    "bodyConditionScore": "Body Condition Score",
+    "bodyConditionScore": "Kondisyon ng Katawan",
     "activityLevel": "Antas ng Aktibidad",
     "activityLow": "Mababa (sa kulungan)",
     "activityNormal": "Normal",
@@ -343,7 +343,7 @@
       "sahiwal": "Sahiwal",
       "gir": "Gir",
       "redSindhi": "Red Sindhi",
-      "crossbreed": "Crossbreed",
+      "crossbreed": "Pinaghalong Lahi",
       "other": "Iba pa"
     },
     "ageFormatYears": "{count} taon",
@@ -585,7 +585,7 @@
       "generationFailed": "Nabigo ang pagbuo ng rasyon. Pakisubukang muli na gumamit ng ibang pakain o tingnan ang iyong koneksyon.",
       "optimizationFailed": "Hindi makahanap ang optimizer ng wastong rasyon sa mga napiling pakain. Subukang magdagdag ng mas maraming uri ng pakain.",
       "required": "Kailangan",
-      "bodyConditionScore": "Body Condition Score",
+      "bodyConditionScore": "Kondisyon ng Katawan",
       "ageMonths": "Edad (buwan)",
       "ageMonthsHint": "Iwanang blangko kung hindi alam",
       "ageMonthsValue": "{months} buwan",
@@ -1210,7 +1210,7 @@
     "pageNotFoundDescription": "Oops! Mukhang wala o inilipat ang pahinang hinahanap mo.",
     "goHome": "Umuwi",
     "loadFailed": "Hindi ma-load ang data. Paki-ulit.",
-    "sessionExpired": "Session expired. Please log in again."
+    "sessionExpired": "Nag-expire ang session. Paki-log in muli."
   },
   "validation": {
     "required": "Kinakailangan ang field na ito",
@@ -1229,7 +1229,7 @@
     "pinStrengthWeak": "Mahina ang PIN - madaling hulaan",
     "pinStrengthModerate": "Katamtaman",
     "pinStrengthStrong": "Malakas",
-    "phoneTooShort": "Phone number is too short"
+    "phoneTooShort": "Masyadong maikli ang numero ng telepono"
   },
   "units": {
     "kg": "kg",
@@ -1385,15 +1385,15 @@
       },
       "feedCatalog": {
         "question": "Saan ko makikita ang mga feed?",
-        "answer": "Open the side menu and tap \"Feeds\" to browse the complete feed catalog. You can filter by type (Forage or Concentrate), search by name, and view detailed nutritional information for each feed."
+        "answer": "Buksan ang side menu at i-tap ang \"Feeds\" para tingnan ang kumpletong catalog ng pagkain. Maaari kang mag-filter ayon sa uri (Forage o Concentrate), maghanap ayon sa pangalan, at tingnan ang detalyadong impormasyon ng nutrisyon para sa bawat pagkain."
       },
       "editPrices": {
-        "question": "Can I edit feed prices?",
-        "answer": "Yes! When selecting feeds for a simulation, each selected feed shows a price field that you can edit. Enter your local prices to get more accurate cost estimates in the recommendation report."
+        "question": "Maaari ko bang i-edit ang presyo ng pagkain?",
+        "answer": "Oo! Kapag pumipili ng pagkain para sa simulation, ipinapakita ng bawat napiling pagkain ang field ng presyo na maaari mong i-edit. Ilagay ang iyong mga lokal na presyo upang makakuha ng mas tumpak na pagtatantya ng gastos sa ulat ng rekomendasyon."
       },
       "viewHistory": {
-        "question": "How do I view past simulations?",
-        "answer": "Your recent simulations appear on the home page. Tap \"View All\" to see your complete simulation history. You can tap any past simulation to restore its inputs and re-run it with different feeds or settings."
+        "question": "Paano ko titingnan ang mga nakaraang simulation?",
+        "answer": "Ang iyong mga kamakailang simulation ay lumalabas sa home page. I-tap ang \"Tingnan Lahat\" upang makita ang iyong kumpletong kasaysayan ng simulation. Maaari mong i-tap ang anumang nakaraang simulation upang ibalik ang mga input nito at muling patakbuhin ito gamit ang iba't ibang pagkain o setting."
       }
     }
   },
