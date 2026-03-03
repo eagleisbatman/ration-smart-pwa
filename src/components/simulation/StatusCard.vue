@@ -22,12 +22,13 @@ import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
 
 const props = defineProps<{
-  status: string; // PERFECT | GOOD | MARGINAL | INFEASIBLE
+  status: string; // OPTIMAL | PERFECT | GOOD | MARGINAL | INFEASIBLE
   message?: string;
 }>();
 
 const statusColor = computed(() => {
   switch (props.status?.toUpperCase()) {
+    case 'OPTIMAL': return 'positive';
     case 'PERFECT': return 'positive';
     case 'GOOD': return 'positive';
     case 'MARGINAL': return 'warning';
@@ -38,6 +39,7 @@ const statusColor = computed(() => {
 
 const statusIcon = computed(() => {
   switch (props.status?.toUpperCase()) {
+    case 'OPTIMAL': return 'check_circle';
     case 'PERFECT': return 'check_circle';
     case 'GOOD': return 'thumb_up';
     case 'MARGINAL': return 'warning';
@@ -47,6 +49,7 @@ const statusIcon = computed(() => {
 });
 
 const STATUS_I18N_MAP: Record<string, string> = {
+  OPTIMAL: 'simulation.status.optimal',
   PERFECT: 'simulation.status.perfect',
   GOOD: 'simulation.status.good',
   MARGINAL: 'simulation.status.marginal',

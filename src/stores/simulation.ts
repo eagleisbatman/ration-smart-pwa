@@ -168,7 +168,7 @@ function normalizeRecResponse(raw: Record<string, any>): DietRecommendationRespo
   return {
     report_id: String(reportInfo.report_id ?? ''),
     simulation_id: String(reportInfo.simulation_id ?? ''),
-    is_valid: Boolean(dietStatus.is_valid),
+    is_valid: dietStatus.is_valid !== undefined ? Boolean(dietStatus.is_valid) : true,
     total_cost: Number(raw.total_diet_cost) || Number(solutionSummary.daily_cost) || 0,
     solution_status: String(dietStatus.status_classification ?? ''),
     confidence_level: String(dietStatus.summary ?? ''),
@@ -373,6 +373,7 @@ export const useSimulationStore = defineStore('simulation', () => {
    * Requires quantities on every selected feed.
    */
   async function generateEvaluation(): Promise<boolean> {
+    if (evaluating.value) return false;
     const authStore = useAuthStore();
     if (!authStore.userId) {
       error.value = 'Not authenticated';
@@ -421,6 +422,7 @@ export const useSimulationStore = defineStore('simulation', () => {
    * @param milkOverride – optional milk production override (from eval → rec flow)
    */
   async function generateRecommendation(milkOverride?: number): Promise<boolean> {
+    if (recommending.value) return false;
     const authStore = useAuthStore();
     if (!authStore.userId) {
       error.value = 'Not authenticated';

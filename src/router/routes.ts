@@ -58,13 +58,13 @@ const routes: RouteRecordRaw[] = [
         path: 'evaluation-report',
         name: 'evaluation-report',
         component: () => import('pages/simulation/EvaluationReportPage.vue'),
-        meta: { titleKey: 'simulation.evaluationReport', showBack: true },
+        meta: { titleKey: 'simulation.evaluationReport' },
       },
       {
         path: 'recommendation-report',
         name: 'recommendation-report',
         component: () => import('pages/simulation/RecommendationReportPage.vue'),
-        meta: { titleKey: 'simulation.recommendationReport', showBack: true },
+        meta: { titleKey: 'simulation.recommendationReport' },
       },
 
       // Feeds catalog

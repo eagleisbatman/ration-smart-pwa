@@ -2029,6 +2029,7 @@
       "title": "Animal Characteristics"
     },
     "status": {
+      "optimal": "Optimal",
       "perfect": "Perfect",
       "good": "Good",
       "adequate": "Adequate",
