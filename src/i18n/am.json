@@ -50,7 +50,13 @@
     "chooseFromGallery": "ከጋለሪ ይምረጡ",
     "removePhoto": "ፎቶ ያስወግዱ",
     "you": "እርስዎ",
-    "clearAll": "ሁሉንም አጥፋ"
+    "clearAll": "ሁሉንም አጥፋ",
+    "unknown": "የማይታወቅ",
+    "units": {
+      "kg": "ኪ.ግ",
+      "litersPerDay": "ሊ/ቀን",
+      "liters": "ሊትር"
+    }
   },
   "nav": {
     "home": "መነሻ",
@@ -1203,7 +1209,8 @@
     "pageNotFound": "ገጹ አልተገኘም",
     "pageNotFoundDescription": "ይቅርታ! እየፈለጉት ያለው ገጽ የለም ወይም ተንቀሳቅሷል።",
     "goHome": "ወደ ዋናው ገጽ ሂድ",
-    "loadFailed": "መረጃውን መጫን አልተሳካም። እባክዎ እንደገና ይሞክሩ።"
+    "loadFailed": "መረጃውን መጫን አልተሳካም። እባክዎ እንደገና ይሞክሩ።",
+    "sessionExpired": "የአገልግሎት ጊዜው አልፏል። እባክዎ እንደገና ይግቡ።"
   },
   "validation": {
     "required": "ይህ መስክ ያስፈልጋል",
@@ -1221,7 +1228,8 @@
     "pinMismatch": "ፒኖች አይዛመዱም",
     "pinStrengthWeak": "ደካማ ሚስጥራዊ ቁጥር - ለመገመት ቀላል",
     "pinStrengthModerate": "መካከለኛ",
-    "pinStrengthStrong": "ጠንካራ"
+    "pinStrengthStrong": "ጠንካራ",
+    "phoneTooShort": "ስልክ ቁጥሩ በጣም አጭር ነው።"
   },
   "units": {
     "kg": "ኪ.ግ",
@@ -1370,6 +1378,22 @@
       "dataSync": {
         "question": "ውሂቤን እንዴት ማመሳሰል እችላለሁ?",
         "answer": "ከበይነመረብ ጋር ሲገናኙ ውሂብዎ በራስ-ሰር ይመሳሰላል። እንዲሁም በቅንብሮች ስር ከ \"ውሂብ እና ማመሳሰል\" በታች የማመሳሰል ቁልፍን በመንካት በእጅ ማመሳሰልን ማነሳሳት ይችላሉ።"
+      },
+      "runSimulation": {
+        "question": "የምግብ ቀመር ግምትን እንዴት አገኛለሁ?",
+        "answer": "ከዋናው ገጽ ላይ \"አዲስ ግምት ጀምር\" የሚለውን ይጫኑ። የእንስሳትዎን ባህሪያት (ዝርያ፣ ክብደት፣ የወተት ምርት፣ ወዘተ) ያስገቡ፣ ከዚያ ይቀጥሉ የሚለውን ይጫኑ። ያሉትን መኖዎች ይምረጡ እና የተሻለ የአመጋገብ ስርዓት ለማግኘት \"ምክር አግኝ\" የሚለውን ወይም የተወሰኑ መጠኖች ካሉዎት \"የምግብ ስርዓቱን ገምግም\" የሚለውን ይምረጡ።"
+      },
+      "feedCatalog": {
+        "question": "መኖዎችን የት ማሰስ እችላለሁ?",
+        "answer": "የጎን ምናሌውን ይክፈቱ እና የተሟላውን የመኖ ካታሎግ ለማሰስ \"መኖዎች\" የሚለውን ይጫኑ። በአይነት (አረንጓዴ መኖ ወይም የደረቀ መኖ) ማጣራት፣ በስም መፈለግ እና የእያንዳንዱን መኖ ዝርዝር የአመጋገብ መረጃ ማየት ይችላሉ።"
+      },
+      "editPrices": {
+        "question": "የመኖ ዋጋዎችን ማስተካከል እችላለሁ?",
+        "answer": "አዎ! ለግምት መኖዎችን በሚመርጡበት ጊዜ፣ እያንዳንዱ የተመረጠ መኖ ማስተካከል የሚችሉት የዋጋ መስክ ያሳያል። በምክር ሪፖርቱ ውስጥ ይበልጥ ትክክለኛ የዋጋ ግምቶችን ለማግኘት የአካባቢዎን ዋጋ ያስገቡ።"
+      },
+      "viewHistory": {
+        "question": "ያለፉትን ግምቶች እንዴት ማየት እችላለሁ?",
+        "answer": "የእርስዎ የቅርብ ጊዜ ግምቶች በዋናው ገጽ ላይ ይታያሉ። የእርስዎን የተሟላ የግምት ታሪክ ለማየት \"ሁሉንም እይ\" የሚለውን ይጫኑ። ግብአቶቹን ለመመለስ እና በተለያዩ መኖዎች ወይም ቅንብሮች እንደገና ለማስኬድ ማንኛውንም ያለፈ ግምት መጫን ይችላሉ።"
       }
     }
   },
@@ -1845,5 +1869,212 @@
     "ocean": "ውቅያኖስ",
     "vibrant": "ደማቅ",
     "sunset": "ፀሐይ ስትጠልቅ"
+  },
+  "feedback": {
+    "type": "የአስተያየት አይነት",
+    "rating": "አጠቃላይ ደረጃ",
+    "message": "የእርስዎ አስተያየት",
+    "submit": "አስተያየት አስገባ",
+    "thankYou": "ስለ አስተያየትዎ እናመሰግናለን!",
+    "error": "አስተያየትን ማስገባት አልተቻለም። እባክዎ እንደገና ይሞክሩ።",
+    "tooLong": "አስተያየት 1000 ቁምፊዎች ወይም ከዚያ በታች መሆን አለበት።",
+    "typeGeneral": "አጠቃላይ",
+    "typeDefect": "ስህተት ሪፖርት አድርግ",
+    "typeFeature": "አዲስ ነገር እንዲጨመር መጠየቅ"
+  },
+  "simulation": {
+    "title": "አዲስ ግምት",
+    "cattleInfo": "የከብት መረጃ",
+    "feedSelection": "የመኖ ምርጫ",
+    "evaluationReport": "የግምገማ ሪፖርት",
+    "recommendationReport": "የውሳኔ ሪፖርት",
+    "continue": "ቀጥል",
+    "newCase": "አዲስ ጉዳይ",
+    "history": "የሲሙሌሽን ታሪክ",
+    "historyEmpty": "እስካሁን ምንም ሲሙሌሽን የለም",
+    "historyEmptyDesc": "እዚህ ለማየት ሲሙሌሽን ያካሂዱ።",
+    "restoring": "ሲሙሌሽን በመመለስ ላይ...",
+    "generating": "ሪፖርት በመፍጠር ላይ...",
+    "generatingDesc": "ይህ እስከ 90 ሰከንዶች ሊወስድ ይችላል።",
+    "sections": {
+      "animalCharacteristics": "የእንስሳት ባህሪያት",
+      "milkProduction": "የወተት ምርት",
+      "reproductiveData": "የመራባት መረጃ",
+      "environment": "አካባቢ"
+    },
+    "fields": {
+      "bodyWeight": "የሰውነት ክብደት (ኪግ)",
+      "breed": "ዘር",
+      "bcScore": "የሰውነት ሁኔታ ነጥብ",
+      "lactating": "በአሁኑ ጊዜ ወተት የምትሰጥ",
+      "daysInMilk": "ወተት መስጠት የጀመረችበት ቀን",
+      "milkProduction": "የወተት ምርት (ሊትር/ቀን)",
+      "fatMilk": "የወተት ስብ (%)",
+      "tpMilk": "የወተት እውነተኛ ፕሮቲን (%)",
+      "parity": "ወለዶች ብዛት (የወተት ጊዜ ቁጥር)",
+      "daysOfPregnancy": "የእርግዝና ቀናት",
+      "calvingInterval": "የመውለጃ ጊዜ ልዩነት (ቀናት)",
+      "temperature": "የሙቀት መጠን (°C)",
+      "topography": "የመሬት አቀማመጥ",
+      "distance": "የመራመጃ ርቀት (ኪሜ)",
+      "grazing": "ግጦሽ",
+      "bwGain": "የሰውነት ክብደት መጨመር (ኪግ/ቀን)"
+    },
+    "topographyOptions": {
+      "flat": "ጠፍጣፋ",
+      "hilly": "ኮረብታማ",
+      "mountainous": "ተራራማ"
+    },
+    "validation": {
+      "breedRequired": "የከብት ዝርያ ያስፈልጋል",
+      "bodyWeightMin": "የሰውነት ክብደት ቢያንስ 100 ኪ.ግ መሆን አለበት",
+      "bodyWeightMax": "የሰውነት ክብደት ከ1200 ኪ.ግ መብለጥ የለበትም",
+      "milkProductionMin": "የወተት ምርት ቢያንስ 0 መሆን አለበት",
+      "milkProductionMax": "የወተት ምርት ከ80 ሊትር/ቀን መብለጥ የለበትም",
+      "minZero": "ዋጋው 0 ወይም ከዚያ በላይ መሆን አለበት",
+      "daysInMilkMax": "በወተት የቆየችበት ቀን ከ700 መብለጥ የለበትም",
+      "fatMilkMin": "የወተት ስብ ቢያንስ 1% መሆን አለበት",
+      "fatMilkMax": "የወተት ስብ ከ8% መብለጥ የለበትም",
+      "tpMilkMin": "የወተት ፕሮቲን ቢያንስ 1% መሆን አለበት",
+      "tpMilkMax": "የወተት ፕሮቲን ከ6% መብለጥ የለበትም",
+      "parityMax": "የወለደችበት ቁጥር ከ15 መብለጥ የለበትም",
+      "daysOfPregnancyMax": "የእርግዝና ቀናት ከ290 መብለጥ የለበትም",
+      "calvingIntervalMin": "የመውለጃ ጊዜ ልዩነት ቢያንስ 300 ቀናት መሆን አለበት",
+      "calvingIntervalMax": "የመውለጃ ጊዜ ልዩነት ከ600 ቀናት መብለጥ የለበትም",
+      "temperatureMin": "የሙቀት መጠን ቢያንስ -20°C መሆን አለበት",
+      "temperatureMax": "የሙቀት መጠን ከ50°C መብለጥ የለበትም",
+      "distanceMax": "የእግር ጉዞ ርቀት ከ50 ኪ.ሜ መብለጥ የለበትም",
+      "bwGainMin": "የሰውነት ክብደት መጨመር ቢያንስ -1 ኪ.ግ/ቀን መሆን አለበት",
+      "bwGainMax": "የሰውነት ክብደት መጨመር ከ2 ኪ.ግ/ቀን መብለጥ የለበትም",
+      "priceMin": "ዋጋው ከ0 በላይ መሆን አለበት",
+      "milkOverrideMin": "የወተት ምርት ቢያንስ 1 ሊትር/ቀን መሆን አለበት",
+      "milkOverrideMax": "የወተት ምርት ከ60 ሊትር/ቀን መብለጥ የለበትም",
+      "constraintMin": "ዋጋው 0 ወይም ከዚያ በላይ መሆን አለበት",
+      "constraintMax": "ዋጋው ከ100 መብለጥ የለበትም",
+      "required": "ይህ መስክ ያስፈልጋል",
+      "lactatingLatePregnancy": "ላሟ በ{days} ቀን እርግዝና ውስጥ ወተት ትሰጣለች። ላሞች በአብዛኛው ከ210-220 ቀናት በኋላ ወተት ማቆም አለባቸው። ለማንኛውም መቀጠል ይፈልጋሉ?",
+      "notLactatingCleared": "እንስሳው ወተት ስለማይሰጥ የወተት ምርት መስኮች ተሰርዘዋል።"
+    },
+    "historyItem": {
+      "evaluation": "የምግብ ግምገማ",
+      "recommendation": "የምግብ ጥቆማ",
+      "breed": "የከብት ዝርያ",
+      "weight": "ክብደት",
+      "milk": "ወተት"
+    },
+    "feedSelect": {
+      "title": "መኖዎችን ይምረጡ",
+      "filterAll": "ሁሉም",
+      "filterForage": "ግጦሽ",
+      "filterConcentrate": "ቅልቅል መኖ",
+      "category": "ምድብ",
+      "allCategories": "ሁሉም ምድቦች",
+      "selectedFeeds": "የተመረጡ መኖዎች",
+      "noFeedsSelected": "ምንም መኖ አልተመረጠም",
+      "selectAtLeast": "ለመቀጠል ቢያንስ አንድ መኖ ይምረጡ",
+      "pricePerKg": "ዋጋ/ኪግ",
+      "quantityKg": "ብዛት (ኪግ/ቀን)",
+      "quantityOptional": "ብዛት (አማራጭ)",
+      "customLimits": "የምግብ ገደቦች ማበጀት",
+      "withQuantities": "የምግብ ግምገማ",
+      "withoutQuantities": "ጥቆማ ያግኙ",
+      "priceRequired": "ሁሉም መኖዎች ከዜሮ በላይ ዋጋ ሊኖራቸው ይገባል",
+      "quantityRequired": "ለግምገማ ሁሉም መኖዎች ከዜሮ በላይ ብዛት ሊኖራቸው ይገባል",
+      "maxFeedsReached": "ቢበዛ {max} መኖዎች ሊመረጡ ይችላሉ"
+    },
+    "constraints": {
+      "title": "የተበጁ የምግብ ገደቦች",
+      "fiberNdf": "ፋይበር NDF (ከደረቅ ነገር %)",
+      "starch": "ስታርች (ከደረቅ ነገር %)",
+      "fatEe": "ስብ / EE (ከደረቅ ነገር %)",
+      "ash": "አሽ (ከደረቅ ነገር %)",
+      "resetDefaults": "ወደ ነባሪ ቅንብሮች ይመልሱ",
+      "hintRange": "{min} – {max}"
+    },
+    "evaluation": {
+      "title": "የምግብ ግምገማ ሪፖርት",
+      "overallStatus": "አጠቃላይ ሁኔታ",
+      "milkAnalysis": "የወተት ምርት ትንተና",
+      "targetMilk": "የታለመ የወተት መጠን",
+      "supportedByEnergy": "በኃይል የተደገፈ",
+      "supportedByProtein": "በፕሮቲን የተደገፈ",
+      "limitingNutrient": "የጎደለ ንጥረ-ምግብ",
+      "intakeEvaluation": "የፍጆታ ግምገማ",
+      "actualIntake": "ትክክለኛ ፍጆታ",
+      "targetIntake": "የታለመ ፍጆታ",
+      "costAnalysis": "የወጪ ትንተና",
+      "totalCost": "ጠቅላላ ወጪ/ቀን",
+      "costPerKgMilk": "ወጪ/ኪግ ወተት",
+      "nutrientBalance": "የንጥረ-ምግብ ሚዛን",
+      "generateRecommendation": "ምክር ያዘጋጁ",
+      "generateRecommendationDesc": "በነዚህ ምግቦች ላይ ተመስርቶ የተሻለ የምግብ ምክር ያዘጋጁ",
+      "milkOverride": "የታለመ የወተት ምርት (ሊትር/ቀን)",
+      "milkOverrideHint": "1 – 60 ሊትር/ቀን",
+      "useCurrentMilk": "ወቅታዊ የወተት ምርትን ይጠቀሙ",
+      "noData": "ምንም የግምገማ መረጃ የለም"
+    },
+    "recommendation": {
+      "title": "የምግብ ምክር ሪፖርት",
+      "reportInfo": "የሪፖርት መረጃ",
+      "reportId": "የሪፖርት መለያ",
+      "simulationId": "የምርምር መለያ",
+      "date": "ቀን",
+      "solutionSummary": "የመፍትሄ ማጠቃለያ",
+      "dailyCost": "ዕለታዊ ወጪ",
+      "dmIntake": "የደረቅ ነገር ፍጆታ",
+      "milkProduction": "የወተት ምርት",
+      "feedBreakdown": "የምግብ ዝርዝር",
+      "feedName": "መኖ",
+      "quantity": "ብዛት (ኪግ)",
+      "cost": "ዋጋ",
+      "percentage": "ከደረቅ ንጥረ ነገር %",
+      "totalCost": "ጠቅላላ ወጪ",
+      "dietStatus": "የመኖ ሁኔታ",
+      "warnings": "ማስጠንቀቂያዎች",
+      "recommendations": "ምክሮች",
+      "saveReport": "ሪፖርቱን አስቀምጥ",
+      "reportSaved": "ሪፖርቱ በተሳካ ሁኔታ ተቀምጧል",
+      "noData": "ምንም የምክር መረጃ የለም",
+      "infeasible": "ምንም የሚሆን አመጋገብ አልተገኘም",
+      "infeasibleDetail": "የተመረጡት መኖዎች ለዚህ እንስሳ የአመጋገብ መስፈርቶችን ማሟላት አይችሉም። አመጣጣኝ አመጋገብ ማግኘት አልተቻለም።",
+      "infeasibleHint": "ተጨማሪ የመኖ አይነቶችን ለመጨመር ይሞክሩ — ሳር፣ በፕሮቲን የበለፀጉ መኖዎችን (ለምሳሌ፣ የዘይት እህሎች) እና የማዕድን ማሟያ ያካትቱ።",
+      "tryAgain": "መኖዎችን ቀይር"
+    },
+    "methane": {
+      "title": "የአካባቢ ተፅዕኖ",
+      "production": "የሚቴን ምርት",
+      "yield": "የሚቴን ምርት ብዛት",
+      "intensity": "የሚቴን ጥንካሬ",
+      "conversionRate": "የኃይል ልውውጥ መጠን",
+      "gPerDay": "ግ/ቀን",
+      "gPerKgDmi": "ግ/ኪግ የደረቅ ንጥረ ነገር",
+      "gPerKgMilk": "ግ/ኪግ ወተት",
+      "percent": "%"
+    },
+    "animalSummary": {
+      "title": "የእንስሳት ባህሪያት"
+    },
+    "status": {
+      "optimal": "ምርጥ",
+      "perfect": "ፍፁም",
+      "good": "ጥሩ",
+      "adequate": "በቂ",
+      "marginal": "አማካይ",
+      "deficient": "ያልበቃ",
+      "excess": "ከመጠን በላይ",
+      "infeasible": "የማይቻል"
+    },
+    "home": {
+      "welcome": "እንኳን ደህና መጡ፣ {name}",
+      "goodMorning": "እንደምን አደሩ",
+      "goodAfternoon": "እንደምን ዋሉ",
+      "goodEvening": "እንደምን አመሹ",
+      "startSimulation": "አዲስ ምናባዊ ግብዓት ይጀምሩ",
+      "startSimulationDesc": "የከብት መረጃ እና መኖን በማስተካከል የምግብ ምክር ያግኙ",
+      "recentSimulations": "የቅርብ ጊዜ ምናባዊ ግብዓቶች",
+      "noSimulations": "እስካሁን ምንም ምናባዊ ግብዓት የለም",
+      "noSimulationsDesc": "የመጀመሪያዎን ምናባዊ ግብዓት እዚህ ለማየት ያካሂዱ",
+      "viewAll": "ሁሉንም ይመልከቱ"
+    }
   }
 }

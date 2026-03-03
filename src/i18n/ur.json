@@ -50,7 +50,13 @@
     "chooseFromGallery": "گیلری سے منتخب کریں",
     "removePhoto": "تصویر ہٹائیں",
     "you": "آپ",
-    "clearAll": "سب صاف کریں"
+    "clearAll": "سب صاف کریں",
+    "unknown": "نامعلوم",
+    "units": {
+      "kg": "کلوگرام",
+      "litersPerDay": "L/دن",
+      "liters": "لیٹر"
+    }
   },
   "nav": {
     "home": "ہوم",
@@ -462,13 +468,13 @@
       "following": "پیروی کر رہے ہیں",
       "archived": "آرکائیو شدہ"
     },
-    "tdnLabel": "TDN",
+    "tdnLabel": "ٹی ڈی این",
     "dailyCost": "روزانہ کی لاگت",
     "dmKg": "خشک مادہ کی مقدار (کلو)",
     "feeds": "خوراک کے اجزاء",
     "recommendedFeeds": "تجویز کردہ خوراک",
-    "dmLabel": "DM",
-    "cpLabel": "CP",
+    "dmLabel": "ڈی ایم",
+    "cpLabel": "سی پی",
     "nutrientBalance": "غذائی اجزاء کا توازن",
     "crudeProteinCP": "خام پروٹین (CP)",
     "totalDigestibleNutrients": "کل ہضم شدہ غذائی اجزاء (TDN)",
@@ -676,22 +682,22 @@
     },
     "labels": {
       "dmPercent": "خشک مادہ (DM)",
-      "dmPercentShort": "DM",
+      "dmPercentShort": "ڈی ایم",
       "dmPercentInput": "خشک مادہ % *",
       "cpPercent": "خام پروٹین (CP)",
-      "cpPercentShort": "CP",
+      "cpPercentShort": "سی پی",
       "cpPercentInput": "خام پروٹین % *",
       "tdnPercent": "کل ہضم شدہ غذائی اجزاء (TDN)",
-      "tdnPercentShort": "TDN",
+      "tdnPercentShort": "ٹی ڈی این",
       "tdnPercentInput": "ٹی ڈی این % *",
       "ndfPercent": "نیوٹرل ڈیٹرجنٹ فائبر (NDF)",
-      "ndfPercentShort": "NDF",
+      "ndfPercentShort": "این ڈی ایف",
       "ndfPercentInput": "این ڈی ایف %",
       "caPercent": "کیلشیم (Ca)",
-      "caPercentShort": "Ca",
+      "caPercentShort": "کیلشیم",
       "caPercentInput": "کیلشیم %",
       "pPercent": "فاسفورس (P)",
-      "pPercentShort": "P",
+      "pPercentShort": "فاسفورس",
       "pPercentInput": "فاسفورس %",
       "category": "کیٹیگری",
       "categoryRequired": "کیٹیگری *",
@@ -1203,7 +1209,8 @@
     "pageNotFound": "صفحہ نہیں ملا",
     "pageNotFoundDescription": "اوہ! وہ صفحہ جو آپ ڈھونڈ رہے ہیں موجود نہیں یا منتقل کر دیا گیا ہے۔",
     "goHome": "ہوم پر جائیں",
-    "loadFailed": "ڈیٹا لوڈ کرنے میں ناکامی۔ براہ کرم دوبارہ کوشش کریں۔"
+    "loadFailed": "ڈیٹا لوڈ کرنے میں ناکامی۔ براہ کرم دوبارہ کوشش کریں۔",
+    "sessionExpired": "سیشن ختم ہو گیا ہے۔ براہ کرم دوبارہ لاگ ان کریں۔"
   },
   "validation": {
     "required": "یہ فیلڈ ضروری ہے",
@@ -1221,14 +1228,15 @@
     "pinMismatch": "پن مماثل نہیں",
     "pinStrengthWeak": "کمزور پن - اندازہ لگانا آسان ہے",
     "pinStrengthModerate": "درمیانہ",
-    "pinStrengthStrong": "مضبوط"
+    "pinStrengthStrong": "مضبوط",
+    "phoneTooShort": "فون نمبر بہت چھوٹا ہے"
   },
   "units": {
     "kg": "کلو",
     "g": "گرام",
     "l": "لیٹر",
     "ml": "ملی لیٹر",
-    "percent": "%",
+    "percent": "فیصد",
     "rupees": "₨",
     "dong": "₨",
     "perDay": "/دن",
@@ -1371,6 +1379,22 @@
       "dataSync": {
         "question": "میں اپنا ڈیٹا کیسے سنک (sync) کروں؟",
         "answer": "انٹرنیٹ سے جڑے ہونے پر آپ کا ڈیٹا خود بخود اپڈیٹ ہو جاتا ہے۔ آپ سیٹنگز میں \"ڈیٹا اور سنک\" کے تحت جا کر خود بھی سنک بٹن دبا کر ڈیٹا اپڈیٹ کر سکتے ہیں۔"
+      },
+      "runSimulation": {
+        "question": "میں ایک تخمینہ (سمولیشن) کیسے چلاؤں؟",
+        "answer": "ہوم پیج سے، \"نئی سمولیشن شروع کریں\" پر ٹیپ کریں۔ اپنے مویشیوں کی خصوصیات (نسل، وزن، دودھ کی پیداوار وغیرہ) درج کریں، پھر جاری رکھیں پر ٹیپ کریں۔ دستیاب فیڈز کو منتخب کریں، اور اگر آپ کو بہتر خوراک درکار ہے تو \"سفارش حاصل کریں\" منتخب کریں یا اگر آپ کے پاس مخصوص مقداریں ہیں تو \"خوراک کا جائزہ لیں\" منتخب کریں۔"
+      },
+      "feedCatalog": {
+        "question": "میں فیڈز کہاں دیکھ سکتا ہوں؟",
+        "answer": "سائیڈ مینو کھولیں اور مکمل فیڈ کیٹلاگ دیکھنے کے لیے \"فیڈز\" پر ٹیپ کریں۔ آپ قسم (چارہ یا کنسنٹریٹ) کے لحاظ سے فلٹر کر سکتے ہیں، نام سے تلاش کر سکتے ہیں، اور ہر فیڈ کے لیے تفصیلی غذائی معلومات دیکھ سکتے ہیں۔"
+      },
+      "editPrices": {
+        "question": "کیا میں فیڈ کی قیمتیں تبدیل کر سکتا ہوں؟",
+        "answer": "ہاں! جب سمولیشن کے لیے فیڈز کا انتخاب کرتے ہیں، تو ہر منتخب فیڈ ایک قیمت کا فیلڈ دکھاتا ہے جسے آپ ایڈٹ کر سکتے ہیں۔ سفارش کی رپورٹ میں زیادہ درست لاگت کے تخمینے حاصل کرنے کے لیے اپنی مقامی قیمتیں درج کریں۔"
+      },
+      "viewHistory": {
+        "question": "میں ماضی کے سمولیشنز کیسے دیکھوں؟",
+        "answer": "آپ کے حالیہ سمولیشنز ہوم پیج پر ظاہر ہوتے ہیں۔ اپنی مکمل سمولیشن ہسٹری دیکھنے کے لیے \"سب دیکھیں\" پر ٹیپ کریں۔ آپ کسی بھی ماضی کے سمولیشن پر ٹیپ کر کے اس کی ان پٹ کو بحال کر سکتے ہیں اور اسے مختلف فیڈز یا سیٹنگز کے ساتھ دوبارہ چلا سکتے ہیں۔"
       }
     }
   },
@@ -1846,5 +1870,212 @@
     "ocean": "سمندر",
     "vibrant": "شاندار",
     "sunset": "غروب آفتاب"
+  },
+  "feedback": {
+    "type": "فیڈ بیک کی قسم",
+    "rating": "مجموعی درجہ بندی",
+    "message": "آپ کا فیڈ بیک",
+    "submit": "فیڈ بیک جمع کروائیں",
+    "thankYou": "آپ کے فیڈ بیک کا شکریہ!",
+    "error": "فیڈ بیک جمع کرانے میں ناکام رہا۔ براہ کرم دوبارہ کوشش کریں۔",
+    "tooLong": "تاثرات 1000 حروف یا اس سے کم ہونے چاہئیں",
+    "typeGeneral": "عام",
+    "typeDefect": "بگ کی اطلاع دیں",
+    "typeFeature": "فیچر کی درخواست"
+  },
+  "simulation": {
+    "title": "نئی نقالی",
+    "cattleInfo": "مویشیوں کی معلومات",
+    "feedSelection": "چارے کا انتخاب",
+    "evaluationReport": "تشخیصی رپورٹ",
+    "recommendationReport": "تجاویزی رپورٹ",
+    "continue": "جاری رکھیں",
+    "newCase": "نیا کیس",
+    "history": "نقالی کی تاریخ",
+    "historyEmpty": "ابھی تک کوئی نقالی نہیں",
+    "historyEmptyDesc": "نقالی چلائیں تاکہ اسے یہاں دیکھ سکیں۔",
+    "restoring": "نقالی بحال ہو رہی ہے...",
+    "generating": "رپورٹ تیار ہو رہی ہے...",
+    "generatingDesc": "اس میں 90 سیکنڈ تک لگ سکتے ہیں۔",
+    "sections": {
+      "animalCharacteristics": "جانوروں کی خصوصیات",
+      "milkProduction": "دودھ کی پیداوار",
+      "reproductiveData": "تولیدی ڈیٹا",
+      "environment": "ماحول"
+    },
+    "fields": {
+      "bodyWeight": "جسمانی وزن (کلوگرام)",
+      "breed": "نسل",
+      "bcScore": "جسمانی حالت کا سکور",
+      "lactating": "فی الحال دودھ دے رہی ہے",
+      "daysInMilk": "دودھ دینے کے دن",
+      "milkProduction": "دودھ کی پیداوار (لیٹر/دن)",
+      "fatMilk": "دودھ کی چربی (%)",
+      "tpMilk": "دودھ کی اصل پروٹین (%)",
+      "parity": "پیرٹی (دودھ دینے کا نمبر)",
+      "daysOfPregnancy": "حمل کے دن",
+      "calvingInterval": "بچھڑا دینے کا وقفہ (دن)",
+      "temperature": "درجہ حرارت (سینٹی گریڈ)",
+      "topography": "علاقے کی ساخت",
+      "distance": "چلنے کا فاصلہ (کلومیٹر)",
+      "grazing": "چرائی",
+      "bwGain": "جسمانی وزن میں اضافہ (کلوگرام/دن)"
+    },
+    "topographyOptions": {
+      "flat": "ہموار",
+      "hilly": "پہاڑی",
+      "mountainous": "کوہستانی"
+    },
+    "validation": {
+      "breedRequired": "نسل ضروری ہے",
+      "bodyWeightMin": "جسمانی وزن کم از کم 100 کلوگرام ہونا چاہیے",
+      "bodyWeightMax": "جسمانی وزن 1200 کلوگرام سے زیادہ نہیں ہونا چاہیے",
+      "milkProductionMin": "دودھ کی پیداوار کم از کم 0 ہونی چاہیے",
+      "milkProductionMax": "دودھ کی پیداوار 80 لیٹر/دن سے زیادہ نہیں ہونی چاہیے",
+      "minZero": "قدر 0 یا اس سے زیادہ ہونی چاہیے",
+      "daysInMilkMax": "دودھ دینے کے دن 700 سے زیادہ نہیں ہونے چاہئیں",
+      "fatMilkMin": "دودھ میں چکنائی کم از کم 1% ہونی چاہیے",
+      "fatMilkMax": "دودھ میں چکنائی 8% سے زیادہ نہیں ہونی چاہیے",
+      "tpMilkMin": "دودھ میں پروٹین کم از کم 1% ہونی چاہیے",
+      "tpMilkMax": "دودھ میں پروٹین 6% سے زیادہ نہیں ہونی چاہیے",
+      "parityMax": "پیدائشوں کی تعداد 15 سے زیادہ نہیں ہونی چاہیے",
+      "daysOfPregnancyMax": "حمل کے دن 290 سے زیادہ نہیں ہونے چاہئیں",
+      "calvingIntervalMin": "بچھڑا دینے کا وقفہ کم از کم 300 دن ہونا چاہیے",
+      "calvingIntervalMax": "بچھڑا دینے کا وقفہ 600 دن سے زیادہ نہیں ہونا چاہیے",
+      "temperatureMin": "درجہ حرارت کم از کم -20°C ہونا چاہیے",
+      "temperatureMax": "درجہ حرارت 50°C سے زیادہ نہیں ہونا چاہیے",
+      "distanceMax": "چلنے کا فاصلہ 50 کلومیٹر سے زیادہ نہیں ہونا چاہیے",
+      "bwGainMin": "جسمانی وزن میں اضافہ کم از کم -1 کلوگرام/دن ہونا چاہیے",
+      "bwGainMax": "جسمانی وزن میں اضافہ 2 کلوگرام/دن سے زیادہ نہیں ہونا چاہیے",
+      "priceMin": "قیمت 0 سے زیادہ ہونی چاہیے",
+      "milkOverrideMin": "دودھ کی پیداوار کم از کم 1 لیٹر/دن ہونی چاہیے",
+      "milkOverrideMax": "دودھ کی پیداوار 60 لیٹر/دن سے زیادہ نہیں ہونی چاہیے",
+      "constraintMin": "قیمت 0 یا اس سے زیادہ ہونی چاہیے",
+      "constraintMax": "قیمت 100 سے زیادہ نہیں ہونی چاہیے",
+      "required": "یہ خانہ ضروری ہے",
+      "lactatingLatePregnancy": "گائے حمل کے {days} دن کے ساتھ دودھ دے رہی ہے۔ گایوں کو عام طور پر 210-220 دن کے بعد خشک کیا جاتا ہے۔ کیا پھر بھی جاری رکھیں؟",
+      "notLactatingCleared": "چونکہ جانور دودھ نہیں دے رہا تھا، اس لیے دودھ کی پیداوار کے خانے صاف کر دیے گئے۔"
+    },
+    "historyItem": {
+      "evaluation": "خوراک کی تشخیص",
+      "recommendation": "خوراک کی تجویز",
+      "breed": "نسل",
+      "weight": "وزن",
+      "milk": "دودھ"
+    },
+    "feedSelect": {
+      "title": "فیڈز کا انتخاب کریں",
+      "filterAll": "تمام",
+      "filterForage": "چارہ",
+      "filterConcentrate": "کنسنٹریٹ",
+      "category": "قسم",
+      "allCategories": "تمام اقسام",
+      "selectedFeeds": "منتخب فیڈز",
+      "noFeedsSelected": "کوئی فیڈ منتخب نہیں",
+      "selectAtLeast": "جاری رکھنے کے لیے کم از کم ایک فیڈ منتخب کریں",
+      "pricePerKg": "قیمت/کلو",
+      "quantityKg": "مقدار (کلو/دن)",
+      "quantityOptional": "مقدار (اختیاری)",
+      "customLimits": "خوراک کی اپنی حدیں",
+      "withQuantities": "خوراک کی تشخیص کریں",
+      "withoutQuantities": "تجویز حاصل کریں",
+      "priceRequired": "تمام فیڈز کی قیمت صفر سے زیادہ ہونی چاہیے",
+      "quantityRequired": "تشخیص کے لیے تمام فیڈز کی مقدار صفر سے زیادہ ہونی چاہیے",
+      "maxFeedsReached": "{max} سے زیادہ خوراک کا انتخاب نہیں کیا جا سکتا"
+    },
+    "constraints": {
+      "title": "خوراک کی مخصوص حدود",
+      "fiberNdf": "فائبر NDF (خشک مادے کا %)",
+      "starch": "نشاستہ (خشک مادے کا %)",
+      "fatEe": "چربی / EE (خشک مادے کا %)",
+      "ash": "راکھ (خشک مادے کا %)",
+      "resetDefaults": "پہلے سے طے شدہ پر سیٹ کریں",
+      "hintRange": "{min} – {max}"
+    },
+    "evaluation": {
+      "title": "خوراک کی جانچ کی رپورٹ",
+      "overallStatus": "مجموعی حیثیت",
+      "milkAnalysis": "دودھ کی پیداوار کا تجزیہ",
+      "targetMilk": "ہدف دودھ",
+      "supportedByEnergy": "توانائی سے تعاون یافتہ",
+      "supportedByProtein": "پروٹین سے تعاون یافتہ",
+      "limitingNutrient": "محدود کرنے والا غذائی جزو",
+      "intakeEvaluation": "خوراک کی مقدار کی جانچ",
+      "actualIntake": "اصل مقدار",
+      "targetIntake": "ہدف مقدار",
+      "costAnalysis": "لاگت کا تجزیہ",
+      "totalCost": "کل لاگت/دن",
+      "costPerKgMilk": "لاگت/کلوگرام دودھ",
+      "nutrientBalance": "غذائی اجزاء کا توازن",
+      "generateRecommendation": "سفارش تیار کریں",
+      "generateRecommendationDesc": "ان خوراکوں کی بنیاد پر ایک بہترین خوراک کی سفارش تیار کریں",
+      "milkOverride": "دودھ کی ہدف پیداوار (لٹر/دن)",
+      "milkOverrideHint": "1 – 60 لٹر/دن",
+      "useCurrentMilk": "موجودہ دودھ کی پیداوار استعمال کریں",
+      "noData": "جانچ کا کوئی ڈیٹا دستیاب نہیں ہے"
+    },
+    "recommendation": {
+      "title": "خوراک کی سفارش کی رپورٹ",
+      "reportInfo": "رپورٹ کی معلومات",
+      "reportId": "رپورٹ ID",
+      "simulationId": "سیمولیشن ID",
+      "date": "تاریخ",
+      "solutionSummary": "حل کا خلاصہ",
+      "dailyCost": "روزانہ کا خرچ",
+      "dmIntake": "DM استعمال",
+      "milkProduction": "دودھ کی پیداوار",
+      "feedBreakdown": "فیڈ کی تفصیل",
+      "feedName": "فیڈ",
+      "quantity": "مقدار (کلوگرام)",
+      "cost": "قیمت",
+      "percentage": "DM کا %",
+      "totalCost": "کل قیمت",
+      "dietStatus": "خوراک کی حالت",
+      "warnings": "انتباہات",
+      "recommendations": "تجاویز",
+      "saveReport": "رپورٹ محفوظ کریں",
+      "reportSaved": "رپورٹ کامیابی سے محفوظ ہو گئی",
+      "noData": "تجویز کا کوئی ڈیٹا دستیاب نہیں",
+      "infeasible": "کوئی قابل عمل خوراک نہیں ملی",
+      "infeasibleDetail": "منتخب کردہ خوراکیں اس جانور کی غذائی ضروریات کو پورا نہیں کر سکتیں۔ آپٹیمائزر کو متوازن خوراک نہیں مل سکی۔",
+      "infeasibleHint": "زیادہ قسم کی خوراک شامل کرنے کی کوشش کریں — جس میں چارہ، پروٹین سے بھرپور خوراک (جیسے تیل کے بیجوں کا آٹا)، اور معدنی سپلیمنٹ شامل ہوں۔",
+      "tryAgain": "فیڈ تبدیل کریں"
+    },
+    "methane": {
+      "title": "ماحولیاتی اثرات",
+      "production": "میتھین کی پیداوار",
+      "yield": "میتھین کی پیداوار",
+      "intensity": "میتھین کی شدت",
+      "conversionRate": "توانائی کی تبدیلی کی شرح",
+      "gPerDay": "گرام/دن",
+      "gPerKgDmi": "گرام/کلوگرام DMI",
+      "gPerKgMilk": "گرام/کلوگرام دودھ",
+      "percent": "فیصد"
+    },
+    "animalSummary": {
+      "title": "جانوروں کی خصوصیات"
+    },
+    "status": {
+      "optimal": "بہترین",
+      "perfect": "کامل",
+      "good": "اچھا",
+      "adequate": "مناسب",
+      "marginal": "معمولی",
+      "deficient": "کمی",
+      "excess": "زیادہ",
+      "infeasible": "ناممکن"
+    },
+    "home": {
+      "welcome": "خوش آمدید، {name}",
+      "goodMorning": "صبح بخیر",
+      "goodAfternoon": "دوپہر بخیر",
+      "goodEvening": "شام بخیر",
+      "startSimulation": "نئی سیمولیشن شروع کریں",
+      "startSimulationDesc": "خوراک کی سفارش حاصل کرنے کے لیے مویشیوں کی معلومات اور چارہ ترتیب دیں",
+      "recentSimulations": "حالیہ سیمولیشنز",
+      "noSimulations": "ابھی تک کوئی سیمولیشن نہیں",
+      "noSimulationsDesc": "اپنی پہلی سیمولیشن چلائیں تاکہ اسے یہاں دیکھ سکیں",
+      "viewAll": "سب دیکھیں"
+    }
   }
 }

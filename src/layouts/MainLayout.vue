@@ -61,6 +61,13 @@
 
         <!-- Navigation -->
         <q-list padding>
+          <q-item v-ripple clickable to="/" exact active-class="text-primary bg-grey-2" @click="leftDrawerOpen = false">
+            <q-item-section avatar>
+              <q-icon name="home" />
+            </q-item-section>
+            <q-item-section>{{ $t('nav.home') }}</q-item-section>
+          </q-item>
+
           <q-item v-ripple clickable @click="openSimulationHistory">
             <q-item-section avatar>
               <q-icon name="history" />
