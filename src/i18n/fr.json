@@ -1107,7 +1107,8 @@
     "languageSaveError": "La langue a été modifiée localement mais n'a pas pu être enregistrée sur le serveur.",
     "theme": "Thème",
     "themeDesc": "Choisissez votre thème de couleurs",
-    "chooseTheme": "Choisir le thème"
+    "chooseTheme": "Choisir le thème",
+    "feedback": "Commentaires"
   },
   "farmer": {
     "farmers": "Éleveurs",

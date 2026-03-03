@@ -44,6 +44,18 @@
 
 ## Pending
 
+### app-lite branch — UX Fixes (User Feedback)
+- [ ] **Report Info demotion** — Report ID / Simulation ID card is too prominent at top. Make it a subtle collapsible or move to bottom.
+- [ ] **Font/color consistency in Solution Summary** — daily cost, DM intake, milk values have inconsistent font colors. Unify styling.
+- [ ] **PDF download / Share** — Add ability to download or share recommendation report as PDF.
+- [ ] **SimulationHistoryDialog on all pages** — Currently only mounted on HomePage and CattleInfoPage. Drawer "Simulation History" link does nothing on report pages.
+- [ ] **"Feedback" translation missing** — Hindi and Arabic show "Feedback" in English. Need to add `settings.feedback` key to hi.json, ar.json, and other locales.
+- [ ] **Settings link in drawer** — No "Settings" item in the main navigation drawer. Users must navigate to /settings via URL. Add a settings gear icon link.
+
+### app-lite branch — Multi-Country Setup
+- [ ] **Create test users for Ethiopia, Bangladesh, Kenya** — No test users exist for these countries. Need backend seed data.
+- [ ] **Add Kenya to country list** — Kenya (+254) missing from the country dropdown. Test case T7.2 can't run.
+
 ### Informational / Architectural (no immediate action required)
 - [ ] **[ARCH] APP_API_KEY in browser** — `axios.ts:43` sends APP_API_KEY in every browser request header. Either remove (bearer token is sufficient) or proxy via server. Requires backend decision on whether this key gate is meaningful for a public SPA.
 - [ ] **[MED] Offline banner** — show "Viewing cached data" notification when stores fall back to IndexedDB on API failure.

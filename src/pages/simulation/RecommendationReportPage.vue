@@ -10,23 +10,6 @@
     </template>
 
     <template v-else>
-      <!-- Report Info -->
-      <q-card v-if="reportId || simulationId" flat bordered class="q-mb-md rounded-borders">
-        <q-card-section>
-          <div class="text-subtitle2 q-mb-sm">{{ $t('simulation.recommendation.reportInfo') }}</div>
-          <q-list dense>
-            <q-item v-if="reportId">
-              <q-item-section>{{ $t('simulation.recommendation.reportId') }}</q-item-section>
-              <q-item-section side class="text-weight-medium text-caption">{{ reportId }}</q-item-section>
-            </q-item>
-            <q-item v-if="simulationId">
-              <q-item-section>{{ $t('simulation.recommendation.simulationId') }}</q-item-section>
-              <q-item-section side class="text-weight-medium text-caption">{{ simulationId }}</q-item-section>
-            </q-item>
-          </q-list>
-        </q-card-section>
-      </q-card>
-
       <!-- Animal Summary -->
       <AnimalCharacteristicsSummary :cattle-info="store.cattleInfo" />
 
@@ -58,15 +41,15 @@
             <div class="text-subtitle2 q-mb-sm">{{ $t('simulation.recommendation.solutionSummary') }}</div>
             <div class="row q-gutter-md">
               <div class="col text-center">
-                <div class="text-h5 text-primary">{{ formatCurrency(solutionData.total_cost ?? totalCost ?? 0) }}</div>
+                <div class="text-h5 text-weight-bold">{{ formatCurrency(solutionData.total_cost ?? totalCost ?? 0) }}</div>
                 <div class="text-caption text-grey-6">{{ $t('simulation.recommendation.dailyCost') }}</div>
               </div>
               <div v-if="solutionData.dm_intake" class="col text-center">
-                <div class="text-h5 text-secondary">{{ formatNum(solutionData.dm_intake) }} {{ $t('common.units.kg') }}</div>
+                <div class="text-h5 text-weight-bold">{{ formatNum(solutionData.dm_intake) }} {{ $t('common.units.kg') }}</div>
                 <div class="text-caption text-grey-6">{{ $t('simulation.recommendation.dmIntake') }}</div>
               </div>
               <div v-if="solutionData.milk_production" class="col text-center">
-                <div class="text-h5 text-accent">{{ formatNum(solutionData.milk_production) }} {{ $t('common.units.liters') }}</div>
+                <div class="text-h5 text-weight-bold">{{ formatNum(solutionData.milk_production) }} {{ $t('common.units.liters') }}</div>
                 <div class="text-caption text-grey-6">{{ $t('simulation.recommendation.milkProduction') }}</div>
               </div>
             </div>
@@ -132,6 +115,13 @@
           icon="add"
           @click="newCase"
         />
+      </div>
+
+      <!-- Report Info (subtle, at bottom) -->
+      <div v-if="reportId || simulationId" class="q-mt-lg text-center text-caption text-grey-5">
+        <span v-if="reportId">{{ $t('simulation.recommendation.reportId') }}: {{ reportId }}</span>
+        <span v-if="reportId && simulationId" class="q-mx-xs">·</span>
+        <span v-if="simulationId">{{ $t('simulation.recommendation.simulationId') }}: {{ simulationId }}</span>
       </div>
     </template>
   </q-page>

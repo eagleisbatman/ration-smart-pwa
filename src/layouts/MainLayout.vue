@@ -103,6 +103,13 @@
             <q-item-section>{{ $t('settings.privacyPolicy') }}</q-item-section>
           </q-item>
 
+          <q-item v-ripple clickable to="/settings" active-class="text-primary bg-grey-2">
+            <q-item-section avatar>
+              <q-icon name="settings" />
+            </q-item-section>
+            <q-item-section>{{ $t('nav.settings') }}</q-item-section>
+          </q-item>
+
           <template v-if="authStore.isAnyAdmin">
             <q-item v-ripple clickable to="/admin" active-class="text-primary bg-grey-2">
               <q-item-section avatar>
@@ -133,6 +140,12 @@
       </router-view>
     </q-page-container>
 
+    <!-- Simulation History Dialog (global, accessible from any page) -->
+    <SimulationHistoryDialog
+      v-model="showHistoryDialog"
+      @restored="onHistoryRestored"
+    />
+
     <!-- Add to Home Screen -->
     <AddToHomeScreen ref="a2hsRef" />
   </q-layout>
@@ -147,6 +160,7 @@ import { useHapticFeedback } from 'src/composables/useHapticFeedback';
 import OfflineIndicator from 'src/components/pwa/OfflineIndicator.vue';
 import UpdatePrompt from 'src/components/pwa/UpdatePrompt.vue';
 import AddToHomeScreen from 'src/components/pwa/AddToHomeScreen.vue';
+import SimulationHistoryDialog from 'src/components/simulation/SimulationHistoryDialog.vue';
 import { backOverride } from 'src/lib/back-override';
 import { openHistoryKey } from 'src/lib/injection-keys';
 
@@ -193,9 +207,17 @@ function goBack() {
   router.back();
 }
 
+const showHistoryDialog = ref(false);
+
 function openSimulationHistory() {
   leftDrawerOpen.value = false;
+  showHistoryDialog.value = true;
   openHistoryCounter.value++;
+}
+
+function onHistoryRestored() {
+  showHistoryDialog.value = false;
+  router.push('/cattle-info');
 }
 
 async function logout() {

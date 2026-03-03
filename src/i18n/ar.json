@@ -1104,7 +1104,8 @@
     "languageSaveError": "تم تغيير اللغة محليًا ولكن تعذر حفظها على الخادم.",
     "theme": "السمة",
     "themeDesc": "اختر سمة الألوان",
-    "chooseTheme": "اختر السمة"
+    "chooseTheme": "اختر السمة",
+    "feedback": "ملاحظات"
   },
   "farmer": {
     "farmers": "المزارعون",

@@ -1104,7 +1104,8 @@
     "languageSaveError": "ਭਾਸ਼ਾ ਸਥਾਨਕ ਤੌਰ 'ਤੇ ਬਦਲ ਗਈ ਹੈ ਪਰ ਸਰਵਰ 'ਤੇ ਸੁਰੱਖਿਅਤ ਨਹੀਂ ਕੀਤੀ ਜਾ ਸਕੀ।",
     "theme": "ਥੀਮ",
     "themeDesc": "ਆਪਣੀ ਰੰਗ ਥੀਮ ਚੁਣੋ",
-    "chooseTheme": "ਥੀਮ ਚੁਣੋ"
+    "chooseTheme": "ਥੀਮ ਚੁਣੋ",
+    "feedback": "ਫੀਡਬੈਕ"
   },
   "farmer": {
     "farmers": "ਕਿਸਾਨ",

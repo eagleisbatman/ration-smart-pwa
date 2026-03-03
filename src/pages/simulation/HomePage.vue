@@ -124,24 +124,16 @@
       </q-card>
     </template>
 
-    <!-- Simulation History Dialog (triggered by "View All") -->
-    <SimulationHistoryDialog
-      v-model="showHistory"
-      @restored="onHistoryRestored"
-    />
   </q-page>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, inject, watch } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useQuasar } from 'quasar';
 import { useI18n } from 'vue-i18n';
 import { useSimulationStore } from 'src/stores/simulation';
 import { useAuthStore } from 'src/stores/auth';
-import { openHistoryKey } from 'src/lib/injection-keys';
-import SimulationHistoryDialog from 'src/components/simulation/SimulationHistoryDialog.vue';
-
 const router = useRouter();
 const $q = useQuasar();
 const { t } = useI18n();
@@ -150,14 +142,6 @@ const authStore = useAuthStore();
 
 const loading = ref(false);
 const restoring = ref(false);
-const showHistory = ref(false);
-
-// Inject the counter from MainLayout to support drawer → history dialog trigger
-const openHistoryCounter = inject(openHistoryKey, ref(0));
-
-watch(openHistoryCounter, () => {
-  showHistory.value = true;
-});
 
 const userName = computed(() => authStore.user?.name || 'User');
 
@@ -191,11 +175,6 @@ async function onRestore(reportId: string) {
   } else if (store.error) {
     $q.notify({ type: 'negative', message: store.error });
   }
-}
-
-function onHistoryRestored() {
-  showHistory.value = false;
-  router.push('/cattle-info');
 }
 
 function formatDate(iso: string): string {

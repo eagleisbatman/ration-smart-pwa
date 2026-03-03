@@ -1104,7 +1104,8 @@
     "languageSaveError": "Na-local change ang wika pero hindi na-save sa server.",
     "theme": "Tema",
     "themeDesc": "Piliin ang iyong tema ng kulay",
-    "chooseTheme": "Pumili ng Tema"
+    "chooseTheme": "Pumili ng Tema",
+    "feedback": "Feedback"
   },
   "farmer": {
     "farmers": "Mga Magsasaka",

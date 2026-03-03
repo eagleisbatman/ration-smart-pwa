@@ -126,17 +126,28 @@ watch(detectedCountry, (code) => {
 });
 
 const countryOptions = computed(() => {
-  const source = authStore.countries.length > 0 ? authStore.countries : FALLBACK_COUNTRIES;
-  return source
-    .filter((c) => SUPPORTED_COUNTRY_CODES.has(c.country_code))
-    .map((c) => {
-      const dialCode = getDialCode(c.country_code);
-      const name = t(`countries.${c.country_code}`, c.name || c.country_code);
-      return {
-        label: dialCode ? `${name} (${dialCode})` : name,
-        value: c.country_code,
-      };
-    });
+  const seen = new Set<string>();
+  const merged: { country_code: string; name: string }[] = [];
+  for (const c of authStore.countries) {
+    if (SUPPORTED_COUNTRY_CODES.has(c.country_code) && !seen.has(c.country_code)) {
+      seen.add(c.country_code);
+      merged.push(c);
+    }
+  }
+  for (const c of FALLBACK_COUNTRIES) {
+    if (!seen.has(c.country_code)) {
+      seen.add(c.country_code);
+      merged.push({ ...c });
+    }
+  }
+  return merged.map((c) => {
+    const dialCode = getDialCode(c.country_code);
+    const name = t(`countries.${c.country_code}`, c.name || c.country_code);
+    return {
+      label: dialCode ? `${name} (${dialCode})` : name,
+      value: c.country_code,
+    };
+  });
 });
 
 const selectedDialCode = computed(() => getDialCode(form.country_code));

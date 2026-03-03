@@ -1104,7 +1104,8 @@
     "languageSaveError": "भाषा स्थानिकरित्या बदलली आहे, परंतु सर्व्हरवर सेव्ह करता आली नाही.",
     "theme": "थीम",
     "themeDesc": "तुमचा रंग निवडा",
-    "chooseTheme": "थीम निवडा"
+    "chooseTheme": "थीम निवडा",
+    "feedback": "अभिप्राय"
   },
   "farmer": {
     "farmers": "शेतकरी",

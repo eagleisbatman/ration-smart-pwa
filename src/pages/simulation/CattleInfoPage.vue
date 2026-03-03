@@ -238,16 +238,11 @@
       />
     </q-form>
 
-    <!-- Simulation History Dialog -->
-    <SimulationHistoryDialog
-      v-model="showHistory"
-      @restored="onHistoryRestored"
-    />
   </q-page>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watch, inject } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useQuasar } from 'quasar';
@@ -255,8 +250,7 @@ import { useSimulationStore } from 'src/stores/simulation';
 import { useAuthStore } from 'src/stores/auth';
 import { getCountryId, fetchAndCacheCountries } from 'src/services/api-adapter';
 import { api } from 'src/lib/api';
-import SimulationHistoryDialog from 'src/components/simulation/SimulationHistoryDialog.vue';
-import { openHistoryKey } from 'src/lib/injection-keys';
+
 
 const { t } = useI18n();
 const router = useRouter();
@@ -264,7 +258,6 @@ const $q = useQuasar();
 const store = useSimulationStore();
 const authStore = useAuthStore();
 
-const showHistory = ref(false);
 const breedsLoading = ref(false);
 const breedOptions = ref<Array<{ name: string }>>([]);
 
@@ -340,16 +333,6 @@ function proceedToFeedSelection() {
   store.newSimulationId();
   router.push('/feed-selection');
 }
-
-function onHistoryRestored() {
-  showHistory.value = false;
-}
-
-// Listen for drawer "Simulation History" trigger via provide/inject
-const openHistoryCounter = inject(openHistoryKey, ref(0));
-watch(openHistoryCounter, () => {
-  showHistory.value = true;
-});
 
 onMounted(() => {
   fetchBreeds();
