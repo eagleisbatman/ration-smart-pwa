@@ -35,18 +35,11 @@ body {
 // Responsive Content Container
 // ============================================
 
-// Constrain main content width on desktop for readability.
-// [dir] boosts specificity to 0,2,0 so this beats postcss-rtlcss overrides
-// like [dir="rtl"] .q-gutter-md { margin-right: -16px } which would
-// otherwise override margin-inline: auto and break centering.
+// Content fills available width on all screen sizes.
+// Individual components (forms, dialogs) apply their own max-width constraints.
+// [dir] boosts specificity to 0,2,0 so this beats postcss-rtlcss overrides.
 [dir] .q-page > * {
-  max-width: 960px;
-  margin-inline: auto;
-}
-
-// Opt-out class for pages that need full width (compare pages, tables)
-.q-page--full-width > * {
-  max-width: none;
+  max-width: 100%;
 }
 
 // Responsive horizontal padding scale
