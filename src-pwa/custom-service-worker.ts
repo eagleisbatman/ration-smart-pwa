@@ -22,7 +22,6 @@ cleanupOutdatedCaches();
 // Cache names
 const API_CACHE = 'api-cache-v1';
 const IMAGE_CACHE = 'image-cache-v2';
-const STATIC_CACHE = 'static-cache-v1';
 
 // Background sync queue for mutations
 // NOTE: Only network failures re-queue a request. HTTP 4xx errors (like 409
@@ -148,19 +147,10 @@ registerRoute(
   })
 );
 
-// Static assets (JS, CSS) - Stale While Revalidate
-registerRoute(
-  ({ request }) =>
-    request.destination === 'script' || request.destination === 'style',
-  new StaleWhileRevalidate({
-    cacheName: STATIC_CACHE,
-    plugins: [
-      new CacheableResponsePlugin({
-        statuses: [0, 200],
-      }),
-    ],
-  })
-);
+// NOTE: Build JS/CSS assets are precached by workbox (precacheAndRoute above).
+// No additional StaleWhileRevalidate route is needed for scripts/styles.
+// A catch-all script route caused "Failed to load module script" errors during
+// deployments when `serve --single` returned HTML for missing old-hash filenames.
 
 // Navigation routes - Network First with offline fallback
 const navigationRoute = new NavigationRoute(
