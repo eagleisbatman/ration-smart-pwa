@@ -468,13 +468,13 @@
       "following": "ਪਾਲਣਾ ਕਰ ਰਿਹਾ ਹੈ",
       "archived": "ਪੁਰਾਲੇਖਬੱਧ"
     },
-    "tdnLabel": "TDN",
+    "tdnLabel": "ਟੀਡੀਐਨ",
     "dailyCost": "ਰੋਜ਼ਾਨਾ ਲਾਗਤ",
     "dmKg": "ਖੁਸ਼ਕ ਪਦਾਰਥ ਦਾ ਸੇਵਨ (ਕਿਲੋਗ੍ਰਾਮ)",
     "feeds": "ਚਾਰਾ",
     "recommendedFeeds": "ਸਿਫਾਰਸ਼ੀ ਚਾਰਾ",
-    "dmLabel": "DM",
-    "cpLabel": "CP",
+    "dmLabel": "ਡੀਐਮ",
+    "cpLabel": "ਸੀਪੀ",
     "nutrientBalance": "ਪੌਸ਼ਟਿਕ ਸੰਤੁਲਨ",
     "crudeProteinCP": "ਕੱਚਾ ਪ੍ਰੋਟੀਨ (CP)",
     "totalDigestibleNutrients": "ਕੁੱਲ ਪਚਣਯੋਗ ਪੌਸ਼ਟਿਕ ਤੱਤ (TDN)",
@@ -682,22 +682,22 @@
     },
     "labels": {
       "dmPercent": "ਖੁਸ਼ਕ ਪਦਾਰਥ (DM)",
-      "dmPercentShort": "DM",
+      "dmPercentShort": "ਡੀਐਮ",
       "dmPercentInput": "ਖੁਸ਼ਕ ਪਦਾਰਥ % *",
       "cpPercent": "ਕੱਚਾ ਪ੍ਰੋਟੀਨ (CP)",
-      "cpPercentShort": "CP",
+      "cpPercentShort": "ਸੀਪੀ",
       "cpPercentInput": "ਕੱਚਾ ਪ੍ਰੋਟੀਨ % *",
       "tdnPercent": "ਕੁੱਲ ਪਚਣਯੋਗ ਪੌਸ਼ਟਿਕ ਤੱਤ (TDN)",
-      "tdnPercentShort": "TDN",
-      "tdnPercentInput": "TDN % *",
+      "tdnPercentShort": "ਟੀਡੀਐਨ",
+      "tdnPercentInput": "ਟੀਡੀਐਨ % *",
       "ndfPercent": "ਨਿਊਟਰਲ ਡਿਟਰਜੈਂਟ ਫਾਈਬਰ (NDF)",
-      "ndfPercentShort": "NDF",
-      "ndfPercentInput": "NDF %",
+      "ndfPercentShort": "ਐਨਡੀਐਫ",
+      "ndfPercentInput": "ਐਨਡੀਐਫ %",
       "caPercent": "ਕੈਲਸ਼ੀਅਮ (Ca)",
-      "caPercentShort": "Ca",
+      "caPercentShort": "ਕੈਲਸ਼ੀਅਮ",
       "caPercentInput": "ਕੈਲਸ਼ੀਅਮ %",
       "pPercent": "ਫਾਸਫੋਰਸ (P)",
-      "pPercentShort": "P",
+      "pPercentShort": "ਫਾਸਫੋਰਸ",
       "pPercentInput": "ਫਾਸਫੋਰਸ %",
       "category": "ਸ਼੍ਰੇਣੀ",
       "categoryRequired": "ਸ਼੍ਰੇਣੀ *",
@@ -819,7 +819,7 @@
       "yieldRequired": "ਪੈਦਾਵਾਰ ਜ਼ਰੂਰੀ ਹੈ",
       "cannotBeNegative": "ਨਕਾਰਾਤਮਕ ਨਹੀਂ ਹੋ ਸਕਦਾ",
       "fatPercent": "ਫੈਟ %",
-      "snfPercent": "SNF %",
+      "snfPercent": "ਐਸਐਨਐਫ %",
       "maxPercent": "ਵੱਧ ਤੋਂ ਵੱਧ 15%",
       "linkedToDiet": "{name} ਲਈ ਸਰਗਰਮ ਖੁਰਾਕ ਨਾਲ ਜੁੜਿਆ ਹੋਇਆ ਹੈ",
       "notesLabel": "ਨੋਟਸ",
@@ -838,7 +838,7 @@
       "avgLPerDay": "ਔਸਤ L/ਦਿਨ",
       "avgFat": "ਔਸਤ ਫੈਟ",
       "fat": "ਫੈਟ",
-      "snf": "SNF",
+      "snf": "ਐਸਐਨਐਫ",
       "pending": "ਬਕਾਇਆ",
       "yieldRecordNotFound": "ਝਾੜ ਰਿਕਾਰਡ ਨਹੀਂ ਮਿਲਿਆ",
       "editYield": "ਝਾੜ ਸੰਪਾਦਿਤ ਕਰੋ",
@@ -1862,7 +1862,37 @@
     "orgTypeNgo": "ਐੱਨ.ਜੀ.ਓ.",
     "orgTypeCooperative": "ਸਹਿਕਾਰੀ",
     "orgTypeResearch": "ਖੋਜ",
-    "orgTypeOther": "ਹੋਰ"
+    "orgTypeOther": "ਹੋਰ",
+    "quickActions": "ਤੇਜ਼ ਕਾਰਵਾਈਆਂ",
+    "feeds": {
+      "title": "ਫੀਡ ਪ੍ਰਬੰਧਨ",
+      "subtitle": "ਫੀਡ ਸ਼ਾਮਲ ਕਰੋ, ਸੰਪਾਦਿਤ ਕਰੋ ਅਤੇ ਪ੍ਰਬੰਧਿਤ ਕਰੋ",
+      "bulkUpload": "ਥੋਕ ਅੱਪਲੋਡ",
+      "export": "ਐਕਸਪੋਰਟ",
+      "noFeeds": "ਕੋਈ ਫੀਡ ਨਹੀਂ ਮਿਲੀ"
+    },
+    "feedback": {
+      "title": "ਫੀਡਬੈਕ",
+      "subtitle": "ਉਪਭੋਗਤਾ ਫੀਡਬੈਕ ਵੇਖੋ",
+      "overview": "ਫੀਡਬੈਕ ਸੰਖੇਪ ਜਾਣਕਾਰੀ",
+      "totalResponses": "ਕੁੱਲ ਜਵਾਬ",
+      "avgRating": "ਔਸਤ ਰੇਟਿੰਗ",
+      "noFeedback": "ਹਾਲੇ ਕੋਈ ਫੀਡਬੈਕ ਨਹੀਂ"
+    },
+    "reports": {
+      "title": "ਰਿਪੋਰਟਾਂ",
+      "subtitle": "ਸੇਵ ਕੀਤੀਆਂ ਰਿਪੋਰਟਾਂ ਵੇਖੋ",
+      "noReports": "ਕੋਈ ਰਿਪੋਰਟ ਨਹੀਂ ਮਿਲੀ"
+    },
+    "simStats": {
+      "title": "ਸਿਮੂਲੇਸ਼ਨ ਦੇ ਅੰਕੜੇ",
+      "total": "ਕੁੱਲ",
+      "successRate": "ਸਫਲਤਾ ਦਰ",
+      "recommendations": "ਸਿਫਾਰਸ਼ਾਂ",
+      "evaluations": "ਮੁਲਾਂਕਣ",
+      "countryBreakdown": "ਦੇਸ਼ ਅਨੁਸਾਰ ਵੰਡ",
+      "superOnly": "ਸਿਰਫ ਸੁਪਰ ਐਡਮਿਨ"
+    }
   },
   "theme": {
     "zinc": "ਜ਼ਿੰਕ",
@@ -1954,7 +1984,8 @@
       "constraintMax": "ਮੁੱਲ 100 ਤੋਂ ਵੱਧ ਨਹੀਂ ਹੋਣਾ ਚਾਹੀਦਾ",
       "required": "ਇਹ ਖੇਤਰ ਲਾਜ਼ਮੀ ਹੈ",
       "lactatingLatePregnancy": "ਗਾਂ ਗਰਭ ਅਵਸਥਾ ਦੇ {days} ਦਿਨਾਂ ਨਾਲ ਦੁੱਧ ਦੇ ਰਹੀ ਹੈ। ਗਾਵਾਂ ਨੂੰ ਆਮ ਤੌਰ 'ਤੇ 210-220 ਦਿਨਾਂ ਬਾਅਦ ਸੁਕਾ ਦਿੱਤਾ ਜਾਂਦਾ ਹੈ। ਕੀ ਤੁਸੀਂ ਫਿਰ ਵੀ ਜਾਰੀ ਰੱਖਣਾ ਚਾਹੁੰਦੇ ਹੋ?",
-      "notLactatingCleared": "ਜਾਨਵਰ ਦੇ ਦੁੱਧ ਨਾ ਦੇਣ ਕਾਰਨ ਦੁੱਧ ਉਤਪਾਦਨ ਦੇ ਖੇਤਰ ਸਾਫ਼ ਕਰ ਦਿੱਤੇ ਗਏ ਹਨ।"
+      "notLactatingCleared": "ਜਾਨਵਰ ਦੇ ਦੁੱਧ ਨਾ ਦੇਣ ਕਾਰਨ ਦੁੱਧ ਉਤਪਾਦਨ ਦੇ ਖੇਤਰ ਸਾਫ਼ ਕਰ ਦਿੱਤੇ ਗਏ ਹਨ।",
+      "quantityMin": "ਮਾਤਰਾ 0 ਤੋਂ ਵੱਧ ਹੋਣੀ ਚਾਹੀਦੀ ਹੈ"
     },
     "historyItem": {
       "evaluation": "ਖੁਰਾਕ ਦਾ ਮੁਲਾਂਕਣ",
@@ -1981,7 +2012,16 @@
       "withoutQuantities": "ਸਿਫਾਰਸ਼ ਪ੍ਰਾਪਤ ਕਰੋ",
       "priceRequired": "ਸਾਰੇ ਫੀਡਾਂ ਦੀ ਕੀਮਤ ਜ਼ੀਰੋ ਤੋਂ ਵੱਧ ਹੋਣੀ ਚਾਹੀਦੀ ਹੈ",
       "quantityRequired": "ਮੁਲਾਂਕਣ ਲਈ ਸਾਰੇ ਫੀਡਾਂ ਦੀ ਮਾਤਰਾ ਜ਼ੀਰੋ ਤੋਂ ਵੱਧ ਹੋਣੀ ਚਾਹੀਦੀ ਹੈ",
-      "maxFeedsReached": "ਵੱਧ ਤੋਂ ਵੱਧ {max} ਫੀਡ ਚੁਣੇ ਜਾ ਸਕਦੇ ਹਨ"
+      "maxFeedsReached": "ਵੱਧ ਤੋਂ ਵੱਧ {max} ਫੀਡ ਚੁਣੇ ਜਾ ਸਕਦੇ ਹਨ",
+      "dietRecommendation": "ਖੁਰਾਕ ਦੀ ਸਿਫਾਰਸ਼",
+      "dietEvaluation": "ਖੁਰਾਕ ਦਾ ਮੁਲਾਂਕਣ",
+      "generateRecommendation": "ਸਿਫਾਰਸ਼ ਬਣਾਓ",
+      "getEvaluation": "ਮੁਲਾਂਕਣ ਪ੍ਰਾਪਤ ਕਰੋ",
+      "feedLabel": "ਖੁਰਾਕ {n}",
+      "customFeed": "ਕਸਟਮ ਖੁਰਾਕ",
+      "customFeedHint": "ਕਸਟਮ ਖੁਰਾਕ ਬਣਾਉਣਾ ਜਲਦੀ ਹੀ ਉਪਲਬਧ ਹੋਵੇਗਾ।",
+      "price": "ਕੀਮਤ",
+      "qty": "ਮਾਤਰਾ"
     },
     "constraints": {
       "title": "ਖੁਰਾਕ ਦੀਆਂ ਖਾਸ ਸੀਮਾਵਾਂ",
@@ -2063,7 +2103,9 @@
       "marginal": "ਨਾਕਾਫ਼ੀ",
       "deficient": "ਘਾਟ",
       "excess": "ਵਾਧੂ",
-      "infeasible": "ਅਸੰਭਵ"
+      "infeasible": "ਅਸੰਭਵ",
+      "failed": "ਅਸਫਲ",
+      "success": "ਸਫਲ"
     },
     "home": {
       "welcome": "ਜੀ ਆਇਆਂ ਨੂੰ, {name}",
@@ -2079,6 +2121,22 @@
       "searchPlaceholder": "ਸਿਮੂਲੇਸ਼ਨਾਂ ਦੀ ਖੋਜ ਕਰੋ..."
     },
     "dietHistory": "ਖੁਰਾਕ ਦਾ ਇਤਿਹਾਸ",
-    "loadFromHistory": "ਇਤਿਹਾਸ ਤੋਂ ਲੋਡ ਕਰੋ"
+    "loadFromHistory": "ਇਤਿਹਾਸ ਤੋਂ ਲੋਡ ਕਰੋ",
+    "units": {
+      "days": "ਦਿਨ"
+    },
+    "topographyHint": "ਪੱਧਰਾ / ਪਹਾੜੀ / ਪਰਬਤੀ",
+    "reset": "ਰੀਸੈਟ ਕਰੋ",
+    "formReset": "ਫਾਰਮ ਨੂੰ ਡਿਫਾਲਟ 'ਤੇ ਰੀਸੈਟ ਕੀਤਾ ਗਿਆ",
+    "bcsLabels": {
+      "thin": "ਪਤਲਾ",
+      "obese": "ਮੋਟਾ"
+    },
+    "filterTabs": {
+      "recommendations": "ਸਿਫਾਰਸ਼ਾਂ",
+      "evaluations": "ਮੁਲਾਂਕਣ",
+      "failed": "ਅਸਫਲ"
+    },
+    "noFilterResults": "ਇਸ ਫਿਲਟਰ ਲਈ ਕੋਈ ਨਤੀਜਾ ਨਹੀਂ"
   }
 }

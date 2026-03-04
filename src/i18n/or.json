@@ -1862,7 +1862,37 @@
     "orgTypeNgo": "ଏନଜିଓ (NGO)",
     "orgTypeCooperative": "ସମବାୟ",
     "orgTypeResearch": "ଗବେଷଣା",
-    "orgTypeOther": "ଅନ୍ୟାନ୍ୟ"
+    "orgTypeOther": "ଅନ୍ୟାନ୍ୟ",
+    "quickActions": "ତୁରନ୍ତ କାର୍ଯ୍ୟ",
+    "feeds": {
+      "title": "ଖାଦ୍ୟ ପରିଚାଳନା",
+      "subtitle": "ଖାଦ୍ୟ ଯୋଡ଼ନ୍ତୁ, ସମ୍ପାଦନା କରନ୍ତୁ ଏବଂ ପରିଚାଳନା କରନ୍ତୁ",
+      "bulkUpload": "ଏକକାଳୀନ ଅପଲୋଡ୍",
+      "export": "ଏକ୍ସପୋର୍ଟ",
+      "noFeeds": "କୌଣସି ଖାଦ୍ୟ ମିଳିଲା ନାହିଁ"
+    },
+    "feedback": {
+      "title": "ମତାମତ",
+      "subtitle": "ଉପଭୋକ୍ତାଙ୍କ ମତାମତ ଦେଖନ୍ତୁ",
+      "overview": "ମତାମତ ସମୀକ୍ଷା",
+      "totalResponses": "ମୋଟ ପ୍ରତିକ୍ରିୟା",
+      "avgRating": "ସର୍ବନିମ୍ନ ରେଟିଂ",
+      "noFeedback": "ଏପର୍ଯ୍ୟନ୍ତ କୌଣସି ମତାମତ ନାହିଁ"
+    },
+    "reports": {
+      "title": "ରିପୋର୍ଟ",
+      "subtitle": "ସେଭ୍ ହୋଇଥିବା ରିପୋର୍ଟ ଦେଖନ୍ତୁ",
+      "noReports": "କୌଣସି ରିପୋର୍ଟ ମିଳିଲା ନାହିଁ"
+    },
+    "simStats": {
+      "title": "ସିମୁଲେସନ୍ ଷ୍ଟାଟ୍ସ",
+      "total": "ମୋଟ",
+      "successRate": "ସଫଳତା ହାର",
+      "recommendations": "ସୁପାରିଶ",
+      "evaluations": "ମୂଲ୍ୟାଙ୍କନ",
+      "countryBreakdown": "ଦେଶ ଅନୁଯାୟୀ ବିଭାଜନ",
+      "superOnly": "କେବଳ ସୁପର ଆଡମିନ୍"
+    }
   },
   "theme": {
     "zinc": "ଜିଙ୍କ୍",
@@ -1954,7 +1984,8 @@
       "constraintMax": "ମୂଲ୍ୟ ୧୦୦ ରୁ ଅଧିକ ହେବା ଉଚିତ୍ ନୁହେଁ",
       "required": "ଏହି କ୍ଷେତ୍ରଟି ଆବଶ୍ୟକ",
       "lactatingLatePregnancy": "ଗାଈ {days} ଦିନର ଗର୍ଭାବସ୍ଥା ସହିତ କ୍ଷୀର ଦେଉଛି। ସାଧାରଣତଃ ୨୧୦-୨୨୦ ଦିନ ପରେ ଗାଈ କ୍ଷୀର ଦେବା ବନ୍ଦ କରିଥାଏ। ତଥାପି ଜାରି ରଖିବେ କି?",
-      "notLactatingCleared": "ପଶୁ କ୍ଷୀର ଦେଉନଥିବାରୁ କ୍ଷୀର ଉତ୍ପାଦନ କ୍ଷେତ୍ରଗୁଡ଼ିକ ଖାଲି କରାଯାଇଛି।"
+      "notLactatingCleared": "ପଶୁ କ୍ଷୀର ଦେଉନଥିବାରୁ କ୍ଷୀର ଉତ୍ପାଦନ କ୍ଷେତ୍ରଗୁଡ଼ିକ ଖାଲି କରାଯାଇଛି।",
+      "quantityMin": "ପରିମାଣ 0 ରୁ ଅଧିକ ହେବା ଆବଶ୍ୟକ"
     },
     "historyItem": {
       "evaluation": "ଆହାର ମୂଲ୍ୟାଙ୍କନ",
@@ -1981,7 +2012,16 @@
       "withoutQuantities": "ସୁପାରିଶ ପାଆନ୍ତୁ",
       "priceRequired": "ସମସ୍ତ ଖାଦ୍ୟର ଦାମ୍ ଶୂନରୁ ଅଧିକ ହେବା ଉଚିତ୍",
       "quantityRequired": "ମୂଲ୍ୟାଙ୍କନ ପାଇଁ ସମସ୍ତ ଖାଦ୍ୟର ପରିମାଣ ଶୂନରୁ ଅଧିକ ହେବା ଉଚିତ୍",
-      "maxFeedsReached": "ସର୍ବାଧିକ {max} ଖାଦ୍ୟ ବଛାଯାଇପାରିବ"
+      "maxFeedsReached": "ସର୍ବାଧିକ {max} ଖାଦ୍ୟ ବଛାଯାଇପାରିବ",
+      "dietRecommendation": "ଆହାର ସୁପାରିଶ",
+      "dietEvaluation": "ଆହାର ମୂଲ୍ୟାଙ୍କନ",
+      "generateRecommendation": "ସୁପାରିଶ ସୃଷ୍ଟି କରନ୍ତୁ",
+      "getEvaluation": "ମୂଲ୍ୟାଙ୍କନ ପ୍ରାପ୍ତ କରନ୍ତୁ",
+      "feedLabel": "ଖାଦ୍ୟ {n}",
+      "customFeed": "କଷ୍ଟମ ଖାଦ୍ୟ",
+      "customFeedHint": "କଷ୍ଟମ ଖାଦ୍ୟ ସୃଷ୍ଟି ଖୁବ୍ ଶୀଘ୍ର ଆସୁଛି।",
+      "price": "ମୂଲ୍ୟ",
+      "qty": "ପରିମାଣ"
     },
     "constraints": {
       "title": "ନିର୍ଦ୍ଦିଷ୍ଟ ଆହାର ସୀମା",
@@ -2063,7 +2103,9 @@
       "marginal": "ସୀମାନ୍ତ",
       "deficient": "ଅଭାବ",
       "excess": "ଅଧିକ",
-      "infeasible": "ଅସମ୍ଭବ"
+      "infeasible": "ଅସମ୍ଭବ",
+      "failed": "ବିଫଳ",
+      "success": "ସଫଳ"
     },
     "home": {
       "welcome": "ସ୍ୱାଗତ, {name}",
@@ -2079,6 +2121,22 @@
       "searchPlaceholder": "ସିମୁଲେସନ୍ ଖୋଜନ୍ତୁ..."
     },
     "dietHistory": "ଡାଏଟ୍ ଇତିହାସ",
-    "loadFromHistory": "ଇତିହାସରୁ ଲୋଡ୍ କରନ୍ତୁ"
+    "loadFromHistory": "ଇତିହାସରୁ ଲୋଡ୍ କରନ୍ତୁ",
+    "units": {
+      "days": "ଦିନ"
+    },
+    "topographyHint": "ସମତଳ / ପାହାଡ଼ିଆ / ପାର୍ବତ୍ୟ",
+    "reset": "ପୁନଃସ୍ଥାପନ",
+    "formReset": "ଫର୍ମକୁ ଡିଫଲ୍ଟକୁ ପୁନଃସ୍ଥାପନ କରାଯାଇଛି",
+    "bcsLabels": {
+      "thin": "ପତଳା",
+      "obese": "ମୋଟା"
+    },
+    "filterTabs": {
+      "recommendations": "ସୁପାରିଶଗୁଡ଼ିକ",
+      "evaluations": "ମୂଲ୍ୟାଙ୍କନଗୁଡ଼ିକ",
+      "failed": "ବିଫଳ"
+    },
+    "noFilterResults": "ଏହି ଫିଲ୍ଟର୍ ପାଇଁ କୌଣସି ଫଳାଫଳ ନାହିଁ"
   }
 }

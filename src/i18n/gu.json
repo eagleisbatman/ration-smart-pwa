@@ -1862,7 +1862,37 @@
     "orgTypeNgo": "એનજીઓ",
     "orgTypeCooperative": "સહકારી",
     "orgTypeResearch": "સંશોધન",
-    "orgTypeOther": "અન્ય"
+    "orgTypeOther": "અન્ય",
+    "quickActions": "ઝડપી કાર્યો",
+    "feeds": {
+      "title": "ઘાસચારો વ્યવસ્થાપન",
+      "subtitle": "ઘાસચારો ઉમેરો, સુધારો અને મેનેજ કરો",
+      "bulkUpload": "જથ્થાબંધ અપલોડ",
+      "export": "નિકાસ કરો",
+      "noFeeds": "કોઈ ઘાસચારો મળ્યો નથી"
+    },
+    "feedback": {
+      "title": "પ્રતિભાવ",
+      "subtitle": "વપરાશકર્તાનો પ્રતિભાવ જુઓ",
+      "overview": "પ્રતિભાવ વિહંગાવલોકન",
+      "totalResponses": "કુલ પ્રતિભાવો",
+      "avgRating": "સરેરાશ રેટિંગ",
+      "noFeedback": "હજુ સુધી કોઈ પ્રતિભાવ નથી"
+    },
+    "reports": {
+      "title": "રિપોર્ટ્સ",
+      "subtitle": "સાચવેલા રિપોર્ટ્સ જુઓ",
+      "noReports": "કોઈ રિપોર્ટ મળ્યો નથી"
+    },
+    "simStats": {
+      "title": "સિમ્યુલેશનના આંકડા",
+      "total": "કુલ",
+      "successRate": "સફળતાનો દર",
+      "recommendations": "ભલામણો",
+      "evaluations": "મૂલ્યાંકન",
+      "countryBreakdown": "દેશ પ્રમાણે વિભાજન",
+      "superOnly": "માત્ર સુપર એડમિન માટે"
+    }
   },
   "theme": {
     "zinc": "ઝીંક",
@@ -1954,7 +1984,8 @@
       "constraintMax": "મૂલ્ય 100 થી વધવું ન જોઈએ",
       "required": "આ ક્ષેત્ર ફરજિયાત છે",
       "lactatingLatePregnancy": "ગાય {days} દિવસના ગર્ભ સાથે દૂધ આપે છે. ગાયોને સામાન્ય રીતે 210-220 દિવસ પછી સૂકવવામાં આવે છે. તેમ છતાં ચાલુ રાખવું છે?",
-      "notLactatingCleared": "પશુ દૂધ આપતું ન હોવાથી દૂધ ઉત્પાદન ક્ષેત્રો સાફ કરવામાં આવ્યા હતા."
+      "notLactatingCleared": "પશુ દૂધ આપતું ન હોવાથી દૂધ ઉત્પાદન ક્ષેત્રો સાફ કરવામાં આવ્યા હતા.",
+      "quantityMin": "જથ્થો 0 કરતાં વધુ હોવો જોઈએ"
     },
     "historyItem": {
       "evaluation": "આહાર મૂલ્યાંકન",
@@ -1981,7 +2012,16 @@
       "withoutQuantities": "ભલામણ મેળવો",
       "priceRequired": "તમામ ફીડ્સની કિંમત શૂન્ય કરતાં વધુ હોવી જોઈએ",
       "quantityRequired": "મૂલ્યાંકન માટે તમામ ફીડ્સનો જથ્થો શૂન્ય કરતાં વધુ હોવો જોઈએ",
-      "maxFeedsReached": "વધુમાં વધુ {max} ફીડ્સ પસંદ કરી શકાય છે"
+      "maxFeedsReached": "વધુમાં વધુ {max} ફીડ્સ પસંદ કરી શકાય છે",
+      "dietRecommendation": "આહારની ભલામણ",
+      "dietEvaluation": "આહારનું મૂલ્યાંકન",
+      "generateRecommendation": "ભલામણ બનાવો",
+      "getEvaluation": "મૂલ્યાંકન મેળવો",
+      "feedLabel": "ચારો {n}",
+      "customFeed": "કાસ્ટમ ફીડ",
+      "customFeedHint": "કાસ્ટમ ફીડ બનાવવાની સુવિધા જલ્દી આવી રહી છે.",
+      "price": "ભાવ",
+      "qty": "જથ્થો"
     },
     "constraints": {
       "title": "આહારની કસ્ટમ મર્યાદા",
@@ -2063,7 +2103,9 @@
       "marginal": "મર્યાદિત",
       "deficient": "અપૂરતું",
       "excess": "વધારાનું",
-      "infeasible": "અશક્ય"
+      "infeasible": "અશક્ય",
+      "failed": "નિષ્ફળ",
+      "success": "સફળ"
     },
     "home": {
       "welcome": "સ્વાગત છે, {name}",
@@ -2079,6 +2121,22 @@
       "searchPlaceholder": "સિમ્યુલેશન શોધો..."
     },
     "dietHistory": "આહારનો ઇતિહાસ",
-    "loadFromHistory": "ઇતિહાસમાંથી લોડ કરો"
+    "loadFromHistory": "ઇતિહાસમાંથી લોડ કરો",
+    "units": {
+      "days": "દિવસ"
+    },
+    "topographyHint": "સપાટ / ટેકરીવાળું / પર્વતીય",
+    "reset": "ફરીથી સેટ કરો",
+    "formReset": "ફોર્મને ડિફોલ્ટ પર રીસેટ કરવામાં આવ્યું",
+    "bcsLabels": {
+      "thin": "પાતળું",
+      "obese": "જાડું"
+    },
+    "filterTabs": {
+      "recommendations": "ભલામણો",
+      "evaluations": "મૂલ્યાંકન",
+      "failed": "નિષ્ફળ"
+    },
+    "noFilterResults": "આ ફિલ્ટર માટે કોઈ પરિણામ નથી"
   }
 }

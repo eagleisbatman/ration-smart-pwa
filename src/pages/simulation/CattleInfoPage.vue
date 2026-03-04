@@ -204,7 +204,7 @@
             type="number"
             outlined
             dense
-            suffix="days"
+            :suffix="$t('simulation.units.days')"
             hint="300 – 600"
             :rules="[
               (v: number) => v >= 300 || $t('simulation.validation.calvingIntervalMin'),
@@ -247,7 +247,7 @@
                 outlined
                 dense
                 behavior="menu"
-                hint="Flat / Hilly / Mountainous"
+                :hint="$t('simulation.topographyHint')"
               />
             </div>
           </div>

@@ -1244,6 +1244,7 @@
     "perKg": "/كجم"
   },
   "app": {
+    "name": "RationSmart",
     "tagline": "علف أذكى، ماشية أصح، إنتاج أفضل"
   },
   "countries": {
@@ -1862,7 +1863,37 @@
     "orgTypeNgo": "منظمة غير حكومية",
     "orgTypeCooperative": "تعاونية",
     "orgTypeResearch": "بحثي",
-    "orgTypeOther": "أخرى"
+    "orgTypeOther": "أخرى",
+    "quickActions": "إجراءات سريعة",
+    "feeds": {
+      "title": "إدارة الأعلاف",
+      "subtitle": "إضافة الأعلاف وتعديلها وإدارتها",
+      "bulkUpload": "تحميل مجمع",
+      "export": "تصدير",
+      "noFeeds": "لم يتم العثور على أعلاف"
+    },
+    "feedback": {
+      "title": "الملاحظات",
+      "subtitle": "عرض ملاحظات المستخدمين",
+      "overview": "نظرة عامة على الملاحظات",
+      "totalResponses": "إجمالي الردود",
+      "avgRating": "متوسط التقييم",
+      "noFeedback": "لا توجد ملاحظات حتى الآن"
+    },
+    "reports": {
+      "title": "التقارير",
+      "subtitle": "عرض التقارير المحفوظة",
+      "noReports": "لم يتم العثور على تقارير"
+    },
+    "simStats": {
+      "title": "إحصائيات المحاكاة",
+      "total": "الإجمالي",
+      "successRate": "معدل النجاح",
+      "recommendations": "التوصيات",
+      "evaluations": "التقييمات",
+      "countryBreakdown": "توزيع حسب الدولة",
+      "superOnly": "للمشرف الرئيسي فقط"
+    }
   },
   "theme": {
     "zinc": "زنك",
@@ -1954,7 +1985,8 @@
       "constraintMax": "يجب أن لا تتجاوز القيمة 100",
       "required": "هذا الحقل مطلوب",
       "lactatingLatePregnancy": "البقرة تنتج الحليب وهي حامل منذ {days} يومًا. عادة ما تُجفف الأبقار بعد 210-220 يومًا. هل تريد المتابعة على أي حال؟",
-      "notLactatingCleared": "تم مسح حقول إنتاج الحليب لأن الحيوان لا يدر الحليب."
+      "notLactatingCleared": "تم مسح حقول إنتاج الحليب لأن الحيوان لا يدر الحليب.",
+      "quantityMin": "يجب أن تكون الكمية أكبر من 0"
     },
     "historyItem": {
       "evaluation": "تقييم العلف",
@@ -1981,7 +2013,16 @@
       "withoutQuantities": "احصل على توصية",
       "priceRequired": "يجب أن يكون سعر جميع الأعلاف أكبر من الصفر",
       "quantityRequired": "يجب أن تكون كمية جميع الأعلاف أكبر من الصفر للتقييم",
-      "maxFeedsReached": "يمكن اختيار {max} علف كحد أقصى"
+      "maxFeedsReached": "يمكن اختيار {max} علف كحد أقصى",
+      "dietRecommendation": "توصية النظام الغذائي",
+      "dietEvaluation": "تقييم النظام الغذائي",
+      "generateRecommendation": "إنشاء التوصية",
+      "getEvaluation": "الحصول على التقييم",
+      "feedLabel": "العلف {n}",
+      "customFeed": "علف مخصص",
+      "customFeedHint": "إنشاء الأعلاف المخصصة قريباً.",
+      "price": "السعر",
+      "qty": "الكمية"
     },
     "constraints": {
       "title": "حدود النظام الغذائي المخصصة",
@@ -2063,7 +2104,9 @@
       "marginal": "حدي",
       "deficient": "ناقص",
       "excess": "فائض",
-      "infeasible": "غير ممكن"
+      "infeasible": "غير ممكن",
+      "failed": "فشل",
+      "success": "نجاح"
     },
     "home": {
       "welcome": "أهلاً بك، {name}",
@@ -2079,6 +2122,22 @@
       "searchPlaceholder": "ابحث في المحاكاة..."
     },
     "dietHistory": "تاريخ العلف",
-    "loadFromHistory": "تحميل من التاريخ"
+    "loadFromHistory": "تحميل من التاريخ",
+    "units": {
+      "days": "أيام"
+    },
+    "topographyHint": "مسطحة / تلال / جبلية",
+    "reset": "إعادة تعيين",
+    "formReset": "تمت إعادة تعيين النموذج إلى الإعدادات الافتراضية",
+    "bcsLabels": {
+      "thin": "نحيف",
+      "obese": "سمين"
+    },
+    "filterTabs": {
+      "recommendations": "التوصيات",
+      "evaluations": "التقييمات",
+      "failed": "فشل"
+    },
+    "noFilterResults": "لا توجد نتائج لهذا الفلتر"
   }
 }

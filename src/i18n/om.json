@@ -1826,7 +1826,7 @@
     "active": "Hojechaa Jira",
     "inactive": "Hin Hojechu",
     "name": "Maqaa",
-    "email": "Email",
+    "email": "Imeylii",
     "phone": "Bilbila",
     "lastActive": "Yeroo Dhumaaf Hojechaa Ture",
     "farmerCount": "Qonnaan Bultoota",
@@ -1861,7 +1861,37 @@
     "orgTypeNgo": "Waldaa Miti-Mootummaa",
     "orgTypeCooperative": "Waldaa Hojii Gamtaa",
     "orgTypeResearch": "Qorannoo",
-    "orgTypeOther": "Kan Biraa"
+    "orgTypeOther": "Kan Biraa",
+    "quickActions": "Tarkaanfiiwwan Hatattamaa",
+    "feeds": {
+      "title": "Bulchiinsa Nyaataa",
+      "subtitle": "Nyaata dabali, sirreessi & bulchi",
+      "bulkUpload": "Hedduu Olkaa'i",
+      "export": "Ergi",
+      "noFeeds": "Nyaanni tokkollee hin argamne"
+    },
+    "feedback": {
+      "title": "Yaada",
+      "subtitle": "Yaada fayyadamtootaa ilaali",
+      "overview": "Waliigala Yaadaa",
+      "totalResponses": "Deebiiwwan Waliigalaa",
+      "avgRating": "Giddugaleessa Sadarkaa",
+      "noFeedback": "Yaanni homaa hin jiru"
+    },
+    "reports": {
+      "title": "Gabaasota",
+      "subtitle": "Gabaasota qusataman ilaali",
+      "noReports": "Gabaasni tokkollee hin argamne"
+    },
+    "simStats": {
+      "title": "Istaatistiksii Fakkeenyaa",
+      "total": "Waliigala",
+      "successRate": "Sadarkaa Milkaa'inaa",
+      "recommendations": "Gorsa",
+      "evaluations": "Madaallii",
+      "countryBreakdown": "Addaan Qoodinsa Biyyaa",
+      "superOnly": "Admin olaanaa qofaaf"
+    }
   },
   "theme": {
     "zinc": "Ziinkii",
@@ -1953,7 +1983,8 @@
       "constraintMax": "Bu'aan 100 irra caaluu hin qabu",
       "required": "Kutaan kun guutamuu qaba",
       "lactatingLatePregnancy": "Saani guyyaa {days} ulfa taatee aannaan hojjechaa jirti. Saanota baay'inaan guyyaa 210-220 booda aannaan irraa kutu. Itti fufuu barbaaddaa?",
-      "notLactatingCleared": "Saani aannaan waan hin oomishneef dirreen oomisha aannanii qulqullaa'eera."
+      "notLactatingCleared": "Saani aannaan waan hin oomishneef dirreen oomisha aannanii qulqullaa'eera.",
+      "quantityMin": "Baay'inni 0 irra caaluu qaba"
     },
     "historyItem": {
       "evaluation": "Madaallii Nyaataa",
@@ -1980,7 +2011,16 @@
       "withoutQuantities": "Yaada Gaafadhaa",
       "priceRequired": "Nyaanni hundi gatii zeeroo ol qabaachuu qaba",
       "quantityRequired": "Nyaanni hundi baay'ina zeeroo ol qabaachuu qaba qorannoo kanaaf",
-      "maxFeedsReached": "Nyaata {max} caalu filachuu hin danda'amu"
+      "maxFeedsReached": "Nyaata {max} caalu filachuu hin danda'amu",
+      "dietRecommendation": "Gorsa Nyaataa",
+      "dietEvaluation": "Madaallii Nyaataa",
+      "generateRecommendation": "Yaada dhiyeessii uumi",
+      "getEvaluation": "Dabalee argadhu",
+      "feedLabel": "MIDHAAN {n}",
+      "customFeed": "Midhaan Dhuunfaa",
+      "customFeedHint": "Uumuu midhaan dhuunfaa yeroo dhiyootti ni dhufa.",
+      "price": "Gatii",
+      "qty": "Qabii"
     },
     "constraints": {
       "title": "Daangaa Nyaataa Murtaa'e",
@@ -2062,7 +2102,9 @@
       "marginal": "Daangaa",
       "deficient": "Hir'uu",
       "excess": "Baay'ee",
-      "infeasible": "Hin danda'amu"
+      "infeasible": "Hin danda'amu",
+      "failed": "Kufeera",
+      "success": "Milkaa'eera"
     },
     "home": {
       "welcome": "Nagaa dhuftaa, {name}",
@@ -2078,6 +2120,22 @@
       "searchPlaceholder": "Simuleeshinii barbaadi..."
     },
     "dietHistory": "Seenaa Nyaataa",
-    "loadFromHistory": "Seenaa irraa fe'i"
+    "loadFromHistory": "Seenaa irraa fe'i",
+    "units": {
+      "days": "guyyaa"
+    },
+    "topographyHint": "Dheedhii / Tulluu / Gaaraa",
+    "reset": "Deebisi",
+    "formReset": "Foormiin gara duraan turetti deebi'eera",
+    "bcsLabels": {
+      "thin": "Hooqa",
+      "obese": "Furdaa"
+    },
+    "filterTabs": {
+      "recommendations": "Yaadota",
+      "evaluations": "Dabaleewwan",
+      "failed": "Kufeera"
+    },
+    "noFilterResults": "Wanti barbaaddan hin jiru"
   }
 }

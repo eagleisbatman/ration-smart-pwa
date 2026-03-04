@@ -468,13 +468,13 @@
       "following": "অনুসৰণ কৰি থকা হৈছে",
       "archived": "আৰ্কাইভ কৰা হৈছে"
     },
-    "tdnLabel": "TDN",
+    "tdnLabel": "টিডিএন",
     "dailyCost": "দৈনিক খৰচ",
     "dmKg": "শুকান পদাৰ্থৰ পৰিমাণ (কি.গ্ৰা.)",
     "feeds": "খাদ্যসমূহ",
     "recommendedFeeds": "পৰামৰ্শ দিয়া খাদ্যসমূহ",
     "dmLabel": "শুকান পদাৰ্থ",
-    "cpLabel": "CP",
+    "cpLabel": "চিপি",
     "nutrientBalance": "পুষ্টিৰ সমতা",
     "crudeProteinCP": "ক্ৰুড প্ৰটিন (CP)",
     "totalDigestibleNutrients": "মুঠ হজমযোগ্য পুষ্টি (TDN)",
@@ -1238,7 +1238,7 @@
     "ml": "মিলি",
     "percent": "%",
     "rupees": "টকা",
-    "dong": "VND",
+    "dong": "ভিএনডি",
     "perDay": "/দিন",
     "perKg": "/কেজি"
   },
@@ -1862,7 +1862,37 @@
     "orgTypeNgo": "বেচৰকাৰী সংস্থা",
     "orgTypeCooperative": "সমবায়",
     "orgTypeResearch": "গৱেষণা",
-    "orgTypeOther": "অন্যান্য"
+    "orgTypeOther": "অন্যান্য",
+    "quickActions": "ত্বৰিত ক্ৰিয়াৱলী",
+    "feeds": {
+      "title": "দানা ব্যৱস্থাপনা",
+      "subtitle": "দানা যোগ কৰক, সম্পাদনা কৰক আৰু পৰিচালনা কৰক",
+      "bulkUpload": "বুল্ক আপলোড",
+      "export": "ৰপ্তানি",
+      "noFeeds": "কোনো দানা পোৱা নগ'ল"
+    },
+    "feedback": {
+      "title": "মতামত",
+      "subtitle": "ব্যৱহাৰকাৰীৰ মতামত চাওক",
+      "overview": "মতামতৰ সংক্ষিপ্ত বিৱৰণ",
+      "totalResponses": "মুঠ সঁহাৰি",
+      "avgRating": "গড় ৰেটিং",
+      "noFeedback": "এতিয়ালৈকে কোনো মতামত নাই"
+    },
+    "reports": {
+      "title": "প্ৰতিবেদন",
+      "subtitle": "সংৰক্ষিত প্ৰতিবেদন চাওক",
+      "noReports": "কোনো প্ৰতিবেদন পোৱা নগ'ল"
+    },
+    "simStats": {
+      "title": "ছিমুলেচন পৰিসংখ্যা",
+      "total": "মুঠ",
+      "successRate": "সফলতাৰ হাৰ",
+      "recommendations": "সুপাৰিশসমূহ",
+      "evaluations": "মূল্যাংকনসমূহ",
+      "countryBreakdown": "দেশ অনুসৰি বিভাজন",
+      "superOnly": "কেৱল চুপাৰ এডমিনৰ বাবে"
+    }
   },
   "theme": {
     "zinc": "জিংক",
@@ -1954,7 +1984,8 @@
       "constraintMax": "মূল্য ১০০তকৈ বেছি হ'ব নোৱাৰিব",
       "required": "এই স্থান পূৰণ কৰাটো বাধ্যতামূলক",
       "lactatingLatePregnancy": "গৰুজনী {days} দিনৰ গৰ্ভাৱস্থাত গাখীৰ দি আছে। গৰু সাধাৰণতে ২১০-২২০ দিনৰ পিছত শুকান কৰা হয়। তথাপিও আগবাঢ়িবনে?",
-      "notLactatingCleared": "পশু গাখীৰ নিদিয়াৰ বাবে গাখীৰ উৎপাদনৰ স্থানসমূহ পৰিষ্কাৰ কৰা হ'ল।"
+      "notLactatingCleared": "পশু গাখীৰ নিদিয়াৰ বাবে গাখীৰ উৎপাদনৰ স্থানসমূহ পৰিষ্কাৰ কৰা হ'ল।",
+      "quantityMin": "পৰিমাণ ০ তকৈ বেছি হ'ব লাগিব"
     },
     "historyItem": {
       "evaluation": "আহাৰৰ মূল্যায়ন",
@@ -1981,7 +2012,16 @@
       "withoutQuantities": "পৰামৰ্শ লাভ কৰক",
       "priceRequired": "সকলো আহাৰৰ মূল্য শূন্যতকৈ বেছি হ'ব লাগিব",
       "quantityRequired": "মূল্যায়নৰ বাবে সকলো আহাৰৰ পৰিমাণ শূন্যতকৈ বেছি হ'ব লাগিব",
-      "maxFeedsReached": "সৰ্বাধিক {max} টা আহাৰ বাছনি কৰিব পাৰি"
+      "maxFeedsReached": "সৰ্বাধিক {max} টা আহাৰ বাছনি কৰিব পাৰি",
+      "dietRecommendation": "খাদ্যৰ পৰামৰ্শ",
+      "dietEvaluation": "খাদ্যৰ মূল্যায়ন",
+      "generateRecommendation": "পৰামৰ্শ সৃষ্টি কৰক",
+      "getEvaluation": "মূল্যায়ন পাওক",
+      "feedLabel": "খাদ্য {n}",
+      "customFeed": "কাষ্টম খাদ্য",
+      "customFeedHint": "কাষ্টম খাদ্য সৃষ্টি সোনকালে আহি আছে।",
+      "price": "মূল্য",
+      "qty": "পৰিমাণ"
     },
     "constraints": {
       "title": "নিৰ্দিষ্ট আহাৰৰ সীমা",
@@ -2063,7 +2103,9 @@
       "marginal": "সীমিত",
       "deficient": "অভাৱগ্ৰস্ত",
       "excess": "অতিরিক্ত",
-      "infeasible": "অসম্ভৱ"
+      "infeasible": "অসম্ভৱ",
+      "failed": "বিফল হ'ল",
+      "success": "সফল হ'ল"
     },
     "home": {
       "welcome": "স্বাগতম, {name}",
@@ -2079,6 +2121,22 @@
       "searchPlaceholder": "চিমুলেচন বিচাৰক..."
     },
     "dietHistory": "আহাৰৰ ইতিহাস",
-    "loadFromHistory": "ইতিহাসৰ পৰা লওক"
+    "loadFromHistory": "ইতিহাসৰ পৰা লওক",
+    "units": {
+      "days": "দিন"
+    },
+    "topographyHint": "সমতল / পাহাৰীয়া / পৰ্বতীয়া",
+    "reset": "পুনৰায় আৰম্ভ কৰক",
+    "formReset": "ফৰ্ম ডিফল্টলৈ ৰিছেট কৰা হ'ল",
+    "bcsLabels": {
+      "thin": "শুকান",
+      "obese": "অতি স্থূল"
+    },
+    "filterTabs": {
+      "recommendations": "পৰামৰ্শসমূহ",
+      "evaluations": "মূল্যায়নসমূহ",
+      "failed": "বিফল"
+    },
+    "noFilterResults": "এই ফিল্টাৰৰ বাবে কোনো ফলাফল নাই"
   }
 }

@@ -1862,7 +1862,37 @@
     "orgTypeNgo": "NGO",
     "orgTypeCooperative": "సహకార సంఘం",
     "orgTypeResearch": "పరిశోధన",
-    "orgTypeOther": "ఇతర"
+    "orgTypeOther": "ఇతర",
+    "quickActions": "త్వరిత చర్యలు",
+    "feeds": {
+      "title": "మేత నిర్వహణ",
+      "subtitle": "మేతను జోడించండి, సవరించండి & నిర్వహించండి",
+      "bulkUpload": "బల్క్ అప్‌లోడ్",
+      "export": "ఎగుమతి",
+      "noFeeds": "మేత దొరకలేదు"
+    },
+    "feedback": {
+      "title": "అభిప్రాయం",
+      "subtitle": "వినియోగదారు అభిప్రాయాన్ని వీక్షించండి",
+      "overview": "అభిప్రాయం అవలోకనం",
+      "totalResponses": "మొత్తం ప్రతిస్పందనలు",
+      "avgRating": "సగటు రేటింగ్",
+      "noFeedback": "ఇంకా అభిప్రాయం లేదు"
+    },
+    "reports": {
+      "title": "నివేదికలు",
+      "subtitle": "సేవ్ చేసిన నివేదికలను చూడండి",
+      "noReports": "నివేదికలు కనుగొనబడలేదు"
+    },
+    "simStats": {
+      "title": "సిమ్యులేషన్ గణాంకాలు",
+      "total": "మొత్తం",
+      "successRate": "విజయ శాతం",
+      "recommendations": "సిఫార్సులు",
+      "evaluations": "మూల్యాంకనాలు",
+      "countryBreakdown": "దేశాల వారీగా వివరాలు",
+      "superOnly": "సూపర్ అడ్మిన్ మాత్రమే"
+    }
   },
   "theme": {
     "zinc": "జింక్",
@@ -1954,7 +1984,8 @@
       "constraintMax": "విలువ 100 మించకూడదు",
       "required": "ఈ ఫీల్డ్ అవసరం",
       "lactatingLatePregnancy": "ఆవు {days} రోజుల గర్భంతో పాలిస్తోంది. ఆవులు సాధారణంగా 210-220 రోజుల తర్వాత పాలు ఆపుతాయి. కొనసాగించాలా?",
-      "notLactatingCleared": "జంతువు పాలివ్వడం లేదు కాబట్టి పాలు ఉత్పత్తి ఫీల్డ్‌లు క్లియర్ చేయబడ్డాయి."
+      "notLactatingCleared": "జంతువు పాలివ్వడం లేదు కాబట్టి పాలు ఉత్పత్తి ఫీల్డ్‌లు క్లియర్ చేయబడ్డాయి.",
+      "quantityMin": "పరిమాణం 0 కంటే ఎక్కువ ఉండాలి"
     },
     "historyItem": {
       "evaluation": "ఆహార మూల్యాంకనం",
@@ -1981,7 +2012,16 @@
       "withoutQuantities": "సిఫార్సు పొందండి",
       "priceRequired": "అన్ని దాణాలకు ధర సున్నా కంటే ఎక్కువ ఉండాలి",
       "quantityRequired": "అన్ని దాణాలకు అంచనా వేయడానికి సున్నా కంటే ఎక్కువ పరిమాణం ఉండాలి",
-      "maxFeedsReached": "గరిష్టంగా {max} దాణాలు ఎంచుకోవచ్చు"
+      "maxFeedsReached": "గరిష్టంగా {max} దాణాలు ఎంచుకోవచ్చు",
+      "dietRecommendation": "ఆహార సిఫార్సు",
+      "dietEvaluation": "ఆహార మూల్యాంకనం",
+      "generateRecommendation": "సిఫార్సును రూపొందించండి",
+      "getEvaluation": "మూల్యాంకనాన్ని పొందండి",
+      "feedLabel": "ఫీడ్ {n}",
+      "customFeed": "కస్టమ్ ఫీడ్",
+      "customFeedHint": "కస్టమ్ ఫీడ్ సృష్టి త్వరలో రాబోతోంది.",
+      "price": "ధర",
+      "qty": "పరిమాణం"
     },
     "constraints": {
       "title": "ప్రత్యేక ఆహార పరిమితులు",
@@ -2063,7 +2103,9 @@
       "marginal": "మార్గినల్",
       "deficient": "లోపం",
       "excess": "అధికం",
-      "infeasible": "సాధ్యం కాదు"
+      "infeasible": "సాధ్యం కాదు",
+      "failed": "విఫలమైంది",
+      "success": "విజయవంతమైంది"
     },
     "home": {
       "welcome": "స్వాగతం, {name}",
@@ -2079,6 +2121,22 @@
       "searchPlaceholder": "అనుకరణలను శోధించండి..."
     },
     "dietHistory": "ఆహార చరిత్ర",
-    "loadFromHistory": "చరిత్ర నుండి లోడ్ చేయండి"
+    "loadFromHistory": "చరిత్ర నుండి లోడ్ చేయండి",
+    "units": {
+      "days": "రోజులు"
+    },
+    "topographyHint": "సమతలం / కొండలు / పర్వతాలు",
+    "reset": "రీసెట్ చేయండి",
+    "formReset": "ఫారం డిఫాల్ట్‌లకు రీసెట్ చేయబడింది",
+    "bcsLabels": {
+      "thin": "సన్నగా",
+      "obese": "అధిక బరువు"
+    },
+    "filterTabs": {
+      "recommendations": "సిఫార్సులు",
+      "evaluations": "అంచనాలు",
+      "failed": "విఫలమైనవి"
+    },
+    "noFilterResults": "ఈ ఫిల్టర్‌కు ఫలితాలు లేవు"
   }
 }

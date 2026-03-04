@@ -1926,6 +1926,10 @@
       "grazing": "Grazing",
       "bwGain": "Body Weight Gain (kg/day)"
     },
+    "units": {
+      "days": "days"
+    },
+    "topographyHint": "Flat / Hilly / Mountainous",
     "topographyOptions": {
       "flat": "Flat",
       "hilly": "Hilly",
