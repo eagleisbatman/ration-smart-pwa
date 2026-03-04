@@ -1986,7 +1986,11 @@
       "withoutQuantities": "Get Recommendation",
       "priceRequired": "All feeds must have a price greater than zero",
       "quantityRequired": "All feeds must have a quantity greater than zero for evaluation",
-      "maxFeedsReached": "Maximum of {max} feeds can be selected"
+      "maxFeedsReached": "Maximum of {max} feeds can be selected",
+      "actionHint": "Choose how to run your simulation",
+      "evalTooltip": "Enter quantities for each feed to evaluate your diet",
+      "price": "Price",
+      "qty": "Qty"
     },
     "constraints": {
       "title": "Custom Diet Limits",

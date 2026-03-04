@@ -32,6 +32,7 @@
             dense
             :loading="breedsLoading"
             :rules="[(v: string) => !!v || $t('simulation.validation.breedRequired')]"
+            hide-bottom-space
           />
 
           <div class="row q-col-gutter-sm">
@@ -239,6 +240,7 @@
                 map-options
                 outlined
                 dense
+                hint=" "
               />
             </div>
           </div>
@@ -427,8 +429,20 @@ onMounted(() => {
 .action-bar {
   @media screen and (max-width: 599px) {
     position: sticky;
-    bottom: 12px;
+    bottom: 0;
     z-index: 1;
+    background: var(--q-background, #fff);
+    padding: 12px 0;
+    margin-left: -16px;
+    margin-right: -16px;
+    padding-left: 16px;
+    padding-right: 16px;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+
+    .body--dark & {
+      background: var(--q-dark-page, #121212);
+      border-top-color: rgba(255, 255, 255, 0.1);
+    }
   }
 }
 

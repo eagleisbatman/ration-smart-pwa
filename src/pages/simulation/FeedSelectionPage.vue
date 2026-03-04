@@ -99,47 +99,45 @@
       <div class="text-subtitle1 text-weight-medium q-mb-sm">
         {{ $t('simulation.feedSelect.selectedFeeds') }} ({{ simStore.selectedFeeds.length }})
       </div>
-      <q-card
-        v-for="(sf, idx) in simStore.selectedFeeds"
-        :key="sf.feed_id"
-        flat
-        bordered
-        class="q-mb-sm rounded-borders"
-      >
-        <q-card-section class="q-pb-none">
-          <div class="row items-center no-wrap">
-            <div class="col">
-              <div class="text-body1 text-weight-medium">{{ sf.feed_name }}</div>
-              <div class="text-caption text-grey-6">
-                <q-badge v-if="sf.fd_type" :label="sf.fd_type" :color="sf.fd_type === 'Forage' ? 'green-7' : 'blue-7'" text-color="white" class="q-mr-xs" />
-                <span v-if="sf.fd_category">{{ sf.fd_category }}</span>
-              </div>
-            </div>
-            <q-btn flat round dense icon="close" color="grey-5" @click="removeFeed(idx)" />
-          </div>
-        </q-card-section>
-        <q-card-section class="q-pt-sm">
-          <q-input
-            v-model.number="simStore.selectedFeeds[idx].price_per_kg"
-            :label="$t('simulation.feedSelect.pricePerKg')"
-            type="number"
-            outlined
-            dense
-            step="0.1"
-            suffix="/kg"
-            :rules="[(v: number) => v > 0 || $t('simulation.validation.priceMin')]"
-            class="q-mb-sm"
-          />
-          <q-input
-            v-model.number="simStore.selectedFeeds[idx].quantity_as_fed"
-            :label="$t('simulation.feedSelect.quantityOptional')"
-            type="number"
-            outlined
-            dense
-            step="0.1"
-            suffix="kg"
-          />
-        </q-card-section>
+      <q-card flat bordered class="q-mb-md rounded-borders selected-feeds-card">
+        <q-list separator dense>
+          <q-item v-for="(sf, idx) in simStore.selectedFeeds" :key="sf.feed_id">
+            <q-item-section>
+              <q-item-label class="text-weight-medium">{{ sf.feed_name }}</q-item-label>
+              <q-item-label caption>
+                <span :class="sf.fd_type === 'Forage' ? 'text-green-7' : 'text-blue-7'">{{ sf.fd_type }}</span>
+                <span v-if="sf.fd_category"> · {{ sf.fd_category }}</span>
+              </q-item-label>
+            </q-item-section>
+            <q-item-section side style="min-width: 80px">
+              <q-input
+                v-model.number="simStore.selectedFeeds[idx].price_per_kg"
+                type="number"
+                outlined
+                dense
+                step="0.1"
+                suffix="/kg"
+                :placeholder="$t('simulation.feedSelect.price')"
+                class="selected-feed-input"
+              />
+            </q-item-section>
+            <q-item-section side style="min-width: 80px">
+              <q-input
+                v-model.number="simStore.selectedFeeds[idx].quantity_as_fed"
+                type="number"
+                outlined
+                dense
+                step="0.1"
+                suffix="kg"
+                :placeholder="$t('simulation.feedSelect.qty')"
+                class="selected-feed-input"
+              />
+            </q-item-section>
+            <q-item-section side>
+              <q-btn flat round dense icon="close" size="sm" color="grey-5" @click="removeFeed(idx)" />
+            </q-item-section>
+          </q-item>
+        </q-list>
       </q-card>
     </template>
 
@@ -162,28 +160,38 @@
     />
 
     <!-- Action Buttons -->
-    <div class="q-gutter-sm action-bar">
-      <q-btn
-        v-if="hasQuantities"
-        :label="$t('simulation.feedSelect.withQuantities')"
-        color="secondary"
-        class="full-width action-btn"
-        unelevated
-        no-caps
-        :loading="simStore.evaluating"
-        :disable="simStore.selectedFeeds.length === 0 || simStore.recommending"
-        @click="runEvaluation"
-      />
-      <q-btn
-        :label="$t('simulation.feedSelect.withoutQuantities')"
-        color="primary"
-        class="full-width action-btn"
-        unelevated
-        no-caps
-        :loading="simStore.recommending"
-        :disable="simStore.selectedFeeds.length === 0 || simStore.evaluating"
-        @click="runRecommendation"
-      />
+    <div class="action-bar">
+      <div class="text-caption text-grey-6 q-mb-xs text-center">
+        {{ $t('simulation.feedSelect.actionHint') }}
+      </div>
+      <div class="row q-col-gutter-sm">
+        <div class="col-6">
+          <q-btn
+            :label="$t('simulation.feedSelect.withoutQuantities')"
+            color="primary"
+            class="full-width action-btn"
+            unelevated
+            no-caps
+            :loading="simStore.recommending"
+            :disable="simStore.selectedFeeds.length === 0 || simStore.evaluating"
+            @click="runRecommendation"
+          />
+        </div>
+        <div class="col-6">
+          <q-btn
+            :label="$t('simulation.feedSelect.withQuantities')"
+            color="secondary"
+            class="full-width action-btn"
+            unelevated
+            no-caps
+            :loading="simStore.evaluating"
+            :disable="simStore.selectedFeeds.length === 0 || !hasQuantities || simStore.recommending"
+            @click="runEvaluation"
+          >
+            <q-tooltip v-if="!hasQuantities">{{ $t('simulation.feedSelect.evalTooltip') }}</q-tooltip>
+          </q-btn>
+        </div>
+      </div>
     </div>
 
     <!-- Loading Overlay -->
@@ -386,23 +394,45 @@ onMounted(() => {
   }
 }
 
-.action-bar {
-  @media screen and (max-width: 599px) {
-    position: sticky;
-    bottom: 0;
-    background: var(--q-background, #fff);
-    padding: 12px 0;
-    z-index: 1;
+.selected-feeds-card {
+  max-height: 40vh;
+  overflow-y: auto;
+}
 
-    .body--dark & {
-      background: var(--q-dark-page, #121212);
-    }
+.selected-feed-input {
+  :deep(.q-field__control) {
+    min-height: 32px;
+  }
+  :deep(.q-field__native) {
+    padding: 2px 4px;
+    font-size: 0.85rem;
+  }
+  :deep(.q-field__suffix) {
+    font-size: 0.75rem;
+  }
+}
+
+.action-bar {
+  position: sticky;
+  bottom: 0;
+  background: var(--q-background, #fff);
+  padding: 12px 0;
+  margin-left: -16px;
+  margin-right: -16px;
+  padding-left: 16px;
+  padding-right: 16px;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  z-index: 1;
+
+  .body--dark & {
+    background: var(--q-dark-page, #121212);
+    border-top-color: rgba(255, 255, 255, 0.1);
   }
 }
 
 .action-btn {
   border-radius: $radius-loose;
-  font-size: 1rem;
+  font-size: 0.9rem;
   padding-top: 12px;
   padding-bottom: 12px;
 }
