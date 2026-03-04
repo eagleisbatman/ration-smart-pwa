@@ -6,7 +6,7 @@
           <!-- Logo floating above the card -->
           <div class="auth-logo-section">
             <q-avatar size="72px" color="primary" text-color="white" class="auth-logo">
-              <q-icon name="nutrition" size="40px" />
+              <q-icon :name="cowIcon" size="40px" />
             </q-avatar>
           </div>
 
@@ -34,6 +34,9 @@
 </template>
 
 <script setup lang="ts">
+import { useCowIcon } from 'src/composables/useCowIcon';
+
+const { cowIcon } = useCowIcon();
 const isOnboarding = false;
 </script>
 

@@ -978,8 +978,8 @@
       "fatHint": "Average fat percentage for the day",
       "snfPercentage": "SNF % (Optional)",
       "snfHint": "Solids-Not-Fat percentage, typically 7-10%",
-      "temperature": "Temperature \u00b0C (Optional)",
-      "temperatureHint": "Milk temperature at collection, typically 0-45\u00b0C",
+      "temperature": "Temperature °C (Optional)",
+      "temperatureHint": "Milk temperature at collection, typically 0-45°C",
       "notesOptional": "Notes (Optional)",
       "notesHint": "Any observations for the day",
       "cannotBeNegative": "Cannot be negative",
@@ -1842,7 +1842,37 @@
     "orgTypeNgo": "NGO",
     "orgTypeCooperative": "Cooperative",
     "orgTypeResearch": "Research",
-    "orgTypeOther": "Other"
+    "orgTypeOther": "Other",
+    "quickActions": "Quick Actions",
+    "feeds": {
+      "title": "Feed Management",
+      "subtitle": "Add, edit & manage feeds",
+      "bulkUpload": "Bulk Upload",
+      "export": "Export",
+      "noFeeds": "No feeds found"
+    },
+    "feedback": {
+      "title": "Feedback",
+      "subtitle": "View user feedback",
+      "overview": "Feedback Overview",
+      "totalResponses": "Total Responses",
+      "avgRating": "Avg Rating",
+      "noFeedback": "No feedback yet"
+    },
+    "reports": {
+      "title": "Reports",
+      "subtitle": "View saved reports",
+      "noReports": "No reports found"
+    },
+    "simStats": {
+      "title": "Simulation Stats",
+      "total": "Total",
+      "successRate": "Success Rate",
+      "recommendations": "Recommendations",
+      "evaluations": "Evaluations",
+      "countryBreakdown": "Country Breakdown",
+      "superOnly": "Super admin only"
+    }
   },
   "feedback": {
     "type": "Feedback Type",
@@ -1865,6 +1895,8 @@
     "continue": "Continue",
     "newCase": "New Case",
     "history": "Simulation History",
+    "dietHistory": "Diet History",
+    "loadFromHistory": "Load from History",
     "historyEmpty": "No simulations yet",
     "historyEmptyDesc": "Run a simulation to see it here.",
     "restoring": "Restoring simulation...",
@@ -1915,8 +1947,8 @@
       "daysOfPregnancyMax": "Days of pregnancy must not exceed 290",
       "calvingIntervalMin": "Calving interval must be at least 300 days",
       "calvingIntervalMax": "Calving interval must not exceed 600 days",
-      "temperatureMin": "Temperature must be at least -20\u00b0C",
-      "temperatureMax": "Temperature must not exceed 50\u00b0C",
+      "temperatureMin": "Temperature must be at least -20°C",
+      "temperatureMax": "Temperature must not exceed 50°C",
       "distanceMax": "Walking distance must not exceed 50 km",
       "bwGainMin": "Body weight gain must be at least -1 kg/day",
       "bwGainMax": "Body weight gain must not exceed 2 kg/day",
@@ -2036,7 +2068,9 @@
       "marginal": "Marginal",
       "deficient": "Deficient",
       "excess": "Excess",
-      "infeasible": "Infeasible"
+      "infeasible": "Infeasible",
+      "failed": "Failed",
+      "success": "Success"
     },
     "home": {
       "welcome": "Welcome, {name}",
@@ -2048,7 +2082,20 @@
       "recentSimulations": "Recent Simulations",
       "noSimulations": "No simulations yet",
       "noSimulationsDesc": "Run your first simulation to see it here",
-      "viewAll": "View All"
-    }
+      "viewAll": "View All",
+      "searchPlaceholder": "Search simulations..."
+    },
+    "reset": "Reset",
+    "formReset": "Form reset to defaults",
+    "bcsLabels": {
+      "thin": "Thin",
+      "obese": "Obese"
+    },
+    "filterTabs": {
+      "recommendations": "Recommendations",
+      "evaluations": "Evaluations",
+      "failed": "Failed"
+    },
+    "noFilterResults": "No results for this filter"
   }
 }

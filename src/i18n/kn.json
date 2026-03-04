@@ -2075,7 +2075,10 @@
       "recentSimulations": "ಇತ್ತೀಚಿನ ಸಿಮ್ಯುಲೇಶನ್‌ಗಳು",
       "noSimulations": "ಇನ್ನೂ ಯಾವುದೇ ಸಿಮ್ಯುಲೇಶನ್‌ಗಳಿಲ್ಲ",
       "noSimulationsDesc": "ನಿಮ್ಮ ಮೊದಲ ಸಿಮ್ಯುಲೇಷನ್ ಅನ್ನು ಇಲ್ಲಿ ನೋಡಲು ರನ್ ಮಾಡಿ",
-      "viewAll": "ಎಲ್ಲವನ್ನೂ ವೀಕ್ಷಿಸಿ"
-    }
+      "viewAll": "ಎಲ್ಲವನ್ನೂ ವೀಕ್ಷಿಸಿ",
+      "searchPlaceholder": "Search simulations..."
+    },
+    "dietHistory": "Diet History",
+    "loadFromHistory": "Load from History"
   }
 }

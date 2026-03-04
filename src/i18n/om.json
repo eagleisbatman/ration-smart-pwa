@@ -2074,7 +2074,10 @@
       "recentSimulations": "Yaaliiwwan Dhiheenyaa",
       "noSimulations": "Yaaliin tokkollee hin jiru",
       "noSimulationsDesc": "Yaalii kee isa jalqabaa hojjedhu, achi irratti argita",
-      "viewAll": "Hunda Ilaali"
-    }
+      "viewAll": "Hunda Ilaali",
+      "searchPlaceholder": "Simuleeshinii barbaadi..."
+    },
+    "dietHistory": "Seenaa Nyaataa",
+    "loadFromHistory": "Seenaa irraa fe'i"
   }
 }

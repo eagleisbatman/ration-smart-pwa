@@ -2075,7 +2075,10 @@
       "recentSimulations": "Các mô phỏng gần đây",
       "noSimulations": "Chưa có mô phỏng nào",
       "noSimulationsDesc": "Chạy mô phỏng đầu tiên của bạn để xem tại đây",
-      "viewAll": "Xem tất cả"
-    }
+      "viewAll": "Xem tất cả",
+      "searchPlaceholder": "Tìm kiếm mô phỏng..."
+    },
+    "dietHistory": "Lịch sử khẩu phần",
+    "loadFromHistory": "Tải từ Lịch sử"
   }
 }

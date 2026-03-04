@@ -27,7 +27,7 @@
         </q-card-section>
         <q-card-section class="col-auto flex flex-center q-pr-md">
           <q-avatar color="primary" text-color="white" size="48px">
-            <q-icon name="science" />
+            <q-icon :name="cowIcon" size="28px" />
           </q-avatar>
         </q-card-section>
       </q-card-section>
@@ -45,7 +45,7 @@
         no-caps
         color="primary"
         :label="$t('simulation.home.viewAll')"
-        @click="openHistoryCounter++"
+        @click="router.push('/diet-history')"
       />
     </div>
 
@@ -103,8 +103,20 @@
             </q-item-section>
 
             <q-item-section>
-              <q-item-label>
-                {{ item.report_name || item.report_type_display }}
+              <q-item-label class="row items-center no-wrap">
+                <span>{{ reportLabel(item) }}</span>
+                <q-badge
+                  v-if="isInfeasible(item)"
+                  color="negative"
+                  :label="$t('simulation.status.failed')"
+                  class="q-ml-sm"
+                />
+                <q-badge
+                  v-else-if="item.solution_status"
+                  color="positive"
+                  :label="$t('simulation.status.success')"
+                  class="q-ml-sm"
+                />
               </q-item-label>
               <q-item-label caption>
                 {{ item.cattle_summary?.breed || '–' }}
@@ -128,22 +140,30 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, inject } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useQuasar } from 'quasar';
 import { useI18n } from 'vue-i18n';
-import { useSimulationStore } from 'src/stores/simulation';
+import { useSimulationStore, type SimulationListItem } from 'src/stores/simulation';
 import { useAuthStore } from 'src/stores/auth';
-import { openHistoryKey } from 'src/lib/injection-keys';
+import { useCowIcon } from 'src/composables/useCowIcon';
+import {
+  reportLabel as _reportLabel,
+  isInfeasible,
+} from 'src/lib/simulation-helpers';
+
 const router = useRouter();
 const $q = useQuasar();
 const { t } = useI18n();
 const store = useSimulationStore();
 const authStore = useAuthStore();
-
-const openHistoryCounter = inject(openHistoryKey, ref(0));
+const { cowIcon } = useCowIcon();
 const loading = ref(false);
 const restoring = ref(false);
+
+function reportLabel(item: SimulationListItem): string {
+  return _reportLabel(item, t);
+}
 
 const userName = computed(() => authStore.user?.name || 'User');
 

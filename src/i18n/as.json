@@ -2075,7 +2075,10 @@
       "recentSimulations": "শেহতীয়া অনুকৰণসমূহ",
       "noSimulations": "এতিয়ালৈকে কোনো অনুকৰণ নাই",
       "noSimulationsDesc": "ইয়াত চাবলৈ আপোনাৰ প্ৰথম অনুকৰণ চলোৱক",
-      "viewAll": "সকলো চাওক"
-    }
+      "viewAll": "সকলো চাওক",
+      "searchPlaceholder": "চিমুলেচন বিচাৰক..."
+    },
+    "dietHistory": "আহাৰৰ ইতিহাস",
+    "loadFromHistory": "ইতিহাসৰ পৰা লওক"
   }
 }

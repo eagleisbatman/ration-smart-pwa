@@ -2075,7 +2075,10 @@
       "recentSimulations": "การจำลองล่าสุด",
       "noSimulations": "ยังไม่มีการจำลอง",
       "noSimulationsDesc": "เรียกใช้การจำลองครั้งแรกของคุณเพื่อดูที่นี่",
-      "viewAll": "ดูทั้งหมด"
-    }
+      "viewAll": "ดูทั้งหมด",
+      "searchPlaceholder": "ค้นหาการจำลอง..."
+    },
+    "dietHistory": "ประวัติสูตรอาหาร",
+    "loadFromHistory": "โหลดจากประวัติ"
   }
 }

@@ -2075,7 +2075,10 @@
       "recentSimulations": "حالیہ سیمولیشنز",
       "noSimulations": "ابھی تک کوئی سیمولیشن نہیں",
       "noSimulationsDesc": "اپنی پہلی سیمولیشن چلائیں تاکہ اسے یہاں دیکھ سکیں",
-      "viewAll": "سب دیکھیں"
-    }
+      "viewAll": "سب دیکھیں",
+      "searchPlaceholder": "سیمولیشنز تلاش کریں..."
+    },
+    "dietHistory": "خوراک کی ہسٹری",
+    "loadFromHistory": "ہسٹری سے لوڈ کریں"
   }
 }

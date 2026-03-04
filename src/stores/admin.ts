@@ -162,6 +162,169 @@ export const useAdminStore = defineStore('admin', () => {
     }
   }
 
+  // ---- Feed Management ----
+  async function fetchFeeds(page = 1, search?: string, countryId?: string): Promise<{ feeds: Record<string, unknown>[]; total: number }> {
+    const authStore = useAuthStore();
+    loading.value = true;
+    error.value = null;
+    try {
+      const params: Record<string, string | number> = {
+        admin_user_id: authStore.userId || '',
+        page,
+        page_size: 25,
+      };
+      if (search) params.search = search;
+      if (countryId) params.country_id = countryId;
+      const resp = await api.get('/api/v1/admin/list-feeds', { params });
+      const data = resp.data;
+      return { feeds: data.feeds || [], total: data.total_count || 0 };
+    } catch (err) {
+      error.value = extractUserFriendlyError(err);
+      return { feeds: [], total: 0 };
+    } finally {
+      loading.value = false;
+    }
+  }
+
+  async function addFeed(payload: Record<string, unknown>): Promise<boolean> {
+    const authStore = useAuthStore();
+    error.value = null;
+    try {
+      await api.post('/api/v1/admin/add-feed', payload, {
+        params: { admin_user_id: authStore.userId },
+      });
+      return true;
+    } catch (err) {
+      error.value = extractUserFriendlyError(err);
+      return false;
+    }
+  }
+
+  async function updateFeed(feedId: string, payload: Record<string, unknown>): Promise<boolean> {
+    const authStore = useAuthStore();
+    error.value = null;
+    try {
+      await api.put(`/api/v1/admin/update-feed/${feedId}`, payload, {
+        params: { admin_user_id: authStore.userId },
+      });
+      return true;
+    } catch (err) {
+      error.value = extractUserFriendlyError(err);
+      return false;
+    }
+  }
+
+  async function deleteFeed(feedId: string): Promise<boolean> {
+    const authStore = useAuthStore();
+    error.value = null;
+    try {
+      await api.delete(`/api/v1/admin/delete-feed/${feedId}`, {
+        params: { admin_user_id: authStore.userId },
+      });
+      return true;
+    } catch (err) {
+      error.value = extractUserFriendlyError(err);
+      return false;
+    }
+  }
+
+  async function bulkUploadFeeds(file: File, countryId: string): Promise<{ success: boolean; message: string }> {
+    const authStore = useAuthStore();
+    error.value = null;
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      const resp = await api.post('/api/v1/admin/bulk-upload-feeds', formData, {
+        params: { admin_user_id: authStore.userId, country_id: countryId },
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      return { success: true, message: resp.data.message || 'Upload complete' };
+    } catch (err) {
+      error.value = extractUserFriendlyError(err);
+      return { success: false, message: error.value || 'Upload failed' };
+    }
+  }
+
+  async function exportFeeds(countryId?: string): Promise<string | null> {
+    const authStore = useAuthStore();
+    error.value = null;
+    try {
+      const params: Record<string, string> = { admin_user_id: authStore.userId || '' };
+      if (countryId) params.country_id = countryId;
+      const resp = await api.get('/api/v1/admin/export-feeds', { params });
+      return resp.data?.download_url || resp.data?.url || null;
+    } catch (err) {
+      error.value = extractUserFriendlyError(err);
+      return null;
+    }
+  }
+
+  // ---- Feedback ----
+  async function fetchFeedback(limit = 50): Promise<Record<string, unknown>[]> {
+    const authStore = useAuthStore();
+    loading.value = true;
+    error.value = null;
+    try {
+      const resp = await api.get('/api/v1/admin/user-feedback/all', {
+        params: { admin_user_id: authStore.userId, limit },
+      });
+      return resp.data?.feedbacks || resp.data || [];
+    } catch (err) {
+      error.value = extractUserFriendlyError(err);
+      return [];
+    } finally {
+      loading.value = false;
+    }
+  }
+
+  async function fetchFeedbackStats(): Promise<Record<string, unknown> | null> {
+    const authStore = useAuthStore();
+    error.value = null;
+    try {
+      const resp = await api.get('/api/v1/admin/user-feedback/stats', {
+        params: { admin_user_id: authStore.userId },
+      });
+      return resp.data || null;
+    } catch (err) {
+      error.value = extractUserFriendlyError(err);
+      return null;
+    }
+  }
+
+  // ---- Reports ----
+  async function fetchAllReports(page = 1): Promise<{ reports: Record<string, unknown>[]; total: number }> {
+    const authStore = useAuthStore();
+    loading.value = true;
+    error.value = null;
+    try {
+      const resp = await api.get('/api/v1/admin/get-all-reports', {
+        params: { admin_user_id: authStore.userId, page, page_size: 25 },
+      });
+      const data = resp.data;
+      return { reports: data.reports || [], total: data.total_count || 0 };
+    } catch (err) {
+      error.value = extractUserFriendlyError(err);
+      return { reports: [], total: 0 };
+    } finally {
+      loading.value = false;
+    }
+  }
+
+  // ---- Simulation Stats ----
+  async function fetchSimulationStats(): Promise<Record<string, unknown> | null> {
+    const authStore = useAuthStore();
+    error.value = null;
+    try {
+      const resp = await api.get('/api/v1/admin/simulation-stats', {
+        params: { admin_user_id: authStore.userId },
+      });
+      return resp.data || null;
+    } catch (err) {
+      error.value = extractUserFriendlyError(err);
+      return null;
+    }
+  }
+
   return {
     users,
     orgs,
@@ -172,5 +335,15 @@ export const useAdminStore = defineStore('admin', () => {
     setAdminLevel,
     fetchOrgs,
     createOrg,
+    fetchFeeds,
+    addFeed,
+    updateFeed,
+    deleteFeed,
+    bulkUploadFeeds,
+    exportFeeds,
+    fetchFeedback,
+    fetchFeedbackStats,
+    fetchAllReports,
+    fetchSimulationStats,
   };
 });

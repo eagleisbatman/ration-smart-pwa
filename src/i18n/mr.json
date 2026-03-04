@@ -2076,7 +2076,10 @@
       "recentSimulations": "नवीनतम सिम्युलेशन",
       "noSimulations": "अजून कोणतेही सिम्युलेशन नाही",
       "noSimulationsDesc": "येथे पाहण्यासाठी तुमचे पहिले सिम्युलेशन चालवा",
-      "viewAll": "सर्व पहा"
-    }
+      "viewAll": "सर्व पहा",
+      "searchPlaceholder": "सिम्युलेशन शोधा..."
+    },
+    "dietHistory": "आहाराचा इतिहास",
+    "loadFromHistory": "इतिहासातून लोड करा"
   }
 }

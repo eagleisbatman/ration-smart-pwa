@@ -2075,7 +2075,10 @@
       "recentSimulations": "সাম্প্রতিক সিমুলেশনগুলি",
       "noSimulations": "এখনও কোনো সিমুলেশন নেই",
       "noSimulationsDesc": "এখানে দেখতে আপনার প্রথম সিমুলেশনটি চালান",
-      "viewAll": "সব দেখুন"
-    }
+      "viewAll": "সব দেখুন",
+      "searchPlaceholder": "সিমুলেশন খুঁজুন..."
+    },
+    "dietHistory": "খাদ্যের ইতিহাস",
+    "loadFromHistory": "ইতিহাস থেকে লোড করুন"
   }
 }

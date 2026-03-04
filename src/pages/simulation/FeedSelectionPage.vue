@@ -99,40 +99,47 @@
       <div class="text-subtitle1 text-weight-medium q-mb-sm">
         {{ $t('simulation.feedSelect.selectedFeeds') }} ({{ simStore.selectedFeeds.length }})
       </div>
-      <q-card flat bordered class="q-mb-md rounded-borders">
-        <q-list separator>
-          <q-item v-for="(sf, idx) in simStore.selectedFeeds" :key="sf.feed_id">
-            <q-item-section>
-              <q-item-label>{{ sf.feed_name }}</q-item-label>
-              <div class="row q-col-gutter-sm q-mt-xs">
-                <div class="col-12 col-sm-6">
-                  <q-input
-                    v-model.number="simStore.selectedFeeds[idx].price_per_kg"
-                    :label="$t('simulation.feedSelect.pricePerKg')"
-                    type="number"
-                    outlined
-                    dense
-                    step="0.1"
-                    :rules="[(v: number) => v > 0 || $t('simulation.validation.priceMin')]"
-                  />
-                </div>
-                <div class="col-12 col-sm-6">
-                  <q-input
-                    v-model.number="simStore.selectedFeeds[idx].quantity_as_fed"
-                    :label="$t('simulation.feedSelect.quantityOptional')"
-                    type="number"
-                    outlined
-                    dense
-                    step="0.1"
-                  />
-                </div>
+      <q-card
+        v-for="(sf, idx) in simStore.selectedFeeds"
+        :key="sf.feed_id"
+        flat
+        bordered
+        class="q-mb-sm rounded-borders"
+      >
+        <q-card-section class="q-pb-none">
+          <div class="row items-center no-wrap">
+            <div class="col">
+              <div class="text-body1 text-weight-medium">{{ sf.feed_name }}</div>
+              <div class="text-caption text-grey-6">
+                <q-badge v-if="sf.fd_type" :label="sf.fd_type" :color="sf.fd_type === 'Forage' ? 'green-7' : 'blue-7'" text-color="white" class="q-mr-xs" />
+                <span v-if="sf.fd_category">{{ sf.fd_category }}</span>
               </div>
-            </q-item-section>
-            <q-item-section side top>
-              <q-btn flat round dense icon="close" color="grey-5" @click="removeFeed(idx)" />
-            </q-item-section>
-          </q-item>
-        </q-list>
+            </div>
+            <q-btn flat round dense icon="close" color="grey-5" @click="removeFeed(idx)" />
+          </div>
+        </q-card-section>
+        <q-card-section class="q-pt-sm">
+          <q-input
+            v-model.number="simStore.selectedFeeds[idx].price_per_kg"
+            :label="$t('simulation.feedSelect.pricePerKg')"
+            type="number"
+            outlined
+            dense
+            step="0.1"
+            suffix="/kg"
+            :rules="[(v: number) => v > 0 || $t('simulation.validation.priceMin')]"
+            class="q-mb-sm"
+          />
+          <q-input
+            v-model.number="simStore.selectedFeeds[idx].quantity_as_fed"
+            :label="$t('simulation.feedSelect.quantityOptional')"
+            type="number"
+            outlined
+            dense
+            step="0.1"
+            suffix="kg"
+          />
+        </q-card-section>
       </q-card>
     </template>
 

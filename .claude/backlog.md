@@ -41,6 +41,16 @@
   - Removed `q-ml-sm` from Settings/Help/Privacy section titles (broke `margin-inline: auto` centering)
   - Removed manual FAB RTL position overrides from 9 files (double-flipped with postcss-rtlcss)
   - Verified "Remember Me" login feature works correctly (dual localStorage/sessionStorage)
+- [x] **Dashboard + Status Badges + Admin + Form Cleanup** (Mar 2026):
+  - Backend: `solution_status` on SimulationListItem, `/admin/simulation-stats` endpoint
+  - CattleInfoPage: 2-col layout, range hints, unit suffixes, BCS labels, reset button
+  - FeedSelectionPage: Individual cards per selected feed with type badge + category
+  - Status badges (Success/Failed) on HomePage + DietHistoryPage + filter tabs
+  - Admin dashboard: simulation stats section + 5 action cards
+  - 3 new admin pages: AdminFeedsPage, AdminFeedbackPage, AdminReportsPage
+  - Cow icon integration across AuthLayout, MainLayout, HomePage
+  - PWA manifest fix: unique `id` prevents duplicate installs
+  - `docs-lite/` folder: 8 documentation files for app-lite
 
 ## Pending
 

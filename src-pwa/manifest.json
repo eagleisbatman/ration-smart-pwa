@@ -1,8 +1,8 @@
 {
-  "id": "/",
-  "name": "RationSmart",
+  "id": "com.digitalgreen.rationsmart.lite",
+  "name": "RationSmart Lite",
   "short_name": "RationSmart",
-  "description": "Optimize your cattle's diet for better productivity and lower costs",
+  "description": "Lightweight cattle diet simulation tool",
   "display": "standalone",
   "orientation": "portrait-primary",
   "background_color": "#18181B",
@@ -23,18 +23,18 @@
   ],
   "shortcuts": [
     {
-      "name": "Log Milk",
-      "short_name": "Log",
-      "description": "Log daily milk production",
-      "url": "/logs/new?source=shortcut",
-      "icons": [{ "src": "icons/shortcut-log.png", "sizes": "192x192" }]
+      "name": "New Simulation",
+      "short_name": "Simulate",
+      "description": "Start a new diet simulation",
+      "url": "/cattle-info?source=shortcut",
+      "icons": [{ "src": "icons/shortcut-diet.png", "sizes": "192x192" }]
     },
     {
-      "name": "Get Diet",
-      "short_name": "Diet",
-      "description": "Get diet recommendation",
-      "url": "/diet/new?source=shortcut",
-      "icons": [{ "src": "icons/shortcut-diet.png", "sizes": "192x192" }]
+      "name": "Diet History",
+      "short_name": "History",
+      "description": "View past simulations",
+      "url": "/diet-history?source=shortcut",
+      "icons": [{ "src": "icons/shortcut-log.png", "sizes": "192x192" }]
     }
   ]
 }

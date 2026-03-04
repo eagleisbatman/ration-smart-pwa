@@ -67,6 +67,14 @@ const routes: RouteRecordRaw[] = [
         meta: { titleKey: 'simulation.recommendationReport' },
       },
 
+      // Diet History
+      {
+        path: 'diet-history',
+        name: 'diet-history',
+        component: () => import('pages/simulation/DietHistoryPage.vue'),
+        meta: { titleKey: 'simulation.dietHistory', showBack: true },
+      },
+
       // Feeds catalog
       {
         path: 'feeds',
@@ -125,6 +133,24 @@ const routes: RouteRecordRaw[] = [
         name: 'admin-users',
         component: () => import('pages/admin/AdminUsersPage.vue'),
         meta: { titleKey: 'admin.userManagement', showBack: true, requiresAdmin: true },
+      },
+      {
+        path: 'admin/feeds',
+        name: 'admin-feeds',
+        component: () => import('pages/admin/AdminFeedsPage.vue'),
+        meta: { titleKey: 'admin.feeds.title', showBack: true, requiresAdmin: true },
+      },
+      {
+        path: 'admin/feedback',
+        name: 'admin-feedback',
+        component: () => import('pages/admin/AdminFeedbackPage.vue'),
+        meta: { titleKey: 'admin.feedback.title', showBack: true, requiresAdmin: true },
+      },
+      {
+        path: 'admin/reports',
+        name: 'admin-reports',
+        component: () => import('pages/admin/AdminReportsPage.vue'),
+        meta: { titleKey: 'admin.reports.title', showBack: true, requiresAdmin: true },
       },
     ],
   },

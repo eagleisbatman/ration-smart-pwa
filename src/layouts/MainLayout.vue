@@ -48,8 +48,8 @@
           <q-avatar v-if="authStore.profileImage" size="56px">
             <q-img :src="authStore.profileImage" :ratio="1" />
           </q-avatar>
-          <q-avatar v-else size="56px" color="grey-3" text-color="grey-8">
-            <q-icon name="person" size="32px" />
+          <q-avatar v-else size="56px" color="primary" text-color="white">
+            <q-icon :name="cowIcon" size="32px" />
           </q-avatar>
           <div class="q-mt-sm text-subtitle1">{{ userName }}</div>
           <div class="text-caption text-grey-6">{{ userPhone }}</div>
@@ -68,11 +68,11 @@
             <q-item-section>{{ $t('nav.home') }}</q-item-section>
           </q-item>
 
-          <q-item v-ripple clickable @click="openSimulationHistory">
+          <q-item v-ripple clickable to="/diet-history" active-class="text-primary bg-grey-2" @click="leftDrawerOpen = false">
             <q-item-section avatar>
               <q-icon name="history" />
             </q-item-section>
-            <q-item-section>{{ $t('simulation.history') }}</q-item-section>
+            <q-item-section>{{ $t('simulation.dietHistory') }}</q-item-section>
           </q-item>
 
           <q-item v-ripple clickable to="/settings/profile" active-class="text-primary bg-grey-2">
@@ -147,42 +147,32 @@
       </router-view>
     </q-page-container>
 
-    <!-- Simulation History Dialog (global, accessible from any page) -->
-    <SimulationHistoryDialog
-      v-model="showHistoryDialog"
-      @restored="onHistoryRestored"
-    />
-
     <!-- Add to Home Screen -->
     <AddToHomeScreen ref="a2hsRef" />
   </q-layout>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, provide, watch } from 'vue';
+import { ref, computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useAuthStore } from 'src/stores/auth';
+import { useCowIcon } from 'src/composables/useCowIcon';
 import { useHapticFeedback } from 'src/composables/useHapticFeedback';
 import OfflineIndicator from 'src/components/pwa/OfflineIndicator.vue';
 import UpdatePrompt from 'src/components/pwa/UpdatePrompt.vue';
 import AddToHomeScreen from 'src/components/pwa/AddToHomeScreen.vue';
-import SimulationHistoryDialog from 'src/components/simulation/SimulationHistoryDialog.vue';
 import { backOverride } from 'src/lib/back-override';
-import { openHistoryKey } from 'src/lib/injection-keys';
 
 const router = useRouter();
 const route = useRoute();
 const { t } = useI18n();
 const authStore = useAuthStore();
+const { cowIcon } = useCowIcon();
 const { light, medium } = useHapticFeedback();
 
 const leftDrawerOpen = ref(false);
 const a2hsRef = ref<InstanceType<typeof AddToHomeScreen> | null>(null);
-
-// Provide a reactive counter for simulation history dialog trigger
-const openHistoryCounter = ref(0);
-provide(openHistoryKey, openHistoryCounter);
 
 // Admin level label for drawer badge
 const adminLevelLabel = computed(() => {
@@ -212,23 +202,6 @@ function goBack() {
   light();
   if (backOverride.value && backOverride.value()) return;
   router.back();
-}
-
-const showHistoryDialog = ref(false);
-
-// Open history dialog when child pages increment the counter (e.g. HomePage "View All")
-watch(openHistoryCounter, () => {
-  showHistoryDialog.value = true;
-});
-
-function openSimulationHistory() {
-  leftDrawerOpen.value = false;
-  openHistoryCounter.value++;
-}
-
-function onHistoryRestored() {
-  showHistoryDialog.value = false;
-  router.push('/cattle-info');
 }
 
 async function logout() {
