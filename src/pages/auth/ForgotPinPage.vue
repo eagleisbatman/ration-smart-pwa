@@ -30,6 +30,7 @@
           emit-value
           map-options
           dense
+          behavior="menu"
           :loading="authStore.countriesLoading"
           class="q-mb-sm"
         >
