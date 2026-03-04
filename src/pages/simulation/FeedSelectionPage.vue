@@ -381,13 +381,12 @@ onMounted(() => {
 
 .rounded-borders {
   border-radius: $radius-loose;
-  overflow: hidden;
 }
 
 .bordered-scroll {
   border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: $radius-loose;
-  overflow: hidden;
+  overflow-y: auto;
 
   .body--dark & {
     border-color: rgba(255, 255, 255, 0.2);
