@@ -1862,7 +1862,37 @@
     "orgTypeNgo": "এনজিও",
     "orgTypeCooperative": "সমবায়",
     "orgTypeResearch": "গবেষণা",
-    "orgTypeOther": "অন্যান্য"
+    "orgTypeOther": "অন্যান্য",
+    "quickActions": "তাৎক্ষণিক কাজ",
+    "feeds": {
+      "title": "খাবার ব্যবস্থাপনা",
+      "subtitle": "খাবার যোগ করুন, সম্পাদনা করুন ও পরিচালনা করুন",
+      "bulkUpload": "একসাথে আপলোড করুন",
+      "export": "রপ্তানি করুন",
+      "noFeeds": "কোনো খাবার পাওয়া যায়নি"
+    },
+    "feedback": {
+      "title": "মতামত",
+      "subtitle": "ব্যবহারকারীর মতামত দেখুন",
+      "overview": "মতামতের সারসংক্ষেপ",
+      "totalResponses": "মোট প্রতিক্রিয়া",
+      "avgRating": "গড় রেটিং",
+      "noFeedback": "এখনও কোনো মতামত নেই"
+    },
+    "reports": {
+      "title": "রিপোর্ট",
+      "subtitle": "সংরক্ষিত রিপোর্ট দেখুন",
+      "noReports": "কোনো রিপোর্ট পাওয়া যায়নি"
+    },
+    "simStats": {
+      "title": "সিমুলেশন পরিসংখ্যান",
+      "total": "মোট",
+      "successRate": "সফলতার হার",
+      "recommendations": "সুপারিশ",
+      "evaluations": "মূল্যায়ন",
+      "countryBreakdown": "দেশ অনুযায়ী বিভাজন",
+      "superOnly": "শুধুমাত্র সুপার অ্যাডমিন"
+    }
   },
   "theme": {
     "zinc": "জিঙ্ক",
@@ -1954,7 +1984,8 @@
       "constraintMax": "মান 100 এর বেশি হবে না",
       "required": "এই ঘরটি পূরণ করা আবশ্যক",
       "lactatingLatePregnancy": "গরুটি গর্ভধারণের {days} দিন পার করেছে এবং দুধ দিচ্ছে। সাধারণত ২১০-২২০ দিনের পর গরুকে দুধ ছাড়ানো হয়। তবুও চালিয়ে যেতে চান?",
-      "notLactatingCleared": "গরু দুধ না দেওয়ায় দুধ উৎপাদনের ঘরগুলো খালি করা হয়েছে।"
+      "notLactatingCleared": "গরু দুধ না দেওয়ায় দুধ উৎপাদনের ঘরগুলো খালি করা হয়েছে।",
+      "quantityMin": "পরিমাণ 0 এর বেশি হতে হবে"
     },
     "historyItem": {
       "evaluation": "খাদ্য মূল্যায়ন",
@@ -1981,7 +2012,16 @@
       "withoutQuantities": "সুপারিশ পান",
       "priceRequired": "সব খাদ্যের মূল্য অবশ্যই শূন্যের বেশি হতে হবে",
       "quantityRequired": "মূল্যায়নের জন্য সব খাদ্যের পরিমাণ অবশ্যই শূন্যের বেশি হতে হবে",
-      "maxFeedsReached": "{max}টির বেশি খাদ্য নির্বাচন করা যাবে না"
+      "maxFeedsReached": "{max}টির বেশি খাদ্য নির্বাচন করা যাবে না",
+      "dietRecommendation": "খাদ্য সুপারিশ",
+      "dietEvaluation": "খাদ্য মূল্যায়ন",
+      "generateRecommendation": "সুপারিশ তৈরি করুন",
+      "getEvaluation": "মূল্যায়ন পান",
+      "feedLabel": "খাবার {n}",
+      "customFeed": "কাস্টম খাবার",
+      "customFeedHint": "কাস্টম খাবার তৈরির অপশন শীঘ্রই আসছে।",
+      "price": "দাম",
+      "qty": "পরিমাণ"
     },
     "constraints": {
       "title": "খাদ্যের কাস্টম সীমাবদ্ধতা",
@@ -2063,7 +2103,9 @@
       "marginal": "সামান্য",
       "deficient": "ঘাটতি",
       "excess": "অতিরিক্ত",
-      "infeasible": "অসম্ভব"
+      "infeasible": "অসম্ভব",
+      "failed": "ব্যর্থ",
+      "success": "সফল"
     },
     "home": {
       "welcome": "স্বাগতম, {name}",
@@ -2079,6 +2121,22 @@
       "searchPlaceholder": "সিমুলেশন খুঁজুন..."
     },
     "dietHistory": "খাদ্যের ইতিহাস",
-    "loadFromHistory": "ইতিহাস থেকে লোড করুন"
+    "loadFromHistory": "ইতিহাস থেকে লোড করুন",
+    "units": {
+      "days": "দিন"
+    },
+    "topographyHint": "সমতল / পাহাড়ি / পর্বতমালা",
+    "reset": "রিসেট করুন",
+    "formReset": "ফর্ম ডিফল্ট সেটিংসে রিসেট করা হয়েছে",
+    "bcsLabels": {
+      "thin": "রোগা",
+      "obese": "মোটা"
+    },
+    "filterTabs": {
+      "recommendations": "সুপারিশসমূহ",
+      "evaluations": "মূল্যায়নসমূহ",
+      "failed": "ব্যর্থ"
+    },
+    "noFilterResults": "এই ফিল্টারের জন্য কোনো ফলাফল নেই"
   }
 }

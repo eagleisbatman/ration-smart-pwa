@@ -1862,7 +1862,37 @@
     "orgTypeNgo": "एनजीओ",
     "orgTypeCooperative": "सहकारी",
     "orgTypeResearch": "अनुसंधान",
-    "orgTypeOther": "अन्य"
+    "orgTypeOther": "अन्य",
+    "quickActions": "तुरंत कार्य",
+    "feeds": {
+      "title": "चारा प्रबंधन",
+      "subtitle": "चारा जोड़ें, संपादित करें और प्रबंधित करें",
+      "bulkUpload": "थोक अपलोड",
+      "export": "निर्यात करें",
+      "noFeeds": "कोई चारा नहीं मिला"
+    },
+    "feedback": {
+      "title": "प्रतिक्रिया",
+      "subtitle": "उपयोगकर्ता प्रतिक्रिया देखें",
+      "overview": "प्रतिक्रिया का अवलोकन",
+      "totalResponses": "कुल प्रतिक्रियाएँ",
+      "avgRating": "औसत रेटिंग",
+      "noFeedback": "अभी तक कोई प्रतिक्रिया नहीं"
+    },
+    "reports": {
+      "title": "रिपोर्ट",
+      "subtitle": "सहेजी गई रिपोर्ट देखें",
+      "noReports": "कोई रिपोर्ट नहीं मिली"
+    },
+    "simStats": {
+      "title": "सिमुलेशन आंकड़े",
+      "total": "कुल",
+      "successRate": "सफलता दर",
+      "recommendations": "सिफारिशें",
+      "evaluations": "मूल्यांकन",
+      "countryBreakdown": "देश के अनुसार विश्लेषण",
+      "superOnly": "केवल सुपर एडमिन के लिए"
+    }
   },
   "theme": {
     "zinc": "ज़िंक",
@@ -1954,7 +1984,8 @@
       "constraintMax": "मान 100 से ज़्यादा नहीं होना चाहिए",
       "required": "यह फ़ील्ड भरना ज़रूरी है",
       "lactatingLatePregnancy": "गाय {days} दिनों की गर्भाधान अवधि के साथ दूध दे रही है. गायों को आमतौर पर 210-220 दिनों के बाद दूध देना बंद करवा दिया जाता है. क्या आप जारी रखना चाहते हैं?",
-      "notLactatingCleared": "दूध उत्पादन वाले फ़ील्ड साफ़ कर दिए गए हैं क्योंकि जानवर दूध नहीं दे रहा है."
+      "notLactatingCleared": "दूध उत्पादन वाले फ़ील्ड साफ़ कर दिए गए हैं क्योंकि जानवर दूध नहीं दे रहा है.",
+      "quantityMin": "मात्रा 0 से अधिक होनी चाहिए"
     },
     "historyItem": {
       "evaluation": "आहार मूल्यांकन",
@@ -1981,7 +2012,16 @@
       "withoutQuantities": "सिफारिश प्राप्त करें",
       "priceRequired": "सभी चारे की कीमत शून्य से अधिक होनी चाहिए",
       "quantityRequired": "मूल्यांकन के लिए सभी चारे की मात्रा शून्य से अधिक होनी चाहिए",
-      "maxFeedsReached": "अधिकतम {max} चारे का चयन किया जा सकता है"
+      "maxFeedsReached": "अधिकतम {max} चारे का चयन किया जा सकता है",
+      "dietRecommendation": "आहार सिफारिश",
+      "dietEvaluation": "आहार मूल्यांकन",
+      "generateRecommendation": "सिफारिश तैयार करें",
+      "getEvaluation": "मूल्यांकन प्राप्त करें",
+      "feedLabel": "चारा {n}",
+      "customFeed": "कस्टम चारा",
+      "customFeedHint": "कस्टम चारा बनाने की सुविधा जल्द आ रही है।",
+      "price": "कीमत",
+      "qty": "मात्रा"
     },
     "constraints": {
       "title": "आहार की अपनी सीमाएँ",
@@ -2063,7 +2103,9 @@
       "marginal": "कम",
       "deficient": "कमी",
       "excess": "ज़्यादा",
-      "infeasible": "असंभव"
+      "infeasible": "असंभव",
+      "failed": "विफल",
+      "success": "सफल"
     },
     "home": {
       "welcome": "स्वागत है, {name}",
@@ -2079,6 +2121,22 @@
       "searchPlaceholder": "सिमुलेशन खोजें..."
     },
     "dietHistory": "आहार इतिहास",
-    "loadFromHistory": "इतिहास से लोड करें"
+    "loadFromHistory": "इतिहास से लोड करें",
+    "units": {
+      "days": "दिन"
+    },
+    "topographyHint": "समतल / पहाड़ी / पर्वतीय",
+    "reset": "रीसेट",
+    "formReset": "फ़ॉर्म डिफ़ॉल्ट पर रीसेट हो गया",
+    "bcsLabels": {
+      "thin": "दुबला",
+      "obese": "मोटा"
+    },
+    "filterTabs": {
+      "recommendations": "सिफारिशें",
+      "evaluations": "मूल्यांकन",
+      "failed": "विफल"
+    },
+    "noFilterResults": "इस फ़िल्टर के लिए कोई परिणाम नहीं"
   }
 }

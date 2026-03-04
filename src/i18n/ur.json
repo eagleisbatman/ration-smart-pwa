@@ -1862,7 +1862,37 @@
     "orgTypeNgo": "این جی او",
     "orgTypeCooperative": "کوآپریٹو",
     "orgTypeResearch": "تحقیقاتی",
-    "orgTypeOther": "دیگر"
+    "orgTypeOther": "دیگر",
+    "quickActions": "فوری اقدامات",
+    "feeds": {
+      "title": "خوراک کا انتظام",
+      "subtitle": "خوراک شامل کریں، ترمیم کریں اور انتظام کریں",
+      "bulkUpload": "بلک اپ لوڈ",
+      "export": "ایکسپورٹ",
+      "noFeeds": "کوئی خوراک نہیں ملی"
+    },
+    "feedback": {
+      "title": "رائے",
+      "subtitle": "صارفین کی رائے دیکھیں",
+      "overview": "رائے کا جائزہ",
+      "totalResponses": "کل جوابات",
+      "avgRating": "اوسط درجہ بندی",
+      "noFeedback": "ابھی تک کوئی رائے نہیں"
+    },
+    "reports": {
+      "title": "رپورٹس",
+      "subtitle": "محفوظ شدہ رپورٹس دیکھیں",
+      "noReports": "کوئی رپورٹس نہیں ملی"
+    },
+    "simStats": {
+      "title": "نقلی اعدادوشمار",
+      "total": "کل",
+      "successRate": "کامیابی کی شرح",
+      "recommendations": "تجاویز",
+      "evaluations": "تخمینہ جات",
+      "countryBreakdown": "ملکی تقسیم",
+      "superOnly": "صرف سپر ایڈمن"
+    }
   },
   "theme": {
     "zinc": "زنک",
@@ -1954,7 +1984,8 @@
       "constraintMax": "قیمت 100 سے زیادہ نہیں ہونی چاہیے",
       "required": "یہ خانہ ضروری ہے",
       "lactatingLatePregnancy": "گائے حمل کے {days} دن کے ساتھ دودھ دے رہی ہے۔ گایوں کو عام طور پر 210-220 دن کے بعد خشک کیا جاتا ہے۔ کیا پھر بھی جاری رکھیں؟",
-      "notLactatingCleared": "چونکہ جانور دودھ نہیں دے رہا تھا، اس لیے دودھ کی پیداوار کے خانے صاف کر دیے گئے۔"
+      "notLactatingCleared": "چونکہ جانور دودھ نہیں دے رہا تھا، اس لیے دودھ کی پیداوار کے خانے صاف کر دیے گئے۔",
+      "quantityMin": "مقدار 0 سے زیادہ ہونی چاہیے"
     },
     "historyItem": {
       "evaluation": "خوراک کی تشخیص",
@@ -1981,7 +2012,16 @@
       "withoutQuantities": "تجویز حاصل کریں",
       "priceRequired": "تمام فیڈز کی قیمت صفر سے زیادہ ہونی چاہیے",
       "quantityRequired": "تشخیص کے لیے تمام فیڈز کی مقدار صفر سے زیادہ ہونی چاہیے",
-      "maxFeedsReached": "{max} سے زیادہ خوراک کا انتخاب نہیں کیا جا سکتا"
+      "maxFeedsReached": "{max} سے زیادہ خوراک کا انتخاب نہیں کیا جا سکتا",
+      "dietRecommendation": "خوراک کی تجویز",
+      "dietEvaluation": "خوراک کا تخمینہ",
+      "generateRecommendation": "تجویز بنائیں",
+      "getEvaluation": "تخمینہ حاصل کریں",
+      "feedLabel": "خوراک {n}",
+      "customFeed": "اپنی فیڈ بنائیں",
+      "customFeedHint": "اپنی فیڈ بنانے کی سہولت جلد دستیاب ہوگی۔",
+      "price": "قیمت",
+      "qty": "مقدار"
     },
     "constraints": {
       "title": "خوراک کی مخصوص حدود",
@@ -2063,7 +2103,9 @@
       "marginal": "معمولی",
       "deficient": "کمی",
       "excess": "زیادہ",
-      "infeasible": "ناممکن"
+      "infeasible": "ناممکن",
+      "failed": "ناکام",
+      "success": "کامیاب"
     },
     "home": {
       "welcome": "خوش آمدید، {name}",
@@ -2079,6 +2121,22 @@
       "searchPlaceholder": "سیمولیشنز تلاش کریں..."
     },
     "dietHistory": "خوراک کی ہسٹری",
-    "loadFromHistory": "ہسٹری سے لوڈ کریں"
+    "loadFromHistory": "ہسٹری سے لوڈ کریں",
+    "units": {
+      "days": "دن"
+    },
+    "topographyHint": "ہموار / پہاڑی / دشوار گزار",
+    "reset": "ری سیٹ کریں",
+    "formReset": "فارم کو ڈیفالٹ پر ری سیٹ کر دیا گیا ہے",
+    "bcsLabels": {
+      "thin": "پتلا",
+      "obese": "موٹا"
+    },
+    "filterTabs": {
+      "recommendations": "تجاویز",
+      "evaluations": "جانچیں",
+      "failed": "ناکام"
+    },
+    "noFilterResults": "اس فلٹر کے لیے کوئی نتیجہ نہیں"
   }
 }

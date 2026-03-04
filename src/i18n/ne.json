@@ -1862,7 +1862,37 @@
     "orgTypeNgo": "गैर-सरकारी संस्था",
     "orgTypeCooperative": "सहकारी",
     "orgTypeResearch": "अनुसन्धान",
-    "orgTypeOther": "अन्य"
+    "orgTypeOther": "अन्य",
+    "quickActions": "द्रुत कार्यहरू",
+    "feeds": {
+      "title": "दाना व्यवस्थापन",
+      "subtitle": "दाना थप्नुहोस्, सम्पादन गर्नुहोस् र व्यवस्थापन गर्नुहोस्",
+      "bulkUpload": "बल्क अपलोड",
+      "export": "निर्यात",
+      "noFeeds": "कुनै दाना भेटिएन"
+    },
+    "feedback": {
+      "title": "प्रतिक्रिया",
+      "subtitle": "प्रयोगकर्ता प्रतिक्रिया हेर्नुहोस्",
+      "overview": "प्रतिक्रिया अवलोकन",
+      "totalResponses": "कुल प्रतिक्रियाहरू",
+      "avgRating": "औसत मूल्याङ्कन",
+      "noFeedback": "अझै कुनै प्रतिक्रिया छैन"
+    },
+    "reports": {
+      "title": "रिपोर्टहरू",
+      "subtitle": "बचत गरिएका रिपोर्टहरू हेर्नुहोस्",
+      "noReports": "कुनै रिपोर्ट भेटिएन"
+    },
+    "simStats": {
+      "title": "सिमुलेशन तथ्याङ्क",
+      "total": "जम्मा",
+      "successRate": "सफलता दर",
+      "recommendations": "सिफारिसहरू",
+      "evaluations": "मूल्याङ्कनहरू",
+      "countryBreakdown": "देश अनुसारको विवरण",
+      "superOnly": "सुपर एडमिन मात्र"
+    }
   },
   "theme": {
     "zinc": "जिंक",
@@ -1954,7 +1984,8 @@
       "constraintMax": "मान १०० भन्दा बढी हुनुहुँदैन",
       "required": "यो फिल्ड अनिवार्य छ",
       "lactatingLatePregnancy": "गाई {days} दिनको गर्भावस्थामै दुध दिइरहेको छ। गाईहरू सामान्यतया २१०-२२० दिनपछि सुकाइन्छ। तैपनि जारी राख्ने हो?",
-      "notLactatingCleared": "गाई दुध नदिने भएकोले दूध उत्पादनको फिल्डहरू खाली गरिएको छ।"
+      "notLactatingCleared": "गाई दुध नदिने भएकोले दूध उत्पादनको फिल्डहरू खाली गरिएको छ।",
+      "quantityMin": "मात्रा ० भन्दा बढी हुनुपर्छ"
     },
     "historyItem": {
       "evaluation": "आहार मूल्याङ्कन",
@@ -1981,7 +2012,16 @@
       "withoutQuantities": "सुझाव प्राप्त गर्नुहोस्",
       "priceRequired": "सबै दानाको मूल्य शून्य भन्दा बढी हुनुपर्छ",
       "quantityRequired": "मूल्याङ्कनका लागि सबै दानाको मात्रा शून्य भन्दा बढी हुनुपर्छ",
-      "maxFeedsReached": "अधिकतम {max} दाना चयन गर्न सकिन्छ"
+      "maxFeedsReached": "अधिकतम {max} दाना चयन गर्न सकिन्छ",
+      "dietRecommendation": "आहार सिफारिस",
+      "dietEvaluation": "आहार मूल्याङ्कन",
+      "generateRecommendation": "सिफारिस उत्पन्न गर्नुहोस्",
+      "getEvaluation": "मूल्याङ्कन प्राप्त गर्नुहोस्",
+      "feedLabel": "दाना {n}",
+      "customFeed": "अनुकूलित दाना",
+      "customFeedHint": "अनुकूलित दाना सिर्जना चाँडै आउँदैछ।",
+      "price": "मूल्य",
+      "qty": "मात्रा"
     },
     "constraints": {
       "title": "आहारको सीमा निर्धारण गर्नुहोस्",
@@ -2063,7 +2103,9 @@
       "marginal": "सीमित",
       "deficient": "कम",
       "excess": "बढी",
-      "infeasible": "असम्भव"
+      "infeasible": "असम्भव",
+      "failed": "असफल भयो",
+      "success": "सफल भयो"
     },
     "home": {
       "welcome": "स्वागत छ, {name}",
@@ -2079,6 +2121,22 @@
       "searchPlaceholder": "सिमुलेशन खोज्नुहोस्..."
     },
     "dietHistory": "आहारको इतिहास",
-    "loadFromHistory": "इतिहासबाट लोड गर्नुहोस्"
+    "loadFromHistory": "इतिहासबाट लोड गर्नुहोस्",
+    "units": {
+      "days": "दिन"
+    },
+    "topographyHint": "समतल / पहाडी / हिमाली",
+    "reset": "रिसेट गर्नुहोस्",
+    "formReset": "फर्म डिफल्टमा रिसेट भयो",
+    "bcsLabels": {
+      "thin": "पातलो",
+      "obese": "मोटो"
+    },
+    "filterTabs": {
+      "recommendations": "सिफारिसहरू",
+      "evaluations": "मूल्याङ्कनहरू",
+      "failed": "असफल"
+    },
+    "noFilterResults": "यो फिल्टरको लागि कुनै नतिजा छैन"
   }
 }

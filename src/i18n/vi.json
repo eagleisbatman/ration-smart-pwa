@@ -1862,7 +1862,37 @@
     "orgTypeNgo": "Tổ chức phi chính phủ",
     "orgTypeCooperative": "Hợp tác xã",
     "orgTypeResearch": "Viện nghiên cứu",
-    "orgTypeOther": "Khác"
+    "orgTypeOther": "Khác",
+    "quickActions": "Thao tác nhanh",
+    "feeds": {
+      "title": "Quản lý thức ăn chăn nuôi",
+      "subtitle": "Thêm, chỉnh sửa và quản lý thức ăn chăn nuôi",
+      "bulkUpload": "Tải lên hàng loạt",
+      "export": "Xuất",
+      "noFeeds": "Không tìm thấy thức ăn chăn nuôi nào"
+    },
+    "feedback": {
+      "title": "Phản hồi",
+      "subtitle": "Xem phản hồi người dùng",
+      "overview": "Tổng quan phản hồi",
+      "totalResponses": "Tổng số phản hồi",
+      "avgRating": "Đánh giá trung bình",
+      "noFeedback": "Chưa có phản hồi nào"
+    },
+    "reports": {
+      "title": "Báo cáo",
+      "subtitle": "Xem các báo cáo đã lưu",
+      "noReports": "Không tìm thấy báo cáo nào"
+    },
+    "simStats": {
+      "title": "Thống kê mô phỏng",
+      "total": "Tổng cộng",
+      "successRate": "Tỷ lệ thành công",
+      "recommendations": "Đề xuất",
+      "evaluations": "Đánh giá",
+      "countryBreakdown": "Phân tích theo quốc gia",
+      "superOnly": "Chỉ dành cho quản trị viên cấp cao"
+    }
   },
   "theme": {
     "zinc": "Kẽm",
@@ -1954,7 +1984,8 @@
       "constraintMax": "Giá trị không được vượt quá 100",
       "required": "Trường này là bắt buộc",
       "lactatingLatePregnancy": "Bò đang vắt sữa với {days} ngày mang thai. Bò thường được ngừng vắt sữa sau 210-220 ngày. Tiếp tục chứ?",
-      "notLactatingCleared": "Các trường sản lượng sữa đã được xóa vì vật nuôi không vắt sữa."
+      "notLactatingCleared": "Các trường sản lượng sữa đã được xóa vì vật nuôi không vắt sữa.",
+      "quantityMin": "Số lượng phải lớn hơn 0"
     },
     "historyItem": {
       "evaluation": "Đánh giá khẩu phần",
@@ -1981,7 +2012,16 @@
       "withoutQuantities": "Nhận Khuyến nghị",
       "priceRequired": "Tất cả các loại thức ăn phải có giá lớn hơn 0",
       "quantityRequired": "Tất cả các loại thức ăn phải có số lượng lớn hơn 0 để đánh giá",
-      "maxFeedsReached": "Có thể chọn tối đa {max} loại thức ăn"
+      "maxFeedsReached": "Có thể chọn tối đa {max} loại thức ăn",
+      "dietRecommendation": "Đề xuất khẩu phần ăn",
+      "dietEvaluation": "Đánh giá khẩu phần ăn",
+      "generateRecommendation": "Tạo đề xuất",
+      "getEvaluation": "Nhận đánh giá",
+      "feedLabel": "THỨC ĂN {n}",
+      "customFeed": "Thức ăn tùy chỉnh",
+      "customFeedHint": "Tính năng tạo thức ăn tùy chỉnh sẽ sớm ra mắt.",
+      "price": "Giá",
+      "qty": "Số lượng"
     },
     "constraints": {
       "title": "Giới hạn Khẩu phần Ăn Tùy chỉnh",
@@ -2063,7 +2103,9 @@
       "marginal": "Trung bình",
       "deficient": "Thiếu hụt",
       "excess": "Thừa",
-      "infeasible": "Không khả thi"
+      "infeasible": "Không khả thi",
+      "failed": "Thất bại",
+      "success": "Thành công"
     },
     "home": {
       "welcome": "Chào mừng, {name}",
@@ -2079,6 +2121,22 @@
       "searchPlaceholder": "Tìm kiếm mô phỏng..."
     },
     "dietHistory": "Lịch sử khẩu phần",
-    "loadFromHistory": "Tải từ Lịch sử"
+    "loadFromHistory": "Tải từ Lịch sử",
+    "units": {
+      "days": "ngày"
+    },
+    "topographyHint": "Đồng bằng / Đồi núi / Núi cao",
+    "reset": "Đặt lại",
+    "formReset": "Biểu mẫu đã đặt lại về mặc định",
+    "bcsLabels": {
+      "thin": "Gầy",
+      "obese": "Béo phì"
+    },
+    "filterTabs": {
+      "recommendations": "Đề xuất",
+      "evaluations": "Đánh giá",
+      "failed": "Thất bại"
+    },
+    "noFilterResults": "Không có kết quả cho bộ lọc này"
   }
 }

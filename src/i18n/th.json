@@ -1862,7 +1862,37 @@
     "orgTypeNgo": "องค์กรไม่แสวงหากำไร",
     "orgTypeCooperative": "สหกรณ์",
     "orgTypeResearch": "งานวิจัย",
-    "orgTypeOther": "อื่นๆ"
+    "orgTypeOther": "อื่นๆ",
+    "quickActions": "เมนูลัด",
+    "feeds": {
+      "title": "จัดการอาหารสัตว์",
+      "subtitle": "เพิ่ม, แก้ไข & จัดการอาหารสัตว์",
+      "bulkUpload": "อัปโหลดจำนวนมาก",
+      "export": "ส่งออก",
+      "noFeeds": "ไม่พบอาหารสัตว์"
+    },
+    "feedback": {
+      "title": "ข้อเสนอแนะ",
+      "subtitle": "ดูข้อเสนอแนะจากผู้ใช้",
+      "overview": "ภาพรวมข้อเสนอแนะ",
+      "totalResponses": "จำนวนการตอบกลับทั้งหมด",
+      "avgRating": "คะแนนเฉลี่ย",
+      "noFeedback": "ยังไม่มีข้อเสนอแนะ"
+    },
+    "reports": {
+      "title": "รายงาน",
+      "subtitle": "ดูรายงานที่บันทึกไว้",
+      "noReports": "ไม่พบรายงาน"
+    },
+    "simStats": {
+      "title": "สถิติการจำลอง",
+      "total": "ทั้งหมด",
+      "successRate": "อัตราความสำเร็จ",
+      "recommendations": "คำแนะนำ",
+      "evaluations": "การประเมิน",
+      "countryBreakdown": "แบ่งตามประเทศ",
+      "superOnly": "เฉพาะผู้ดูแลระบบขั้นสูงเท่านั้น"
+    }
   },
   "theme": {
     "zinc": "สังกะสี",
@@ -1954,7 +1984,8 @@
       "constraintMax": "ค่าต้องไม่เกิน 100",
       "required": "ช่องนี้ต้องกรอก",
       "lactatingLatePregnancy": "แม่โคกำลังให้นมและตั้งท้องได้ {days} วัน โดยทั่วไปแม่โคจะถูกหย่านมหลัง 210-220 วัน คุณต้องการดำเนินการต่อหรือไม่?",
-      "notLactatingCleared": "เนื่องจากสัตว์ไม่ได้ให้นม ข้อมูลผลผลิตนมจึงถูกล้าง"
+      "notLactatingCleared": "เนื่องจากสัตว์ไม่ได้ให้นม ข้อมูลผลผลิตนมจึงถูกล้าง",
+      "quantityMin": "ปริมาณต้องมากกว่า 0"
     },
     "historyItem": {
       "evaluation": "การประเมินอาหาร",
@@ -1981,7 +2012,16 @@
       "withoutQuantities": "รับคำแนะนำ",
       "priceRequired": "อาหารทุกชนิดต้องมีราคามากกว่าศูนย์",
       "quantityRequired": "อาหารทุกชนิดต้องมีปริมาณมากกว่าศูนย์สำหรับการประเมิน",
-      "maxFeedsReached": "สามารถเลือกอาหารได้สูงสุด {max} ชนิด"
+      "maxFeedsReached": "สามารถเลือกอาหารได้สูงสุด {max} ชนิด",
+      "dietRecommendation": "คำแนะนำอาหาร",
+      "dietEvaluation": "การประเมินอาหาร",
+      "generateRecommendation": "สร้างคำแนะนำ",
+      "getEvaluation": "รับการประเมิน",
+      "feedLabel": "อาหาร {n}",
+      "customFeed": "อาหารกำหนดเอง",
+      "customFeedHint": "การสร้างอาหารกำหนดเองจะมาเร็วๆ นี้",
+      "price": "ราคา",
+      "qty": "ปริมาณ"
     },
     "constraints": {
       "title": "ข้อจำกัดสูตรอาหาร",
@@ -2063,7 +2103,9 @@
       "marginal": "ปานกลาง",
       "deficient": "ขาดแคลน",
       "excess": "มากเกินไป",
-      "infeasible": "ทำไม่ได้"
+      "infeasible": "ทำไม่ได้",
+      "failed": "ไม่สำเร็จ",
+      "success": "สำเร็จ"
     },
     "home": {
       "welcome": "ยินดีต้อนรับ, {name}",
@@ -2079,6 +2121,22 @@
       "searchPlaceholder": "ค้นหาการจำลอง..."
     },
     "dietHistory": "ประวัติสูตรอาหาร",
-    "loadFromHistory": "โหลดจากประวัติ"
+    "loadFromHistory": "โหลดจากประวัติ",
+    "units": {
+      "days": "วัน"
+    },
+    "topographyHint": "พื้นราบ / เนินเขา / ภูเขา",
+    "reset": "รีเซ็ต",
+    "formReset": "ฟอร์มถูกรีเซ็ตเป็นค่าเริ่มต้น",
+    "bcsLabels": {
+      "thin": "ผอม",
+      "obese": "อ้วน"
+    },
+    "filterTabs": {
+      "recommendations": "คำแนะนำ",
+      "evaluations": "การประเมิน",
+      "failed": "ไม่สำเร็จ"
+    },
+    "noFilterResults": "ไม่พบผลลัพธ์สำหรับตัวกรองนี้"
   }
 }

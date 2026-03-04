@@ -1865,7 +1865,37 @@
     "orgTypeNgo": "ONG",
     "orgTypeCooperative": "Coopérative",
     "orgTypeResearch": "Recherche",
-    "orgTypeOther": "Autre"
+    "orgTypeOther": "Autre",
+    "quickActions": "Actions rapides",
+    "feeds": {
+      "title": "Gestion de l'alimentation",
+      "subtitle": "Ajouter, modifier et gérer les aliments",
+      "bulkUpload": "Téléchargement en masse",
+      "export": "Exporter",
+      "noFeeds": "Aucun aliment trouvé"
+    },
+    "feedback": {
+      "title": "Commentaires",
+      "subtitle": "Voir les commentaires des utilisateurs",
+      "overview": "Aperçu des retours",
+      "totalResponses": "Total des réponses",
+      "avgRating": "Note moyenne",
+      "noFeedback": "Pas encore de retour"
+    },
+    "reports": {
+      "title": "Rapports",
+      "subtitle": "Voir les rapports enregistrés",
+      "noReports": "Aucun rapport trouvé"
+    },
+    "simStats": {
+      "title": "Statistiques de simulation",
+      "total": "Total",
+      "successRate": "Taux de réussite",
+      "recommendations": "Recommandations",
+      "evaluations": "Évaluations",
+      "countryBreakdown": "Répartition par pays",
+      "superOnly": "Administrateur principal uniquement"
+    }
   },
   "theme": {
     "zinc": "Zinc",
@@ -1957,7 +1987,8 @@
       "constraintMax": "La valeur ne doit pas dépasser 100",
       "required": "Ce champ est obligatoire",
       "lactatingLatePregnancy": "La vache est en lactation avec {days} jours de gestation. Les vaches sont généralement taries après 210-220 jours. Voulez-vous continuer ?",
-      "notLactatingCleared": "Les champs de production laitière ont été effacés car l'animal n'est pas en lactation."
+      "notLactatingCleared": "Les champs de production laitière ont été effacés car l'animal n'est pas en lactation.",
+      "quantityMin": "La quantité doit être supérieure à 0"
     },
     "historyItem": {
       "evaluation": "Évaluation de la ration",
@@ -1984,7 +2015,16 @@
       "withoutQuantities": "Obtenir une recommandation",
       "priceRequired": "Tous les aliments doivent avoir un prix supérieur à zéro",
       "quantityRequired": "Toutes les quantités d'aliments doivent être supérieures à zéro pour l'évaluation",
-      "maxFeedsReached": "Un maximum de {max} aliments peut être sélectionné"
+      "maxFeedsReached": "Un maximum de {max} aliments peut être sélectionné",
+      "dietRecommendation": "Recommandation alimentaire",
+      "dietEvaluation": "Évaluation alimentaire",
+      "generateRecommendation": "Générer la recommandation",
+      "getEvaluation": "Obtenir l'évaluation",
+      "feedLabel": "ALIMENT {n}",
+      "customFeed": "Aliment personnalisé",
+      "customFeedHint": "La création d'aliments personnalisés arrive bientôt.",
+      "price": "Prix",
+      "qty": "Qté"
     },
     "constraints": {
       "title": "Limites personnalisées pour la ration",
@@ -2066,7 +2106,9 @@
       "marginal": "Marginal",
       "deficient": "Déficient",
       "excess": "Excès",
-      "infeasible": "Irréalisable"
+      "infeasible": "Irréalisable",
+      "failed": "Échec",
+      "success": "Réussite"
     },
     "home": {
       "welcome": "Bienvenue, {name}",
@@ -2082,6 +2124,22 @@
       "searchPlaceholder": "Rechercher des simulations..."
     },
     "dietHistory": "Historique des rations",
-    "loadFromHistory": "Charger de l'historique"
+    "loadFromHistory": "Charger de l'historique",
+    "units": {
+      "days": "jours"
+    },
+    "topographyHint": "Plat / Vallonné / Montagneux",
+    "reset": "Réinitialiser",
+    "formReset": "Formulaire réinitialisé aux valeurs par défaut",
+    "bcsLabels": {
+      "thin": "Maigre",
+      "obese": "Obèse"
+    },
+    "filterTabs": {
+      "recommendations": "Recommandations",
+      "evaluations": "Évaluations",
+      "failed": "Échouées"
+    },
+    "noFilterResults": "Aucun résultat pour ce filtre"
   }
 }

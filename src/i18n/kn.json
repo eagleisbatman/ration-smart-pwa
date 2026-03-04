@@ -1862,7 +1862,37 @@
     "orgTypeNgo": "ಎನ್‌ಜಿಓ",
     "orgTypeCooperative": "ಸಹಕಾರಿ",
     "orgTypeResearch": "ಸಂಶೋಧನೆ",
-    "orgTypeOther": "ಇತರೆ"
+    "orgTypeOther": "ಇತರೆ",
+    "quickActions": "ತ್ವರಿತ ಕ್ರಿಯೆಗಳು",
+    "feeds": {
+      "title": "ಮೇವು ನಿರ್ವಹಣೆ",
+      "subtitle": "ಮೇವನ್ನು ಸೇರಿಸಿ, ಸಂಪಾದಿಸಿ ಮತ್ತು ನಿರ್ವಹಿಸಿ",
+      "bulkUpload": "ಒಟ್ಟಾಗಿ ಅಪ್ಲೋಡ್ ಮಾಡಿ",
+      "export": "ರಫ್ತು ಮಾಡಿ",
+      "noFeeds": "ಯಾವುದೇ ಮೇವು ಸಿಗಲಿಲ್ಲ"
+    },
+    "feedback": {
+      "title": "ಪ್ರತಿಕ್ರಿಯೆ",
+      "subtitle": "ಬಳಕೆದಾರರ ಪ್ರತಿಕ್ರಿಯೆಯನ್ನು ವೀಕ್ಷಿಸಿ",
+      "overview": "ಪ್ರತಿಕ್ರಿಯೆಯ ಅವಲೋಕನ",
+      "totalResponses": "ಒಟ್ಟು ಪ್ರತಿಕ್ರಿಯೆಗಳು",
+      "avgRating": "ಸರಾಸರಿ ರೇಟಿಂಗ್",
+      "noFeedback": "ಇನ್ನೂ ಯಾವುದೇ ಪ್ರತಿಕ್ರಿಯೆ ಇಲ್ಲ"
+    },
+    "reports": {
+      "title": "ವರದಿಗಳು",
+      "subtitle": "ಉಳಿಸಿದ ವರದಿಗಳನ್ನು ವೀಕ್ಷಿಸಿ",
+      "noReports": "ಯಾವುದೇ ವರದಿಗಳು ಸಿಗಲಿಲ್ಲ"
+    },
+    "simStats": {
+      "title": "ಸಿಮ್ಯುಲೇಶನ್ ಅಂಕಿಅಂಶಗಳು",
+      "total": "ಒಟ್ಟು",
+      "successRate": "ಯಶಸ್ಸಿನ ದರ",
+      "recommendations": "ಶಿಫಾರಸುಗಳು",
+      "evaluations": "ಮೌಲ್ಯಮಾಪನಗಳು",
+      "countryBreakdown": "ದೇಶವಾರು ವಿಭಜನೆ",
+      "superOnly": "ಸೂಪರ್ ಅಡ್ಮಿನ್‌ಗೆ ಮಾತ್ರ"
+    }
   },
   "theme": {
     "zinc": "ಜಿಂಕ್",
@@ -1954,7 +1984,8 @@
       "constraintMax": "ಮೌಲ್ಯ 100 ಮೀರಬಾರದು",
       "required": "ಈ ಕ್ಷೇತ್ರ ಕಡ್ಡಾಯವಾಗಿದೆ",
       "lactatingLatePregnancy": "ಹಸು {days} ದಿನಗಳ ಗರ್ಭಾವಸ್ಥೆಯಲ್ಲಿದ್ದರೂ ಹಾಲು ಕೊಡುತ್ತಿದೆ. ಹಸುಗಳನ್ನು ಸಾಮಾನ್ಯವಾಗಿ 210-220 ದಿನಗಳ ನಂತರ ಹಾಲು ನಿಲ್ಲಿಸಲಾಗುತ್ತದೆ. ಮುಂದುವರಿಸಬೇಕೆ?",
-      "notLactatingCleared": "ಪ್ರಾಣಿ ಹಾಲು ಕೊಡದ ಕಾರಣ ಹಾಲು ಉತ್ಪಾದನಾ ಕ್ಷೇತ್ರಗಳನ್ನು ತೆರವುಗೊಳಿಸಲಾಗಿದೆ."
+      "notLactatingCleared": "ಪ್ರಾಣಿ ಹಾಲು ಕೊಡದ ಕಾರಣ ಹಾಲು ಉತ್ಪಾದನಾ ಕ್ಷೇತ್ರಗಳನ್ನು ತೆರವುಗೊಳಿಸಲಾಗಿದೆ.",
+      "quantityMin": "ಪ್ರಮಾಣವು 0 ಕ್ಕಿಂತ ಹೆಚ್ಚಿರಬೇಕು"
     },
     "historyItem": {
       "evaluation": "ಆಹಾರ ಮೌಲ್ಯಮಾಪನ",
@@ -1981,7 +2012,16 @@
       "withoutQuantities": "ಶಿಫಾರಸು ಪಡೆಯಿರಿ",
       "priceRequired": "ಎಲ್ಲಾ ಆಹಾರಗಳ ಬೆಲೆ ಶೂನ್ಯಕ್ಕಿಂತ ಹೆಚ್ಚಾಗಿರಬೇಕು",
       "quantityRequired": "ಮೌಲ್ಯಮಾಪನಕ್ಕಾಗಿ ಎಲ್ಲಾ ಫೀಡ್‌ಗಳು ಸೊನ್ನೆಯ (ಶೂನ್ಯ) ಕಕಿಂತ ಹೆಚ್ಚು ಪ್ರಮಾಣವನ್ನು ಹೊಂದಿರಬೇಕು",
-      "maxFeedsReached": "ಗರಿಷ್ಠ {max} ಫೀಡ್‌ಗಳನ್ನು ಆಯ್ಕೆ ಮಾಡಬಹುದು"
+      "maxFeedsReached": "ಗರಿಷ್ಠ {max} ಫೀಡ್‌ಗಳನ್ನು ಆಯ್ಕೆ ಮಾಡಬಹುದು",
+      "dietRecommendation": "ಆಹಾರದ ಶಿಫಾರಸು",
+      "dietEvaluation": "ಆಹಾರದ ಮೌಲ್ಯಮಾಪನ",
+      "generateRecommendation": "ಶಿಫಾರಸು ರಚಿಸಿ",
+      "getEvaluation": "ಮೌಲ್ಯಮಾಪನ ಪಡೆಯಿರಿ",
+      "feedLabel": "ಆಹಾರ {n}",
+      "customFeed": "ಕಸ್ಟಮ್ ಆಹಾರ",
+      "customFeedHint": "ಕಸ್ಟಮ್ ಆಹಾರ ರಚನೆ ಶೀಘ್ರದಲ್ಲೇ ಬರಲಿದೆ.",
+      "price": "ಬೆಲೆ",
+      "qty": "ಪ್ರಮಾಣ"
     },
     "constraints": {
       "title": "ಕಸ್ಟಮ್ ಆಹಾರ ಮಿತಿಗಳು",
@@ -2063,7 +2103,9 @@
       "marginal": "ಸೀಮಿತ",
       "deficient": "ಕಡಿಮೆ",
       "excess": "ಹೆಚ್ಚುವರಿ",
-      "infeasible": "ಅಸಾಧ್ಯ"
+      "infeasible": "ಅಸಾಧ್ಯ",
+      "failed": "ವಿಫಲವಾಗಿದೆ",
+      "success": "ಯಶಸ್ವಿ"
     },
     "home": {
       "welcome": "ಸ್ವಾಗತ, {name}",
@@ -2076,9 +2118,25 @@
       "noSimulations": "ಇನ್ನೂ ಯಾವುದೇ ಸಿಮ್ಯುಲೇಶನ್‌ಗಳಿಲ್ಲ",
       "noSimulationsDesc": "ನಿಮ್ಮ ಮೊದಲ ಸಿಮ್ಯುಲೇಷನ್ ಅನ್ನು ಇಲ್ಲಿ ನೋಡಲು ರನ್ ಮಾಡಿ",
       "viewAll": "ಎಲ್ಲವನ್ನೂ ವೀಕ್ಷಿಸಿ",
-      "searchPlaceholder": "Search simulations..."
+      "searchPlaceholder": "ಸಿಮ್ಯುಲೇಶನ್‌ಗಳನ್ನು ಹುಡುಕಿ..."
     },
-    "dietHistory": "Diet History",
-    "loadFromHistory": "Load from History"
+    "dietHistory": "ಆಹಾರದ ಇತಿಹಾಸ",
+    "loadFromHistory": "ಇತಿಹಾಸದಿಂದ ಲೋಡ್ ಮಾಡಿ",
+    "units": {
+      "days": "ದಿನಗಳು"
+    },
+    "topographyHint": "ಸಮತಟ್ಟಾದ / ಗುಡ್ಡಗಾಡು / ಪರ್ವತಮಯ",
+    "reset": "ಮರುಹೊಂದಿಸಿ",
+    "formReset": "ಫಾರ್ಮ್ ಅನ್ನು ಡೀಫಾಲ್ಟ್‌ಗಳಿಗೆ ಮರುಹೊಂದಿಸಲಾಗಿದೆ",
+    "bcsLabels": {
+      "thin": "ಸಣ್ಣ",
+      "obese": "ಬೊಜ್ಜು"
+    },
+    "filterTabs": {
+      "recommendations": "ಶಿಫಾರಸುಗಳು",
+      "evaluations": "ಮೌಲ್ಯಮಾಪನಗಳು",
+      "failed": "ವಿಫಲವಾಗಿದೆ"
+    },
+    "noFilterResults": "ಈ ಫಿಲ್ಟರ್‌ಗೆ ಯಾವುದೇ ಫಲಿತಾಂಶಗಳಿಲ್ಲ"
   }
 }

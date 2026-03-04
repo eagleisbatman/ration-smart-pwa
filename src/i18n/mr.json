@@ -1863,7 +1863,37 @@
     "orgTypeNgo": "एनजीओ",
     "orgTypeCooperative": "सहकारी संस्था",
     "orgTypeResearch": "संशोधन",
-    "orgTypeOther": "इतर"
+    "orgTypeOther": "इतर",
+    "quickActions": "जलद कृती",
+    "feeds": {
+      "title": "खाद्य व्यवस्थापन",
+      "subtitle": "खाद्य जोडा, संपादित करा आणि व्यवस्थापित करा",
+      "bulkUpload": "बल्क अपलोड",
+      "export": "निर्यात करा",
+      "noFeeds": "कोणतेही खाद्य आढळले नाही"
+    },
+    "feedback": {
+      "title": "अभिप्राय",
+      "subtitle": "वापरकर्त्यांचा अभिप्राय पहा",
+      "overview": "अभिप्राय विहंगावलोकन",
+      "totalResponses": "एकूण प्रतिसाद",
+      "avgRating": "सरासरी रेटिंग",
+      "noFeedback": "अद्याप कोणताही अभिप्राय नाही"
+    },
+    "reports": {
+      "title": "अहवाल",
+      "subtitle": "जतन केलेले अहवाल पहा",
+      "noReports": "कोणतेही अहवाल आढळले नाहीत"
+    },
+    "simStats": {
+      "title": "सिम्युलेशन आकडेवारी",
+      "total": "एकूण",
+      "successRate": "यशस्वी दर",
+      "recommendations": "शिफारसी",
+      "evaluations": "मूल्यमापन",
+      "countryBreakdown": "देशानुसार वर्गीकरण",
+      "superOnly": "फक्त सुपर ॲडमिन"
+    }
   },
   "theme": {
     "zinc": "झिंक",
@@ -1955,7 +1985,8 @@
       "constraintMax": "मूल्य 100 पेक्षा जास्त नसावे",
       "required": "हे क्षेत्र आवश्यक आहे",
       "lactatingLatePregnancy": "गाय {days} दिवसांच्या गर्भावस्थेत दूध देत आहे. गायींना साधारणपणे 210-220 दिवसांनंतर दूध देणे थांबवले जाते. तरीही पुढे चालू ठेवायचे का?",
-      "notLactatingCleared": "जनावर दूध देत नसल्यामुळे दूध उत्पादन क्षेत्रे रिकामी केली आहेत."
+      "notLactatingCleared": "जनावर दूध देत नसल्यामुळे दूध उत्पादन क्षेत्रे रिकामी केली आहेत.",
+      "quantityMin": "प्रमाण 0 पेक्षा जास्त असावे"
     },
     "historyItem": {
       "evaluation": "आहाराचे मूल्यांकन",
@@ -1982,7 +2013,16 @@
       "withoutQuantities": "शिफारस मिळवा",
       "priceRequired": "सर्व खाद्यपदार्थांची किंमत शून्यापेक्षा जास्त असणे आवश्यक आहे",
       "quantityRequired": "मूल्यांकनासाठी सर्व खाद्यपदार्थांचे प्रमाण शून्यापेक्षा जास्त असणे आवश्यक आहे",
-      "maxFeedsReached": "जास्तीत जास्त {max} खाद्यपदार्थ निवडले जाऊ शकतात"
+      "maxFeedsReached": "जास्तीत जास्त {max} खाद्यपदार्थ निवडले जाऊ शकतात",
+      "dietRecommendation": "आहार शिफारस",
+      "dietEvaluation": "आहार मूल्यमापन",
+      "generateRecommendation": "शिफारस तयार करा",
+      "getEvaluation": "मूल्यमापन मिळवा",
+      "feedLabel": "खाद्य {n}",
+      "customFeed": "सानुकूल खाद्य",
+      "customFeedHint": "सानुकूल खाद्य लवकरच उपलब्ध होईल.",
+      "price": "किंमत",
+      "qty": "प्रमाण"
     },
     "constraints": {
       "title": "आहाराची स्वतःची मर्यादा",
@@ -2064,7 +2104,9 @@
       "marginal": "किमान",
       "deficient": "कमतरता",
       "excess": "जास्त",
-      "infeasible": "अशक्य"
+      "infeasible": "अशक्य",
+      "failed": "अयशस्वी",
+      "success": "यशस्वी"
     },
     "home": {
       "welcome": "स्वागत आहे, {name}",
@@ -2080,6 +2122,22 @@
       "searchPlaceholder": "सिम्युलेशन शोधा..."
     },
     "dietHistory": "आहाराचा इतिहास",
-    "loadFromHistory": "इतिहासातून लोड करा"
+    "loadFromHistory": "इतिहासातून लोड करा",
+    "units": {
+      "days": "दिवस"
+    },
+    "topographyHint": "सपाट / डोंगराळ / पर्वतीय",
+    "reset": "रीसेट करा",
+    "formReset": "फॉर्म डीफॉल्टवर रीसेट केला",
+    "bcsLabels": {
+      "thin": "बारीक",
+      "obese": "लठ्ठ"
+    },
+    "filterTabs": {
+      "recommendations": "शिफारसी",
+      "evaluations": "मूल्यमापन",
+      "failed": "अयशस्वी"
+    },
+    "noFilterResults": "या फिल्टरसाठी कोणतेही परिणाम नाहीत"
   }
 }

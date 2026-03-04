@@ -1861,7 +1861,37 @@
     "orgTypeNgo": "LSM",
     "orgTypeCooperative": "Koperasi",
     "orgTypeResearch": "Penelitian",
-    "orgTypeOther": "Lainnya"
+    "orgTypeOther": "Lainnya",
+    "quickActions": "Tindakan Cepat",
+    "feeds": {
+      "title": "Manajemen Pakan",
+      "subtitle": "Tambah, edit & kelola pakan",
+      "bulkUpload": "Unggah Massal",
+      "export": "Ekspor",
+      "noFeeds": "Tidak ada pakan ditemukan"
+    },
+    "feedback": {
+      "title": "Umpan Balik",
+      "subtitle": "Lihat umpan balik pengguna",
+      "overview": "Gambaran Umum Umpan Balik",
+      "totalResponses": "Total Tanggapan",
+      "avgRating": "Rata-rata Penilaian",
+      "noFeedback": "Belum ada umpan balik"
+    },
+    "reports": {
+      "title": "Laporan",
+      "subtitle": "Lihat laporan yang disimpan",
+      "noReports": "Tidak ada laporan ditemukan"
+    },
+    "simStats": {
+      "title": "Statistik Simulasi",
+      "total": "Total",
+      "successRate": "Tingkat Keberhasilan",
+      "recommendations": "Rekomendasi",
+      "evaluations": "Evaluasi",
+      "countryBreakdown": "Rincian Negara",
+      "superOnly": "Hanya super admin"
+    }
   },
   "theme": {
     "zinc": "Seng",
@@ -1953,7 +1983,8 @@
       "constraintMax": "Nilai tidak boleh melebihi 100",
       "required": "Kolom ini wajib diisi",
       "lactatingLatePregnancy": "Sapi sedang laktasi dengan kebuntingan {days} hari. Sapi biasanya dikeringkan setelah 210-220 hari. Lanjutkan?",
-      "notLactatingCleared": "Kolom produksi susu dikosongkan karena hewan tidak sedang laktasi."
+      "notLactatingCleared": "Kolom produksi susu dikosongkan karena hewan tidak sedang laktasi.",
+      "quantityMin": "Jumlah harus lebih dari 0"
     },
     "historyItem": {
       "evaluation": "Evaluasi Pakan",
@@ -1980,7 +2011,16 @@
       "withoutQuantities": "Dapatkan Rekomendasi",
       "priceRequired": "Semua pakan harus memiliki harga lebih dari nol",
       "quantityRequired": "Semua pakan harus memiliki jumlah lebih dari nol untuk evaluasi",
-      "maxFeedsReached": "Maksimal {max} pakan bisa dipilih"
+      "maxFeedsReached": "Maksimal {max} pakan bisa dipilih",
+      "dietRecommendation": "Rekomendasi Pakan",
+      "dietEvaluation": "Evaluasi Pakan",
+      "generateRecommendation": "Hasilkan Rekomendasi",
+      "getEvaluation": "Dapatkan Evaluasi",
+      "feedLabel": "PAKAN {n}",
+      "customFeed": "Pakan Kustom",
+      "customFeedHint": "Pembuatan pakan kustom akan segera hadir.",
+      "price": "Harga",
+      "qty": "Jumlah"
     },
     "constraints": {
       "title": "Batasan Diet Khusus",
@@ -2062,7 +2102,9 @@
       "marginal": "Kurang Baik",
       "deficient": "Kurang",
       "excess": "Berlebih",
-      "infeasible": "Tidak Memungkinkan"
+      "infeasible": "Tidak Memungkinkan",
+      "failed": "Gagal",
+      "success": "Berhasil"
     },
     "home": {
       "welcome": "Selamat datang, {name}",
@@ -2078,6 +2120,22 @@
       "searchPlaceholder": "Cari simulasi..."
     },
     "dietHistory": "Riwayat Pakan",
-    "loadFromHistory": "Muat dari Riwayat"
+    "loadFromHistory": "Muat dari Riwayat",
+    "units": {
+      "days": "hari"
+    },
+    "topographyHint": "Datar / Berbukit / Pegunungan",
+    "reset": "Setel Ulang",
+    "formReset": "Formulir diatur ulang ke pengaturan awal",
+    "bcsLabels": {
+      "thin": "Kurus",
+      "obese": "Gemuk"
+    },
+    "filterTabs": {
+      "recommendations": "Rekomendasi",
+      "evaluations": "Evaluasi",
+      "failed": "Gagal"
+    },
+    "noFilterResults": "Tidak ada hasil untuk filter ini"
   }
 }

@@ -1861,7 +1861,37 @@
     "orgTypeNgo": "መንግስታዊ ያልሆነ ድርጅት",
     "orgTypeCooperative": "ህብረት ስራ ማህበር",
     "orgTypeResearch": "ምርምር",
-    "orgTypeOther": "ሌላ"
+    "orgTypeOther": "ሌላ",
+    "quickActions": "ፈጣን ተግባራት",
+    "feeds": {
+      "title": "የመኖ አያያዝ",
+      "subtitle": "መኖዎችን ይጨምሩ፣ ያርትዑ እና ያስተዳድሩ",
+      "bulkUpload": "በብዛት ስቀል",
+      "export": "አውጣ",
+      "noFeeds": "ምንም መኖ አልተገኘም"
+    },
+    "feedback": {
+      "title": "አስተያየት",
+      "subtitle": "የተጠቃሚዎችን አስተያየት ይመልከቱ",
+      "overview": "የአስተያየት አጠቃላይ እይታ",
+      "totalResponses": "ጠቅላላ ምላሾች",
+      "avgRating": "አማካይ ደረጃ",
+      "noFeedback": "እስካሁን ምንም አስተያየት የለም"
+    },
+    "reports": {
+      "title": "ሪፖርቶች",
+      "subtitle": "የተቀመጡ ሪፖርቶችን ይመልከቱ",
+      "noReports": "ምንም ሪፖርቶች አልተገኙም"
+    },
+    "simStats": {
+      "title": "የሲሙሌሽን ስታቲስቲክስ",
+      "total": "ጠቅላላ",
+      "successRate": "የስኬት መጠን",
+      "recommendations": "ምክሮች",
+      "evaluations": "ግምገማዎች",
+      "countryBreakdown": "በአገር ዝርዝር",
+      "superOnly": "ለሱፐር አስተዳዳሪ ብቻ"
+    }
   },
   "theme": {
     "zinc": "ዚንክ",
@@ -1953,7 +1983,8 @@
       "constraintMax": "ዋጋው ከ100 መብለጥ የለበትም",
       "required": "ይህ መስክ ያስፈልጋል",
       "lactatingLatePregnancy": "ላሟ በ{days} ቀን እርግዝና ውስጥ ወተት ትሰጣለች። ላሞች በአብዛኛው ከ210-220 ቀናት በኋላ ወተት ማቆም አለባቸው። ለማንኛውም መቀጠል ይፈልጋሉ?",
-      "notLactatingCleared": "እንስሳው ወተት ስለማይሰጥ የወተት ምርት መስኮች ተሰርዘዋል።"
+      "notLactatingCleared": "እንስሳው ወተት ስለማይሰጥ የወተት ምርት መስኮች ተሰርዘዋል።",
+      "quantityMin": "ብዛት ከ 0 በላይ መሆን አለበት"
     },
     "historyItem": {
       "evaluation": "የምግብ ግምገማ",
@@ -1980,7 +2011,16 @@
       "withoutQuantities": "ጥቆማ ያግኙ",
       "priceRequired": "ሁሉም መኖዎች ከዜሮ በላይ ዋጋ ሊኖራቸው ይገባል",
       "quantityRequired": "ለግምገማ ሁሉም መኖዎች ከዜሮ በላይ ብዛት ሊኖራቸው ይገባል",
-      "maxFeedsReached": "ቢበዛ {max} መኖዎች ሊመረጡ ይችላሉ"
+      "maxFeedsReached": "ቢበዛ {max} መኖዎች ሊመረጡ ይችላሉ",
+      "dietRecommendation": "የምግብ ምክር",
+      "dietEvaluation": "የምግብ ግምገማ",
+      "generateRecommendation": "ምክር ፍጠር",
+      "getEvaluation": "ግምገማ ያግኙ",
+      "feedLabel": "ምግብ {n}",
+      "customFeed": "የግል ምግብ",
+      "customFeedHint": "የግል ምግብ መፍጠር በቅርብ ቀን ይመጣል።",
+      "price": "ዋጋ",
+      "qty": "ብዛት"
     },
     "constraints": {
       "title": "የተበጁ የምግብ ገደቦች",
@@ -2062,7 +2102,9 @@
       "marginal": "አማካይ",
       "deficient": "ያልበቃ",
       "excess": "ከመጠን በላይ",
-      "infeasible": "የማይቻል"
+      "infeasible": "የማይቻል",
+      "failed": "አልተሳካም",
+      "success": "ተሳክቷል"
     },
     "home": {
       "welcome": "እንኳን ደህና መጡ፣ {name}",
@@ -2078,6 +2120,22 @@
       "searchPlaceholder": "አስመሳይ ፍለጋ..."
     },
     "dietHistory": "የምግብ ታሪክ",
-    "loadFromHistory": "ከታሪክ አስመጣ"
+    "loadFromHistory": "ከታሪክ አስመጣ",
+    "units": {
+      "days": "ቀናት"
+    },
+    "topographyHint": "ጠፍጣፋ / ተራራማ / ወጣ ገባ",
+    "reset": "ዳግም አስጀምር",
+    "formReset": "ቅጽ ወደ ነባሪዎች ዳግም ተጀምሯል።",
+    "bcsLabels": {
+      "thin": "ቀጭን",
+      "obese": "ወፍራም"
+    },
+    "filterTabs": {
+      "recommendations": "ምክሮች",
+      "evaluations": "ግምገማዎች",
+      "failed": "ያልተሳኩ"
+    },
+    "noFilterResults": "ለዚህ ማጣሪያ ምንም ውጤት የለም"
   }
 }

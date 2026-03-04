@@ -218,7 +218,7 @@
     "pinsDontMatch": "Hindi tugma ang mga PIN",
     "pinChangedSuccess": "Matagumpay na napalitan ang PIN",
     "pinChangeFailed": "Nabigong palitan ang PIN",
-    "defaultUserName": "User",
+    "defaultUserName": "Gumagamit",
     "change": "Palitan",
     "changeEmail": "Palitan ang Email",
     "changePhone": "Palitan ang Telepono",
@@ -1861,7 +1861,37 @@
     "orgTypeNgo": "NGO",
     "orgTypeCooperative": "Kooperatiba",
     "orgTypeResearch": "Pananaliksik",
-    "orgTypeOther": "Iba pa"
+    "orgTypeOther": "Iba pa",
+    "quickActions": "Mga Mabilisang Aksyon",
+    "feeds": {
+      "title": "Pamamahala ng Pagkain ng Baka",
+      "subtitle": "Magdagdag, mag-edit at mamahala ng pagkain",
+      "bulkUpload": "Bulk Upload",
+      "export": "I-export",
+      "noFeeds": "Walang nakitang pagkain"
+    },
+    "feedback": {
+      "title": "Feedback",
+      "subtitle": "Tingnan ang feedback ng user",
+      "overview": "Pangkalahatang Ideya ng Feedback",
+      "totalResponses": "Kabuuang Tugon",
+      "avgRating": "Average na Rating",
+      "noFeedback": "Wala pang feedback"
+    },
+    "reports": {
+      "title": "Mga Ulat",
+      "subtitle": "Tingnan ang mga naka-save na ulat",
+      "noReports": "Walang nakitang ulat"
+    },
+    "simStats": {
+      "title": "Stats ng Simulation",
+      "total": "Kabuuan",
+      "successRate": "Success Rate",
+      "recommendations": "Mga Rekomendasyon",
+      "evaluations": "Mga Pagsusuri",
+      "countryBreakdown": "Pagsira ng Bansa",
+      "superOnly": "Para lang sa super admin"
+    }
   },
   "theme": {
     "zinc": "Zinc",
@@ -1953,7 +1983,8 @@
       "constraintMax": "Ang halaga ay hindi dapat lumampas sa 100",
       "required": "Kailangan ang field na ito",
       "lactatingLatePregnancy": "Ang baka ay nagpapasuso na may {days} araw ng pagbubuntis. Karaniwang pinatitigil ang pagpapasuso matapos ang 210-220 araw. Tuloy pa rin?",
-      "notLactatingCleared": "Na-clear ang mga field ng produksyon ng gatas dahil ang hayop ay hindi nagpapasuso."
+      "notLactatingCleared": "Na-clear ang mga field ng produksyon ng gatas dahil ang hayop ay hindi nagpapasuso.",
+      "quantityMin": "Dapat mas malaki sa 0 ang dami"
     },
     "historyItem": {
       "evaluation": "Pagsusuri ng Diyeta",
@@ -1966,7 +1997,7 @@
       "title": "Pumili ng mga Pakain",
       "filterAll": "Lahat",
       "filterForage": "Damuhan",
-      "filterConcentrate": "Concentrate",
+      "filterConcentrate": "Konsentrado",
       "category": "Kategorya",
       "allCategories": "Lahat ng Kategorya",
       "selectedFeeds": "Napiling Pakain",
@@ -1980,7 +2011,16 @@
       "withoutQuantities": "Kumuha ng Rekomendasyon",
       "priceRequired": "Lahat ng pakain ay dapat may presyo na mas mataas sa zero",
       "quantityRequired": "Lahat ng pakain ay dapat may dami na mas mataas sa zero para masuri",
-      "maxFeedsReached": "Maximum na {max} na pakain lang ang maaaring mapili"
+      "maxFeedsReached": "Maximum na {max} na pakain lang ang maaaring mapili",
+      "dietRecommendation": "Rekomendasyon sa Diyeta",
+      "dietEvaluation": "Pagsusuri sa Diyeta",
+      "generateRecommendation": "Bumuo ng Rekomendasyon",
+      "getEvaluation": "Kumuha ng Pagsusuri",
+      "feedLabel": "PAKAIN {n}",
+      "customFeed": "Custom na Pakain",
+      "customFeedHint": "Malapit na ang paggawa ng custom na pakain.",
+      "price": "Presyo",
+      "qty": "Dami"
     },
     "constraints": {
       "title": "Pasadyang Limitasyon ng Diyeta",
@@ -2021,7 +2061,7 @@
       "date": "Petsa",
       "solutionSummary": "Buod ng Solusyon",
       "dailyCost": "Pang-araw-araw na Gastos",
-      "dmIntake": "DM Intake",
+      "dmIntake": "Pagkonsumo ng DM",
       "milkProduction": "Produksyon ng Gatas",
       "feedBreakdown": "Pagkasira ng Pakain",
       "feedName": "Pakain",
@@ -2062,7 +2102,9 @@
       "marginal": "Limitado",
       "deficient": "Kulang",
       "excess": "Sobra",
-      "infeasible": "Hindi Magagawa"
+      "infeasible": "Hindi Magagawa",
+      "failed": "Bigo",
+      "success": "Tagumpay"
     },
     "home": {
       "welcome": "Kumusta, {name}",
@@ -2078,6 +2120,22 @@
       "searchPlaceholder": "Maghanap ng mga simulation..."
     },
     "dietHistory": "Kasaysayan ng Diyeta",
-    "loadFromHistory": "I-load mula sa Kasaysayan"
+    "loadFromHistory": "I-load mula sa Kasaysayan",
+    "units": {
+      "days": "araw"
+    },
+    "topographyHint": "Patag / Maburol / Bulubundukin",
+    "reset": "I-reset",
+    "formReset": "Naibalik sa default ang form",
+    "bcsLabels": {
+      "thin": "Payat",
+      "obese": "Napakataba"
+    },
+    "filterTabs": {
+      "recommendations": "Mga Rekomendasyon",
+      "evaluations": "Mga Pagsusuri",
+      "failed": "Bigo"
+    },
+    "noFilterResults": "Walang resulta para sa filter na ito"
   }
 }
