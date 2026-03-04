@@ -186,20 +186,34 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('push', (event) => {
   if (!event.data) return;
 
-  const data = event.data.json();
+  let data: Record<string, unknown>;
+  try {
+    data = event.data.json();
+  } catch {
+    // Malformed push payload — show a generic notification rather than failing silently
+    console.warn('Push: failed to parse payload as JSON');
+    event.waitUntil(
+      self.registration.showNotification('RationSmart', {
+        body: event.data.text() || 'New notification',
+        icon: '/icons/icon-192x192.png',
+        badge: '/icons/badge-72x72.png',
+      })
+    );
+    return;
+  }
 
   const options: NotificationOptions & { vibrate?: number[]; actions?: Array<{ action: string; title: string; icon?: string }> } = {
-    body: data.body || 'New notification',
+    body: (data.body as string) || 'New notification',
     icon: '/icons/icon-192x192.png',
     badge: '/icons/badge-72x72.png',
     data: {
-      url: data.url || '/',
+      url: (data.url as string) || '/',
     },
   };
 
   // Add actions if provided
   if (data.actions && Array.isArray(data.actions)) {
-    options.actions = data.actions;
+    options.actions = data.actions as Array<{ action: string; title: string; icon?: string }>;
   }
 
   // Add vibrate pattern if supported
@@ -208,7 +222,7 @@ self.addEventListener('push', (event) => {
   }
 
   event.waitUntil(
-    self.registration.showNotification(data.title || 'RationSmart', options)
+    self.registration.showNotification((data.title as string) || 'RationSmart', options)
   );
 });
 

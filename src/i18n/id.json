@@ -1261,7 +1261,7 @@
     "withCode": {
       "IN": "India (+91)",
       "KE": "Kenya (+254)",
-      "ET": "Ethiopia (+251)",
+      "ET": "Etiopia (+251)",
       "NP": "Nepal (+977)",
       "BD": "Bangladesh (+880)",
       "VN": "Vietnam (+84)",
@@ -2074,7 +2074,10 @@
       "recentSimulations": "Simulasi Terbaru",
       "noSimulations": "Belum ada simulasi",
       "noSimulationsDesc": "Jalankan simulasi pertama Anda untuk melihatnya di sini",
-      "viewAll": "Lihat Semua"
-    }
+      "viewAll": "Lihat Semua",
+      "searchPlaceholder": "Cari simulasi..."
+    },
+    "dietHistory": "Riwayat Pakan",
+    "loadFromHistory": "Muat dari Riwayat"
   }
 }

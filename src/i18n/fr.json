@@ -2078,7 +2078,10 @@
       "recentSimulations": "Simulations récentes",
       "noSimulations": "Aucune simulation pour l'instant",
       "noSimulationsDesc": "Lancez votre première simulation pour la voir ici",
-      "viewAll": "Tout voir"
-    }
+      "viewAll": "Tout voir",
+      "searchPlaceholder": "Rechercher des simulations..."
+    },
+    "dietHistory": "Historique des rations",
+    "loadFromHistory": "Charger de l'historique"
   }
 }

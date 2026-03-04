@@ -2075,7 +2075,10 @@
       "recentSimulations": "તાજેતરના સિમ્યુલેશન",
       "noSimulations": "હજુ કોઈ સિમ્યુલેશન નથી",
       "noSimulationsDesc": "તમારું પહેલું સિમ્યુલેશન ચલાવો તે અહીં જોવા માટે",
-      "viewAll": "બધા જુઓ"
-    }
+      "viewAll": "બધા જુઓ",
+      "searchPlaceholder": "સિમ્યુલેશન શોધો..."
+    },
+    "dietHistory": "આહારનો ઇતિહાસ",
+    "loadFromHistory": "ઇતિહાસમાંથી લોડ કરો"
   }
 }

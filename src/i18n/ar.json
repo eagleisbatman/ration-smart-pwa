@@ -2075,7 +2075,10 @@
       "recentSimulations": "المحاكاة الأخيرة",
       "noSimulations": "لا توجد محاكاة بعد",
       "noSimulationsDesc": "قم بتشغيل أول محاكاة لك لِتراها هنا",
-      "viewAll": "عرض الكل"
-    }
+      "viewAll": "عرض الكل",
+      "searchPlaceholder": "ابحث في المحاكاة..."
+    },
+    "dietHistory": "تاريخ العلف",
+    "loadFromHistory": "تحميل من التاريخ"
   }
 }

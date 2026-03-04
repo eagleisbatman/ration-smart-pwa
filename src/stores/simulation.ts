@@ -59,6 +59,7 @@ export interface SimulationListItem {
     body_weight: number;
     milk_production: number;
   } | null;
+  solution_status?: string | null;
 }
 
 // ---------------------------------------------------------------------------

@@ -2074,7 +2074,10 @@
       "recentSimulations": "የቅርብ ጊዜ ምናባዊ ግብዓቶች",
       "noSimulations": "እስካሁን ምንም ምናባዊ ግብዓት የለም",
       "noSimulationsDesc": "የመጀመሪያዎን ምናባዊ ግብዓት እዚህ ለማየት ያካሂዱ",
-      "viewAll": "ሁሉንም ይመልከቱ"
-    }
+      "viewAll": "ሁሉንም ይመልከቱ",
+      "searchPlaceholder": "አስመሳይ ፍለጋ..."
+    },
+    "dietHistory": "የምግብ ታሪክ",
+    "loadFromHistory": "ከታሪክ አስመጣ"
   }
 }

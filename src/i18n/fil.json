@@ -2074,7 +2074,10 @@
       "recentSimulations": "Mga Nakaraang Simulation",
       "noSimulations": "Wala pang simulation",
       "noSimulationsDesc": "Patakbuhin ang iyong unang simulation para makita dito",
-      "viewAll": "Tingnan Lahat"
-    }
+      "viewAll": "Tingnan Lahat",
+      "searchPlaceholder": "Maghanap ng mga simulation..."
+    },
+    "dietHistory": "Kasaysayan ng Diyeta",
+    "loadFromHistory": "I-load mula sa Kasaysayan"
   }
 }

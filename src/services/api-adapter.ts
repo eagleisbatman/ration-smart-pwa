@@ -848,6 +848,36 @@ const ENDPOINT_MAP: Record<string, EndpointMapping> = {
   '/api/v1/admin/analytics/org/:orgId': {
     path: '/admin/analytics/org/:orgId',
   },
+  '/api/v1/admin/list-feeds': {
+    path: '/admin/list-feeds',
+  },
+  '/api/v1/admin/add-feed': {
+    path: '/admin/add-feed',
+  },
+  '/api/v1/admin/update-feed/:feedId': {
+    path: '/admin/update-feed/:feedId',
+  },
+  '/api/v1/admin/delete-feed/:feedId': {
+    path: '/admin/delete-feed/:feedId',
+  },
+  '/api/v1/admin/bulk-upload-feeds': {
+    path: '/admin/bulk-upload-feeds',
+  },
+  '/api/v1/admin/export-feeds': {
+    path: '/admin/export-feeds',
+  },
+  '/api/v1/admin/user-feedback/all': {
+    path: '/admin/user-feedback/all',
+  },
+  '/api/v1/admin/user-feedback/stats': {
+    path: '/admin/user-feedback/stats',
+  },
+  '/api/v1/admin/get-all-reports': {
+    path: '/admin/get-all-reports/',
+  },
+  '/api/v1/admin/simulation-stats': {
+    path: '/admin/simulation-stats',
+  },
   '/api/v1/user-delete-account': {
     path: '/auth/user-delete-account',
   },

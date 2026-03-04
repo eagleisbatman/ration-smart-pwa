@@ -2075,7 +2075,10 @@
       "recentSimulations": "ସମ୍ପ୍ରତି ସିମୁଲେସନ",
       "noSimulations": "ବର୍ତ୍ତମାନ ସୁଦ୍ଧା କୌଣସି ସିମୁଲେସନ ନାହିଁ",
       "noSimulationsDesc": "ଏଠାରେ ଦେଖିବା ପାଇଁ ଆପଣଙ୍କର ପ୍ରଥମ ସିମୁଲେସନ ଚଲାନ୍ତୁ",
-      "viewAll": "ସମସ୍ତ ଦେଖନ୍ତୁ"
-    }
+      "viewAll": "ସମସ୍ତ ଦେଖନ୍ତୁ",
+      "searchPlaceholder": "ସିମୁଲେସନ୍ ଖୋଜନ୍ତୁ..."
+    },
+    "dietHistory": "ଡାଏଟ୍ ଇତିହାସ",
+    "loadFromHistory": "ଇତିହାସରୁ ଲୋଡ୍ କରନ୍ତୁ"
   }
 }

@@ -2075,7 +2075,10 @@
       "recentSimulations": "ਹਾਲੀਆ ਸਿਮੂਲੇਸ਼ਨਾਂ",
       "noSimulations": "ਅਜੇ ਕੋਈ ਸਿਮੂਲੇਸ਼ਨ ਨਹੀਂ",
       "noSimulationsDesc": "ਇੱਥੇ ਦੇਖਣ ਲਈ ਆਪਣੀ ਪਹਿਲੀ ਸਿਮੂਲੇਸ਼ਨ ਚਲਾਓ",
-      "viewAll": "ਸਾਰੇ ਦੇਖੋ"
-    }
+      "viewAll": "ਸਾਰੇ ਦੇਖੋ",
+      "searchPlaceholder": "ਸਿਮੂਲੇਸ਼ਨਾਂ ਦੀ ਖੋਜ ਕਰੋ..."
+    },
+    "dietHistory": "ਖੁਰਾਕ ਦਾ ਇਤਿਹਾਸ",
+    "loadFromHistory": "ਇਤਿਹਾਸ ਤੋਂ ਲੋਡ ਕਰੋ"
   }
 }

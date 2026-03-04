@@ -3,8 +3,12 @@ import { boot } from 'quasar/wrappers';
 /**
  * Custom icon boot file for RationSmart.
  *
- * Registers iconMapFn so plain icon names (e.g. "home", "people")
- * automatically render with Material Symbols Outlined.
+ * Sets up iconMapFn so plain icon names (e.g. "home", "people")
+ * automatically render with Material Symbols Outlined instead of
+ * the removed Material Icons font.
+ *
+ * For the custom cow icon, use `useCowIcon()` composable or import
+ * `COW_ICON` from `src/composables/useCowIcon`.
  */
 
 // Prefixes that Quasar already handles — do NOT remap these
