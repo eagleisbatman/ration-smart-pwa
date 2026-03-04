@@ -32,7 +32,7 @@
             dense
             :loading="breedsLoading"
             :rules="[(v: string) => !!v || $t('simulation.validation.breedRequired')]"
-            hide-bottom-space
+            hint=" "
           />
 
           <div class="row q-col-gutter-sm">
@@ -88,33 +88,38 @@
           />
 
           <template v-if="store.cattleInfo.lactating">
-            <q-input
-              v-model.number="store.cattleInfo.days_in_milk"
-              :label="$t('simulation.fields.daysInMilk')"
-              type="number"
-              outlined
-              dense
-              hint="0 – 700"
-              :rules="[
-                (v: number) => v >= 0 || $t('simulation.validation.minZero'),
-                (v: number) => v <= 700 || $t('simulation.validation.daysInMilkMax'),
-              ]"
-            />
-
-            <q-input
-              v-model.number="store.cattleInfo.milk_production"
-              :label="$t('simulation.fields.milkProduction')"
-              type="number"
-              outlined
-              dense
-              step="0.1"
-              suffix="L/day"
-              hint="0 – 80"
-              :rules="[
-                (v: number) => v >= 0 || $t('simulation.validation.minZero'),
-                (v: number) => v <= 80 || $t('simulation.validation.milkProductionMax'),
-              ]"
-            />
+            <div class="row q-col-gutter-sm">
+              <div class="col-12 col-sm-6">
+                <q-input
+                  v-model.number="store.cattleInfo.days_in_milk"
+                  :label="$t('simulation.fields.daysInMilk')"
+                  type="number"
+                  outlined
+                  dense
+                  hint="0 – 700"
+                  :rules="[
+                    (v: number) => v >= 0 || $t('simulation.validation.minZero'),
+                    (v: number) => v <= 700 || $t('simulation.validation.daysInMilkMax'),
+                  ]"
+                />
+              </div>
+              <div class="col-12 col-sm-6">
+                <q-input
+                  v-model.number="store.cattleInfo.milk_production"
+                  :label="$t('simulation.fields.milkProduction')"
+                  type="number"
+                  outlined
+                  dense
+                  step="0.1"
+                  suffix="L/day"
+                  hint="0 – 80"
+                  :rules="[
+                    (v: number) => v >= 0 || $t('simulation.validation.minZero'),
+                    (v: number) => v <= 80 || $t('simulation.validation.milkProductionMax'),
+                  ]"
+                />
+              </div>
+            </div>
 
             <div class="row q-col-gutter-sm">
               <div class="col-12 col-sm-6">
@@ -240,45 +245,50 @@
                 map-options
                 outlined
                 dense
-                hint=" "
+                hint="Flat / Hilly / Mountainous"
               />
             </div>
           </div>
 
-          <q-input
-            v-model.number="store.cattleInfo.distance"
-            :label="$t('simulation.fields.distance')"
-            type="number"
-            outlined
-            dense
-            step="0.1"
-            suffix="km"
-            hint="0 – 50"
-            :rules="[
-              (v: number) => v >= 0 || $t('simulation.validation.minZero'),
-              (v: number) => v <= 50 || $t('simulation.validation.distanceMax'),
-            ]"
-          />
+          <div class="row q-col-gutter-sm">
+            <div class="col-12 col-sm-6">
+              <q-input
+                v-model.number="store.cattleInfo.distance"
+                :label="$t('simulation.fields.distance')"
+                type="number"
+                outlined
+                dense
+                step="0.1"
+                suffix="km"
+                hint="0 – 50"
+                :rules="[
+                  (v: number) => v >= 0 || $t('simulation.validation.minZero'),
+                  (v: number) => v <= 50 || $t('simulation.validation.distanceMax'),
+                ]"
+              />
+            </div>
+            <div class="col-12 col-sm-6">
+              <q-input
+                v-model.number="store.cattleInfo.bw_gain"
+                :label="$t('simulation.fields.bwGain')"
+                type="number"
+                outlined
+                dense
+                step="0.01"
+                suffix="kg/day"
+                hint="-1 – 2"
+                :rules="[
+                  (v: number) => v >= -1 || $t('simulation.validation.bwGainMin'),
+                  (v: number) => v <= 2 || $t('simulation.validation.bwGainMax'),
+                ]"
+              />
+            </div>
+          </div>
 
           <q-toggle
             v-model="store.cattleInfo.grazing"
             :label="$t('simulation.fields.grazing')"
             color="primary"
-          />
-
-          <q-input
-            v-model.number="store.cattleInfo.bw_gain"
-            :label="$t('simulation.fields.bwGain')"
-            type="number"
-            outlined
-            dense
-            step="0.01"
-            suffix="kg/day"
-            hint="-1 – 2"
-            :rules="[
-              (v: number) => v >= -1 || $t('simulation.validation.bwGainMin'),
-              (v: number) => v <= 2 || $t('simulation.validation.bwGainMax'),
-            ]"
           />
         </q-card-section>
       </q-card>

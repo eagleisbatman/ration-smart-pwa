@@ -47,12 +47,46 @@ export const useFeedsStore = defineStore('feeds', () => {
 
   const categories = computed(() => Object.keys(feedsByCategory.value).sort());
 
+  // Cache TTL: refresh from API if cache is older than 1 hour
+  const CACHE_TTL_MS = 60 * 60 * 1000;
+
+  /** Load feeds from IndexedDB cache instantly (no network). */
+  async function loadFromCache(): Promise<void> {
+    const cached = await db.feeds
+      .where('is_custom')
+      .equals(0)
+      .filter((f) => !f._deleted)
+      .toArray();
+    if (cached.length > 0) {
+      masterFeeds.value = cached;
+    }
+  }
+
+  /** Check if feed cache is stale (older than TTL). */
+  async function isCacheStale(): Promise<boolean> {
+    const ts = await db.getSetting('feeds_last_fetched');
+    if (!ts) return true;
+    return Date.now() - Number(ts) > CACHE_TTL_MS;
+  }
+
   // Actions
   async function fetchMasterFeeds(countryCode?: string): Promise<void> {
     const authStore = useAuthStore();
     const country = countryCode || authStore.userCountry;
 
-    loading.value = true;
+    // 1. Load from IndexedDB cache first (instant)
+    await loadFromCache();
+    const hadCachedData = masterFeeds.value.length > 0;
+
+    // 2. If we have cached data and it's fresh, skip network
+    if (hadCachedData && !(await isCacheStale())) {
+      return;
+    }
+
+    // 3. Fetch from API (show loading only if no cached data)
+    if (!hadCachedData) {
+      loading.value = true;
+    }
     error.value = null;
 
     try {
@@ -76,10 +110,11 @@ export const useFeedsStore = defineStore('feeds', () => {
         // Update local database
         if (feeds.length > 0) {
           await db.feeds.bulkPut(feeds);
+          await db.setSetting('feeds_last_fetched', Date.now());
         }
       }
 
-      // Load from local database
+      // Reload from local database
       masterFeeds.value = await db.feeds
         .where('is_custom')
         .equals(0)
@@ -105,7 +140,23 @@ export const useFeedsStore = defineStore('feeds', () => {
     const authStore = useAuthStore();
     if (!authStore.userId) return;
 
-    loading.value = true;
+    // 1. Load from IndexedDB cache first (instant)
+    customFeeds.value = await db.feeds
+      .where({ user_id: authStore.userId, is_custom: 1 })
+      .filter((f) => !f._deleted)
+      .toArray();
+    const hadCachedData = customFeeds.value.length > 0;
+
+    // 2. If we have cached data and it's fresh, skip network
+    const ts = await db.getSetting('custom_feeds_last_fetched');
+    if (hadCachedData && ts && Date.now() - Number(ts) < CACHE_TTL_MS) {
+      return;
+    }
+
+    // 3. Fetch from API (show loading only if no cached data)
+    if (!hadCachedData) {
+      loading.value = true;
+    }
     error.value = null;
 
     try {
@@ -124,6 +175,7 @@ export const useFeedsStore = defineStore('feeds', () => {
         // Update local database
         if (feeds.length > 0) {
           await db.feeds.bulkPut(feeds);
+          await db.setSetting('custom_feeds_last_fetched', Date.now());
         }
       }
 
