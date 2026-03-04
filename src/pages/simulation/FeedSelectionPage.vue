@@ -1,5 +1,49 @@
 <template>
   <q-page class="q-pa-md">
+    <!-- Top buttons row: Custom Diet Limits + Custom Feed -->
+    <div class="row q-col-gutter-sm q-mb-md">
+      <div class="col-6">
+        <q-btn
+          outline
+          no-caps
+          color="primary"
+          icon="tune"
+          :label="$t('simulation.feedSelect.customLimits')"
+          class="full-width top-btn"
+          @click="showConstraints = true"
+        />
+      </div>
+      <div class="col-6">
+        <q-btn
+          unelevated
+          no-caps
+          color="primary"
+          icon="add"
+          :label="$t('simulation.feedSelect.customFeed')"
+          class="full-width top-btn"
+          @click="showCustomFeed = true"
+        />
+      </div>
+    </div>
+
+    <!-- Diet Mode Radio Toggle -->
+    <div class="row items-center q-mb-md mode-toggle">
+      <q-radio
+        v-model="dietMode"
+        val="recommendation"
+        :label="$t('simulation.feedSelect.dietRecommendation')"
+        color="primary"
+        class="col-6"
+      />
+      <q-radio
+        v-model="dietMode"
+        val="evaluation"
+        :label="$t('simulation.feedSelect.dietEvaluation')"
+        color="primary"
+        class="col-6"
+      />
+    </div>
+
     <!-- Feed Type Toggle -->
     <div class="view-toggle q-mb-md">
       <q-btn-toggle
@@ -68,7 +112,7 @@
       v-else
       :items="filteredFeeds"
       :virtual-scroll-item-size="72"
-      style="max-height: 50vh"
+      style="max-height: 45vh"
       class="rounded-borders q-mb-md bordered-scroll"
       separator
     >
@@ -99,45 +143,55 @@
       <div class="text-subtitle1 text-weight-medium q-mb-sm">
         {{ $t('simulation.feedSelect.selectedFeeds') }} ({{ simStore.selectedFeeds.length }})
       </div>
-      <q-card flat bordered class="q-mb-md rounded-borders selected-feeds-card">
-        <q-list separator dense>
-          <q-item v-for="(sf, idx) in simStore.selectedFeeds" :key="sf.feed_id">
-            <q-item-section>
-              <q-item-label class="text-weight-medium">{{ sf.feed_name }}</q-item-label>
-              <q-item-label caption>
-                <span :class="sf.fd_type === 'Forage' ? 'text-green-7' : 'text-blue-7'">{{ sf.fd_type }}</span>
-                <span v-if="sf.fd_category"> · {{ sf.fd_category }}</span>
-              </q-item-label>
-            </q-item-section>
-            <q-item-section side style="min-width: 80px">
+
+      <q-card
+        v-for="(sf, idx) in simStore.selectedFeeds"
+        :key="sf.feed_id"
+        flat
+        bordered
+        class="q-mb-sm rounded-borders"
+      >
+        <q-card-section class="q-py-sm">
+          <div class="row items-center no-wrap q-mb-xs">
+            <div class="col text-weight-bold" style="color: var(--q-primary)">
+              {{ $t('simulation.feedSelect.feedLabel', { n: idx + 1 }) }}
+            </div>
+            <q-btn flat round dense icon="close" size="sm" color="grey-5" @click="removeFeed(idx)" />
+          </div>
+
+          <div class="text-body2 q-mb-xs">{{ sf.feed_name }}</div>
+          <div class="text-caption text-grey-6 q-mb-sm">
+            <span :class="sf.fd_type === 'Forage' ? 'text-green-7' : 'text-blue-7'">{{ sf.fd_type }}</span>
+            <span v-if="sf.fd_category"> · {{ sf.fd_category }}</span>
+          </div>
+
+          <div class="row q-col-gutter-sm">
+            <div :class="dietMode === 'evaluation' ? 'col-6' : 'col-12'">
               <q-input
                 v-model.number="simStore.selectedFeeds[idx].price_per_kg"
+                :label="$t('simulation.feedSelect.pricePerKg')"
                 type="number"
                 outlined
                 dense
                 step="0.1"
                 suffix="/kg"
-                :placeholder="$t('simulation.feedSelect.price')"
-                class="selected-feed-input"
+                :rules="[(v: number) => v > 0 || $t('simulation.validation.priceMin')]"
               />
-            </q-item-section>
-            <q-item-section side style="min-width: 80px">
+            </div>
+            <div v-if="dietMode === 'evaluation'" class="col-6">
               <q-input
                 v-model.number="simStore.selectedFeeds[idx].quantity_as_fed"
+                :label="$t('simulation.feedSelect.quantityKg')"
                 type="number"
                 outlined
                 dense
                 step="0.1"
                 suffix="kg"
-                :placeholder="$t('simulation.feedSelect.qty')"
-                class="selected-feed-input"
+                :rules="[(v: number) => v > 0 || $t('simulation.validation.quantityMin')]"
               />
-            </q-item-section>
-            <q-item-section side>
-              <q-btn flat round dense icon="close" size="sm" color="grey-5" @click="removeFeed(idx)" />
-            </q-item-section>
-          </q-item>
-        </q-list>
+            </div>
+          </div>
+        </q-card-section>
       </q-card>
     </template>
 
@@ -148,50 +202,21 @@
       </div>
     </template>
 
-    <!-- Custom Limits Button -->
-    <q-btn
-      flat
-      no-caps
-      color="primary"
-      icon="tune"
-      :label="$t('simulation.feedSelect.customLimits')"
-      class="q-mb-md"
-      @click="showConstraints = true"
-    />
-
-    <!-- Action Buttons -->
+    <!-- Single Action Button (changes based on mode) -->
     <div class="action-bar">
-      <div class="text-caption text-grey-6 q-mb-xs text-center">
-        {{ $t('simulation.feedSelect.actionHint') }}
-      </div>
-      <div class="row q-col-gutter-sm">
-        <div class="col-6">
-          <q-btn
-            :label="$t('simulation.feedSelect.withoutQuantities')"
-            color="primary"
-            class="full-width action-btn"
-            unelevated
-            no-caps
-            :loading="simStore.recommending"
-            :disable="simStore.selectedFeeds.length === 0 || simStore.evaluating"
-            @click="runRecommendation"
-          />
-        </div>
-        <div class="col-6">
-          <q-btn
-            :label="$t('simulation.feedSelect.withQuantities')"
-            color="secondary"
-            class="full-width action-btn"
-            unelevated
-            no-caps
-            :loading="simStore.evaluating"
-            :disable="simStore.selectedFeeds.length === 0 || !hasQuantities || simStore.recommending"
-            @click="runEvaluation"
-          >
-            <q-tooltip v-if="!hasQuantities">{{ $t('simulation.feedSelect.evalTooltip') }}</q-tooltip>
-          </q-btn>
-        </div>
-      </div>
+      <q-btn
+        :label="dietMode === 'recommendation'
+          ? $t('simulation.feedSelect.generateRecommendation')
+          : $t('simulation.feedSelect.getEvaluation')"
+        color="primary"
+        class="full-width action-btn"
+        unelevated
+        no-caps
+        icon-right="arrow_forward"
+        :loading="simStore.recommending || simStore.evaluating"
+        :disable="simStore.selectedFeeds.length === 0"
+        @click="dietMode === 'recommendation' ? runRecommendation() : runEvaluation()"
+      />
     </div>
 
     <!-- Loading Overlay -->
@@ -205,6 +230,19 @@
 
     <!-- Custom Constraints Dialog -->
     <CustomConstraintsDialog v-model="showConstraints" />
+
+    <!-- Custom Feed Dialog (placeholder) -->
+    <q-dialog v-model="showCustomFeed">
+      <q-card style="min-width: 320px">
+        <q-card-section>
+          <div class="text-h6">{{ $t('simulation.feedSelect.customFeed') }}</div>
+          <div class="text-caption text-grey-6 q-mt-sm">{{ $t('simulation.feedSelect.customFeedHint') }}</div>
+        </q-card-section>
+        <q-card-actions align="right">
+          <q-btn flat :label="$t('common.close')" color="primary" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
@@ -227,10 +265,12 @@ const simStore = useSimulationStore();
 const feedsStore = useFeedsStore();
 const { formatCurrency } = useCurrency();
 
+const dietMode = ref<'recommendation' | 'evaluation'>('recommendation');
 const feedTypeFilter = ref('all');
 const categoryFilter = ref<string | null>(null);
 const searchQuery = ref('');
 const showConstraints = ref(false);
+const showCustomFeed = ref(false);
 const showGenerating = ref(false);
 
 // Reset category filter when type filter changes to avoid stale cross-filter state
@@ -278,10 +318,6 @@ const categoryOptions = computed(() => {
   ];
 });
 
-const hasQuantities = computed(() =>
-  simStore.selectedFeeds.some((f) => f.quantity_as_fed != null && f.quantity_as_fed > 0)
-);
-
 const selectedFeedIds = computed(() => new Set(simStore.selectedFeeds.map((f) => f.feed_id)));
 
 function isSelected(feedId: string): boolean {
@@ -321,6 +357,14 @@ async function runEvaluation() {
   );
   if (missingQty) {
     $q.notify({ type: 'warning', message: t('simulation.feedSelect.quantityRequired') });
+    return;
+  }
+  // Ensure all feeds have price > 0
+  const missingPrice = simStore.selectedFeeds.some(
+    (f) => !f.price_per_kg || f.price_per_kg <= 0
+  );
+  if (missingPrice) {
+    $q.notify({ type: 'warning', message: t('simulation.feedSelect.priceRequired') });
     return;
   }
   showGenerating.value = true;
@@ -371,6 +415,22 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
+.top-btn {
+  border-radius: $radius-loose;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.mode-toggle {
+  background: rgba(0, 0, 0, 0.03);
+  border-radius: $radius-loose;
+  padding: 4px 8px;
+
+  .body--dark & {
+    background: rgba(255, 255, 255, 0.05);
+  }
+}
+
 .view-toggle {
   .q-btn-toggle {
     border: 1px solid var(--q-primary);
@@ -390,24 +450,6 @@ onMounted(() => {
 
   .body--dark & {
     border-color: rgba(255, 255, 255, 0.2);
-  }
-}
-
-.selected-feeds-card {
-  max-height: 40vh;
-  overflow-y: auto;
-}
-
-.selected-feed-input {
-  :deep(.q-field__control) {
-    min-height: 32px;
-  }
-  :deep(.q-field__native) {
-    padding: 2px 4px;
-    font-size: 0.85rem;
-  }
-  :deep(.q-field__suffix) {
-    font-size: 0.75rem;
   }
 }
 
@@ -431,8 +473,8 @@ onMounted(() => {
 
 .action-btn {
   border-radius: $radius-loose;
-  font-size: 0.9rem;
-  padding-top: 12px;
-  padding-bottom: 12px;
+  font-size: 1rem;
+  padding-top: 14px;
+  padding-bottom: 14px;
 }
 </style>
