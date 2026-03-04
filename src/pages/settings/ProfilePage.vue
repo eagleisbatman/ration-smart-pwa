@@ -59,6 +59,7 @@
         v-model="form.country_code"
         :label="$t('profile.country')"
         outlined
+        behavior="menu"
         :options="countryOptions"
         emit-value
         map-options
@@ -74,6 +75,7 @@
         v-model="form.language"
         :label="$t('profile.language')"
         outlined
+        behavior="menu"
         :options="languageOptions"
         emit-value
         map-options

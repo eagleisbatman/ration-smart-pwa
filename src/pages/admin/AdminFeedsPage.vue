@@ -71,7 +71,7 @@
         </q-card-section>
         <q-card-section class="q-gutter-sm">
           <q-input v-model="feedForm.name" label="Feed Name" outlined dense />
-          <q-select v-model="feedForm.fd_type" :options="['Forage', 'Concentrate']" label="Type" outlined dense />
+          <q-select v-model="feedForm.fd_type" :options="['Forage', 'Concentrate']" label="Type" outlined dense behavior="menu" />
           <q-input v-model="feedForm.category" label="Category" outlined dense />
           <q-input v-model.number="feedForm.price_per_kg" label="Price/kg" type="number" outlined dense />
         </q-card-section>

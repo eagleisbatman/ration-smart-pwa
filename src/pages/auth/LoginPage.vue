@@ -11,6 +11,7 @@
         map-options
         dense
         borderless
+        behavior="menu"
         class="language-select"
         @update:model-value="switchLanguage"
       >
@@ -47,6 +48,7 @@
             emit-value
             map-options
             dense
+            behavior="menu"
             :loading="authStore.countriesLoading"
             class="q-mb-sm"
           >

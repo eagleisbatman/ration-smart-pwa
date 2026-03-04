@@ -9,6 +9,7 @@
         map-options
         outlined
         dense
+        behavior="menu"
         class="q-mb-md"
         :rules="[(v: string) => !!v || $t('validation.required')]"
       />

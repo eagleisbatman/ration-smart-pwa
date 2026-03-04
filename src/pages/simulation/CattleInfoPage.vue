@@ -30,6 +30,7 @@
             map-options
             outlined
             dense
+            behavior="menu"
             :loading="breedsLoading"
             :rules="[(v: string) => !!v || $t('simulation.validation.breedRequired')]"
             hint=" "
@@ -245,6 +246,7 @@
                 map-options
                 outlined
                 dense
+                behavior="menu"
                 hint="Flat / Hilly / Mountainous"
               />
             </div>

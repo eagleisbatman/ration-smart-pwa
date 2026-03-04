@@ -54,6 +54,7 @@
               outlined
               emit-value
               map-options
+              behavior="menu"
               style="min-width: 140px"
               @update:model-value="(val: string) => onLevelChange(u, val)"
             />

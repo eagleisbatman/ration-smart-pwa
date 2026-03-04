@@ -11,6 +11,7 @@
         map-options
         dense
         borderless
+        behavior="menu"
         class="language-select"
         @update:model-value="switchLanguage"
       >
@@ -55,6 +56,7 @@
             v-model="form.country_code"
             :label="$t('profile.country')"
             outlined
+            behavior="menu"
             :options="countryOptions"
             emit-value
             map-options

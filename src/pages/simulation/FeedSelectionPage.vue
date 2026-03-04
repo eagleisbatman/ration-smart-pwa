@@ -73,6 +73,7 @@
       outlined
       dense
       clearable
+      behavior="menu"
       class="q-mb-md"
     />
 
@@ -153,13 +154,13 @@
       >
         <q-card-section class="q-py-sm">
           <div class="row items-center no-wrap q-mb-xs">
-            <div class="col text-weight-bold" style="color: var(--q-primary)">
-              {{ $t('simulation.feedSelect.feedLabel', { n: idx + 1 }) }}
+            <div class="col">
+              <span class="text-body2 text-weight-medium">{{ sf.feed_name }}</span>
+              <span class="text-caption text-grey-6"> ({{ idx + 1 }})</span>
             </div>
             <q-btn flat round dense icon="close" size="sm" color="grey-5" @click="removeFeed(idx)" />
           </div>
 
-          <div class="text-body2 q-mb-xs">{{ sf.feed_name }}</div>
           <div class="text-caption text-grey-6 q-mb-sm">
             <span :class="sf.fd_type === 'Forage' ? 'text-green-7' : 'text-blue-7'">{{ sf.fd_type }}</span>
             <span v-if="sf.fd_category"> · {{ sf.fd_category }}</span>
@@ -175,6 +176,7 @@
                 dense
                 step="0.1"
                 suffix="/kg"
+                hide-bottom-space
                 :rules="[(v: number) => v > 0 || $t('simulation.validation.priceMin')]"
               />
             </div>
@@ -187,6 +189,7 @@
                 dense
                 step="0.1"
                 suffix="kg"
+                hide-bottom-space
                 :rules="[(v: number) => v > 0 || $t('simulation.validation.quantityMin')]"
               />
             </div>
