@@ -25,8 +25,6 @@ export interface CattleInfoForm {
   temperature: number;
   topography: string; // Flat | Hilly | Mountainous
   distance: number;
-  grazing: boolean; // UI-only (not sent to backend)
-  calving_interval: number;
   bw_gain: number;
 }
 
@@ -293,8 +291,6 @@ function defaultCattleInfo(): CattleInfoForm {
     temperature: 25,
     topography: 'Flat',
     distance: 1,
-    grazing: false,
-    calving_interval: 370,
     bw_gain: 0.2,
   };
 }
@@ -345,7 +341,7 @@ export const useSimulationStore = defineStore('simulation', () => {
     return Number.isFinite(n) ? n : fallback;
   }
 
-  /** Build the cattle_info payload (exclude UI-only fields like `grazing`). */
+  /** Build the cattle_info payload for the backend API. */
   function buildCattlePayload(): Record<string, unknown> {
     const c = cattleInfo.value;
     return {
@@ -362,7 +358,6 @@ export const useSimulationStore = defineStore('simulation', () => {
       temperature: safeNum(c.temperature, 25),
       topography: c.topography || 'Flat',
       distance: safeNum(c.distance, 1),
-      calving_interval: safeNum(c.calving_interval, 370),
       bw_gain: safeNum(c.bw_gain, 0.2),
     };
   }
@@ -534,8 +529,6 @@ export const useSimulationStore = defineStore('simulation', () => {
       temperature: safeNum(ci.temperature, 25),
       topography: String(ci.topography || 'Flat'),
       distance: safeNum(ci.distance, 1),
-      grazing: false,
-      calving_interval: safeNum(ci.calving_interval, 370),
       bw_gain: safeNum(ci.bw_gain, 0.2),
     };
   }
