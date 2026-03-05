@@ -220,19 +220,6 @@
             </div>
           </div>
 
-          <q-input
-            v-model.number="store.cattleInfo.calving_interval"
-            :label="$t('simulation.fields.calvingInterval')"
-            type="number"
-            outlined
-            dense
-            :suffix="$t('simulation.units.days')"
-            :hint="$t('simulation.hints.calvingInterval')"
-            :rules="[
-              (v: number) => v >= 300 || $t('simulation.validation.calvingIntervalMin'),
-              (v: number) => v <= 600 || $t('simulation.validation.calvingIntervalMax'),
-            ]"
-          />
         </q-card-section>
       </q-card>
 
@@ -309,11 +296,6 @@
             </div>
           </div>
 
-          <q-toggle
-            v-model="store.cattleInfo.grazing"
-            :label="$t('simulation.fields.grazing')"
-            color="primary"
-          />
         </q-card-section>
       </q-card>
 
