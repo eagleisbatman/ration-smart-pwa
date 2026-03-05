@@ -66,8 +66,8 @@
                 type="number"
                 outlined
                 dense
-                suffix="kg"
-                hint="100 – 1,200"
+                :suffix="$t('simulation.units.kg')"
+                :hint="$t('simulation.hints.bodyWeight')"
                 :rules="[
                   (v: number) => (v >= 100) || $t('simulation.validation.bodyWeightMin'),
                   (v: number) => (v <= 1200) || $t('simulation.validation.bodyWeightMax'),
@@ -119,7 +119,7 @@
                   type="number"
                   outlined
                   dense
-                  hint="0 – 700"
+                  :hint="$t('simulation.hints.daysInMilk')"
                   :rules="[
                     (v: number) => v >= 0 || $t('simulation.validation.minZero'),
                     (v: number) => v <= 700 || $t('simulation.validation.daysInMilkMax'),
@@ -134,8 +134,8 @@
                   outlined
                   dense
                   step="0.1"
-                  suffix="L/day"
-                  hint="0 – 80"
+                  :suffix="$t('simulation.units.litersPerDay')"
+                  :hint="$t('simulation.hints.milkProduction')"
                   :rules="[
                     (v: number) => v >= 0 || $t('simulation.validation.minZero'),
                     (v: number) => v <= 80 || $t('simulation.validation.milkProductionMax'),
@@ -153,8 +153,8 @@
                   outlined
                   dense
                   step="0.1"
-                  suffix="%"
-                  hint="1 – 8"
+                  :suffix="$t('simulation.units.percent')"
+                  :hint="$t('simulation.hints.fatMilk')"
                   :rules="[
                     (v: number) => v >= 1 || $t('simulation.validation.fatMilkMin'),
                     (v: number) => v <= 8 || $t('simulation.validation.fatMilkMax'),
@@ -169,8 +169,8 @@
                   outlined
                   dense
                   step="0.1"
-                  suffix="%"
-                  hint="1 – 6"
+                  :suffix="$t('simulation.units.percent')"
+                  :hint="$t('simulation.hints.tpMilk')"
                   :rules="[
                     (v: number) => v >= 1 || $t('simulation.validation.tpMilkMin'),
                     (v: number) => v <= 6 || $t('simulation.validation.tpMilkMax'),
@@ -197,7 +197,7 @@
                 type="number"
                 outlined
                 dense
-                hint="0 – 15"
+                :hint="$t('simulation.hints.parity')"
                 :rules="[
                   (v: number) => v >= 0 || $t('simulation.validation.minZero'),
                   (v: number) => v <= 15 || $t('simulation.validation.parityMax'),
@@ -211,7 +211,7 @@
                 type="number"
                 outlined
                 dense
-                hint="0 – 290"
+                :hint="$t('simulation.hints.daysOfPregnancy')"
                 :rules="[
                   (v: number) => v >= 0 || $t('simulation.validation.minZero'),
                   (v: number) => v <= 290 || $t('simulation.validation.daysOfPregnancyMax'),
@@ -227,7 +227,7 @@
             outlined
             dense
             :suffix="$t('simulation.units.days')"
-            hint="300 – 600"
+            :hint="$t('simulation.hints.calvingInterval')"
             :rules="[
               (v: number) => v >= 300 || $t('simulation.validation.calvingIntervalMin'),
               (v: number) => v <= 600 || $t('simulation.validation.calvingIntervalMax'),
@@ -251,8 +251,8 @@
                 type="number"
                 outlined
                 dense
-                suffix="°C"
-                hint="-20 – 50"
+                :suffix="$t('simulation.units.degreeC')"
+                :hint="$t('simulation.hints.temperature')"
                 :rules="[
                   (v: number) => v >= -20 || $t('simulation.validation.temperatureMin'),
                   (v: number) => v <= 50 || $t('simulation.validation.temperatureMax'),
@@ -283,8 +283,8 @@
                 outlined
                 dense
                 step="0.1"
-                suffix="km"
-                hint="0 – 50"
+                :suffix="$t('simulation.units.km')"
+                :hint="$t('simulation.hints.distance')"
                 :rules="[
                   (v: number) => v >= 0 || $t('simulation.validation.minZero'),
                   (v: number) => v <= 50 || $t('simulation.validation.distanceMax'),
@@ -299,8 +299,8 @@
                 outlined
                 dense
                 step="0.01"
-                suffix="kg/day"
-                hint="-1 – 2"
+                :suffix="$t('simulation.units.kgPerDay')"
+                :hint="$t('simulation.hints.bwGain')"
                 :rules="[
                   (v: number) => v >= -1 || $t('simulation.validation.bwGainMin'),
                   (v: number) => v <= 2 || $t('simulation.validation.bwGainMax'),

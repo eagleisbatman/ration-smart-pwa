@@ -129,11 +129,11 @@
             <q-item-label>{{ getFeedDisplayName(feed, locale) }}</q-item-label>
             <q-item-label caption>
               {{ translateCategory(feed.category, t) }}
-              <q-badge v-if="feed.fd_type" :label="feed.fd_type" color="grey-5" text-color="white" class="q-ml-xs" />
+              <q-badge v-if="feed.fd_type" :label="translateFeedType(feed.fd_type)" color="grey-5" text-color="white" class="q-ml-xs" />
             </q-item-label>
           </q-item-section>
           <q-item-section side>
-            <q-item-label v-if="feed.price_per_kg" caption>{{ formatCurrency(feed.price_per_kg) }}/kg</q-item-label>
+            <q-item-label v-if="feed.price_per_kg" caption>{{ formatCurrency(feed.price_per_kg) }}/{{ $t('simulation.units.kg') }}</q-item-label>
           </q-item-section>
         </q-item>
       </template>
@@ -162,7 +162,7 @@
           </div>
 
           <div class="text-caption text-grey-6 q-mb-sm">
-            <span :class="sf.fd_type === 'Forage' ? 'text-green-7' : 'text-blue-7'">{{ sf.fd_type }}</span>
+            <span :class="sf.fd_type === 'Forage' ? 'text-green-7' : 'text-blue-7'">{{ translateFeedType(sf.fd_type) }}</span>
             <span v-if="sf.fd_category"> · {{ sf.fd_category }}</span>
           </div>
 
@@ -263,6 +263,13 @@ import CustomConstraintsDialog from 'src/components/simulation/CustomConstraints
 
 const { t, locale } = useI18n();
 const router = useRouter();
+
+function translateFeedType(fdType?: string): string {
+  if (!fdType) return '';
+  const key = `simulation.feedSelect.feedType_${fdType.toLowerCase()}`;
+  const translated = t(key);
+  return translated !== key ? translated : fdType;
+}
 const $q = useQuasar();
 const simStore = useSimulationStore();
 const feedsStore = useFeedsStore();

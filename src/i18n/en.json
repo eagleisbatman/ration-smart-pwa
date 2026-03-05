@@ -1930,7 +1930,26 @@
       "bwGain": "Body Weight Gain (kg/day)"
     },
     "units": {
-      "days": "days"
+      "days": "days",
+      "kg": "kg",
+      "litersPerDay": "L/day",
+      "kgPerDay": "kg/day",
+      "degreeC": "°C",
+      "km": "km",
+      "percent": "%"
+    },
+    "hints": {
+      "bodyWeight": "100 – 1,200",
+      "daysInMilk": "0 – 700",
+      "milkProduction": "0 – 80",
+      "fatMilk": "1 – 8",
+      "tpMilk": "1 – 6",
+      "parity": "0 – 15",
+      "daysOfPregnancy": "0 – 290",
+      "calvingInterval": "300 – 600",
+      "temperature": "-20 – 50",
+      "distance": "0 – 50",
+      "bwGain": "-1 – 2"
     },
     "topographyHint": "Flat / Hilly / Mountainous",
     "topographyOptions": {
@@ -2001,6 +2020,8 @@
       "generateRecommendation": "Generate Recommendation",
       "getEvaluation": "Get Evaluation",
       "feedLabel": "FEED {n}",
+      "feedType_forage": "Forage",
+      "feedType_concentrate": "Concentrate",
       "customFeed": "Custom Feed",
       "customFeedHint": "Custom feed creation is coming soon.",
       "price": "Price",
@@ -2008,12 +2029,28 @@
     },
     "constraints": {
       "title": "Custom Diet Limits",
-      "fiberNdf": "Fiber NDF (% of DM)",
-      "starch": "Starch (% of DM)",
-      "fatEe": "Fat / EE (% of DM)",
-      "ash": "Ash (% of DM)",
+      "fiberNdf": "Maximum Fiber (%)",
+      "starch": "Maximum Starch (%)",
+      "fatEe": "Maximum Fat (%)",
+      "ash": "Mineral Content (%)",
       "resetDefaults": "Reset to Defaults",
       "hintRange": "{min} – {max}"
+    },
+    "nutrientLabels": {
+      "ne_l": "Energy",
+      "mp": "Protein",
+      "ndf": "Fiber",
+      "ee": "Fat",
+      "ash": "Minerals",
+      "rdp": "Digestible Protein",
+      "rup": "Bypass Protein",
+      "ca": "Calcium",
+      "p": "Phosphorus",
+      "energy_mcal": "Energy (Mcal)",
+      "protein_kg": "Protein (kg)",
+      "calcium_kg": "Calcium (kg)",
+      "phosphorus_kg": "Phosphorus (kg)",
+      "ndf_kg": "Fiber (kg)"
     },
     "evaluation": {
       "title": "Diet Evaluation Report",
@@ -2040,12 +2077,12 @@
     "recommendation": {
       "title": "Diet Recommendation Report",
       "reportInfo": "Report Information",
-      "reportId": "Report ID",
-      "simulationId": "Simulation ID",
+      "reportId": "Reference",
+      "simulationId": "Simulation Ref",
       "date": "Date",
       "solutionSummary": "Solution Summary",
       "dailyCost": "Daily Cost",
-      "dmIntake": "DM Intake",
+      "dmIntake": "Dry Feed Amount",
       "milkProduction": "Milk Production",
       "feedBreakdown": "Feed Breakdown",
       "feedName": "Feed",
@@ -2067,12 +2104,12 @@
     "methane": {
       "title": "Environmental Impact",
       "production": "Methane Production",
-      "yield": "Methane Yield",
-      "intensity": "Methane Intensity",
-      "conversionRate": "Energy Conversion Rate",
+      "yield": "Methane per kg Feed",
+      "intensity": "Methane per kg Milk",
+      "conversionRate": "Feed-to-Methane Rate",
       "gPerDay": "g/day",
-      "gPerKgDmi": "g/kg DMI",
-      "gPerKgMilk": "g/kg milk",
+      "gPerKgDmi": "g per kg dry feed",
+      "gPerKgMilk": "g per kg milk",
       "percent": "%"
     },
     "animalSummary": {
@@ -2086,7 +2123,7 @@
       "marginal": "Marginal",
       "deficient": "Deficient",
       "excess": "Excess",
-      "infeasible": "Infeasible",
+      "infeasible": "No diet found",
       "failed": "Failed",
       "success": "Success"
     },

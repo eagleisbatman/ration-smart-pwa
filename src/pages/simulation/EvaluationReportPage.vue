@@ -23,7 +23,7 @@
             :label="translateStatus(evalSummary.overall_status)"
           />
           <div v-if="evalSummary.limiting_factor" class="text-caption text-grey-6 q-mt-xs">
-            {{ $t('simulation.evaluation.limitingNutrient') }}: {{ evalSummary.limiting_factor }}
+            {{ $t('simulation.evaluation.limitingNutrient') }}: {{ friendlyNutrient(evalSummary.limiting_factor) }}
           </div>
         </q-card-section>
       </q-card>
@@ -47,7 +47,7 @@
             </q-item>
             <q-item v-if="milkAnalysis.limiting_nutrient">
               <q-item-section>{{ $t('simulation.evaluation.limitingNutrient') }}</q-item-section>
-              <q-item-section side class="text-weight-medium">{{ formatNutrientLabel(milkAnalysis.limiting_nutrient) }}</q-item-section>
+              <q-item-section side class="text-weight-medium">{{ friendlyNutrient(milkAnalysis.limiting_nutrient) }}</q-item-section>
             </q-item>
           </q-list>
         </q-card-section>
@@ -82,7 +82,7 @@
           <div class="text-subtitle2 q-mb-sm">{{ $t('simulation.evaluation.nutrientBalance') }}</div>
           <q-list dense separator>
             <q-item v-for="(val, key) in nutrientBalance" :key="String(key)">
-              <q-item-section>{{ formatNutrientLabel(String(key)) }}</q-item-section>
+              <q-item-section>{{ friendlyNutrient(String(key)) }}</q-item-section>
               <q-item-section side>
                 <q-badge
                   :color="getNutrientColor(val as NutrientBalanceEntry)"
@@ -213,7 +213,13 @@ function formatNum(val: unknown): string {
   return val != null ? Number(val).toFixed(1) : '–';
 }
 
-function formatNutrientLabel(key: string): string {
+function friendlyNutrient(key: string): string {
+  // Try i18n lookup first, then title-case fallback
+  const normalized = key.toLowerCase().replace(/[^a-z0-9_]/g, '_').replace(/__+/g, '_').replace(/^_|_$/g, '');
+  const i18nKey = `simulation.nutrientLabels.${normalized}`;
+  const translated = t(i18nKey);
+  if (translated !== i18nKey) return translated;
+  // Fallback: title-case the raw key
   return key.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
@@ -242,7 +248,8 @@ function getNutrientColor(val: NutrientBalanceEntry): string {
 }
 
 function getNutrientStatus(val: NutrientBalanceEntry): string {
-  return String(val?.status || val?.balance || '–');
+  const raw = String(val?.status || val?.balance || '–');
+  return translateStatus(raw);
 }
 
 async function onGenerateRecommendation() {
