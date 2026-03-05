@@ -1930,7 +1930,8 @@
       "animalCharacteristics": "የእንስሳት ባህሪያት",
       "milkProduction": "የወተት ምርት",
       "reproductiveData": "የመራባት መረጃ",
-      "environment": "አካባቢ"
+      "environment": "አካባቢ",
+      "simulationDetails": "የሲሙሌሽን ዝርዝሮች"
     },
     "fields": {
       "bodyWeight": "የሰውነት ክብደት (ኪግ)",
@@ -1948,7 +1949,8 @@
       "topography": "የመሬት አቀማመጥ",
       "distance": "የመራመጃ ርቀት (ኪሜ)",
       "grazing": "ግጦሽ",
-      "bwGain": "የሰውነት ክብደት መጨመር (ኪግ/ቀን)"
+      "bwGain": "የሰውነት ክብደት መጨመር (ኪግ/ቀን)",
+      "simulationName": "የሲሙሌሽኑ ስም"
     },
     "topographyOptions": {
       "flat": "ጠፍጣፋ",
@@ -1984,7 +1986,8 @@
       "required": "ይህ መስክ ያስፈልጋል",
       "lactatingLatePregnancy": "ላሟ በ{days} ቀን እርግዝና ውስጥ ወተት ትሰጣለች። ላሞች በአብዛኛው ከ210-220 ቀናት በኋላ ወተት ማቆም አለባቸው። ለማንኛውም መቀጠል ይፈልጋሉ?",
       "notLactatingCleared": "እንስሳው ወተት ስለማይሰጥ የወተት ምርት መስኮች ተሰርዘዋል።",
-      "quantityMin": "ብዛት ከ 0 በላይ መሆን አለበት"
+      "quantityMin": "ብዛት ከ 0 በላይ መሆን አለበት",
+      "simulationNameMax": "የሲሙሌሽኑ ስም 100 ፊደላት ወይም ከዚያ ያነሰ መሆን አለበት"
     },
     "historyItem": {
       "evaluation": "የምግብ ግምገማ",
@@ -2020,7 +2023,9 @@
       "customFeed": "የግል ምግብ",
       "customFeedHint": "የግል ምግብ መፍጠር በቅርብ ቀን ይመጣል።",
       "price": "ዋጋ",
-      "qty": "ብዛት"
+      "qty": "ብዛት",
+      "feedType_forage": "መኖ",
+      "feedType_concentrate": "ማጎሪያ"
     },
     "constraints": {
       "title": "የተበጁ የምግብ ገደቦች",
@@ -2117,12 +2122,22 @@
       "noSimulations": "እስካሁን ምንም ምናባዊ ግብዓት የለም",
       "noSimulationsDesc": "የመጀመሪያዎን ምናባዊ ግብዓት እዚህ ለማየት ያካሂዱ",
       "viewAll": "ሁሉንም ይመልከቱ",
-      "searchPlaceholder": "አስመሳይ ፍለጋ..."
+      "searchPlaceholder": "አስመሳይ ፍለጋ...",
+      "recommendations": "ምክር",
+      "evaluations": "ግምገማዎች",
+      "noRecommendationsYet": "የመጀመሪያው ምክርዎ እዚህ ይታያል",
+      "noEvaluationsYet": "የመጀመሪያው ግምገማዎ እዚህ ይታያል"
     },
     "dietHistory": "የምግብ ታሪክ",
     "loadFromHistory": "ከታሪክ አስመጣ",
     "units": {
-      "days": "ቀናት"
+      "days": "ቀናት",
+      "kg": "ኪ.ግ",
+      "litersPerDay": "ሊትር/ቀን",
+      "kgPerDay": "ኪ.ግ/ቀን",
+      "degreeC": "°C",
+      "km": "ኪ.ሜ",
+      "percent": "%"
     },
     "topographyHint": "ጠፍጣፋ / ተራራማ / ወጣ ገባ",
     "reset": "ዳግም አስጀምር",
@@ -2136,6 +2151,36 @@
       "evaluations": "ግምገማዎች",
       "failed": "ያልተሳኩ"
     },
-    "noFilterResults": "ለዚህ ማጣሪያ ምንም ውጤት የለም"
+    "noFilterResults": "ለዚህ ማጣሪያ ምንም ውጤት የለም",
+    "rerunSimulation": "የሲሙሌሽኑን ውጤት ደግመው ይመልከቱ",
+    "hints": {
+      "bodyWeight": "100 – 1,200",
+      "daysInMilk": "0 – 700",
+      "milkProduction": "0 – 80",
+      "fatMilk": "1 – 8",
+      "tpMilk": "1 – 6",
+      "parity": "0 – 15",
+      "daysOfPregnancy": "0 – 290",
+      "calvingInterval": "300 – 600",
+      "temperature": "-20 – 50",
+      "distance": "0 – 50",
+      "bwGain": "-1 – 2"
+    },
+    "nutrientLabels": {
+      "ne_l": "ኃይል",
+      "mp": "ፕሮቲን",
+      "ndf": "ፋይበር",
+      "ee": "ቅባት",
+      "ash": "ማዕድናት",
+      "rdp": "የሚፈጭ ፕሮቲን",
+      "rup": "የማይፈጭ ፕሮቲን",
+      "ca": "ካልሲየም",
+      "p": "ፎስፈረስ",
+      "energy_mcal": "ኃይል (Mcal)",
+      "protein_kg": "ፕሮቲን (ኪግ)",
+      "calcium_kg": "ካልሲየም (ኪግ)",
+      "phosphorus_kg": "ፎስፈረስ (ኪግ)",
+      "ndf_kg": "ፋይበር (ኪግ)"
+    }
   }
 }

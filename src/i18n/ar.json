@@ -1932,7 +1932,8 @@
       "animalCharacteristics": "خصائص الحيوان",
       "milkProduction": "إنتاج الحليب",
       "reproductiveData": "بيانات التناسل",
-      "environment": "البيئة"
+      "environment": "البيئة",
+      "simulationDetails": "تفاصيل المحاكاة"
     },
     "fields": {
       "bodyWeight": "وزن الجسم (كجم)",
@@ -1950,7 +1951,8 @@
       "topography": "التضاريس",
       "distance": "مسافة المشي (كم)",
       "grazing": "الرعي",
-      "bwGain": "زيادة وزن الجسم (كجم/يوم)"
+      "bwGain": "زيادة وزن الجسم (كجم/يوم)",
+      "simulationName": "اسم المحاكاة"
     },
     "topographyOptions": {
       "flat": "مسطحة",
@@ -1986,7 +1988,8 @@
       "required": "هذا الحقل مطلوب",
       "lactatingLatePregnancy": "البقرة تنتج الحليب وهي حامل منذ {days} يومًا. عادة ما تُجفف الأبقار بعد 210-220 يومًا. هل تريد المتابعة على أي حال؟",
       "notLactatingCleared": "تم مسح حقول إنتاج الحليب لأن الحيوان لا يدر الحليب.",
-      "quantityMin": "يجب أن تكون الكمية أكبر من 0"
+      "quantityMin": "يجب أن تكون الكمية أكبر من 0",
+      "simulationNameMax": "يجب ألا يزيد اسم المحاكاة عن 100 حرف"
     },
     "historyItem": {
       "evaluation": "تقييم العلف",
@@ -2022,7 +2025,9 @@
       "customFeed": "علف مخصص",
       "customFeedHint": "إنشاء الأعلاف المخصصة قريباً.",
       "price": "السعر",
-      "qty": "الكمية"
+      "qty": "الكمية",
+      "feedType_forage": "أعلاف خضراء",
+      "feedType_concentrate": "أعلاف مركزة"
     },
     "constraints": {
       "title": "حدود النظام الغذائي المخصصة",
@@ -2119,12 +2124,22 @@
       "noSimulations": "لا توجد محاكاة بعد",
       "noSimulationsDesc": "قم بتشغيل أول محاكاة لك لِتراها هنا",
       "viewAll": "عرض الكل",
-      "searchPlaceholder": "ابحث في المحاكاة..."
+      "searchPlaceholder": "ابحث في المحاكاة...",
+      "recommendations": "توصيات",
+      "evaluations": "تقييمات",
+      "noRecommendationsYet": "ستظهر أول توصية لك هنا",
+      "noEvaluationsYet": "سيظهر أول تقييم لك هنا"
     },
     "dietHistory": "تاريخ العلف",
     "loadFromHistory": "تحميل من التاريخ",
     "units": {
-      "days": "أيام"
+      "days": "أيام",
+      "kg": "كجم",
+      "litersPerDay": "لتر/يوم",
+      "kgPerDay": "كجم/يوم",
+      "degreeC": "°م",
+      "km": "كم",
+      "percent": "%"
     },
     "topographyHint": "مسطحة / تلال / جبلية",
     "reset": "إعادة تعيين",
@@ -2138,6 +2153,36 @@
       "evaluations": "التقييمات",
       "failed": "فشل"
     },
-    "noFilterResults": "لا توجد نتائج لهذا الفلتر"
+    "noFilterResults": "لا توجد نتائج لهذا الفلتر",
+    "rerunSimulation": "إعادة تشغيل المحاكاة",
+    "hints": {
+      "bodyWeight": "100 – 1,200",
+      "daysInMilk": "0 – 700",
+      "milkProduction": "0 – 80",
+      "fatMilk": "1 – 8",
+      "tpMilk": "1 – 6",
+      "parity": "0 – 15",
+      "daysOfPregnancy": "0 – 290",
+      "calvingInterval": "300 – 600",
+      "temperature": "-20 – 50",
+      "distance": "0 – 50",
+      "bwGain": "-1 – 2"
+    },
+    "nutrientLabels": {
+      "ne_l": "الطاقة",
+      "mp": "البروتين",
+      "ndf": "الألياف",
+      "ee": "الدهون",
+      "ash": "المعادن",
+      "rdp": "بروتين مهضوم",
+      "rup": "بروتين غير مهضوم (باي باس)",
+      "ca": "كالسيوم",
+      "p": "فوسفور",
+      "energy_mcal": "طاقة (ميجا كالوري)",
+      "protein_kg": "بروتين (كجم)",
+      "calcium_kg": "كالسيوم (كجم)",
+      "phosphorus_kg": "فوسفور (كجم)",
+      "ndf_kg": "ألياف (كجم)"
+    }
   }
 }

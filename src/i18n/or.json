@@ -1931,7 +1931,8 @@
       "animalCharacteristics": "ପଶୁର ବୈଶିଷ୍ଟ୍ୟ",
       "milkProduction": "କ୍ଷୀର ଉତ୍ପାଦନ",
       "reproductiveData": "ପ୍ରଜନନ ତଥ୍ୟ",
-      "environment": "ପରିବେଶ"
+      "environment": "ପରିବେଶ",
+      "simulationDetails": "ସିମୁଲେସନ୍ ବିବରଣୀ"
     },
     "fields": {
       "bodyWeight": "ଶରୀରର ଓଜନ (କିଲୋଗ୍ରାମ)",
@@ -1949,7 +1950,8 @@
       "topography": "ଭୂପୃଷ୍ଠ",
       "distance": "ଚାଲିବାର ଦୂରତା (କି.ମି.)",
       "grazing": "ଚରାବୁଲା",
-      "bwGain": "ଶରୀର ଓଜନ ବୃଦ୍ଧି (କି.ଗ୍ରା./ଦିନ)"
+      "bwGain": "ଶରୀର ଓଜନ ବୃଦ୍ଧି (କି.ଗ୍ରା./ଦିନ)",
+      "simulationName": "ସିମୁଲେସନ୍ ନାମ"
     },
     "topographyOptions": {
       "flat": "ସମତଳ",
@@ -1985,7 +1987,8 @@
       "required": "ଏହି କ୍ଷେତ୍ରଟି ଆବଶ୍ୟକ",
       "lactatingLatePregnancy": "ଗାଈ {days} ଦିନର ଗର୍ଭାବସ୍ଥା ସହିତ କ୍ଷୀର ଦେଉଛି। ସାଧାରଣତଃ ୨୧୦-୨୨୦ ଦିନ ପରେ ଗାଈ କ୍ଷୀର ଦେବା ବନ୍ଦ କରିଥାଏ। ତଥାପି ଜାରି ରଖିବେ କି?",
       "notLactatingCleared": "ପଶୁ କ୍ଷୀର ଦେଉନଥିବାରୁ କ୍ଷୀର ଉତ୍ପାଦନ କ୍ଷେତ୍ରଗୁଡ଼ିକ ଖାଲି କରାଯାଇଛି।",
-      "quantityMin": "ପରିମାଣ 0 ରୁ ଅଧିକ ହେବା ଆବଶ୍ୟକ"
+      "quantityMin": "ପରିମାଣ 0 ରୁ ଅଧିକ ହେବା ଆବଶ୍ୟକ",
+      "simulationNameMax": "ସିମୁଲେସନ୍ ନାମ ୧୦୦ ଅକ୍ଷର କିମ୍ବା ତା'ଠାରୁ କମ୍ ହେବା ଉଚିତ"
     },
     "historyItem": {
       "evaluation": "ଆହାର ମୂଲ୍ୟାଙ୍କନ",
@@ -2021,7 +2024,9 @@
       "customFeed": "କଷ୍ଟମ ଖାଦ୍ୟ",
       "customFeedHint": "କଷ୍ଟମ ଖାଦ୍ୟ ସୃଷ୍ଟି ଖୁବ୍ ଶୀଘ୍ର ଆସୁଛି।",
       "price": "ମୂଲ୍ୟ",
-      "qty": "ପରିମାଣ"
+      "qty": "ପରିମାଣ",
+      "feedType_forage": "ଘାସ",
+      "feedType_concentrate": "ସାନ୍ଦ୍ର ଖାଦ୍ୟ"
     },
     "constraints": {
       "title": "ନିର୍ଦ୍ଦିଷ୍ଟ ଆହାର ସୀମା",
@@ -2118,12 +2123,22 @@
       "noSimulations": "ବର୍ତ୍ତମାନ ସୁଦ୍ଧା କୌଣସି ସିମୁଲେସନ ନାହିଁ",
       "noSimulationsDesc": "ଏଠାରେ ଦେଖିବା ପାଇଁ ଆପଣଙ୍କର ପ୍ରଥମ ସିମୁଲେସନ ଚଲାନ୍ତୁ",
       "viewAll": "ସମସ୍ତ ଦେଖନ୍ତୁ",
-      "searchPlaceholder": "ସିମୁଲେସନ୍ ଖୋଜନ୍ତୁ..."
+      "searchPlaceholder": "ସିମୁଲେସନ୍ ଖୋଜନ୍ତୁ...",
+      "recommendations": "ପରାମର୍ଶ",
+      "evaluations": "ମୂଲ୍ୟାଙ୍କନ",
+      "noRecommendationsYet": "ଆପଣଙ୍କର ପ୍ରଥମ ପରାମର୍ଶ ଏଠାରେ ଦେଖାଯିବ",
+      "noEvaluationsYet": "ଆପଣଙ୍କର ପ୍ରଥମ ମୂଲ୍ୟାଙ୍କନ ଏଠାରେ ଦେଖାଯିବ"
     },
     "dietHistory": "ଡାଏଟ୍ ଇତିହାସ",
     "loadFromHistory": "ଇତିହାସରୁ ଲୋଡ୍ କରନ୍ତୁ",
     "units": {
-      "days": "ଦିନ"
+      "days": "ଦିନ",
+      "kg": "କିଲୋଗ୍ରାମ",
+      "litersPerDay": "ଲିଟର/ଦିନ",
+      "kgPerDay": "କିଲୋଗ୍ରାମ/ଦିନ",
+      "degreeC": "°C",
+      "km": "କିଲୋମିଟର",
+      "percent": "%"
     },
     "topographyHint": "ସମତଳ / ପାହାଡ଼ିଆ / ପାର୍ବତ୍ୟ",
     "reset": "ପୁନଃସ୍ଥାପନ",
@@ -2137,6 +2152,36 @@
       "evaluations": "ମୂଲ୍ୟାଙ୍କନଗୁଡ଼ିକ",
       "failed": "ବିଫଳ"
     },
-    "noFilterResults": "ଏହି ଫିଲ୍ଟର୍ ପାଇଁ କୌଣସି ଫଳାଫଳ ନାହିଁ"
+    "noFilterResults": "ଏହି ଫିଲ୍ଟର୍ ପାଇଁ କୌଣସି ଫଳାଫଳ ନାହିଁ",
+    "rerunSimulation": "ସିମୁଲେସନ୍ ପୁଣି ଚଲାନ୍ତୁ",
+    "hints": {
+      "bodyWeight": "100 – 1,200",
+      "daysInMilk": "0 – 700",
+      "milkProduction": "0 – 80",
+      "fatMilk": "1 – 8",
+      "tpMilk": "1 – 6",
+      "parity": "0 – 15",
+      "daysOfPregnancy": "0 – 290",
+      "calvingInterval": "300 – 600",
+      "temperature": "-20 – 50",
+      "distance": "0 – 50",
+      "bwGain": "-1 – 2"
+    },
+    "nutrientLabels": {
+      "ne_l": "ଶକ୍ତି",
+      "mp": "ପ୍ରୋଟିନ୍",
+      "ndf": "ଫାଇବର",
+      "ee": "ଚର୍ବି",
+      "ash": "ଖଣିଜ ପଦାର୍ଥ",
+      "rdp": "ହଜମ ହେବା ଭଳି ପ୍ରୋଟିନ",
+      "rup": "ବାଇପାସ୍ ପ୍ରୋଟିନ",
+      "ca": "କ୍ୟାଲସିୟମ୍",
+      "p": "ଫସଫରସ୍",
+      "energy_mcal": "ଶକ୍ତି (Mcal)",
+      "protein_kg": "ପ୍ରୋଟିନ୍ (କି.ଗ୍ରା.)",
+      "calcium_kg": "କ୍ୟାଲସିୟମ୍ (କି.ଗ୍ରା.)",
+      "phosphorus_kg": "ଫସଫରସ୍ (କି.ଗ୍ରା.)",
+      "ndf_kg": "ଫାଇବର (କି.ଗ୍ରା.)"
+    }
   }
 }

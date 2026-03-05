@@ -1931,7 +1931,8 @@
       "animalCharacteristics": "પ્રાણીઓની લાક્ષણિકતાઓ",
       "milkProduction": "દૂધ ઉત્પાદન",
       "reproductiveData": "પ્રજનન ડેટા",
-      "environment": "પર્યાવરણ"
+      "environment": "પર્યાવરણ",
+      "simulationDetails": "સિમ્યુલેશનની વિગતો"
     },
     "fields": {
       "bodyWeight": "શરીરનું વજન (કિલો)",
@@ -1949,7 +1950,8 @@
       "topography": "ભૂપ્રદેશ",
       "distance": "ચાલવાનું અંતર (કિમી)",
       "grazing": "ચરાણ",
-      "bwGain": "શરીરના વજનમાં વધારો (કિલો/દિવસ)"
+      "bwGain": "શરીરના વજનમાં વધારો (કિલો/દિવસ)",
+      "simulationName": "સિમ્યુલેશનનું નામ"
     },
     "topographyOptions": {
       "flat": "સપાટ",
@@ -1985,7 +1987,8 @@
       "required": "આ ક્ષેત્ર ફરજિયાત છે",
       "lactatingLatePregnancy": "ગાય {days} દિવસના ગર્ભ સાથે દૂધ આપે છે. ગાયોને સામાન્ય રીતે 210-220 દિવસ પછી સૂકવવામાં આવે છે. તેમ છતાં ચાલુ રાખવું છે?",
       "notLactatingCleared": "પશુ દૂધ આપતું ન હોવાથી દૂધ ઉત્પાદન ક્ષેત્રો સાફ કરવામાં આવ્યા હતા.",
-      "quantityMin": "જથ્થો 0 કરતાં વધુ હોવો જોઈએ"
+      "quantityMin": "જથ્થો 0 કરતાં વધુ હોવો જોઈએ",
+      "simulationNameMax": "સિમ્યુલેશનનું નામ 100 અક્ષરો અથવા તેનાથી ઓછું હોવું જોઈએ"
     },
     "historyItem": {
       "evaluation": "આહાર મૂલ્યાંકન",
@@ -2021,7 +2024,9 @@
       "customFeed": "કાસ્ટમ ફીડ",
       "customFeedHint": "કાસ્ટમ ફીડ બનાવવાની સુવિધા જલ્દી આવી રહી છે.",
       "price": "ભાવ",
-      "qty": "જથ્થો"
+      "qty": "જથ્થો",
+      "feedType_forage": "ચારા",
+      "feedType_concentrate": "દાણ"
     },
     "constraints": {
       "title": "આહારની કસ્ટમ મર્યાદા",
@@ -2118,12 +2123,22 @@
       "noSimulations": "હજુ કોઈ સિમ્યુલેશન નથી",
       "noSimulationsDesc": "તમારું પહેલું સિમ્યુલેશન ચલાવો તે અહીં જોવા માટે",
       "viewAll": "બધા જુઓ",
-      "searchPlaceholder": "સિમ્યુલેશન શોધો..."
+      "searchPlaceholder": "સિમ્યુલેશન શોધો...",
+      "recommendations": "ભલામણો",
+      "evaluations": "મૂલ્યાંકનો",
+      "noRecommendationsYet": "તમારી પ્રથમ ભલામણ અહીં દેખાશે",
+      "noEvaluationsYet": "તમારું પ્રથમ મૂલ્યાંકન અહીં દેખાશે"
     },
     "dietHistory": "આહારનો ઇતિહાસ",
     "loadFromHistory": "ઇતિહાસમાંથી લોડ કરો",
     "units": {
-      "days": "દિવસ"
+      "days": "દિવસ",
+      "kg": "કિલો",
+      "litersPerDay": "લિટર/દિવસ",
+      "kgPerDay": "કિલો/દિવસ",
+      "degreeC": "°C",
+      "km": "કિમી",
+      "percent": "%"
     },
     "topographyHint": "સપાટ / ટેકરીવાળું / પર્વતીય",
     "reset": "ફરીથી સેટ કરો",
@@ -2137,6 +2152,36 @@
       "evaluations": "મૂલ્યાંકન",
       "failed": "નિષ્ફળ"
     },
-    "noFilterResults": "આ ફિલ્ટર માટે કોઈ પરિણામ નથી"
+    "noFilterResults": "આ ફિલ્ટર માટે કોઈ પરિણામ નથી",
+    "rerunSimulation": "સિમ્યુલેશન ફરી ચલાવો",
+    "hints": {
+      "bodyWeight": "100 – 1,200",
+      "daysInMilk": "0 – 700",
+      "milkProduction": "0 – 80",
+      "fatMilk": "1 – 8",
+      "tpMilk": "1 – 6",
+      "parity": "0 – 15",
+      "daysOfPregnancy": "0 – 290",
+      "calvingInterval": "300 – 600",
+      "temperature": "-20 – 50",
+      "distance": "0 – 50",
+      "bwGain": "-1 – 2"
+    },
+    "nutrientLabels": {
+      "ne_l": "શક્તિ",
+      "mp": "પ્રોટીન",
+      "ndf": "ફાઈબર",
+      "ee": "ચરબી",
+      "ash": "ખનિજો",
+      "rdp": "પચી શકે તેવું પ્રોટીન",
+      "rup": "બાયપાસ પ્રોટીન",
+      "ca": "કેલ્શિયમ",
+      "p": "ફોસ્ફરસ",
+      "energy_mcal": "શક્તિ (Mcal)",
+      "protein_kg": "પ્રોટીન (કિલો)",
+      "calcium_kg": "કેલ્શિયમ (કિલો)",
+      "phosphorus_kg": "ફોસ્ફરસ (કિલો)",
+      "ndf_kg": "ફાઈબર (કિલો)"
+    }
   }
 }

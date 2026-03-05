@@ -1931,7 +1931,8 @@
       "animalCharacteristics": "జంతువుల లక్షణాలు",
       "milkProduction": "పాల ఉత్పత్తి",
       "reproductiveData": "పునరుత్పత్తి డేటా",
-      "environment": "వాతావరణం"
+      "environment": "వాతావరణం",
+      "simulationDetails": "సిమ్యులేషన్ వివరాలు"
     },
     "fields": {
       "bodyWeight": "శరీర బరువు (కిలోలు)",
@@ -1949,7 +1950,8 @@
       "topography": "భూభాగం",
       "distance": "నడిచే దూరం (కి.మీ)",
       "grazing": "మేత మేయడం",
-      "bwGain": "శరీర బరువు పెరుగుదల (కిలోలు/రోజు)"
+      "bwGain": "శరీర బరువు పెరుగుదల (కిలోలు/రోజు)",
+      "simulationName": "సిమ్యులేషన్ పేరు"
     },
     "topographyOptions": {
       "flat": "సమతలం",
@@ -1985,7 +1987,8 @@
       "required": "ఈ ఫీల్డ్ అవసరం",
       "lactatingLatePregnancy": "ఆవు {days} రోజుల గర్భంతో పాలిస్తోంది. ఆవులు సాధారణంగా 210-220 రోజుల తర్వాత పాలు ఆపుతాయి. కొనసాగించాలా?",
       "notLactatingCleared": "జంతువు పాలివ్వడం లేదు కాబట్టి పాలు ఉత్పత్తి ఫీల్డ్‌లు క్లియర్ చేయబడ్డాయి.",
-      "quantityMin": "పరిమాణం 0 కంటే ఎక్కువ ఉండాలి"
+      "quantityMin": "పరిమాణం 0 కంటే ఎక్కువ ఉండాలి",
+      "simulationNameMax": "సిమ్యులేషన్ పేరు 100 అక్షరాలు లేదా అంతకంటే తక్కువ ఉండాలి"
     },
     "historyItem": {
       "evaluation": "ఆహార మూల్యాంకనం",
@@ -2021,7 +2024,9 @@
       "customFeed": "కస్టమ్ ఫీడ్",
       "customFeedHint": "కస్టమ్ ఫీడ్ సృష్టి త్వరలో రాబోతోంది.",
       "price": "ధర",
-      "qty": "పరిమాణం"
+      "qty": "పరిమాణం",
+      "feedType_forage": "పశుగ్రాసం",
+      "feedType_concentrate": "కాన్‌సెంట్రేట్"
     },
     "constraints": {
       "title": "ప్రత్యేక ఆహార పరిమితులు",
@@ -2118,12 +2123,22 @@
       "noSimulations": "ఇంకా సిమ్యులేషన్స్ లేవు",
       "noSimulationsDesc": "మీ మొదటి సిమ్యులేషన్‌ను ఇక్కడ చూడటానికి రన్ చేయండి",
       "viewAll": "అన్నింటినీ వీక్షించండి",
-      "searchPlaceholder": "అనుకరణలను శోధించండి..."
+      "searchPlaceholder": "అనుకరణలను శోధించండి...",
+      "recommendations": "సిఫార్సులు",
+      "evaluations": "విశ్లేషణలు",
+      "noRecommendationsYet": "మీ మొదటి సిఫార్సు ఇక్కడ కనిపిస్తుంది",
+      "noEvaluationsYet": "మీ మొదటి మూల్యాంకనం ఇక్కడ కనిపిస్తుంది"
     },
     "dietHistory": "ఆహార చరిత్ర",
     "loadFromHistory": "చరిత్ర నుండి లోడ్ చేయండి",
     "units": {
-      "days": "రోజులు"
+      "days": "రోజులు",
+      "kg": "kg",
+      "litersPerDay": "L/day",
+      "kgPerDay": "kg/day",
+      "degreeC": "°C",
+      "km": "km",
+      "percent": "%"
     },
     "topographyHint": "సమతలం / కొండలు / పర్వతాలు",
     "reset": "రీసెట్ చేయండి",
@@ -2137,6 +2152,36 @@
       "evaluations": "అంచనాలు",
       "failed": "విఫలమైనవి"
     },
-    "noFilterResults": "ఈ ఫిల్టర్‌కు ఫలితాలు లేవు"
+    "noFilterResults": "ఈ ఫిల్టర్‌కు ఫలితాలు లేవు",
+    "rerunSimulation": "సిమ్యులేషన్‌ను మళ్లీ అమలు చేయండి",
+    "hints": {
+      "bodyWeight": "100 – 1,200",
+      "daysInMilk": "0 – 700",
+      "milkProduction": "0 – 80",
+      "fatMilk": "1 – 8",
+      "tpMilk": "1 – 6",
+      "parity": "0 – 15",
+      "daysOfPregnancy": "0 – 290",
+      "calvingInterval": "300 – 600",
+      "temperature": "-20 – 50",
+      "distance": "0 – 50",
+      "bwGain": "-1 – 2"
+    },
+    "nutrientLabels": {
+      "ne_l": "శక్తి",
+      "mp": "ప్రోటీన్",
+      "ndf": "ఫైబర్",
+      "ee": "కొవ్వు",
+      "ash": "ఖనిజాలు",
+      "rdp": "జీర్ణమయ్యే ప్రోటీన్",
+      "rup": "బైపాస్ ప్రోటీన్",
+      "ca": "కాల్షియం",
+      "p": "ఫాస్పరస్",
+      "energy_mcal": "శక్తి (Mcal)",
+      "protein_kg": "ప్రోటీన్ (కిలో)",
+      "calcium_kg": "కాల్షియం (కిలో)",
+      "phosphorus_kg": "ఫాస్పరస్ (కిలో)",
+      "ndf_kg": "ఫైబర్ (కిలో)"
+    }
   }
 }

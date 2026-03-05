@@ -1931,7 +1931,8 @@
       "animalCharacteristics": "প্ৰাণীৰ বৈশিষ্ট্য",
       "milkProduction": "গাখীৰ উৎপাদন",
       "reproductiveData": "প্ৰজনন তথ্য",
-      "environment": "পৰিৱেশ"
+      "environment": "পৰিৱেশ",
+      "simulationDetails": "চিমুলেচনৰ বিৱৰণ"
     },
     "fields": {
       "bodyWeight": "শৰীৰৰ ওজন (কেজি)",
@@ -1949,7 +1950,8 @@
       "topography": "ভূ-প্ৰকৃতি",
       "distance": "খোজ কঢ়া দূৰত্ব (km)",
       "grazing": "চৰণীয়া পথাৰ",
-      "bwGain": "শৰীৰৰ ওজন বৃদ্ধি (kg/day)"
+      "bwGain": "শৰীৰৰ ওজন বৃদ্ধি (kg/day)",
+      "simulationName": "চিমুলেচনৰ নাম"
     },
     "topographyOptions": {
       "flat": "সৰল",
@@ -1985,7 +1987,8 @@
       "required": "এই স্থান পূৰণ কৰাটো বাধ্যতামূলক",
       "lactatingLatePregnancy": "গৰুজনী {days} দিনৰ গৰ্ভাৱস্থাত গাখীৰ দি আছে। গৰু সাধাৰণতে ২১০-২২০ দিনৰ পিছত শুকান কৰা হয়। তথাপিও আগবাঢ়িবনে?",
       "notLactatingCleared": "পশু গাখীৰ নিদিয়াৰ বাবে গাখীৰ উৎপাদনৰ স্থানসমূহ পৰিষ্কাৰ কৰা হ'ল।",
-      "quantityMin": "পৰিমাণ ০ তকৈ বেছি হ'ব লাগিব"
+      "quantityMin": "পৰিমাণ ০ তকৈ বেছি হ'ব লাগিব",
+      "simulationNameMax": "চিমুলেচনৰ নাম 100টা আখৰ বা তাতকৈ কম হ’ব লাগিব"
     },
     "historyItem": {
       "evaluation": "আহাৰৰ মূল্যায়ন",
@@ -2021,7 +2024,9 @@
       "customFeed": "কাষ্টম খাদ্য",
       "customFeedHint": "কাষ্টম খাদ্য সৃষ্টি সোনকালে আহি আছে।",
       "price": "মূল্য",
-      "qty": "পৰিমাণ"
+      "qty": "পৰিমাণ",
+      "feedType_forage": "গছ-বন",
+      "feedType_concentrate": "ঘনীভূত"
     },
     "constraints": {
       "title": "নিৰ্দিষ্ট আহাৰৰ সীমা",
@@ -2118,12 +2123,22 @@
       "noSimulations": "এতিয়ালৈকে কোনো অনুকৰণ নাই",
       "noSimulationsDesc": "ইয়াত চাবলৈ আপোনাৰ প্ৰথম অনুকৰণ চলোৱক",
       "viewAll": "সকলো চাওক",
-      "searchPlaceholder": "চিমুলেচন বিচাৰক..."
+      "searchPlaceholder": "চিমুলেচন বিচাৰক...",
+      "recommendations": "পৰামৰ্শসমূহ",
+      "evaluations": "মূল্যাংকনসমূহ",
+      "noRecommendationsYet": "আপোনাৰ প্ৰথম পৰামৰ্শ ইয়াত দেখুওৱা হ'ব",
+      "noEvaluationsYet": "আপোনাৰ প্ৰথম মূল্যাংকন ইয়াত দেখুওৱা হ'ব"
     },
     "dietHistory": "আহাৰৰ ইতিহাস",
     "loadFromHistory": "ইতিহাসৰ পৰা লওক",
     "units": {
-      "days": "দিন"
+      "days": "দিন",
+      "kg": "কেজি",
+      "litersPerDay": "লিটাৰ/দিন",
+      "kgPerDay": "কেজি/দিন",
+      "degreeC": "°C",
+      "km": "কিমি",
+      "percent": "%"
     },
     "topographyHint": "সমতল / পাহাৰীয়া / পৰ্বতীয়া",
     "reset": "পুনৰায় আৰম্ভ কৰক",
@@ -2137,6 +2152,36 @@
       "evaluations": "মূল্যায়নসমূহ",
       "failed": "বিফল"
     },
-    "noFilterResults": "এই ফিল্টাৰৰ বাবে কোনো ফলাফল নাই"
+    "noFilterResults": "এই ফিল্টাৰৰ বাবে কোনো ফলাফল নাই",
+    "rerunSimulation": "পুনৰ চিমুলেচন কৰক",
+    "hints": {
+      "bodyWeight": "100 – 1,200",
+      "daysInMilk": "0 – 700",
+      "milkProduction": "0 – 80",
+      "fatMilk": "1 – 8",
+      "tpMilk": "1 – 6",
+      "parity": "0 – 15",
+      "daysOfPregnancy": "0 – 290",
+      "calvingInterval": "300 – 600",
+      "temperature": "-20 – 50",
+      "distance": "0 – 50",
+      "bwGain": "-1 – 2"
+    },
+    "nutrientLabels": {
+      "ne_l": "শক্তি",
+      "mp": "প্ৰ'টিন",
+      "ndf": "ফাইবাৰ",
+      "ee": "চৰ্বি",
+      "ash": "খনিজ পদাৰ্থ",
+      "rdp": "সহজপাচ্য প্ৰ'টিন",
+      "rup": "বাইপাছ প্ৰ'টিন",
+      "ca": "কেলছিয়াম",
+      "p": "ফছফৰাছ",
+      "energy_mcal": "শক্তি (Mcal)",
+      "protein_kg": "প্ৰ'টিন (kg)",
+      "calcium_kg": "কেলছিয়াম (kg)",
+      "phosphorus_kg": "ফছফৰাছ (kg)",
+      "ndf_kg": "ফাইবাৰ (kg)"
+    }
   }
 }

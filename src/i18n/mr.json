@@ -1932,7 +1932,8 @@
       "animalCharacteristics": "जनावरांची वैशिष्ट्ये",
       "milkProduction": "दूध उत्पादन",
       "reproductiveData": "प्रजनन डेटा",
-      "environment": "पर्यावरण"
+      "environment": "पर्यावरण",
+      "simulationDetails": "सिम्युलेशन तपशील"
     },
     "fields": {
       "bodyWeight": "शरीराचे वजन (किलो)",
@@ -1950,7 +1951,8 @@
       "topography": "भूभाग",
       "distance": "चालण्याचे अंतर (किमी)",
       "grazing": "चराई",
-      "bwGain": "शरीराच्या वजनात वाढ (किलो/दिवस)"
+      "bwGain": "शरीराच्या वजनात वाढ (किलो/दिवस)",
+      "simulationName": "सिम्युलेशनचे नाव"
     },
     "topographyOptions": {
       "flat": "सपाट",
@@ -1986,7 +1988,8 @@
       "required": "हे क्षेत्र आवश्यक आहे",
       "lactatingLatePregnancy": "गाय {days} दिवसांच्या गर्भावस्थेत दूध देत आहे. गायींना साधारणपणे 210-220 दिवसांनंतर दूध देणे थांबवले जाते. तरीही पुढे चालू ठेवायचे का?",
       "notLactatingCleared": "जनावर दूध देत नसल्यामुळे दूध उत्पादन क्षेत्रे रिकामी केली आहेत.",
-      "quantityMin": "प्रमाण 0 पेक्षा जास्त असावे"
+      "quantityMin": "प्रमाण 0 पेक्षा जास्त असावे",
+      "simulationNameMax": "सिम्युलेशनचे नाव १०० अक्षरांपेक्षा कमी असावे"
     },
     "historyItem": {
       "evaluation": "आहाराचे मूल्यांकन",
@@ -2022,7 +2025,9 @@
       "customFeed": "सानुकूल खाद्य",
       "customFeedHint": "सानुकूल खाद्य लवकरच उपलब्ध होईल.",
       "price": "किंमत",
-      "qty": "प्रमाण"
+      "qty": "प्रमाण",
+      "feedType_forage": "चारा",
+      "feedType_concentrate": "केंद्रित खाद्य"
     },
     "constraints": {
       "title": "आहाराची स्वतःची मर्यादा",
@@ -2119,12 +2124,22 @@
       "noSimulations": "अजून कोणतेही सिम्युलेशन नाही",
       "noSimulationsDesc": "येथे पाहण्यासाठी तुमचे पहिले सिम्युलेशन चालवा",
       "viewAll": "सर्व पहा",
-      "searchPlaceholder": "सिम्युलेशन शोधा..."
+      "searchPlaceholder": "सिम्युलेशन शोधा...",
+      "recommendations": "शिफारसी",
+      "evaluations": "मूल्यमापन",
+      "noRecommendationsYet": "तुमची पहिली शिफारस येथे दिसेल",
+      "noEvaluationsYet": "तुमचे पहिले मूल्यमापन येथे दिसेल"
     },
     "dietHistory": "आहाराचा इतिहास",
     "loadFromHistory": "इतिहासातून लोड करा",
     "units": {
-      "days": "दिवस"
+      "days": "दिवस",
+      "kg": "किलो",
+      "litersPerDay": "लिटर/दिवस",
+      "kgPerDay": "किलो/दिवस",
+      "degreeC": "°C",
+      "km": "किमी",
+      "percent": "%"
     },
     "topographyHint": "सपाट / डोंगराळ / पर्वतीय",
     "reset": "रीसेट करा",
@@ -2138,6 +2153,36 @@
       "evaluations": "मूल्यमापन",
       "failed": "अयशस्वी"
     },
-    "noFilterResults": "या फिल्टरसाठी कोणतेही परिणाम नाहीत"
+    "noFilterResults": "या फिल्टरसाठी कोणतेही परिणाम नाहीत",
+    "rerunSimulation": "सिम्युलेशन पुन्हा चालवा",
+    "hints": {
+      "bodyWeight": "100 – 1,200",
+      "daysInMilk": "0 – 700",
+      "milkProduction": "0 – 80",
+      "fatMilk": "1 – 8",
+      "tpMilk": "1 – 6",
+      "parity": "0 – 15",
+      "daysOfPregnancy": "0 – 290",
+      "calvingInterval": "३०० – ६००",
+      "temperature": "-२० – ५०",
+      "distance": "० – ५०",
+      "bwGain": "-१ – २"
+    },
+    "nutrientLabels": {
+      "ne_l": "ऊर्जा",
+      "mp": "प्रथिने",
+      "ndf": "तंतू",
+      "ee": "चरबी",
+      "ash": "खनिजे",
+      "rdp": "पचण्याजोगे प्रथिने",
+      "rup": "बायपास प्रथिने",
+      "ca": "कॅल्शियम",
+      "p": "फॉस्फरस",
+      "energy_mcal": "ऊर्जा (Mcal)",
+      "protein_kg": "प्रथिने (किलो)",
+      "calcium_kg": "कॅल्शियम (किलो)",
+      "phosphorus_kg": "फॉस्फरस (किलो)",
+      "ndf_kg": "तंतू (किलो)"
+    }
   }
 }
