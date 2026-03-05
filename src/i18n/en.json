@@ -1927,7 +1927,7 @@
       "topography": "Topography",
       "distance": "Walking Distance (km)",
       "grazing": "Grazing",
-      "bwGain": "Body Weight Gain (kg/day)"
+      "bwGain": "Expected Weight Change (kg/day)"
     },
     "units": {
       "days": "days",
@@ -1939,17 +1939,17 @@
       "percent": "%"
     },
     "hints": {
-      "bodyWeight": "100 – 1,200",
-      "daysInMilk": "0 – 700",
-      "milkProduction": "0 – 80",
-      "fatMilk": "1 – 8",
-      "tpMilk": "1 – 6",
-      "parity": "0 – 15",
-      "daysOfPregnancy": "0 – 290",
+      "bodyWeight": "Live weight in kg (100 – 1,200)",
+      "daysInMilk": "Days since last calving",
+      "milkProduction": "Current daily milk output",
+      "fatMilk": "Typical range: 3 – 5%",
+      "tpMilk": "Typical range: 2.5 – 3.5%",
+      "parity": "Number of times the cow has calved",
+      "daysOfPregnancy": "0 if not pregnant",
       "calvingInterval": "300 – 600",
-      "temperature": "-20 – 50",
-      "distance": "0 – 50",
-      "bwGain": "-1 – 2"
+      "temperature": "Current weather temperature",
+      "distance": "How far the cow walks daily",
+      "bwGain": "Negative = losing weight, 0 = stable, positive = gaining"
     },
     "topographyHint": "Flat / Hilly / Mountainous",
     "topographyOptions": {
