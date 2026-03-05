@@ -13,6 +13,28 @@
         class="q-mb-md"
       />
 
+      <!-- Simulation Name -->
+      <div class="section-header">
+        <q-icon name="label" color="primary" size="sm" class="q-mr-sm" />
+        <span class="text-subtitle1 text-weight-medium">{{ $t('simulation.sections.simulationDetails') }}</span>
+      </div>
+      <q-card flat bordered class="q-mb-md section-card">
+        <q-card-section>
+          <q-input
+            v-model="store.simulationName"
+            :label="$t('simulation.fields.simulationName')"
+            outlined
+            dense
+            maxlength="100"
+            :rules="[
+              (v: string) => (v && v.trim().length > 0) || $t('simulation.validation.required'),
+              (v: string) => v.trim().length <= 100 || $t('simulation.validation.simulationNameMax'),
+            ]"
+            hint=" "
+          />
+        </q-card-section>
+      </q-card>
+
       <!-- Section: Animal Characteristics -->
       <div class="section-header">
         <q-icon name="pets" color="primary" size="sm" class="q-mr-sm" />

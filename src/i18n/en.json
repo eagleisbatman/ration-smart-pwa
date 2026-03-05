@@ -1902,13 +1902,16 @@
     "restoring": "Restoring simulation...",
     "generating": "Generating report...",
     "generatingDesc": "This may take up to 90 seconds.",
+    "rerunSimulation": "Re-run Simulation",
     "sections": {
+      "simulationDetails": "Simulation Details",
       "animalCharacteristics": "Animal Characteristics",
       "milkProduction": "Milk Production",
       "reproductiveData": "Reproductive Data",
       "environment": "Environment"
     },
     "fields": {
+      "simulationName": "Simulation Name",
       "bodyWeight": "Body Weight (kg)",
       "breed": "Breed",
       "bcScore": "Body Condition Score",
@@ -1963,6 +1966,7 @@
       "constraintMin": "Value must be 0 or greater",
       "constraintMax": "Value must not exceed 100",
       "required": "This field is required",
+      "simulationNameMax": "Simulation name must be 100 characters or fewer",
       "lactatingLatePregnancy": "Cow is lactating with {days} days of pregnancy. Cows are typically dried off after 210-220 days. Continue anyway?",
       "notLactatingCleared": "Milk production fields were cleared since animal is not lactating."
     },
@@ -2097,7 +2101,11 @@
       "noSimulations": "No simulations yet",
       "noSimulationsDesc": "Run your first simulation to see it here",
       "viewAll": "View All",
-      "searchPlaceholder": "Search simulations..."
+      "searchPlaceholder": "Search simulations...",
+      "recommendations": "Recommendations",
+      "evaluations": "Evaluations",
+      "noRecommendationsYet": "No recommendations yet",
+      "noEvaluationsYet": "No evaluations yet"
     },
     "reset": "Reset",
     "formReset": "Form reset to defaults",

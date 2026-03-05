@@ -107,10 +107,19 @@
       <!-- Actions -->
       <div class="q-gutter-sm q-mt-lg">
         <q-btn
-          :label="$t('simulation.newCase')"
+          :label="$t('simulation.rerunSimulation')"
           color="primary"
           class="full-width action-btn"
           unelevated
+          no-caps
+          icon="replay"
+          @click="rerunSimulation"
+        />
+        <q-btn
+          :label="$t('simulation.newCase')"
+          color="grey-7"
+          flat
+          class="full-width"
           no-caps
           icon="add"
           @click="newCase"
@@ -190,6 +199,12 @@ function formatNum(val: unknown): string {
 
 function goToFeedSelection() {
   router.push('/feed-selection');
+}
+
+function rerunSimulation() {
+  // Data is already in the store from viewSimulationReport; navigate to cattle-info to tweak
+  store.newSimulationId();
+  router.push('/cattle-info');
 }
 
 function newCase() {
