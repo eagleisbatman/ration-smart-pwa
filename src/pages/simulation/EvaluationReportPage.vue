@@ -10,6 +10,11 @@
     </template>
 
     <template v-else>
+      <!-- Simulation Name -->
+      <div v-if="store.simulationName" class="text-h6 text-weight-medium q-mb-md">
+        {{ store.simulationName }}
+      </div>
+
       <!-- Animal Summary -->
       <AnimalCharacteristicsSummary :cattle-info="store.cattleInfo" />
 
