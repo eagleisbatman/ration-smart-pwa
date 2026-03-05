@@ -94,6 +94,21 @@
               </div>
             </div>
           </div>
+
+          <q-input
+            v-model.number="store.cattleInfo.bw_gain"
+            :label="$t('simulation.fields.bwGain')"
+            type="number"
+            outlined
+            dense
+            step="0.01"
+            :suffix="$t('simulation.units.kgPerDay')"
+            :hint="$t('simulation.hints.bwGain')"
+            :rules="[
+              (v: number) => v >= -1 || $t('simulation.validation.bwGainMin'),
+              (v: number) => v <= 2 || $t('simulation.validation.bwGainMax'),
+            ]"
+          />
         </q-card-section>
       </q-card>
 
@@ -275,22 +290,6 @@
                 :rules="[
                   (v: number) => v >= 0 || $t('simulation.validation.minZero'),
                   (v: number) => v <= 50 || $t('simulation.validation.distanceMax'),
-                ]"
-              />
-            </div>
-            <div class="col-12 col-sm-6">
-              <q-input
-                v-model.number="store.cattleInfo.bw_gain"
-                :label="$t('simulation.fields.bwGain')"
-                type="number"
-                outlined
-                dense
-                step="0.01"
-                :suffix="$t('simulation.units.kgPerDay')"
-                :hint="$t('simulation.hints.bwGain')"
-                :rules="[
-                  (v: number) => v >= -1 || $t('simulation.validation.bwGainMin'),
-                  (v: number) => v <= 2 || $t('simulation.validation.bwGainMax'),
                 ]"
               />
             </div>
