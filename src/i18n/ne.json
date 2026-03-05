@@ -1931,7 +1931,8 @@
       "animalCharacteristics": "पशु विशेषताहरू",
       "milkProduction": "दूध उत्पादन",
       "reproductiveData": "प्रजनन डेटा",
-      "environment": "वातावरण"
+      "environment": "वातावरण",
+      "simulationDetails": "सिमुलेशन विवरण"
     },
     "fields": {
       "bodyWeight": "शारीरिक तौल (के.जी.)",
@@ -1949,7 +1950,8 @@
       "topography": "भू-भाग",
       "distance": "हिँड्ने दूरी (किमी)",
       "grazing": "चराउने",
-      "bwGain": "शारीरिक तौल वृद्धि (के.जी./दिन)"
+      "bwGain": "शारीरिक तौल वृद्धि (के.जी./दिन)",
+      "simulationName": "सिमुलेशन नाम"
     },
     "topographyOptions": {
       "flat": "समतल",
@@ -1985,7 +1987,8 @@
       "required": "यो फिल्ड अनिवार्य छ",
       "lactatingLatePregnancy": "गाई {days} दिनको गर्भावस्थामै दुध दिइरहेको छ। गाईहरू सामान्यतया २१०-२२० दिनपछि सुकाइन्छ। तैपनि जारी राख्ने हो?",
       "notLactatingCleared": "गाई दुध नदिने भएकोले दूध उत्पादनको फिल्डहरू खाली गरिएको छ।",
-      "quantityMin": "मात्रा ० भन्दा बढी हुनुपर्छ"
+      "quantityMin": "मात्रा ० भन्दा बढी हुनुपर्छ",
+      "simulationNameMax": "सिमुलेसनको नाम १०० अक्षर वा सोभन्दा कम हुनुपर्छ"
     },
     "historyItem": {
       "evaluation": "आहार मूल्याङ्कन",
@@ -2021,7 +2024,9 @@
       "customFeed": "अनुकूलित दाना",
       "customFeedHint": "अनुकूलित दाना सिर्जना चाँडै आउँदैछ।",
       "price": "मूल्य",
-      "qty": "मात्रा"
+      "qty": "मात्रा",
+      "feedType_forage": "घाँस",
+      "feedType_concentrate": "दाना"
     },
     "constraints": {
       "title": "आहारको सीमा निर्धारण गर्नुहोस्",
@@ -2118,12 +2123,22 @@
       "noSimulations": "अहिलेसम्म कुनै सिमुलेशन छैन",
       "noSimulationsDesc": "पहिलो सिमुलेशन चलाएर यहाँ हेर्नुहोस्",
       "viewAll": "सबै हेर्नुहोस्",
-      "searchPlaceholder": "सिमुलेशन खोज्नुहोस्..."
+      "searchPlaceholder": "सिमुलेशन खोज्नुहोस्...",
+      "recommendations": "सिफारिसहरू",
+      "evaluations": "मूल्याङ्कनहरू",
+      "noRecommendationsYet": "तपाईंको पहिलो सिफारिस यहाँ देखिनेछ",
+      "noEvaluationsYet": "तपाईंको पहिलो मूल्याङ्कन यहाँ देखिनेछ"
     },
     "dietHistory": "आहारको इतिहास",
     "loadFromHistory": "इतिहासबाट लोड गर्नुहोस्",
     "units": {
-      "days": "दिन"
+      "days": "दिन",
+      "kg": "kg",
+      "litersPerDay": "L/दिन",
+      "kgPerDay": "kg/दिन",
+      "degreeC": "°C",
+      "km": "km",
+      "percent": "%"
     },
     "topographyHint": "समतल / पहाडी / हिमाली",
     "reset": "रिसेट गर्नुहोस्",
@@ -2137,6 +2152,36 @@
       "evaluations": "मूल्याङ्कनहरू",
       "failed": "असफल"
     },
-    "noFilterResults": "यो फिल्टरको लागि कुनै नतिजा छैन"
+    "noFilterResults": "यो फिल्टरको लागि कुनै नतिजा छैन",
+    "rerunSimulation": "सिमुलेशन पुन: चलाउनुहोस्",
+    "hints": {
+      "bodyWeight": "100 – 1,200",
+      "daysInMilk": "0 – 700",
+      "milkProduction": "0 – 80",
+      "fatMilk": "1 – 8",
+      "tpMilk": "1 – 6",
+      "parity": "० – १५",
+      "daysOfPregnancy": "० – २९०",
+      "calvingInterval": "३०० – ६००",
+      "temperature": "-२० – ५०",
+      "distance": "० – ५०",
+      "bwGain": "-१ – २"
+    },
+    "nutrientLabels": {
+      "ne_l": "ऊर्जा",
+      "mp": "प्रोटिन",
+      "ndf": "फाइबर",
+      "ee": "फ्याट",
+      "ash": "खनिज पदार्थ",
+      "rdp": "पच्ने प्रोटिन",
+      "rup": "बाईपास प्रोटिन",
+      "ca": "क्याल्सियम",
+      "p": "फस्फोरस",
+      "energy_mcal": "ऊर्जा (Mcal)",
+      "protein_kg": "प्रोटिन (kg)",
+      "calcium_kg": "क्याल्सियम (kg)",
+      "phosphorus_kg": "फस्फोरस (kg)",
+      "ndf_kg": "फाइबर (kg)"
+    }
   }
 }

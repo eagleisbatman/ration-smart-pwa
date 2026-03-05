@@ -1248,7 +1248,7 @@
   "countries": {
     "IN": "India",
     "KE": "Kenya",
-    "ET": "Ethiopia",
+    "ET": "Etiopia",
     "NP": "Nepal",
     "BD": "Bangladesh",
     "VN": "Vietnam",
@@ -1930,7 +1930,8 @@
       "animalCharacteristics": "Karakteristik Hewan",
       "milkProduction": "Produksi Susu",
       "reproductiveData": "Data Reproduksi",
-      "environment": "Lingkungan"
+      "environment": "Lingkungan",
+      "simulationDetails": "Detail Simulasi"
     },
     "fields": {
       "bodyWeight": "Berat Badan (kg)",
@@ -1948,7 +1949,8 @@
       "topography": "Topografi",
       "distance": "Jarak Berjalan (km)",
       "grazing": "Merumput",
-      "bwGain": "Penambahan Bobot Badan (kg/hari)"
+      "bwGain": "Penambahan Bobot Badan (kg/hari)",
+      "simulationName": "Nama Simulasi"
     },
     "topographyOptions": {
       "flat": "Datar",
@@ -1984,7 +1986,8 @@
       "required": "Kolom ini wajib diisi",
       "lactatingLatePregnancy": "Sapi sedang laktasi dengan kebuntingan {days} hari. Sapi biasanya dikeringkan setelah 210-220 hari. Lanjutkan?",
       "notLactatingCleared": "Kolom produksi susu dikosongkan karena hewan tidak sedang laktasi.",
-      "quantityMin": "Jumlah harus lebih dari 0"
+      "quantityMin": "Jumlah harus lebih dari 0",
+      "simulationNameMax": "Nama simulasi harus 100 karakter atau kurang"
     },
     "historyItem": {
       "evaluation": "Evaluasi Pakan",
@@ -2020,7 +2023,9 @@
       "customFeed": "Pakan Kustom",
       "customFeedHint": "Pembuatan pakan kustom akan segera hadir.",
       "price": "Harga",
-      "qty": "Jumlah"
+      "qty": "Jumlah",
+      "feedType_forage": "Hijauan",
+      "feedType_concentrate": "Konsentrat"
     },
     "constraints": {
       "title": "Batasan Diet Khusus",
@@ -2117,12 +2122,22 @@
       "noSimulations": "Belum ada simulasi",
       "noSimulationsDesc": "Jalankan simulasi pertama Anda untuk melihatnya di sini",
       "viewAll": "Lihat Semua",
-      "searchPlaceholder": "Cari simulasi..."
+      "searchPlaceholder": "Cari simulasi...",
+      "recommendations": "Rekomendasi",
+      "evaluations": "Evaluasi",
+      "noRecommendationsYet": "Rekomendasi pertama Anda akan muncul di sini",
+      "noEvaluationsYet": "Evaluasi pertama Anda akan muncul di sini"
     },
     "dietHistory": "Riwayat Pakan",
     "loadFromHistory": "Muat dari Riwayat",
     "units": {
-      "days": "hari"
+      "days": "hari",
+      "kg": "kg",
+      "litersPerDay": "L/hari",
+      "kgPerDay": "kg/hari",
+      "degreeC": "°C",
+      "km": "km",
+      "percent": "%"
     },
     "topographyHint": "Datar / Berbukit / Pegunungan",
     "reset": "Setel Ulang",
@@ -2136,6 +2151,36 @@
       "evaluations": "Evaluasi",
       "failed": "Gagal"
     },
-    "noFilterResults": "Tidak ada hasil untuk filter ini"
+    "noFilterResults": "Tidak ada hasil untuk filter ini",
+    "rerunSimulation": "Jalankan Ulang Simulasi",
+    "hints": {
+      "bodyWeight": "100 – 1.200",
+      "daysInMilk": "0 – 700",
+      "milkProduction": "0 – 80",
+      "fatMilk": "1 – 8",
+      "tpMilk": "1 – 6",
+      "parity": "0 – 15",
+      "daysOfPregnancy": "0 – 290",
+      "calvingInterval": "300 – 600",
+      "temperature": "-20 – 50",
+      "distance": "0 – 50",
+      "bwGain": "-1 – 2"
+    },
+    "nutrientLabels": {
+      "ne_l": "Energi",
+      "mp": "Protein",
+      "ndf": "Serat",
+      "ee": "Lemak",
+      "ash": "Mineral",
+      "rdp": "Protein Tercerna",
+      "rup": "Protein Bypass",
+      "ca": "Kalsium",
+      "p": "Fosfor",
+      "energy_mcal": "Energi (Mkal)",
+      "protein_kg": "Protein (kg)",
+      "calcium_kg": "Kalsium (kg)",
+      "phosphorus_kg": "Fosfor (kg)",
+      "ndf_kg": "Serat (kg)"
+    }
   }
 }

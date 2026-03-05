@@ -318,7 +318,7 @@
     "bodyConditionScore": "Note d'état corporel",
     "activityLevel": "Niveau d'activité",
     "activityLow": "Faible (à l'étable)",
-    "activityNormal": "Normal",
+    "activityNormal": "Normale",
     "activityHigh": "Élevé (pâturage)",
     "notes": "Notes",
     "notesHint": "Toute information additionnelle",
@@ -334,7 +334,7 @@
     "bcsHint": "1 (très maigre) à 5 (très gras)",
     "bcs1": "1 - Très maigre",
     "bcs2": "2 - Maigre",
-    "bcs3": "3 - Normal",
+    "bcs3": "3 - Normale",
     "bcs4": "4 - Gras",
     "bcs5": "5 - Très gras",
     "breeds": {
@@ -1934,7 +1934,8 @@
       "animalCharacteristics": "Caractéristiques de l'animal",
       "milkProduction": "Production laitière",
       "reproductiveData": "Données de reproduction",
-      "environment": "Environnement"
+      "environment": "Environnement",
+      "simulationDetails": "Détails de la simulation"
     },
     "fields": {
       "bodyWeight": "Poids corporel (kg)",
@@ -1952,7 +1953,8 @@
       "topography": "Topographie",
       "distance": "Distance de marche (km)",
       "grazing": "Pâturage",
-      "bwGain": "Gain de poids corporel (kg/jour)"
+      "bwGain": "Gain de poids corporel (kg/jour)",
+      "simulationName": "Nom de la simulation"
     },
     "topographyOptions": {
       "flat": "Plat",
@@ -1988,7 +1990,8 @@
       "required": "Ce champ est obligatoire",
       "lactatingLatePregnancy": "La vache est en lactation avec {days} jours de gestation. Les vaches sont généralement taries après 210-220 jours. Voulez-vous continuer ?",
       "notLactatingCleared": "Les champs de production laitière ont été effacés car l'animal n'est pas en lactation.",
-      "quantityMin": "La quantité doit être supérieure à 0"
+      "quantityMin": "La quantité doit être supérieure à 0",
+      "simulationNameMax": "Le nom de la simulation doit contenir 100 caractères ou moins"
     },
     "historyItem": {
       "evaluation": "Évaluation de la ration",
@@ -2024,7 +2027,9 @@
       "customFeed": "Aliment personnalisé",
       "customFeedHint": "La création d'aliments personnalisés arrive bientôt.",
       "price": "Prix",
-      "qty": "Qté"
+      "qty": "Qté",
+      "feedType_forage": "Fourrage",
+      "feedType_concentrate": "Concentré"
     },
     "constraints": {
       "title": "Limites personnalisées pour la ration",
@@ -2121,12 +2126,22 @@
       "noSimulations": "Aucune simulation pour l'instant",
       "noSimulationsDesc": "Lancez votre première simulation pour la voir ici",
       "viewAll": "Tout voir",
-      "searchPlaceholder": "Rechercher des simulations..."
+      "searchPlaceholder": "Rechercher des simulations...",
+      "recommendations": "Recommandations",
+      "evaluations": "Évaluations",
+      "noRecommendationsYet": "Votre première recommandation s'affichera ici",
+      "noEvaluationsYet": "Votre première évaluation s'affichera ici"
     },
     "dietHistory": "Historique des rations",
     "loadFromHistory": "Charger de l'historique",
     "units": {
-      "days": "jours"
+      "days": "jours",
+      "kg": "kg",
+      "litersPerDay": "L/jour",
+      "kgPerDay": "kg/jour",
+      "degreeC": "°C",
+      "km": "km",
+      "percent": "%"
     },
     "topographyHint": "Plat / Vallonné / Montagneux",
     "reset": "Réinitialiser",
@@ -2140,6 +2155,36 @@
       "evaluations": "Évaluations",
       "failed": "Échouées"
     },
-    "noFilterResults": "Aucun résultat pour ce filtre"
+    "noFilterResults": "Aucun résultat pour ce filtre",
+    "rerunSimulation": "Relancer la simulation",
+    "hints": {
+      "bodyWeight": "100 – 1 200",
+      "daysInMilk": "0 – 700",
+      "milkProduction": "0 – 80",
+      "fatMilk": "1 – 8",
+      "tpMilk": "1 – 6",
+      "parity": "0 – 15",
+      "daysOfPregnancy": "0 – 290",
+      "calvingInterval": "300 – 600",
+      "temperature": "-20 – 50",
+      "distance": "0 – 50",
+      "bwGain": "-1 – 2"
+    },
+    "nutrientLabels": {
+      "ne_l": "Énergie",
+      "mp": "Protéines",
+      "ndf": "Fibres",
+      "ee": "Matière grasse",
+      "ash": "Minéraux",
+      "rdp": "Protéines digestibles",
+      "rup": "Protéines non dégradables",
+      "ca": "Calcium",
+      "p": "Phosphore",
+      "energy_mcal": "Énergie (Mcal)",
+      "protein_kg": "Protéines (kg)",
+      "calcium_kg": "Calcium (kg)",
+      "phosphorus_kg": "Phosphore (kg)",
+      "ndf_kg": "Fibres (kg)"
+    }
   }
 }

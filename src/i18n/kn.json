@@ -1931,7 +1931,8 @@
       "animalCharacteristics": "ಪ್ರಾಣಿಗಳ ಗುಣಲಕ್ಷಣಗಳು",
       "milkProduction": "ಹಾಲು ಉತ್ಪಾದನೆ",
       "reproductiveData": " ಸಂತಾನೋತ್ಪತ್ತಿ ಮಾಹಿತಿ",
-      "environment": "ಪರಿಸರ"
+      "environment": "ಪರಿಸರ",
+      "simulationDetails": "ಸಿಮ್ಯುಲೇಶನ್ ವಿವರಗಳು"
     },
     "fields": {
       "bodyWeight": "ದೇಹದ ತೂಕ (ಕೆಜಿ)",
@@ -1949,7 +1950,8 @@
       "topography": "ಭೂಪ್ರದೇಶ",
       "distance": "ನಡೆಯುವ ದೂರ (ಕಿಮೀ)",
       "grazing": "ಮೇಯಿಸುವಿಕೆ",
-      "bwGain": "ದೇಹದ ತೂಕ ಹೆಚ್ಚಳ (ಕೆಜಿ/ದಿನ)"
+      "bwGain": "ದೇಹದ ತೂಕ ಹೆಚ್ಚಳ (ಕೆಜಿ/ದಿನ)",
+      "simulationName": "ಸಿಮ್ಯುಲೇಶನ್ ಹೆಸರು"
     },
     "topographyOptions": {
       "flat": "ಸಮತಟ್ಟಾದ",
@@ -1985,7 +1987,8 @@
       "required": "ಈ ಕ್ಷೇತ್ರ ಕಡ್ಡಾಯವಾಗಿದೆ",
       "lactatingLatePregnancy": "ಹಸು {days} ದಿನಗಳ ಗರ್ಭಾವಸ್ಥೆಯಲ್ಲಿದ್ದರೂ ಹಾಲು ಕೊಡುತ್ತಿದೆ. ಹಸುಗಳನ್ನು ಸಾಮಾನ್ಯವಾಗಿ 210-220 ದಿನಗಳ ನಂತರ ಹಾಲು ನಿಲ್ಲಿಸಲಾಗುತ್ತದೆ. ಮುಂದುವರಿಸಬೇಕೆ?",
       "notLactatingCleared": "ಪ್ರಾಣಿ ಹಾಲು ಕೊಡದ ಕಾರಣ ಹಾಲು ಉತ್ಪಾದನಾ ಕ್ಷೇತ್ರಗಳನ್ನು ತೆರವುಗೊಳಿಸಲಾಗಿದೆ.",
-      "quantityMin": "ಪ್ರಮಾಣವು 0 ಕ್ಕಿಂತ ಹೆಚ್ಚಿರಬೇಕು"
+      "quantityMin": "ಪ್ರಮಾಣವು 0 ಕ್ಕಿಂತ ಹೆಚ್ಚಿರಬೇಕು",
+      "simulationNameMax": "ಸಿಮ್ಯುಲೇಶನ್ ಹೆಸರು 100 ಅಕ್ಷರಗಳು ಅಥವಾ ಅದಕ್ಕಿಂತ ಕಡಿಮೆ ಇರಬೇಕು"
     },
     "historyItem": {
       "evaluation": "ಆಹಾರ ಮೌಲ್ಯಮಾಪನ",
@@ -2021,7 +2024,9 @@
       "customFeed": "ಕಸ್ಟಮ್ ಆಹಾರ",
       "customFeedHint": "ಕಸ್ಟಮ್ ಆಹಾರ ರಚನೆ ಶೀಘ್ರದಲ್ಲೇ ಬರಲಿದೆ.",
       "price": "ಬೆಲೆ",
-      "qty": "ಪ್ರಮಾಣ"
+      "qty": "ಪ್ರಮಾಣ",
+      "feedType_forage": "ಮೇವು",
+      "feedType_concentrate": "ಸಂಸ್ಕರಿಸಿದ ಆಹಾರ"
     },
     "constraints": {
       "title": "ಕಸ್ಟಮ್ ಆಹಾರ ಮಿತಿಗಳು",
@@ -2118,12 +2123,22 @@
       "noSimulations": "ಇನ್ನೂ ಯಾವುದೇ ಸಿಮ್ಯುಲೇಶನ್‌ಗಳಿಲ್ಲ",
       "noSimulationsDesc": "ನಿಮ್ಮ ಮೊದಲ ಸಿಮ್ಯುಲೇಷನ್ ಅನ್ನು ಇಲ್ಲಿ ನೋಡಲು ರನ್ ಮಾಡಿ",
       "viewAll": "ಎಲ್ಲವನ್ನೂ ವೀಕ್ಷಿಸಿ",
-      "searchPlaceholder": "ಸಿಮ್ಯುಲೇಶನ್‌ಗಳನ್ನು ಹುಡುಕಿ..."
+      "searchPlaceholder": "ಸಿಮ್ಯುಲೇಶನ್‌ಗಳನ್ನು ಹುಡುಕಿ...",
+      "recommendations": "ಶಿಫಾರಸುಗಳು",
+      "evaluations": "ಮೌಲ್ಯಮಾಪನಗಳು",
+      "noRecommendationsYet": "ನಿಮ್ಮ ಮೊದಲ ಶಿಫಾರಸು ಇಲ್ಲಿ ಕಾಣಿಸುತ್ತದೆ",
+      "noEvaluationsYet": "ನಿಮ್ಮ ಮೊದಲ ಮೌಲ್ಯಮಾಪನ ಇಲ್ಲಿ ಕಾಣಿಸುತ್ತದೆ"
     },
     "dietHistory": "ಆಹಾರದ ಇತಿಹಾಸ",
     "loadFromHistory": "ಇತಿಹಾಸದಿಂದ ಲೋಡ್ ಮಾಡಿ",
     "units": {
-      "days": "ದಿನಗಳು"
+      "days": "ದಿನಗಳು",
+      "kg": "kg",
+      "litersPerDay": "ಲೀ/ದಿನ",
+      "kgPerDay": "kg/ದಿನ",
+      "degreeC": "°C",
+      "km": "km",
+      "percent": "%"
     },
     "topographyHint": "ಸಮತಟ್ಟಾದ / ಗುಡ್ಡಗಾಡು / ಪರ್ವತಮಯ",
     "reset": "ಮರುಹೊಂದಿಸಿ",
@@ -2137,6 +2152,36 @@
       "evaluations": "ಮೌಲ್ಯಮಾಪನಗಳು",
       "failed": "ವಿಫಲವಾಗಿದೆ"
     },
-    "noFilterResults": "ಈ ಫಿಲ್ಟರ್‌ಗೆ ಯಾವುದೇ ಫಲಿತಾಂಶಗಳಿಲ್ಲ"
+    "noFilterResults": "ಈ ಫಿಲ್ಟರ್‌ಗೆ ಯಾವುದೇ ಫಲಿತಾಂಶಗಳಿಲ್ಲ",
+    "rerunSimulation": "ಸಿಮ್ಯುಲೇಶನ್ ಮರು-ಪ್ರಾರಂಭಿಸಿ",
+    "hints": {
+      "bodyWeight": "100 – 1,200",
+      "daysInMilk": "0 – 700",
+      "milkProduction": "0 – 80",
+      "fatMilk": "1 – 8",
+      "tpMilk": "1 – 6",
+      "parity": "0 – 15",
+      "daysOfPregnancy": "0 – 290",
+      "calvingInterval": "300 – 600",
+      "temperature": "-20 – 50",
+      "distance": "0 – 50",
+      "bwGain": "-1 – 2"
+    },
+    "nutrientLabels": {
+      "ne_l": "ಶಕ್ತಿ",
+      "mp": "ಪ್ರೋಟೀನ್",
+      "ndf": "ಫೈಬರ್",
+      "ee": "ಕೊಬ್ಬು",
+      "ash": "ಖನಿಜಗಳು",
+      "rdp": "ಜೀರ್ಣವಾಗುವ ಪ್ರೋಟೀನ್",
+      "rup": "ಬೈಪಾಸ್ ಪ್ರೋಟೀನ್",
+      "ca": "ಕ್ಯಾಲ್ಸಿಯಂ",
+      "p": "ಫಾಸ್ಫರಸ್",
+      "energy_mcal": "ಶಕ್ತಿ (Mcal)",
+      "protein_kg": "ಪ್ರೋಟೀನ್ (ಕೆಜಿ)",
+      "calcium_kg": "ಕ್ಯಾಲ್ಸಿಯಂ (ಕೆಜಿ)",
+      "phosphorus_kg": "ಫಾಸ್ಫರಸ್ (ಕೆಜಿ)",
+      "ndf_kg": "ಫೈಬರ್ (ಕೆಜಿ)"
+    }
   }
 }

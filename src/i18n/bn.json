@@ -1931,7 +1931,8 @@
       "animalCharacteristics": "প্রাণীর বৈশিষ্ট্য",
       "milkProduction": "দুধ উৎপাদন",
       "reproductiveData": "প্রজনন সংক্রান্ত তথ্য",
-      "environment": "পরিবেশ"
+      "environment": "পরিবেশ",
+      "simulationDetails": "সিমুলেশন বিবরণ"
     },
     "fields": {
       "bodyWeight": "শরীরের ওজন (কেজি)",
@@ -1949,7 +1950,8 @@
       "topography": "ভূখণ্ড",
       "distance": "হাঁটার দূরত্ব (কিমি)",
       "grazing": "চারণ",
-      "bwGain": "শরীরের ওজন বৃদ্ধি (কেজি/দিন)"
+      "bwGain": "শরীরের ওজন বৃদ্ধি (কেজি/দিন)",
+      "simulationName": "সিমুলেশনের নাম"
     },
     "topographyOptions": {
       "flat": "সমতল",
@@ -1985,7 +1987,8 @@
       "required": "এই ঘরটি পূরণ করা আবশ্যক",
       "lactatingLatePregnancy": "গরুটি গর্ভধারণের {days} দিন পার করেছে এবং দুধ দিচ্ছে। সাধারণত ২১০-২২০ দিনের পর গরুকে দুধ ছাড়ানো হয়। তবুও চালিয়ে যেতে চান?",
       "notLactatingCleared": "গরু দুধ না দেওয়ায় দুধ উৎপাদনের ঘরগুলো খালি করা হয়েছে।",
-      "quantityMin": "পরিমাণ 0 এর বেশি হতে হবে"
+      "quantityMin": "পরিমাণ 0 এর বেশি হতে হবে",
+      "simulationNameMax": "সিমুলেশনের নাম 100 অক্ষরের কম বা সমান হতে হবে"
     },
     "historyItem": {
       "evaluation": "খাদ্য মূল্যায়ন",
@@ -2021,7 +2024,9 @@
       "customFeed": "কাস্টম খাবার",
       "customFeedHint": "কাস্টম খাবার তৈরির অপশন শীঘ্রই আসছে।",
       "price": "দাম",
-      "qty": "পরিমাণ"
+      "qty": "পরিমাণ",
+      "feedType_forage": "গো-খাদ্য",
+      "feedType_concentrate": "ঘনীভূত খাদ্য"
     },
     "constraints": {
       "title": "খাদ্যের কাস্টম সীমাবদ্ধতা",
@@ -2118,12 +2123,22 @@
       "noSimulations": "এখনও কোনো সিমুলেশন নেই",
       "noSimulationsDesc": "এখানে দেখতে আপনার প্রথম সিমুলেশনটি চালান",
       "viewAll": "সব দেখুন",
-      "searchPlaceholder": "সিমুলেশন খুঁজুন..."
+      "searchPlaceholder": "সিমুলেশন খুঁজুন...",
+      "recommendations": "পরামর্শ",
+      "evaluations": "মূল্যায়ন",
+      "noRecommendationsYet": "আপনার প্রথম পরামর্শ এখানে দেখানো হবে",
+      "noEvaluationsYet": "আপনার প্রথম মূল্যায়ন এখানে দেখানো হবে"
     },
     "dietHistory": "খাদ্যের ইতিহাস",
     "loadFromHistory": "ইতিহাস থেকে লোড করুন",
     "units": {
-      "days": "দিন"
+      "days": "দিন",
+      "kg": "কেজি",
+      "litersPerDay": "লিটার/দিন",
+      "kgPerDay": "কেজি/দিন",
+      "degreeC": "°সে",
+      "km": "কিমি",
+      "percent": "%"
     },
     "topographyHint": "সমতল / পাহাড়ি / পর্বতমালা",
     "reset": "রিসেট করুন",
@@ -2137,6 +2152,36 @@
       "evaluations": "মূল্যায়নসমূহ",
       "failed": "ব্যর্থ"
     },
-    "noFilterResults": "এই ফিল্টারের জন্য কোনো ফলাফল নেই"
+    "noFilterResults": "এই ফিল্টারের জন্য কোনো ফলাফল নেই",
+    "rerunSimulation": "সিমুলেশন আবার চালান",
+    "hints": {
+      "bodyWeight": "100 – 1,200",
+      "daysInMilk": "0 – 700",
+      "milkProduction": "0 – 80",
+      "fatMilk": "1 – 8",
+      "tpMilk": "1 – 6",
+      "parity": "0 – 15",
+      "daysOfPregnancy": "0 – 290",
+      "calvingInterval": "300 – 600",
+      "temperature": "-20 – 50",
+      "distance": "0 – 50",
+      "bwGain": "-1 – 2"
+    },
+    "nutrientLabels": {
+      "ne_l": "শক্তি",
+      "mp": "প্রোটিন",
+      "ndf": "ফাইবার",
+      "ee": "চর্বি",
+      "ash": "খনিজ পদার্থ",
+      "rdp": "সহজপাচ্য প্রোটিন",
+      "rup": "বাইপাস প্রোটিন",
+      "ca": "ক্যালসিয়াম",
+      "p": "ফসফরাস",
+      "energy_mcal": "শক্তি (Mcal)",
+      "protein_kg": "প্রোটিন (কেজি)",
+      "calcium_kg": "ক্যালসিয়াম (কেজি)",
+      "phosphorus_kg": "ফসফরাস (কেজি)",
+      "ndf_kg": "ফাইবার (কেজি)"
+    }
   }
 }

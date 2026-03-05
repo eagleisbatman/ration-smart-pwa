@@ -1931,7 +1931,8 @@
       "animalCharacteristics": "पशु की विशेषताएं",
       "milkProduction": "दूध उत्पादन",
       "reproductiveData": "प्रजनन संबंधी डेटा",
-      "environment": "पर्यावरण"
+      "environment": "पर्यावरण",
+      "simulationDetails": "सिमुलेशन विवरण"
     },
     "fields": {
       "bodyWeight": "शरीर का वज़न (किग्रा)",
@@ -1949,7 +1950,8 @@
       "topography": "भूभाग",
       "distance": "चलने की दूरी (किमी)",
       "grazing": "चराई",
-      "bwGain": "शारीरिक वजन में वृद्धि (किग्रा/दिन)"
+      "bwGain": "शारीरिक वजन में वृद्धि (किग्रा/दिन)",
+      "simulationName": "सिमुलेशन का नाम"
     },
     "topographyOptions": {
       "flat": "समतल",
@@ -1985,7 +1987,8 @@
       "required": "यह फ़ील्ड भरना ज़रूरी है",
       "lactatingLatePregnancy": "गाय {days} दिनों की गर्भाधान अवधि के साथ दूध दे रही है. गायों को आमतौर पर 210-220 दिनों के बाद दूध देना बंद करवा दिया जाता है. क्या आप जारी रखना चाहते हैं?",
       "notLactatingCleared": "दूध उत्पादन वाले फ़ील्ड साफ़ कर दिए गए हैं क्योंकि जानवर दूध नहीं दे रहा है.",
-      "quantityMin": "मात्रा 0 से अधिक होनी चाहिए"
+      "quantityMin": "मात्रा 0 से अधिक होनी चाहिए",
+      "simulationNameMax": "सिमुलेशन का नाम 100 अक्षर या उससे कम होना चाहिए"
     },
     "historyItem": {
       "evaluation": "आहार मूल्यांकन",
@@ -2021,7 +2024,9 @@
       "customFeed": "कस्टम चारा",
       "customFeedHint": "कस्टम चारा बनाने की सुविधा जल्द आ रही है।",
       "price": "कीमत",
-      "qty": "मात्रा"
+      "qty": "मात्रा",
+      "feedType_forage": "चारा",
+      "feedType_concentrate": "दानेदार"
     },
     "constraints": {
       "title": "आहार की अपनी सीमाएँ",
@@ -2118,12 +2123,22 @@
       "noSimulations": "अभी कोई सिमुलेशन नहीं",
       "noSimulationsDesc": "अपना पहला सिमुलेशन चलाएँ ताकि आप इसे यहाँ देख सकें",
       "viewAll": "सभी देखें",
-      "searchPlaceholder": "सिमुलेशन खोजें..."
+      "searchPlaceholder": "सिमुलेशन खोजें...",
+      "recommendations": "सिफारिशें",
+      "evaluations": "मूल्यांकन",
+      "noRecommendationsYet": "आपकी पहली सिफारिश यहाँ दिखाई देगी",
+      "noEvaluationsYet": "आपका पहला मूल्यांकन यहाँ दिखाई देगा"
     },
     "dietHistory": "आहार इतिहास",
     "loadFromHistory": "इतिहास से लोड करें",
     "units": {
-      "days": "दिन"
+      "days": "दिन",
+      "kg": "किलो",
+      "litersPerDay": "लीटर/दिन",
+      "kgPerDay": "किलो/दिन",
+      "degreeC": "°C",
+      "km": "किमी",
+      "percent": "%"
     },
     "topographyHint": "समतल / पहाड़ी / पर्वतीय",
     "reset": "रीसेट",
@@ -2137,6 +2152,36 @@
       "evaluations": "मूल्यांकन",
       "failed": "विफल"
     },
-    "noFilterResults": "इस फ़िल्टर के लिए कोई परिणाम नहीं"
+    "noFilterResults": "इस फ़िल्टर के लिए कोई परिणाम नहीं",
+    "rerunSimulation": "सिमुलेशन फिर से चलाएँ",
+    "hints": {
+      "bodyWeight": "100 – 1,200",
+      "daysInMilk": "0 – 700",
+      "milkProduction": "0 – 80",
+      "fatMilk": "1 – 8",
+      "tpMilk": "1 – 6",
+      "parity": "0 – 15",
+      "daysOfPregnancy": "0 – 290",
+      "calvingInterval": "300 – 600",
+      "temperature": "-20 – 50",
+      "distance": "0 – 50",
+      "bwGain": "-1 – 2"
+    },
+    "nutrientLabels": {
+      "ne_l": "ऊर्जा",
+      "mp": "प्रोटीन",
+      "ndf": "फाइबर",
+      "ee": "वसा",
+      "ash": "खनिज",
+      "rdp": "पचने योग्य प्रोटीन",
+      "rup": "बाईपास प्रोटीन",
+      "ca": "कैल्शियम",
+      "p": "फास्फोरस",
+      "energy_mcal": "ऊर्जा (Mcal)",
+      "protein_kg": "प्रोटीन (किग्रा)",
+      "calcium_kg": "कैल्शियम (किग्रा)",
+      "phosphorus_kg": "फास्फोरस (किग्रा)",
+      "ndf_kg": "फाइबर (किग्रा)"
+    }
   }
 }

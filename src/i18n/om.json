@@ -1930,7 +1930,8 @@
       "animalCharacteristics": "Amaloota Beeyladaa",
       "milkProduction": "Omisha Aannanii",
       "reproductiveData": "Odeeffannoo Walhormannaa",
-      "environment": "Naannoo"
+      "environment": "Naannoo",
+      "simulationDetails": "Waan Qorannoon Jedhu"
     },
     "fields": {
       "bodyWeight": "Ulfaatina Qaamaa (kg)",
@@ -1948,7 +1949,8 @@
       "topography": "Lafti Dirrii Isaa",
       "distance": "Fageenya Deemaa (km)",
       "grazing": "Dheedaa",
-      "bwGain": "Ulfaatina qaamaa dabaluu (kg/guyyaa)"
+      "bwGain": "Ulfaatina qaamaa dabaluu (kg/guyyaa)",
+      "simulationName": "Maqaa Qorannoo"
     },
     "topographyOptions": {
       "flat": "Daree",
@@ -1984,7 +1986,8 @@
       "required": "Kutaan kun guutamuu qaba",
       "lactatingLatePregnancy": "Saani guyyaa {days} ulfa taatee aannaan hojjechaa jirti. Saanota baay'inaan guyyaa 210-220 booda aannaan irraa kutu. Itti fufuu barbaaddaa?",
       "notLactatingCleared": "Saani aannaan waan hin oomishneef dirreen oomisha aannanii qulqullaa'eera.",
-      "quantityMin": "Baay'inni 0 irra caaluu qaba"
+      "quantityMin": "Baay'inni 0 irra caaluu qaba",
+      "simulationNameMax": "Maqaan qorannoo qubee 100 yookaan sanaa gadi ta'uu qaba"
     },
     "historyItem": {
       "evaluation": "Madaallii Nyaataa",
@@ -2020,7 +2023,9 @@
       "customFeed": "Midhaan Dhuunfaa",
       "customFeedHint": "Uumuu midhaan dhuunfaa yeroo dhiyootti ni dhufa.",
       "price": "Gatii",
-      "qty": "Qabii"
+      "qty": "Qabii",
+      "feedType_forage": "Marga",
+      "feedType_concentrate": "Concentrate"
     },
     "constraints": {
       "title": "Daangaa Nyaataa Murtaa'e",
@@ -2117,12 +2122,22 @@
       "noSimulations": "Yaaliin tokkollee hin jiru",
       "noSimulationsDesc": "Yaalii kee isa jalqabaa hojjedhu, achi irratti argita",
       "viewAll": "Hunda Ilaali",
-      "searchPlaceholder": "Simuleeshinii barbaadi..."
+      "searchPlaceholder": "Simuleeshinii barbaadi...",
+      "recommendations": "Recommendations",
+      "evaluations": "Evaluations",
+      "noRecommendationsYet": "Your first recommendation will show up here",
+      "noEvaluationsYet": "Your first evaluation will show up here"
     },
     "dietHistory": "Seenaa Nyaataa",
     "loadFromHistory": "Seenaa irraa fe'i",
     "units": {
-      "days": "guyyaa"
+      "days": "guyyaa",
+      "kg": "kg",
+      "litersPerDay": "L/guyyaa",
+      "kgPerDay": "kg/guyyaa",
+      "degreeC": "°C",
+      "km": "km",
+      "percent": "%"
     },
     "topographyHint": "Dheedhii / Tulluu / Gaaraa",
     "reset": "Deebisi",
@@ -2136,6 +2151,36 @@
       "evaluations": "Dabaleewwan",
       "failed": "Kufeera"
     },
-    "noFilterResults": "Wanti barbaaddan hin jiru"
+    "noFilterResults": "Wanti barbaaddan hin jiru",
+    "rerunSimulation": "Qorannoo irra deebi'ii hojjedhi",
+    "hints": {
+      "bodyWeight": "100 – 1,200",
+      "daysInMilk": "0 – 700",
+      "milkProduction": "0 – 80",
+      "fatMilk": "1 – 8",
+      "tpMilk": "1 – 6",
+      "parity": "0 – 15",
+      "daysOfPregnancy": "0 – 290",
+      "calvingInterval": "300 – 600",
+      "temperature": "-20 – 50",
+      "distance": "0 – 50",
+      "bwGain": "-1 – 2"
+    },
+    "nutrientLabels": {
+      "ne_l": "Anniisaa",
+      "mp": "Pirootiin",
+      "ndf": "Fiber",
+      "ee": "Dibaayaa",
+      "ash": "Minerals",
+      "rdp": "Digestible Protein",
+      "rup": "Bypass Protein",
+      "ca": "Calcium",
+      "p": "Phosphorus",
+      "energy_mcal": "Energy (Mcal)",
+      "protein_kg": "Protein (kg)",
+      "calcium_kg": "Calcium (kg)",
+      "phosphorus_kg": "Phosphorus (kg)",
+      "ndf_kg": "Fiber (kg)"
+    }
   }
 }

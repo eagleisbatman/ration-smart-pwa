@@ -1931,7 +1931,8 @@
       "animalCharacteristics": "جانوروں کی خصوصیات",
       "milkProduction": "دودھ کی پیداوار",
       "reproductiveData": "تولیدی ڈیٹا",
-      "environment": "ماحول"
+      "environment": "ماحول",
+      "simulationDetails": "سمولیشن کی تفصیلات"
     },
     "fields": {
       "bodyWeight": "جسمانی وزن (کلوگرام)",
@@ -1949,7 +1950,8 @@
       "topography": "علاقے کی ساخت",
       "distance": "چلنے کا فاصلہ (کلومیٹر)",
       "grazing": "چرائی",
-      "bwGain": "جسمانی وزن میں اضافہ (کلوگرام/دن)"
+      "bwGain": "جسمانی وزن میں اضافہ (کلوگرام/دن)",
+      "simulationName": "سمولیشن کا نام"
     },
     "topographyOptions": {
       "flat": "ہموار",
@@ -1985,7 +1987,8 @@
       "required": "یہ خانہ ضروری ہے",
       "lactatingLatePregnancy": "گائے حمل کے {days} دن کے ساتھ دودھ دے رہی ہے۔ گایوں کو عام طور پر 210-220 دن کے بعد خشک کیا جاتا ہے۔ کیا پھر بھی جاری رکھیں؟",
       "notLactatingCleared": "چونکہ جانور دودھ نہیں دے رہا تھا، اس لیے دودھ کی پیداوار کے خانے صاف کر دیے گئے۔",
-      "quantityMin": "مقدار 0 سے زیادہ ہونی چاہیے"
+      "quantityMin": "مقدار 0 سے زیادہ ہونی چاہیے",
+      "simulationNameMax": "سمولیشن کا نام 100 حروف یا اس سے کم ہونا چاہیے"
     },
     "historyItem": {
       "evaluation": "خوراک کی تشخیص",
@@ -2021,7 +2024,9 @@
       "customFeed": "اپنی فیڈ بنائیں",
       "customFeedHint": "اپنی فیڈ بنانے کی سہولت جلد دستیاب ہوگی۔",
       "price": "قیمت",
-      "qty": "مقدار"
+      "qty": "مقدار",
+      "feedType_forage": "چارہ",
+      "feedType_concentrate": "کنسنٹریٹ"
     },
     "constraints": {
       "title": "خوراک کی مخصوص حدود",
@@ -2118,12 +2123,22 @@
       "noSimulations": "ابھی تک کوئی سیمولیشن نہیں",
       "noSimulationsDesc": "اپنی پہلی سیمولیشن چلائیں تاکہ اسے یہاں دیکھ سکیں",
       "viewAll": "سب دیکھیں",
-      "searchPlaceholder": "سیمولیشنز تلاش کریں..."
+      "searchPlaceholder": "سیمولیشنز تلاش کریں...",
+      "recommendations": "تجاویز",
+      "evaluations": "جائزے",
+      "noRecommendationsYet": "آپ کی پہلی تجویز یہاں نظر آئے گی",
+      "noEvaluationsYet": "آپ کا پہلا جائزہ یہاں نظر آئے گا"
     },
     "dietHistory": "خوراک کی ہسٹری",
     "loadFromHistory": "ہسٹری سے لوڈ کریں",
     "units": {
-      "days": "دن"
+      "days": "دن",
+      "kg": "کلوگرام",
+      "litersPerDay": "لٹر/دن",
+      "kgPerDay": "کلوگرام/دن",
+      "degreeC": "°C",
+      "km": "کلومیٹر",
+      "percent": "%"
     },
     "topographyHint": "ہموار / پہاڑی / دشوار گزار",
     "reset": "ری سیٹ کریں",
@@ -2137,6 +2152,36 @@
       "evaluations": "جانچیں",
       "failed": "ناکام"
     },
-    "noFilterResults": "اس فلٹر کے لیے کوئی نتیجہ نہیں"
+    "noFilterResults": "اس فلٹر کے لیے کوئی نتیجہ نہیں",
+    "rerunSimulation": "دوبارہ سمولیشن چلائیں",
+    "hints": {
+      "bodyWeight": "100 – 1,200",
+      "daysInMilk": "0 – 700",
+      "milkProduction": "0 – 80",
+      "fatMilk": "1 – 8",
+      "tpMilk": "1 – 6",
+      "parity": "0 – 15",
+      "daysOfPregnancy": "0 – 290",
+      "calvingInterval": "300 – 600",
+      "temperature": "-20 – 50",
+      "distance": "0 – 50",
+      "bwGain": "-1 – 2"
+    },
+    "nutrientLabels": {
+      "ne_l": "توانائی",
+      "mp": "پروٹین",
+      "ndf": "فائبر",
+      "ee": "چربی",
+      "ash": "معدنیات",
+      "rdp": "ہضم شدہ پروٹین",
+      "rup": "بائی پاس پروٹین",
+      "ca": "کیلشیم",
+      "p": "فاسفورس",
+      "energy_mcal": "توانائی (Mcal)",
+      "protein_kg": "پروٹین (کلوگرام)",
+      "calcium_kg": "کیلشیم (کلوگرام)",
+      "phosphorus_kg": "فاسفورس (کلوگرام)",
+      "ndf_kg": "فائبر (کلوگرام)"
+    }
   }
 }

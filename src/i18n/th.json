@@ -1931,7 +1931,8 @@
       "animalCharacteristics": "ลักษณะเฉพาะของสัตว์",
       "milkProduction": "การผลิตน้ำนม",
       "reproductiveData": "ข้อมูลการสืบพันธุ์",
-      "environment": "สภาพแวดล้อม"
+      "environment": "สภาพแวดล้อม",
+      "simulationDetails": "รายละเอียดการจำลอง"
     },
     "fields": {
       "bodyWeight": "น้ำหนักตัว (กก.)",
@@ -1949,7 +1950,8 @@
       "topography": "ลักษณะภูมิประเทศ",
       "distance": "ระยะทางเดิน (กม.)",
       "grazing": "การเล็มหญ้า",
-      "bwGain": "น้ำหนักตัวที่เพิ่มขึ้น (กก./วัน)"
+      "bwGain": "น้ำหนักตัวที่เพิ่มขึ้น (กก./วัน)",
+      "simulationName": "ชื่อการจำลอง"
     },
     "topographyOptions": {
       "flat": "ราบ",
@@ -1985,7 +1987,8 @@
       "required": "ช่องนี้ต้องกรอก",
       "lactatingLatePregnancy": "แม่โคกำลังให้นมและตั้งท้องได้ {days} วัน โดยทั่วไปแม่โคจะถูกหย่านมหลัง 210-220 วัน คุณต้องการดำเนินการต่อหรือไม่?",
       "notLactatingCleared": "เนื่องจากสัตว์ไม่ได้ให้นม ข้อมูลผลผลิตนมจึงถูกล้าง",
-      "quantityMin": "ปริมาณต้องมากกว่า 0"
+      "quantityMin": "ปริมาณต้องมากกว่า 0",
+      "simulationNameMax": "ชื่อการจำลองต้องมีความยาวไม่เกิน 100 ตัวอักษร"
     },
     "historyItem": {
       "evaluation": "การประเมินอาหาร",
@@ -2021,7 +2024,9 @@
       "customFeed": "อาหารกำหนดเอง",
       "customFeedHint": "การสร้างอาหารกำหนดเองจะมาเร็วๆ นี้",
       "price": "ราคา",
-      "qty": "ปริมาณ"
+      "qty": "ปริมาณ",
+      "feedType_forage": "อาหารหยาบ",
+      "feedType_concentrate": "อาหารข้น"
     },
     "constraints": {
       "title": "ข้อจำกัดสูตรอาหาร",
@@ -2118,12 +2123,22 @@
       "noSimulations": "ยังไม่มีการจำลอง",
       "noSimulationsDesc": "เรียกใช้การจำลองครั้งแรกของคุณเพื่อดูที่นี่",
       "viewAll": "ดูทั้งหมด",
-      "searchPlaceholder": "ค้นหาการจำลอง..."
+      "searchPlaceholder": "ค้นหาการจำลอง...",
+      "recommendations": "คำแนะนำ",
+      "evaluations": "การประเมิน",
+      "noRecommendationsYet": "คำแนะนำแรกของคุณจะแสดงขึ้นที่นี่",
+      "noEvaluationsYet": "การประเมินครั้งแรกของคุณจะแสดงที่นี่"
     },
     "dietHistory": "ประวัติสูตรอาหาร",
     "loadFromHistory": "โหลดจากประวัติ",
     "units": {
-      "days": "วัน"
+      "days": "วัน",
+      "kg": "กก.",
+      "litersPerDay": "ลิตร/วัน",
+      "kgPerDay": "กก./วัน",
+      "degreeC": "°C",
+      "km": "กม.",
+      "percent": "%"
     },
     "topographyHint": "พื้นราบ / เนินเขา / ภูเขา",
     "reset": "รีเซ็ต",
@@ -2137,6 +2152,36 @@
       "evaluations": "การประเมิน",
       "failed": "ไม่สำเร็จ"
     },
-    "noFilterResults": "ไม่พบผลลัพธ์สำหรับตัวกรองนี้"
+    "noFilterResults": "ไม่พบผลลัพธ์สำหรับตัวกรองนี้",
+    "rerunSimulation": "คำนวณใหม่",
+    "hints": {
+      "bodyWeight": "100 – 1,200",
+      "daysInMilk": "0 – 700",
+      "milkProduction": "0 – 80",
+      "fatMilk": "1 – 8",
+      "tpMilk": "1 – 6",
+      "parity": "0 – 15",
+      "daysOfPregnancy": "0 – 290",
+      "calvingInterval": "300 – 600",
+      "temperature": "-20 – 50",
+      "distance": "0 – 50",
+      "bwGain": "-1 – 2"
+    },
+    "nutrientLabels": {
+      "ne_l": "พลังงาน",
+      "mp": "โปรตีน",
+      "ndf": "ใยอาหาร",
+      "ee": "ไขมัน",
+      "ash": "แร่ธาตุ",
+      "rdp": "โปรตีนที่ย่อยได้",
+      "rup": "โปรตีนไม่ย่อยสลายในกระเพาะรูเมน",
+      "ca": "แคลเซียม",
+      "p": "ฟอสฟอรัส",
+      "energy_mcal": "พลังงาน (Mcal)",
+      "protein_kg": "โปรตีน (กก.)",
+      "calcium_kg": "แคลเซียม (กก.)",
+      "phosphorus_kg": "ฟอสฟอรัส (กก.)",
+      "ndf_kg": "ใยอาหาร (กก.)"
+    }
   }
 }

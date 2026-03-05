@@ -1931,7 +1931,8 @@
       "animalCharacteristics": "മൃഗത്തിന്റെ സ്വഭാവസവിശേഷതകൾ",
       "milkProduction": "പാൽ ഉത്പാദനം",
       "reproductiveData": "പ്രജനന വിവരങ്ങൾ",
-      "environment": "പരിസ്ഥിതി"
+      "environment": "പരിസ്ഥിതി",
+      "simulationDetails": "സിമുലേഷൻ വിശദാംശങ്ങൾ"
     },
     "fields": {
       "bodyWeight": "ശരീരഭാരം (kg)",
@@ -1949,7 +1950,8 @@
       "topography": "പ്രദേശത്തിന്റെ സ്വഭാവം",
       "distance": "നടത്ത ദൂരം (കി.മീ)",
       "grazing": "മേയൽ",
-      "bwGain": "ശരീരഭാരം വർദ്ധിക്കുന്നത് (കിലോ/ദിവസം)"
+      "bwGain": "ശരീരഭാരം വർദ്ധിക്കുന്നത് (കിലോ/ദിവസം)",
+      "simulationName": "സിമുലേഷൻ പേര്"
     },
     "topographyOptions": {
       "flat": "നിരപ്പായ പ്രദേശം",
@@ -1985,7 +1987,8 @@
       "required": "ഈ കോളം പൂരിപ്പിക്കേണ്ടതാണ്",
       "lactatingLatePregnancy": "ഗർഭകാലത്തിന്റെ {days} ദിവസങ്ങളിൽ പശു പാൽ ചുരത്തുന്നു. സാധാരണയായി 210-220 ദിവസങ്ങൾക്ക് ശേഷം പശുവിനെ കറവ വറ്റിക്കാറുണ്ട്. എന്നിട്ടും തുടരണോ?",
       "notLactatingCleared": "മൃഗം പാൽ ചുരത്താത്തതിനാൽ പാൽ ഉത്പാദന കോളം ഒഴിവാക്കിയിട്ടുണ്ട്.",
-      "quantityMin": "അളവ് 0-നേക്കാൾ കൂടുതൽ ആയിരിക്കണം"
+      "quantityMin": "അളവ് 0-നേക്കാൾ കൂടുതൽ ആയിരിക്കണം",
+      "simulationNameMax": "സിമുലേഷൻ പേര് 100 അക്ഷരങ്ങളിൽ താഴെയായിരിക്കണം"
     },
     "historyItem": {
       "evaluation": "തീറ്റ വിശകലനം",
@@ -2021,7 +2024,9 @@
       "customFeed": "കസ്റ്റം ഫീഡ്",
       "customFeedHint": "കസ്റ്റം ഫീഡ് ഉണ്ടാക്കുന്ന സൗകര്യം ഉടൻ വരുന്നു.",
       "price": "വില",
-      "qty": "അളവ്"
+      "qty": "അളവ്",
+      "feedType_forage": "പരുഷാഹാരം",
+      "feedType_concentrate": "സാന്ദ്രീകൃതാഹാരം"
     },
     "constraints": {
       "title": "പ്രത്യേക തീറ്റ പരിധികൾ",
@@ -2118,12 +2123,22 @@
       "noSimulations": "ഇതുവരെ സിമുലേഷനുകളൊന്നുമില്ല",
       "noSimulationsDesc": "നിങ്ങളുടെ ആദ്യത്തെ സിമുലേഷൻ ഇവിടെ കാണുന്നതിന് പ്രവർത്തിപ്പിക്കുക",
       "viewAll": "എല്ലാം കാണുക",
-      "searchPlaceholder": "സിമുലേഷനുകൾ തിരയുക..."
+      "searchPlaceholder": "സിമുലേഷനുകൾ തിരയുക...",
+      "recommendations": "ശുപാർശകൾ",
+      "evaluations": "വിലയിരുത്തലുകൾ",
+      "noRecommendationsYet": "നിങ്ങളുടെ ആദ്യ ശുപാർശ ഇവിടെ കാണിക്കും",
+      "noEvaluationsYet": "നിങ്ങളുടെ ആദ്യത്തെ വിലയിരുത്തൽ ഇവിടെ കാണിക്കും"
     },
     "dietHistory": "തീറ്റ ചരിത്രം",
     "loadFromHistory": "ചരിത്രത്തിൽ നിന്ന് ലോഡ് ചെയ്യുക",
     "units": {
-      "days": "ദിവസങ്ങൾ"
+      "days": "ദിവസങ്ങൾ",
+      "kg": "kg",
+      "litersPerDay": "L/day",
+      "kgPerDay": "kg/day",
+      "degreeC": "°C",
+      "km": "km",
+      "percent": "%"
     },
     "topographyHint": "നിരപ്പായ പ്രദേശം / കുന്നിൻപ്രദേശം / മലമ്പ്രദേശം",
     "reset": "പുനഃസ്ഥാപിക്കുക",
@@ -2137,6 +2152,36 @@
       "evaluations": "വിലയിരുത്തലുകൾ",
       "failed": "പരാജയപ്പെട്ടവ"
     },
-    "noFilterResults": "ഈ ഫിൽട്ടറിന് ഫലങ്ങളൊന്നുമില്ല"
+    "noFilterResults": "ഈ ഫിൽട്ടറിന് ഫലങ്ങളൊന്നുമില്ല",
+    "rerunSimulation": "സിമുലേഷൻ വീണ്ടും പ്രവർത്തിപ്പിക്കുക",
+    "hints": {
+      "bodyWeight": "100 – 1,200",
+      "daysInMilk": "0 – 700",
+      "milkProduction": "0 – 80",
+      "fatMilk": "1 – 8",
+      "tpMilk": "1 – 6",
+      "parity": "0 – 15",
+      "daysOfPregnancy": "0 – 290",
+      "calvingInterval": "300 – 600",
+      "temperature": "-20 – 50",
+      "distance": "0 – 50",
+      "bwGain": "-1 – 2"
+    },
+    "nutrientLabels": {
+      "ne_l": "ഊർജ്ജം",
+      "mp": "പ്രോട്ടീൻ",
+      "ndf": "നാരുകൾ",
+      "ee": "കൊഴുപ്പ്",
+      "ash": "ധാതുക്കൾ",
+      "rdp": "ദഹിക്കുന്ന പ്രോട്ടീൻ",
+      "rup": "ബൈപാസ് പ്രോട്ടീൻ",
+      "ca": "കാൽസ്യം",
+      "p": "ഫോസ്ഫറസ്",
+      "energy_mcal": "ഊർജ്ജം (Mcal)",
+      "protein_kg": "പ്രോട്ടീൻ (kg)",
+      "calcium_kg": "കാൽസ്യം (kg)",
+      "phosphorus_kg": "ഫോസ്ഫറസ് (kg)",
+      "ndf_kg": "നാരുകൾ (kg)"
+    }
   }
 }

@@ -1930,7 +1930,8 @@
       "animalCharacteristics": "Mga Katangian ng Hayop",
       "milkProduction": "Produksyon ng Gatas",
       "reproductiveData": "Data ng Reproduksyon",
-      "environment": "Kapaligiran"
+      "environment": "Kapaligiran",
+      "simulationDetails": "Mga Detalye ng Simulation"
     },
     "fields": {
       "bodyWeight": "Timbang ng Katawan (kg)",
@@ -1948,7 +1949,8 @@
       "topography": "Topograpiya",
       "distance": "Layo ng Lakad (km)",
       "grazing": "Pangangaso",
-      "bwGain": "Pagtaas ng Timbang ng Katawan (kg/araw)"
+      "bwGain": "Pagtaas ng Timbang ng Katawan (kg/araw)",
+      "simulationName": "Pangalan ng Simulation"
     },
     "topographyOptions": {
       "flat": "Patag",
@@ -1984,7 +1986,8 @@
       "required": "Kailangan ang field na ito",
       "lactatingLatePregnancy": "Ang baka ay nagpapasuso na may {days} araw ng pagbubuntis. Karaniwang pinatitigil ang pagpapasuso matapos ang 210-220 araw. Tuloy pa rin?",
       "notLactatingCleared": "Na-clear ang mga field ng produksyon ng gatas dahil ang hayop ay hindi nagpapasuso.",
-      "quantityMin": "Dapat mas malaki sa 0 ang dami"
+      "quantityMin": "Dapat mas malaki sa 0 ang dami",
+      "simulationNameMax": "Ang pangalan ng simulation ay dapat 100 karakter o mas kaunti"
     },
     "historyItem": {
       "evaluation": "Pagsusuri ng Diyeta",
@@ -2020,7 +2023,9 @@
       "customFeed": "Custom na Pakain",
       "customFeedHint": "Malapit na ang paggawa ng custom na pakain.",
       "price": "Presyo",
-      "qty": "Dami"
+      "qty": "Dami",
+      "feedType_forage": "Damo/Pananim",
+      "feedType_concentrate": "Konsentrado"
     },
     "constraints": {
       "title": "Pasadyang Limitasyon ng Diyeta",
@@ -2117,12 +2122,22 @@
       "noSimulations": "Wala pang simulation",
       "noSimulationsDesc": "Patakbuhin ang iyong unang simulation para makita dito",
       "viewAll": "Tingnan Lahat",
-      "searchPlaceholder": "Maghanap ng mga simulation..."
+      "searchPlaceholder": "Maghanap ng mga simulation...",
+      "recommendations": "Mga Rekomendasyon",
+      "evaluations": "Mga Pagsusuri",
+      "noRecommendationsYet": "Ang una mong rekomendasyon ay lalabas dito",
+      "noEvaluationsYet": "Ang una mong pagsusuri ay lalabas dito"
     },
     "dietHistory": "Kasaysayan ng Diyeta",
     "loadFromHistory": "I-load mula sa Kasaysayan",
     "units": {
-      "days": "araw"
+      "days": "araw",
+      "kg": "kg",
+      "litersPerDay": "L/araw",
+      "kgPerDay": "kg/araw",
+      "degreeC": "°C",
+      "km": "km",
+      "percent": "%"
     },
     "topographyHint": "Patag / Maburol / Bulubundukin",
     "reset": "I-reset",
@@ -2136,6 +2151,36 @@
       "evaluations": "Mga Pagsusuri",
       "failed": "Bigo"
     },
-    "noFilterResults": "Walang resulta para sa filter na ito"
+    "noFilterResults": "Walang resulta para sa filter na ito",
+    "rerunSimulation": "Ulitin ang Simulation",
+    "hints": {
+      "bodyWeight": "100 – 1,200",
+      "daysInMilk": "0 – 700",
+      "milkProduction": "0 – 80",
+      "fatMilk": "1 – 8",
+      "tpMilk": "1 – 6",
+      "parity": "0 – 15",
+      "daysOfPregnancy": "0 – 290",
+      "calvingInterval": "300 – 600",
+      "temperature": "-20 – 50",
+      "distance": "0 – 50",
+      "bwGain": "-1 – 2"
+    },
+    "nutrientLabels": {
+      "ne_l": "Enerhiya",
+      "mp": "Proyina",
+      "ndf": "Hibla",
+      "ee": "Taba",
+      "ash": "Mineral",
+      "rdp": "Natutunaw na Proyina",
+      "rup": "Bypass Proyina",
+      "ca": "Kalsiyum",
+      "p": "Posporus",
+      "energy_mcal": "Enerhiya (Mcal)",
+      "protein_kg": "Proyina (kg)",
+      "calcium_kg": "Kalsiyum (kg)",
+      "phosphorus_kg": "Posporus (kg)",
+      "ndf_kg": "Hibla (kg)"
+    }
   }
 }

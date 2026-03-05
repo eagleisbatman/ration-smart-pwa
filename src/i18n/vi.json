@@ -1931,7 +1931,8 @@
       "animalCharacteristics": "Đặc điểm động vật",
       "milkProduction": "Sản lượng sữa",
       "reproductiveData": "Dữ liệu sinh sản",
-      "environment": "Môi trường"
+      "environment": "Môi trường",
+      "simulationDetails": "Chi tiết mô phỏng"
     },
     "fields": {
       "bodyWeight": "Cân nặng (kg)",
@@ -1949,7 +1950,8 @@
       "topography": "Địa hình",
       "distance": "Khoảng cách đi bộ (km)",
       "grazing": "Chăn thả",
-      "bwGain": "Tăng trọng cơ thể (kg/ngày)"
+      "bwGain": "Tăng trọng cơ thể (kg/ngày)",
+      "simulationName": "Tên mô phỏng"
     },
     "topographyOptions": {
       "flat": "Đồng bằng",
@@ -1985,7 +1987,8 @@
       "required": "Trường này là bắt buộc",
       "lactatingLatePregnancy": "Bò đang vắt sữa với {days} ngày mang thai. Bò thường được ngừng vắt sữa sau 210-220 ngày. Tiếp tục chứ?",
       "notLactatingCleared": "Các trường sản lượng sữa đã được xóa vì vật nuôi không vắt sữa.",
-      "quantityMin": "Số lượng phải lớn hơn 0"
+      "quantityMin": "Số lượng phải lớn hơn 0",
+      "simulationNameMax": "Tên mô phỏng phải có 100 ký tự trở xuống"
     },
     "historyItem": {
       "evaluation": "Đánh giá khẩu phần",
@@ -2021,7 +2024,9 @@
       "customFeed": "Thức ăn tùy chỉnh",
       "customFeedHint": "Tính năng tạo thức ăn tùy chỉnh sẽ sớm ra mắt.",
       "price": "Giá",
-      "qty": "Số lượng"
+      "qty": "Số lượng",
+      "feedType_forage": "Thức ăn thô",
+      "feedType_concentrate": "Thức ăn tinh"
     },
     "constraints": {
       "title": "Giới hạn Khẩu phần Ăn Tùy chỉnh",
@@ -2118,12 +2123,22 @@
       "noSimulations": "Chưa có mô phỏng nào",
       "noSimulationsDesc": "Chạy mô phỏng đầu tiên của bạn để xem tại đây",
       "viewAll": "Xem tất cả",
-      "searchPlaceholder": "Tìm kiếm mô phỏng..."
+      "searchPlaceholder": "Tìm kiếm mô phỏng...",
+      "recommendations": "Khuyến nghị",
+      "evaluations": "Đánh giá",
+      "noRecommendationsYet": "Khuyến nghị đầu tiên của bạn sẽ hiển thị ở đây",
+      "noEvaluationsYet": "Đánh giá đầu tiên của bạn sẽ hiển thị ở đây"
     },
     "dietHistory": "Lịch sử khẩu phần",
     "loadFromHistory": "Tải từ Lịch sử",
     "units": {
-      "days": "ngày"
+      "days": "ngày",
+      "kg": "kg",
+      "litersPerDay": "L/ngày",
+      "kgPerDay": "kg/ngày",
+      "degreeC": "°C",
+      "km": "km",
+      "percent": "%"
     },
     "topographyHint": "Đồng bằng / Đồi núi / Núi cao",
     "reset": "Đặt lại",
@@ -2137,6 +2152,36 @@
       "evaluations": "Đánh giá",
       "failed": "Thất bại"
     },
-    "noFilterResults": "Không có kết quả cho bộ lọc này"
+    "noFilterResults": "Không có kết quả cho bộ lọc này",
+    "rerunSimulation": "Chạy lại mô phỏng",
+    "hints": {
+      "bodyWeight": "100 – 1.200",
+      "daysInMilk": "0 – 700",
+      "milkProduction": "0 – 80",
+      "fatMilk": "1 – 8",
+      "tpMilk": "1 – 6",
+      "parity": "0 – 15",
+      "daysOfPregnancy": "0 – 290",
+      "calvingInterval": "300 – 600",
+      "temperature": "-20 – 50",
+      "distance": "0 – 50",
+      "bwGain": "-1 – 2"
+    },
+    "nutrientLabels": {
+      "ne_l": "Năng lượng",
+      "mp": "Protein",
+      "ndf": "Xơ",
+      "ee": "Béo",
+      "ash": "Khoáng chất",
+      "rdp": "Protein tiêu hóa",
+      "rup": "Protein không tiêu hóa",
+      "ca": "Canxi",
+      "p": "Phốt pho",
+      "energy_mcal": "Năng lượng (Mcal)",
+      "protein_kg": "Protein (kg)",
+      "calcium_kg": "Canxi (kg)",
+      "phosphorus_kg": "Phốt pho (kg)",
+      "ndf_kg": "Xơ (kg)"
+    }
   }
 }

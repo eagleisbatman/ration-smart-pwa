@@ -1931,7 +1931,8 @@
       "animalCharacteristics": "ਜਾਨਵਰ ਦੀਆਂ ਵਿਸ਼ੇਸ਼ਤਾਵਾਂ",
       "milkProduction": "ਦੁੱਧ ਉਤਪਾਦਨ",
       "reproductiveData": "ਪ੍ਰਜਨਨ ਡਾਟਾ",
-      "environment": "ਵਾਤਾਵਰਣ"
+      "environment": "ਵਾਤਾਵਰਣ",
+      "simulationDetails": "ਸਿਮੂਲੇਸ਼ਨ ਦੇ ਵੇਰਵੇ"
     },
     "fields": {
       "bodyWeight": "ਸਰੀਰ ਦਾ ਭਾਰ (ਕਿਲੋਗ੍ਰਾਮ)",
@@ -1949,7 +1950,8 @@
       "topography": "ਭੂਗੋਲ",
       "distance": "ਚੱਲਣ ਦੀ ਦੂਰੀ (ਕਿਲੋਮੀਟਰ)",
       "grazing": "ਚਰਾਉਣ",
-      "bwGain": "ਸਰੀਰ ਦੇ ਭਾਰ ਵਿੱਚ ਵਾਧਾ (ਕਿਲੋਗ੍ਰਾਮ/ਦਿਨ)"
+      "bwGain": "ਸਰੀਰ ਦੇ ਭਾਰ ਵਿੱਚ ਵਾਧਾ (ਕਿਲੋਗ੍ਰਾਮ/ਦਿਨ)",
+      "simulationName": "ਸਿਮੂਲੇਸ਼ਨ ਦਾ ਨਾਮ"
     },
     "topographyOptions": {
       "flat": "ਸਮਤਲ",
@@ -1985,7 +1987,8 @@
       "required": "ਇਹ ਖੇਤਰ ਲਾਜ਼ਮੀ ਹੈ",
       "lactatingLatePregnancy": "ਗਾਂ ਗਰਭ ਅਵਸਥਾ ਦੇ {days} ਦਿਨਾਂ ਨਾਲ ਦੁੱਧ ਦੇ ਰਹੀ ਹੈ। ਗਾਵਾਂ ਨੂੰ ਆਮ ਤੌਰ 'ਤੇ 210-220 ਦਿਨਾਂ ਬਾਅਦ ਸੁਕਾ ਦਿੱਤਾ ਜਾਂਦਾ ਹੈ। ਕੀ ਤੁਸੀਂ ਫਿਰ ਵੀ ਜਾਰੀ ਰੱਖਣਾ ਚਾਹੁੰਦੇ ਹੋ?",
       "notLactatingCleared": "ਜਾਨਵਰ ਦੇ ਦੁੱਧ ਨਾ ਦੇਣ ਕਾਰਨ ਦੁੱਧ ਉਤਪਾਦਨ ਦੇ ਖੇਤਰ ਸਾਫ਼ ਕਰ ਦਿੱਤੇ ਗਏ ਹਨ।",
-      "quantityMin": "ਮਾਤਰਾ 0 ਤੋਂ ਵੱਧ ਹੋਣੀ ਚਾਹੀਦੀ ਹੈ"
+      "quantityMin": "ਮਾਤਰਾ 0 ਤੋਂ ਵੱਧ ਹੋਣੀ ਚਾਹੀਦੀ ਹੈ",
+      "simulationNameMax": "ਸਿਮੂਲੇਸ਼ਨ ਦਾ ਨਾਮ 100 ਅੱਖਰਾਂ ਜਾਂ ਘੱਟ ਦਾ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ"
     },
     "historyItem": {
       "evaluation": "ਖੁਰਾਕ ਦਾ ਮੁਲਾਂਕਣ",
@@ -2021,7 +2024,9 @@
       "customFeed": "ਕਸਟਮ ਖੁਰਾਕ",
       "customFeedHint": "ਕਸਟਮ ਖੁਰਾਕ ਬਣਾਉਣਾ ਜਲਦੀ ਹੀ ਉਪਲਬਧ ਹੋਵੇਗਾ।",
       "price": "ਕੀਮਤ",
-      "qty": "ਮਾਤਰਾ"
+      "qty": "ਮਾਤਰਾ",
+      "feedType_forage": "ਚਾਰਾ",
+      "feedType_concentrate": "ਦਾਣਾ"
     },
     "constraints": {
       "title": "ਖੁਰਾਕ ਦੀਆਂ ਖਾਸ ਸੀਮਾਵਾਂ",
@@ -2118,12 +2123,22 @@
       "noSimulations": "ਅਜੇ ਕੋਈ ਸਿਮੂਲੇਸ਼ਨ ਨਹੀਂ",
       "noSimulationsDesc": "ਇੱਥੇ ਦੇਖਣ ਲਈ ਆਪਣੀ ਪਹਿਲੀ ਸਿਮੂਲੇਸ਼ਨ ਚਲਾਓ",
       "viewAll": "ਸਾਰੇ ਦੇਖੋ",
-      "searchPlaceholder": "ਸਿਮੂਲੇਸ਼ਨਾਂ ਦੀ ਖੋਜ ਕਰੋ..."
+      "searchPlaceholder": "ਸਿਮੂਲੇਸ਼ਨਾਂ ਦੀ ਖੋਜ ਕਰੋ...",
+      "recommendations": "ਸਿਫਾਰਸ਼ਾਂ",
+      "evaluations": "ਮੁਲਾਂਕਣ",
+      "noRecommendationsYet": "ਤੁਹਾਡੀ ਪਹਿਲੀ ਸਿਫਾਰਸ਼ ਇੱਥੇ ਦਿਖਾਈ ਦੇਵੇਗੀ",
+      "noEvaluationsYet": "ਤੁਹਾਡਾ ਪਹਿਲਾ ਮੁਲਾਂਕਣ ਇੱਥੇ ਦਿਖਾਈ ਦੇਵੇਗਾ"
     },
     "dietHistory": "ਖੁਰਾਕ ਦਾ ਇਤਿਹਾਸ",
     "loadFromHistory": "ਇਤਿਹਾਸ ਤੋਂ ਲੋਡ ਕਰੋ",
     "units": {
-      "days": "ਦਿਨ"
+      "days": "ਦਿਨ",
+      "kg": "ਕਿਲੋਗ੍ਰਾਮ",
+      "litersPerDay": "ਲੀਟਰ/ਦਿਨ",
+      "kgPerDay": "ਕਿਲੋਗ੍ਰਾਮ/ਦਿਨ",
+      "degreeC": "°C",
+      "km": "ਕਿਲੋਮੀਟਰ",
+      "percent": "%"
     },
     "topographyHint": "ਪੱਧਰਾ / ਪਹਾੜੀ / ਪਰਬਤੀ",
     "reset": "ਰੀਸੈਟ ਕਰੋ",
@@ -2137,6 +2152,36 @@
       "evaluations": "ਮੁਲਾਂਕਣ",
       "failed": "ਅਸਫਲ"
     },
-    "noFilterResults": "ਇਸ ਫਿਲਟਰ ਲਈ ਕੋਈ ਨਤੀਜਾ ਨਹੀਂ"
+    "noFilterResults": "ਇਸ ਫਿਲਟਰ ਲਈ ਕੋਈ ਨਤੀਜਾ ਨਹੀਂ",
+    "rerunSimulation": "ਸਿਮੂਲੇਸ਼ਨ ਮੁੜ ਚਲਾਓ",
+    "hints": {
+      "bodyWeight": "100 – 1,200",
+      "daysInMilk": "0 – 700",
+      "milkProduction": "0 – 80",
+      "fatMilk": "1 – 8",
+      "tpMilk": "1 – 6",
+      "parity": "0 – 15",
+      "daysOfPregnancy": "0 – 290",
+      "calvingInterval": "300 – 600",
+      "temperature": "-20 – 50",
+      "distance": "0 – 50",
+      "bwGain": "-1 – 2"
+    },
+    "nutrientLabels": {
+      "ne_l": "ਊਰਜਾ",
+      "mp": "ਪ੍ਰੋਟੀਨ",
+      "ndf": "ਫਾਈਬਰ",
+      "ee": "ਚਰਬੀ",
+      "ash": "ਖਣਿਜ",
+      "rdp": "ਹਜ਼ਮ ਹੋਣ ਵਾਲਾ ਪ੍ਰੋਟੀਨ",
+      "rup": "ਬਾਈਪਾਸ ਪ੍ਰੋਟੀਨ",
+      "ca": "ਕੈਲਸ਼ੀਅਮ",
+      "p": "ਫਾਸਫੋਰਸ",
+      "energy_mcal": "ਊਰਜਾ (Mcal)",
+      "protein_kg": "ਪ੍ਰੋਟੀਨ (ਕਿਲੋ)",
+      "calcium_kg": "ਕੈਲਸ਼ੀਅਮ (ਕਿਲੋ)",
+      "phosphorus_kg": "ਫਾਸਫੋਰਸ (ਕਿਲੋ)",
+      "ndf_kg": "ਫਾਈਬਰ (ਕਿਲੋ)"
+    }
   }
 }
