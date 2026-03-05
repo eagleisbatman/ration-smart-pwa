@@ -11,43 +11,24 @@
     <!-- Action Card: Start New Simulation -->
     <q-card
       flat
-      bordered
-      class="q-mb-lg action-card cursor-pointer"
+      class="q-mb-lg action-card cursor-pointer bg-primary text-white"
       v-ripple
-      @click="router.push('/cattle-info')"
+      @click="startNewSimulation"
     >
       <q-card-section horizontal>
         <q-card-section class="col">
           <div class="text-subtitle1 text-weight-medium">
             {{ $t('simulation.home.startSimulation') }}
           </div>
-          <div class="text-caption text-grey-6 q-mt-xs">
+          <div class="text-caption q-mt-xs" style="opacity: 0.8">
             {{ $t('simulation.home.startSimulationDesc') }}
           </div>
         </q-card-section>
         <q-card-section class="col-auto flex flex-center q-pr-md">
-          <q-avatar color="primary" text-color="white" size="48px">
-            <q-icon :name="cowIcon" size="28px" />
-          </q-avatar>
+          <q-btn round flat text-color="white" icon="arrow_forward" size="lg" />
         </q-card-section>
       </q-card-section>
     </q-card>
-
-    <!-- Recent Simulations -->
-    <div class="q-mb-sm row items-center justify-between">
-      <div class="text-subtitle1 text-weight-medium">
-        {{ $t('simulation.home.recentSimulations') }}
-      </div>
-      <q-btn
-        v-if="store.simulationHistory.length > 5"
-        flat
-        dense
-        no-caps
-        color="primary"
-        :label="$t('simulation.home.viewAll')"
-        @click="router.push('/diet-history')"
-      />
-    </div>
 
     <!-- Loading -->
     <template v-if="loading">
@@ -65,8 +46,8 @@
       </q-card>
     </template>
 
-    <!-- Empty State -->
-    <template v-else-if="recentItems.length === 0">
+    <!-- Empty State (no simulations at all) -->
+    <template v-else-if="store.simulationHistory.length === 0">
       <q-card flat bordered class="rounded-borders">
         <q-card-section class="text-center q-pa-lg">
           <q-icon name="science" size="56px" color="grey-4" />
@@ -80,60 +61,107 @@
       </q-card>
     </template>
 
-    <!-- Simulation List -->
+    <!-- Categorized Simulation Lists -->
     <template v-else>
-      <q-card flat bordered class="rounded-borders">
-        <q-list separator>
-          <q-item
-            v-for="item in recentItems"
-            :key="item.report_id"
-            v-ripple
-            clickable
-            :disable="restoring"
-            @click="onRestore(item.report_id)"
-          >
-            <q-item-section avatar>
-              <q-avatar
-                :color="item.report_type === 'rec' ? 'primary' : 'secondary'"
-                text-color="white"
-                size="40px"
-              >
-                <q-icon :name="item.report_type === 'rec' ? 'auto_fix_high' : 'assessment'" />
-              </q-avatar>
-            </q-item-section>
+      <!-- Recommendations Section -->
+      <div class="q-mb-sm row items-center justify-between">
+        <div class="text-subtitle1 text-weight-medium">
+          {{ $t('simulation.home.recommendations') }}
+          <q-badge v-if="recentRecs.length" color="primary" :label="recentRecs.length" class="q-ml-xs" />
+        </div>
+        <q-btn
+          v-if="allRecs.length > RECENT_LIMIT"
+          flat dense no-caps color="primary"
+          :label="$t('simulation.home.viewAll')"
+          @click="router.push({ path: '/diet-history', query: { tab: 'rec' } })"
+        />
+      </div>
 
-            <q-item-section>
-              <q-item-label class="row items-center no-wrap">
-                <span>{{ reportLabel(item) }}</span>
-                <q-badge
-                  v-if="isInfeasible(item)"
-                  color="negative"
-                  :label="$t('simulation.status.failed')"
-                  class="q-ml-sm"
-                />
-                <q-badge
-                  v-else-if="item.solution_status"
-                  color="positive"
-                  :label="$t('simulation.status.success')"
-                  class="q-ml-sm"
-                />
-              </q-item-label>
-              <q-item-label caption>
-                {{ item.cattle_summary?.breed || '–' }}
-                · {{ item.cattle_summary?.body_weight ?? '–' }}{{ $t('common.units.kg') }}
-                · {{ item.cattle_summary?.milk_production ?? '–' }}{{ $t('common.units.litersPerDay') }}
-              </q-item-label>
-              <q-item-label caption class="text-grey-5">
-                {{ formatDate(item.created_at) }}
-              </q-item-label>
-            </q-item-section>
+      <template v-if="recentRecs.length > 0">
+        <q-card flat bordered class="q-mb-lg rounded-borders">
+          <q-list separator>
+            <q-item
+              v-for="item in recentRecs"
+              :key="item.report_id"
+              v-ripple clickable
+              :disable="restoring"
+              @click="onViewReport(item.report_id)"
+            >
+              <q-item-section avatar>
+                <q-avatar color="primary" text-color="white" size="40px">
+                  <q-icon name="auto_fix_high" />
+                </q-avatar>
+              </q-item-section>
+              <q-item-section>
+                <q-item-label class="row items-center no-wrap">
+                  <span>{{ reportLabel(item) }}</span>
+                  <q-badge v-if="isInfeasible(item)" color="negative" :label="$t('simulation.status.failed')" class="q-ml-sm" />
+                  <q-badge v-else-if="item.solution_status" color="positive" :label="$t('simulation.status.success')" class="q-ml-sm" />
+                </q-item-label>
+                <q-item-label caption>
+                  {{ item.cattle_summary?.breed || '–' }}
+                  · {{ item.cattle_summary?.body_weight ?? '–' }}{{ $t('common.units.kg') }}
+                  · {{ item.cattle_summary?.milk_production ?? '–' }}{{ $t('common.units.litersPerDay') }}
+                </q-item-label>
+                <q-item-label caption class="text-grey-5">{{ formatDate(item.created_at) }}</q-item-label>
+              </q-item-section>
+              <q-item-section side>
+                <q-icon name="chevron_right" color="grey-5" />
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-card>
+      </template>
+      <div v-else class="text-caption text-grey-5 q-mb-lg">{{ $t('simulation.home.noRecommendationsYet') }}</div>
 
-            <q-item-section side>
-              <q-icon name="chevron_right" color="grey-5" />
-            </q-item-section>
-          </q-item>
-        </q-list>
-      </q-card>
+      <!-- Evaluations Section -->
+      <div class="q-mb-sm row items-center justify-between">
+        <div class="text-subtitle1 text-weight-medium">
+          {{ $t('simulation.home.evaluations') }}
+          <q-badge v-if="recentEvals.length" color="secondary" :label="recentEvals.length" class="q-ml-xs" />
+        </div>
+        <q-btn
+          v-if="allEvals.length > RECENT_LIMIT"
+          flat dense no-caps color="primary"
+          :label="$t('simulation.home.viewAll')"
+          @click="router.push({ path: '/diet-history', query: { tab: 'eval' } })"
+        />
+      </div>
+
+      <template v-if="recentEvals.length > 0">
+        <q-card flat bordered class="rounded-borders">
+          <q-list separator>
+            <q-item
+              v-for="item in recentEvals"
+              :key="item.report_id"
+              v-ripple clickable
+              :disable="restoring"
+              @click="onViewReport(item.report_id)"
+            >
+              <q-item-section avatar>
+                <q-avatar color="secondary" text-color="white" size="40px">
+                  <q-icon name="assessment" />
+                </q-avatar>
+              </q-item-section>
+              <q-item-section>
+                <q-item-label class="row items-center no-wrap">
+                  <span>{{ reportLabel(item) }}</span>
+                </q-item-label>
+                <q-item-label caption>
+                  {{ item.cattle_summary?.breed || '–' }}
+                  · {{ item.cattle_summary?.body_weight ?? '–' }}{{ $t('common.units.kg') }}
+                  · {{ item.cattle_summary?.milk_production ?? '–' }}{{ $t('common.units.litersPerDay') }}
+                </q-item-label>
+                <q-item-label caption class="text-grey-5">{{ formatDate(item.created_at) }}</q-item-label>
+              </q-item-section>
+              <q-item-section side>
+                <q-icon name="chevron_right" color="grey-5" />
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-card>
+      </template>
+      <div v-else class="text-caption text-grey-5">{{ $t('simulation.home.noEvaluationsYet') }}</div>
     </template>
 
   </q-page>
@@ -146,7 +174,6 @@ import { useQuasar } from 'quasar';
 import { useI18n } from 'vue-i18n';
 import { useSimulationStore, type SimulationListItem } from 'src/stores/simulation';
 import { useAuthStore } from 'src/stores/auth';
-import { useCowIcon } from 'src/composables/useCowIcon';
 import {
   reportLabel as _reportLabel,
   isInfeasible,
@@ -157,7 +184,6 @@ const $q = useQuasar();
 const { t } = useI18n();
 const store = useSimulationStore();
 const authStore = useAuthStore();
-const { cowIcon } = useCowIcon();
 const loading = ref(false);
 const restoring = ref(false);
 
@@ -174,8 +200,16 @@ const greeting = computed(() => {
   return t('simulation.home.goodEvening');
 });
 
-/** Show at most 5 recent simulations. */
-const recentItems = computed(() => store.simulationHistory.slice(0, 5));
+const RECENT_LIMIT = 3;
+const allRecs = computed(() => store.simulationHistory.filter(i => i.report_type === 'rec'));
+const allEvals = computed(() => store.simulationHistory.filter(i => i.report_type === 'eval'));
+const recentRecs = computed(() => allRecs.value.slice(0, RECENT_LIMIT));
+const recentEvals = computed(() => allEvals.value.slice(0, RECENT_LIMIT));
+
+function startNewSimulation() {
+  store.resetForm();
+  router.push('/cattle-info');
+}
 
 async function retryFetch() {
   loading.value = true;
@@ -188,12 +222,15 @@ async function retryFetch() {
 
 onMounted(retryFetch);
 
-async function onRestore(reportId: string) {
+async function onViewReport(reportId: string) {
+  if (restoring.value || store.viewingReport) return;
   restoring.value = true;
-  const ok = await store.restoreSimulation(reportId);
+  const reportType = await store.viewSimulationReport(reportId);
   restoring.value = false;
-  if (ok) {
-    router.push('/cattle-info');
+  if (reportType === 'rec') {
+    router.push('/recommendation-report');
+  } else if (reportType === 'eval') {
+    router.push('/evaluation-report');
   } else if (store.error) {
     $q.notify({ type: 'negative', message: store.error });
   }

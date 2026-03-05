@@ -326,6 +326,8 @@ export const useSimulationStore = defineStore('simulation', () => {
   const restoringSimulation = ref(false);
   const error = ref<string | null>(null);
   const currentSimulationId = ref<string>('');
+  const simulationName = ref<string>('');
+  const viewingReport = ref(false);
 
   // ---------------------------------------------------------------------------
   // Helpers
@@ -393,7 +395,7 @@ export const useSimulationStore = defineStore('simulation', () => {
       const countryId = getCountryId(countryCode) || '';
       const currency = getCurrencyCodeForCountry(countryCode);
 
-      const payload = {
+      const payload: Record<string, unknown> = {
         user_id: authStore.userId,
         country_id: countryId,
         simulation_id: simId,
@@ -405,6 +407,9 @@ export const useSimulationStore = defineStore('simulation', () => {
           price_per_kg: f.price_per_kg,
         })),
       };
+      if (simulationName.value.trim()) {
+        payload.report_name = simulationName.value.trim();
+      }
 
       const response = await api.post('/diet-evaluation-working/', payload, { timeout: 120000 });
       evaluationResult.value = normalizeEvalResponse(response.data as Record<string, unknown>);
@@ -468,6 +473,9 @@ export const useSimulationStore = defineStore('simulation', () => {
       if (hasConstraints) {
         payload.base_thresholds = constraints;
       }
+      if (simulationName.value.trim()) {
+        payload.report_name = simulationName.value.trim();
+      }
 
       const response = await api.post('/diet-recommendation-working/', payload, { timeout: 120000 });
       recommendationResult.value = normalizeRecResponse(response.data as Record<string, unknown>);
@@ -510,6 +518,50 @@ export const useSimulationStore = defineStore('simulation', () => {
     }
   }
 
+  /** Map a raw cattle_info object from the API into a CattleInfoForm. */
+  function mapCattleInfo(ci: Record<string, unknown>): CattleInfoForm {
+    return {
+      body_weight: safeNum(ci.body_weight, 450),
+      breed: String(ci.breed || ''),
+      bc_score: safeNum(ci.bc_score, 3),
+      lactating: Boolean(ci.lactating),
+      days_in_milk: safeNum(ci.days_in_milk, 100),
+      milk_production: safeNum(ci.milk_production, 15),
+      fat_milk: safeNum(ci.fat_milk, 3.8),
+      tp_milk: safeNum(ci.tp_milk, 3.2),
+      parity: safeNum(ci.parity, 2),
+      days_of_pregnancy: safeNum(ci.days_of_pregnancy, 0),
+      temperature: safeNum(ci.temperature, 25),
+      topography: String(ci.topography || 'Flat'),
+      distance: safeNum(ci.distance, 1),
+      grazing: false,
+      calving_interval: safeNum(ci.calving_interval, 370),
+      bw_gain: safeNum(ci.bw_gain, 0.2),
+    };
+  }
+
+  /** Map a raw feed list from the API into SelectedFeed[]. */
+  function mapFeedList(feedList: Array<Record<string, unknown>>): SelectedFeed[] {
+    return feedList.map((f) => ({
+      feed_id: String(f.feed_id || ''),
+      feed_name: String(f.feed_name || ''),
+      fd_type: f.feed_type as string | undefined,
+      fd_category: f.feed_category as string | undefined,
+      price_per_kg: Number(f.price_per_kg) || 0,
+      quantity_as_fed: f.quantity_as_fed != null ? Number(f.quantity_as_fed) : undefined,
+    }));
+  }
+
+  /** Map a raw custom_constraints object from the API into CustomConstraints. */
+  function mapConstraints(cc: Record<string, unknown>): CustomConstraints {
+    return {
+      ndf_max: cc.ndf_max != null ? Number(cc.ndf_max) : undefined,
+      starch_max: cc.starch_max != null ? Number(cc.starch_max) : undefined,
+      ee_max: cc.ee_max != null ? Number(cc.ee_max) : undefined,
+      ash_max: cc.ash_max != null ? Number(cc.ash_max) : undefined,
+    };
+  }
+
   /**
    * POST /fetch-simulation-details/
    * Populates cattleInfo, selectedFeeds, and customConstraints from a saved simulation.
@@ -530,6 +582,7 @@ export const useSimulationStore = defineStore('simulation', () => {
       const data = response.data as {
         success: boolean;
         report_type: string;
+        report_name?: string;
         cattle_info: Record<string, unknown>;
         feed_selection: Array<Record<string, unknown>>;
         feed_evaluation?: Array<Record<string, unknown>>;
@@ -542,50 +595,13 @@ export const useSimulationStore = defineStore('simulation', () => {
         return false;
       }
 
-      // Restore cattle info (use safeNum to handle NaN/null without treating 0 as missing)
-      const ci = data.cattle_info;
-      cattleInfo.value = {
-        body_weight: safeNum(ci.body_weight, 450),
-        breed: String(ci.breed || ''),
-        bc_score: safeNum(ci.bc_score, 3),
-        lactating: Boolean(ci.lactating),
-        days_in_milk: safeNum(ci.days_in_milk, 100),
-        milk_production: safeNum(ci.milk_production, 15),
-        fat_milk: safeNum(ci.fat_milk, 3.8),
-        tp_milk: safeNum(ci.tp_milk, 3.2),
-        parity: safeNum(ci.parity, 2),
-        days_of_pregnancy: safeNum(ci.days_of_pregnancy, 0),
-        temperature: safeNum(ci.temperature, 25),
-        topography: String(ci.topography || 'Flat'),
-        distance: safeNum(ci.distance, 1),
-        grazing: false,
-        calving_interval: safeNum(ci.calving_interval, 370),
-        bw_gain: safeNum(ci.bw_gain, 0.2),
-      };
-
-      // Restore feeds — use feed_evaluation if available (eval report), otherwise feed_selection
-      const feedList = data.feed_evaluation ?? data.feed_selection ?? [];
-      selectedFeeds.value = feedList.map((f) => ({
-        feed_id: String(f.feed_id || ''),
-        feed_name: String(f.feed_name || ''),
-        fd_type: f.feed_type as string | undefined,
-        fd_category: f.feed_category as string | undefined,
-        price_per_kg: Number(f.price_per_kg) || 0,
-        quantity_as_fed: f.quantity_as_fed != null ? Number(f.quantity_as_fed) : undefined,
-      }));
-
-      // Restore custom constraints
-      if (data.custom_constraints) {
-        const cc = data.custom_constraints;
-        customConstraints.value = {
-          ndf_max: cc.ndf_max != null ? Number(cc.ndf_max) : undefined,
-          starch_max: cc.starch_max != null ? Number(cc.starch_max) : undefined,
-          ee_max: cc.ee_max != null ? Number(cc.ee_max) : undefined,
-          ash_max: cc.ash_max != null ? Number(cc.ash_max) : undefined,
-        };
-      } else {
-        customConstraints.value = defaultConstraints();
-      }
+      // Restore cattle info, feeds, constraints, and name
+      cattleInfo.value = mapCattleInfo(data.cattle_info);
+      selectedFeeds.value = mapFeedList(data.feed_evaluation ?? data.feed_selection ?? []);
+      customConstraints.value = data.custom_constraints
+        ? mapConstraints(data.custom_constraints)
+        : defaultConstraints();
+      simulationName.value = data.report_name || '';
 
       // Generate a new simulation ID for re-running
       newSimulationId();
@@ -600,6 +616,66 @@ export const useSimulationStore = defineStore('simulation', () => {
   }
 
   /**
+   * POST /fetch-simulation-details/
+   * Fetches a saved simulation and populates the result for viewing the report.
+   * Returns the report_type so the caller can navigate to the correct report page.
+   */
+  async function viewSimulationReport(reportId: string): Promise<string | null> {
+    const authStore = useAuthStore();
+    if (!authStore.userId) return null;
+
+    viewingReport.value = true;
+    error.value = null;
+
+    try {
+      const response = await api.post('/fetch-simulation-details/', {
+        user_id: authStore.userId,
+        report_id: reportId,
+      });
+
+      const data = response.data as {
+        success: boolean;
+        report_type: string;
+        report_name?: string;
+        cattle_info: Record<string, unknown>;
+        feed_selection: Array<Record<string, unknown>>;
+        feed_evaluation?: Array<Record<string, unknown>>;
+        custom_constraints?: Record<string, unknown>;
+        full_result?: Record<string, unknown>;
+      };
+
+      if (!data.success) {
+        error.value = 'Failed to load simulation report';
+        return null;
+      }
+
+      // Restore cattle info, feeds, constraints, and name for report display
+      cattleInfo.value = mapCattleInfo(data.cattle_info);
+      selectedFeeds.value = mapFeedList(data.feed_evaluation ?? data.feed_selection ?? []);
+      customConstraints.value = data.custom_constraints
+        ? mapConstraints(data.custom_constraints)
+        : defaultConstraints();
+      simulationName.value = data.report_name || '';
+
+      // Populate the appropriate result from full_result
+      if (data.full_result && Object.keys(data.full_result).length > 0) {
+        if (data.report_type === 'rec') {
+          recommendationResult.value = normalizeRecResponse(data.full_result);
+        } else if (data.report_type === 'eval') {
+          evaluationResult.value = normalizeEvalResponse(data.full_result);
+        }
+      }
+
+      return data.report_type;
+    } catch (err) {
+      error.value = extractUserFriendlyError(err);
+      return null;
+    } finally {
+      viewingReport.value = false;
+    }
+  }
+
+  /**
    * Reset all form state for a fresh simulation.
    */
   function resetForm(): void {
@@ -610,6 +686,7 @@ export const useSimulationStore = defineStore('simulation', () => {
     recommendationResult.value = null;
     error.value = null;
     currentSimulationId.value = '';
+    simulationName.value = '';
   }
 
   return {
@@ -624,10 +701,13 @@ export const useSimulationStore = defineStore('simulation', () => {
     recommending,
     fetchingHistory,
     restoringSimulation,
+    viewingReport,
     error,
     currentSimulationId,
+    simulationName,
     // Actions
     newSimulationId,
+    viewSimulationReport,
     generateEvaluation,
     generateRecommendation,
     fetchSimulationHistory,

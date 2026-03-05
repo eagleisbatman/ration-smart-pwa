@@ -105,8 +105,8 @@
         bordered
         class="q-mb-sm rounded-borders cursor-pointer"
         v-ripple
-        :class="{ 'bg-grey-2': restoring }"
-        @click="onRestore(item.report_id)"
+        :class="{ 'opacity-50': restoring }"
+        @click="onViewReport(item.report_id)"
       >
         <q-card-section horizontal class="items-center">
           <q-card-section class="col-auto">
@@ -217,12 +217,15 @@ async function retryFetch() {
 
 onMounted(retryFetch);
 
-async function onRestore(reportId: string) {
+async function onViewReport(reportId: string) {
+  if (restoring.value || store.viewingReport) return;
   restoring.value = true;
-  const ok = await store.restoreSimulation(reportId);
+  const reportType = await store.viewSimulationReport(reportId);
   restoring.value = false;
-  if (ok) {
-    router.push('/cattle-info');
+  if (reportType === 'rec') {
+    router.push('/recommendation-report');
+  } else if (reportType === 'eval') {
+    router.push('/evaluation-report');
   } else if (store.error) {
     $q.notify({ type: 'negative', message: store.error });
   }

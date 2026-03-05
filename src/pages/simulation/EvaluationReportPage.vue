@@ -106,6 +106,15 @@
           @click="showRecDialog = true"
         />
         <q-btn
+          :label="$t('simulation.rerunSimulation')"
+          outline
+          color="primary"
+          class="full-width action-btn"
+          no-caps
+          icon="replay"
+          @click="rerunSimulation"
+        />
+        <q-btn
           :label="$t('simulation.newCase')"
           color="grey-7"
           flat
@@ -252,6 +261,11 @@ async function onGenerateRecommendation() {
   } finally {
     showGenerating.value = false;
   }
+}
+
+function rerunSimulation() {
+  store.newSimulationId();
+  router.push('/cattle-info');
 }
 
 function newCase() {
