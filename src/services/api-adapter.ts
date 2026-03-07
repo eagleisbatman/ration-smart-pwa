@@ -1392,23 +1392,34 @@ function replacePathParams(pattern: string, params: Record<string, string>): str
 /**
  * Find matching endpoint mapping for a given URL
  */
-function findMapping(url: string): { mapping: EndpointMapping; params: Record<string, string> } | null {
+function findMapping(url: string, method?: string): { mapping: EndpointMapping; params: Record<string, string> } | null {
   const urlWithoutQuery = url.split('?')[0];
+  const normalizedMethod = method?.toUpperCase();
+
+  // Helper: check if mapping's method constraint matches
+  const methodMatches = (mapping: EndpointMapping) =>
+    !normalizedMethod || !mapping.method || mapping.method.toUpperCase() === normalizedMethod;
 
   // First try exact match
-  if (ENDPOINT_MAP[urlWithoutQuery]) {
+  if (ENDPOINT_MAP[urlWithoutQuery] && methodMatches(ENDPOINT_MAP[urlWithoutQuery])) {
     return { mapping: ENDPOINT_MAP[urlWithoutQuery], params: {} };
   }
 
-  // Try pattern matching
+  // Try pattern matching (prefer method-matching mappings)
+  let fallback: { mapping: EndpointMapping; params: Record<string, string> } | null = null;
   for (const [pattern, mapping] of Object.entries(ENDPOINT_MAP)) {
     const params = extractPathParams(pattern, urlWithoutQuery);
     if (params) {
-      return { mapping, params };
+      if (methodMatches(mapping)) {
+        return { mapping, params };
+      }
+      if (!fallback) {
+        fallback = { mapping, params };
+      }
     }
   }
 
-  return null;
+  return fallback;
 }
 
 /**
@@ -1511,11 +1522,6 @@ export function handleRequestInterceptor(config: AxiosRequestConfig): AxiosReque
   // Transform params
   if (config.params) {
     config.params = transformParams(originalUrl, config.params);
-  }
-
-  // Log adapter activity in development
-  if (process.env.NODE_ENV === 'development' && originalUrl !== config.url) {
-    console.log(`[API Adapter] ${originalUrl} -> ${config.url}`);
   }
 
   return config;

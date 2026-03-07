@@ -20,7 +20,7 @@
     <q-input
       v-if="store.simulationHistory.length > 5"
       v-model="search"
-      :placeholder="$t('simulation.home.searchPlaceholder')"
+      :label="$t('simulation.home.searchPlaceholder')"
       outlined
       dense
       clearable
@@ -105,8 +105,12 @@
         bordered
         class="q-mb-sm rounded-borders cursor-pointer"
         v-ripple
+        tabindex="0"
+        role="button"
         :class="{ 'opacity-50': restoring }"
         @click="onViewReport(item.report_id)"
+        @keydown.enter="onViewReport(item.report_id)"
+        @keydown.space.prevent="onViewReport(item.report_id)"
       >
         <q-card-section horizontal class="items-center">
           <q-card-section class="col-auto">
@@ -153,12 +157,14 @@
         </q-card-section>
       </q-card>
     </template>
+    <!-- Restoring overlay -->
+    <q-inner-loading :showing="restoring" :label="$t('common.loading', 'Loading...')" />
   </q-page>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import { useQuasar } from 'quasar';
 import { useI18n } from 'vue-i18n';
 import { useSimulationStore, type SimulationListItem } from 'src/stores/simulation';
@@ -168,6 +174,7 @@ import {
 } from 'src/lib/simulation-helpers';
 
 const router = useRouter();
+const route = useRoute();
 const $q = useQuasar();
 const { t } = useI18n();
 const store = useSimulationStore();
@@ -215,7 +222,13 @@ async function retryFetch() {
   }
 }
 
-onMounted(retryFetch);
+onMounted(() => {
+  const tab = route.query.tab as string;
+  if (tab === 'rec' || tab === 'eval') {
+    filterTab.value = tab;
+  }
+  retryFetch();
+});
 
 async function onViewReport(reportId: string) {
   if (restoring.value || store.viewingReport) return;

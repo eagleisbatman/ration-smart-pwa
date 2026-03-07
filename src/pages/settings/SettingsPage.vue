@@ -5,7 +5,7 @@
       <q-item v-ripple clickable @click="router.push('/settings/profile')">
         <q-item-section avatar>
           <q-avatar v-if="profileImage" size="40px">
-            <q-img :src="profileImage" :ratio="1" />
+            <q-img :src="profileImage" :ratio="1" alt="Profile photo" />
           </q-avatar>
           <q-avatar v-else color="primary" text-color="white">
             <q-icon name="person" />
@@ -209,7 +209,11 @@
               :key="tid"
               class="theme-card"
               :class="{ 'theme-card--active': tid === selectedThemeId }"
+              role="button"
+              tabindex="0"
               @click="selectTheme(tid)"
+              @keydown.enter="selectTheme(tid)"
+              @keydown.space.prevent="selectTheme(tid)"
             >
               <div class="row justify-center" style="gap: 6px">
                 <span

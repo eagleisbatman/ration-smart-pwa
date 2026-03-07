@@ -172,17 +172,18 @@
 
     <!-- Generating Overlay -->
     <q-dialog v-model="showGenerating" persistent>
-      <q-card class="text-center q-pa-lg" style="min-width: 280px">
+      <q-card class="text-center q-pa-lg" style="min-width: 280px" aria-live="polite">
         <q-spinner-gears size="48px" color="primary" />
         <div class="text-body1 q-mt-md">{{ $t('simulation.generating') }}</div>
         <div class="text-caption text-grey-6 q-mt-xs">{{ $t('simulation.generatingDesc') }}</div>
+        <q-btn flat no-caps color="grey-7" :label="$t('common.cancel')" class="q-mt-md" @click="showGenerating = false" />
       </q-card>
     </q-dialog>
   </q-page>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useQuasar } from 'quasar';
 import { useI18n } from 'vue-i18n';
@@ -202,6 +203,12 @@ const showRecDialog = ref(false);
 const showGenerating = ref(false);
 const useCustomMilk = ref(false);
 const milkOverride = ref(store.cattleInfo.milk_production);
+
+onMounted(() => {
+  if (!store.evaluationResult) {
+    router.replace('/');
+  }
+});
 
 const result = computed(() => store.evaluationResult);
 const evalSummary = computed(() => result.value?.evaluation_summary ?? null);

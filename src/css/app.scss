@@ -69,6 +69,20 @@ body {
 }
 
 // ============================================
+// Focus-Visible Styles
+// ============================================
+
+*:focus-visible {
+  outline: 2px solid var(--q-primary);
+  outline-offset: 2px;
+}
+
+// Restore suppressed focus helpers
+.q-btn:focus-visible .q-focus-helper {
+  opacity: 0.15;
+}
+
+// ============================================
 // Toggle Button Hover Fix
 // ============================================
 // Quasar's .q-focus-helper creates a rectangular overlay on hover/focus

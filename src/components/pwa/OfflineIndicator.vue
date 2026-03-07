@@ -1,6 +1,6 @@
 <template>
   <transition name="slide-down">
-    <div v-if="!isOnline" class="offline-indicator">
+    <div v-if="!isOnline" class="offline-indicator" role="alert">
       <q-icon name="cloud_off" class="q-mr-sm" />
       <span>{{ $t('offline.youAreOffline') }}</span>
     </div>

@@ -25,14 +25,14 @@
           v-model="searchQuery"
           outlined
           dense
-          :placeholder="$t('feed.search.placeholder')"
+          :label="$t('feed.search.placeholder')"
           class="col"
         >
           <template #prepend>
             <q-icon name="search" />
           </template>
           <template v-if="searchQuery" #append>
-            <q-icon name="close" class="cursor-pointer" @click="searchQuery = ''" />
+            <q-icon name="close" class="cursor-pointer" aria-label="Clear search" role="button" tabindex="0" @click="searchQuery = ''" />
           </template>
         </q-input>
         <q-btn
@@ -70,6 +70,15 @@
       <!-- Loading -->
       <template v-if="loading && feeds.length === 0">
         <SkeletonList :count="5" />
+      </template>
+
+      <!-- Error State -->
+      <template v-else-if="feedsStore.error">
+        <div class="text-center q-pa-md q-mb-md">
+          <q-icon name="cloud_off" size="32px" color="negative" />
+          <div class="text-body2 text-negative q-mt-xs">{{ feedsStore.error }}</div>
+          <q-btn flat no-caps color="primary" :label="$t('common.retry')" class="q-mt-sm" @click="feedsStore.fetchAllFeeds()" />
+        </div>
       </template>
 
       <!-- Empty State -->
@@ -115,6 +124,7 @@
                     :src="feed.image_url"
                     :ratio="1"
                     class="photo-avatar--fill"
+                    :alt="getFeedDisplayName(feed, locale)"
                   />
                   <q-icon v-else name="grass" />
                 </q-avatar>
