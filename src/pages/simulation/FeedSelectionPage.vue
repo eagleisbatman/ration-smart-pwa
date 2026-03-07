@@ -21,13 +21,15 @@
           icon="add"
           :label="$t('simulation.feedSelect.customFeed')"
           class="full-width top-btn"
-          @click="showCustomFeed = true"
-        />
+          disable
+        >
+          <q-badge floating color="warning" text-color="dark" label="Coming Soon" />
+        </q-btn>
       </div>
     </div>
 
     <!-- Diet Mode Radio Toggle -->
-    <div class="row items-center q-mb-md mode-toggle">
+    <div class="row items-center q-mb-md mode-toggle" role="radiogroup" :aria-label="$t('simulation.dietMode', 'Diet mode')">
       <q-radio
         v-model="dietMode"
         val="recommendation"
@@ -82,14 +84,14 @@
       v-model="searchQuery"
       outlined
       dense
-      :placeholder="$t('feed.search.placeholder')"
+      :label="$t('feed.search.placeholder')"
       class="q-mb-md"
     >
       <template #prepend>
         <q-icon name="search" />
       </template>
       <template v-if="searchQuery" #append>
-        <q-icon name="close" class="cursor-pointer" @click="searchQuery = ''" />
+        <q-icon name="close" class="cursor-pointer" aria-label="Clear search" role="button" tabindex="0" @click="searchQuery = ''" />
       </template>
     </q-input>
 
@@ -158,7 +160,7 @@
               <span class="text-body2 text-weight-medium">{{ sf.feed_name }}</span>
               <span class="text-caption text-grey-6"> ({{ idx + 1 }})</span>
             </div>
-            <q-btn flat round dense icon="close" size="sm" color="grey-5" @click="removeFeed(idx)" />
+            <q-btn flat round dense icon="close" size="sm" color="grey-5" :aria-label="$t('common.remove', 'Remove') + ' ' + sf.feed_name" @click="removeFeed(idx)" />
           </div>
 
           <div class="text-caption text-grey-6 q-mb-sm">
@@ -175,7 +177,7 @@
                 outlined
                 dense
                 step="0.1"
-                suffix="/kg"
+                :suffix="'/' + $t('simulation.units.kg')"
                 hide-bottom-space
                 :rules="[(v: number) => v > 0 || $t('simulation.validation.priceMin')]"
               />
@@ -188,7 +190,7 @@
                 outlined
                 dense
                 step="0.1"
-                suffix="kg"
+                :suffix="$t('simulation.units.kg')"
                 hide-bottom-space
                 :rules="[(v: number) => v > 0 || $t('simulation.validation.quantityMin')]"
               />
@@ -224,10 +226,11 @@
 
     <!-- Loading Overlay -->
     <q-dialog v-model="showGenerating" persistent>
-      <q-card class="text-center q-pa-lg" style="min-width: 280px">
+      <q-card class="text-center q-pa-lg" style="min-width: 280px" aria-live="polite">
         <q-spinner-gears size="48px" color="primary" />
         <div class="text-body1 q-mt-md">{{ $t('simulation.generating') }}</div>
         <div class="text-caption text-grey-6 q-mt-xs">{{ $t('simulation.generatingDesc') }}</div>
+        <q-btn flat no-caps color="grey-7" :label="$t('common.cancel')" class="q-mt-md" @click="showGenerating = false" />
       </q-card>
     </q-dialog>
 

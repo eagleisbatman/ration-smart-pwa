@@ -6,13 +6,10 @@
         {{ $t('auth.forgotPinPhoneDescription') }}
       </p>
 
-      <!-- New PIN Dialog -->
-      <q-banner v-if="newPin" dense class="bg-positive text-white q-mb-md" rounded>
-        <div class="text-weight-bold q-mb-xs">{{ $t('auth.newPinGenerated') }}</div>
-        <div>{{ $t('auth.newPinMessage', { pin: newPin }) }}</div>
-        <div v-if="redirectCountdown > 0" class="text-caption q-mt-xs">
-          {{ $t('auth.redirectingToLogin', { seconds: redirectCountdown }) }}
-        </div>
+      <!-- Success Message -->
+      <q-banner v-if="resetSuccess" dense class="bg-positive text-white q-mb-md" rounded>
+        <div class="text-weight-bold q-mb-xs">{{ $t('auth.pinResetSuccess') }}</div>
+        <div>{{ $t('auth.pinResetContactAdmin') }}</div>
       </q-banner>
 
       <!-- Error Message -->
@@ -20,7 +17,7 @@
         {{ error }}
       </q-banner>
 
-      <template v-if="!newPin">
+      <template v-if="!resetSuccess">
         <!-- Country Selection -->
         <q-select
           v-model="form.country_code"
@@ -35,12 +32,12 @@
           class="q-mb-sm"
         >
           <template #prepend>
-            <img :src="flagUrl(form.country_code)" width="20" height="15" class="flag-img" />
+            <img :src="flagUrl(form.country_code)" width="20" height="15" class="flag-img" :alt="$t('profile.country')" />
           </template>
           <template v-slot:option="{ itemProps, opt }">
             <q-item v-bind="itemProps">
               <q-item-section side class="country-option-flag">
-                <img :src="flagUrl(opt.value)" width="20" height="15" class="flag-img" />
+                <img :src="flagUrl(opt.value)" width="20" height="15" class="flag-img" :alt="opt.label" />
               </q-item-section>
               <q-item-section>
                 <q-item-label>{{ opt.label }}</q-item-label>
@@ -62,7 +59,7 @@
           ]"
         >
           <template #prepend>
-            <img :src="flagUrl(form.country_code)" width="20" height="15" class="q-mr-xs flag-img" />
+            <img :src="flagUrl(form.country_code)" width="20" height="15" class="q-mr-xs flag-img" :alt="$t('profile.country')" />
             <span class="text-body2 text-weight-medium text-grey-8 q-mr-xs">{{ selectedDialCode }}</span>
           </template>
         </q-input>
@@ -96,7 +93,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted, onUnmounted, watch } from 'vue';
+import { ref, reactive, computed, onMounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { api } from 'src/lib/api';
@@ -160,40 +157,20 @@ onMounted(() => {
 
 const loading = ref(false);
 const error = ref<string | null>(null);
-const newPin = ref<string | null>(null);
-const redirectCountdown = ref(0);
-let redirectTimer: ReturnType<typeof setInterval> | null = null;
-
-onUnmounted(() => {
-  if (redirectTimer) clearInterval(redirectTimer);
-});
+const resetSuccess = ref(false);
 
 async function onSubmit() {
   loading.value = true;
   error.value = null;
-  newPin.value = null;
+  resetSuccess.value = false;
 
   try {
     const payload = {
       phone_number: formatPhoneE164(form.phone, form.country_code),
     };
 
-    const response = await api.post('/api/v1/auth/forgot-pin-phone', payload);
-    const data = response.data as { new_pin?: string };
-
-    if (data.new_pin) {
-      newPin.value = data.new_pin;
-    }
-
-    // Auto-redirect to login after 5 seconds (longer to let user note PIN)
-    redirectCountdown.value = 5;
-    redirectTimer = setInterval(() => {
-      redirectCountdown.value--;
-      if (redirectCountdown.value <= 0) {
-        if (redirectTimer) clearInterval(redirectTimer);
-        router.push('/auth/login');
-      }
-    }, 1000);
+    await api.post('/api/v1/auth/forgot-pin-phone', payload);
+    resetSuccess.value = true;
   } catch (err: unknown) {
     if (err && typeof err === 'object' && 'response' in err) {
       const response = (err as { response?: { data?: { detail?: string }; status?: number } })

@@ -1,5 +1,7 @@
 <template>
   <q-layout view="lHh Lpr lFf">
+    <a href="#main-content" class="skip-to-content">Skip to main content</a>
+
     <!-- Offline Indicator -->
     <OfflineIndicator />
 
@@ -16,6 +18,7 @@
           round
           icon="arrow_back"
           color="white"
+          aria-label="Go back"
           @click="goBack"
         />
         <q-btn
@@ -25,6 +28,7 @@
           round
           icon="menu"
           color="white"
+          aria-label="Open navigation menu"
           @click="leftDrawerOpen = !leftDrawerOpen"
         />
 
@@ -46,7 +50,7 @@
         <!-- User Info -->
         <div class="drawer-header q-pa-md">
           <q-avatar v-if="authStore.profileImage" size="56px">
-            <q-img :src="authStore.profileImage" :ratio="1" />
+            <q-img :src="authStore.profileImage" :ratio="1" alt="Profile photo" />
           </q-avatar>
           <q-avatar v-else size="56px" color="primary" text-color="white">
             <q-icon :name="cowIcon" size="32px" />
@@ -75,42 +79,42 @@
             <q-item-section>{{ $t('simulation.dietHistory') }}</q-item-section>
           </q-item>
 
-          <q-item v-ripple clickable to="/settings/profile" active-class="text-primary bg-grey-2">
+          <q-item v-ripple clickable to="/settings/profile" active-class="text-primary bg-grey-2" @click="leftDrawerOpen = false">
             <q-item-section avatar>
               <q-icon name="person" />
             </q-item-section>
             <q-item-section>{{ $t('settings.profile') }}</q-item-section>
           </q-item>
 
-          <q-item v-ripple clickable to="/feeds" active-class="text-primary bg-grey-2">
+          <q-item v-ripple clickable to="/feeds" active-class="text-primary bg-grey-2" @click="leftDrawerOpen = false">
             <q-item-section avatar>
               <q-icon name="grass" />
             </q-item-section>
             <q-item-section>{{ $t('nav.feeds') }}</q-item-section>
           </q-item>
 
-          <q-item v-ripple clickable to="/settings/help" active-class="text-primary bg-grey-2">
+          <q-item v-ripple clickable to="/settings/help" active-class="text-primary bg-grey-2" @click="leftDrawerOpen = false">
             <q-item-section avatar>
               <q-icon name="help_outline" />
             </q-item-section>
             <q-item-section>{{ $t('settings.helpSupport') }}</q-item-section>
           </q-item>
 
-          <q-item v-ripple clickable to="/settings/feedback" active-class="text-primary bg-grey-2">
+          <q-item v-ripple clickable to="/settings/feedback" active-class="text-primary bg-grey-2" @click="leftDrawerOpen = false">
             <q-item-section avatar>
               <q-icon name="feedback" />
             </q-item-section>
             <q-item-section>{{ $t('settings.feedback') }}</q-item-section>
           </q-item>
 
-          <q-item v-ripple clickable to="/settings/privacy" active-class="text-primary bg-grey-2">
+          <q-item v-ripple clickable to="/settings/privacy" active-class="text-primary bg-grey-2" @click="leftDrawerOpen = false">
             <q-item-section avatar>
               <q-icon name="gavel" />
             </q-item-section>
             <q-item-section>{{ $t('settings.privacyPolicy') }}</q-item-section>
           </q-item>
 
-          <q-item v-ripple clickable to="/settings" active-class="text-primary bg-grey-2">
+          <q-item v-ripple clickable to="/settings" active-class="text-primary bg-grey-2" @click="leftDrawerOpen = false">
             <q-item-section avatar>
               <q-icon name="settings" />
             </q-item-section>
@@ -118,7 +122,7 @@
           </q-item>
 
           <template v-if="authStore.isAnyAdmin">
-            <q-item v-ripple clickable to="/admin" active-class="text-primary bg-grey-2">
+            <q-item v-ripple clickable to="/admin" active-class="text-primary bg-grey-2" @click="leftDrawerOpen = false">
               <q-item-section avatar>
                 <q-icon name="admin_panel_settings" />
               </q-item-section>
@@ -139,7 +143,7 @@
     </q-drawer>
 
     <!-- Page Container -->
-    <q-page-container>
+    <q-page-container id="main-content">
       <router-view v-slot="{ Component }">
         <transition name="fade" mode="out-in">
           <component :is="Component" />
@@ -212,6 +216,20 @@ async function logout() {
 </script>
 
 <style lang="scss" scoped>
+.skip-to-content {
+  position: absolute;
+  left: -9999px;
+  z-index: 9999;
+  padding: 8px 16px;
+  background: var(--q-primary);
+  color: white;
+  text-decoration: none;
+  &:focus {
+    left: 8px;
+    top: 8px;
+  }
+}
+
 .main-header {
   border-color: rgba(0, 0, 0, 0.15) !important;
 }

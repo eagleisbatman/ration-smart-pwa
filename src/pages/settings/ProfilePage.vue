@@ -4,7 +4,7 @@
       <!-- Avatar -->
       <div class="flex justify-center q-mb-md">
         <q-avatar v-if="profileImage" size="80px">
-          <q-img :src="profileImage" :ratio="1" />
+          <q-img :src="profileImage" :ratio="1" alt="Profile photo" />
         </q-avatar>
         <q-avatar v-else size="80px" color="primary" text-color="white">
           <q-icon name="person" size="40px" />
@@ -132,6 +132,10 @@
             type="password"
             outlined
             mask="####"
+            :rules="[
+              (val: string) => !!val || $t('validation.required'),
+              (val: string) => val.length === 4 || $t('validation.pinLength'),
+            ]"
           />
           <q-input
             v-model="pinForm.newPin"
@@ -139,6 +143,10 @@
             type="password"
             outlined
             mask="####"
+            :rules="[
+              (val: string) => !!val || $t('validation.required'),
+              (val: string) => val.length === 4 || $t('validation.pinLength'),
+            ]"
           />
           <q-input
             v-model="pinForm.confirmPin"
@@ -146,6 +154,11 @@
             type="password"
             outlined
             mask="####"
+            :rules="[
+              (val: string) => !!val || $t('validation.required'),
+              (val: string) => val.length === 4 || $t('validation.pinLength'),
+              (val: string) => val === pinForm.newPin || $t('profile.pinsDontMatch'),
+            ]"
             :error="pinForm.newPin !== pinForm.confirmPin && pinForm.confirmPin.length === 4"
             :error-message="$t('profile.pinsDontMatch')"
           />
@@ -256,6 +269,11 @@ async function onSubmit() {
     $q.notify({
       type: 'positive',
       message: t('profile.profileUpdated'),
+    });
+  } else {
+    $q.notify({
+      type: 'negative',
+      message: authStore.error || t('profile.profileUpdateFailed', 'Failed to save profile'),
     });
   }
 }

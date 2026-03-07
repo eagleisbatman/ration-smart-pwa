@@ -53,12 +53,12 @@
             class="q-mb-sm"
           >
             <template #prepend>
-              <img :src="flagUrl(form.country_code)" width="20" height="15" class="flag-img" />
+              <img :src="flagUrl(form.country_code)" width="20" height="15" class="flag-img" :alt="$t('profile.country')" />
             </template>
             <template v-slot:option="{ itemProps, opt }">
               <q-item v-bind="itemProps">
                 <q-item-section side class="country-option-flag">
-                  <img :src="flagUrl(opt.value)" width="20" height="15" class="flag-img" />
+                  <img :src="flagUrl(opt.value)" width="20" height="15" class="flag-img" :alt="opt.label" />
                 </q-item-section>
                 <q-item-section>
                   <q-item-label>{{ opt.label }}</q-item-label>
@@ -80,7 +80,7 @@
             ]"
           >
             <template #prepend>
-              <img :src="flagUrl(form.country_code)" width="20" height="15" class="q-mr-xs flag-img" />
+              <img :src="flagUrl(form.country_code)" width="20" height="15" class="q-mr-xs flag-img" :alt="$t('profile.country')" />
               <span class="text-body2 text-weight-medium text-grey-8 q-mr-xs">{{ selectedDialCode }}</span>
             </template>
           </q-input>
@@ -114,7 +114,12 @@
               <q-icon
                 :name="showPin ? 'visibility_off' : 'visibility'"
                 class="cursor-pointer"
+                :aria-label="showPin ? $t('auth.hidePin', 'Hide PIN') : $t('auth.showPin', 'Show PIN')"
+                role="button"
+                tabindex="0"
                 @click="showPin = !showPin"
+                @keydown.enter="showPin = !showPin"
+                @keydown.space.prevent="showPin = !showPin"
               />
             </template>
           </q-input>

@@ -13,7 +13,11 @@
       flat
       class="q-mb-lg action-card cursor-pointer bg-primary text-white"
       v-ripple
+      tabindex="0"
+      role="button"
       @click="startNewSimulation"
+      @keydown.enter="startNewSimulation"
+      @keydown.space.prevent="startNewSimulation"
     >
       <q-card-section horizontal>
         <q-card-section class="col">
@@ -25,7 +29,7 @@
           </div>
         </q-card-section>
         <q-card-section class="col-auto flex flex-center q-pr-md">
-          <q-btn round flat text-color="white" icon="arrow_forward" size="lg" />
+          <q-btn round flat text-color="white" icon="arrow_forward" size="lg" tabindex="-1" aria-hidden="true" />
         </q-card-section>
       </q-card-section>
     </q-card>
@@ -164,6 +168,8 @@
       <div v-else class="text-caption text-grey-5">{{ $t('simulation.home.noEvaluationsYet') }}</div>
     </template>
 
+    <!-- Restoring overlay -->
+    <q-inner-loading :showing="restoring" :label="$t('common.loading', 'Loading...')" />
   </q-page>
 </template>
 

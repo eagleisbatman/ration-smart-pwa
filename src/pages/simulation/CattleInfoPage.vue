@@ -25,6 +25,7 @@
             :label="$t('simulation.fields.simulationName')"
             outlined
             dense
+            autofocus
             maxlength="100"
             :rules="[
               (v: string) => (v && v.trim().length > 0) || $t('simulation.validation.required'),
@@ -384,8 +385,14 @@ async function fetchBreeds() {
 }
 
 function resetForm() {
-  store.resetForm();
-  $q.notify({ type: 'info', message: t('simulation.formReset') });
+  $q.dialog({
+    title: t('common.confirm'),
+    message: t('simulation.resetConfirmMessage'),
+    cancel: true,
+  }).onOk(() => {
+    store.resetForm();
+    $q.notify({ type: 'info', message: t('simulation.formReset') });
+  });
 }
 
 function onContinue() {

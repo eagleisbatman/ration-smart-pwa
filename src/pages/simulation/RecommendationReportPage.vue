@@ -142,7 +142,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useSimulationStore } from 'src/stores/simulation';
 import { useCurrency } from 'src/composables/useCurrency';
@@ -154,6 +154,12 @@ import StatusCard from 'src/components/simulation/StatusCard.vue';
 const router = useRouter();
 const store = useSimulationStore();
 const { formatCurrency } = useCurrency();
+
+onMounted(() => {
+  if (!store.recommendationResult) {
+    router.replace('/');
+  }
+});
 
 const result = computed(() => store.recommendationResult);
 

@@ -2146,6 +2146,7 @@
     },
     "reset": "Reset",
     "formReset": "Form reset to defaults",
+    "resetConfirmMessage": "Are you sure you want to reset the form? All entered data will be cleared.",
     "bcsLabels": {
       "thin": "Thin",
       "obese": "Obese"

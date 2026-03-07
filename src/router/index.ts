@@ -6,6 +6,7 @@ import {
   createWebHistory,
 } from 'vue-router';
 import { useAuthStore } from 'src/stores/auth';
+import { i18n } from 'src/boot/i18n';
 import routes from './routes';
 
 export default route(function (/* { store, ssrContext } */) {
@@ -73,6 +74,12 @@ export default route(function (/* { store, ssrContext } */) {
     }
 
     next();
+  });
+
+  Router.afterEach((to) => {
+    const titleKey = to.meta?.titleKey as string;
+    const title = titleKey ? (i18n.global as unknown as { t: (k: string) => string }).t(titleKey) : (to.meta?.title as string) || 'RationSmart';
+    document.title = `${title} | RationSmart`;
   });
 
   return Router;
