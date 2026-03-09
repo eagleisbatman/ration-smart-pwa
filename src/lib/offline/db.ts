@@ -57,19 +57,37 @@ export interface Feed {
   name: string;
   local_name?: string;
   fd_name?: string; // English name from backend
-  fd_type?: string;
+  fd_type?: string; // 'Forage' | 'Concentrate'
   fd_code?: string;
+  fd_category?: string; // Raw EC2 category (may differ from normalized `category`)
   category: string;
+  // Primary nutrient percentages (normalized from EC2 fd_* fields)
   dm_percentage: number;
   cp_percentage: number;
   tdn_percentage: number;
   ca_percentage?: number;
   p_percentage?: number;
   ndf_percentage?: number;
+  // Extended EC2 nutrient fields (pass-through for round-tripping)
+  fd_ash?: number;
+  fd_ee?: number;    // ether extract
+  fd_st?: number;    // starch
+  fd_adf?: number;   // acid detergent fiber
+  fd_lg?: number;    // lignin
+  fd_ndin?: number;  // neutral detergent insoluble nitrogen
+  fd_adin?: number;  // acid detergent insoluble nitrogen
+  fd_cf?: number;    // crude fiber
+  fd_nfe?: number;   // nitrogen-free extract
+  fd_hemicellulose?: number;
+  fd_cellulose?: number;
+  fd_npn_cp?: number; // non-protein nitrogen as % of CP
+  // Metadata
   price_per_kg?: number;
   currency?: string;
   image_url?: string;
   season?: string;
+  fd_country_id?: string;
+  fd_country_name?: string;
   is_custom: number; // 0 = master feed, 1 = custom feed (Dexie indexes require number)
   user_id?: string;
   country_code?: string;

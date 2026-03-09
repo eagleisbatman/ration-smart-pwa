@@ -134,7 +134,9 @@ const metrics = computed<MetricRow[]>(() => {
   return [
     higherIsBetter(t('feed.labels.dmPercentShort'), a.dm_percentage, b.dm_percentage),
     higherIsBetter(t('feed.labels.cpPercentShort'), a.cp_percentage, b.cp_percentage),
-    higherIsBetter(t('feed.labels.tdnPercentShort'), a.tdn_percentage, b.tdn_percentage),
+    higherIsBetter(t('feed.labels.ndfPercentShort'), a.ndf_percentage, b.ndf_percentage),
+    higherIsBetter(t('feed.labels.caPercentShort'), a.ca_percentage, b.ca_percentage),
+    higherIsBetter(t('feed.labels.pPercentShort'), a.p_percentage, b.p_percentage),
     lowerIsBetter(t('feed.pricePerKg'), a.price_per_kg, b.price_per_kg),
   ];
 });

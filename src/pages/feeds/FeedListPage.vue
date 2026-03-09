@@ -136,7 +136,7 @@
                   {{ getFeedSecondaryName(feed, locale) }}
                 </q-item-label>
                 <q-item-label caption>
-                  {{ $t('feed.labels.cpPercentShort') }}: {{ feed.cp_percentage != null ? feed.cp_percentage + '%' : '–' }} · {{ $t('feed.labels.tdnPercentShort') }}: {{ feed.tdn_percentage != null ? feed.tdn_percentage + '%' : '–' }} · {{ $t('feed.labels.dmPercentShort') }}: {{ feed.dm_percentage != null ? feed.dm_percentage + '%' : '–' }}
+                  {{ $t('feed.labels.cpPercentShort') }}: {{ feed.cp_percentage ? feed.cp_percentage + '%' : '–' }} · {{ $t('feed.labels.ndfPercentShort') }}: {{ feed.ndf_percentage ? feed.ndf_percentage + '%' : '–' }} · {{ $t('feed.labels.dmPercentShort') }}: {{ feed.dm_percentage ? feed.dm_percentage + '%' : '–' }}
                 </q-item-label>
               </q-item-section>
 

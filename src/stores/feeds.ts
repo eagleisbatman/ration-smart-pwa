@@ -7,6 +7,8 @@ import { queueCreate, queueUpdate, queueDelete } from 'src/lib/offline/sync-mana
 import { useAuthStore } from './auth';
 import { isOnline } from 'src/boot/pwa';
 import { extractUserFriendlyError } from 'src/lib/error-messages';
+import { applyFeedTranslations } from 'src/lib/feed-translations';
+import { i18n } from 'src/boot/i18n';
 
 export interface FeedInput {
   name: string;
@@ -18,9 +20,99 @@ export interface FeedInput {
   ca_percentage?: number;
   p_percentage?: number;
   ndf_percentage?: number;
+  // Extended nutrients
+  fd_ash?: number;
+  fd_ee?: number;
+  fd_st?: number;
+  fd_adf?: number;
+  fd_lg?: number;
+  fd_ndin?: number;
+  fd_adin?: number;
+  fd_npn_cp?: number;
+  // Metadata
   price_per_kg?: number;
   image_url?: string;
   season?: string;
+}
+
+/**
+ * Estimate TDN from available EC2 nutrient data.
+ * Uses the Weiss (1999) summative equation commonly applied to ruminant feeds:
+ *   TDN ≈ NFC + CP + (EE × 2.25) + ndNDF - 7
+ * where NFC = 100 - CP - NDF - EE - Ash, ndNDF ≈ NDF - (NDF × lignin/NDF-factor)
+ * Simplified fallback: TDN ≈ 87.84 - (0.70 × ADF)  [Rohweder et al. 1978]
+ */
+function estimateTdn(raw: Record<string, unknown>): number | undefined {
+  const adf = raw.fd_adf as number | undefined;
+  const cp = raw.fd_cp as number | undefined;
+  const ee = raw.fd_ee as number | undefined;
+  const ndf = raw.fd_ndf as number | undefined;
+  const ash = raw.fd_ash as number | undefined;
+  const lg = raw.fd_lg as number | undefined;
+
+  // Full Weiss equation if all components available
+  if (cp != null && ee != null && ndf != null && ash != null && lg != null && ndf > 0) {
+    const ndNDF = ndf * (1 - (lg / ndf) * 2.4); // digestible NDF estimate
+    const nfc = Math.max(0, 100 - cp - ndf - ee - ash);
+    const tdn = nfc * 0.98 + cp * 0.93 + (ee - 1) * 2.25 * 0.97 + ndNDF * 0.75 - 7;
+    if (tdn > 0 && tdn <= 100) return Math.round(tdn * 10) / 10;
+  }
+
+  // Fallback: ADF-based regression
+  if (adf != null && adf > 0) {
+    const tdn = 87.84 - 0.70 * adf;
+    if (tdn > 0 && tdn <= 100) return Math.round(tdn * 10) / 10;
+  }
+
+  return undefined;
+}
+
+/**
+ * Normalize an EC2 feed API response into a PWA Feed object.
+ * Maps fd_* fields to _percentage fields, preserves all extended nutrients.
+ */
+function normalizeEc2Feed(raw: Record<string, unknown>, countryCode?: string): Feed {
+  const category = (raw.fd_category || raw.category || '') as string;
+  return {
+    // Identity
+    id: (raw.feed_id || raw.id || '') as string,
+    name: (raw.fd_name || raw.name || '') as string,
+    fd_name: (raw.fd_name || '') as string,
+    fd_type: (raw.fd_type || '') as string,
+    fd_code: (raw.fd_code || '') as string,
+    fd_category: category,
+    category,
+    // Primary nutrients — map EC2 fd_* → PWA _percentage
+    dm_percentage: (raw.fd_dm ?? raw.dm_percentage ?? 0) as number,
+    cp_percentage: (raw.fd_cp ?? raw.cp_percentage ?? 0) as number,
+    tdn_percentage: (raw.tdn_percentage ?? estimateTdn(raw) ?? 0) as number,
+    ndf_percentage: (raw.fd_ndf ?? raw.ndf_percentage) as number | undefined,
+    ca_percentage: (raw.fd_ca ?? raw.ca_percentage) as number | undefined,
+    p_percentage: (raw.fd_p ?? raw.p_percentage) as number | undefined,
+    // Extended nutrients (pass-through)
+    fd_ash: raw.fd_ash as number | undefined,
+    fd_ee: raw.fd_ee as number | undefined,
+    fd_st: raw.fd_st as number | undefined,
+    fd_adf: raw.fd_adf as number | undefined,
+    fd_lg: raw.fd_lg as number | undefined,
+    fd_ndin: raw.fd_ndin as number | undefined,
+    fd_adin: raw.fd_adin as number | undefined,
+    fd_cf: raw.fd_cf as number | undefined,
+    fd_nfe: raw.fd_nfe as number | undefined,
+    fd_hemicellulose: raw.fd_hemicellulose as number | undefined,
+    fd_cellulose: raw.fd_cellulose as number | undefined,
+    fd_npn_cp: raw.fd_npn_cp as number | undefined,
+    // Metadata
+    season: (raw.fd_season || raw.season || '') as string,
+    fd_country_id: raw.fd_country_id as string | undefined,
+    fd_country_name: raw.fd_country_name as string | undefined,
+    is_custom: (raw.is_custom ?? 0) as number,
+    country_code: countryCode,
+    created_at: (raw.created_at || new Date().toISOString()) as string,
+    updated_at: (raw.updated_at || new Date().toISOString()) as string,
+    _synced: true,
+    _deleted: false,
+  };
 }
 
 export const useFeedsStore = defineStore('feeds', () => {
@@ -112,17 +204,7 @@ export const useFeedsStore = defineStore('feeds', () => {
         const response = await api.get('/feeds/', { params });
 
         const rawFeeds = Array.isArray(response.data) ? response.data : [];
-        const feeds = rawFeeds.map((feed: Feed) => ({
-          ...feed,
-          // Normalize EC2 field names to PWA's internal schema
-          id: feed.id || feed.feed_id,
-          name: feed.name || feed.fd_name,
-          category: feed.category || feed.fd_category,
-          is_custom: 0,
-          country_code: country,
-          _synced: true,
-          _deleted: false,
-        }));
+        const feeds = rawFeeds.map((raw: Record<string, unknown>) => normalizeEc2Feed(raw, country));
 
         // Update local database
         if (feeds.length > 0) {
@@ -137,6 +219,7 @@ export const useFeedsStore = defineStore('feeds', () => {
         .equals(0)
         .filter((f) => !f._deleted)
         .toArray();
+      applyFeedTranslations(masterFeeds.value, i18n.global.locale.value);
     } catch (err) {
       // Fallback to local data
       masterFeeds.value = await db.feeds
@@ -144,6 +227,7 @@ export const useFeedsStore = defineStore('feeds', () => {
         .equals(0)
         .filter((f) => !f._deleted)
         .toArray();
+      applyFeedTranslations(masterFeeds.value, i18n.global.locale.value);
 
       if (masterFeeds.value.length === 0) {
         error.value = extractUserFriendlyError(err);
@@ -181,14 +265,7 @@ export const useFeedsStore = defineStore('feeds', () => {
       try {
         // EC2: GET /feeds/{feed_id}
         const response = await api.get(`/feeds/${id}`);
-        const serverFeed: Feed = {
-          ...response.data,
-          id: response.data.id || response.data.feed_id,
-          name: response.data.name || response.data.fd_name,
-          category: response.data.category || response.data.fd_category,
-          _synced: true,
-          _deleted: false,
-        };
+        const serverFeed = normalizeEc2Feed(response.data);
         await db.feeds.put(serverFeed);
         return serverFeed;
       } catch {
@@ -252,21 +329,25 @@ export const useFeedsStore = defineStore('feeds', () => {
             fd_ndf: input.ndf_percentage,
             fd_ca: input.ca_percentage,
             fd_p: input.p_percentage,
+            fd_ash: input.fd_ash,
+            fd_ee: input.fd_ee,
+            fd_st: input.fd_st,
+            fd_adf: input.fd_adf,
+            fd_lg: input.fd_lg,
+            fd_ndin: input.fd_ndin,
+            fd_adin: input.fd_adin,
+            fd_npn_cp: input.fd_npn_cp,
           },
         });
 
         const serverFeedDetails = response.data?.feed_details || response.data;
-        const serverFeed: Feed = {
-          id: serverFeedDetails?.feed_id || serverFeedDetails?.id || newFeed.id,
-          name: serverFeedDetails?.fd_name || input.name,
-          category: serverFeedDetails?.fd_category || input.category,
-          ...serverFeedDetails,
-          is_custom: 1,
-          user_id: authStore.userId,
-          country_code: authStore.userCountry,
-          _synced: true,
-          _deleted: false,
-        };
+        const serverFeed = normalizeEc2Feed(
+          { ...serverFeedDetails, is_custom: 1 },
+          authStore.userCountry,
+        );
+        serverFeed.user_id = authStore.userId;
+        // Preserve local ID if server didn't return one
+        if (!serverFeed.id) serverFeed.id = newFeed.id;
 
         // Update with server response
         await db.feeds.delete(newFeed.id);
@@ -349,6 +430,14 @@ export const useFeedsStore = defineStore('feeds', () => {
             fd_ndf: input.ndf_percentage ?? existingFeed.ndf_percentage,
             fd_ca: input.ca_percentage ?? existingFeed.ca_percentage,
             fd_p: input.p_percentage ?? existingFeed.p_percentage,
+            fd_ash: input.fd_ash ?? existingFeed.fd_ash,
+            fd_ee: input.fd_ee ?? existingFeed.fd_ee,
+            fd_st: input.fd_st ?? existingFeed.fd_st,
+            fd_adf: input.fd_adf ?? existingFeed.fd_adf,
+            fd_lg: input.fd_lg ?? existingFeed.fd_lg,
+            fd_ndin: input.fd_ndin ?? existingFeed.fd_ndin,
+            fd_adin: input.fd_adin ?? existingFeed.fd_adin,
+            fd_npn_cp: input.fd_npn_cp ?? existingFeed.fd_npn_cp,
           },
         });
 
