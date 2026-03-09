@@ -33,30 +33,19 @@
       <q-list separator>
         <q-item v-for="u in adminStore.users" :key="u.id" class="q-py-sm">
           <q-item-section>
-            <q-item-label>{{ u.name || u.phone_number || u.email || '—' }}</q-item-label>
-            <q-item-label caption>
-              <template v-if="u.name">
-                <q-icon v-if="!u.email && u.phone_number" name="phone" size="12px" class="q-mr-xs" />
-                {{ u.email || u.phone_number || '—' }}
-              </template>
-              <template v-else-if="u.email">
-                {{ u.email }}
-              </template>
-              <span v-if="u.user_role" :class="{ 'q-ml-sm': u.name || u.email || u.phone_number }">{{ u.name || u.email ? '· ' : '' }}{{ formatRole(u.user_role) }}</span>
+            <q-item-label>{{ u.name || u.email || '—' }}</q-item-label>
+            <q-item-label v-if="u.name && u.email" caption>
+              {{ u.email }}
             </q-item-label>
           </q-item-section>
 
           <q-item-section side>
-            <q-select
-              :model-value="u.admin_level"
-              :options="availableLevels"
+            <q-toggle
+              :model-value="u.is_active"
+              :label="u.is_active ? $t('admin.active') : $t('admin.inactive')"
+              color="primary"
               dense
-              outlined
-              emit-value
-              map-options
-              behavior="menu"
-              style="min-width: 140px"
-              @update:model-value="(val: string) => onLevelChange(u, val)"
+              @update:model-value="(val: boolean) => onToggleStatus(u, val)"
             />
           </q-item-section>
         </q-item>
@@ -84,15 +73,11 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, computed } from 'vue';
 import { useQuasar } from 'quasar';
-import { useRoute } from 'vue-router';
 import { useAdminStore, type AdminUser } from 'src/stores/admin';
-import { useAuthStore } from 'src/stores/auth';
 import { useI18n } from 'vue-i18n';
 
 const $q = useQuasar();
-const route = useRoute();
 const adminStore = useAdminStore();
-const authStore = useAuthStore();
 const { t } = useI18n();
 
 const search = ref('');
@@ -100,71 +85,34 @@ const page = ref(1);
 const totalUsers = ref(0);
 const pageSize = 25;
 const totalPages = computed(() => Math.max(1, Math.ceil(totalUsers.value / pageSize)));
-const orgFilter = computed(() => (route.query.org as string) || null);
 let debounceTimer: ReturnType<typeof setTimeout> | null = null;
-
-const availableLevels = computed(() => {
-  const levels = [
-    { label: t('admin.user'), value: 'user' },
-  ];
-  // Only show levels below the caller's own rank
-  if (authStore.isSuperAdmin) {
-    levels.push(
-      { label: t('admin.orgAdmin'), value: 'org_admin' },
-      { label: t('admin.countryAdmin'), value: 'country_admin' },
-      { label: t('admin.superAdmin'), value: 'super_admin', disable: true },
-    );
-  } else if (authStore.isCountryAdmin) {
-    levels.push(
-      { label: t('admin.orgAdmin'), value: 'org_admin' },
-    );
-  }
-  return levels;
-});
-
-function formatRole(role: string | null): string {
-  if (!role) return '';
-  return role.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
-}
 
 function debouncedFetch() {
   if (debounceTimer) clearTimeout(debounceTimer);
-  page.value = 1; // Reset to first page on search
+  page.value = 1;
   debounceTimer = setTimeout(() => fetchUsers(), 400);
 }
 
 async function fetchUsers() {
-  if (orgFilter.value) {
-    await adminStore.fetchOrgUsers(orgFilter.value);
-    totalUsers.value = adminStore.users.length;
-  } else if (authStore.isOrgAdmin && authStore.user?.organization_id) {
-    await adminStore.fetchOrgUsers(authStore.user.organization_id);
-    totalUsers.value = adminStore.users.length;
-  } else {
-    const result = await adminStore.fetchAllUsers(page.value, pageSize, search.value || undefined);
-    totalUsers.value = result.total;
-  }
+  const result = await adminStore.fetchAllUsers(page.value, pageSize, search.value || undefined);
+  totalUsers.value = result.total;
 }
 
-async function onLevelChange(user: AdminUser, newLevel: string) {
-  if (newLevel === user.admin_level) return; // No change
-
+async function onToggleStatus(user: AdminUser, enable: boolean) {
+  const action = enable ? t('admin.enable') : t('admin.disable');
   $q.dialog({
-    title: t('admin.setAdminLevel'),
-    message: t('admin.confirmLevelChange', { name: user.name || user.phone_number || user.email || user.id, level: newLevel }),
+    title: t('common.confirm'),
+    message: t('admin.confirmToggleStatus', { name: user.name || user.email || user.id, action }),
     ok: { label: t('common.confirm'), color: 'primary', flat: true },
     cancel: { label: t('common.cancel'), flat: true },
   }).onOk(async () => {
-    const success = await adminStore.setAdminLevel(user.id, newLevel);
+    const success = await adminStore.toggleUserStatus(user.id, enable);
     if (success) {
-      // Update local state only after API success
-      user.admin_level = newLevel;
-      $q.notify({ type: 'positive', message: t('admin.levelUpdated') });
+      $q.notify({ type: 'positive', message: t('admin.statusUpdated') });
     } else {
-      $q.notify({ type: 'negative', message: t('admin.levelUpdateFailed') });
+      $q.notify({ type: 'negative', message: t('admin.statusUpdateFailed') });
     }
   });
-  // onCancel: no action needed — :model-value is read-only, store unchanged
 }
 
 onMounted(fetchUsers);

@@ -23,34 +23,16 @@
         </template>
       </q-input>
 
-      <!-- Email (read-only if set, with Change button) -->
+      <!-- Email (read-only) -->
       <q-input
         v-model="form.email"
         :label="$t('profile.email')"
         type="email"
         outlined
-        :readonly="!!authStore.user?.email"
+        readonly
       >
         <template #prepend>
           <q-icon name="email" />
-        </template>
-        <template v-if="authStore.user?.email" #append>
-          <q-btn flat dense size="sm" :label="$t('profile.change')" color="primary" @click="openChangeDialog('email')" />
-        </template>
-      </q-input>
-
-      <!-- Phone (read-only if set, with Change button) -->
-      <q-input
-        v-model="form.phone"
-        :label="$t('profile.phone')"
-        outlined
-        :readonly="!!authStore.user?.phone"
-      >
-        <template #prepend>
-          <q-icon name="phone" />
-        </template>
-        <template v-if="authStore.user?.phone" #append>
-          <q-btn flat dense size="sm" :label="$t('profile.change')" color="primary" @click="openChangeDialog('phone')" />
         </template>
       </q-input>
 
@@ -109,14 +91,6 @@
         @click="showChangePinDialog"
       />
     </q-form>
-
-    <!-- Change Contact Dialog (Email/Phone) -->
-    <ChangeContactDialog
-      v-model="showChangeDialog"
-      :type="changeDialogType"
-      :current-value="changeDialogType === 'email' ? form.email : form.phone"
-      @changed="onContactChanged"
-    />
 
     <!-- Change PIN Dialog -->
     <q-dialog v-model="changePinDialog" persistent>
@@ -186,7 +160,6 @@ import { useQuasar } from 'quasar';
 import { useI18n } from 'vue-i18n';
 import { useAuthStore } from 'src/stores/auth';
 import { availableLocales } from 'src/boot/i18n';
-import ChangeContactDialog from 'src/components/settings/ChangeContactDialog.vue';
 
 const $q = useQuasar();
 const { t } = useI18n();
@@ -195,35 +168,9 @@ const authStore = useAuthStore();
 const loading = computed(() => authStore.loading);
 const profileImage = ref<string | null>(null);
 
-// Change contact dialog state
-const showChangeDialog = ref(false);
-const changeDialogType = ref<'email' | 'phone'>('email');
-
-function openChangeDialog(type: 'email' | 'phone') {
-  changeDialogType.value = type;
-  showChangeDialog.value = true;
-}
-
-function onContactChanged() {
-  // Refresh form values from updated auth store
-  if (authStore.user) {
-    form.email = authStore.user.email || '';
-    form.phone = authStore.user.phone || '';
-  }
-  $q.notify({
-    type: 'positive',
-    message: t('profile.contactChanged', {
-      type: changeDialogType.value === 'email'
-        ? t('profile.email')
-        : t('profile.phone'),
-    }),
-  });
-}
-
 const form = reactive({
   name: '',
   email: '',
-  phone: '',
   country_code: 'IN',
   language: 'en',
 });
@@ -310,8 +257,7 @@ async function changePin() {
 function populateForm() {
   if (authStore.user) {
     form.name = authStore.user.name || '';
-    form.email = authStore.user.email || '';
-    form.phone = authStore.user.phone || '';
+    form.email = authStore.user.email || authStore.userEmail || '';
     form.country_code = authStore.user.country_code || 'IN';
     form.language = authStore.user.language || 'en';
   }

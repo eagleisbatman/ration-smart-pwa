@@ -39,49 +39,19 @@
           {{ $t('auth.sectionCredentials') }}
         </div>
         <div class="q-gutter-sm">
-          <!-- Country Selection -->
-          <q-select
-            v-model="form.country_code"
-            :label="$t('profile.country')"
-            outlined
-            :options="countryOptions"
-            emit-value
-            map-options
-            dense
-            behavior="menu"
-            :loading="authStore.countriesLoading"
-            class="q-mb-sm"
-          >
-            <template #prepend>
-              <img :src="flagUrl(form.country_code)" width="20" height="15" class="flag-img" :alt="$t('profile.country')" />
-            </template>
-            <template v-slot:option="{ itemProps, opt }">
-              <q-item v-bind="itemProps">
-                <q-item-section side class="country-option-flag">
-                  <img :src="flagUrl(opt.value)" width="20" height="15" class="flag-img" :alt="opt.label" />
-                </q-item-section>
-                <q-item-section>
-                  <q-item-label>{{ opt.label }}</q-item-label>
-                </q-item-section>
-              </q-item>
-            </template>
-          </q-select>
-
-          <!-- Phone Input -->
+          <!-- Email Input -->
           <q-input
-            v-model="form.phone"
-            :label="$t('auth.phone')"
-            type="tel"
+            v-model="form.email"
+            :label="$t('auth.email', 'Email')"
+            type="email"
             outlined
-            :mask="selectedPhoneMask"
             :rules="[
               (val: string) => !!val || $t('validation.required'),
-              (val: string) => val.replace(/\D/g, '').length >= 7 || $t('validation.phoneTooShort'),
+              (val: string) => emailRegex.test(val) || $t('validation.emailInvalid', 'Please enter a valid email'),
             ]"
           >
             <template #prepend>
-              <img :src="flagUrl(form.country_code)" width="20" height="15" class="q-mr-xs flag-img" :alt="$t('profile.country')" />
-              <span class="text-body2 text-weight-medium text-grey-8 q-mr-xs">{{ selectedDialCode }}</span>
+              <q-icon name="email" />
             </template>
           </q-input>
         </div>
@@ -204,106 +174,43 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted, watch } from 'vue';
+import { ref, reactive, computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import { useI18n } from 'vue-i18n';
 import { useAuthStore } from 'src/stores/auth';
-import { getDialCode, getPhoneMask, FALLBACK_COUNTRIES, SUPPORTED_COUNTRY_CODES, COUNTRY_LANGUAGE_MAP } from 'src/services/api-adapter';
-import { useGeoCountry } from 'src/composables/useGeoCountry';
 import { availableLocales, setLocale } from 'src/boot/i18n';
 
-const flagUrl = (code: string) => `/flags/${(code || 'xx').toLowerCase()}.svg`;
-
-const { t } = useI18n();
 const router = useRouter();
 const route = useRoute();
 const authStore = useAuthStore();
-const { detectedCountry } = useGeoCountry();
 
 const showPin = ref(false);
 const rememberMe = ref(false);
 
-// Prefer saved country from last login over geo-detection
-const savedCountry = localStorage.getItem('last_country_code');
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const form = reactive({
-  phone: '',
+  email: '',
   pin: '',
-  country_code: savedCountry || detectedCountry.value,
-});
-
-// Update country when geo-detection resolves, but only if no saved preference
-// and user hasn't started typing their phone
-watch(detectedCountry, (code) => {
-  if (!savedCountry && (form.country_code === 'IN' || !form.phone)) {
-    form.country_code = code;
-  }
 });
 
 // Language selection
 const selectedLanguage = ref(localStorage.getItem('locale') || 'en');
 
-const languageOptions = computed(() => {
-  const codes = COUNTRY_LANGUAGE_MAP[form.country_code] || ['en'];
-  const recommended = codes
-    .map(code => availableLocales.find(l => l.value === code))
-    .filter(Boolean) as typeof availableLocales;
-  if (!codes.includes(selectedLanguage.value)) {
-    const current = availableLocales.find(l => l.value === selectedLanguage.value);
-    if (current) recommended.unshift(current);
-  }
-  return recommended;
-});
+const languageOptions = computed(() => availableLocales);
 
 function switchLanguage(code: string) {
   setLocale(code);
 }
 
-const countryOptions = computed(() => {
-  // Merge backend countries with fallback list so supported countries always appear
-  const seen = new Set<string>();
-  const merged: { country_code: string; name: string }[] = [];
-  for (const c of authStore.countries) {
-    if (SUPPORTED_COUNTRY_CODES.has(c.country_code) && !seen.has(c.country_code)) {
-      seen.add(c.country_code);
-      merged.push(c);
-    }
-  }
-  for (const c of FALLBACK_COUNTRIES) {
-    if (!seen.has(c.country_code)) {
-      seen.add(c.country_code);
-      merged.push({ ...c });
-    }
-  }
-  return merged.map((c) => {
-    const dialCode = getDialCode(c.country_code);
-    const name = t(`countries.${c.country_code}`, c.name || c.country_code);
-    return {
-      label: dialCode ? `${name} (${dialCode})` : name,
-      value: c.country_code,
-    };
-  });
-});
-
-const selectedDialCode = computed(() => getDialCode(form.country_code));
-const selectedPhoneMask = computed(() => getPhoneMask(form.country_code));
-
-onMounted(() => {
-  authStore.fetchCountries();
-});
-
 const loading = computed(() => authStore.loading);
 const error = computed(() => authStore.error);
 
 async function onSubmit() {
-  const credentials = {
+  const success = await authStore.login({
+    email: form.email,
     pin: form.pin,
     rememberMe: rememberMe.value,
-    phone: form.phone,
-    country_code: form.country_code,
-  };
-
-  const success = await authStore.login(credentials);
+  });
 
   if (success) {
     await authStore.loadUserProfile();
