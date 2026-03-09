@@ -13,7 +13,7 @@
         </q-item-section>
         <q-item-section>
           <q-item-label>{{ userName }}</q-item-label>
-          <q-item-label caption>{{ userPhone }}</q-item-label>
+          <q-item-label caption>{{ userEmail }}</q-item-label>
         </q-item-section>
         <q-item-section side>
           <q-icon name="chevron_right" />
@@ -291,18 +291,11 @@ const currentLanguageLabel = computed(() => {
 });
 
 const userName = computed(() => authStore.user?.name || t('profile.defaultUserName'));
-const userPhone = computed(() => authStore.user?.phone || '');
+const userEmail = computed(() => authStore.userEmail || authStore.user?.email || '');
 
-async function changeLanguage(locale: string) {
+function changeLanguage(locale: string) {
   setLocale(locale);
   currentLanguage.value = locale;
-
-  try {
-    await authStore.updateUserSettings({ language_code: locale });
-  } catch (error) {
-    console.error('Failed to save language preference:', error);
-  }
-
   showLanguageDialog.value = false;
 }
 

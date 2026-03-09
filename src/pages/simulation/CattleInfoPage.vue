@@ -334,7 +334,7 @@ import { useI18n } from 'vue-i18n';
 import { useQuasar } from 'quasar';
 import { useSimulationStore } from 'src/stores/simulation';
 import { useAuthStore } from 'src/stores/auth';
-import { getCountryId, fetchAndCacheCountries } from 'src/services/api-adapter';
+import { toAlpha2 } from 'src/services/api-adapter';
 import { api } from 'src/lib/api';
 
 
@@ -363,9 +363,10 @@ const FALLBACK_BREEDS = [
 ];
 
 async function fetchBreeds() {
-  await fetchAndCacheCountries();
+  await authStore.ensureCountriesLoaded();
   const countryCode = authStore.userCountry || 'IN';
-  const countryId = getCountryId(countryCode);
+  const countryObj = authStore.countries.find(c => toAlpha2(c.country_code) === countryCode);
+  const countryId = countryObj?.id;
   if (!countryId) {
     breedOptions.value = FALLBACK_BREEDS;
     return;

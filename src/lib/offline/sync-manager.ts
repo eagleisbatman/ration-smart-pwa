@@ -17,40 +17,31 @@ export const hasConflicts = computed(() => conflictCount.value > 0);
 // Computed
 export const hasPendingChanges = computed(() => pendingCount.value > 0);
 
-// API endpoint mapping for CREATE/LIST operations.
-// These must use the frontend path convention (/api/v1/...) so the
-// api-adapter request interceptor can map them to backend paths.
-const API_ENDPOINTS: Record<SyncQueueItem['entity_type'], string> = {
-  cow: '/api/v1/cows',
-  feed: '/api/v1/feeds/custom',
-  diet: '/api/v1/diet/history',
-  milk_log: '/api/v1/milk-logs',
-  farmer: '/api/v1/farmer-profiles',
-  yield: '/api/v1/yield-data',
-  health_event: '/api/v1/health-events',
+// EC2 API endpoint mapping for CREATE operations.
+// Only feed and diet are relevant for app-lite on EC2.
+const API_ENDPOINTS: Partial<Record<SyncQueueItem['entity_type'], string>> = {
+  feed: '/insert-custom-feed/',
+  diet: '/diet-recommendation-working/',
 };
 
 /**
  * Get the correct URL for read/update/delete operations on a specific entity.
- * Some entity types use different paths than the base endpoint + /{id}
- * (e.g., cows use /cows/update/:id for PUT, diets use /diet/:id for transforms).
  */
 function getEntityUrl(
   entityType: SyncQueueItem['entity_type'],
   entityId: string,
   operation: 'read' | 'update' | 'delete',
 ): string {
-  if (entityType === 'cow') {
-    if (operation === 'update') return `/api/v1/cows/update/${entityId}`;
-    if (operation === 'delete') return `/api/v1/cows/delete/${entityId}`;
-    return `/api/v1/cows/${entityId}`;
+  if (entityType === 'feed') {
+    if (operation === 'update') return '/update-custom-feed/';
+    if (operation === 'delete') return `/feeds/delete-feed/${entityId}`;
+    return `/feeds/${entityId}`;
   }
   if (entityType === 'diet') {
-    // /api/v1/diet/:id has request+response transforms;
-    // /api/v1/diet/history/:id only has response transform
-    return `/api/v1/diet/${entityId}`;
+    return `/fetch-simulation-details/${entityId}`;
   }
-  return `${API_ENDPOINTS[entityType]}/${entityId}`;
+  // Unsupported entity types on EC2
+  return `/${entityType}/${entityId}`;
 }
 
 // Update pending count
@@ -115,11 +106,19 @@ export async function syncPendingChanges(): Promise<boolean> {
     for (const item of pendingItems) {
       const entityName = (item.data as Record<string, unknown>)?.name as string | undefined;
 
+      // Skip entity types not supported on EC2
+      if (!API_ENDPOINTS[item.entity_type] && item.operation === 'create') {
+        console.warn(`[SyncManager] Skipping unsupported entity type: ${item.entity_type}`);
+        await db.removeFromSyncQueue(item.id!);
+        completed++;
+        syncProgress.value = Math.round((completed / total) * 100);
+        continue;
+      }
+
       try {
         const synced = await syncItem(item);
         if (synced) {
           await db.removeFromSyncQueue(item.id!);
-          // Log success to sync history
           await logSyncHistoryEntry({
             operation: 'push',
             entity_type: item.entity_type,
@@ -129,7 +128,6 @@ export async function syncPendingChanges(): Promise<boolean> {
             status: 'success',
           });
         } else {
-          // syncItem returned false means conflict was detected
           await logSyncHistoryEntry({
             operation: 'push',
             entity_type: item.entity_type,
@@ -145,12 +143,10 @@ export async function syncPendingChanges(): Promise<boolean> {
       } catch (error) {
         console.error(`Failed to sync item ${item.id}:`, error);
 
-        // Update retry count
         const t = i18n.global.t;
         const errorMessage = error instanceof Error ? error.message : t('sync.unknownError');
         await db.updateSyncQueueRetry(item.id!, errorMessage);
 
-        // Log failure to sync history
         await logSyncHistoryEntry({
           operation: 'push',
           entity_type: item.entity_type,
@@ -161,8 +157,7 @@ export async function syncPendingChanges(): Promise<boolean> {
           error_message: errorMessage,
         });
 
-        // If too many retries, permanently remove the item to avoid unbounded queue growth.
-        // The failure was already logged above; update the message to reflect removal.
+        // Remove after too many retries
         const updatedItem = await db.syncQueue.get(item.id!);
         if (updatedItem && updatedItem.retry_count >= 5) {
           console.warn(`Item ${item.id} exceeded retry limit — removing from queue`);
@@ -183,20 +178,28 @@ export async function syncPendingChanges(): Promise<boolean> {
 
 // Sync a single item (returns true if synced, false if conflict detected)
 async function syncItem(item: SyncQueueItem): Promise<boolean> {
+  const endpoint = API_ENDPOINTS[item.entity_type];
+
   switch (item.operation) {
     case 'create':
-      await api.post(API_ENDPOINTS[item.entity_type], item.data);
+      if (endpoint) {
+        await api.post(endpoint, item.data);
+      }
       break;
 
     case 'update': {
-      // Check for conflicts before pushing update (read from GET detail endpoint)
       const readUrl = getEntityUrl(item.entity_type, item.entity_id, 'read');
       const hasConflict = await checkForConflict(item, readUrl);
       if (hasConflict) {
         return false;
       }
       const updateUrl = getEntityUrl(item.entity_type, item.entity_id, 'update');
-      await api.put(updateUrl, item.data);
+      if (item.entity_type === 'feed') {
+        // EC2 uses POST for update-custom-feed
+        await api.post(updateUrl, item.data);
+      } else {
+        await api.put(updateUrl, item.data);
+      }
       break;
     }
 
@@ -207,7 +210,6 @@ async function syncItem(item: SyncQueueItem): Promise<boolean> {
     }
   }
 
-  // Mark local entity as synced
   await markEntitySynced(item.entity_type, item.entity_id, item.operation);
   return true;
 }
@@ -221,7 +223,6 @@ async function checkForConflict(
     const response = await api.get(readUrl);
     const serverData = response.data as Record<string, unknown>;
 
-    // Compare updated_at timestamps
     const serverUpdatedAt = serverData.updated_at as string | undefined;
     const localUpdatedAt = item.data.updated_at as string | undefined;
 
@@ -230,23 +231,19 @@ async function checkForConflict(
       const localTime = new Date(localUpdatedAt).getTime();
 
       if (serverTime > localTime) {
-        // Conflict detected - server has a newer version
         await db.addSyncConflict(
           item.entity_type,
           item.entity_id,
           item.data,
           serverData
         );
-        // Remove from sync queue since we stored the conflict
         await db.removeFromSyncQueue(item.id!);
         return true;
       }
     }
 
     return false;
-  } catch (error) {
-    // If server fetch fails (404, network error, etc.), skip conflict check
-    // and proceed with normal sync
+  } catch {
     return false;
   }
 }
@@ -260,11 +257,13 @@ export async function resolveConflict(
   if (!conflict) return;
 
   if (choice === 'local') {
-    // Push local data to server using the correct update URL
     const updateUrl = getEntityUrl(conflict.entity_type, conflict.entity_id, 'update');
-    await api.put(updateUrl, conflict.local_data);
+    if (conflict.entity_type === 'feed') {
+      await api.post(updateUrl, conflict.local_data);
+    } else {
+      await api.put(updateUrl, conflict.local_data);
+    }
   } else {
-    // Update local IndexedDB with server data
     const table = getTableForEntityType(conflict.entity_type);
     if (table) {
       await table.update(conflict.entity_id, {
@@ -274,7 +273,6 @@ export async function resolveConflict(
     }
   }
 
-  // Mark conflict as resolved
   await db.resolveSyncConflict(conflictId);
   await updateConflictCount();
 }
@@ -289,10 +287,8 @@ async function markEntitySynced(
   if (!table) return;
 
   if (operation === 'delete') {
-    // Remove from local DB after successful delete sync
     await table.delete(entityId);
   } else {
-    // Mark as synced
     await table.update(entityId, { _synced: true });
   }
 }
@@ -300,21 +296,12 @@ async function markEntitySynced(
 // Get Dexie table for entity type
 function getTableForEntityType(entityType: SyncQueueItem['entity_type']) {
   switch (entityType) {
-    case 'cow':
-      return db.cows;
     case 'feed':
       return db.feeds;
     case 'diet':
       return db.diets;
-    case 'milk_log':
-      return db.milkLogs;
-    case 'farmer':
-      return db.farmerProfiles;
-    case 'yield':
-      return db.yieldData;
-    case 'health_event':
-      return db.healthEvents;
     default:
+      // cow, milk_log, farmer, yield, health_event not used on EC2
       return undefined;
   }
 }
@@ -328,7 +315,6 @@ export async function queueCreate(
   await db.addToSyncQueue(entityType, entityId, 'create', data);
   await updatePendingCount();
 
-  // Try to sync immediately if online
   if (isOnline.value) {
     syncPendingChanges().catch(err => console.error('[SyncManager] Sync after create failed:', err));
   }
@@ -340,22 +326,18 @@ export async function queueUpdate(
   entityId: string,
   data: Record<string, unknown>
 ): Promise<void> {
-  // Check if there's already a pending create for this entity
   const existingCreate = await db.syncQueue
     .where({ entity_type: entityType, entity_id: entityId, operation: 'create' })
     .first();
 
   if (existingCreate) {
-    // Update the create operation's data instead
     await db.syncQueue.update(existingCreate.id!, { data });
   } else {
-    // Check for existing update
     const existingUpdate = await db.syncQueue
       .where({ entity_type: entityType, entity_id: entityId, operation: 'update' })
       .first();
 
     if (existingUpdate) {
-      // Merge with existing update
       await db.syncQueue.update(existingUpdate.id!, {
         data: { ...existingUpdate.data, ...data },
       });
@@ -366,7 +348,6 @@ export async function queueUpdate(
 
   await updatePendingCount();
 
-  // Try to sync immediately if online
   if (isOnline.value) {
     syncPendingChanges().catch(err => console.error('[SyncManager] Sync after update failed:', err));
   }
@@ -377,34 +358,28 @@ export async function queueDelete(
   entityType: SyncQueueItem['entity_type'],
   entityId: string
 ): Promise<void> {
-  // Remove any pending creates or updates for this entity
   await db.syncQueue
     .where({ entity_type: entityType, entity_id: entityId })
     .delete();
 
-  // Check if entity was ever synced (has _synced: true)
   const table = getTableForEntityType(entityType);
   if (!table) return;
 
   const entity = await table.get(entityId);
 
   if (entity && (entity as { _synced?: boolean })._synced) {
-    // Entity exists on server, queue delete
     await db.addToSyncQueue(entityType, entityId, 'delete', {});
   }
 
-  // Mark as deleted locally
   await table.update(entityId, { _deleted: true });
-
   await updatePendingCount();
 
-  // Try to sync immediately if online
   if (isOnline.value) {
     syncPendingChanges().catch(err => console.error('[SyncManager] Sync after delete failed:', err));
   }
 }
 
-// Force sync (pull from server)
+// Force sync (pull from server) — only feed supported on EC2
 export async function forcePullFromServer(
   entityType: SyncQueueItem['entity_type']
 ): Promise<void> {
@@ -412,69 +387,15 @@ export async function forcePullFromServer(
     throw new Error(i18n.global.t('offline.cannotSyncWhileOffline'));
   }
 
-  const endpoint = API_ENDPOINTS[entityType];
-  const response = await api.get(endpoint);
-  const serverData = response.data;
-
-  // Clear local data and replace with server data
-  switch (entityType) {
-    case 'cow':
-      await db.cows.clear();
-      if (Array.isArray(serverData)) {
-        await db.cows.bulkPut(
-          serverData.map((item) => ({ ...item, _synced: true, _deleted: false }))
-        );
-      }
-      break;
-    case 'feed':
-      await db.feeds.clear();
-      if (Array.isArray(serverData)) {
-        await db.feeds.bulkPut(
-          serverData.map((item) => ({ ...item, _synced: true, _deleted: false }))
-        );
-      }
-      break;
-    case 'diet':
-      await db.diets.clear();
-      if (Array.isArray(serverData)) {
-        await db.diets.bulkPut(
-          serverData.map((item) => ({ ...item, _synced: true }))
-        );
-      }
-      break;
-    case 'milk_log':
-      await db.milkLogs.clear();
-      if (Array.isArray(serverData)) {
-        await db.milkLogs.bulkPut(
-          serverData.map((item) => ({ ...item, _synced: true, _deleted: false }))
-        );
-      }
-      break;
-    case 'farmer':
-      await db.farmerProfiles.clear();
-      if (Array.isArray(serverData)) {
-        await db.farmerProfiles.bulkPut(
-          serverData.map((item) => ({ ...item, _synced: true, _deleted: false }))
-        );
-      }
-      break;
-    case 'yield':
-      await db.yieldData.clear();
-      if (Array.isArray(serverData)) {
-        await db.yieldData.bulkPut(
-          serverData.map((item) => ({ ...item, _synced: true, _deleted: false }))
-        );
-      }
-      break;
-    case 'health_event':
-      await db.healthEvents.clear();
-      if (Array.isArray(serverData)) {
-        await db.healthEvents.bulkPut(
-          serverData.map((item) => ({ ...item, _synced: true, _deleted: false }))
-        );
-      }
-      break;
+  if (entityType === 'feed') {
+    // Feeds are fetched via the feeds store, not directly here
+    const { useFeedsStore } = await import('src/stores/feeds');
+    const feedsStore = useFeedsStore();
+    await feedsStore.fetchAllFeeds();
+    return;
   }
+
+  console.warn(`[SyncManager] forcePullFromServer not supported for entity type: ${entityType}`);
 }
 
 // Log a sync history entry

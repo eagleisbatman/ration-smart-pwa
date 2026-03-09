@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import { api } from 'src/lib/api';
 import { db, User } from 'src/lib/offline/db';
-import { fetchAndCacheCountries, setCountryCache, clearCountryCache, toAlpha2 } from 'src/services/api-adapter';
+import { setCountryCache, clearCountryCache, toAlpha2 } from 'src/services/api-adapter';
 import { extractUserFriendlyError } from 'src/lib/error-messages';
 import { setLocale } from 'src/boot/i18n';
 
@@ -15,13 +15,10 @@ export interface Country {
 
 export interface AuthState {
   user: User | null;
-  token: string | null;
   userId: string | null;
   isAuthenticated: boolean;
   userRole: string;
   preferredLanguage: string;
-  selfFarmerProfileId: string | null;
-  needsOnboarding: boolean;
 }
 
 // Helper: determine which storage backend holds the session.
@@ -31,8 +28,7 @@ function getStorage(): Storage {
 }
 
 // Normalize backend user response to match frontend User type.
-// Backend returns email_id, phone_number, country_id (UUID), language_code;
-// frontend expects email, phone, country_code (alpha-2), language.
+// EC2 returns email_id, country_id (UUID); frontend expects email, country_code (alpha-2).
 function normalizeUser(data: Record<string, unknown>): User {
   const normalized = { ...data };
 
@@ -41,17 +37,6 @@ function normalizeUser(data: Record<string, unknown>): User {
     normalized.email = normalized.email_id;
   }
   delete normalized.email_id;
-
-  // phone_number → phone
-  if ('phone_number' in normalized && !normalized.phone) {
-    normalized.phone = normalized.phone_number;
-  }
-  delete normalized.phone_number;
-
-  // language_code → language (same value, e.g. "en")
-  if (normalized.language_code && !normalized.language) {
-    normalized.language = normalized.language_code;
-  }
 
   // Extract country_code from nested country object (alpha-3 → alpha-2)
   if (!normalized.country_code && normalized.country && typeof normalized.country === 'object') {
@@ -65,13 +50,14 @@ function normalizeUser(data: Record<string, unknown>): User {
 }
 
 export const useAuthStore = defineStore('auth', () => {
-  // State – try both storages so a returning session is found regardless
+  // State – EC2 has no JWT tokens, auth is tracked client-side via userId
   const user = ref<User | null>(null);
-  const token = ref<string | null>(
-    localStorage.getItem('auth_token') || sessionStorage.getItem('auth_token'),
-  );
   const userId = ref<string | null>(
     localStorage.getItem('user_id') || sessionStorage.getItem('user_id'),
+  );
+  // Store user email for EC2 profile lookup (EC2 keys user by email_id)
+  const userEmail = ref<string | null>(
+    localStorage.getItem('user_email') || sessionStorage.getItem('user_email'),
   );
   const loading = ref(false);
   const error = ref<string | null>(null);
@@ -80,20 +66,18 @@ export const useAuthStore = defineStore('auth', () => {
   const countries = ref<Country[]>([]);
   const countriesLoading = ref(false);
 
-  // Extended state for generic user system
+  // Extended state
   const userRole = ref<string>(localStorage.getItem('user_role') || 'farmer');
   const preferredLanguage = ref<string>(localStorage.getItem('preferred_language') || 'en');
-  const selfFarmerProfileId = ref<string | null>(localStorage.getItem('self_farmer_profile_id'));
   const adminLevel = ref<string | null>(localStorage.getItem('admin_level'));
-  const onboardingSkipped = ref(sessionStorage.getItem('onboarding_skipped') === 'true');
   const profileImage = ref<string | null>(localStorage.getItem('profile_image'));
 
-  // Computed
-  const isAuthenticated = computed(() => !!token.value && !!userId.value);
+  // Computed — EC2 has no JWT, so isAuthenticated checks userId only
+  const isAuthenticated = computed(() => !!userId.value);
   const userCountry = computed(
     () => user.value?.country_code || localStorage.getItem('last_country_code') || ''
   );
-  const userLanguage = computed(() => user.value?.language_code || preferredLanguage.value || 'en');
+  const userLanguage = computed(() => preferredLanguage.value || 'en');
   const needsOnboarding = computed(() => false);
 
   // Role-based computed properties
@@ -111,22 +95,20 @@ export const useAuthStore = defineStore('auth', () => {
     return role === 'farmer' || role === 'feed_supplier' || role === 'other';
   });
 
-  // Admin hierarchy computed properties
-  const isOrgAdmin = computed(() => adminLevel.value === 'org_admin');
-  const isCountryAdmin = computed(() => adminLevel.value === 'country_admin');
-  const isSuperAdmin = computed(() => adminLevel.value === 'super_admin');
-  const isAnyAdmin = computed(() => !!adminLevel.value && ['org_admin', 'country_admin', 'super_admin'].includes(adminLevel.value));
+  // Admin — EC2 has simple is_admin boolean, not hierarchy
+  const isAdmin = computed(() => adminLevel.value === 'admin' || adminLevel.value === 'super_admin');
+  const isOrgAdmin = computed(() => isAdmin.value);
+  const isCountryAdmin = computed(() => isAdmin.value);
+  const isSuperAdmin = computed(() => isAdmin.value);
+  const isAnyAdmin = computed(() => isAdmin.value);
 
   // Actions
 
   /**
-   * Fetch countries from the API for dropdown population.
-   * Caches the result in localStorage for offline fallback.
+   * Fetch countries from the EC2 API.
+   * EC2 returns: [{id: UUID, name, country_code: alpha-3, currency, is_active}]
    */
   async function fetchCountries(): Promise<void> {
-    // If already loaded, ensure the api-adapter cache is seeded and return.
-    // clearAuth() clears countryCache (module-level) but NOT countries.value,
-    // so we must re-seed here to avoid country_id → undefined on next register/login.
     if (countries.value.length > 0) {
       setCountryCache(countries.value as Array<{ id: string; country_code: string }>);
       return;
@@ -134,16 +116,13 @@ export const useAuthStore = defineStore('auth', () => {
 
     countriesLoading.value = true;
     try {
-      const response = await api.get('/api/v1/countries');
+      const response = await api.get('/auth/countries');
       const data = response.data as Country[];
       countries.value = data;
-      // Cache in localStorage for offline fallback
       localStorage.setItem('cached_countries', JSON.stringify(data));
-      // Also seed the api-adapter cache for country_code -> UUID lookup
       setCountryCache(data as Array<{ id: string; country_code: string }>);
     } catch (err) {
       console.warn('[Auth] Failed to fetch countries from API, trying localStorage cache:', err);
-      // Fall back to localStorage cache
       const cached = localStorage.getItem('cached_countries');
       if (cached) {
         try {
@@ -158,69 +137,79 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  /**
-   * Ensure countries are loaded for country_code to country_id UUID lookup.
-   * Delegates to fetchCountries which populates both the store and api-adapter cache.
-   */
   async function ensureCountriesLoaded(): Promise<void> {
     await fetchCountries();
   }
 
+  /**
+   * Register a new user (EC2: email-based).
+   * EC2 POST /auth/register expects: {name, email_id, pin, country_id}
+   * EC2 returns: {success, message, user: {id, name, email_id, country_id, country, is_admin}}
+   */
   async function register(data: {
-    phone: string;
+    email: string;
     pin: string;
     country_code: string;
-    language?: string;
     name?: string;
   }): Promise<boolean> {
     loading.value = true;
     error.value = null;
 
     try {
-      // Ensure countries are loaded for country_code -> country_id mapping
+      // Ensure countries are loaded for country_code -> country_id UUID mapping
       await ensureCountriesLoaded();
 
-      // Always use phone registration endpoint
-      const endpoint = '/api/v1/users/register-phone';
+      // Find country_id UUID from country_code
+      const country = countries.value.find(
+        c => toAlpha2(c.country_code) === data.country_code
+      );
+      if (!country) {
+        error.value = 'Country not found. Please select a valid country.';
+        return false;
+      }
 
-      // The api-adapter will transform the request data automatically:
-      // - Convert phone to E.164 format (e.g., "9876543210" -> "+919876543210")
-      // - Convert country_code to country_id UUID
-      // - Map field names (email -> email_id, phone -> phone_number)
-      const response = await api.post(endpoint, data);
+      const response = await api.post('/auth/register', {
+        name: data.name || data.email.split('@')[0],
+        email_id: data.email,
+        pin: data.pin,
+        country_id: country.id,
+      });
 
-      // Handle response - backend returns different field names
       const responseData = response.data;
-      const rawUser = responseData.user;
-      const authToken = responseData.access_token || responseData.token;
-      const responseUserId = rawUser?.id || responseData.user_id;
+      if (!responseData.success) {
+        error.value = responseData.message || 'Registration failed';
+        return false;
+      }
 
-      // Normalize backend field names (email_id→email, phone_number→phone, etc.)
+      const rawUser = responseData.user;
+      const responseUserId = rawUser?.id;
       const userData = rawUser ? normalizeUser(rawUser) : null;
 
       // Save to local state
       user.value = userData;
-      token.value = authToken;
       userId.value = responseUserId;
+      userEmail.value = data.email;
 
-      // Always persist to localStorage after registration (not sessionStorage).
-      // New users proceed directly into onboarding, so we keep them signed in
-      // across tabs/refreshes — equivalent to "remember me" by default.
-      if (authToken) {
-        localStorage.setItem('auth_token', authToken);
-      }
+      // Persist to localStorage (new users stay signed in)
       if (responseUserId) {
         localStorage.setItem('user_id', responseUserId);
       }
+      localStorage.setItem('user_email', data.email);
 
       // Save user to IndexedDB
       if (userData) {
         await db.users.put(userData);
       }
 
-      // Persist last-used country for future login pre-fill
+      // Persist last-used country
       if (data.country_code) {
         localStorage.setItem('last_country_code', data.country_code);
+      }
+
+      // Set admin level from response
+      if (rawUser?.is_admin) {
+        adminLevel.value = 'admin';
+        localStorage.setItem('admin_level', 'admin');
       }
 
       return true;
@@ -232,108 +221,79 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
+  /**
+   * Login (EC2: email-based).
+   * EC2 POST /auth/login expects: {email_id, pin}
+   * EC2 returns: {success, message, user: {id, name, email_id, country_id, country, is_admin}}
+   * No JWT token — auth is tracked client-side.
+   */
   async function login(data: {
-    email?: string;
-    phone?: string;
+    email: string;
     pin: string;
-    country_code?: string; // Needed for phone login to format E.164
     rememberMe?: boolean;
   }): Promise<boolean> {
     loading.value = true;
     error.value = null;
 
     try {
-      // Always use phone login endpoint
-      const endpoint = '/api/v1/users/login-phone';
+      const response = await api.post('/auth/login', {
+        email_id: data.email,
+        pin: data.pin,
+      });
 
-      // Strip rememberMe before sending to the API
-      const { rememberMe, ...apiData } = data;
-
-      // The api-adapter will transform the request data automatically:
-      // - Convert phone to E.164 format
-      // - Map field names (email -> email_id, phone -> phone_number)
-      const response = await api.post(endpoint, apiData);
-
-      // Handle response - backend returns different field names
       const responseData = response.data;
-      const rawUser = responseData.user;
-      const authToken = responseData.access_token || responseData.token;
-      const responseUserId = rawUser?.id || responseData.user_id;
+      if (!responseData.success) {
+        error.value = responseData.message || 'Login failed';
+        return false;
+      }
 
-      // Normalize backend field names (email_id→email, phone_number→phone, etc.)
+      const rawUser = responseData.user;
+      const responseUserId = rawUser?.id;
       const userData = rawUser ? normalizeUser(rawUser) : null;
 
       // Save to local state
       user.value = userData;
-      token.value = authToken;
       userId.value = responseUserId;
+      userEmail.value = data.email;
 
       // Choose storage backend based on "Remember me" preference
-      if (rememberMe) {
+      if (data.rememberMe) {
         localStorage.setItem('remember_me', '1');
       } else {
         localStorage.removeItem('remember_me');
       }
       const storage = getStorage();
 
-      // Persist auth tokens to the chosen storage
-      if (authToken) {
-        storage.setItem('auth_token', authToken);
-      }
       if (responseUserId) {
         storage.setItem('user_id', responseUserId);
       }
+      storage.setItem('user_email', data.email);
 
       // Save user to IndexedDB
       if (userData) {
         await db.users.put(userData);
       }
 
-      // Persist last-used country so the login page can pre-fill it next time
-      // (this key is intentionally NOT cleared by clearAuth)
-      if (data.country_code) {
-        localStorage.setItem('last_country_code', data.country_code);
+      // Persist last-used country
+      if (userData?.country_code) {
+        localStorage.setItem('last_country_code', userData.country_code);
       }
 
-      // Restore onboarding-related fields from login response
-      if (userData?.self_farmer_profile_id) {
-        selfFarmerProfileId.value = userData.self_farmer_profile_id;
-        localStorage.setItem('self_farmer_profile_id', userData.self_farmer_profile_id);
-      }
-      if (userData?.user_role) {
-        userRole.value = userData.user_role;
-        localStorage.setItem('user_role', userData.user_role);
-      }
-      if (userData?.language_code) {
-        preferredLanguage.value = userData.language_code;
-        localStorage.setItem('preferred_language', userData.language_code);
-        // Sync i18n engine so the app displays in the correct language immediately
-        setLocale(userData.language_code);
-      }
-      if (userData?.profile_image_url) {
-        profileImage.value = userData.profile_image_url;
-        localStorage.setItem('profile_image', userData.profile_image_url);
-      }
-
-      // Sync milk price from backend to local settings store
-      if (userData?.milk_price_per_liter != null) {
-        const { useSettingsStore } = await import('./settings');
-        const settingsStore = useSettingsStore();
-        settingsStore.loadFromUserProfile(userData.milk_price_per_liter);
-      }
-
-      // Restore admin_level from login response
-      const respAdminLevel = responseData.admin_level || userData?.admin_level || null;
-      adminLevel.value = respAdminLevel;
-      if (respAdminLevel) {
-        localStorage.setItem('admin_level', respAdminLevel);
+      // Set admin level from is_admin boolean
+      if (rawUser?.is_admin) {
+        adminLevel.value = 'admin';
+        localStorage.setItem('admin_level', 'admin');
       } else {
+        adminLevel.value = null;
         localStorage.removeItem('admin_level');
       }
 
-      // If self_farmer_profile_id wasn't in login response, fetch full profile
-      if (!selfFarmerProfileId.value && responseUserId) {
-        await loadUserProfile();
+      // Restore language if available
+      if (userData?.language_code || userData?.language) {
+        const lang = userData.language_code || userData.language || 'en';
+        preferredLanguage.value = lang;
+        localStorage.setItem('preferred_language', lang);
+        setLocale(lang);
       }
 
       return true;
@@ -345,60 +305,22 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
+  /**
+   * Load user profile from EC2.
+   * EC2 GET /auth/user/{email_id} returns: {id, name, email_id, country_id, country, is_admin}
+   */
   async function loadUserProfile(): Promise<void> {
-    if (!userId.value) return;
+    if (!userEmail.value) return;
 
     loading.value = true;
 
     try {
-      // Try to load from server first
-      const response = await api.get(`/api/v1/users/${userId.value}`);
+      const response = await api.get(`/auth/user/${encodeURIComponent(userEmail.value)}`);
       const normalizedData = normalizeUser(response.data);
       user.value = normalizedData;
       await db.users.put(normalizedData);
-
-      // Update extended state from user data
-      if (normalizedData.user_role) {
-        userRole.value = normalizedData.user_role;
-        localStorage.setItem('user_role', normalizedData.user_role);
-      }
-      if (normalizedData.language_code || normalizedData.language) {
-        const lang = normalizedData.language_code || normalizedData.language || 'en';
-        preferredLanguage.value = lang;
-        localStorage.setItem('preferred_language', lang);
-        setLocale(lang);
-      }
-      if (normalizedData.self_farmer_profile_id) {
-        selfFarmerProfileId.value = normalizedData.self_farmer_profile_id;
-        localStorage.setItem('self_farmer_profile_id', normalizedData.self_farmer_profile_id);
-      }
-      if (normalizedData.profile_image_url) {
-        profileImage.value = normalizedData.profile_image_url;
-        localStorage.setItem('profile_image', normalizedData.profile_image_url);
-      }
-      // Restore admin_level from profile
-      const profileAdminLevel = normalizedData.admin_level || null;
-      adminLevel.value = profileAdminLevel;
-      if (profileAdminLevel) {
-        localStorage.setItem('admin_level', profileAdminLevel);
-      } else {
-        localStorage.removeItem('admin_level');
-      }
-
-      // If self_farmer_profile_id still not set, check via self-profile endpoint
-      if (!selfFarmerProfileId.value) {
-        try {
-          const profileResp = await api.get(`/api/v1/users/${userId.value}/self-profile`);
-          if (profileResp.data?.id) {
-            selfFarmerProfileId.value = profileResp.data.id;
-            localStorage.setItem('self_farmer_profile_id', profileResp.data.id);
-          }
-        } catch {
-          // 404 means no self-profile yet — user needs onboarding
-        }
-      }
     } catch {
-      // Fallback to local cache (userId may have been cleared by 401 interceptor)
+      // Fallback to local cache
       if (userId.value) {
         const cachedUser = await db.users.get(userId.value);
         if (cachedUser) {
@@ -410,17 +332,42 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
+  /**
+   * Update user profile on EC2.
+   * EC2 PUT /auth/user/{email_id} expects: {name?, country_id?}
+   */
   async function updateProfile(data: Partial<User>): Promise<boolean> {
-    if (!userId.value) return false;
+    if (!userEmail.value) return false;
 
     loading.value = true;
     error.value = null;
 
     try {
-      const response = await api.put(`/api/v1/users/${userId.value}`, data);
+      // EC2 accepts name and country_id
+      const updateData: Record<string, unknown> = {};
+      if (data.name) updateData.name = data.name;
+      if (data.country_id) updateData.country_id = data.country_id;
+      // If country_code passed, resolve to country_id UUID
+      if (data.country_code && !data.country_id) {
+        const country = countries.value.find(
+          c => toAlpha2(c.country_code) === data.country_code
+        );
+        if (country) updateData.country_id = country.id;
+      }
+
+      const response = await api.put(
+        `/auth/user/${encodeURIComponent(userEmail.value)}`,
+        updateData
+      );
       const normalized = normalizeUser(response.data);
       user.value = normalized;
       await db.users.put(normalized);
+
+      // Update country cache
+      if (normalized.country_code) {
+        localStorage.setItem('last_country_code', normalized.country_code);
+      }
+
       return true;
     } catch (err) {
       error.value = extractUserFriendlyError(err);
@@ -430,15 +377,19 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
+  /**
+   * Change PIN on EC2.
+   * EC2 POST /auth/change-pin expects: {email_id, current_pin, new_pin}
+   */
   async function changePin(currentPin: string, newPin: string): Promise<boolean> {
-    if (!userId.value) return false;
+    if (!userEmail.value) return false;
 
     loading.value = true;
     error.value = null;
 
     try {
-      await api.post('/api/v1/users/change-pin', {
-        user_id: userId.value,
+      await api.post('/auth/change-pin', {
+        email_id: userEmail.value,
         current_pin: currentPin,
         new_pin: newPin,
       });
@@ -448,143 +399,6 @@ export const useAuthStore = defineStore('auth', () => {
       return false;
     } finally {
       loading.value = false;
-    }
-  }
-
-  async function updateUserSettings(settings: {
-    user_role?: string;
-    language_code?: string;
-    organization_id?: string | null;
-  }): Promise<boolean> {
-    if (!userId.value) return false;
-
-    loading.value = true;
-    error.value = null;
-
-    try {
-      // Backend expects settings as query parameters, not request body
-      const params = new URLSearchParams();
-      if (settings.user_role) params.append('user_role', settings.user_role);
-      if (settings.language_code) params.append('language_code', settings.language_code);
-      if (settings.organization_id !== undefined) params.append('organization_id', settings.organization_id || '');
-      const queryString = params.toString();
-      const settingsUrl = `/api/v1/users/${userId.value}/settings${queryString ? '?' + queryString : ''}`;
-      const response = await api.put(settingsUrl);
-
-      // Update local state
-      if (settings.user_role) {
-        userRole.value = settings.user_role;
-        localStorage.setItem('user_role', settings.user_role);
-      }
-      if (settings.language_code) {
-        preferredLanguage.value = settings.language_code;
-        localStorage.setItem('preferred_language', settings.language_code);
-      }
-
-      // Update user object if returned (normalize to PWA field names)
-      if (response.data && user.value) {
-        const normalized = normalizeUser(response.data);
-        user.value = { ...user.value, ...normalized };
-        await db.users.put(user.value as User);
-      }
-
-      return true;
-    } catch (err) {
-      error.value = extractUserFriendlyError(err);
-      return false;
-    } finally {
-      loading.value = false;
-    }
-  }
-
-  async function createSelfProfile(profileData: {
-    name: string;
-    phone?: string | null;
-    village?: string | null;
-    district?: string | null;
-    state?: string | null;
-  }): Promise<boolean> {
-    if (!userId.value) return false;
-
-    loading.value = true;
-    error.value = null;
-
-    try {
-      const response = await api.post(`/api/v1/users/${userId.value}/self-profile`, profileData);
-
-      // Store the self farmer profile ID
-      if (response.data?.id) {
-        selfFarmerProfileId.value = response.data.id;
-        localStorage.setItem('self_farmer_profile_id', response.data.id);
-      }
-
-      return true;
-    } catch (err) {
-      error.value = extractUserFriendlyError(err);
-      return false;
-    } finally {
-      loading.value = false;
-    }
-  }
-
-  async function getSelfProfile(): Promise<unknown | null> {
-    if (!userId.value) return null;
-
-    try {
-      const response = await api.get(`/api/v1/users/${userId.value}/self-profile`);
-      if (response.data?.id) {
-        selfFarmerProfileId.value = response.data.id;
-        localStorage.setItem('self_farmer_profile_id', response.data.id);
-      }
-      return response.data;
-    } catch {
-      return null;
-    }
-  }
-
-  async function requestContactChange(type: 'email' | 'phone', newValue: string, pin?: string): Promise<boolean> {
-    error.value = null;
-    try {
-      await api.post('/api/v1/auth/change-contact/request', {
-        user_id: userId.value,
-        type,
-        new_value: newValue,
-        pin: pin || '',
-      });
-      return true;
-    } catch (err: unknown) {
-      const msg = (err as { response?: { data?: { detail?: string } } })?.response?.data?.detail;
-      error.value = msg || 'Failed to request contact change';
-      return false;
-    }
-  }
-
-  async function verifyContactChange(type: 'email' | 'phone', newValue: string, code: string): Promise<boolean> {
-    error.value = null;
-    try {
-      await api.post('/api/v1/auth/change-contact/verify', {
-        user_id: userId.value,
-        type,
-        new_value: newValue,
-        code,
-      });
-
-      // Update local user info
-      if (user.value) {
-        if (type === 'email') {
-          user.value.email = newValue;
-        } else {
-          user.value.phone = newValue;
-        }
-        // Persist to IndexedDB
-        await db.users.put(user.value);
-      }
-
-      return true;
-    } catch (err: unknown) {
-      const msg = (err as { response?: { data?: { detail?: string } } })?.response?.data?.detail;
-      error.value = msg || 'Failed to verify contact change';
-      return false;
     }
   }
 
@@ -599,85 +413,67 @@ export const useAuthStore = defineStore('auth', () => {
 
   function clearAuth(): void {
     user.value = null;
-    token.value = null;
     userId.value = null;
-    // Preserve user preferences (role, language) — they survive session expiry
-    // and will be restored from the backend on next login
+    userEmail.value = null;
     const savedRole = localStorage.getItem('user_role') || 'farmer';
     const savedLang = localStorage.getItem('preferred_language') || 'en';
     userRole.value = savedRole;
     preferredLanguage.value = savedLang;
-    selfFarmerProfileId.value = null;
     adminLevel.value = null;
-    onboardingSkipped.value = false;
     profileImage.value = null;
 
-    // Clear auth data from both storages
     for (const storage of [localStorage, sessionStorage]) {
-      storage.removeItem('auth_token');
       storage.removeItem('user_id');
+      storage.removeItem('user_email');
     }
     localStorage.removeItem('remember_me');
-    // Keep user_role, preferred_language, and last_country_code so they
-    // survive session expiry and pre-fill the login page correctly
-    localStorage.removeItem('self_farmer_profile_id');
     localStorage.removeItem('admin_level');
     localStorage.removeItem('profile_image');
-    sessionStorage.removeItem('onboarding_skipped');
 
-    // Clear module-level caches to prevent stale data for next user
     clearCountryCache();
   }
 
   async function logout(): Promise<void> {
-    // Clear local data
     clearAuth();
     await db.clearUserData();
 
-    // Clear in-memory state of data stores to prevent stale data leaking to
-    // the next user session on shared-device scenarios.
     try {
       const { useFeedsStore } = await import('./feeds');
       useFeedsStore().$patch({ masterFeeds: [], customFeeds: [] });
     } catch {
-      // Non-critical: stores may not be initialized if user logs out before loading data
+      // Non-critical
     }
   }
 
-  // Initialize - restore user from IndexedDB immediately, then refresh from API.
-  // This ensures UI has data instantly (name, email, phone) instead of waiting
-  // for the network request — critical after app updates / page reloads.
+  // Initialize - restore user from IndexedDB, then refresh from API.
   async function initialize(): Promise<void> {
     if (userId.value) {
-      // 1. Instant restore from IndexedDB (survives reloads)
       try {
         const cachedUser = await db.users.get(userId.value);
         if (cachedUser) {
-          // Normalize in case cached data has old backend field names
           user.value = normalizeUser(cachedUser as unknown as Record<string, unknown>);
         }
       } catch {
-        // IndexedDB unavailable — will rely on API below
+        // IndexedDB unavailable
       }
-      // 2. Refresh from server (updates IndexedDB too)
-      await loadUserProfile();
+      if (userEmail.value) {
+        await loadUserProfile();
+      }
     }
   }
 
   return {
     // State
     user,
-    token,
     userId,
+    userEmail,
     loading,
     error,
     countries,
     countriesLoading,
     userRole,
     preferredLanguage,
-    selfFarmerProfileId,
     adminLevel,
-    onboardingSkipped,
     profileImage,
     // Computed
     isAuthenticated,
@@ -687,6 +483,7 @@ export const useAuthStore = defineStore('auth', () => {
     isExtensionWorker,
     isResearcher,
     isFarmerRole,
+    isAdmin,
     isOrgAdmin,
     isCountryAdmin,
     isSuperAdmin,
@@ -698,13 +495,8 @@ export const useAuthStore = defineStore('auth', () => {
     login,
     loadUserProfile,
     updateProfile,
-    updateUserSettings,
-    createSelfProfile,
-    getSelfProfile,
     changePin,
     setProfileImage,
-    requestContactChange,
-    verifyContactChange,
     clearAuth,
     logout,
     initialize,

@@ -79,21 +79,19 @@
             </template>
           </q-select>
 
-          <!-- Phone Input with dial code -->
+          <!-- Email Input -->
           <q-input
-            v-model="form.phone"
-            :label="$t('auth.phone')"
-            type="tel"
+            v-model="form.email"
+            :label="$t('auth.email', 'Email')"
+            type="email"
             outlined
-            :mask="selectedPhoneMask"
             :rules="[
               (val: string) => !!val || $t('validation.required'),
-              (val: string) => val.replace(/\D/g, '').length >= 7 || $t('validation.phoneTooShort'),
+              (val: string) => emailRegex.test(val) || $t('validation.emailInvalid', 'Please enter a valid email'),
             ]"
           >
             <template #prepend>
-              <img :src="flagUrl(form.country_code)" width="20" height="15" class="q-mr-xs flag-img" :alt="$t('profile.country')" />
-              <span class="text-body2 text-weight-medium text-grey-8 q-mr-xs">{{ selectedDialCode }}</span>
+              <q-icon name="email" />
             </template>
           </q-input>
         </div>
@@ -227,12 +225,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted, watch } from 'vue';
+import { ref, reactive, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useAuthStore } from 'src/stores/auth';
-import { getDialCode, getPhoneMask, FALLBACK_COUNTRIES, SUPPORTED_COUNTRY_CODES, COUNTRY_LANGUAGE_MAP } from 'src/services/api-adapter';
-import { useGeoCountry } from 'src/composables/useGeoCountry';
+import { FALLBACK_COUNTRIES, SUPPORTED_COUNTRY_CODES, COUNTRY_LANGUAGE_MAP } from 'src/services/api-adapter';
 import { availableLocales, setLocale } from 'src/boot/i18n';
 
 const flagUrl = (code: string) => `/flags/${(code || 'xx').toLowerCase()}.svg`;
@@ -240,26 +237,20 @@ const flagUrl = (code: string) => `/flags/${(code || 'xx').toLowerCase()}.svg`;
 const { t } = useI18n();
 const router = useRouter();
 const authStore = useAuthStore();
-const { detectedCountry } = useGeoCountry();
 
 const showPin = ref(false);
 
-// Prefer saved country from a previous login/registration over geo-detection
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+// Prefer saved country from a previous login/registration
 const savedCountry = localStorage.getItem('last_country_code');
 
 const form = reactive({
   name: '',
-  phone: '',
-  country_code: savedCountry || detectedCountry.value,
+  email: '',
+  country_code: savedCountry || 'IN',
   pin: '',
   confirmPin: '',
-});
-
-// Update country when geo-detection resolves, but only if no saved preference
-watch(detectedCountry, (code) => {
-  if (!savedCountry && (form.country_code === 'IN' || !form.phone)) {
-    form.country_code = code;
-  }
 });
 
 // Language selection
@@ -298,17 +289,13 @@ const countryOptions = computed(() => {
     }
   }
   return merged.map((c) => {
-    const dialCode = getDialCode(c.country_code);
     const name = t(`countries.${c.country_code}`, c.name || c.country_code);
     return {
-      label: dialCode ? `${name} (${dialCode})` : name,
+      label: name,
       value: c.country_code,
     };
   });
 });
-
-const selectedDialCode = computed(() => getDialCode(form.country_code));
-const selectedPhoneMask = computed(() => getPhoneMask(form.country_code));
 
 onMounted(() => {
   authStore.fetchCountries();
@@ -368,32 +355,14 @@ const pinStrength = computed(() => {
 });
 
 async function onSubmit() {
-  const data = {
+  const success = await authStore.register({
     name: form.name,
+    email: form.email,
     pin: form.pin,
     country_code: form.country_code,
-    phone: form.phone,
-  };
-
-  const success = await authStore.register(data);
+  });
 
   if (success) {
-    // Auto-set role and create self-profile, then go to simulation home.
-    // These are best-effort — registration already succeeded, so we proceed
-    // to home even if they fail (profile can be completed later).
-    try {
-      await authStore.updateUserSettings({
-        user_role: 'farmer',
-        language_code: selectedLanguage.value,
-      });
-    } catch {
-      console.warn('[Register] Failed to set user settings post-registration');
-    }
-    try {
-      await authStore.createSelfProfile({ name: form.name });
-    } catch {
-      console.warn('[Register] Failed to create self-profile post-registration');
-    }
     router.push('/');
   }
 }

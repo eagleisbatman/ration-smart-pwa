@@ -6,7 +6,6 @@ import { db, Feed } from 'src/lib/offline/db';
 import { queueCreate, queueUpdate, queueDelete } from 'src/lib/offline/sync-manager';
 import { useAuthStore } from './auth';
 import { isOnline } from 'src/boot/pwa';
-import { fetchAndCacheCountries } from 'src/services/api-adapter';
 import { extractUserFriendlyError } from 'src/lib/error-messages';
 
 export interface FeedInput {
@@ -69,7 +68,11 @@ export const useFeedsStore = defineStore('feeds', () => {
     return Date.now() - Number(ts) > CACHE_TTL_MS;
   }
 
-  // Actions
+  /**
+   * Fetch master feeds from EC2.
+   * EC2 endpoint: GET /feeds/?country_id={UUID}&limit=2000
+   * Requires country_id UUID, not country_code.
+   */
   async function fetchMasterFeeds(countryCode?: string): Promise<void> {
     const authStore = useAuthStore();
     const country = countryCode || authStore.userCountry;
@@ -91,16 +94,30 @@ export const useFeedsStore = defineStore('feeds', () => {
 
     try {
       if (isOnline.value) {
-        // Ensure country cache is populated so the API adapter can map country_code → country_id
-        await fetchAndCacheCountries();
+        // Ensure countries loaded so we can resolve country_code → country_id UUID
+        await authStore.ensureCountriesLoaded();
 
-        const response = await api.get('/api/v1/feeds/master', {
-          params: { country_code: country, limit: 2000 },
-        });
+        // Find country_id UUID from country_code (alpha-2)
+        const { toAlpha2 } = await import('src/services/api-adapter');
+        const countryObj = authStore.countries.find(
+          c => toAlpha2(c.country_code) === country
+        );
+        const countryId = countryObj?.id;
+
+        const params: Record<string, unknown> = { limit: 2000 };
+        if (countryId) {
+          params.country_id = countryId;
+        }
+
+        const response = await api.get('/feeds/', { params });
 
         const rawFeeds = Array.isArray(response.data) ? response.data : [];
         const feeds = rawFeeds.map((feed: Feed) => ({
           ...feed,
+          // Normalize EC2 field names to PWA's internal schema
+          id: feed.id || feed.feed_id,
+          name: feed.name || feed.fd_name,
+          category: feed.category || feed.fd_category,
           is_custom: 0,
           country_code: country,
           _synced: true,
@@ -136,72 +153,20 @@ export const useFeedsStore = defineStore('feeds', () => {
     }
   }
 
+  /**
+   * Fetch custom feeds.
+   * EC2 doesn't have a "list custom feeds" endpoint, so we rely on IndexedDB cache.
+   * Custom feeds are synced individually via create/update operations.
+   */
   async function fetchCustomFeeds(): Promise<void> {
     const authStore = useAuthStore();
     if (!authStore.userId) return;
 
-    // 1. Load from IndexedDB cache first (instant)
+    // Load from IndexedDB cache only (EC2 has no bulk list endpoint for custom feeds)
     customFeeds.value = await db.feeds
       .where({ user_id: authStore.userId, is_custom: 1 })
       .filter((f) => !f._deleted)
       .toArray();
-    const hadCachedData = customFeeds.value.length > 0;
-
-    // 2. If we have cached data and it's fresh, skip network
-    const ts = await db.getSetting('custom_feeds_last_fetched');
-    if (hadCachedData && ts && Date.now() - Number(ts) < CACHE_TTL_MS) {
-      return;
-    }
-
-    // 3. Fetch from API (show loading only if no cached data)
-    if (!hadCachedData) {
-      loading.value = true;
-    }
-    error.value = null;
-
-    try {
-      if (isOnline.value) {
-        const response = await api.get('/api/v1/feeds/custom');
-
-        const rawFeeds = Array.isArray(response.data) ? response.data : [];
-        const feeds = rawFeeds.map((feed: Feed) => ({
-          ...feed,
-          is_custom: 1,
-          user_id: authStore.userId,
-          _synced: true,
-          _deleted: false,
-        }));
-
-        // Update local database
-        if (feeds.length > 0) {
-          await db.feeds.bulkPut(feeds);
-          await db.setSetting('custom_feeds_last_fetched', Date.now());
-        }
-      }
-
-      // Load from local database (userId may have been cleared by 401 interceptor)
-      if (!authStore.userId) return;
-
-      customFeeds.value = await db.feeds
-        .where({ user_id: authStore.userId, is_custom: 1 })
-        .filter((f) => !f._deleted)
-        .toArray();
-    } catch (err) {
-      // Fallback to local data (userId may have been cleared by 401 interceptor)
-      if (authStore.userId) {
-        customFeeds.value = await db.feeds
-          .where({ user_id: authStore.userId })
-          .filter((f) => f.is_custom === 1 && !f._deleted)
-          .toArray();
-      }
-
-      if (customFeeds.value.length === 0 && !isOnline.value) {
-        // Only show error if offline and no cached data
-        error.value = extractUserFriendlyError(err);
-      }
-    } finally {
-      loading.value = false;
-    }
   }
 
   async function fetchAllFeeds(): Promise<void> {
@@ -214,8 +179,16 @@ export const useFeedsStore = defineStore('feeds', () => {
 
     if (!feed && isOnline.value) {
       try {
-        const response = await api.get(`/api/v1/feeds/${id}`);
-        const serverFeed: Feed = { ...response.data, _synced: true, _deleted: false };
+        // EC2: GET /feeds/{feed_id}
+        const response = await api.get(`/feeds/${id}`);
+        const serverFeed: Feed = {
+          ...response.data,
+          id: response.data.id || response.data.feed_id,
+          name: response.data.name || response.data.fd_name,
+          category: response.data.category || response.data.fd_category,
+          _synced: true,
+          _deleted: false,
+        };
         await db.feeds.put(serverFeed);
         return serverFeed;
       } catch {
@@ -226,6 +199,11 @@ export const useFeedsStore = defineStore('feeds', () => {
     return feed ?? null;
   }
 
+  /**
+   * Create a custom feed on EC2.
+   * EC2 endpoint: POST /insert-custom-feed/
+   * EC2 expects: {user_id, country_id, feed_insert: true, feed_details: {...}}
+   */
   async function createCustomFeed(input: FeedInput): Promise<Feed | null> {
     const authStore = useAuthStore();
     if (!authStore.userId) {
@@ -254,10 +232,35 @@ export const useFeedsStore = defineStore('feeds', () => {
       customFeeds.value.push(newFeed);
 
       if (isOnline.value) {
-        // Sync with server
-        const response = await api.post('/api/v1/feeds/custom', input);
+        // Resolve country_id UUID
+        const { toAlpha2 } = await import('src/services/api-adapter');
+        const countryObj = authStore.countries.find(
+          c => toAlpha2(c.country_code) === authStore.userCountry
+        );
+
+        // EC2 /insert-custom-feed/ expects InsertCustomFeedRequest
+        const response = await api.post('/insert-custom-feed/', {
+          user_id: authStore.userId,
+          country_id: countryObj?.id || '',
+          feed_insert: true,
+          feed_details: {
+            feed_name: input.name,
+            feed_type: input.fd_type || 'Concentrate',
+            feed_category: input.category,
+            fd_dm: input.dm_percentage,
+            fd_cp: input.cp_percentage,
+            fd_ndf: input.ndf_percentage,
+            fd_ca: input.ca_percentage,
+            fd_p: input.p_percentage,
+          },
+        });
+
+        const serverFeedDetails = response.data?.feed_details || response.data;
         const serverFeed: Feed = {
-          ...response.data,
+          id: serverFeedDetails?.feed_id || serverFeedDetails?.id || newFeed.id,
+          name: serverFeedDetails?.fd_name || input.name,
+          category: serverFeedDetails?.fd_category || input.category,
+          ...serverFeedDetails,
           is_custom: 1,
           user_id: authStore.userId,
           country_code: authStore.userCountry,
@@ -269,7 +272,6 @@ export const useFeedsStore = defineStore('feeds', () => {
         await db.feeds.delete(newFeed.id);
         await db.feeds.put(serverFeed);
 
-        // Update local state
         const index = customFeeds.value.findIndex((f) => f.id === newFeed.id);
         if (index !== -1) {
           customFeeds.value[index] = serverFeed;
@@ -277,7 +279,6 @@ export const useFeedsStore = defineStore('feeds', () => {
 
         return serverFeed;
       } else {
-        // Queue for later sync
         await queueCreate('feed', newFeed.id, input as unknown as Record<string, unknown>);
         return newFeed;
       }
@@ -289,7 +290,6 @@ export const useFeedsStore = defineStore('feeds', () => {
         return newFeed;
       }
 
-      // Remove optimistically added feed on error
       await db.feeds.delete(newFeed.id);
       customFeeds.value = customFeeds.value.filter((f) => f.id !== newFeed.id);
       return null;
@@ -298,7 +298,13 @@ export const useFeedsStore = defineStore('feeds', () => {
     }
   }
 
+  /**
+   * Update a custom feed on EC2.
+   * EC2 endpoint: POST /update-custom-feed/
+   * EC2 expects: {user_id, country_id, feed_id, feed_insert: false, feed_details: {...}}
+   */
   async function updateCustomFeed(id: string, input: Partial<FeedInput>): Promise<boolean> {
+    const authStore = useAuthStore();
     loading.value = true;
     error.value = null;
 
@@ -317,22 +323,40 @@ export const useFeedsStore = defineStore('feeds', () => {
       // Update locally immediately (optimistic)
       await db.feeds.update(id, { ...updatedData, _synced: false });
 
-      // Update local state
       const index = customFeeds.value.findIndex((f) => f.id === id);
       if (index !== -1) {
         customFeeds.value[index] = { ...customFeeds.value[index], ...updatedData, _synced: false };
       }
 
       if (isOnline.value) {
-        // Sync with server
-        await api.put(`/api/v1/feeds/custom/${id}`, input);
-        await db.feeds.update(id, { _synced: true });
+        const { toAlpha2 } = await import('src/services/api-adapter');
+        const countryObj = authStore.countries.find(
+          c => toAlpha2(c.country_code) === authStore.userCountry
+        );
 
+        // EC2 /update-custom-feed/ expects UpdateCustomFeedRequest
+        await api.post('/update-custom-feed/', {
+          user_id: authStore.userId,
+          country_id: countryObj?.id || '',
+          feed_id: id,
+          feed_insert: false,
+          feed_details: {
+            feed_name: input.name || existingFeed.name || existingFeed.fd_name,
+            feed_type: input.fd_type || existingFeed.fd_type || 'Concentrate',
+            feed_category: input.category || existingFeed.category || existingFeed.fd_category,
+            fd_dm: input.dm_percentage ?? existingFeed.dm_percentage,
+            fd_cp: input.cp_percentage ?? existingFeed.cp_percentage,
+            fd_ndf: input.ndf_percentage ?? existingFeed.ndf_percentage,
+            fd_ca: input.ca_percentage ?? existingFeed.ca_percentage,
+            fd_p: input.p_percentage ?? existingFeed.p_percentage,
+          },
+        });
+
+        await db.feeds.update(id, { _synced: true });
         if (index !== -1) {
           customFeeds.value[index]._synced = true;
         }
       } else {
-        // Queue for later sync
         await queueUpdate('feed', id, input as unknown as Record<string, unknown>);
       }
 
@@ -351,6 +375,10 @@ export const useFeedsStore = defineStore('feeds', () => {
     }
   }
 
+  /**
+   * Delete a custom feed on EC2.
+   * EC2 endpoint: DELETE /feeds/delete-feed/{feed_id}
+   */
   async function deleteCustomFeed(id: string): Promise<boolean> {
     loading.value = true;
     error.value = null;
@@ -367,11 +395,9 @@ export const useFeedsStore = defineStore('feeds', () => {
       customFeeds.value = customFeeds.value.filter((f) => f.id !== id);
 
       if (isOnline.value) {
-        // Delete on server
-        await api.delete(`/api/v1/feeds/custom/${id}`);
+        await api.delete(`/feeds/delete-feed/${id}`);
         await db.feeds.delete(id);
       } else {
-        // Queue for later sync
         await queueDelete('feed', id);
       }
 

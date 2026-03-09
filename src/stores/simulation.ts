@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import { v4 as uuidv4 } from 'uuid';
 import { api } from 'src/lib/api';
 import { useAuthStore } from './auth';
-import { getCountryId, fetchAndCacheCountries } from 'src/services/api-adapter';
+import { toAlpha2 } from 'src/services/api-adapter';
 import { getCurrencyCodeForCountry } from 'src/composables/useCurrency';
 import { extractUserFriendlyError } from 'src/lib/error-messages';
 
@@ -382,12 +382,12 @@ export const useSimulationStore = defineStore('simulation', () => {
     error.value = null;
 
     try {
-      // Ensure country cache is populated for country_code → country_id mapping
-      await fetchAndCacheCountries();
+      await authStore.ensureCountriesLoaded();
 
       const simId = currentSimulationId.value || newSimulationId();
       const countryCode = authStore.userCountry || 'IN';
-      const countryId = getCountryId(countryCode) || '';
+      const countryObj = authStore.countries.find(c => toAlpha2(c.country_code) === countryCode);
+      const countryId = countryObj?.id || '';
       const currency = getCurrencyCodeForCountry(countryCode);
 
       const payload: Record<string, unknown> = {
@@ -434,12 +434,12 @@ export const useSimulationStore = defineStore('simulation', () => {
     error.value = null;
 
     try {
-      // Ensure country cache is populated for country_code → country_id mapping
-      await fetchAndCacheCountries();
+      await authStore.ensureCountriesLoaded();
 
       const simId = currentSimulationId.value || newSimulationId();
       const countryCode = authStore.userCountry || 'IN';
-      const countryId = getCountryId(countryCode) || '';
+      const countryObj = authStore.countries.find(c => toAlpha2(c.country_code) === countryCode);
+      const countryId = countryObj?.id || '';
 
       const cattlePayload = buildCattlePayload();
       if (milkOverride !== undefined) {

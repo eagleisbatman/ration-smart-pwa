@@ -56,7 +56,7 @@
             <q-icon :name="cowIcon" size="32px" />
           </q-avatar>
           <div class="q-mt-sm text-subtitle1">{{ userName }}</div>
-          <div class="text-caption text-grey-6">{{ userPhone }}</div>
+          <div class="text-caption text-grey-6">{{ userEmail }}</div>
           <q-chip v-if="authStore.isAnyAdmin" dense outline size="sm" class="q-mt-xs q-ml-none">
             <q-icon name="verified_user" size="12px" class="q-mr-xs" />
             {{ adminLevelLabel }}
@@ -190,7 +190,7 @@ const adminLevelLabel = computed(() => {
 
 // User info
 const userName = computed(() => authStore.user?.name || 'User');
-const userPhone = computed(() => authStore.user?.phone || '');
+const userEmail = computed(() => authStore.userEmail || authStore.user?.email || '');
 
 // Page title from route meta (supports i18n titleKey or plain title)
 const pageTitle = computed(() => {
