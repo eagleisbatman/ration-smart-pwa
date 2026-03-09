@@ -53,6 +53,7 @@ export const CATEGORY_I18N_MAP: Record<string, string> = {
   'Animal Protein': 'feed.categories.animalProtein',
   Aquatic: 'feed.categories.aquatic',
   'By-Product/Other': 'feed.categories.byProduct',
+  'By-Product/Other-Forage': 'feed.categories.byProductForage',
   'Cereal Hay': 'feed.categories.cerealHay',
   'Cereal Stover': 'feed.categories.cerealStover',
   'Cereal Straw': 'feed.categories.cerealStraw',
@@ -83,11 +84,17 @@ export const CATEGORY_I18N_MAP: Record<string, string> = {
   'Tree Leaves': 'feed.categories.treeLeaves',
 };
 
+// Case-insensitive lookup built from CATEGORY_I18N_MAP
+const CATEGORY_I18N_MAP_LOWER: Record<string, string> = {};
+for (const [cat, i18nKey] of Object.entries(CATEGORY_I18N_MAP)) {
+  CATEGORY_I18N_MAP_LOWER[cat.toLowerCase()] = i18nKey;
+}
+
 /**
  * Translate a feed category using the i18n system.
- * Falls back to the raw category string if no translation key exists.
+ * Case-insensitive. Falls back to the raw category string if no translation key exists.
  */
 export function translateCategory(category: string, t: (key: string) => string): string {
-  const key = CATEGORY_I18N_MAP[category];
+  const key = CATEGORY_I18N_MAP[category] || CATEGORY_I18N_MAP_LOWER[category.toLowerCase()];
   return key ? t(key) : category;
 }

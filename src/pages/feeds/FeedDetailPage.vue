@@ -61,12 +61,13 @@
             </q-item-section>
           </q-item>
 
-          <q-item>
+          <q-item v-if="feed.tdn_percentage">
             <q-item-section>
               <q-item-label>{{ $t('feed.labels.tdnPercent') }}</q-item-label>
+              <q-item-label v-if="!feed.tdn_percentage" caption class="text-grey-5">{{ $t('feed.labels.estimated') }}</q-item-label>
             </q-item-section>
             <q-item-section side>
-              <q-item-label class="text-h6">{{ feed.tdn_percentage != null ? feed.tdn_percentage + '%' : '–' }}</q-item-label>
+              <q-item-label class="text-h6">{{ feed.tdn_percentage }}%</q-item-label>
             </q-item-section>
           </q-item>
 
@@ -76,6 +77,42 @@
             </q-item-section>
             <q-item-section side>
               <q-item-label class="text-h6">{{ feed.ndf_percentage }}%</q-item-label>
+            </q-item-section>
+          </q-item>
+
+          <q-item v-if="feed.fd_adf != null && feed.fd_adf > 0">
+            <q-item-section>
+              <q-item-label>{{ $t('feed.labels.adfPercent') }}</q-item-label>
+            </q-item-section>
+            <q-item-section side>
+              <q-item-label class="text-h6">{{ feed.fd_adf }}%</q-item-label>
+            </q-item-section>
+          </q-item>
+
+          <q-item v-if="feed.fd_ee != null && feed.fd_ee > 0">
+            <q-item-section>
+              <q-item-label>{{ $t('feed.labels.eePercent') }}</q-item-label>
+            </q-item-section>
+            <q-item-section side>
+              <q-item-label class="text-h6">{{ feed.fd_ee }}%</q-item-label>
+            </q-item-section>
+          </q-item>
+
+          <q-item v-if="feed.fd_ash != null && feed.fd_ash > 0">
+            <q-item-section>
+              <q-item-label>{{ $t('feed.labels.ashPercent') }}</q-item-label>
+            </q-item-section>
+            <q-item-section side>
+              <q-item-label class="text-h6">{{ feed.fd_ash }}%</q-item-label>
+            </q-item-section>
+          </q-item>
+
+          <q-item v-if="feed.fd_lg != null && feed.fd_lg > 0">
+            <q-item-section>
+              <q-item-label>{{ $t('feed.labels.lgPercent') }}</q-item-label>
+            </q-item-section>
+            <q-item-section side>
+              <q-item-label class="text-h6">{{ feed.fd_lg }}%</q-item-label>
             </q-item-section>
           </q-item>
 
