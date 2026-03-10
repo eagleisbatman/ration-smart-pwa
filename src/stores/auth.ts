@@ -50,12 +50,14 @@ function normalizeUser(data: Record<string, unknown>): User {
 }
 
 export const useAuthStore = defineStore('auth', () => {
-  // State – EC2 has no JWT tokens, auth is tracked client-side via userId
+  // State
   const user = ref<User | null>(null);
+  const token = ref<string | null>(
+    localStorage.getItem('auth_token') || sessionStorage.getItem('auth_token'),
+  );
   const userId = ref<string | null>(
     localStorage.getItem('user_id') || sessionStorage.getItem('user_id'),
   );
-  // Store user email for EC2 profile lookup (EC2 keys user by email_id)
   const userEmail = ref<string | null>(
     localStorage.getItem('user_email') || sessionStorage.getItem('user_email'),
   );
@@ -176,25 +178,33 @@ export const useAuthStore = defineStore('auth', () => {
       });
 
       const responseData = response.data;
-      if (!responseData.success) {
+
+      // Backend may return {access_token, user} or {success, user}
+      const rawUser = responseData.user;
+      if (!rawUser) {
         error.value = responseData.message || 'Registration failed';
         return false;
       }
 
-      const rawUser = responseData.user;
-      const responseUserId = rawUser?.id;
-      const userData = rawUser ? normalizeUser(rawUser) : null;
+      const responseUserId = rawUser.id;
+      const userData = normalizeUser(rawUser);
 
       // Save to local state
       user.value = userData;
       userId.value = responseUserId;
       userEmail.value = data.email;
+      if (responseData.access_token) {
+        token.value = responseData.access_token;
+      }
 
       // Persist to localStorage (new users stay signed in)
       if (responseUserId) {
         localStorage.setItem('user_id', responseUserId);
       }
       localStorage.setItem('user_email', data.email);
+      if (responseData.access_token) {
+        localStorage.setItem('auth_token', responseData.access_token);
+      }
 
       // Save user to IndexedDB
       if (userData) {
@@ -242,19 +252,24 @@ export const useAuthStore = defineStore('auth', () => {
       });
 
       const responseData = response.data;
-      if (!responseData.success) {
+
+      // Backend may return {access_token, user} or {success, user}
+      const rawUser = responseData.user;
+      if (!rawUser) {
         error.value = responseData.message || 'Login failed';
         return false;
       }
 
-      const rawUser = responseData.user;
-      const responseUserId = rawUser?.id;
-      const userData = rawUser ? normalizeUser(rawUser) : null;
+      const responseUserId = rawUser.id;
+      const userData = normalizeUser(rawUser);
 
       // Save to local state
       user.value = userData;
       userId.value = responseUserId;
       userEmail.value = data.email;
+      if (responseData.access_token) {
+        token.value = responseData.access_token;
+      }
 
       // Choose storage backend based on "Remember me" preference
       if (data.rememberMe) {
@@ -268,6 +283,9 @@ export const useAuthStore = defineStore('auth', () => {
         storage.setItem('user_id', responseUserId);
       }
       storage.setItem('user_email', data.email);
+      if (responseData.access_token) {
+        storage.setItem('auth_token', responseData.access_token);
+      }
 
       // Save user to IndexedDB
       if (userData) {
@@ -413,6 +431,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   function clearAuth(): void {
     user.value = null;
+    token.value = null;
     userId.value = null;
     userEmail.value = null;
     const savedRole = localStorage.getItem('user_role') || 'farmer';
@@ -425,6 +444,7 @@ export const useAuthStore = defineStore('auth', () => {
     for (const storage of [localStorage, sessionStorage]) {
       storage.removeItem('user_id');
       storage.removeItem('user_email');
+      storage.removeItem('auth_token');
     }
     localStorage.removeItem('remember_me');
     localStorage.removeItem('admin_level');
@@ -465,6 +485,7 @@ export const useAuthStore = defineStore('auth', () => {
   return {
     // State
     user,
+    token,
     userId,
     userEmail,
     loading,
