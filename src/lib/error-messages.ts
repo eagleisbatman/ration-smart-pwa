@@ -5,7 +5,7 @@ const PASSTHROUGH_STATUS_CODES = new Set([401, 400]);
 
 /** Map raw backend error details to user-friendly i18n keys */
 const ERROR_PATTERNS: Array<{ pattern: RegExp; key: string }> = [
-  { pattern: /phone.*already/i, key: 'errors.phoneAlreadyRegistered' },
+  { pattern: /phone.*already/i, key: 'errors.phoneAlreadyRegistered' }, // legacy — EC2 is email-only
   { pattern: /email.*already|unique.*email/i, key: 'errors.emailAlreadyRegistered' },
   { pattern: /permission|forbidden/i, key: 'errors.forbidden' },
   { pattern: /integrity|constraint|duplicate/i, key: 'errors.duplicateEntry' },

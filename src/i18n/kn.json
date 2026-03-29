@@ -79,7 +79,9 @@
     "addCow": "ಹಸು ಸೇರಿಸಿ",
     "logMilk": "ಹಾಲು ದಾಖಲಿಸಿ",
     "getDiet": "ಆಹಾರ ಪಡೆಯಿರಿ",
-    "admin": "ನಿರ್ವಾಹಕರು"
+    "admin": "ನಿರ್ವಾಹಕರು",
+    "feedReports": "ಮೇವು ವರದಿಗಳು",
+    "termsConditions": "ನಿಯಮಗಳು ಮತ್ತು ಷರತ್ತುಗಳು"
   },
   "roles": {
     "farmer": "ರೈತ",
@@ -236,7 +238,9 @@
     "newPhone": "ಹೊಸ ಫೋನ್ ಸಂಖ್ಯೆ",
     "currentValue": "ಪ್ರಸ್ತುತ: {value}",
     "sendCode": "ಪರಿಶೀಲನಾ ಕೋಡ್ ಕಳುಹಿಸಿ",
-    "changeSuccess": "ನಿಮ್ಮ {type} ಯಶಸ್ವಿಯಾಗಿ ನವೀಕರಿಸಲಾಗಿದೆ."
+    "changeSuccess": "ನಿಮ್ಮ {type} ಯಶಸ್ವಿಯಾಗಿ ನವೀಕರಿಸಲಾಗಿದೆ.",
+    "dangerZone": "ಅಪಾಯದ ವಲಯ",
+    "profileUpdateFailed": "ಪ್ರೊಫೈಲ್ ಉಳಿಸಲು ವಿಫಲವಾಗಿದೆ"
   },
   "cow": {
     "myCows": "ನನ್ನ ಹಸುಗಳು",
@@ -678,7 +682,8 @@
       "stover": "ಕಡ್ಡಿ ಹುಲ್ಲು",
       "straw": "ಹುಲ್ಲು",
       "succulent": "ರಸಭರಿತ",
-      "treeLeaves": "ಮರದ ಎಲೆಗಳು"
+      "treeLeaves": "ಮರದ ಎಲೆಗಳು",
+      "byProductForage": "ಉಪ-ಉತ್ಪನ್ನ ಮೇವು"
     },
     "labels": {
       "dmPercent": "ಒಣ ಪದಾರ್ಥ (DM)",
@@ -706,7 +711,15 @@
       "pricing": "ಬೆಲೆ ನಿರ್ಧಾರ",
       "season": "ಋತು",
       "type": "ಪ್ರಕಾರ",
-      "typeRequired": "ಪ್ರಕಾರ *"
+      "typeRequired": "ಪ್ರಕಾರ *",
+      "adfPercent": "ಆಮ್ಲ ಡಿಟರ್ಜೆಂಟ್ ಫೈಬರ್ (ADF)",
+      "adfPercentShort": "ADF",
+      "ashPercent": "ಬೂದಿ",
+      "eePercent": "ಈಥರ್ ಎಕ್ಸ್‌ಟ್ರಾಕ್ಟ್ (EE)",
+      "stPercent": "ಪಿಷ್ಟ",
+      "lgPercent": "ಲಿಗ್ನಿನ್",
+      "ndinPercent": "NDIN",
+      "adinPercent": "ADIN"
     },
     "seasons": {
       "allYear": "ವರ್ಷವಿಡೀ",
@@ -1869,7 +1882,14 @@
       "subtitle": "ಮೇವನ್ನು ಸೇರಿಸಿ, ಸಂಪಾದಿಸಿ ಮತ್ತು ನಿರ್ವಹಿಸಿ",
       "bulkUpload": "ಒಟ್ಟಾಗಿ ಅಪ್ಲೋಡ್ ಮಾಡಿ",
       "export": "ರಫ್ತು ಮಾಡಿ",
-      "noFeeds": "ಯಾವುದೇ ಮೇವು ಸಿಗಲಿಲ್ಲ"
+      "noFeeds": "ಯಾವುದೇ ಮೇವು ಸಿಗಲಿಲ್ಲ",
+      "manageTypes": "ಪ್ರಕಾರಗಳನ್ನು ನಿರ್ವಹಿಸಿ",
+      "feedTypes": "ಮೇವಿನ ವಿಧಗಳು",
+      "feedCategories": "ಮೇವು ವರ್ಗಗಳು",
+      "type": "ವಿಧ",
+      "category": "ವರ್ಗ",
+      "newTypeName": "ಹೊಸ ಪ್ರಕಾರದ ಹೆಸರು",
+      "newCategoryName": "ಹೊಸ ವರ್ಗದ ಹೆಸರು"
     },
     "feedback": {
       "title": "ಪ್ರತಿಕ್ರಿಯೆ",
@@ -1892,7 +1912,15 @@
       "evaluations": "ಮೌಲ್ಯಮಾಪನಗಳು",
       "countryBreakdown": "ದೇಶವಾರು ವಿಭಜನೆ",
       "superOnly": "ಸೂಪರ್ ಅಡ್ಮಿನ್‌ಗೆ ಮಾತ್ರ"
-    }
+    },
+    "welcomeLabel": "ಸ್ವಾಗತ",
+    "bulkUploadExport": "ಬೃಹತ್ ಅಪ್‌ಲೋಡ್ ಮತ್ತು ಮೇವು ರಫ್ತು",
+    "adminLabel": "ನಿರ್ವಾಹಕ",
+    "confirmToggleStatus": "ಬಳಕೆದಾರ {name} ರ {action} ಮಾಡುವುದೇ?",
+    "statusUpdated": "ಬಳಕೆದಾರರ ಸ್ಥಿತಿ ಯಶಸ್ವಿಯಾಗಿ ನವೀಕರಿಸಲಾಗಿದೆ",
+    "statusUpdateFailed": "ಬಳಕೆದಾರರ ಸ್ಥಿತಿ ನವೀಕರಿಸಲು ವಿಫಲವಾಗಿದೆ",
+    "enable": "ಸಕ್ರಿಯಗೊಳಿಸಿ",
+    "disable": "ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಿ"
   },
   "theme": {
     "zinc": "ಜಿಂಕ್",
@@ -1951,7 +1979,9 @@
       "distance": "ನಡೆಯುವ ದೂರ (ಕಿಮೀ)",
       "grazing": "ಮೇಯಿಸುವಿಕೆ",
       "bwGain": "ದೇಹದ ತೂಕ ಹೆಚ್ಚಳ (ಕೆಜಿ/ದಿನ)",
-      "simulationName": "ಸಿಮ್ಯುಲೇಶನ್ ಹೆಸರು"
+      "simulationName": "ಸಿಮ್ಯುಲೇಶನ್ ಹೆಸರು",
+      "simulationCountry": "ದೇಶ",
+      "activeGrazing": "ಸಕ್ರಿಯ ಮೇಯಿಸುವಿಕೆ"
     },
     "topographyOptions": {
       "flat": "ಸಮತಟ್ಟಾದ",
@@ -2026,7 +2056,18 @@
       "price": "ಬೆಲೆ",
       "qty": "ಪ್ರಮಾಣ",
       "feedType_forage": "ಮೇವು",
-      "feedType_concentrate": "ಸಂಸ್ಕರಿಸಿದ ಆಹಾರ"
+      "feedType_concentrate": "ಸಂಸ್ಕರಿಸಿದ ಆಹಾರ",
+      "noForageWarning": "ಯಾವುದೇ ಮೇವಿನ ಆಯ್ಕೆ ಮಾಡಲಾಗಿಲ್ಲ. ಜಾನುವಾರುಗಳಿಗೆ ಸರಿಯಾದ ಜೀರ್ಣಕ್ರಿಯೆಗಾಗಿ ಒರಟು ಮೇವು ಅಗತ್ಯವಿದೆ. ಕನಿಷ್ಠ ಒಂದು ಮೇವನ್ನು ಸೇರಿಸುವುದನ್ನು ಪರಿಗಣಿಸಿ.",
+      "feedTypeLabel": "ಮೇವು ವಿಧ",
+      "feedCategoryLabel": "ಮೇವು ವರ್ಗ",
+      "feedNameLabel": "ಮೇವು",
+      "addMoreFeed": "ಹೆಚ್ಚು ಮೇವು ಸೇರಿಸಿ",
+      "addCustomFeed": "ಕಸ್ಟಮ್ ಮೇವು ಸೇರಿಸಿ",
+      "feedDetails": "ಮೇವಿನ ವಿವರಗಳು",
+      "feedName": "ಮೇವಿನ ಹೆಸರು",
+      "nutritionalInfo": "ಪೌಷ್ಟಿಕಾಂಶದ ಮಾಹಿತಿ",
+      "costLabel": "ವೆಚ್ಚ",
+      "customFeedCreated": "ಕಸ್ಟಮ್ ಮೇವನ್ನು ಯಶಸ್ವಿಯಾಗಿ ರಚಿಸಲಾಗಿದೆ"
     },
     "constraints": {
       "title": "ಕಸ್ಟಮ್ ಆಹಾರ ಮಿತಿಗಳು",
@@ -2084,7 +2125,11 @@
       "infeasible": "ಸಾಧ್ಯವಾದ ಆಹಾರ ಸಿಕ್ಕಿಲ್ಲ",
       "infeasibleDetail": "ಆಯ್ಕೆ ಮಾಡಿದ ಮೇವುಗಳು ಈ ಪ್ರಾಣಿಯ ಪೌಷ್ಟಿಕಾಂಶದ ಅಗತ್ಯಗಳನ್ನು ಪೂರೈಸಲು ಸಾಧ್ಯವಿಲ್ಲ. ಆಪ್ಟಿಮೈಜರ್ ಸಮತೋಲಿತ ಆಹಾರವನ್ನು ಕಂಡುಹಿಡಿಯಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ.",
       "infeasibleHint": "ಹೆಚ್ಚು ಮೇವಿನ ವೈವಿಧ್ಯತೆಯನ್ನು ಸೇರಿಸಲು ಪ್ರಯತ್ನಿಸಿ - ಹಸಿರು ಮೇವು, ಪ್ರೋಟೀನ್-ಭರಿತ ಸಾಂದ್ರತೆಗಳು (ಉದಾಹಹರಣೆಗೆ ಎಣ್ಣೆಕಾಳು ಹಿಂಡಿ), ಮತ್ತು ಖನಿಜ ಪೂರಕವನ್ನು ಸೇರಿಸಿ.",
-      "tryAgain": "ಮೇವಿನ ಆಯ್ಕೆ ಬದಲಾಯಿಸಿ"
+      "tryAgain": "ಮೇವಿನ ಆಯ್ಕೆ ಬದಲಾಯಿಸಿ",
+      "reportSavedDesc": "ನಿಮ್ಮ ವರದಿಯನ್ನು ಉಳಿಸಲಾಗಿದೆ. ನ್ಯಾವಿಗೇಶನ್ ಪ್ಯಾನೆಲ್‌ನಲ್ಲಿರುವ 'ಮೇವಿನ ವರದಿಗಳು' ಅಡಿಯಲ್ಲಿ ನೀವು ಅದನ್ನು ಕಾಣಬಹುದು. ನೀವು ಅದನ್ನು ಹಂಚಿಕೊಳ್ಳಲು ಬಯಸುತ್ತೀರಾ?",
+      "sharePrompt": "ಈ ವರದಿಯನ್ನು ಹಂಚಿಕೊಳ್ಳುವುದೇ?",
+      "yesShare": "ಹೌದು, ಹಂಚಿಕೊಳ್ಳಿ",
+      "noDone": "ಬೇಡ, ಮುಗಿದಿದೆ"
     },
     "methane": {
       "title": "ಪರಿಸರ ಪರಿಣಾಮ",
@@ -2133,11 +2178,11 @@
     "loadFromHistory": "ಇತಿಹಾಸದಿಂದ ಲೋಡ್ ಮಾಡಿ",
     "units": {
       "days": "ದಿನಗಳು",
-      "kg": "kg",
+      "kg": "ಕೆಜಿ",
       "litersPerDay": "ಲೀ/ದಿನ",
       "kgPerDay": "kg/ದಿನ",
       "degreeC": "°C",
-      "km": "km",
+      "km": "ಕಿ.ಮೀ",
       "percent": "%"
     },
     "topographyHint": "ಸಮತಟ್ಟಾದ / ಗುಡ್ಡಗಾಡು / ಪರ್ವತಮಯ",
@@ -2165,7 +2210,8 @@
       "calvingInterval": "300 – 600",
       "temperature": "-20 – 50",
       "distance": "0 – 50",
-      "bwGain": "-1 – 2"
+      "bwGain": "-1 – 2",
+      "simulationCountry": "ಮೇವು ಮತ್ತು ತಳಿ ಆಯ್ಕೆಗಾಗಿ ದೇಶ"
     },
     "nutrientLabels": {
       "ne_l": "ಶಕ್ತಿ",
@@ -2182,6 +2228,12 @@
       "calcium_kg": "ಕ್ಯಾಲ್ಸಿಯಂ (ಕೆಜಿ)",
       "phosphorus_kg": "ಫಾಸ್ಫರಸ್ (ಕೆಜಿ)",
       "ndf_kg": "ಫೈಬರ್ (ಕೆಜಿ)"
+    },
+    "resetConfirmMessage": "ಫಾರ್ಮ್ ಅನ್ನು ಮರುಹೊಂದಿಸಲು ನೀವು ಖಚಿತಪಡಿಸಿಕೊಳ್ಳುತ್ತೀರಾ? ನಮೂದಿಸಿದ ಎಲ್ಲಾ ಡೇಟಾವನ್ನು ತೆರವುಗೊಳಿಸಲಾಗುತ್ತದೆ.",
+    "report": {
+      "share": "ಹಂಚಿಕೊಳ್ಳಿ",
+      "print": "ಮುದ್ರಿಸು / PDF",
+      "copiedToClipboard": "ವರದಿಯನ್ನು ಕ್ಲಿಪ್‌ಬೋರ್ಡ್‌ಗೆ ನಕಲಿಸಲಾಗಿದೆ"
     }
   }
 }

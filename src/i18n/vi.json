@@ -79,7 +79,9 @@
     "addCow": "Thêm bò",
     "logMilk": "Ghi chép sữa",
     "getDiet": "Lập khẩu phần",
-    "admin": "Quản trị"
+    "admin": "Quản trị",
+    "feedReports": "Báo cáo Thức ăn",
+    "termsConditions": "Điều khoản & Điều kiện"
   },
   "roles": {
     "farmer": "Nông dân",
@@ -236,7 +238,9 @@
     "newPhone": "Số điện thoại mới",
     "currentValue": "Hiện tại: {value}",
     "sendCode": "Gửi mã xác thực",
-    "changeSuccess": "Cập nhật {type} thành công."
+    "changeSuccess": "Cập nhật {type} thành công.",
+    "dangerZone": "Khu vực nguy hiểm",
+    "profileUpdateFailed": "Không lưu được hồ sơ"
   },
   "cow": {
     "myCows": "Bò của tôi",
@@ -678,11 +682,12 @@
       "stover": "Thân cây ngô",
       "straw": "Rơm rạ",
       "succulent": "Mọng nước",
-      "treeLeaves": "Lá cây"
+      "treeLeaves": "Lá cây",
+      "byProductForage": "Phụ phẩm thức ăn thô xanh"
     },
     "labels": {
       "dmPercent": "Vật chất khô (DM)",
-      "dmPercentShort": "DM",
+      "dmPercentShort": "VC",
       "dmPercentInput": "% Vật chất khô *",
       "cpPercent": "Protein thô (CP)",
       "cpPercentShort": "CP",
@@ -706,7 +711,15 @@
       "pricing": "Giá cả",
       "season": "Mùa vụ",
       "type": "Loại",
-      "typeRequired": "Loại *"
+      "typeRequired": "Loại *",
+      "adfPercent": "Xơ ADF",
+      "adfPercentShort": "ADF",
+      "ashPercent": "Tro thô",
+      "eePercent": "Béo thô (EE)",
+      "stPercent": "Tinh bột",
+      "lgPercent": "Lignin",
+      "ndinPercent": "NDIN",
+      "adinPercent": "ADIN"
     },
     "seasons": {
       "allYear": "Quanh năm",
@@ -1869,7 +1882,14 @@
       "subtitle": "Thêm, chỉnh sửa và quản lý thức ăn chăn nuôi",
       "bulkUpload": "Tải lên hàng loạt",
       "export": "Xuất",
-      "noFeeds": "Không tìm thấy thức ăn chăn nuôi nào"
+      "noFeeds": "Không tìm thấy thức ăn chăn nuôi nào",
+      "manageTypes": "Quản lý loại",
+      "feedTypes": "Loại thức ăn",
+      "feedCategories": "Danh mục thức ăn",
+      "type": "Loại",
+      "category": "Danh mục",
+      "newTypeName": "Tên loại mới",
+      "newCategoryName": "Tên danh mục mới"
     },
     "feedback": {
       "title": "Phản hồi",
@@ -1892,7 +1912,15 @@
       "evaluations": "Đánh giá",
       "countryBreakdown": "Phân tích theo quốc gia",
       "superOnly": "Chỉ dành cho quản trị viên cấp cao"
-    }
+    },
+    "welcomeLabel": "CHÀO MỪNG",
+    "bulkUploadExport": "Tải lên và xuất khẩu thức ăn số lượng lớn",
+    "adminLabel": "Quản trị",
+    "confirmToggleStatus": "{action} người dùng {name}?",
+    "statusUpdated": "Cập nhật trạng thái người dùng thành công",
+    "statusUpdateFailed": "Cập nhật trạng thái người dùng thất bại",
+    "enable": "Bật",
+    "disable": "Tắt"
   },
   "theme": {
     "zinc": "Kẽm",
@@ -1951,7 +1979,9 @@
       "distance": "Khoảng cách đi bộ (km)",
       "grazing": "Chăn thả",
       "bwGain": "Tăng trọng cơ thể (kg/ngày)",
-      "simulationName": "Tên mô phỏng"
+      "simulationName": "Tên mô phỏng",
+      "simulationCountry": "Quốc gia",
+      "activeGrazing": "Chăn thả tích cực"
     },
     "topographyOptions": {
       "flat": "Đồng bằng",
@@ -2026,7 +2056,18 @@
       "price": "Giá",
       "qty": "Số lượng",
       "feedType_forage": "Thức ăn thô",
-      "feedType_concentrate": "Thức ăn tinh"
+      "feedType_concentrate": "Thức ăn tinh",
+      "noForageWarning": "Chưa chọn thức ăn thô xanh nào. Gia súc cần thức ăn thô để tiêu hóa đúng cách. Hãy cân nhắc thêm ít nhất một loại thức ăn thô xanh.",
+      "feedTypeLabel": "Loại thức ăn",
+      "feedCategoryLabel": "Danh mục thức ăn",
+      "feedNameLabel": "Thức ăn",
+      "addMoreFeed": "Thêm thức ăn",
+      "addCustomFeed": "Thêm thức ăn tùy chỉnh",
+      "feedDetails": "Chi tiết thức ăn",
+      "feedName": "Tên thức ăn",
+      "nutritionalInfo": "Thông tin dinh dưỡng",
+      "costLabel": "Chi phí",
+      "customFeedCreated": "Đã tạo thức ăn tùy chỉnh thành công"
     },
     "constraints": {
       "title": "Giới hạn Khẩu phần Ăn Tùy chỉnh",
@@ -2084,7 +2125,11 @@
       "infeasible": "Không tìm thấy khẩu phần ăn khả thi",
       "infeasibleDetail": "Các loại thức ăn đã chọn không thể đáp ứng nhu cầu dinh dưỡng cho con vật này. Bộ tối ưu hóa không tìm được khẩu phần ăn cân bằng.",
       "infeasibleHint": "Hãy thử bổ sung thêm các loại thức ăn đa dạng hơn — bao gồm thức ăn thô xanh, thức ăn tinh giàu protein (ví dụ: khô dầu hạt) và bổ sung khoáng chất.",
-      "tryAgain": "Thay đổi thức ăn"
+      "tryAgain": "Thay đổi thức ăn",
+      "reportSavedDesc": "Báo cáo của bạn đã được lưu. Bạn có thể tìm thấy báo cáo này trong phần Báo cáo Thức ăn trên Bảng điều hướng. Bạn có muốn chia sẻ không?",
+      "sharePrompt": "CHIA SẺ BÁO CÁO NÀY?",
+      "yesShare": "Có, Chia sẻ",
+      "noDone": "Không, Xong"
     },
     "methane": {
       "title": "Tác động môi trường",
@@ -2165,11 +2210,12 @@
       "calvingInterval": "300 – 600",
       "temperature": "-20 – 50",
       "distance": "0 – 50",
-      "bwGain": "-1 – 2"
+      "bwGain": "-1 – 2",
+      "simulationCountry": "Quốc gia để chọn thức ăn và giống vật nuôi"
     },
     "nutrientLabels": {
       "ne_l": "Năng lượng",
-      "mp": "Protein",
+      "mp": "Đạm",
       "ndf": "Xơ",
       "ee": "Béo",
       "ash": "Khoáng chất",
@@ -2178,10 +2224,16 @@
       "ca": "Canxi",
       "p": "Phốt pho",
       "energy_mcal": "Năng lượng (Mcal)",
-      "protein_kg": "Protein (kg)",
+      "protein_kg": "Đạm (kg)",
       "calcium_kg": "Canxi (kg)",
       "phosphorus_kg": "Phốt pho (kg)",
       "ndf_kg": "Xơ (kg)"
+    },
+    "resetConfirmMessage": "Bạn có chắc chắn muốn đặt lại biểu mẫu không? Tất cả dữ liệu đã nhập sẽ bị xóa.",
+    "report": {
+      "share": "Chia sẻ",
+      "print": "In / PDF",
+      "copiedToClipboard": "Báo cáo đã được sao chép vào bộ nhớ tạm"
     }
   }
 }

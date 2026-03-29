@@ -79,7 +79,9 @@
     "addCow": "Tambah Sapi",
     "logMilk": "Catat Susu",
     "getDiet": "Dapatkan Pakan",
-    "admin": "Admin"
+    "admin": "Admin",
+    "feedReports": "Laporan Pakan",
+    "termsConditions": "Syarat & Ketentuan"
   },
   "roles": {
     "farmer": "Peternak",
@@ -236,7 +238,9 @@
     "newPhone": "Nomor Telepon Baru",
     "currentValue": "Saat ini: {value}",
     "sendCode": "Kirim Kode Verifikasi",
-    "changeSuccess": "{type} Anda telah berhasil diperbarui."
+    "changeSuccess": "{type} Anda telah berhasil diperbarui.",
+    "dangerZone": "Zona Bahaya",
+    "profileUpdateFailed": "Gagal menyimpan profil"
   },
   "cow": {
     "myCows": "Sapi Saya",
@@ -678,7 +682,8 @@
       "stover": "Batang Jagung/Padi",
       "straw": "Jerami",
       "succulent": "Sukulen",
-      "treeLeaves": "Daun Pohon"
+      "treeLeaves": "Daun Pohon",
+      "byProductForage": "Hijauan Hasil Samping"
     },
     "labels": {
       "dmPercent": "Bahan Kering (BK)",
@@ -706,7 +711,15 @@
       "pricing": "Harga",
       "season": "Musim",
       "type": "Jenis",
-      "typeRequired": "Jenis *"
+      "typeRequired": "Jenis *",
+      "adfPercent": "Serat Deterjen Asam (ADF)",
+      "adfPercentShort": "ADF",
+      "ashPercent": "Abu",
+      "eePercent": "Ekstrak Eter (EE)",
+      "stPercent": "Pati",
+      "lgPercent": "Lignin",
+      "ndinPercent": "NDIN",
+      "adinPercent": "ADIN"
     },
     "seasons": {
       "allYear": "Sepanjang Tahun",
@@ -1868,7 +1881,14 @@
       "subtitle": "Tambah, edit & kelola pakan",
       "bulkUpload": "Unggah Massal",
       "export": "Ekspor",
-      "noFeeds": "Tidak ada pakan ditemukan"
+      "noFeeds": "Tidak ada pakan ditemukan",
+      "manageTypes": "Kelola Tipe",
+      "feedTypes": "Tipe Pakan",
+      "feedCategories": "Kategori Pakan",
+      "type": "Tipe",
+      "category": "Kategori",
+      "newTypeName": "Nama jenis baru",
+      "newCategoryName": "Nama kategori baru"
     },
     "feedback": {
       "title": "Umpan Balik",
@@ -1891,7 +1911,15 @@
       "evaluations": "Evaluasi",
       "countryBreakdown": "Rincian Negara",
       "superOnly": "Hanya super admin"
-    }
+    },
+    "welcomeLabel": "SELAMAT DATANG",
+    "bulkUploadExport": "Unggah Massal & Ekspor Pakan",
+    "adminLabel": "Admin",
+    "confirmToggleStatus": "{action} pengguna {name}?",
+    "statusUpdated": "Status pengguna berhasil diperbarui",
+    "statusUpdateFailed": "Gagal memperbarui status pengguna",
+    "enable": "Aktifkan",
+    "disable": "Nonaktifkan"
   },
   "theme": {
     "zinc": "Seng",
@@ -1950,7 +1978,9 @@
       "distance": "Jarak Berjalan (km)",
       "grazing": "Merumput",
       "bwGain": "Penambahan Bobot Badan (kg/hari)",
-      "simulationName": "Nama Simulasi"
+      "simulationName": "Nama Simulasi",
+      "simulationCountry": "Negara",
+      "activeGrazing": "Merumput Aktif"
     },
     "topographyOptions": {
       "flat": "Datar",
@@ -2025,7 +2055,18 @@
       "price": "Harga",
       "qty": "Jumlah",
       "feedType_forage": "Hijauan",
-      "feedType_concentrate": "Konsentrat"
+      "feedType_concentrate": "Konsentrat",
+      "noForageWarning": "Tidak ada pakan hijauan yang dipilih. Ternak membutuhkan serat kasar untuk pencernaan yang baik. Pertimbangkan untuk menambahkan setidaknya satu pakan hijauan.",
+      "feedTypeLabel": "Jenis Pakan",
+      "feedCategoryLabel": "Kategori Pakan",
+      "feedNameLabel": "Pakan",
+      "addMoreFeed": "Tambah Pakan Lain",
+      "addCustomFeed": "Tambah Pakan Kustom",
+      "feedDetails": "Detail Pakan",
+      "feedName": "Nama Pakan",
+      "nutritionalInfo": "Informasi Nutrisi",
+      "costLabel": "Biaya",
+      "customFeedCreated": "Pakan kustom berhasil dibuat"
     },
     "constraints": {
       "title": "Batasan Diet Khusus",
@@ -2083,7 +2124,11 @@
       "infeasible": "Pakan yang sesuai tidak ditemukan",
       "infeasibleDetail": "Pakan yang dipilih tidak dapat memenuhi kebutuhan nutrisi untuk hewan ini. Sistem tidak dapat menemukan pakan yang seimbang.",
       "infeasibleHint": "Coba tambahkan variasi pakan — masukkan hijauan, konsentrat kaya protein (misalnya bungkil biji minyak), dan suplemen mineral.",
-      "tryAgain": "Ubah Pakan"
+      "tryAgain": "Ubah Pakan",
+      "reportSavedDesc": "Laporan Anda telah disimpan. Anda bisa menemukannya di bawah Laporan Pakan di Panel Navigasi. Apakah Anda ingin membagikannya?",
+      "sharePrompt": "BAGIKAN LAPORAN INI?",
+      "yesShare": "Ya, Bagikan",
+      "noDone": "Tidak, Selesai"
     },
     "methane": {
       "title": "Dampak Lingkungan",
@@ -2164,7 +2209,8 @@
       "calvingInterval": "300 – 600",
       "temperature": "-20 – 50",
       "distance": "0 – 50",
-      "bwGain": "-1 – 2"
+      "bwGain": "-1 – 2",
+      "simulationCountry": "Negara untuk pemilihan pakan dan jenis ternak"
     },
     "nutrientLabels": {
       "ne_l": "Energi",
@@ -2181,6 +2227,12 @@
       "calcium_kg": "Kalsium (kg)",
       "phosphorus_kg": "Fosfor (kg)",
       "ndf_kg": "Serat (kg)"
+    },
+    "resetConfirmMessage": "Apakah Anda yakin ingin mengatur ulang formulir? Semua data yang sudah dimasukkan akan dihapus.",
+    "report": {
+      "share": "Bagikan",
+      "print": "Cetak / PDF",
+      "copiedToClipboard": "Laporan disalin ke papan klip"
     }
   }
 }

@@ -26,6 +26,7 @@ export interface CattleInfoForm {
   topography: string; // Flat | Hilly | Mountainous
   distance: number;
   bw_gain: number;
+  calving_interval: number;
 }
 
 export interface SelectedFeed {
@@ -135,6 +136,8 @@ export interface DietRecommendationResponse {
   diet_summary?: DietSummary;
   diet_summary_detailed?: DietSummary;
   animal_requirements?: { milk_production?: number; [key: string]: unknown };
+  nutrient_balance?: Record<string, NutrientBalanceEntry>;
+  milk_production_analysis?: MilkProductionAnalysis;
   [key: string]: unknown;
 }
 
@@ -187,6 +190,20 @@ function normalizeRecResponse(raw: Record<string, any>): DietRecommendationRespo
     animal_requirements: {
       milk_production: parseNumericValue(solutionSummary.milk_production),
     },
+    // Include nutrient balance and milk analysis if backend returns them
+    ...(raw.nutrient_balance && Object.keys(raw.nutrient_balance).length > 0
+      ? { nutrient_balance: normalizeNutrientBalance(raw.nutrient_balance) }
+      : {}),
+    ...(raw.milk_production_analysis
+      ? {
+          milk_production_analysis: {
+            target_milk: Number(raw.milk_production_analysis.target_production_kg_per_day ?? raw.milk_production_analysis.target_milk ?? 0),
+            supported_by_energy: Number(raw.milk_production_analysis.milk_supported_by_energy_kg_per_day ?? raw.milk_production_analysis.supported_by_energy ?? 0),
+            supported_by_protein: Number(raw.milk_production_analysis.milk_supported_by_protein_kg_per_day ?? raw.milk_production_analysis.supported_by_protein ?? 0),
+            limiting_nutrient: String(raw.milk_production_analysis.limiting_nutrient ?? ''),
+          },
+        }
+      : {}),
   };
 }
 
@@ -292,6 +309,7 @@ function defaultCattleInfo(): CattleInfoForm {
     topography: 'Flat',
     distance: 1,
     bw_gain: 0.2,
+    calving_interval: 365,
   };
 }
 
@@ -359,6 +377,7 @@ export const useSimulationStore = defineStore('simulation', () => {
       topography: c.topography || 'Flat',
       distance: safeNum(c.distance, 1),
       bw_gain: safeNum(c.bw_gain, 0.2),
+      calving_interval: safeNum(c.calving_interval, 365),
     };
   }
 
@@ -530,6 +549,7 @@ export const useSimulationStore = defineStore('simulation', () => {
       topography: String(ci.topography || 'Flat'),
       distance: safeNum(ci.distance, 1),
       bw_gain: safeNum(ci.bw_gain, 0.2),
+      calving_interval: safeNum(ci.calving_interval, 365),
     };
   }
 
@@ -682,6 +702,18 @@ export const useSimulationStore = defineStore('simulation', () => {
     simulationName.value = '';
   }
 
+  /**
+   * Start a new case keeping previous cattle info and feed selection.
+   * Only clears results, simulation name, and generates a new ID.
+   */
+  function newCaseFromPrevious(): void {
+    evaluationResult.value = null;
+    recommendationResult.value = null;
+    error.value = null;
+    simulationName.value = '';
+    newSimulationId();
+  }
+
   return {
     // State
     cattleInfo,
@@ -706,5 +738,6 @@ export const useSimulationStore = defineStore('simulation', () => {
     fetchSimulationHistory,
     restoreSimulation,
     resetForm,
+    newCaseFromPrevious,
   };
 });

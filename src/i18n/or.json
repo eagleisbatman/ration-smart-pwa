@@ -79,7 +79,9 @@
     "addCow": "ଗାଈ ଯୋଡ଼ନ୍ତୁ",
     "logMilk": "କ୍ଷୀର ଲେଖନ୍ତୁ",
     "getDiet": "ଖାଦ୍ୟ ତାଲିକା",
-    "admin": "ଆଡମିନ୍"
+    "admin": "ଆଡମିନ୍",
+    "feedReports": "ଖାଦ୍ୟ ରିପୋର୍ଟ",
+    "termsConditions": "ସର୍ତ୍ତାବଳୀ"
   },
   "roles": {
     "farmer": "କୃଷକ",
@@ -236,7 +238,9 @@
     "newPhone": "ନୂଆ ଫୋନ୍ ନମ୍ବର",
     "currentValue": "ବର୍ତ୍ତମାନ: {value}",
     "sendCode": "ଯାଞ୍ଚ କୋଡ୍ ପଠାନ୍ତୁ",
-    "changeSuccess": "ଆପଣଙ୍କର {type} ସଫଳତାର ସହ ଅପଡେଟ୍ ହୋଇଛି।"
+    "changeSuccess": "ଆପଣଙ୍କର {type} ସଫଳତାର ସହ ଅପଡେଟ୍ ହୋଇଛି।",
+    "dangerZone": "ବିପଦ ଜୋନ୍",
+    "profileUpdateFailed": "ପ୍ରୋଫାଇଲ୍ ସେଭ୍ କରିବାରେ ବିଫଳ ହେଲା"
   },
   "cow": {
     "myCows": "ମୋର ଗାଈ",
@@ -678,7 +682,8 @@
       "stover": "ଶୁଖିଲା ଡାଳ",
       "straw": "ନଡ଼ା",
       "succulent": "ରସାଳ",
-      "treeLeaves": "ଗଛ ପତ୍ର"
+      "treeLeaves": "ଗଛ ପତ୍ର",
+      "byProductForage": "ଉପ-ଉତ୍ପାଦ ଗାଈଗୋରୁ ଖାଦ୍ୟ"
     },
     "labels": {
       "dmPercent": "ଶୁଖିଲା ପଦାର୍ଥ (DM)",
@@ -706,7 +711,15 @@
       "pricing": "ମୂଲ୍ୟ",
       "season": "ଋତୁ",
       "type": "ପ୍ରକାର",
-      "typeRequired": "ପ୍ରକାର *"
+      "typeRequired": "ପ୍ରକାର *",
+      "adfPercent": "ଏସିଡ୍ ଡିଟର୍ଜେଣ୍ଟ ଫାଇବର୍ (ADF)",
+      "adfPercentShort": "ADF",
+      "ashPercent": "ପାଉଁଶ",
+      "eePercent": "ଇଥର ଏକ୍ସଟ୍ରାକ୍ଟ (EE)",
+      "stPercent": "ଷ୍ଟାର୍ଚ୍ଚ",
+      "lgPercent": "ଲିଗ୍ନିନ୍",
+      "ndinPercent": "NDIN",
+      "adinPercent": "ADIN"
     },
     "seasons": {
       "allYear": "ସାରା ବର୍ଷ",
@@ -1869,7 +1882,14 @@
       "subtitle": "ଖାଦ୍ୟ ଯୋଡ଼ନ୍ତୁ, ସମ୍ପାଦନା କରନ୍ତୁ ଏବଂ ପରିଚାଳନା କରନ୍ତୁ",
       "bulkUpload": "ଏକକାଳୀନ ଅପଲୋଡ୍",
       "export": "ଏକ୍ସପୋର୍ଟ",
-      "noFeeds": "କୌଣସି ଖାଦ୍ୟ ମିଳିଲା ନାହିଁ"
+      "noFeeds": "କୌଣସି ଖାଦ୍ୟ ମିଳିଲା ନାହିଁ",
+      "manageTypes": "ପ୍ରକାରଗୁଡ଼ିକ ପରିଚାଳନା କରନ୍ତୁ",
+      "feedTypes": "ଖାଦ୍ୟ ପ୍ରକାର",
+      "feedCategories": "ଖାଦ୍ୟ ଶ୍ରେଣୀ",
+      "type": "ପ୍ରକାର",
+      "category": "ଶ୍ରେଣୀ",
+      "newTypeName": "ନୂଆ ପ୍ରକାର ନାମ",
+      "newCategoryName": "ନୂଆ ବର୍ଗ ନାମ"
     },
     "feedback": {
       "title": "ମତାମତ",
@@ -1892,7 +1912,15 @@
       "evaluations": "ମୂଲ୍ୟାଙ୍କନ",
       "countryBreakdown": "ଦେଶ ଅନୁଯାୟୀ ବିଭାଜନ",
       "superOnly": "କେବଳ ସୁପର ଆଡମିନ୍"
-    }
+    },
+    "welcomeLabel": "ସ୍ୱାଗତ",
+    "bulkUploadExport": "ବଲ୍କ ଅପଲୋଡ୍ ଏବଂ ଖାଦ୍ୟ ରପ୍ତାନି କରନ୍ତୁ",
+    "adminLabel": "ଆଡମିନ୍",
+    "confirmToggleStatus": "{name}ଙ୍କୁ {action} କରିବେ କି?",
+    "statusUpdated": "ଉପଭୋକ୍ତା ସ୍ଥିତି ସଫଳତାର ସହିତ ଅପଡେଟ୍ ହୋଇଛି",
+    "statusUpdateFailed": "ଉପଭୋକ୍ତା ସ୍ଥିତି ଅପଡେଟ୍ କରିବାରେ ବିଫଳ ହେଲା",
+    "enable": "ସକ୍ଷମ କରନ୍ତୁ",
+    "disable": "ଅକ୍ଷମ କରନ୍ତୁ"
   },
   "theme": {
     "zinc": "ଜିଙ୍କ୍",
@@ -1951,7 +1979,9 @@
       "distance": "ଚାଲିବାର ଦୂରତା (କି.ମି.)",
       "grazing": "ଚରାବୁଲା",
       "bwGain": "ଶରୀର ଓଜନ ବୃଦ୍ଧି (କି.ଗ୍ରା./ଦିନ)",
-      "simulationName": "ସିମୁଲେସନ୍ ନାମ"
+      "simulationName": "ସିମୁଲେସନ୍ ନାମ",
+      "simulationCountry": "ଦେଶ",
+      "activeGrazing": "ସକ୍ରିୟ ଚରିବା"
     },
     "topographyOptions": {
       "flat": "ସମତଳ",
@@ -2026,7 +2056,18 @@
       "price": "ମୂଲ୍ୟ",
       "qty": "ପରିମାଣ",
       "feedType_forage": "ଘାସ",
-      "feedType_concentrate": "ସାନ୍ଦ୍ର ଖାଦ୍ୟ"
+      "feedType_concentrate": "ସାନ୍ଦ୍ର ଖାଦ୍ୟ",
+      "noForageWarning": "କୌଣସି ଚାରା ଖାଦ୍ୟ ଚୟନ କରାଯାଇ ନାହିଁ। ଗୋରୁମାନଙ୍କୁ ସଠିକ୍ ହଜମ ପାଇଁ ରଫେଜ୍ ଆବଶ୍ୟକ। ଅତି କମରେ ଗୋଟିଏ ଚାରା ଖାଦ୍ୟ ଯୋଡ଼ିବାକୁ ବିଚାର କରନ୍ତୁ।",
+      "feedTypeLabel": "ଖାଦ୍ୟ ପ୍ରକାର",
+      "feedCategoryLabel": "ଖାଦ୍ୟ ବର୍ଗ",
+      "feedNameLabel": "ଖାଦ୍ୟ",
+      "addMoreFeed": "ଅଧିକ ଖାଦ୍ୟ ଯୋଡ଼ନ୍ତୁ",
+      "addCustomFeed": "କଷ୍ଟମ୍ ଖାଦ୍ୟ ଯୋଡ଼ନ୍ତୁ",
+      "feedDetails": "ଖାଦ୍ୟ ବିବରଣୀ",
+      "feedName": "ଖାଦ୍ୟ ନାମ",
+      "nutritionalInfo": "ପୁଷ୍ଟିକର ସୂଚନା",
+      "costLabel": "ମୂଲ୍ୟ",
+      "customFeedCreated": "କଷ୍ଟମ୍ ଖାଦ୍ୟ ସଫଳତାର ସହ ତିଆରି ହେଲା"
     },
     "constraints": {
       "title": "ନିର୍ଦ୍ଦିଷ୍ଟ ଆହାର ସୀମା",
@@ -2084,7 +2125,11 @@
       "infeasible": "କୌଣସି ସମ୍ଭାବ୍ୟ ଖାଦ୍ୟ ମିଳିଲା ନାହିଁ",
       "infeasibleDetail": "ମନୋନୀତ ଖାଦ୍ୟ ଏହି ପଶୁର ପୁଷ୍ଟିକର ଆବଶ୍ୟକତା ପୂରଣ କରିପାରିବ ନାହିଁ। ଅପ୍ଟିମାଇଜର୍ ଏକ ସନ୍ତୁଳିତ ଖାଦ୍ୟ ଖୋଜି ପାଇଲା ନାହିଁ।",
       "infeasibleHint": "ଅଧିକ ଖାଦ୍ୟ ବିଭିନ୍ନତା ଯୋଗ କରିବାକୁ ଚେଷ୍ଟା କରନ୍ତୁ — ଚାରା, ପ୍ରୋଟିନ୍‌ଯୁକ୍ତ କନ୍‌ସେଣ୍ଟ୍ରେଟ୍ (ଯଥା: ତେଲବୀଜ ମିଲ୍), ଏବଂ ଏକ ମିନେରାଲ୍ ସପ୍ଲିମେଣ୍ଟ ଯୋଗ କରନ୍ତୁ।",
-      "tryAgain": "ଖାଦ୍ୟ ବଦଳାନ୍ତୁ"
+      "tryAgain": "ଖାଦ୍ୟ ବଦଳାନ୍ତୁ",
+      "reportSavedDesc": "ଆପଣଙ୍କ ରିପୋର୍ଟ ସେଭ୍ ହୋଇଛି। ଆପଣ ଏହାକୁ ନାଭିଗେସନ୍ ପ୍ୟାନେଲରେ 'ଫିଡ୍ ରିପୋର୍ଟ' ତଳେ ପାଇପାରିବେ। ଆପଣ ଏହାକୁ ସେୟାର କରିବାକୁ ଚାହୁଁଛନ୍ତି କି?",
+      "sharePrompt": "ଏହି ରିପୋର୍ଟ ସେୟାର କରିବେ କି?",
+      "yesShare": "ହଁ, ସେୟାର କରନ୍ତୁ",
+      "noDone": "ନା, ହୋଇଗଲା"
     },
     "methane": {
       "title": "ପରିବେଶ ଉପରେ ପ୍ରଭାବ",
@@ -2162,10 +2207,11 @@
       "tpMilk": "1 – 6",
       "parity": "0 – 15",
       "daysOfPregnancy": "0 – 290",
-      "calvingInterval": "300 – 600",
+      "calvingInterval": "୩୦୦ – ୬୦୦",
       "temperature": "-20 – 50",
       "distance": "0 – 50",
-      "bwGain": "-1 – 2"
+      "bwGain": "-1 – 2",
+      "simulationCountry": "ଖାଦ୍ୟ ଏବଂ ପ୍ରଜାତି ଚୟନ ପାଇଁ ଦେଶ"
     },
     "nutrientLabels": {
       "ne_l": "ଶକ୍ତି",
@@ -2182,6 +2228,12 @@
       "calcium_kg": "କ୍ୟାଲସିୟମ୍ (କି.ଗ୍ରା.)",
       "phosphorus_kg": "ଫସଫରସ୍ (କି.ଗ୍ରା.)",
       "ndf_kg": "ଫାଇବର (କି.ଗ୍ରା.)"
+    },
+    "resetConfirmMessage": "ଆପଣ ଫର୍ମକୁ ରିସେଟ୍ କରିବାକୁ ନିଶ୍ଚିତ? ସମସ୍ତ ପ୍ରବେଶ କରାଯାଇଥିବା ତଥ୍ୟ ପରିଷ୍କାର ହୋଇଯିବ।",
+    "report": {
+      "share": "ସେୟାର କରନ୍ତୁ",
+      "print": "ପ୍ରିଣ୍ଟ / PDF",
+      "copiedToClipboard": "ରିପୋର୍ଟ କ୍ଲିପବୋର୍ଡକୁ କପି ହୋଇଛି"
     }
   }
 }

@@ -79,7 +79,9 @@
     "addCow": "Saawwa Dabali",
     "logMilk": "Aannan Galmeessi",
     "getDiet": "Nyaata Barbaadi",
-    "admin": "Bulchaa"
+    "admin": "Bulchaa",
+    "feedReports": "Gabaasa Nyaataa",
+    "termsConditions": "Ulaagaalee fi Haala"
   },
   "roles": {
     "farmer": "Qonnaan Buulee",
@@ -236,7 +238,9 @@
     "newPhone": "Lakkoofsa Bilbilaa Haaraa",
     "currentValue": "Ammaa: {value}",
     "sendCode": "Koodii Mirkaneessaa Ergi",
-    "changeSuccess": "{type} keessan milkaa’inaan fooyya’eera."
+    "changeSuccess": "{type} keessan milkaa’inaan fooyya’eera.",
+    "dangerZone": "Naannoo Balaaf Saaxilamaa",
+    "profileUpdateFailed": "Pirofaayiliin ol ka'uu hin dandeenye"
   },
   "cow": {
     "myCows": "Sa'oota Koo",
@@ -678,7 +682,8 @@
       "stover": "Habaqii",
       "straw": "Qarmii",
       "succulent": "Mi'aawaa",
-      "treeLeaves": "Baala Mukaalee"
+      "treeLeaves": "Baala Mukaalee",
+      "byProductForage": "Nyaata Cooma Keessaa"
     },
     "labels": {
       "dmPercent": "Qabiyye Gogaa (DM)",
@@ -706,7 +711,15 @@
       "pricing": "Gatii",
       "season": "Yeroo",
       "type": "Gosa",
-      "typeRequired": "Gosa *"
+      "typeRequired": "Gosa *",
+      "adfPercent": "Acid Detergent Fiber (ADF)",
+      "adfPercentShort": "ADF",
+      "ashPercent": "Daaraa",
+      "eePercent": "Ether Extract (EE)",
+      "stPercent": "Sitaarchii",
+      "lgPercent": "Liigniin",
+      "ndinPercent": "NDIN",
+      "adinPercent": "ADIN"
     },
     "seasons": {
       "allYear": "Yeroo Hundumaa",
@@ -1868,7 +1881,14 @@
       "subtitle": "Nyaata dabali, sirreessi & bulchi",
       "bulkUpload": "Hedduu Olkaa'i",
       "export": "Ergi",
-      "noFeeds": "Nyaanni tokkollee hin argamne"
+      "noFeeds": "Nyaanni tokkollee hin argamne",
+      "manageTypes": "Gosa Bulchuu",
+      "feedTypes": "Gosoota Nyaataa",
+      "feedCategories": "Ramaddii Nyaataa",
+      "type": "Gosa",
+      "category": "Ramaddii",
+      "newTypeName": "Maqaa gosa haaraa",
+      "newCategoryName": "Maqaa ramaddii haaraa"
     },
     "feedback": {
       "title": "Yaada",
@@ -1891,7 +1911,15 @@
       "evaluations": "Madaallii",
       "countryBreakdown": "Addaan Qoodinsa Biyyaa",
       "superOnly": "Admin olaanaa qofaaf"
-    }
+    },
+    "welcomeLabel": "NAGAA GAALTO",
+    "bulkUploadExport": "Nyaata Baay’inaan Ol-kaa’uu & Erguu",
+    "adminLabel": "Bulchaa",
+    "confirmToggleStatus": "Fayyadamtuu {name} {action} ?",
+    "statusUpdated": "Haalli fayyadamtootaa milkaa'inaan jijjiirameera",
+    "statusUpdateFailed": "Haala fayyadamaa jijjiiruu hin dandamne",
+    "enable": "Dandeessisuu",
+    "disable": "Dhoorkuu"
   },
   "theme": {
     "zinc": "Ziinkii",
@@ -1950,7 +1978,9 @@
       "distance": "Fageenya Deemaa (km)",
       "grazing": "Dheedaa",
       "bwGain": "Ulfaatina qaamaa dabaluu (kg/guyyaa)",
-      "simulationName": "Maqaa Qorannoo"
+      "simulationName": "Maqaa Qorannoo",
+      "simulationCountry": "Biyya",
+      "activeGrazing": "Dheedhii Ifaa"
     },
     "topographyOptions": {
       "flat": "Daree",
@@ -2025,7 +2055,18 @@
       "price": "Gatii",
       "qty": "Qabii",
       "feedType_forage": "Marga",
-      "feedType_concentrate": "Concentrate"
+      "feedType_concentrate": "Concentrate",
+      "noForageWarning": "Nyaanni margaa hin filatamne. Loonni nyaata gogogaa garaachaan qabachuuf barbaadu. Nyaata margaa tokko yookaan isaa ol dabaluu yaadi.",
+      "feedTypeLabel": "Gosa Nyaataa",
+      "feedCategoryLabel": "Damee Nyaataa",
+      "feedNameLabel": "Nyaata",
+      "addMoreFeed": "Nyaata Dabalataa Dabali",
+      "addCustomFeed": "Nyaata Ofii Dabali",
+      "feedDetails": "Bal'ina Nyaataa",
+      "feedName": "Maqaa Nyaataa",
+      "nutritionalInfo": "Odeeffannoo Soorataa",
+      "costLabel": "Baasii",
+      "customFeedCreated": "Nyaanni ofii milkaa'inaan uumameera"
     },
     "constraints": {
       "title": "Daangaa Nyaataa Murtaa'e",
@@ -2083,7 +2124,11 @@
       "infeasible": "Sooranni madaalawaan hin argamne",
       "infeasibleDetail": "Sooranni filatame fedhii nyaataa bineensichaa guutuu hin danda'u. Optimaayizeriin soorata madaalawaa argachuu hin dandeenye.",
       "infeasibleHint": "Soorata gosa hedduu dabaluuf yaali — kanneen akka margaa, soorata pirootiiniin badhaadhaa (fkn. baaqelaa zayitaa) fi dabalataa albuudaa dabali.",
-      "tryAgain": "Soorata Jijjiiri"
+      "tryAgain": "Soorata Jijjiiri",
+      "reportSavedDesc": "Gabaasni keessan olkaawameera. Kaabinee gabaasa nyaataa keessatti argachuu dandeessu. Hiriyyoota keessaniif dabarsuuf ni feetaa?",
+      "sharePrompt": "Gabaasa kana dabarsuuf ni feetaa?",
+      "yesShare": "Eeyyen, Dabarsi",
+      "noDone": "Lakkii, Xumurameera"
     },
     "methane": {
       "title": "Dhiibbaa Naannoo",
@@ -2123,10 +2168,10 @@
       "noSimulationsDesc": "Yaalii kee isa jalqabaa hojjedhu, achi irratti argita",
       "viewAll": "Hunda Ilaali",
       "searchPlaceholder": "Simuleeshinii barbaadi...",
-      "recommendations": "Recommendations",
-      "evaluations": "Evaluations",
-      "noRecommendationsYet": "Your first recommendation will show up here",
-      "noEvaluationsYet": "Your first evaluation will show up here"
+      "recommendations": "Yaada Furmaataa",
+      "evaluations": "Qorannoo",
+      "noRecommendationsYet": "Yaanni furmaataa keessan inni jalqabaa as irratti mul’ata",
+      "noEvaluationsYet": "Qorannoon keessan inni jalqabaa as irratti mul’ata"
     },
     "dietHistory": "Seenaa Nyaataa",
     "loadFromHistory": "Seenaa irraa fe'i",
@@ -2164,23 +2209,30 @@
       "calvingInterval": "300 – 600",
       "temperature": "-20 – 50",
       "distance": "0 – 50",
-      "bwGain": "-1 – 2"
+      "bwGain": "-1 – 2",
+      "simulationCountry": "Biyya filannoo nyaataa fi sanyii looniif"
     },
     "nutrientLabels": {
       "ne_l": "Anniisaa",
       "mp": "Pirootiin",
-      "ndf": "Fiber",
+      "ndf": "Nyaata Dhoqonnoo",
       "ee": "Dibaayaa",
-      "ash": "Minerals",
-      "rdp": "Digestible Protein",
-      "rup": "Bypass Protein",
-      "ca": "Calcium",
-      "p": "Phosphorus",
-      "energy_mcal": "Energy (Mcal)",
-      "protein_kg": "Protein (kg)",
-      "calcium_kg": "Calcium (kg)",
-      "phosphorus_kg": "Phosphorus (kg)",
-      "ndf_kg": "Fiber (kg)"
+      "ash": "Ashii",
+      "rdp": "Pirootiinii Haammatamuu Danda'u",
+      "rup": "Pirootiinii Darbu",
+      "ca": "Kaalsiyaamii",
+      "p": "Foosfarasii",
+      "energy_mcal": "Humna (Mcal)",
+      "protein_kg": "Pirootiinii (kg)",
+      "calcium_kg": "Kaalsiyaamii (kg)",
+      "phosphorus_kg": "Foosfarasii (kg)",
+      "ndf_kg": "Nyaata Cooma (kg)"
+    },
+    "resetConfirmMessage": "Formii sana jijjiiruu ni barbaaddaa? Odeeffannoon galmeeffame hundi ni haqama.",
+    "report": {
+      "share": "Dabarsi",
+      "print": "Maxxansi / PDF",
+      "copiedToClipboard": "Gabaasni irratti maxxanfameera"
     }
   }
 }

@@ -79,7 +79,9 @@
     "addCow": "گائے شامل کریں",
     "logMilk": "دودھ درج کریں",
     "getDiet": "خوراک حاصل کریں",
-    "admin": "ایڈمن"
+    "admin": "ایڈمن",
+    "feedReports": "خوراک کی رپورٹس",
+    "termsConditions": "شرائط و ضوابط"
   },
   "roles": {
     "farmer": "کسان",
@@ -236,7 +238,9 @@
     "newPhone": "نیا فون نمبر",
     "currentValue": "موجودہ: {value}",
     "sendCode": "تصدیقی کوڈ بھیجیں",
-    "changeSuccess": "آپ کا {type} کامیابی سے اپ ڈیٹ ہو گیا ہے۔"
+    "changeSuccess": "آپ کا {type} کامیابی سے اپ ڈیٹ ہو گیا ہے۔",
+    "dangerZone": "خطرناک علاقہ",
+    "profileUpdateFailed": "پروفائل محفوظ کرنے میں ناکامی"
   },
   "cow": {
     "myCows": "میری گائیں",
@@ -678,7 +682,8 @@
       "stover": "توڑی",
       "straw": "پرالی",
       "succulent": "رسیلا چارہ",
-      "treeLeaves": "درختوں کے پتے"
+      "treeLeaves": "درختوں کے پتے",
+      "byProductForage": "ضمنی مصنوعات کا چارہ"
     },
     "labels": {
       "dmPercent": "خشک مادہ (DM)",
@@ -706,7 +711,15 @@
       "pricing": "قیمت",
       "season": "موسم",
       "type": "قسم",
-      "typeRequired": "قسم *"
+      "typeRequired": "قسم *",
+      "adfPercent": "ایسڈ ڈیٹرجنٹ فائبر (ADF)",
+      "adfPercentShort": "ADF",
+      "ashPercent": "راکھ",
+      "eePercent": "ایٹھیر ایکسٹریکٹ (EE)",
+      "stPercent": "نشاستہ",
+      "lgPercent": "لگنن",
+      "ndinPercent": "NDIN",
+      "adinPercent": "ADIN"
     },
     "seasons": {
       "allYear": "پورا سال",
@@ -1869,7 +1882,14 @@
       "subtitle": "خوراک شامل کریں، ترمیم کریں اور انتظام کریں",
       "bulkUpload": "بلک اپ لوڈ",
       "export": "ایکسپورٹ",
-      "noFeeds": "کوئی خوراک نہیں ملی"
+      "noFeeds": "کوئی خوراک نہیں ملی",
+      "manageTypes": "اقسام کا انتظام کریں",
+      "feedTypes": "خوراک کی اقسام",
+      "feedCategories": "خوراک کی اقسام",
+      "type": "قسم",
+      "category": "کیٹیگری",
+      "newTypeName": "نئی قسم کا نام",
+      "newCategoryName": "نئی کیٹیگری کا نام"
     },
     "feedback": {
       "title": "رائے",
@@ -1892,7 +1912,15 @@
       "evaluations": "تخمینہ جات",
       "countryBreakdown": "ملکی تقسیم",
       "superOnly": "صرف سپر ایڈمن"
-    }
+    },
+    "welcomeLabel": "خوش آمدید",
+    "bulkUploadExport": "بلک اپ لوڈ اور خوراک ایکسپورٹ کریں",
+    "adminLabel": "ایڈمن",
+    "confirmToggleStatus": "صارف {name} کو {action} کریں؟",
+    "statusUpdated": "صارف کی حیثیت کامیابی سے اپ ڈیٹ ہو گئی",
+    "statusUpdateFailed": "صارف کی حیثیت اپ ڈیٹ کرنے میں ناکامی",
+    "enable": "فعال کریں",
+    "disable": "غیر فعال کریں"
   },
   "theme": {
     "zinc": "زنک",
@@ -1951,7 +1979,9 @@
       "distance": "چلنے کا فاصلہ (کلومیٹر)",
       "grazing": "چرائی",
       "bwGain": "جسمانی وزن میں اضافہ (کلوگرام/دن)",
-      "simulationName": "سمولیشن کا نام"
+      "simulationName": "سمولیشن کا نام",
+      "simulationCountry": "ملک",
+      "activeGrazing": "فعال چرانا"
     },
     "topographyOptions": {
       "flat": "ہموار",
@@ -2026,7 +2056,18 @@
       "price": "قیمت",
       "qty": "مقدار",
       "feedType_forage": "چارہ",
-      "feedType_concentrate": "کنسنٹریٹ"
+      "feedType_concentrate": "کنسنٹریٹ",
+      "noForageWarning": "کوئی چارے والی خوراک منتخب نہیں کی گئی۔ جانوروں کو صحیح ہاضمے کے لیے روفیج کی ضرورت ہوتی ہے۔ کم از کم ایک چارے والی خوراک شامل کرنے پر غور کریں۔",
+      "feedTypeLabel": "خوراک کی قسم",
+      "feedCategoryLabel": "خوراک کی قسم",
+      "feedNameLabel": "خوراک",
+      "addMoreFeed": "مزید خوراک شامل کریں",
+      "addCustomFeed": "اپنی مرضی کی خوراک شامل کریں",
+      "feedDetails": "خوراک کی تفصیلات",
+      "feedName": "خوراک کا نام",
+      "nutritionalInfo": "غذائی معلومات",
+      "costLabel": "قیمت",
+      "customFeedCreated": "اپنی مرضی کی خوراک کامیابی سے بنائی گئی"
     },
     "constraints": {
       "title": "خوراک کی مخصوص حدود",
@@ -2084,7 +2125,11 @@
       "infeasible": "کوئی قابل عمل خوراک نہیں ملی",
       "infeasibleDetail": "منتخب کردہ خوراکیں اس جانور کی غذائی ضروریات کو پورا نہیں کر سکتیں۔ آپٹیمائزر کو متوازن خوراک نہیں مل سکی۔",
       "infeasibleHint": "زیادہ قسم کی خوراک شامل کرنے کی کوشش کریں — جس میں چارہ، پروٹین سے بھرپور خوراک (جیسے تیل کے بیجوں کا آٹا)، اور معدنی سپلیمنٹ شامل ہوں۔",
-      "tryAgain": "فیڈ تبدیل کریں"
+      "tryAgain": "فیڈ تبدیل کریں",
+      "reportSavedDesc": "آپ کی رپورٹ محفوظ کر لی گئی ہے۔ آپ اسے نیویگیشن پینل میں 'فیڈ رپورٹس' کے تحت تلاش کر سکتے ہیں۔ کیا آپ اسے شیئر کرنا چاہیں گے؟",
+      "sharePrompt": "کیا اس رپورٹ کو شیئر کریں؟",
+      "yesShare": "ہاں، شیئر کریں",
+      "noDone": "نہیں، ہو گیا"
     },
     "methane": {
       "title": "ماحولیاتی اثرات",
@@ -2136,7 +2181,7 @@
       "kg": "کلوگرام",
       "litersPerDay": "لٹر/دن",
       "kgPerDay": "کلوگرام/دن",
-      "degreeC": "°C",
+      "degreeC": "ڈگری سیلسیس",
       "km": "کلومیٹر",
       "percent": "%"
     },
@@ -2165,7 +2210,8 @@
       "calvingInterval": "300 – 600",
       "temperature": "-20 – 50",
       "distance": "0 – 50",
-      "bwGain": "-1 – 2"
+      "bwGain": "-1 – 2",
+      "simulationCountry": "چارہ اور نسل کے انتخاب کے لیے ملک"
     },
     "nutrientLabels": {
       "ne_l": "توانائی",
@@ -2182,6 +2228,12 @@
       "calcium_kg": "کیلشیم (کلوگرام)",
       "phosphorus_kg": "فاسفورس (کلوگرام)",
       "ndf_kg": "فائبر (کلوگرام)"
+    },
+    "resetConfirmMessage": "کیا آپ واقعی فارم کو ری سیٹ کرنا چاہتے ہیں؟ درج کیا گیا تمام ڈیٹا صاف ہو جائے گا۔",
+    "report": {
+      "share": "شیئر کریں",
+      "print": "پرنٹ / PDF",
+      "copiedToClipboard": "رپورٹ کلپ بورڈ میں کاپی کر لی گئی"
     }
   }
 }

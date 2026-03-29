@@ -82,7 +82,7 @@ export const useAdminStore = defineStore('admin', () => {
   }
 
   // ---- Feed Management ----
-  async function fetchFeeds(page = 1, search?: string, countryId?: string): Promise<{ feeds: Record<string, unknown>[]; total: number }> {
+  async function fetchFeeds(page = 1, search?: string, countryName?: string): Promise<{ feeds: Record<string, unknown>[]; total: number }> {
     const authStore = useAuthStore();
     loading.value = true;
     error.value = null;
@@ -93,7 +93,7 @@ export const useAdminStore = defineStore('admin', () => {
         page_size: 25,
       };
       if (search) params.search = search;
-      if (countryId) params.country_id = countryId;
+      if (countryName) params.country_name = countryName;
       const resp = await api.get('/admin/list-feeds', { params });
       const data = resp.data;
       return { feeds: data.feeds || [], total: data.total_count || 0 };
@@ -170,11 +170,118 @@ export const useAdminStore = defineStore('admin', () => {
     try {
       const params: Record<string, string> = { admin_user_id: authStore.userId || '' };
       if (countryId) params.country_id = countryId;
-      const resp = await api.get('/admin/export-feeds', { params });
+      const resp = await api.get('/admin/export-feeds', { params, responseType: 'blob' });
+
+      // If response is a blob (CSV/Excel), trigger download directly
+      if (resp.data instanceof Blob) {
+        const url = URL.createObjectURL(resp.data);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `feeds-export-${new Date().toISOString().slice(0, 10)}.csv`;
+        a.click();
+        URL.revokeObjectURL(url);
+        return url;
+      }
+
+      // If JSON with a download URL
       return resp.data?.download_url || resp.data?.url || null;
     } catch (err) {
       error.value = extractUserFriendlyError(err);
       return null;
+    }
+  }
+
+  // ---- Feed Types & Categories ----
+  const feedTypes = ref<{ id: string; type_name: string; description?: string; sort_order?: number }[]>([]);
+  const feedCategories = ref<{ id: string; category_name: string; feed_type_id: string; description?: string; sort_order?: number }[]>([]);
+
+  async function listFeedTypes(): Promise<typeof feedTypes.value> {
+    const authStore = useAuthStore();
+    error.value = null;
+    try {
+      const resp = await api.get('/admin/list-feed-types', {
+        params: { admin_user_id: authStore.userId },
+      });
+      feedTypes.value = Array.isArray(resp.data) ? resp.data : [];
+      return feedTypes.value;
+    } catch (err) {
+      error.value = extractUserFriendlyError(err);
+      return [];
+    }
+  }
+
+  async function addFeedType(typeName: string, description?: string): Promise<boolean> {
+    const authStore = useAuthStore();
+    error.value = null;
+    try {
+      await api.post('/admin/add-feed-type', { type_name: typeName, description }, {
+        params: { admin_user_id: authStore.userId },
+      });
+      return true;
+    } catch (err) {
+      error.value = extractUserFriendlyError(err);
+      return false;
+    }
+  }
+
+  async function deleteFeedType(typeId: string): Promise<boolean> {
+    const authStore = useAuthStore();
+    error.value = null;
+    try {
+      await api.delete(`/admin/delete-feed-type/${typeId}`, {
+        params: { admin_user_id: authStore.userId },
+      });
+      return true;
+    } catch (err) {
+      error.value = extractUserFriendlyError(err);
+      return false;
+    }
+  }
+
+  async function listFeedCategories(): Promise<typeof feedCategories.value> {
+    const authStore = useAuthStore();
+    error.value = null;
+    try {
+      const resp = await api.get('/admin/list-feed-categories', {
+        params: { admin_user_id: authStore.userId },
+      });
+      feedCategories.value = Array.isArray(resp.data) ? resp.data : [];
+      return feedCategories.value;
+    } catch (err) {
+      error.value = extractUserFriendlyError(err);
+      return [];
+    }
+  }
+
+  async function addFeedCategory(categoryName: string, feedTypeId: string, description?: string): Promise<boolean> {
+    const authStore = useAuthStore();
+    error.value = null;
+    try {
+      await api.post('/admin/add-feed-category', {
+        category_name: categoryName,
+        feed_type_id: feedTypeId,
+        description,
+      }, {
+        params: { admin_user_id: authStore.userId },
+      });
+      return true;
+    } catch (err) {
+      error.value = extractUserFriendlyError(err);
+      return false;
+    }
+  }
+
+  async function deleteFeedCategory(categoryId: string): Promise<boolean> {
+    const authStore = useAuthStore();
+    error.value = null;
+    try {
+      await api.delete(`/admin/delete-feed-category/${categoryId}`, {
+        params: { admin_user_id: authStore.userId },
+      });
+      return true;
+    } catch (err) {
+      error.value = extractUserFriendlyError(err);
+      return false;
     }
   }
 
@@ -217,7 +324,7 @@ export const useAdminStore = defineStore('admin', () => {
     error.value = null;
     try {
       const resp = await api.get('/admin/get-all-reports', {
-        params: { admin_user_id: authStore.userId, page, page_size: 25 },
+        params: { user_id: authStore.userId, page, page_size: 25 },
       });
       const data = resp.data;
       return { reports: data.reports || [], total: data.total_count || 0 };
@@ -229,25 +336,12 @@ export const useAdminStore = defineStore('admin', () => {
     }
   }
 
-  // ---- Simulation Stats ----
-  async function fetchSimulationStats(): Promise<Record<string, unknown> | null> {
-    const authStore = useAuthStore();
-    error.value = null;
-    try {
-      const resp = await api.get('/admin/simulation-stats', {
-        params: { admin_user_id: authStore.userId },
-      });
-      return resp.data || null;
-    } catch (err) {
-      error.value = extractUserFriendlyError(err);
-      return null;
-    }
-  }
-
   return {
     users,
     loading,
     error,
+    feedTypes,
+    feedCategories,
     fetchAllUsers,
     toggleUserStatus,
     fetchFeeds,
@@ -256,9 +350,14 @@ export const useAdminStore = defineStore('admin', () => {
     deleteFeed,
     bulkUploadFeeds,
     exportFeeds,
+    listFeedTypes,
+    addFeedType,
+    deleteFeedType,
+    listFeedCategories,
+    addFeedCategory,
+    deleteFeedCategory,
     fetchFeedback,
     fetchFeedbackStats,
     fetchAllReports,
-    fetchSimulationStats,
   };
 });

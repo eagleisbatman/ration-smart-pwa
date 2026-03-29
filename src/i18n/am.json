@@ -79,7 +79,9 @@
     "addCow": "ላም ጨምር",
     "logMilk": "ወተት አስገባ",
     "getDiet": "የምግብ ዕቅድ አግኝ",
-    "admin": "አስተዳዳሪ"
+    "admin": "አስተዳዳሪ",
+    "feedReports": "የመኖ ሪፖርቶች",
+    "termsConditions": "ደንቦች እና ሁኔታዎች"
   },
   "roles": {
     "farmer": "ገበሬ",
@@ -236,7 +238,9 @@
     "newPhone": "አዲስ ስልክ ቁጥር",
     "currentValue": "አሁን ያለው: {value}",
     "sendCode": "ማረጋገጫ ኮድ ላክ",
-    "changeSuccess": "የእርስዎ {type} በተሳካ ሁኔታ ተዘምኗል።"
+    "changeSuccess": "የእርስዎ {type} በተሳካ ሁኔታ ተዘምኗል።",
+    "dangerZone": "አደገኛ ዞን",
+    "profileUpdateFailed": "የግል መረጃ ማስቀመጥ አልተሳካም"
   },
   "cow": {
     "myCows": "ላሞቼ",
@@ -678,7 +682,8 @@
       "stover": "የሰብል ቅጠልና ግንድ",
       "straw": "ገለባ",
       "succulent": "ውሃማ መኖ",
-      "treeLeaves": "የዛፍ ቅጠሎች"
+      "treeLeaves": "የዛፍ ቅጠሎች",
+      "byProductForage": "ተረፈ ምርት መኖ"
     },
     "labels": {
       "dmPercent": "ደረቅ ንጥረ ነገር (DM)",
@@ -706,7 +711,15 @@
       "pricing": "ዋጋ",
       "season": "ወቅት",
       "type": "አይነት",
-      "typeRequired": "አይነት *"
+      "typeRequired": "አይነት *",
+      "adfPercent": "አሲድ ዲተርጀንት ፋይበር (ADF)",
+      "adfPercentShort": "ADF",
+      "ashPercent": "አመድ",
+      "eePercent": "ኢተር ኤክስትራክት (EE)",
+      "stPercent": "ስታርች",
+      "lgPercent": "ሊግኒን",
+      "ndinPercent": "NDIN",
+      "adinPercent": "ADIN"
     },
     "seasons": {
       "allYear": "ዓመቱን ሙሉ",
@@ -1868,7 +1881,14 @@
       "subtitle": "መኖዎችን ይጨምሩ፣ ያርትዑ እና ያስተዳድሩ",
       "bulkUpload": "በብዛት ስቀል",
       "export": "አውጣ",
-      "noFeeds": "ምንም መኖ አልተገኘም"
+      "noFeeds": "ምንም መኖ አልተገኘም",
+      "manageTypes": "ዓይነቶችን አስተዳድር",
+      "feedTypes": "የመኖ ዓይነቶች",
+      "feedCategories": "የመኖ ምድቦች",
+      "type": "ዓይነት",
+      "category": "ምድብ",
+      "newTypeName": "የአዲስ ዓይነት ስም",
+      "newCategoryName": "የአዲስ ምድብ ስም"
     },
     "feedback": {
       "title": "አስተያየት",
@@ -1891,7 +1911,15 @@
       "evaluations": "ግምገማዎች",
       "countryBreakdown": "በአገር ዝርዝር",
       "superOnly": "ለሱፐር አስተዳዳሪ ብቻ"
-    }
+    },
+    "welcomeLabel": "እንኳን ደህና መጡ",
+    "bulkUploadExport": "በብዛት መጫን እና መኖ መላክ",
+    "adminLabel": "አድሚን",
+    "confirmToggleStatus": "የተጠቃሚ {name} ሁኔታን {action}?",
+    "statusUpdated": "የተጠቃሚ ሁኔታ በተሳካ ሁኔታ ተዘምኗል",
+    "statusUpdateFailed": "የተጠቃሚ ሁኔታን ማዘመን አልተሳካም",
+    "enable": "አንቃ",
+    "disable": "አቦዝን"
   },
   "theme": {
     "zinc": "ዚንክ",
@@ -1950,7 +1978,9 @@
       "distance": "የመራመጃ ርቀት (ኪሜ)",
       "grazing": "ግጦሽ",
       "bwGain": "የሰውነት ክብደት መጨመር (ኪግ/ቀን)",
-      "simulationName": "የሲሙሌሽኑ ስም"
+      "simulationName": "የሲሙሌሽኑ ስም",
+      "simulationCountry": "ሀገር",
+      "activeGrazing": "ንቁ ግጦሽ"
     },
     "topographyOptions": {
       "flat": "ጠፍጣፋ",
@@ -2025,7 +2055,18 @@
       "price": "ዋጋ",
       "qty": "ብዛት",
       "feedType_forage": "መኖ",
-      "feedType_concentrate": "ማጎሪያ"
+      "feedType_concentrate": "ማጎሪያ",
+      "noForageWarning": "ምንም የሳር መኖ አልተመረጠም። ከብቶች በአግባቡ ለመፍጨት ደረቅ መኖ ያስፈልጋቸዋል። ቢያንስ አንድ የሳር መኖ ማከል ያስቡበት።",
+      "feedTypeLabel": "የመኖ አይነት",
+      "feedCategoryLabel": "የመኖ ምድብ",
+      "feedNameLabel": "መኖ",
+      "addMoreFeed": "ተጨማሪ መኖ ጨምር",
+      "addCustomFeed": "የራስዎን መኖ ይፍጠሩ",
+      "feedDetails": "የመኖ ዝርዝሮች",
+      "feedName": "የመኖ ስም",
+      "nutritionalInfo": "የአመጋገብ መረጃ",
+      "costLabel": "ዋጋ",
+      "customFeedCreated": "የራስዎ መኖ በተሳካ ሁኔታ ተፈጠረ"
     },
     "constraints": {
       "title": "የተበጁ የምግብ ገደቦች",
@@ -2083,7 +2124,11 @@
       "infeasible": "ምንም የሚሆን አመጋገብ አልተገኘም",
       "infeasibleDetail": "የተመረጡት መኖዎች ለዚህ እንስሳ የአመጋገብ መስፈርቶችን ማሟላት አይችሉም። አመጣጣኝ አመጋገብ ማግኘት አልተቻለም።",
       "infeasibleHint": "ተጨማሪ የመኖ አይነቶችን ለመጨመር ይሞክሩ — ሳር፣ በፕሮቲን የበለፀጉ መኖዎችን (ለምሳሌ፣ የዘይት እህሎች) እና የማዕድን ማሟያ ያካትቱ።",
-      "tryAgain": "መኖዎችን ቀይር"
+      "tryAgain": "መኖዎችን ቀይር",
+      "reportSavedDesc": "ሪፖርትዎ ተቀምጧል። በዳሰሳ ፓነል ውስጥ ከ'መኖ ሪፖርቶች' ስር ማግኘት ይችላሉ። ማጋራት ይፈልጋሉ?",
+      "sharePrompt": "ይህንን ሪፖርት ያጋሩ?",
+      "yesShare": "አዎ፣ አጋራ",
+      "noDone": "አይ፣ ጨርሻለሁ"
     },
     "methane": {
       "title": "የአካባቢ ተፅዕኖ",
@@ -2164,7 +2209,8 @@
       "calvingInterval": "300 – 600",
       "temperature": "-20 – 50",
       "distance": "0 – 50",
-      "bwGain": "-1 – 2"
+      "bwGain": "-1 – 2",
+      "simulationCountry": "የመኖ እና የእንስሳት ዝርያ ምርጫ ሀገር"
     },
     "nutrientLabels": {
       "ne_l": "ኃይል",
@@ -2181,6 +2227,12 @@
       "calcium_kg": "ካልሲየም (ኪግ)",
       "phosphorus_kg": "ፎስፈረስ (ኪግ)",
       "ndf_kg": "ፋይበር (ኪግ)"
+    },
+    "resetConfirmMessage": "ፎርሙን ዳግም ማስጀመር ይፈልጋሉ? የገቡት ሁሉም መረጃዎች ይጸዳሉ።",
+    "report": {
+      "share": "አጋራ",
+      "print": "አትም / ፒዲኤፍ",
+      "copiedToClipboard": "ሪፖርቱ ወደ ቅንጥብ ሰሌዳ ተቀድቷል"
     }
   }
 }

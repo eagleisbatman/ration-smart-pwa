@@ -40,6 +40,44 @@
 
       <!-- Valid result content -->
       <template v-if="!isInfeasible">
+        <!-- Overall Status -->
+        <q-card v-if="solutionStatus && solutionStatus !== 'UNKNOWN'" flat bordered class="q-mb-md rounded-borders">
+          <q-card-section>
+            <div class="text-subtitle2 q-mb-xs">{{ $t('simulation.evaluation.overallStatus') }}</div>
+            <q-chip
+              :color="statusColor(solutionStatus)"
+              text-color="white"
+              :label="translateStatus(solutionStatus)"
+            />
+            <div v-if="confidenceLevel" class="text-caption text-grey-6 q-mt-xs">{{ confidenceLevel }}</div>
+          </q-card-section>
+        </q-card>
+
+        <!-- Milk Production Analysis -->
+        <q-card v-if="milkAnalysis" flat bordered class="q-mb-md rounded-borders">
+          <q-card-section>
+            <div class="text-subtitle2 q-mb-sm">{{ $t('simulation.evaluation.milkAnalysis') }}</div>
+            <q-list dense separator>
+              <q-item v-if="milkAnalysis.target_milk">
+                <q-item-section>{{ $t('simulation.evaluation.targetMilk') }}</q-item-section>
+                <q-item-section side class="text-weight-medium">{{ formatNum(milkAnalysis.target_milk) }} {{ $t('common.units.litersPerDay') }}</q-item-section>
+              </q-item>
+              <q-item v-if="milkAnalysis.supported_by_energy">
+                <q-item-section>{{ $t('simulation.evaluation.supportedByEnergy') }}</q-item-section>
+                <q-item-section side class="text-weight-medium">{{ formatNum(milkAnalysis.supported_by_energy) }} {{ $t('common.units.litersPerDay') }}</q-item-section>
+              </q-item>
+              <q-item v-if="milkAnalysis.supported_by_protein">
+                <q-item-section>{{ $t('simulation.evaluation.supportedByProtein') }}</q-item-section>
+                <q-item-section side class="text-weight-medium">{{ formatNum(milkAnalysis.supported_by_protein) }} {{ $t('common.units.litersPerDay') }}</q-item-section>
+              </q-item>
+              <q-item v-if="milkAnalysis.limiting_nutrient">
+                <q-item-section>{{ $t('simulation.evaluation.limitingNutrient') }}</q-item-section>
+                <q-item-section side class="text-weight-medium">{{ friendlyNutrient(milkAnalysis.limiting_nutrient) }}</q-item-section>
+              </q-item>
+            </q-list>
+          </q-card-section>
+        </q-card>
+
         <!-- Solution Summary -->
         <q-card v-if="solutionData" flat bordered class="q-mb-md rounded-borders">
           <q-card-section>
@@ -64,15 +102,26 @@
         <!-- Feed Breakdown -->
         <CostBreakdownTable v-if="feedBreakdown.length > 0" :feeds="feedBreakdown" />
 
-        <!-- Diet Status -->
-        <StatusCard
-          v-if="solutionStatus && solutionStatus !== 'UNKNOWN'"
-          :status="solutionStatus"
-          :message="confidenceLevel"
-        />
-
         <!-- Methane -->
         <MethaneMetrics :data="methaneData" />
+
+        <!-- Nutrient Balance -->
+        <q-card v-if="nutrientBalance && Object.keys(nutrientBalance).length > 0" flat bordered class="q-mb-md rounded-borders">
+          <q-card-section>
+            <div class="text-subtitle2 q-mb-sm">{{ $t('simulation.evaluation.nutrientBalance') }}</div>
+            <q-list dense separator>
+              <q-item v-for="(val, key) in nutrientBalance" :key="String(key)">
+                <q-item-section>{{ friendlyNutrient(String(key)) }}</q-item-section>
+                <q-item-section side>
+                  <q-badge
+                    :color="getNutrientColor(val as NutrientBalanceEntry)"
+                    :label="getNutrientStatus(val as NutrientBalanceEntry)"
+                  />
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </q-card-section>
+        </q-card>
 
         <!-- Warnings -->
         <q-card v-if="warnings.length > 0" flat bordered class="q-mb-md rounded-borders">
@@ -109,27 +158,8 @@
         </q-card>
       </template>
 
-      <!-- Actions -->
-      <div class="q-gutter-sm q-mt-lg">
-        <q-btn
-          :label="$t('simulation.rerunSimulation')"
-          color="primary"
-          class="full-width action-btn"
-          unelevated
-          no-caps
-          icon="replay"
-          @click="rerunSimulation"
-        />
-        <q-btn
-          :label="$t('simulation.newCase')"
-          color="grey-7"
-          flat
-          class="full-width"
-          no-caps
-          icon="add"
-          @click="newCase"
-        />
-      </div>
+      <!-- Spacer for sticky bottom bar -->
+      <div style="height: 72px;" class="print-hide" />
 
       <!-- Report Info (subtle, at bottom) -->
       <div v-if="reportId || simulationId" class="q-mt-lg text-center text-caption text-grey-5">
@@ -137,23 +167,80 @@
         <span v-if="reportId && simulationId" class="q-mx-xs">·</span>
         <span v-if="simulationId">{{ $t('simulation.recommendation.simulationId') }}: {{ simulationId }}</span>
       </div>
+
+      <!-- Sticky Bottom Action Bar -->
+      <div class="report-action-bar print-hide">
+        <q-btn
+          outline
+          color="primary"
+          icon="add"
+          :label="$t('simulation.newCase')"
+          no-caps
+          class="col action-btn"
+          @click="newCase"
+        />
+        <q-btn
+          color="primary"
+          icon="download"
+          :label="$t('simulation.recommendation.saveReport')"
+          no-caps
+          unelevated
+          class="col action-btn"
+          @click="onSaveReport"
+        />
+      </div>
+
+      <!-- Save Report Success Dialog -->
+      <q-dialog v-model="showSaveDialog">
+        <q-card class="save-dialog text-center q-pa-md">
+          <q-icon name="check_circle" color="positive" size="56px" />
+          <div class="text-h6 q-mt-md">{{ $t('simulation.recommendation.reportSaved') }}</div>
+          <div class="text-body2 text-grey-7 q-mt-sm">
+            {{ $t('simulation.recommendation.reportSavedDesc', 'Your report has been saved. You can find it under Feed Reports in the Navigation Panel. Would you like to share it?') }}
+          </div>
+          <div class="text-subtitle2 text-grey-6 q-mt-md">{{ $t('simulation.recommendation.sharePrompt', 'SHARE THIS REPORT?') }}</div>
+          <div class="q-mt-md q-gutter-sm">
+            <q-btn
+              color="primary"
+              icon="share"
+              :label="$t('simulation.recommendation.yesShare', 'Yes, Share')"
+              no-caps
+              unelevated
+              class="full-width action-btn"
+              @click="onShareFromDialog"
+            />
+            <q-btn
+              outline
+              color="primary"
+              :label="$t('simulation.recommendation.noDone', 'No, Done')"
+              no-caps
+              class="full-width action-btn"
+              v-close-popup
+            />
+          </div>
+        </q-card>
+      </q-dialog>
     </template>
   </q-page>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { useSimulationStore } from 'src/stores/simulation';
+import { useI18n } from 'vue-i18n';
+import { useSimulationStore, type NutrientBalanceEntry } from 'src/stores/simulation';
 import { useCurrency } from 'src/composables/useCurrency';
+import { useReportShare } from 'src/composables/useReportShare';
 import AnimalCharacteristicsSummary from 'src/components/simulation/AnimalCharacteristicsSummary.vue';
 import CostBreakdownTable from 'src/components/simulation/CostBreakdownTable.vue';
 import MethaneMetrics from 'src/components/simulation/MethaneMetrics.vue';
-import StatusCard from 'src/components/simulation/StatusCard.vue';
 
 const router = useRouter();
+const { t } = useI18n();
 const store = useSimulationStore();
 const { formatCurrency } = useCurrency();
+const { shareReport } = useReportShare();
+const showSaveDialog = ref(false);
 
 onMounted(() => {
   if (!store.recommendationResult) {
@@ -204,8 +291,51 @@ const feedBreakdown = computed(() => {
   return [];
 });
 
+const nutrientBalance = computed(() => result.value?.nutrient_balance ?? null);
+const milkAnalysis = computed(() => result.value?.milk_production_analysis ?? null);
+
 function formatNum(val: unknown): string {
   return val != null ? Number(val).toFixed(1) : '–';
+}
+
+function friendlyNutrient(key: string): string {
+  const normalized = key.toLowerCase().replace(/[^a-z0-9_]/g, '_').replace(/__+/g, '_').replace(/^_|_$/g, '');
+  const i18nKey = `simulation.nutrientLabels.${normalized}`;
+  const translated = t(i18nKey);
+  if (translated !== i18nKey) return translated;
+  return key.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
+function statusColor(status: string): string {
+  const s = (status || '').toLowerCase();
+  if (s.includes('optimal') || s.includes('perfect') || s.includes('good') || s.includes('adequate') || s.includes('met')) return 'positive';
+  if (s.includes('marginal') || s.includes('close') || s.includes('warning')) return 'warning';
+  return 'negative';
+}
+
+function translateStatus(status: string): string {
+  const s = (status || '').toLowerCase();
+  if (s.includes('optimal')) return t('simulation.status.optimal');
+  if (s.includes('perfect')) return t('simulation.status.perfect');
+  if (s.includes('good')) return t('simulation.status.good');
+  if (s.includes('adequate')) return t('simulation.status.adequate');
+  if (s.includes('marginal')) return t('simulation.status.marginal');
+  if (s.includes('deficient')) return t('simulation.status.deficient');
+  if (s.includes('excess')) return t('simulation.status.excess');
+  return status;
+}
+
+function getNutrientColor(val: NutrientBalanceEntry): string {
+  const status = String(val?.status || '').toLowerCase();
+  if (status.includes('adequate') || status.includes('met')) return 'positive';
+  if (status.includes('marginal') || status.includes('close')) return 'warning';
+  if (status.includes('deficient') || status.includes('excess')) return 'negative';
+  return 'grey';
+}
+
+function getNutrientStatus(val: NutrientBalanceEntry): string {
+  const raw = String(val?.status || val?.balance || '–');
+  return translateStatus(raw);
 }
 
 function goToFeedSelection() {
@@ -219,8 +349,28 @@ function rerunSimulation() {
 }
 
 function newCase() {
-  store.resetForm();
-  router.push('/');
+  store.newCaseFromPrevious();
+  router.push('/cattle-info');
+}
+
+function onSaveReport() {
+  showSaveDialog.value = true;
+}
+
+function onShareFromDialog() {
+  showSaveDialog.value = false;
+  void shareReport({
+    title: t('simulation.recommendation.title'),
+    simulationName: store.simulationName || undefined,
+    totalCost: solutionData.value.total_cost ?? undefined,
+    dmIntake: solutionData.value.dm_intake ?? undefined,
+    milkProduction: solutionData.value.milk_production ?? undefined,
+    feeds: feedBreakdown.value,
+    warnings: warnings.value,
+    recommendations: recommendations.value,
+    reportId: reportId.value || undefined,
+    simulationId: simulationId.value || undefined,
+  });
 }
 </script>
 
@@ -235,5 +385,29 @@ function newCase() {
   font-size: 1rem;
   padding-top: 12px;
   padding-bottom: 12px;
+}
+
+.report-action-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  gap: 12px;
+  padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+  background: var(--q-background, #fff);
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  z-index: 10;
+
+  .body--dark & {
+    background: var(--q-dark-page, #121212);
+    border-top-color: rgba(255, 255, 255, 0.1);
+  }
+}
+
+.save-dialog {
+  border-radius: 16px;
+  min-width: 300px;
+  max-width: 400px;
 }
 </style>

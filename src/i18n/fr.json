@@ -79,7 +79,9 @@
     "addCow": "Ajouter une vache",
     "logMilk": "Enregistrer la traite",
     "getDiet": "Obtenir la ration",
-    "admin": "Admin"
+    "admin": "Admin",
+    "feedReports": "Rapports d'alimentation",
+    "termsConditions": "Conditions générales"
   },
   "roles": {
     "farmer": "Éleveur",
@@ -236,7 +238,9 @@
     "newPhone": "Nouveau numéro de téléphone",
     "currentValue": "Actuel : {value}",
     "sendCode": "Envoyer le code de vérification",
-    "changeSuccess": "Votre {type} a été mis à jour avec succès."
+    "changeSuccess": "Votre {type} a été mis à jour avec succès.",
+    "dangerZone": "Zone de danger",
+    "profileUpdateFailed": "Échec de l'enregistrement du profil"
   },
   "cow": {
     "myCows": "Mes vaches",
@@ -681,7 +685,8 @@
       "stover": "Canne",
       "straw": "Paille",
       "succulent": "Succulent",
-      "treeLeaves": "Feuilles d'arbres"
+      "treeLeaves": "Feuilles d'arbres",
+      "byProductForage": "Fourrage sous-produit"
     },
     "labels": {
       "dmPercent": "Matière Sèche (MS)",
@@ -709,7 +714,15 @@
       "pricing": "Tarification",
       "season": "Saison",
       "type": "Type",
-      "typeRequired": "Type *"
+      "typeRequired": "Type *",
+      "adfPercent": "Fibre à la détergence acide (ADF)",
+      "adfPercentShort": "ADF",
+      "ashPercent": "Cendres",
+      "eePercent": "Extrait éthéré (EE)",
+      "stPercent": "Amidon",
+      "lgPercent": "Lignine",
+      "ndinPercent": "NDIN",
+      "adinPercent": "ADIN"
     },
     "seasons": {
       "allYear": "Toute l'année",
@@ -1872,7 +1885,14 @@
       "subtitle": "Ajouter, modifier et gérer les aliments",
       "bulkUpload": "Téléchargement en masse",
       "export": "Exporter",
-      "noFeeds": "Aucun aliment trouvé"
+      "noFeeds": "Aucun aliment trouvé",
+      "manageTypes": "Gérer les types",
+      "feedTypes": "Types d'aliments",
+      "feedCategories": "Catégories d'aliments",
+      "type": "Type",
+      "category": "Catégorie",
+      "newTypeName": "Nom du nouveau type",
+      "newCategoryName": "Nom de la nouvelle catégorie"
     },
     "feedback": {
       "title": "Commentaires",
@@ -1895,7 +1915,15 @@
       "evaluations": "Évaluations",
       "countryBreakdown": "Répartition par pays",
       "superOnly": "Administrateur principal uniquement"
-    }
+    },
+    "welcomeLabel": "BIENVENUE",
+    "bulkUploadExport": "Importation et exportation en vrac des aliments",
+    "adminLabel": "Admin",
+    "confirmToggleStatus": "{action} l'utilisateur {name} ?",
+    "statusUpdated": "Statut de l'utilisateur mis à jour avec succès",
+    "statusUpdateFailed": "Échec de la mise à jour du statut de l'utilisateur",
+    "enable": "Activer",
+    "disable": "Désactiver"
   },
   "theme": {
     "zinc": "Zinc",
@@ -1954,7 +1982,9 @@
       "distance": "Distance de marche (km)",
       "grazing": "Pâturage",
       "bwGain": "Gain de poids corporel (kg/jour)",
-      "simulationName": "Nom de la simulation"
+      "simulationName": "Nom de la simulation",
+      "simulationCountry": "Pays",
+      "activeGrazing": "Pâturage actif"
     },
     "topographyOptions": {
       "flat": "Plat",
@@ -2029,7 +2059,18 @@
       "price": "Prix",
       "qty": "Qté",
       "feedType_forage": "Fourrage",
-      "feedType_concentrate": "Concentré"
+      "feedType_concentrate": "Concentré",
+      "noForageWarning": "Aucun fourrage sélectionné. Les bovins ont besoin de fourrage pour une bonne digestion. Envisagez d'ajouter au moins un fourrage.",
+      "feedTypeLabel": "Type d'aliment",
+      "feedCategoryLabel": "Catégorie d'aliments",
+      "feedNameLabel": "Aliment",
+      "addMoreFeed": "Ajouter plus d'aliments",
+      "addCustomFeed": "Ajouter un aliment personnalisé",
+      "feedDetails": "Détails de l'aliment",
+      "feedName": "Nom de l'aliment",
+      "nutritionalInfo": "Informations nutritionnelles",
+      "costLabel": "Coût",
+      "customFeedCreated": "Aliment personnalisé créé avec succès"
     },
     "constraints": {
       "title": "Limites personnalisées pour la ration",
@@ -2087,7 +2128,11 @@
       "infeasible": "Aucune ration réalisable trouvée",
       "infeasibleDetail": "Les aliments sélectionnés ne peuvent pas satisfaire les besoins nutritionnels de cet animal. L'optimiseur n'a pas pu trouver une ration équilibrée.",
       "infeasibleHint": "Essayez d'ajouter plus de variété d'aliments — incluez des fourrages, des concentrés riches en protéines (par exemple, des tourteaux oléagineux) et un supplément minéral.",
-      "tryAgain": "Changer les aliments"
+      "tryAgain": "Changer les aliments",
+      "reportSavedDesc": "Votre rapport a été enregistré. Vous pouvez le retrouver sous Rapports d'aliments dans le panneau de navigation. Souhaitez-vous le partager ?",
+      "sharePrompt": "PARTAGER CE RAPPORT ?",
+      "yesShare": "Oui, partager",
+      "noDone": "Non, c'est fait"
     },
     "methane": {
       "title": "Impact environnemental",
@@ -2168,7 +2213,8 @@
       "calvingInterval": "300 – 600",
       "temperature": "-20 – 50",
       "distance": "0 – 50",
-      "bwGain": "-1 – 2"
+      "bwGain": "-1 – 2",
+      "simulationCountry": "Pays pour la sélection des aliments et des races"
     },
     "nutrientLabels": {
       "ne_l": "Énergie",
@@ -2185,6 +2231,12 @@
       "calcium_kg": "Calcium (kg)",
       "phosphorus_kg": "Phosphore (kg)",
       "ndf_kg": "Fibres (kg)"
+    },
+    "resetConfirmMessage": "Êtes-vous sûr de vouloir réinitialiser le formulaire ? Toutes les données saisies seront effacées.",
+    "report": {
+      "share": "Partager",
+      "print": "Imprimer / PDF",
+      "copiedToClipboard": "Rapport copié dans le presse-papiers"
     }
   }
 }

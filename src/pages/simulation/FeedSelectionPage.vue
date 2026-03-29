@@ -7,7 +7,6 @@
           outline
           no-caps
           color="primary"
-          icon="tune"
           :label="$t('simulation.feedSelect.customLimits')"
           class="full-width top-btn"
           @click="showConstraints = true"
@@ -18,13 +17,10 @@
           unelevated
           no-caps
           color="primary"
-          icon="add"
           :label="$t('simulation.feedSelect.customFeed')"
           class="full-width top-btn"
-          disable
-        >
-          <q-badge floating color="warning" text-color="dark" label="Coming Soon" />
-        </q-btn>
+          @click="showCustomFeed = true"
+        />
       </div>
     </div>
 
@@ -46,168 +42,114 @@
       />
     </div>
 
-    <!-- Feed Type Toggle -->
-    <div class="view-toggle q-mb-md">
-      <q-btn-toggle
-        v-model="feedTypeFilter"
-        spread
-        no-caps
-        rounded
-        unelevated
-        toggle-color="primary"
-        color="white"
-        text-color="primary"
-        :options="[
-          { label: $t('simulation.feedSelect.filterAll'), value: 'all' },
-          { label: $t('simulation.feedSelect.filterForage'), value: 'Forage' },
-          { label: $t('simulation.feedSelect.filterConcentrate'), value: 'Concentrate' },
-        ]"
-      />
-    </div>
-
-    <!-- Category Dropdown -->
-    <q-select
-      v-model="categoryFilter"
-      :label="$t('simulation.feedSelect.category')"
-      :options="categoryOptions"
-      emit-value
-      map-options
-      outlined
-      dense
-      clearable
-      behavior="menu"
-      class="q-mb-md"
-    />
-
-    <!-- Search -->
-    <q-input
-      v-model="searchQuery"
-      outlined
-      dense
-      :label="$t('feed.search.placeholder')"
-      class="q-mb-md"
-    >
-      <template #prepend>
-        <q-icon name="search" />
-      </template>
-      <template v-if="searchQuery" #append>
-        <q-icon name="close" class="cursor-pointer" aria-label="Clear search" role="button" tabindex="0" @click="searchQuery = ''" />
-      </template>
-    </q-input>
-
-    <!-- Feed List (checkboxes) -->
-    <template v-if="feedsStore.loading && feedsStore.allFeeds.length === 0">
-      <q-skeleton v-for="i in 6" :key="i" height="48px" class="q-mb-xs rounded-borders" />
-    </template>
-
-    <div v-else-if="feedsStore.error" class="text-center q-pa-md q-mb-md">
-      <q-icon name="cloud_off" size="32px" color="negative" />
-      <div class="text-body2 text-negative q-mt-xs">{{ feedsStore.error }}</div>
-      <q-btn flat no-caps color="primary" :label="$t('common.retry')" class="q-mt-sm" @click="feedsStore.fetchAllFeeds()" />
-    </div>
-
-    <div v-else-if="filteredFeeds.length === 0" class="text-center text-grey-5 q-pa-md q-mb-md">
-      <q-icon name="search_off" size="32px" />
-      <div class="q-mt-xs">{{ $t('feed.search.noResults', { query: searchQuery }) }}</div>
-    </div>
-
-    <q-virtual-scroll
-      v-else
-      :items="filteredFeeds"
-      :virtual-scroll-item-size="72"
-      style="max-height: 45vh"
-      class="rounded-borders q-mb-md bordered-scroll"
-      separator
-    >
-      <template #default="{ item: feed }">
-        <q-item :key="feed.id" dense>
-          <q-item-section side>
-            <q-checkbox
-              :model-value="isSelected(feed.id)"
-              @update:model-value="toggleFeed(feed)"
-            />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>{{ getFeedDisplayName(feed, locale) }}</q-item-label>
-            <q-item-label caption>
-              {{ translateCategory(feed.category, t) }}
-              <q-badge v-if="feed.fd_type" :label="translateFeedType(feed.fd_type)" color="grey-5" text-color="white" class="q-ml-xs" />
-            </q-item-label>
-          </q-item-section>
-          <q-item-section side>
-            <q-item-label v-if="feed.price_per_kg" caption>{{ formatCurrency(feed.price_per_kg) }}/{{ $t('simulation.units.kg') }}</q-item-label>
-          </q-item-section>
-        </q-item>
-      </template>
-    </q-virtual-scroll>
-
-    <!-- Selected Feeds Panel -->
-    <template v-if="simStore.selectedFeeds.length > 0">
-      <div class="text-subtitle1 text-weight-medium q-mb-sm">
-        {{ $t('simulation.feedSelect.selectedFeeds') }} ({{ simStore.selectedFeeds.length }})
+    <!-- Feed Cards -->
+    <div v-for="(slot, idx) in feedSlots" :key="idx" class="feed-card q-mb-md">
+      <div class="row items-center q-mb-sm">
+        <div class="col text-subtitle2 text-weight-bold">FEED {{ idx + 1 }}</div>
+        <q-btn v-if="!slot.isEditing" flat round dense icon="edit" size="sm" color="primary" @click="slot.isEditing = true" />
+        <q-btn v-if="idx > 0" flat round dense icon="delete" size="sm" color="negative" @click="removeSlot(idx)" />
       </div>
 
-      <q-card
-        v-for="(sf, idx) in simStore.selectedFeeds"
-        :key="sf.feed_id"
-        flat
-        bordered
-        class="q-mb-sm rounded-borders"
-      >
-        <q-card-section class="q-py-sm">
-          <div class="row items-center no-wrap q-mb-xs">
-            <div class="col">
-              <span class="text-body2 text-weight-medium">{{ sf.feed_name }}</span>
-              <span class="text-caption text-grey-6"> ({{ idx + 1 }})</span>
-            </div>
-            <q-btn flat round dense icon="close" size="sm" color="grey-5" :aria-label="$t('common.remove', 'Remove') + ' ' + sf.feed_name" @click="removeFeed(idx)" />
-          </div>
-
-          <div class="text-caption text-grey-6 q-mb-sm">
-            <span :class="sf.fd_type === 'Forage' ? 'text-green-7' : 'text-blue-7'">{{ translateFeedType(sf.fd_type) }}</span>
-            <span v-if="sf.fd_category"> · {{ sf.fd_category }}</span>
-          </div>
-
-          <div class="row q-col-gutter-sm">
-            <div :class="dietMode === 'evaluation' ? 'col-6' : 'col-12'">
-              <q-input
-                v-model.number="simStore.selectedFeeds[idx].price_per_kg"
-                :label="$t('simulation.feedSelect.pricePerKg')"
-                type="number"
-                outlined
-                dense
-                step="0.1"
-                :suffix="'/' + $t('simulation.units.kg')"
-                hide-bottom-space
-                :rules="[(v: number) => v > 0 || $t('simulation.validation.priceMin')]"
-              />
-            </div>
-            <div v-if="dietMode === 'evaluation'" class="col-6">
-              <q-input
-                v-model.number="simStore.selectedFeeds[idx].quantity_as_fed"
-                :label="$t('simulation.feedSelect.quantityKg')"
-                type="number"
-                outlined
-                dense
-                step="0.1"
-                :suffix="$t('simulation.units.kg')"
-                hide-bottom-space
-                :rules="[(v: number) => v > 0 || $t('simulation.validation.quantityMin')]"
-              />
-            </div>
-          </div>
-        </q-card-section>
-      </q-card>
-    </template>
-
-    <template v-else>
-      <div class="text-center text-grey-5 q-pa-md q-mb-md">
-        <q-icon name="playlist_add" size="32px" />
-        <div class="q-mt-xs">{{ $t('simulation.feedSelect.noFeedsSelected') }}</div>
+      <!-- Feed Type -->
+      <div class="row q-col-gutter-sm q-mb-sm">
+        <div class="col-6">
+          <q-select
+            v-model="slot.feedType"
+            :label="$t('simulation.feedSelect.feedTypeLabel') + ' *'"
+            :options="feedTypeOptions"
+            emit-value
+            map-options
+            outlined
+            dense
+            behavior="menu"
+            @update:model-value="onFeedTypeChange(slot)"
+          />
+        </div>
+        <div class="col-6">
+          <q-select
+            v-model="slot.feedCategory"
+            :label="$t('simulation.feedSelect.feedCategoryLabel') + ' *'"
+            :options="getCategoryOptions(slot.feedType)"
+            emit-value
+            map-options
+            outlined
+            dense
+            behavior="menu"
+            :disable="!slot.feedType"
+            @update:model-value="onCategoryChange(slot)"
+          />
+        </div>
       </div>
-    </template>
 
-    <!-- Single Action Button (changes based on mode) -->
+      <!-- Feed + Price -->
+      <div class="row q-col-gutter-sm q-mb-sm">
+        <div class="col-6">
+          <q-select
+            v-model="slot.feedId"
+            :label="$t('simulation.feedSelect.feedLabel') + ' *'"
+            :options="getFeedOptions(slot.feedType, slot.feedCategory)"
+            emit-value
+            map-options
+            outlined
+            dense
+            behavior="menu"
+            :disable="!slot.feedCategory"
+            @update:model-value="onFeedChange(slot)"
+          />
+        </div>
+        <div class="col-6">
+          <q-input
+            v-model.number="slot.pricePerKg"
+            :label="priceLabel + ' *'"
+            type="number"
+            outlined
+            dense
+            step="0.1"
+          />
+        </div>
+      </div>
+
+      <!-- Quantity + Cost (Evaluation mode only) -->
+      <div v-if="dietMode === 'evaluation'" class="row q-col-gutter-sm">
+        <div class="col-6">
+          <q-input
+            v-model.number="slot.quantity"
+            :label="$t('simulation.feedSelect.quantityKg') + ' *'"
+            type="number"
+            outlined
+            dense
+            step="0.1"
+          />
+        </div>
+        <div class="col-6">
+          <q-input
+            :model-value="slotCost(slot)"
+            :label="$t('simulation.feedSelect.costLabel') + ' *'"
+            type="number"
+            outlined
+            dense
+            readonly
+            class="readonly-cost"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- Add More Feed Button -->
+    <div class="add-feed-btn q-mb-md" @click="addSlot">
+      <q-icon name="add_circle_outline" size="sm" color="primary" class="q-mr-sm" />
+      <span class="text-primary text-weight-medium">{{ $t('simulation.feedSelect.addMoreFeed') }}</span>
+    </div>
+
+    <!-- Forage Warning -->
+    <q-banner v-if="noForageWarning" inline-actions class="bg-orange-1 text-orange-9 q-mb-md rounded-borders" rounded>
+      <template #avatar>
+        <q-icon name="eco" color="warning" />
+      </template>
+      {{ $t('simulation.feedSelect.noForageWarning') }}
+    </q-banner>
+
+    <!-- Action Button -->
     <div class="action-bar">
       <q-btn
         :label="dietMode === 'recommendation'
@@ -219,7 +161,7 @@
         no-caps
         icon-right="arrow_forward"
         :loading="simStore.recommending || simStore.evaluating"
-        :disable="simStore.selectedFeeds.length === 0"
+        :disable="!isFormValid"
         @click="dietMode === 'recommendation' ? runRecommendation() : runEvaluation()"
       />
     </div>
@@ -237,15 +179,116 @@
     <!-- Custom Constraints Dialog -->
     <CustomConstraintsDialog v-model="showConstraints" />
 
-    <!-- Custom Feed Dialog (placeholder) -->
-    <q-dialog v-model="showCustomFeed">
-      <q-card style="min-width: 320px">
+    <!-- Custom Feed Bottom Sheet -->
+    <q-dialog v-model="showCustomFeed" position="bottom" maximized>
+      <q-card class="custom-feed-sheet">
+        <div class="sheet-handle" />
         <q-card-section>
-          <div class="text-h6">{{ $t('simulation.feedSelect.customFeed') }}</div>
-          <div class="text-caption text-grey-6 q-mt-sm">{{ $t('simulation.feedSelect.customFeedHint') }}</div>
+          <div class="text-h6">{{ $t('simulation.feedSelect.addCustomFeed') }}</div>
         </q-card-section>
-        <q-card-actions align="right">
-          <q-btn flat :label="$t('common.close')" color="primary" v-close-popup />
+
+        <q-card-section class="q-pt-none">
+          <!-- FEED DETAILS -->
+          <div class="row items-center q-mb-sm cursor-pointer" @click="cfDetailsOpen = !cfDetailsOpen">
+            <div class="col text-subtitle2 text-weight-bold text-uppercase">{{ $t('simulation.feedSelect.feedDetails') }}</div>
+            <q-icon :name="cfDetailsOpen ? 'remove' : 'add'" size="sm" />
+          </div>
+          <template v-if="cfDetailsOpen">
+            <q-select
+              v-model="customFeedForm.fd_type"
+              :label="$t('simulation.feedSelect.feedTypeLabel') + ' *'"
+              :options="feedTypeOptions"
+              emit-value
+              map-options
+              outlined
+              dense
+              class="q-mb-sm"
+              behavior="menu"
+              @update:model-value="customFeedForm.fd_category = null"
+            />
+            <q-select
+              v-model="customFeedForm.fd_category"
+              :label="$t('simulation.feedSelect.feedCategoryLabel') + ' *'"
+              :options="getCategoryOptions(customFeedForm.fd_type)"
+              emit-value
+              map-options
+              outlined
+              dense
+              class="q-mb-sm"
+              behavior="menu"
+              :disable="!customFeedForm.fd_type"
+            />
+            <q-input
+              v-model="customFeedForm.name"
+              :label="$t('simulation.feedSelect.feedName')"
+              outlined
+              dense
+              class="q-mb-sm"
+              :prefix="'RAG - '"
+            />
+          </template>
+
+          <!-- NUTRITIONAL INFORMATION -->
+          <div class="row items-center q-mb-sm q-mt-md cursor-pointer" @click="cfNutrientOpen = !cfNutrientOpen">
+            <div class="col text-subtitle2 text-weight-bold text-uppercase">{{ $t('simulation.feedSelect.nutritionalInfo') }}</div>
+            <q-icon :name="cfNutrientOpen ? 'remove' : 'add'" size="sm" />
+          </div>
+          <template v-if="cfNutrientOpen">
+            <div class="row q-col-gutter-sm">
+              <div class="col-6">
+                <q-input v-model.number="customFeedForm.dm" label="Dry Matter" type="number" outlined dense class="q-mb-sm" />
+              </div>
+              <div class="col-6">
+                <q-input v-model.number="customFeedForm.ash" label="Ash" type="number" outlined dense class="q-mb-sm" />
+              </div>
+              <div class="col-6">
+                <q-input v-model.number="customFeedForm.protein" label="Protein" type="number" outlined dense class="q-mb-sm" />
+              </div>
+              <div v-if="customFeedForm.fd_type === 'Concentrate'" class="col-6">
+                <q-input v-model.number="customFeedForm.npn" label="NPN" type="number" outlined dense class="q-mb-sm" />
+              </div>
+              <div class="col-6">
+                <q-input v-model.number="customFeedForm.ee" label="Ether Extract" type="number" outlined dense class="q-mb-sm" />
+              </div>
+              <div class="col-6">
+                <q-input v-model.number="customFeedForm.starch" label="Starch" type="number" outlined dense class="q-mb-sm" />
+              </div>
+              <div class="col-6">
+                <q-input v-model.number="customFeedForm.ndf" label="NDF" type="number" outlined dense class="q-mb-sm" />
+              </div>
+              <div class="col-6">
+                <q-input v-model.number="customFeedForm.adf" label="ADF" type="number" outlined dense class="q-mb-sm" />
+              </div>
+              <div class="col-6">
+                <q-input v-model.number="customFeedForm.lignin" label="Lignin" type="number" outlined dense class="q-mb-sm" />
+              </div>
+              <div class="col-6">
+                <q-input v-model.number="customFeedForm.ndin" label="NDIN" type="number" outlined dense class="q-mb-sm" />
+              </div>
+              <div class="col-6">
+                <q-input v-model.number="customFeedForm.adin" label="ADIN" type="number" outlined dense class="q-mb-sm" />
+              </div>
+              <div class="col-6">
+                <q-input v-model.number="customFeedForm.calcium" label="Calcium" type="number" outlined dense class="q-mb-sm" />
+              </div>
+              <div class="col-6">
+                <q-input v-model.number="customFeedForm.phosphorus" label="Phosphorus" type="number" outlined dense class="q-mb-sm" />
+              </div>
+            </div>
+          </template>
+        </q-card-section>
+
+        <q-card-actions class="q-px-md q-pb-md">
+          <q-btn
+            :label="$t('common.submit')"
+            color="primary"
+            class="full-width action-btn"
+            unelevated
+            no-caps
+            :loading="customFeedSubmitting"
+            :disable="!customFeedForm.fd_type || !customFeedForm.fd_category || !customFeedForm.name"
+            @click="submitCustomFeed"
+          />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -253,7 +296,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from 'vue';
+import { ref, reactive, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useQuasar } from 'quasar';
@@ -261,123 +304,207 @@ import { useSimulationStore } from 'src/stores/simulation';
 import { useFeedsStore } from 'src/stores/feeds';
 import { useCurrency } from 'src/composables/useCurrency';
 import { getFeedDisplayName, translateCategory } from 'src/composables/useFeedDisplayName';
-import { Feed } from 'src/lib/offline/db';
 import CustomConstraintsDialog from 'src/components/simulation/CustomConstraintsDialog.vue';
 
 const { t, locale } = useI18n();
 const router = useRouter();
-
-function translateFeedType(fdType?: string): string {
-  if (!fdType) return '';
-  const key = `simulation.feedSelect.feedType_${fdType.toLowerCase()}`;
-  const translated = t(key);
-  return translated !== key ? translated : fdType;
-}
 const $q = useQuasar();
 const simStore = useSimulationStore();
 const feedsStore = useFeedsStore();
-const { formatCurrency } = useCurrency();
+const { getCurrencyCode } = useCurrency();
 
 const dietMode = ref<'recommendation' | 'evaluation'>('recommendation');
-const feedTypeFilter = ref('all');
-const categoryFilter = ref<string | null>(null);
-const searchQuery = ref('');
 const showConstraints = ref(false);
 const showCustomFeed = ref(false);
 const showGenerating = ref(false);
 
-// Reset category filter when type filter changes to avoid stale cross-filter state
-watch(feedTypeFilter, () => {
-  categoryFilter.value = null;
+// Custom feed form
+const cfDetailsOpen = ref(true);
+const cfNutrientOpen = ref(true);
+const customFeedSubmitting = ref(false);
+const customFeedForm = reactive({
+  fd_type: null as string | null,
+  fd_category: null as string | null,
+  name: '',
+  dm: 0, ash: 0, protein: 0, npn: 0, ee: 0, starch: 0,
+  ndf: 0, adf: 0, lignin: 0, ndin: 0, adin: 0, calcium: 0, phosphorus: 0,
 });
 
-const filteredFeeds = computed(() => {
-  let feeds = feedsStore.allFeeds;
-
-  // Type filter
-  if (feedTypeFilter.value !== 'all') {
-    feeds = feeds.filter((f) => f.fd_type === feedTypeFilter.value);
-  }
-
-  // Category filter
-  if (categoryFilter.value) {
-    feeds = feeds.filter((f) => f.category === categoryFilter.value);
-  }
-
-  // Search
-  if (searchQuery.value) {
-    const q = searchQuery.value.toLowerCase();
-    feeds = feeds.filter(
-      (f) =>
-        f.name.toLowerCase().includes(q) ||
-        (f.fd_name && f.fd_name.toLowerCase().includes(q)) ||
-        (f.local_name && f.local_name.toLowerCase().includes(q)) ||
-        f.category.toLowerCase().includes(q)
-    );
-  }
-
-  return feeds;
-});
-
-const categoryOptions = computed(() => {
-  let feeds = feedsStore.allFeeds;
-  if (feedTypeFilter.value !== 'all') {
-    feeds = feeds.filter((f) => f.fd_type === feedTypeFilter.value);
-  }
-  const cats = [...new Set(feeds.map((f) => f.category))].sort();
-  return [
-    { label: t('simulation.feedSelect.allCategories'), value: null },
-    ...cats.map((c) => ({ label: translateCategory(c, t), value: c })),
-  ];
-});
-
-const selectedFeedIds = computed(() => new Set(simStore.selectedFeeds.map((f) => f.feed_id)));
-
-function isSelected(feedId: string): boolean {
-  return selectedFeedIds.value.has(feedId);
+// Feed slot interface
+interface FeedSlot {
+  feedType: string | null;
+  feedCategory: string | null;
+  feedId: string | null;
+  feedName: string;
+  pricePerKg: number | null;
+  quantity: number | null;
+  isEditing: boolean;
 }
 
-const MAX_SELECTED_FEEDS = 30;
+function createEmptySlot(): FeedSlot {
+  return {
+    feedType: null,
+    feedCategory: null,
+    feedId: null,
+    feedName: '',
+    pricePerKg: null,
+    quantity: null,
+    isEditing: true,
+  };
+}
 
-function toggleFeed(feed: Feed) {
-  const idx = simStore.selectedFeeds.findIndex((f) => f.feed_id === feed.id);
-  if (idx >= 0) {
-    simStore.selectedFeeds.splice(idx, 1);
+// Initialize slots from store's selected feeds or start with one empty slot
+const feedSlots = ref<FeedSlot[]>([]);
+
+function initSlotsFromStore() {
+  if (simStore.selectedFeeds.length > 0) {
+    feedSlots.value = simStore.selectedFeeds.map((sf) => ({
+      feedType: sf.fd_type || null,
+      feedCategory: sf.fd_category || null,
+      feedId: sf.feed_id,
+      feedName: sf.feed_name,
+      pricePerKg: sf.price_per_kg || null,
+      quantity: sf.quantity_as_fed || null,
+      isEditing: false,
+    }));
   } else {
-    if (simStore.selectedFeeds.length >= MAX_SELECTED_FEEDS) {
-      $q.notify({ type: 'warning', message: t('simulation.feedSelect.maxFeedsReached', { max: MAX_SELECTED_FEEDS }) });
-      return;
-    }
-    simStore.selectedFeeds.push({
-      feed_id: feed.id,
-      feed_name: getFeedDisplayName(feed, locale.value),
-      fd_type: feed.fd_type,
-      fd_category: feed.category,
-      price_per_kg: feed.price_per_kg || 0,
-      quantity_as_fed: undefined,
-    });
+    feedSlots.value = [createEmptySlot()];
   }
 }
 
-function removeFeed(idx: number) {
-  simStore.selectedFeeds.splice(idx, 1);
+// Price label based on country currency
+const priceLabel = computed(() => {
+  const code = getCurrencyCode();
+  return `Price ${code}/KG`;
+});
+
+// Feed Type options
+const feedTypeOptions = [
+  { label: 'Forage', value: 'Forage' },
+  { label: 'Concentrate', value: 'Concentrate' },
+];
+
+// Category options filtered by feed type
+function getCategoryOptions(feedType: string | null) {
+  if (!feedType) return [];
+  const feeds = feedsStore.allFeeds.filter((f) => f.fd_type === feedType);
+  const cats = [...new Set(feeds.map((f) => f.category))].filter(Boolean).sort();
+  return cats.map((c) => ({
+    label: translateCategory(c, t),
+    value: c,
+  }));
+}
+
+// Feed options filtered by type + category
+function getFeedOptions(feedType: string | null, feedCategory: string | null) {
+  if (!feedType || !feedCategory) return [];
+  return feedsStore.allFeeds
+    .filter((f) => f.fd_type === feedType && f.category === feedCategory)
+    .map((f) => ({
+      label: getFeedDisplayName(f, locale.value),
+      value: f.id,
+    }))
+    .sort((a, b) => a.label.localeCompare(b.label));
+}
+
+// Cascade resets
+function onFeedTypeChange(slot: FeedSlot) {
+  slot.feedCategory = null;
+  slot.feedId = null;
+  slot.feedName = '';
+}
+
+function onCategoryChange(slot: FeedSlot) {
+  slot.feedId = null;
+  slot.feedName = '';
+}
+
+function onFeedChange(slot: FeedSlot) {
+  if (!slot.feedId) return;
+  const feed = feedsStore.allFeeds.find((f) => f.id === slot.feedId);
+  if (feed) {
+    slot.feedName = getFeedDisplayName(feed, locale.value);
+    if (!slot.pricePerKg && feed.price_per_kg) {
+      slot.pricePerKg = feed.price_per_kg;
+    }
+  }
+}
+
+function slotCost(slot: FeedSlot): number | null {
+  if (slot.pricePerKg && slot.quantity) {
+    return Math.round(slot.pricePerKg * slot.quantity * 100) / 100;
+  }
+  return null;
+}
+
+function addSlot() {
+  feedSlots.value.push(createEmptySlot());
+}
+
+function removeSlot(idx: number) {
+  feedSlots.value.splice(idx, 1);
+}
+
+// Sync slots to store before submission
+function syncSlotsToStore() {
+  simStore.selectedFeeds = feedSlots.value
+    .filter((s) => s.feedId && s.pricePerKg)
+    .map((s) => ({
+      feed_id: s.feedId!,
+      feed_name: s.feedName,
+      fd_type: s.feedType || undefined,
+      fd_category: s.feedCategory || undefined,
+      price_per_kg: s.pricePerKg!,
+      quantity_as_fed: s.quantity || undefined,
+    }));
+}
+
+// Validation
+const completedSlots = computed(() =>
+  feedSlots.value.filter((s) => s.feedId && s.pricePerKg && s.pricePerKg > 0)
+);
+
+const noForageWarning = computed(() => {
+  if (completedSlots.value.length === 0) return false;
+  return completedSlots.value.every((s) => s.feedType !== 'Forage');
+});
+
+const isFormValid = computed(() => {
+  if (completedSlots.value.length === 0) return false;
+  if (dietMode.value === 'evaluation') {
+    return completedSlots.value.every((s) => s.quantity && s.quantity > 0);
+  }
+  return true;
+});
+
+async function runRecommendation() {
+  syncSlotsToStore();
+  if (simStore.selectedFeeds.length === 0) {
+    $q.notify({ type: 'warning', message: t('simulation.feedSelect.priceRequired') });
+    return;
+  }
+  showGenerating.value = true;
+  try {
+    const ok = await simStore.generateRecommendation();
+    if (ok) {
+      router.push('/recommendation-report');
+    } else if (simStore.error) {
+      $q.notify({ type: 'negative', message: simStore.error });
+    }
+  } catch {
+    $q.notify({ type: 'negative', message: t('errors.generic') });
+  } finally {
+    showGenerating.value = false;
+  }
 }
 
 async function runEvaluation() {
-  // Ensure all selected feeds have quantity > 0 for evaluation
+  syncSlotsToStore();
   const missingQty = simStore.selectedFeeds.some(
     (f) => !f.quantity_as_fed || f.quantity_as_fed <= 0
   );
   if (missingQty) {
     $q.notify({ type: 'warning', message: t('simulation.feedSelect.quantityRequired') });
-    return;
-  }
-  // Ensure all feeds have price > 0
-  const missingPrice = simStore.selectedFeeds.some(
-    (f) => !f.price_per_kg || f.price_per_kg <= 0
-  );
-  if (missingPrice) {
-    $q.notify({ type: 'warning', message: t('simulation.feedSelect.priceRequired') });
     return;
   }
   showGenerating.value = true;
@@ -395,28 +522,41 @@ async function runEvaluation() {
   }
 }
 
-async function runRecommendation() {
-  // Validate all feeds have a price > 0
-  const missingPrice = simStore.selectedFeeds.some(
-    (f) => !f.price_per_kg || f.price_per_kg <= 0
-  );
-  if (missingPrice) {
-    $q.notify({ type: 'warning', message: t('simulation.feedSelect.priceRequired') });
-    return;
-  }
-
-  showGenerating.value = true;
+async function submitCustomFeed() {
+  if (!customFeedForm.fd_type || !customFeedForm.fd_category || !customFeedForm.name) return;
+  customFeedSubmitting.value = true;
   try {
-    const ok = await simStore.generateRecommendation();
-    if (ok) {
-      router.push('/recommendation-report');
-    } else if (simStore.error) {
-      $q.notify({ type: 'negative', message: simStore.error });
-    }
+    await feedsStore.createCustomFeed({
+      name: `RAG - ${customFeedForm.name}`,
+      fd_type: customFeedForm.fd_type,
+      category: customFeedForm.fd_category,
+      dm_percentage: customFeedForm.dm,
+      cp_percentage: customFeedForm.protein,
+      tdn_percentage: 0,
+      ca_percentage: customFeedForm.calcium,
+      p_percentage: customFeedForm.phosphorus,
+      ndf_percentage: customFeedForm.ndf,
+      fd_ash: customFeedForm.ash,
+      fd_ee: customFeedForm.ee,
+      fd_st: customFeedForm.starch,
+      fd_adf: customFeedForm.adf,
+      fd_lg: customFeedForm.lignin,
+      fd_ndin: customFeedForm.ndin,
+      fd_adin: customFeedForm.adin,
+      fd_npn_cp: customFeedForm.npn,
+    });
+    $q.notify({ type: 'positive', message: t('simulation.feedSelect.customFeedCreated') });
+    showCustomFeed.value = false;
+    // Reset form
+    Object.assign(customFeedForm, {
+      fd_type: null, fd_category: null, name: '',
+      dm: 0, ash: 0, protein: 0, npn: 0, ee: 0, starch: 0,
+      ndf: 0, adf: 0, lignin: 0, ndin: 0, adin: 0, calcium: 0, phosphorus: 0,
+    });
   } catch {
     $q.notify({ type: 'negative', message: t('errors.generic') });
   } finally {
-    showGenerating.value = false;
+    customFeedSubmitting.value = false;
   }
 }
 
@@ -424,6 +564,7 @@ onMounted(() => {
   if (feedsStore.allFeeds.length === 0) {
     void feedsStore.fetchAllFeeds();
   }
+  initSlotsFromStore();
 });
 </script>
 
@@ -444,25 +585,36 @@ onMounted(() => {
   }
 }
 
-.view-toggle {
-  .q-btn-toggle {
-    border: 1px solid var(--q-primary);
-    border-radius: $radius-default;
-    overflow: hidden;
+.feed-card {
+  background: var(--q-card, #fff);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: $radius-loose;
+  padding: 16px;
+
+  .body--dark & {
+    background: var(--q-dark-page, #1e1e1e);
+    border-color: rgba(255, 255, 255, 0.2);
   }
 }
 
-.rounded-borders {
+.add-feed-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed var(--q-primary);
   border-radius: $radius-loose;
+  padding: 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+
+  &:hover {
+    background: rgba(0, 128, 0, 0.04);
+  }
 }
 
-.bordered-scroll {
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  border-radius: $radius-loose;
-  overflow-y: auto;
-
-  .body--dark & {
-    border-color: rgba(255, 255, 255, 0.2);
+.readonly-cost {
+  :deep(.q-field__native) {
+    background: rgba(0, 0, 0, 0.04);
   }
 }
 
@@ -489,5 +641,24 @@ onMounted(() => {
   font-size: 1rem;
   padding-top: 14px;
   padding-bottom: 14px;
+}
+
+.custom-feed-sheet {
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.sheet-handle {
+  width: 40px;
+  height: 4px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
+  margin: 8px auto;
+}
+
+.rounded-borders {
+  border-radius: $radius-loose;
 }
 </style>

@@ -79,7 +79,9 @@
     "addCow": "গৰু যোগ কৰক",
     "logMilk": "গাখীৰৰ তথ্য লিখক",
     "getDiet": "খাদ্য তালিকা লওক",
-    "admin": "এডমিন"
+    "admin": "এডমিন",
+    "feedReports": "খাদ্যৰ প্ৰতিবেদন",
+    "termsConditions": "নিয়মাৱলী আৰু চৰ্তাৱলী"
   },
   "roles": {
     "farmer": "কৃষক",
@@ -236,7 +238,9 @@
     "newPhone": "নতুন ফোন নম্বৰ",
     "currentValue": "বৰ্তমান: {value}",
     "sendCode": "প্ৰমাণীকৰণ ক’ড পঠাওক",
-    "changeSuccess": "আপোনাৰ {type} সফলতাৰে আপডেট কৰা হৈছে।"
+    "changeSuccess": "আপোনাৰ {type} সফলতাৰে আপডেট কৰা হৈছে।",
+    "dangerZone": "বিপদ অঞ্চল",
+    "profileUpdateFailed": "প্ৰফাইল সংৰক্ষণ কৰিব পৰা নগ'ল"
   },
   "cow": {
     "myCows": "মোৰ গৰু",
@@ -678,7 +682,8 @@
       "stover": "শুকান ডাঁটা",
       "straw": "নৰা",
       "succulent": "ৰসাল খাদ্য",
-      "treeLeaves": "গছৰ পাত"
+      "treeLeaves": "গছৰ পাত",
+      "byProductForage": "উপ-জাতীয় ঘাঁহ"
     },
     "labels": {
       "dmPercent": "শুষ্ক পদাৰ্থ (DM)",
@@ -706,7 +711,15 @@
       "pricing": "মূল্য",
       "season": "ঋতু",
       "type": "প্ৰকাৰ",
-      "typeRequired": "প্ৰকাৰ *"
+      "typeRequired": "প্ৰকাৰ *",
+      "adfPercent": "এছিড ডিটাৰজেণ্ট ফাইবাৰ (ADF)",
+      "adfPercentShort": "ADF",
+      "ashPercent": "ছাই",
+      "eePercent": "ইথাৰ এক্সট্ৰেক্ট (EE)",
+      "stPercent": "ষ্টাৰ্চ",
+      "lgPercent": "লিগনিন",
+      "ndinPercent": "NDIN",
+      "adinPercent": "ADIN"
     },
     "seasons": {
       "allYear": "গোটেই বছৰ",
@@ -1869,7 +1882,14 @@
       "subtitle": "দানা যোগ কৰক, সম্পাদনা কৰক আৰু পৰিচালনা কৰক",
       "bulkUpload": "বুল্ক আপলোড",
       "export": "ৰপ্তানি",
-      "noFeeds": "কোনো দানা পোৱা নগ'ল"
+      "noFeeds": "কোনো দানা পোৱা নগ'ল",
+      "manageTypes": "প্ৰকাৰসমূহ পৰিচালনা কৰক",
+      "feedTypes": "খাদ্যৰ প্ৰকাৰ",
+      "feedCategories": "খাদ্যৰ শ্ৰেণী",
+      "type": "প্ৰকাৰ",
+      "category": "শ্ৰেণী:",
+      "newTypeName": "নতুন প্ৰকাৰৰ নাম:",
+      "newCategoryName": "নতুন শ্ৰেণীৰ নাম:"
     },
     "feedback": {
       "title": "মতামত",
@@ -1892,7 +1912,15 @@
       "evaluations": "মূল্যাংকনসমূহ",
       "countryBreakdown": "দেশ অনুসৰি বিভাজন",
       "superOnly": "কেৱল চুপাৰ এডমিনৰ বাবে"
-    }
+    },
+    "welcomeLabel": "স্বাগতম",
+    "bulkUploadExport": "খাদ্যৰ বাল্ক আপলোড আৰু এক্সপ'ৰ্ট",
+    "adminLabel": "প্ৰশাসক",
+    "confirmToggleStatus": "ব্যৱহাৰকাৰী {name}ক {action} কৰিবনে?",
+    "statusUpdated": "ব্যৱহাৰকাৰীৰ স্থিতি সফলভাৱে আপডেট কৰা হৈছে",
+    "statusUpdateFailed": "ব্যৱহাৰকাৰীৰ স্থিতি আপডেট কৰিবলৈ ব্যৰ্থ হ'ল",
+    "enable": "সক্ষম কৰক",
+    "disable": "অক্ষম কৰক"
   },
   "theme": {
     "zinc": "জিংক",
@@ -1951,7 +1979,9 @@
       "distance": "খোজ কঢ়া দূৰত্ব (km)",
       "grazing": "চৰণীয়া পথাৰ",
       "bwGain": "শৰীৰৰ ওজন বৃদ্ধি (kg/day)",
-      "simulationName": "চিমুলেচনৰ নাম"
+      "simulationName": "চিমুলেচনৰ নাম",
+      "simulationCountry": "দেশ:",
+      "activeGrazing": "সক্ৰিয় চৰণীয়া পথাৰ:"
     },
     "topographyOptions": {
       "flat": "সৰল",
@@ -2026,7 +2056,18 @@
       "price": "মূল্য",
       "qty": "পৰিমাণ",
       "feedType_forage": "গছ-বন",
-      "feedType_concentrate": "ঘনীভূত"
+      "feedType_concentrate": "ঘনীভূত",
+      "noForageWarning": "কোনো ফৰেজ খাদ্য বাছনি কৰা হোৱা নাই। পশুধনক সঠিক হজমৰ বাবে আঁহযুক্ত খাদ্যৰ প্ৰয়োজন। কমেও এটা ফৰেজ খাদ্য যোগ কৰাৰ কথা বিবেচনা কৰক।",
+      "feedTypeLabel": "খাদ্যৰ প্ৰকাৰ:",
+      "feedCategoryLabel": "খাদ্যৰ শ্ৰেণী:",
+      "feedNameLabel": "খাদ্য:",
+      "addMoreFeed": "অধিক খাদ্য যোগ কৰক:",
+      "addCustomFeed": "নিজৰ খাদ্য যোগ কৰক:",
+      "feedDetails": "খাদ্যৰ বিৱৰণ:",
+      "feedName": "খাদ্যৰ নাম:",
+      "nutritionalInfo": "পুষ্টিকৰ তথ্য:",
+      "costLabel": "খৰচ:",
+      "customFeedCreated": "নিজৰ খাদ্য সফলভাৱে তৈয়াৰ কৰা হ'ল:"
     },
     "constraints": {
       "title": "নিৰ্দিষ্ট আহাৰৰ সীমা",
@@ -2084,7 +2125,11 @@
       "infeasible": "কোনো সম্ভৱপৰ আহাৰ পোৱা নগ'ল",
       "infeasibleDetail": "বাছনি কৰা দানাই এই পশুটোৰ পুষ্টিৰ প্ৰয়োজনীয়তা পূৰণ কৰিব নোৱাৰে। অপ্টিমাইজ়াৰে এটা সুষম আহাৰ বিচাৰি উলিয়াব নোৱাৰিলে।",
       "infeasibleHint": "বিভিন্ন ধৰণৰ দানা যোগান ধৰিবলৈ চেষ্টা কৰক — ঘাঁহ, প্ৰ'টিন সমৃদ্ধ ঘন দানা (যেনে তেলবীজৰ খাদ্য), আৰু এটা খনিজ পদাৰ্থৰ পৰিপূৰক অন্তৰ্ভুক্ত কৰক।",
-      "tryAgain": "দানা সলনি কৰক"
+      "tryAgain": "দানা সলনি কৰক",
+      "reportSavedDesc": "আপোনাৰ প্ৰতিবেদন সংৰক্ষণ কৰা হৈছে। আপুনি ইয়াক নেভিগেশ্বন পেনেলত 'ফিড ৰিপোৰ্ট'ৰ অধীনত বিচাৰি পাব। আপুনি ইয়াক শ্বেয়াৰ কৰিব বিচাৰেনে?",
+      "sharePrompt": "এই প্ৰতিবেদনখন শ্বেয়াৰ কৰিবনে?",
+      "yesShare": "হয়, শ্বেয়াৰ কৰক",
+      "noDone": "নহয়, হ'ল"
     },
     "methane": {
       "title": "পৰিৱেশীয় প্ৰভাৱ",
@@ -2162,10 +2207,11 @@
       "tpMilk": "1 – 6",
       "parity": "0 – 15",
       "daysOfPregnancy": "0 – 290",
-      "calvingInterval": "300 – 600",
+      "calvingInterval": "৩০০ – ৬০০",
       "temperature": "-20 – 50",
       "distance": "0 – 50",
-      "bwGain": "-1 – 2"
+      "bwGain": "-1 – 2",
+      "simulationCountry": "দানা আৰু প্ৰজাতি বাছনিৰ বাবে দেশ:"
     },
     "nutrientLabels": {
       "ne_l": "শক্তি",
@@ -2182,6 +2228,12 @@
       "calcium_kg": "কেলছিয়াম (kg)",
       "phosphorus_kg": "ফছফৰাছ (kg)",
       "ndf_kg": "ফাইবাৰ (kg)"
+    },
+    "resetConfirmMessage": "আপুনি নিশ্চিতনে যে আপুনি ফৰ্মখন ৰিছেট কৰিব বিচাৰিছে? সকলো প্ৰবিষ্ট তথ্য মচি পেলোৱা হ'ব।",
+    "report": {
+      "share": "শ্বেয়াৰ কৰক:",
+      "print": "প্ৰিণ্ট / PDF:",
+      "copiedToClipboard": "প্ৰতিবেদন ক্লিপব'ৰ্ডত কপি কৰা হ'ল:"
     }
   }
 }

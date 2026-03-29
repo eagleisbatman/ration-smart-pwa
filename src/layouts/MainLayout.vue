@@ -47,8 +47,13 @@
       :breakpoint="599"
     >
       <q-scroll-area class="fit">
+        <!-- Close button -->
+        <div class="text-right q-pa-sm">
+          <q-btn flat round dense icon="close" @click="leftDrawerOpen = false" />
+        </div>
+
         <!-- User Info -->
-        <div class="drawer-header q-pa-md">
+        <div class="drawer-header q-px-md q-pb-md">
           <q-avatar v-if="authStore.profileImage" size="56px">
             <q-img :src="authStore.profileImage" :ratio="1" alt="Profile photo" />
           </q-avatar>
@@ -57,27 +62,19 @@
           </q-avatar>
           <div class="q-mt-sm text-subtitle1">{{ userName }}</div>
           <div class="text-caption text-grey-6">{{ userEmail }}</div>
-          <q-chip v-if="authStore.isAnyAdmin" dense outline size="sm" class="q-mt-xs q-ml-none">
-            <q-icon name="verified_user" size="12px" class="q-mr-xs" />
-            {{ adminLevelLabel }}
-          </q-chip>
         </div>
 
-        <!-- Navigation -->
+        <!-- Navigation (matches mobile app menu order) -->
         <q-list padding>
-          <q-item v-ripple clickable to="/" exact active-class="text-primary bg-grey-2" @click="leftDrawerOpen = false">
-            <q-item-section avatar>
-              <q-icon name="home" />
-            </q-item-section>
-            <q-item-section>{{ $t('nav.home') }}</q-item-section>
-          </q-item>
-
-          <q-item v-ripple clickable to="/diet-history" active-class="text-primary bg-grey-2" @click="leftDrawerOpen = false">
-            <q-item-section avatar>
-              <q-icon name="history" />
-            </q-item-section>
-            <q-item-section>{{ $t('simulation.dietHistory') }}</q-item-section>
-          </q-item>
+          <!-- Admin (shown first for admin users, like mobile app) -->
+          <template v-if="authStore.isAnyAdmin">
+            <q-item v-ripple clickable to="/admin" active-class="text-primary bg-grey-2" @click="leftDrawerOpen = false">
+              <q-item-section avatar>
+                <q-icon name="admin_panel_settings" />
+              </q-item-section>
+              <q-item-section>{{ $t('nav.admin') }}</q-item-section>
+            </q-item>
+          </template>
 
           <q-item v-ripple clickable to="/settings/profile" active-class="text-primary bg-grey-2" @click="leftDrawerOpen = false">
             <q-item-section avatar>
@@ -86,11 +83,11 @@
             <q-item-section>{{ $t('settings.profile') }}</q-item-section>
           </q-item>
 
-          <q-item v-ripple clickable to="/feeds" active-class="text-primary bg-grey-2" @click="leftDrawerOpen = false">
+          <q-item v-ripple clickable to="/diet-history" active-class="text-primary bg-grey-2" @click="leftDrawerOpen = false">
             <q-item-section avatar>
-              <q-icon name="grass" />
+              <q-icon name="description" />
             </q-item-section>
-            <q-item-section>{{ $t('nav.feeds') }}</q-item-section>
+            <q-item-section>{{ $t('nav.feedReports') }}</q-item-section>
           </q-item>
 
           <q-item v-ripple clickable to="/settings/help" active-class="text-primary bg-grey-2" @click="leftDrawerOpen = false">
@@ -102,7 +99,7 @@
 
           <q-item v-ripple clickable to="/settings/feedback" active-class="text-primary bg-grey-2" @click="leftDrawerOpen = false">
             <q-item-section avatar>
-              <q-icon name="feedback" />
+              <q-icon name="chat" />
             </q-item-section>
             <q-item-section>{{ $t('settings.feedback') }}</q-item-section>
           </q-item>
@@ -111,34 +108,22 @@
             <q-item-section avatar>
               <q-icon name="gavel" />
             </q-item-section>
-            <q-item-section>{{ $t('settings.privacyPolicy') }}</q-item-section>
+            <q-item-section>{{ $t('nav.termsConditions') }}</q-item-section>
           </q-item>
 
-          <q-item v-ripple clickable to="/settings" active-class="text-primary bg-grey-2" @click="leftDrawerOpen = false">
+          <q-item v-ripple clickable class="text-negative" @click="logout">
             <q-item-section avatar>
-              <q-icon name="settings" />
-            </q-item-section>
-            <q-item-section>{{ $t('nav.settings') }}</q-item-section>
-          </q-item>
-
-          <template v-if="authStore.isAnyAdmin">
-            <q-item v-ripple clickable to="/admin" active-class="text-primary bg-grey-2" @click="leftDrawerOpen = false">
-              <q-item-section avatar>
-                <q-icon name="admin_panel_settings" />
-              </q-item-section>
-              <q-item-section>{{ $t('nav.admin') }}</q-item-section>
-            </q-item>
-          </template>
-
-          <q-separator class="q-my-md" />
-
-          <q-item v-ripple clickable @click="logout">
-            <q-item-section avatar>
-              <q-icon name="logout" />
+              <q-icon name="logout" color="negative" />
             </q-item-section>
             <q-item-section>{{ $t('nav.logout') }}</q-item-section>
           </q-item>
         </q-list>
+
+        <!-- Footer -->
+        <div class="drawer-footer q-pa-md text-center text-caption text-grey-5">
+          POWERED BY<br/>
+          <span class="text-primary text-weight-medium">DigitalGreen</span>
+        </div>
       </q-scroll-area>
     </q-drawer>
 
@@ -180,12 +165,8 @@ const a2hsRef = ref<InstanceType<typeof AddToHomeScreen> | null>(null);
 
 // Admin level label for drawer badge
 const adminLevelLabel = computed(() => {
-  switch (authStore.adminLevel) {
-    case 'super_admin': return t('admin.superAdmin');
-    case 'country_admin': return t('admin.countryAdmin');
-    case 'org_admin': return t('admin.orgAdmin');
-    default: return '';
-  }
+  if (authStore.isAnyAdmin) return t('admin.adminLabel', 'Admin');
+  return '';
 });
 
 // User info

@@ -109,7 +109,9 @@
     "addCow": "Add Cow",
     "logMilk": "Log Milk",
     "getDiet": "Get Diet",
-    "admin": "Admin"
+    "admin": "Admin",
+    "feedReports": "Feed Reports",
+    "termsConditions": "Terms & Conditions"
   },
   "roles": {
     "farmer": "Farmer",
@@ -248,6 +250,8 @@
     "pinsDontMatch": "PINs don't match",
     "pinChangedSuccess": "PIN changed successfully",
     "pinChangeFailed": "Failed to change PIN",
+    "dangerZone": "Danger Zone",
+    "profileUpdateFailed": "Failed to save profile",
     "defaultUserName": "User",
     "change": "Change",
     "changeEmail": "Change Email",
@@ -1789,6 +1793,8 @@
   "admin": {
     "dashboard": "Admin Dashboard",
     "managingSystem": "Managing your territory",
+    "welcomeLabel": "WELCOME",
+    "bulkUploadExport": "Bulk Upload & Export Feed",
     "userManagement": "User Management",
     "orgManagement": "Organizations",
     "analytics": "Admin Analytics",
@@ -1800,7 +1806,7 @@
     "totalDiets": "Diets",
     "totalMilkLogs": "Milk Logs",
     "totalEws": "Extension Workers",
-    "manageUsers": "Manage Users",
+    "manageUsers": "User Management",
     "manageOrgs": "Manage Organizations",
     "viewAnalytics": "View Analytics",
     "setAdminLevel": "Set Admin Level",
@@ -1811,6 +1817,7 @@
     "orgAdmin": "Org Admin",
     "countryAdmin": "Country Admin",
     "superAdmin": "Super Admin",
+    "adminLabel": "Admin",
     "role": "Role",
     "status": "Status",
     "active": "Active",
@@ -1863,10 +1870,17 @@
       "subtitle": "Add, edit & manage feeds",
       "bulkUpload": "Bulk Upload",
       "export": "Export",
-      "noFeeds": "No feeds found"
+      "noFeeds": "No feeds found",
+      "manageTypes": "Manage Types",
+      "feedTypes": "Feed Types",
+      "feedCategories": "Feed Categories",
+      "type": "Type",
+      "category": "Category",
+      "newTypeName": "New type name",
+      "newCategoryName": "New category name"
     },
     "feedback": {
-      "title": "Feedback",
+      "title": "Feedback Management",
       "subtitle": "View user feedback",
       "overview": "Feedback Overview",
       "totalResponses": "Total Responses",
@@ -1926,6 +1940,7 @@
     },
     "fields": {
       "simulationName": "Simulation Name",
+      "simulationCountry": "Country",
       "bodyWeight": "Body Weight (kg)",
       "breed": "Breed",
       "bcScore": "Body Condition Score",
@@ -1941,6 +1956,7 @@
       "topography": "Topography",
       "distance": "Walking Distance (km)",
       "grazing": "Grazing",
+      "activeGrazing": "Active Grazing",
       "bwGain": "Expected Weight Change (kg/day)"
     },
     "units": {
@@ -1963,7 +1979,8 @@
       "calvingInterval": "300 – 600",
       "temperature": "Current weather temperature",
       "distance": "How far the cow walks daily",
-      "bwGain": "Negative = losing weight, 0 = stable, positive = gaining"
+      "bwGain": "Negative = losing weight, 0 = stable, positive = gaining",
+      "simulationCountry": "Country for feed and breed selection"
     },
     "topographyHint": "Flat / Hilly / Mountainous",
     "topographyOptions": {
@@ -2019,6 +2036,7 @@
       "allCategories": "All Categories",
       "selectedFeeds": "Selected Feeds",
       "noFeedsSelected": "No feeds selected",
+      "noForageWarning": "No forage feeds selected. Cattle require roughage for proper digestion. Consider adding at least one forage feed.",
       "selectAtLeast": "Select at least one feed to continue",
       "pricePerKg": "Price/kg",
       "quantityKg": "Quantity (kg/day)",
@@ -2039,7 +2057,17 @@
       "customFeed": "Custom Feed",
       "customFeedHint": "Custom feed creation is coming soon.",
       "price": "Price",
-      "qty": "Qty"
+      "qty": "Qty",
+      "feedTypeLabel": "Feed Type",
+      "feedCategoryLabel": "Feed Category",
+      "feedNameLabel": "Feed",
+      "addMoreFeed": "Add More Feed",
+      "addCustomFeed": "Add Custom Feed",
+      "feedDetails": "Feed Details",
+      "feedName": "Feed Name",
+      "nutritionalInfo": "Nutritional Information",
+      "costLabel": "Cost",
+      "customFeedCreated": "Custom feed created successfully"
     },
     "constraints": {
       "title": "Custom Diet Limits",
@@ -2108,7 +2136,11 @@
       "warnings": "Warnings",
       "recommendations": "Recommendations",
       "saveReport": "Save Report",
-      "reportSaved": "Report saved successfully",
+      "reportSaved": "Report Saved Successfully",
+      "reportSavedDesc": "Your report has been saved. You can find it under Feed Reports in the Navigation Panel. Would you like to share it?",
+      "sharePrompt": "SHARE THIS REPORT?",
+      "yesShare": "Yes, Share",
+      "noDone": "No, Done",
       "noData": "No recommendation data available",
       "infeasible": "No feasible diet found",
       "infeasibleDetail": "The selected feeds cannot meet the nutritional requirements for this animal. The optimizer could not find a balanced diet.",
@@ -2170,6 +2202,11 @@
       "evaluations": "Evaluations",
       "failed": "Failed"
     },
-    "noFilterResults": "Nothing here yet — try running a simulation!"
+    "noFilterResults": "Nothing here yet — try running a simulation!",
+    "report": {
+      "share": "Share",
+      "print": "Print / PDF",
+      "copiedToClipboard": "Report copied to clipboard"
+    }
   }
 }

@@ -99,36 +99,61 @@
         </q-card-section>
       </q-card>
 
-      <!-- Actions -->
-      <div class="q-gutter-sm q-mt-lg">
+      <!-- Spacer for sticky bottom bar -->
+      <div style="height: 72px;" class="print-hide" />
+
+      <!-- Sticky Bottom Action Bar -->
+      <div class="report-action-bar print-hide">
         <q-btn
-          :label="$t('simulation.evaluation.generateRecommendation')"
-          color="primary"
-          class="full-width action-btn"
-          unelevated
-          no-caps
-          icon="auto_fix_high"
-          @click="showRecDialog = true"
-        />
-        <q-btn
-          :label="$t('simulation.rerunSimulation')"
           outline
           color="primary"
-          class="full-width action-btn"
-          no-caps
-          icon="replay"
-          @click="rerunSimulation"
-        />
-        <q-btn
-          :label="$t('simulation.newCase')"
-          color="grey-7"
-          flat
-          class="full-width"
-          no-caps
           icon="add"
+          :label="$t('simulation.newCase')"
+          no-caps
+          class="col action-btn"
           @click="newCase"
         />
+        <q-btn
+          color="primary"
+          icon="download"
+          :label="$t('simulation.recommendation.saveReport')"
+          no-caps
+          unelevated
+          class="col action-btn"
+          @click="onSaveReport"
+        />
       </div>
+
+      <!-- Save Report Success Dialog -->
+      <q-dialog v-model="showSaveDialog">
+        <q-card class="save-dialog text-center q-pa-md">
+          <q-icon name="check_circle" color="positive" size="56px" />
+          <div class="text-h6 q-mt-md">{{ $t('simulation.recommendation.reportSaved') }}</div>
+          <div class="text-body2 text-grey-7 q-mt-sm">
+            {{ $t('simulation.recommendation.reportSavedDesc', 'Your report has been saved. You can find it under Feed Reports in the Navigation Panel. Would you like to share it?') }}
+          </div>
+          <div class="text-subtitle2 text-grey-6 q-mt-md">{{ $t('simulation.recommendation.sharePrompt', 'SHARE THIS REPORT?') }}</div>
+          <div class="q-mt-md q-gutter-sm">
+            <q-btn
+              color="primary"
+              icon="share"
+              :label="$t('simulation.recommendation.yesShare', 'Yes, Share')"
+              no-caps
+              unelevated
+              class="full-width action-btn"
+              @click="onShareFromDialog"
+            />
+            <q-btn
+              outline
+              color="primary"
+              :label="$t('simulation.recommendation.noDone', 'No, Done')"
+              no-caps
+              class="full-width action-btn"
+              v-close-popup
+            />
+          </div>
+        </q-card>
+      </q-dialog>
     </template>
 
     <!-- Generate Recommendation Dialog -->
@@ -189,6 +214,7 @@ import { useQuasar } from 'quasar';
 import { useI18n } from 'vue-i18n';
 import { useSimulationStore, type NutrientBalanceEntry } from 'src/stores/simulation';
 import { useCurrency } from 'src/composables/useCurrency';
+import { useReportShare } from 'src/composables/useReportShare';
 import AnimalCharacteristicsSummary from 'src/components/simulation/AnimalCharacteristicsSummary.vue';
 import CostBreakdownTable from 'src/components/simulation/CostBreakdownTable.vue';
 import MethaneMetrics from 'src/components/simulation/MethaneMetrics.vue';
@@ -198,9 +224,11 @@ const $q = useQuasar();
 const { t } = useI18n();
 const store = useSimulationStore();
 const { formatCurrency } = useCurrency();
+const { shareReport } = useReportShare();
 
 const showRecDialog = ref(false);
 const showGenerating = ref(false);
+const showSaveDialog = ref(false);
 const useCustomMilk = ref(false);
 const milkOverride = ref(store.cattleInfo.milk_production);
 
@@ -288,8 +316,23 @@ function rerunSimulation() {
 }
 
 function newCase() {
-  store.resetForm();
-  router.push('/');
+  store.newCaseFromPrevious();
+  router.push('/cattle-info');
+}
+
+function onSaveReport() {
+  showSaveDialog.value = true;
+}
+
+function onShareFromDialog() {
+  showSaveDialog.value = false;
+  void shareReport({
+    title: t('simulation.evaluation.title'),
+    simulationName: store.simulationName || undefined,
+    totalCost: costAnalysis.value?.total_cost ?? undefined,
+    milkProduction: milkAnalysis.value?.target_milk ?? undefined,
+    feeds: feedBreakdown.value,
+  });
 }
 </script>
 
@@ -304,5 +347,29 @@ function newCase() {
   font-size: 1rem;
   padding-top: 12px;
   padding-bottom: 12px;
+}
+
+.report-action-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  gap: 12px;
+  padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+  background: var(--q-background, #fff);
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  z-index: 10;
+
+  .body--dark & {
+    background: var(--q-dark-page, #121212);
+    border-top-color: rgba(255, 255, 255, 0.1);
+  }
+}
+
+.save-dialog {
+  border-radius: 16px;
+  min-width: 300px;
+  max-width: 400px;
 }
 </style>

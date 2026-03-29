@@ -1192,6 +1192,11 @@ body {
     border-inline-start-color: rgba(255, 255, 255, 0.12) !important;
   }
 
+  // ---- Print: hide in dark mode too ----
+  .print-hide {
+    // Handled by @media print below
+  }
+
   // ---- Auth layout ----
   // Page bg darker than card for visual separation
   .auth-layout {
@@ -1364,5 +1369,64 @@ body {
     scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
   }
 
+}
+
+// ============================================
+// Print Styles (Save as PDF)
+// ============================================
+// Clean print output: hide chrome, expand content, force light background.
+
+@media print {
+  // Hide navigation, drawers, FABs, footers, banners
+  .q-header,
+  .q-footer,
+  .q-drawer,
+  .q-drawer__backdrop,
+  .q-fab,
+  .q-page-sticky,
+  .print-hide,
+  .skip-to-content {
+    display: none !important;
+  }
+
+  // Remove page padding adjustments from layout
+  .q-page-container {
+    padding-top: 0 !important;
+    padding-left: 0 !important;
+  }
+
+  // Force light background for readable PDF
+  body,
+  .q-page {
+    background: white !important;
+    color: #111 !important;
+  }
+
+  // Remove card shadows/borders for cleaner print
+  .q-card {
+    box-shadow: none !important;
+    border: 1px solid #ddd !important;
+    break-inside: avoid;
+  }
+
+  // Expand content width
+  .q-page {
+    max-width: 100% !important;
+    padding: 12px !important;
+  }
+
+  // Ensure text is black
+  .text-grey-5,
+  .text-grey-6,
+  .text-grey-7,
+  .text-grey-8 {
+    color: #555 !important;
+  }
+
+  // No page break inside tables
+  .q-markup-table,
+  .q-list {
+    break-inside: avoid;
+  }
 }
 

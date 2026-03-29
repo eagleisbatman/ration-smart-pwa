@@ -79,7 +79,9 @@
     "addCow": "إضافة بقرة",
     "logMilk": "تسجيل الحليب",
     "getDiet": "الحصول على نظام غذائي",
-    "admin": "المسؤول"
+    "admin": "المسؤول",
+    "feedReports": "تقارير الأعلاف",
+    "termsConditions": "الشروط والأحكام"
   },
   "roles": {
     "farmer": "مزارع",
@@ -236,7 +238,9 @@
     "newPhone": "رقم هاتف جديد",
     "currentValue": "الحالي: {value}",
     "sendCode": "إرسال رمز التحقق",
-    "changeSuccess": "تم تحديث {type} بنجاح."
+    "changeSuccess": "تم تحديث {type} بنجاح.",
+    "dangerZone": "منطقة الخطر",
+    "profileUpdateFailed": "فشل حفظ الملف الشخصي"
   },
   "cow": {
     "myCows": "أبقاري",
@@ -678,7 +682,8 @@
       "stover": "تبن",
       "straw": "قش",
       "succulent": "عصاري",
-      "treeLeaves": "أوراق شجر"
+      "treeLeaves": "أوراق شجر",
+      "byProductForage": "أعلاف المنتجات الثانوية"
     },
     "labels": {
       "dmPercent": "المادة الجافة (DM)",
@@ -706,7 +711,15 @@
       "pricing": "التسعير",
       "season": "الموسم",
       "type": "النوع",
-      "typeRequired": "النوع *"
+      "typeRequired": "النوع *",
+      "adfPercent": "الألياف المنظفة الحمضية (ADF)",
+      "adfPercentShort": "ADF",
+      "ashPercent": "الرماد",
+      "eePercent": "مستخلص الإيثر (EE)",
+      "stPercent": "النشا",
+      "lgPercent": "اللجنين",
+      "ndinPercent": "NDIN",
+      "adinPercent": "ADIN"
     },
     "seasons": {
       "allYear": "طوال العام",
@@ -1870,7 +1883,14 @@
       "subtitle": "إضافة الأعلاف وتعديلها وإدارتها",
       "bulkUpload": "تحميل مجمع",
       "export": "تصدير",
-      "noFeeds": "لم يتم العثور على أعلاف"
+      "noFeeds": "لم يتم العثور على أعلاف",
+      "manageTypes": "إدارة الأنواع",
+      "feedTypes": "أنواع الأعلاف",
+      "feedCategories": "فئات الأعلاف",
+      "type": "النوع",
+      "category": "الفئة",
+      "newTypeName": "اسم النوع الجديد",
+      "newCategoryName": "اسم الفئة الجديدة"
     },
     "feedback": {
       "title": "الملاحظات",
@@ -1893,7 +1913,15 @@
       "evaluations": "التقييمات",
       "countryBreakdown": "توزيع حسب الدولة",
       "superOnly": "للمشرف الرئيسي فقط"
-    }
+    },
+    "welcomeLabel": "مرحباً بك",
+    "bulkUploadExport": "رفع وتصدير الأعلاف بالجملة",
+    "adminLabel": "المسؤول",
+    "confirmToggleStatus": "{action} المستخدم {name}؟",
+    "statusUpdated": "تم تحديث حالة المستخدم بنجاح",
+    "statusUpdateFailed": "فشل تحديث حالة المستخدم",
+    "enable": "تمكين",
+    "disable": "تعطيل"
   },
   "theme": {
     "zinc": "زنك",
@@ -1952,7 +1980,9 @@
       "distance": "مسافة المشي (كم)",
       "grazing": "الرعي",
       "bwGain": "زيادة وزن الجسم (كجم/يوم)",
-      "simulationName": "اسم المحاكاة"
+      "simulationName": "اسم المحاكاة",
+      "simulationCountry": "البلد",
+      "activeGrazing": "الرعي النشط"
     },
     "topographyOptions": {
       "flat": "مسطحة",
@@ -2027,7 +2057,18 @@
       "price": "السعر",
       "qty": "الكمية",
       "feedType_forage": "أعلاف خضراء",
-      "feedType_concentrate": "أعلاف مركزة"
+      "feedType_concentrate": "أعلاف مركزة",
+      "noForageWarning": "لم يتم اختيار أعلاف خشنة. تحتاج الماشية إلى أعلاف خشنة للهضم السليم. فكر في إضافة علف خشن واحد على الأقل.",
+      "feedTypeLabel": "نوع العلف",
+      "feedCategoryLabel": "فئة العلف",
+      "feedNameLabel": "العلف",
+      "addMoreFeed": "أضف المزيد من العلف",
+      "addCustomFeed": "أضف علفًا مخصصًا",
+      "feedDetails": "تفاصيل العلف",
+      "feedName": "اسم العلف",
+      "nutritionalInfo": "المعلومات الغذائية",
+      "costLabel": "التكلفة",
+      "customFeedCreated": "تم إنشاء العلف المخصص بنجاح"
     },
     "constraints": {
       "title": "حدود النظام الغذائي المخصصة",
@@ -2085,7 +2126,11 @@
       "infeasible": "لم يتم العثور على عليقة ممكنة",
       "infeasibleDetail": "الأعلاف المختارة لا تستطيع تلبية الاحتياجات الغذائية لهذا الحيوان. لم يتمكن برنامج التحسين من إيجاد عليقة متوازنة.",
       "infeasibleHint": "حاول إضافة المزيد من أنواع الأعلاف — قم بتضمين الأعلاف الخشنة، والمركزات الغنية بالبروتين (مثل كسب البذور الزيتية)، ومكمل معدني.",
-      "tryAgain": "تغيير الأعلاف"
+      "tryAgain": "تغيير الأعلاف",
+      "reportSavedDesc": "تم حفظ تقريرك. يمكنك العثور عليه ضمن تقارير الأعلاف في لوحة التنقل. هل ترغب في مشاركته؟",
+      "sharePrompt": "مشاركة هذا التقرير؟",
+      "yesShare": "نعم، شارك",
+      "noDone": "لا، انتهيت"
     },
     "methane": {
       "title": "التأثير البيئي",
@@ -2166,7 +2211,8 @@
       "calvingInterval": "300 – 600",
       "temperature": "-20 – 50",
       "distance": "0 – 50",
-      "bwGain": "-1 – 2"
+      "bwGain": "-1 – 2",
+      "simulationCountry": "البلد لاختيار الأعلاف والسلالات"
     },
     "nutrientLabels": {
       "ne_l": "الطاقة",
@@ -2183,6 +2229,12 @@
       "calcium_kg": "كالسيوم (كجم)",
       "phosphorus_kg": "فوسفور (كجم)",
       "ndf_kg": "ألياف (كجم)"
+    },
+    "resetConfirmMessage": "هل أنت متأكد أنك تريد إعادة ضبط النموذج؟ سيتم مسح جميع البيانات المدخلة.",
+    "report": {
+      "share": "مشاركة",
+      "print": "طباعة / PDF",
+      "copiedToClipboard": "تم نسخ التقرير إلى الحافظة"
     }
   }
 }
