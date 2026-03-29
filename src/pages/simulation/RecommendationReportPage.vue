@@ -109,17 +109,23 @@
         <q-card v-if="nutrientBalance && Object.keys(nutrientBalance).length > 0" flat bordered class="q-mb-md rounded-borders">
           <q-card-section>
             <div class="text-subtitle2 q-mb-sm">{{ $t('simulation.evaluation.nutrientBalance') }}</div>
-            <q-list dense separator>
-              <q-item v-for="(val, key) in nutrientBalance" :key="String(key)">
-                <q-item-section>{{ friendlyNutrient(String(key)) }}</q-item-section>
-                <q-item-section side>
+            <div class="nutrient-table">
+              <div class="nutrient-row nutrient-header">
+                <div class="nutrient-col nutrient-name">{{ $t('simulation.evaluation.nutrient', 'Nutrient') }}</div>
+                <div class="nutrient-col nutrient-balance">{{ $t('simulation.evaluation.balance', 'Balance') }}</div>
+                <div class="nutrient-col nutrient-status">{{ $t('simulation.evaluation.statusLabel', 'Status') }}</div>
+              </div>
+              <div v-for="(val, key) in nutrientBalance" :key="String(key)" class="nutrient-row">
+                <div class="nutrient-col nutrient-name">{{ friendlyNutrient(String(key)) }}</div>
+                <div class="nutrient-col nutrient-balance text-weight-medium">{{ getNutrientValue(val as NutrientBalanceEntry) }}</div>
+                <div class="nutrient-col nutrient-status">
                   <q-badge
                     :color="getNutrientColor(val as NutrientBalanceEntry)"
                     :label="getNutrientStatus(val as NutrientBalanceEntry)"
                   />
-                </q-item-section>
-              </q-item>
-            </q-list>
+                </div>
+              </div>
+            </div>
           </q-card-section>
         </q-card>
 
@@ -338,6 +344,13 @@ function getNutrientStatus(val: NutrientBalanceEntry): string {
   return translateStatus(raw);
 }
 
+function getNutrientValue(val: NutrientBalanceEntry): string {
+  if (val?.balance != null) return String(val.balance);
+  if (val?.value != null) return String(val.value);
+  if (val?.supplied != null && val?.required != null) return `${val.supplied} / ${val.required}`;
+  return '–';
+}
+
 function goToFeedSelection() {
   router.push('/feed-selection');
 }
@@ -409,5 +422,37 @@ function onShareFromDialog() {
   border-radius: 16px;
   min-width: 300px;
   max-width: 400px;
+}
+
+.nutrient-table {
+  width: 100%;
+}
+
+.nutrient-row {
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+
+  .body--dark & {
+    border-bottom-color: rgba(255, 255, 255, 0.08);
+  }
+}
+
+.nutrient-header {
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.5);
+
+  .body--dark & {
+    color: rgba(255, 255, 255, 0.5);
+  }
+}
+
+.nutrient-col {
+  &.nutrient-name { flex: 1; }
+  &.nutrient-balance { width: 80px; text-align: right; padding-right: 12px; font-size: 0.85rem; }
+  &.nutrient-status { width: 90px; text-align: center; }
 }
 </style>

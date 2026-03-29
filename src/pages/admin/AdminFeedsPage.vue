@@ -27,6 +27,9 @@
         <q-btn outline color="primary" icon="download" :label="$t('admin.feeds.export')" no-caps :loading="exporting" @click="doExport" />
       </div>
       <div class="col-auto">
+        <q-btn outline color="accent" icon="download" :label="$t('admin.feeds.exportCustom', 'Export Custom')" no-caps :loading="exportingCustom" @click="doExportCustom" />
+      </div>
+      <div class="col-auto">
         <q-btn outline color="secondary" icon="category" :label="$t('admin.feeds.manageTypes', 'Manage Types')" no-caps @click="showTypesDialog = true" />
       </div>
     </div>
@@ -208,6 +211,7 @@ const showTypesDialog = ref(false);
 const editingFeed = ref<Record<string, unknown> | null>(null);
 const saving = ref(false);
 const exporting = ref(false);
+const exportingCustom = ref(false);
 const uploading = ref(false);
 const uploadFile = ref<File | null>(null);
 
@@ -334,6 +338,15 @@ async function doExport() {
   exporting.value = true;
   const url = await adminStore.exportFeeds(authStore.user?.country_id as string);
   exporting.value = false;
+  if (!url) {
+    $q.notify({ type: 'negative', message: adminStore.error || 'Export failed' });
+  }
+}
+
+async function doExportCustom() {
+  exportingCustom.value = true;
+  const url = await adminStore.exportFeeds(authStore.user?.country_id as string, true);
+  exportingCustom.value = false;
   if (!url) {
     $q.notify({ type: 'negative', message: adminStore.error || 'Export failed' });
   }

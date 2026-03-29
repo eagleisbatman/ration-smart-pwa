@@ -463,15 +463,7 @@
       "failed": "ਅਸੀਂ ਇਹਨਾਂ ਚਾਰਿਆਂ ਨਾਲ ਇੱਕ ਸੰਤੁਲਿਤ ਖੁਰਾਕ ਨਹੀਂ ਬਣਾ ਸਕੇ। ਇੱਕ ਵੱਖਰਾ ਮਿਸ਼ਰਣ ਚੁਣਨ ਦੀ ਕੋਸ਼ਿਸ਼ ਕਰੋ — ਜਿਸ ਵਿੱਚ ਅਨਾਜ, ਹਰਾ ਚਾਰਾ, ਅਤੇ ਪ੍ਰੋਟੀਨ ਸਰੋਤ ਸ਼ਾਮਲ ਹੋਣ।",
       "waiting": "ਅਨੁਕੂਲਤਾ ਸ਼ੁਰੂ ਹੋਣ ਦੀ ਉਡੀਕ ਕਰ ਰਿਹਾ ਹੈ..."
     },
-    "statusLabel": {
-      "completed": "ਪੂਰਾ ਹੋ ਗਿਆ",
-      "processing": "ਪ੍ਰੋਸੈਸਿੰਗ",
-      "failed": "ਅਸਫਲ",
-      "pending": "ਬਕਾਇਆ",
-      "saved": "ਸੁਰੱਖਿਅਤ ਕੀਤਾ ਗਿਆ",
-      "following": "ਪਾਲਣਾ ਕਰ ਰਿਹਾ ਹੈ",
-      "archived": "ਪੁਰਾਲੇਖਬੱਧ"
-    },
+    "statusLabel": "ਸਥਿਤੀ",
     "tdnLabel": "ਟੀਡੀਐਨ",
     "dailyCost": "ਰੋਜ਼ਾਨਾ ਲਾਗਤ",
     "dmKg": "ਖੁਸ਼ਕ ਪਦਾਰਥ ਦਾ ਸੇਵਨ (ਕਿਲੋਗ੍ਰਾਮ)",
@@ -602,7 +594,9 @@
     "ofNeeded": "ਲੋੜੀਂਦੇ ਵਿੱਚੋਂ",
     "needsMore": "{amount} {unit} ਹੋਰ ਚਾਹੀਦਾ ਹੈ",
     "overNeeded": "ਲੋੜ ਤੋਂ {ratio} ਗੁਣਾ ਵੱਧ",
-    "nutrientExcessWarning": "{nutrient} ਲੋੜ ਤੋਂ {ratio} ਗੁਣਾ ਵੱਧ ਹੈ। ਇਹ ਖਣਿਜ ਪੂਰਕਾਂ ਕਰਕੇ ਹੋ ਸਕਦਾ ਹੈ।"
+    "nutrientExcessWarning": "{nutrient} ਲੋੜ ਤੋਂ {ratio} ਗੁਣਾ ਵੱਧ ਹੈ। ਇਹ ਖਣਿਜ ਪੂਰਕਾਂ ਕਰਕੇ ਹੋ ਸਕਦਾ ਹੈ।",
+    "nutrient": "ਪੌਸ਼ਟਿਕ ਤੱਤ",
+    "balance": "ਸੰਤੁਲਨ"
   },
   "feed": {
     "feeds": "ਚਾਰਾ",
@@ -1889,7 +1883,8 @@
       "type": "ਕਿਸਮ",
       "category": "ਸ਼੍ਰੇਣੀ",
       "newTypeName": "ਨਵੀਂ ਕਿਸਮ ਦਾ ਨਾਮ",
-      "newCategoryName": "ਨਵੀਂ ਸ਼੍ਰੇਣੀ ਦਾ ਨਾਮ"
+      "newCategoryName": "ਨਵੀਂ ਸ਼੍ਰੇਣੀ ਦਾ ਨਾਮ",
+      "exportCustom": "ਕਸਟਮ ਐਕਸਪੋਰਟ ਕਰੋ"
     },
     "feedback": {
       "title": "ਫੀਡਬੈਕ",
@@ -2067,7 +2062,10 @@
       "feedName": "ਫੀਡ ਦਾ ਨਾਮ",
       "nutritionalInfo": "ਪੌਸ਼ਟਿਕ ਜਾਣਕਾਰੀ",
       "costLabel": "ਲਾਗਤ",
-      "customFeedCreated": "ਕਸਟਮ ਫੀਡ ਸਫਲਤਾਪੂਰਵਕ ਬਣਾਈ ਗਈ"
+      "customFeedCreated": "ਕਸਟਮ ਫੀਡ ਸਫਲਤਾਪੂਰਵਕ ਬਣਾਈ ਗਈ",
+      "noForageTitle": "ਕੋਈ ਚਾਰਾ ਨਹੀਂ ਚੁਣਿਆ ਗਿਆ",
+      "noForageConfirm": "ਪਸ਼ੂਆਂ ਨੂੰ ਸਹੀ ਪਾਚਨ ਲਈ ਮੋਟੇ ਚਾਰੇ/ਹਰੇ ਚਾਰੇ ਦੀ ਲੋੜ ਹੁੰਦੀ ਹੈ। ਕੀ ਤੁਸੀਂ ਬਿਨਾਂ ਕਿਸੇ ਚਾਰੇ ਦੇ ਅੱਗੇ ਵਧਣਾ ਚਾਹੁੰਦੇ ਹੋ?",
+      "proceedAnyway": "ਫਿਰ ਵੀ ਅੱਗੇ ਵਧੋ"
     },
     "constraints": {
       "title": "ਖੁਰਾਕ ਦੀਆਂ ਖਾਸ ਸੀਮਾਵਾਂ",

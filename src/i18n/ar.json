@@ -463,15 +463,7 @@
       "failed": "لم نتمكن من إنشاء نظام غذائي متوازن بهذه الأعلاف. حاول اختيار مزيج مختلف — قم بتضمين الحبوب والأعلاف الخضراء ومصادر البروتين.",
       "waiting": "في انتظار بدء التحسين..."
     },
-    "statusLabel": {
-      "completed": "مكتمل",
-      "processing": "قيد المعالجة",
-      "failed": "فشل",
-      "pending": "معلق",
-      "saved": "محفوظ",
-      "following": "متابع",
-      "archived": "مؤرشفة"
-    },
+    "statusLabel": "الحالة",
     "tdnLabel": "إجمالي المغذيات القابلة للهضم",
     "dailyCost": "التكلفة اليومية",
     "dmKg": "المدخول من المادة الجافة (كجم)",
@@ -602,7 +594,9 @@
     "ofNeeded": "من المطلوب",
     "needsMore": "يحتاج {amount} {unit} أكثر",
     "overNeeded": "{ratio}x فوق المطلوب",
-    "nutrientExcessWarning": "{nutrient} أعلى من المتطلبات بـ {ratio} مرة. قد يكون هذا بسبب المكملات المعدنية."
+    "nutrientExcessWarning": "{nutrient} أعلى من المتطلبات بـ {ratio} مرة. قد يكون هذا بسبب المكملات المعدنية.",
+    "nutrient": "المغذيات",
+    "balance": "التوازن"
   },
   "feed": {
     "feeds": "الأعلاف",
@@ -713,7 +707,7 @@
       "type": "النوع",
       "typeRequired": "النوع *",
       "adfPercent": "الألياف المنظفة الحمضية (ADF)",
-      "adfPercentShort": "ADF",
+      "adfPercentShort": "ألياف محايدة",
       "ashPercent": "الرماد",
       "eePercent": "مستخلص الإيثر (EE)",
       "stPercent": "النشا",
@@ -1890,7 +1884,8 @@
       "type": "النوع",
       "category": "الفئة",
       "newTypeName": "اسم النوع الجديد",
-      "newCategoryName": "اسم الفئة الجديدة"
+      "newCategoryName": "اسم الفئة الجديدة",
+      "exportCustom": "تصدير مخصص"
     },
     "feedback": {
       "title": "الملاحظات",
@@ -2068,7 +2063,10 @@
       "feedName": "اسم العلف",
       "nutritionalInfo": "المعلومات الغذائية",
       "costLabel": "التكلفة",
-      "customFeedCreated": "تم إنشاء العلف المخصص بنجاح"
+      "customFeedCreated": "تم إنشاء العلف المخصص بنجاح",
+      "noForageTitle": "لم يتم اختيار علف خشن",
+      "noForageConfirm": "تحتاج الماشية إلى علف خشن/أعلاف خضراء للهضم السليم. هل أنت متأكد من أنك تريد المتابعة بدون أي علف خشن؟",
+      "proceedAnyway": "المتابعة على أي حال"
     },
     "constraints": {
       "title": "حدود النظام الغذائي المخصصة",

@@ -463,15 +463,7 @@
       "failed": "Nyaata jiru kanaan nyaata walsimaa uumuu hin dandeenye. Makoo adda addaa filuuf yaali — midhaan, marga magariisaa fi madda pirootiinii dabaladhu.",
       "waiting": "Qophii jalqabuuf eeggachaa jira..."
     },
-    "statusLabel": {
-      "completed": "Xumurameera",
-      "processing": "Adeemsarra jira",
-      "failed": "Kufee jira",
-      "pending": "Eeggachaa jira",
-      "saved": "Olfameera",
-      "following": "Hordofamaa jira",
-      "archived": "Kuufame"
-    },
+    "statusLabel": "Haala",
     "tdnLabel": "TDN",
     "dailyCost": "Baasii Guyyaa",
     "dmKg": "Nyaata Gogaa (kg)",
@@ -602,7 +594,9 @@
     "ofNeeded": "isa barbaachisu irraa",
     "needsMore": "{amount} {unit} caalaa barbaada",
     "overNeeded": "isa barbaachisu irraa {ratio}x caala",
-    "nutrientExcessWarning": "{nutrient} barbaachisummaa isaa {ratio}x oli. Kun dabalata albuudaa irraa kan ka'e ta'uu danda'a."
+    "nutrientExcessWarning": "{nutrient} barbaachisummaa isaa {ratio}x oli. Kun dabalata albuudaa irraa kan ka'e ta'uu danda'a.",
+    "nutrient": "Nyaata",
+    "balance": "Walmadaalummaa"
   },
   "feed": {
     "feeds": "Nyaata",
@@ -1888,7 +1882,8 @@
       "type": "Gosa",
       "category": "Ramaddii",
       "newTypeName": "Maqaa gosa haaraa",
-      "newCategoryName": "Maqaa ramaddii haaraa"
+      "newCategoryName": "Maqaa ramaddii haaraa",
+      "exportCustom": "Kan Ofii Baasuu"
     },
     "feedback": {
       "title": "Yaada",
@@ -2055,7 +2050,7 @@
       "price": "Gatii",
       "qty": "Qabii",
       "feedType_forage": "Marga",
-      "feedType_concentrate": "Concentrate",
+      "feedType_concentrate": "Konseenitireetii",
       "noForageWarning": "Nyaanni margaa hin filatamne. Loonni nyaata gogogaa garaachaan qabachuuf barbaadu. Nyaata margaa tokko yookaan isaa ol dabaluu yaadi.",
       "feedTypeLabel": "Gosa Nyaataa",
       "feedCategoryLabel": "Damee Nyaataa",
@@ -2066,7 +2061,10 @@
       "feedName": "Maqaa Nyaataa",
       "nutritionalInfo": "Odeeffannoo Soorataa",
       "costLabel": "Baasii",
-      "customFeedCreated": "Nyaanni ofii milkaa'inaan uumameera"
+      "customFeedCreated": "Nyaanni ofii milkaa'inaan uumameera",
+      "noForageTitle": "Nyaata Coomaa Hin Filamne",
+      "noForageConfirm": "Loowwan nyaata sirriitti daakuf coomaa barbaadu. Nyaata coomaa malee itti fufuu barbaaddaa?",
+      "proceedAnyway": "Haala Kamiinuu Itti Fufi"
     },
     "constraints": {
       "title": "Daangaa Nyaataa Murtaa'e",

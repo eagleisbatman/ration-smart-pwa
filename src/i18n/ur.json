@@ -463,15 +463,7 @@
       "failed": "ان اجزاء کے ساتھ متوازن خوراک نہیں بن سکی۔ براہ کرم مختلف اشیاء منتخب کریں — جیسے اناج، ہرا چارہ، اور پروٹین کے ذرائع شامل کریں۔",
       "waiting": "کام شروع ہونے کا انتظار ہے..."
     },
-    "statusLabel": {
-      "completed": "مکمل",
-      "processing": "جاری ہے",
-      "failed": "ناکام",
-      "pending": "باقی ہے",
-      "saved": "محفوظ",
-      "following": "پیروی کر رہے ہیں",
-      "archived": "آرکائیو شدہ"
-    },
+    "statusLabel": "حالت",
     "tdnLabel": "ٹی ڈی این",
     "dailyCost": "روزانہ کی لاگت",
     "dmKg": "خشک مادہ کی مقدار (کلو)",
@@ -602,7 +594,9 @@
     "ofNeeded": "مطلوبہ کا",
     "needsMore": "مزید {amount} {unit} درکار ہیں",
     "overNeeded": "مطلوبہ سے {ratio} گنا زیادہ",
-    "nutrientExcessWarning": "{nutrient} مطلوبہ مقدار سے {ratio} گنا زیادہ ہے۔ یہ معدنی سپلیمنٹس کی وجہ سے ہو سکتا ہے۔"
+    "nutrientExcessWarning": "{nutrient} مطلوبہ مقدار سے {ratio} گنا زیادہ ہے۔ یہ معدنی سپلیمنٹس کی وجہ سے ہو سکتا ہے۔",
+    "nutrient": "غذائی اجزاء",
+    "balance": "توازن"
   },
   "feed": {
     "feeds": "چارہ",
@@ -1889,7 +1883,8 @@
       "type": "قسم",
       "category": "کیٹیگری",
       "newTypeName": "نئی قسم کا نام",
-      "newCategoryName": "نئی کیٹیگری کا نام"
+      "newCategoryName": "نئی کیٹیگری کا نام",
+      "exportCustom": "کسٹم ایکسپورٹ"
     },
     "feedback": {
       "title": "رائے",
@@ -2067,7 +2062,10 @@
       "feedName": "خوراک کا نام",
       "nutritionalInfo": "غذائی معلومات",
       "costLabel": "قیمت",
-      "customFeedCreated": "اپنی مرضی کی خوراک کامیابی سے بنائی گئی"
+      "customFeedCreated": "اپنی مرضی کی خوراک کامیابی سے بنائی گئی",
+      "noForageTitle": "کوئی چارے کا فیڈ منتخب نہیں کیا گیا",
+      "noForageConfirm": "جانوروں کو صحیح ہاضمے کے لیے ریشے/چارے کی ضرورت ہوتی ہے۔ کیا آپ واقعی کسی چارے کے بغیر آگے بڑھنا چاہتے ہیں؟",
+      "proceedAnyway": "بہر حال آگے بڑھیں"
     },
     "constraints": {
       "title": "خوراک کی مخصوص حدود",

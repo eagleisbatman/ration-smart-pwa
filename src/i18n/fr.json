@@ -466,15 +466,7 @@
       "failed": "Nous n'avons pas pu créer un régime équilibré avec ces aliments. Essayez de choisir un mélange différent — incluez des céréales, du fourrage vert et des sources de protéines.",
       "waiting": "En attente du démarrage de l'optimisation..."
     },
-    "statusLabel": {
-      "completed": "Terminé",
-      "processing": "En cours",
-      "failed": "Échec",
-      "pending": "En attente",
-      "saved": "Enregistré",
-      "following": "Suivant",
-      "archived": "Archivée"
-    },
+    "statusLabel": "Statut",
     "tdnLabel": "TDN",
     "dailyCost": "Coût journalier",
     "dmKg": "Ingestion de matière sèche (kg)",
@@ -605,7 +597,9 @@
     "ofNeeded": "du besoin",
     "needsMore": "il faut {amount} {unit} de plus",
     "overNeeded": "{ratio}x au-dessus du besoin",
-    "nutrientExcessWarning": "Le {nutrient} est {ratio}x au-dessus du besoin. Cela peut être dû à des suppléments minéraux."
+    "nutrientExcessWarning": "Le {nutrient} est {ratio}x au-dessus du besoin. Cela peut être dû à des suppléments minéraux.",
+    "nutrient": "Nutriment",
+    "balance": "Équilibre"
   },
   "feed": {
     "feeds": "Aliments",
@@ -1892,7 +1886,8 @@
       "type": "Type",
       "category": "Catégorie",
       "newTypeName": "Nom du nouveau type",
-      "newCategoryName": "Nom de la nouvelle catégorie"
+      "newCategoryName": "Nom de la nouvelle catégorie",
+      "exportCustom": "Exporter Personnalisé"
     },
     "feedback": {
       "title": "Commentaires",
@@ -2070,7 +2065,10 @@
       "feedName": "Nom de l'aliment",
       "nutritionalInfo": "Informations nutritionnelles",
       "costLabel": "Coût",
-      "customFeedCreated": "Aliment personnalisé créé avec succès"
+      "customFeedCreated": "Aliment personnalisé créé avec succès",
+      "noForageTitle": "Aucun fourrage sélectionné",
+      "noForageConfirm": "Les bovins ont besoin de fourrage ou de fibres pour une bonne digestion. Êtes-vous sûr de vouloir continuer sans aucun fourrage ?",
+      "proceedAnyway": "Continuer quand même"
     },
     "constraints": {
       "title": "Limites personnalisées pour la ration",
