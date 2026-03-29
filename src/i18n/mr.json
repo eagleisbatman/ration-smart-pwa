@@ -79,7 +79,9 @@
     "addCow": "गाय जोडा",
     "logMilk": "दूध नोंदवा",
     "getDiet": "आहार मिळवा",
-    "admin": "प्रशासक"
+    "admin": "प्रशासक",
+    "feedReports": "खाद्यान्नाचे अहवाल",
+    "termsConditions": "अटी आणि नियम"
   },
   "roles": {
     "farmer": "शेतकरी",
@@ -236,7 +238,9 @@
     "newPhone": "नवीन फोन नंबर",
     "currentValue": "सध्याचे: {value}",
     "sendCode": "पडताळणी कोड पाठवा",
-    "changeSuccess": "तुमचे {type} यशस्वीरित्या अपडेट केले आहे."
+    "changeSuccess": "तुमचे {type} यशस्वीरित्या अपडेट केले आहे.",
+    "dangerZone": "धोकादायक क्षेत्र",
+    "profileUpdateFailed": "प्रोफाईल सेव्ह करण्यात अयशस्वी"
   },
   "cow": {
     "myCows": "माझ्या गायी",
@@ -678,7 +682,8 @@
       "stover": "पालापाचोळा",
       "straw": "गवत",
       "succulent": "रसाळ चारा",
-      "treeLeaves": "झाडांची पाने"
+      "treeLeaves": "झाडांची पाने",
+      "byProductForage": "उप-उत्पादित चारा"
     },
     "labels": {
       "dmPercent": "शुष्क पदार्थ (DM)",
@@ -706,7 +711,15 @@
       "pricing": "किंमत",
       "season": "हंगाम",
       "type": "प्रकार",
-      "typeRequired": "प्रकार *"
+      "typeRequired": "प्रकार *",
+      "adfPercent": "ऍसिड डिटर्जंट फायबर (ADF)",
+      "adfPercentShort": "ADF",
+      "ashPercent": "राख",
+      "eePercent": "इथर एक्सट्रॅक्ट (EE)",
+      "stPercent": "स्टार्च",
+      "lgPercent": "लिग्निन",
+      "ndinPercent": "NDIN",
+      "adinPercent": "ADIN"
     },
     "seasons": {
       "allYear": "वर्षभर",
@@ -1870,7 +1883,14 @@
       "subtitle": "खाद्य जोडा, संपादित करा आणि व्यवस्थापित करा",
       "bulkUpload": "बल्क अपलोड",
       "export": "निर्यात करा",
-      "noFeeds": "कोणतेही खाद्य आढळले नाही"
+      "noFeeds": "कोणतेही खाद्य आढळले नाही",
+      "manageTypes": "प्रकार व्यवस्थापित करा",
+      "feedTypes": "खाद्याचे प्रकार",
+      "feedCategories": "खाद्याच्या श्रेणी",
+      "type": "प्रकार",
+      "category": "श्रेणी",
+      "newTypeName": "नवीन प्रकाराचे नाव",
+      "newCategoryName": "नवीन श्रेणीचे नाव"
     },
     "feedback": {
       "title": "अभिप्राय",
@@ -1893,7 +1913,15 @@
       "evaluations": "मूल्यमापन",
       "countryBreakdown": "देशानुसार वर्गीकरण",
       "superOnly": "फक्त सुपर ॲडमिन"
-    }
+    },
+    "welcomeLabel": "स्वागत आहे",
+    "bulkUploadExport": "बल्क अपलोड आणि खाद्यान्न निर्यात",
+    "adminLabel": "अॅडमिन",
+    "confirmToggleStatus": "वापरकर्ता {name} ला {action} करायचे आहे का?",
+    "statusUpdated": "वापरकर्त्याची स्थिती यशस्वीरित्या अपडेट केली",
+    "statusUpdateFailed": "वापरकर्त्याची स्थिती अपडेट करण्यात अयशस्वी",
+    "enable": "सक्षम करा",
+    "disable": "अक्षम करा"
   },
   "theme": {
     "zinc": "झिंक",
@@ -1952,7 +1980,9 @@
       "distance": "चालण्याचे अंतर (किमी)",
       "grazing": "चराई",
       "bwGain": "शरीराच्या वजनात वाढ (किलो/दिवस)",
-      "simulationName": "सिम्युलेशनचे नाव"
+      "simulationName": "सिम्युलेशनचे नाव",
+      "simulationCountry": "देश",
+      "activeGrazing": "सक्रिय चराई"
     },
     "topographyOptions": {
       "flat": "सपाट",
@@ -2027,7 +2057,18 @@
       "price": "किंमत",
       "qty": "प्रमाण",
       "feedType_forage": "चारा",
-      "feedType_concentrate": "केंद्रित खाद्य"
+      "feedType_concentrate": "केंद्रित खाद्य",
+      "noForageWarning": "कोणतेही चारा खाद्य निवडले नाही. जनावरांना योग्य पचनासाठी रफेजची (roughage) आवश्यकता असते. कमीतकमी एक चारा खाद्य जोडण्याचा विचार करा.",
+      "feedTypeLabel": "खाद्याचा प्रकार",
+      "feedCategoryLabel": "खाद्याची श्रेणी",
+      "feedNameLabel": "खाद्य",
+      "addMoreFeed": "आणखी खाद्य जोडा",
+      "addCustomFeed": "सानुकूल खाद्य जोडा",
+      "feedDetails": "खाद्याचे तपशील",
+      "feedName": "खाद्याचे नाव",
+      "nutritionalInfo": "पोषण माहिती",
+      "costLabel": "किंमत",
+      "customFeedCreated": "सानुकूल खाद्य यशस्वीरित्या तयार केले"
     },
     "constraints": {
       "title": "आहाराची स्वतःची मर्यादा",
@@ -2085,7 +2126,11 @@
       "infeasible": "योग्य आहार सापडला नाही",
       "infeasibleDetail": "निवडलेली खाद्ये या जनावराच्या पोषण गरजा पूर्ण करू शकत नाहीत. ऑप्टिमाइझरला संतुलित आहार सापडला नाही.",
       "infeasibleHint": "अधिक प्रकारची खाद्ये वापरून पहा — चारा, प्रथिनेयुक्त मिश्रण (उदा. तेलबियांचे पीठ) आणि खनिज पूरक आहार समाविष्ट करा.",
-      "tryAgain": "खाद्ये बदला"
+      "tryAgain": "खाद्ये बदला",
+      "reportSavedDesc": "तुमचा अहवाल जतन केला आहे. तो तुम्हाला नेव्हिगेशन पॅनेलमध्ये 'खाद्य अहवाल' (Feed Reports) अंतर्गत मिळेल. तुम्ही तो शेअर करू इच्छिता?",
+      "sharePrompt": "हा अहवाल शेअर करायचा आहे का?",
+      "yesShare": "होय, शेअर करा",
+      "noDone": "नाही, झाले"
     },
     "methane": {
       "title": "पर्यावरणावर परिणाम",
@@ -2166,7 +2211,8 @@
       "calvingInterval": "३०० – ६००",
       "temperature": "-२० – ५०",
       "distance": "० – ५०",
-      "bwGain": "-१ – २"
+      "bwGain": "-१ – २",
+      "simulationCountry": "खाद्य आणि जातीच्या निवडीसाठी देश"
     },
     "nutrientLabels": {
       "ne_l": "ऊर्जा",
@@ -2183,6 +2229,12 @@
       "calcium_kg": "कॅल्शियम (किलो)",
       "phosphorus_kg": "फॉस्फरस (किलो)",
       "ndf_kg": "तंतू (किलो)"
+    },
+    "resetConfirmMessage": "तुम्ही फॉर्म रीसेट करू इच्छिता याची खात्री आहे का? सर्व प्रविष्ट केलेला डेटा साफ केला जाईल.",
+    "report": {
+      "share": "शेअर करा",
+      "print": "प्रिंट / पीडीएफ",
+      "copiedToClipboard": "अहवाल क्लिपबोर्डवर कॉपी केला"
     }
   }
 }

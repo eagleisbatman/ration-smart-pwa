@@ -79,7 +79,9 @@
     "addCow": "गाय जोड़ें",
     "logMilk": "दूध रिकॉर्ड करें",
     "getDiet": "आहार जानें",
-    "admin": "एडमिन"
+    "admin": "एडमिन",
+    "feedReports": "चारा रिपोर्ट",
+    "termsConditions": "नियम और शर्तें"
   },
   "roles": {
     "farmer": "किसान",
@@ -236,7 +238,9 @@
     "newPhone": "नया फ़ोन नंबर",
     "currentValue": "वर्तमान: {value}",
     "sendCode": "सत्यापन कोड भेजें",
-    "changeSuccess": "आपका {type} सफलतापूर्वक अपडेट कर दिया गया है।"
+    "changeSuccess": "आपका {type} सफलतापूर्वक अपडेट कर दिया गया है।",
+    "dangerZone": "खतरे का क्षेत्र",
+    "profileUpdateFailed": "प्रोफाइल सहेजा नहीं जा सका"
   },
   "cow": {
     "myCows": "मेरी गायें",
@@ -678,7 +682,8 @@
       "stover": "ठूंठ",
       "straw": "भूसा",
       "succulent": "रसीला",
-      "treeLeaves": "पेड़ के पत्ते"
+      "treeLeaves": "पेड़ के पत्ते",
+      "byProductForage": "उप-उत्पाद चारा"
     },
     "labels": {
       "dmPercent": "शुष्क पदार्थ (DM)",
@@ -706,7 +711,15 @@
       "pricing": "कीमत",
       "season": "मौसम",
       "type": "प्रकार",
-      "typeRequired": "प्रकार *"
+      "typeRequired": "प्रकार *",
+      "adfPercent": "एसिड डिटर्जेंट फाइबर (ADF)",
+      "adfPercentShort": "ADF",
+      "ashPercent": "राख",
+      "eePercent": "ईथर एक्सट्रेक्ट (EE)",
+      "stPercent": "स्टार्च",
+      "lgPercent": "लिग्निन",
+      "ndinPercent": "NDIN",
+      "adinPercent": "ADIN"
     },
     "seasons": {
       "allYear": "पूरे साल",
@@ -1869,7 +1882,14 @@
       "subtitle": "चारा जोड़ें, संपादित करें और प्रबंधित करें",
       "bulkUpload": "थोक अपलोड",
       "export": "निर्यात करें",
-      "noFeeds": "कोई चारा नहीं मिला"
+      "noFeeds": "कोई चारा नहीं मिला",
+      "manageTypes": "प्रकार मैनेज करें",
+      "feedTypes": "चारे के प्रकार",
+      "feedCategories": "चारे की श्रेणियां",
+      "type": "प्रकार",
+      "category": "श्रेणी",
+      "newTypeName": "नए प्रकार का नाम",
+      "newCategoryName": "नई श्रेणी का नाम"
     },
     "feedback": {
       "title": "प्रतिक्रिया",
@@ -1892,7 +1912,15 @@
       "evaluations": "मूल्यांकन",
       "countryBreakdown": "देश के अनुसार विश्लेषण",
       "superOnly": "केवल सुपर एडमिन के लिए"
-    }
+    },
+    "welcomeLabel": "स्वागत है",
+    "bulkUploadExport": "बल्क अपलोड और चारा एक्सपोर्ट करें",
+    "adminLabel": "एडमिन",
+    "confirmToggleStatus": "यूजर {name} को {action} करें?",
+    "statusUpdated": "यूजर की स्थिति सफलतापूर्वक अपडेट की गई",
+    "statusUpdateFailed": "यूजर की स्थिति अपडेट नहीं की जा सकी",
+    "enable": "चालू करें",
+    "disable": "बंद करें"
   },
   "theme": {
     "zinc": "ज़िंक",
@@ -1951,7 +1979,9 @@
       "distance": "चलने की दूरी (किमी)",
       "grazing": "चराई",
       "bwGain": "शारीरिक वजन में वृद्धि (किग्रा/दिन)",
-      "simulationName": "सिमुलेशन का नाम"
+      "simulationName": "सिमुलेशन का नाम",
+      "simulationCountry": "देश",
+      "activeGrazing": "सक्रिय चराई"
     },
     "topographyOptions": {
       "flat": "समतल",
@@ -2026,7 +2056,18 @@
       "price": "कीमत",
       "qty": "मात्रा",
       "feedType_forage": "चारा",
-      "feedType_concentrate": "दानेदार"
+      "feedType_concentrate": "दानेदार",
+      "noForageWarning": "कोई चारा नहीं चुना गया है। उचित पाचन के लिए पशुओं को रूखे चारे की आवश्यकता होती है। कम से कम एक चारा जोड़ने पर विचार करें।",
+      "feedTypeLabel": "चारे का प्रकार",
+      "feedCategoryLabel": "चारे की श्रेणी",
+      "feedNameLabel": "चारा",
+      "addMoreFeed": "और चारा जोड़ें",
+      "addCustomFeed": "कस्टम चारा जोड़ें",
+      "feedDetails": "चारे का विवरण",
+      "feedName": "चारे का नाम",
+      "nutritionalInfo": "पोषक जानकारी",
+      "costLabel": "लागत",
+      "customFeedCreated": "कस्टम चारा सफलतापूर्वक बनाया गया"
     },
     "constraints": {
       "title": "आहार की अपनी सीमाएँ",
@@ -2084,7 +2125,11 @@
       "infeasible": "कोई व्यवहार्य आहार नहीं मिला",
       "infeasibleDetail": "चयनित चारा इस जानवर की पोषण संबंधी आवश्यकताओं को पूरा नहीं कर सकता है। अनुकूलक एक संतुलित आहार नहीं ढूंढ सका।",
       "infeasibleHint": "अधिक प्रकार के चारे को जोड़ने का प्रयास करें — इसमें हरा चारा, प्रोटीन युक्त दाना (जैसे तेलबीज का खली), और एक खनिज पूरक शामिल करें।",
-      "tryAgain": "चारा बदलें"
+      "tryAgain": "चारा बदलें",
+      "reportSavedDesc": "आपकी रिपोर्ट सेव हो गई है। आप इसे नेविगेशन पैनल में 'फीड रिपोर्ट्स' के तहत पा सकते हैं। क्या आप इसे साझा करना चाहेंगे?",
+      "sharePrompt": "यह रिपोर्ट साझा करें?",
+      "yesShare": "हाँ, साझा करें",
+      "noDone": "नहीं, हो गया"
     },
     "methane": {
       "title": "पर्यावरणीय प्रभाव",
@@ -2165,7 +2210,8 @@
       "calvingInterval": "300 – 600",
       "temperature": "-20 – 50",
       "distance": "0 – 50",
-      "bwGain": "-1 – 2"
+      "bwGain": "-1 – 2",
+      "simulationCountry": "चारा और नस्ल के चयन के लिए देश"
     },
     "nutrientLabels": {
       "ne_l": "ऊर्जा",
@@ -2182,6 +2228,12 @@
       "calcium_kg": "कैल्शियम (किग्रा)",
       "phosphorus_kg": "फास्फोरस (किग्रा)",
       "ndf_kg": "फाइबर (किग्रा)"
+    },
+    "resetConfirmMessage": "क्या आप वाकई फॉर्म रीसेट करना चाहते हैं? दर्ज किया गया सारा डेटा हटा दिया जाएगा।",
+    "report": {
+      "share": "साझा करें",
+      "print": "प्रिंट / PDF",
+      "copiedToClipboard": "रिपोर्ट क्लिपबोर्ड पर कॉपी हो गई"
     }
   }
 }

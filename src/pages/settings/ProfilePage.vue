@@ -90,7 +90,54 @@
         class="full-width change-pin-btn"
         @click="showChangePinDialog"
       />
+
+      <!-- Delete Account -->
+      <q-separator class="q-my-lg" />
+
+      <div class="text-subtitle1 q-mb-sm text-negative">{{ $t('profile.dangerZone', 'Danger Zone') }}</div>
+
+      <q-btn
+        :label="$t('settings.deleteAccount')"
+        icon="delete_forever"
+        flat
+        color="negative"
+        class="full-width"
+        @click="showDeleteDialog"
+      />
     </q-form>
+
+    <!-- Delete Account Dialog -->
+    <q-dialog v-model="deleteDialog" persistent>
+      <q-card>
+        <q-card-section>
+          <div class="text-h6 text-negative">{{ $t('settings.deleteAccount') }}</div>
+          <div class="text-body2 q-mt-sm">{{ $t('settings.deleteAccountWarning') }}</div>
+        </q-card-section>
+
+        <q-card-section>
+          <q-input
+            v-model="deletePin"
+            :label="$t('settings.enterPin')"
+            type="password"
+            outlined
+            mask="####"
+            :rules="[(val: string) => val.length === 4 || $t('validation.pinLength')]"
+          />
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn v-close-popup flat :label="$t('common.cancel')" />
+          <q-btn
+            flat
+            :label="$t('common.confirm')"
+            color="negative"
+            :disable="deletePin.length !== 4"
+            :loading="deleting"
+            @click="confirmDeleteAccount"
+          />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
 
     <!-- Change PIN Dialog -->
     <q-dialog v-model="changePinDialog" persistent>
@@ -158,11 +205,14 @@
 import { ref, reactive, computed, onMounted, watch } from 'vue';
 import { useQuasar } from 'quasar';
 import { useI18n } from 'vue-i18n';
+import { useRouter } from 'vue-router';
 import { useAuthStore } from 'src/stores/auth';
+import { toAlpha2 } from 'src/services/api-adapter';
 import { availableLocales } from 'src/boot/i18n';
 
 const $q = useQuasar();
 const { t } = useI18n();
+const router = useRouter();
 const authStore = useAuthStore();
 
 const loading = computed(() => authStore.loading);
@@ -190,10 +240,39 @@ const canChangePin = computed(() =>
   pinForm.newPin === pinForm.confirmPin
 );
 
+// Delete account state
+const deleteDialog = ref(false);
+const deletePin = ref('');
+const deleting = ref(false);
+
+function showDeleteDialog() {
+  deletePin.value = '';
+  deleteDialog.value = true;
+}
+
+async function confirmDeleteAccount() {
+  deleting.value = true;
+  const success = await authStore.deleteAccount(deletePin.value);
+  deleting.value = false;
+
+  if (success) {
+    $q.notify({
+      type: 'positive',
+      message: t('settings.accountDeleted'),
+    });
+    router.replace('/auth/login');
+  } else {
+    $q.notify({
+      type: 'negative',
+      message: authStore.error || t('settings.deleteAccountFailed'),
+    });
+  }
+}
+
 const countryOptions = computed(() =>
   authStore.countries.map((c) => ({
     label: c.name || t(`countries.${c.country_code}`, c.country_code),
-    value: c.country_code,
+    value: toAlpha2(c.country_code),
   }))
 );
 
@@ -205,14 +284,18 @@ const languageOptions = computed(() =>
 );
 
 async function onSubmit() {
+  // EC2 only accepts {name, country_id} — language is local-only
   const success = await authStore.updateProfile({
     name: form.name,
     country_code: form.country_code,
-    language: form.language,
-    profile_image_url: profileImage.value,
   });
 
   if (success) {
+    // Save language locally (EC2 doesn't store it)
+    localStorage.setItem('preferred_language', form.language);
+    authStore.preferredLanguage = form.language;
+
+    populateForm();
     $q.notify({
       type: 'positive',
       message: t('profile.profileUpdated'),
@@ -259,8 +342,9 @@ function populateForm() {
     form.name = authStore.user.name || '';
     form.email = authStore.user.email || authStore.userEmail || '';
     form.country_code = authStore.user.country_code || 'IN';
-    form.language = authStore.user.language || 'en';
   }
+  // Language is local-only (EC2 doesn't store it)
+  form.language = localStorage.getItem('preferred_language') || 'en';
 }
 
 watch(() => authStore.user, (newUser) => {

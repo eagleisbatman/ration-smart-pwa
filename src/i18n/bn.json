@@ -79,7 +79,9 @@
     "addCow": "গরু যোগ করুন",
     "logMilk": "দুধের হিসাব রাখুন",
     "getDiet": "খাদ্য তালিকা নিন",
-    "admin": "অ্যাডমিন"
+    "admin": "অ্যাডমিন",
+    "feedReports": "খাদ্য প্রতিবেদন",
+    "termsConditions": "শর্তাবলী"
   },
   "roles": {
     "farmer": "কৃষক",
@@ -236,7 +238,9 @@
     "newPhone": "নতুন ফোন নম্বর",
     "currentValue": "বর্তমান: {value}",
     "sendCode": "যাচাইকরণ কোড পাঠান",
-    "changeSuccess": "আপনার {type} সফলভাবে আপডেট করা হয়েছে।"
+    "changeSuccess": "আপনার {type} সফলভাবে আপডেট করা হয়েছে।",
+    "dangerZone": "বিপজ্জনক অঞ্চল",
+    "profileUpdateFailed": "প্রোফাইল সেভ করা যায়নি"
   },
   "cow": {
     "myCows": "আমার গরু",
@@ -678,7 +682,8 @@
       "stover": "ডাঁটা",
       "straw": "বিচালি",
       "succulent": "রসালো",
-      "treeLeaves": "গাছের পাতা"
+      "treeLeaves": "গাছের পাতা",
+      "byProductForage": "উপজাতীয় পশুখাদ্য"
     },
     "labels": {
       "dmPercent": "শুকনো পদার্থ (DM)",
@@ -706,7 +711,15 @@
       "pricing": "মূল্য নির্ধারণ",
       "season": "ঋতু",
       "type": "ধরণ",
-      "typeRequired": "ধরণ *"
+      "typeRequired": "ধরণ *",
+      "adfPercent": "অ্যাসিড ডিটারজেন্ট ফাইবার (ADF)",
+      "adfPercentShort": "ADF",
+      "ashPercent": "ছাই",
+      "eePercent": "ইথার এক্সট্র্যাক্ট (EE)",
+      "stPercent": "শ্বেতসার",
+      "lgPercent": "লিগনিন",
+      "ndinPercent": "NDIN",
+      "adinPercent": "ADIN"
     },
     "seasons": {
       "allYear": "সারা বছর",
@@ -1869,7 +1882,14 @@
       "subtitle": "খাবার যোগ করুন, সম্পাদনা করুন ও পরিচালনা করুন",
       "bulkUpload": "একসাথে আপলোড করুন",
       "export": "রপ্তানি করুন",
-      "noFeeds": "কোনো খাবার পাওয়া যায়নি"
+      "noFeeds": "কোনো খাবার পাওয়া যায়নি",
+      "manageTypes": "প্রকারভেদ পরিচালনা করুন",
+      "feedTypes": "ফিডের প্রকারভেদ",
+      "feedCategories": "ফিডের বিভাগ",
+      "type": "প্রকার",
+      "category": "বিভাগ",
+      "newTypeName": "নতুন প্রকারের নাম",
+      "newCategoryName": "নতুন বিভাগের নাম"
     },
     "feedback": {
       "title": "মতামত",
@@ -1892,7 +1912,15 @@
       "evaluations": "মূল্যায়ন",
       "countryBreakdown": "দেশ অনুযায়ী বিভাজন",
       "superOnly": "শুধুমাত্র সুপার অ্যাডমিন"
-    }
+    },
+    "welcomeLabel": "স্বাগতম",
+    "bulkUploadExport": "একসাথে আপলোড এবং ফিড এক্সপোর্ট করুন",
+    "adminLabel": "অ্যাডমিন",
+    "confirmToggleStatus": "ব্যবহারকারী {name} কে {action} করবেন?",
+    "statusUpdated": "ব্যবহারকারীর স্ট্যাটাস সফলভাবে আপডেট করা হয়েছে",
+    "statusUpdateFailed": "ব্যবহারকারীর স্ট্যাটাস আপডেট করা যায়নি",
+    "enable": "সক্রিয় করুন",
+    "disable": "নিষ্ক্রিয় করুন"
   },
   "theme": {
     "zinc": "জিঙ্ক",
@@ -1951,7 +1979,9 @@
       "distance": "হাঁটার দূরত্ব (কিমি)",
       "grazing": "চারণ",
       "bwGain": "শরীরের ওজন বৃদ্ধি (কেজি/দিন)",
-      "simulationName": "সিমুলেশনের নাম"
+      "simulationName": "সিমুলেশনের নাম",
+      "simulationCountry": "দেশ",
+      "activeGrazing": "সক্রিয় চারণ"
     },
     "topographyOptions": {
       "flat": "সমতল",
@@ -2026,7 +2056,18 @@
       "price": "দাম",
       "qty": "পরিমাণ",
       "feedType_forage": "গো-খাদ্য",
-      "feedType_concentrate": "ঘনীভূত খাদ্য"
+      "feedType_concentrate": "ঘনীভূত খাদ্য",
+      "noForageWarning": "কোনো ফরেজ ফিড নির্বাচন করা হয়নি। গরুর সঠিক হজমের জন্য রাফেজ প্রয়োজন। অন্তত একটি ফরেজ ফিড যোগ করার কথা বিবেচনা করুন।",
+      "feedTypeLabel": "খাবারের প্রকার",
+      "feedCategoryLabel": "খাবারের শ্রেণী",
+      "feedNameLabel": "খাবার",
+      "addMoreFeed": "আরও খাবার যোগ করুন",
+      "addCustomFeed": "নিজের খাবার যোগ করুন",
+      "feedDetails": "খাবারের বিবরণ",
+      "feedName": "খাবারের নাম",
+      "nutritionalInfo": "পুষ্টির তথ্য",
+      "costLabel": "খরচ",
+      "customFeedCreated": "নিজের তৈরি খাবার সফলভাবে তৈরি হয়েছে"
     },
     "constraints": {
       "title": "খাদ্যের কাস্টম সীমাবদ্ধতা",
@@ -2084,7 +2125,11 @@
       "infeasible": "কোনো কার্যকর খাদ্য তালিকা পাওয়া যায়নি",
       "infeasibleDetail": "নির্বাচিত খাবার এই পশুর পুষ্টির চাহিদা মেটাতে পারে না। অপ্টিমাইজার একটি সুষম খাদ্য তালিকা খুঁজে পায়নি।",
       "infeasibleHint": "আরও বিভিন্ন ধরণের খাবার যোগ করার চেষ্টা করুন — যেমন ঘাস, প্রোটিন সমৃদ্ধ ঘন খাবার (যেমন তেলবীজের খৈল) এবং একটি খনিজ সম্পূরক।",
-      "tryAgain": "খাবার পরিবর্তন করুন"
+      "tryAgain": "খাবার পরিবর্তন করুন",
+      "reportSavedDesc": "আপনার রিপোর্ট সংরক্ষণ করা হয়েছে। আপনি এটি নেভিগেশন প্যানেলে ফিড রিপোর্টের অধীনে খুঁজে পাবেন। আপনি কি এটি শেয়ার করতে চান?",
+      "sharePrompt": "এই রিপোর্ট শেয়ার করবেন?",
+      "yesShare": "হ্যাঁ, শেয়ার করুন",
+      "noDone": "না, হয়ে গেছে"
     },
     "methane": {
       "title": "পরিবেশগত প্রভাব",
@@ -2162,10 +2207,11 @@
       "tpMilk": "1 – 6",
       "parity": "0 – 15",
       "daysOfPregnancy": "0 – 290",
-      "calvingInterval": "300 – 600",
+      "calvingInterval": "৩০০ – ৬০০",
       "temperature": "-20 – 50",
       "distance": "0 – 50",
-      "bwGain": "-1 – 2"
+      "bwGain": "-1 – 2",
+      "simulationCountry": "খাবার এবং জাত নির্বাচনের জন্য দেশ"
     },
     "nutrientLabels": {
       "ne_l": "শক্তি",
@@ -2182,6 +2228,12 @@
       "calcium_kg": "ক্যালসিয়াম (কেজি)",
       "phosphorus_kg": "ফসফরাস (কেজি)",
       "ndf_kg": "ফাইবার (কেজি)"
+    },
+    "resetConfirmMessage": "আপনি কি নিশ্চিত যে আপনি ফর্মটি রিসেট করতে চান? সমস্ত প্রবেশ করা ডেটা মুছে যাবে।",
+    "report": {
+      "share": "শেয়ার করুন",
+      "print": "প্রিন্ট / পিডিএফ",
+      "copiedToClipboard": "রিপোর্ট ক্লিপবোর্ডে কপি করা হয়েছে"
     }
   }
 }

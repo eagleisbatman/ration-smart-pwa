@@ -79,7 +79,9 @@
     "addCow": "ગાય ઉમેરો",
     "logMilk": "દૂધની નોંધ કરો",
     "getDiet": "આહાર મેળવો",
-    "admin": "એડમિન"
+    "admin": "એડમિન",
+    "feedReports": "ફીડ રિપોર્ટ્સ",
+    "termsConditions": "નિયમો અને શરતો"
   },
   "roles": {
     "farmer": "ખેડૂત",
@@ -236,7 +238,9 @@
     "newPhone": "નવો ફોન નંબર",
     "currentValue": "વર્તમાન: {value}",
     "sendCode": "ચકાસણી કોડ મોકલો",
-    "changeSuccess": "તમારું {type} સફળતાપૂર્વક અપડેટ થયું છે."
+    "changeSuccess": "તમારું {type} સફળતાપૂર્વક અપડેટ થયું છે.",
+    "dangerZone": "ડેન્જર ઝોન",
+    "profileUpdateFailed": "પ્રોફાઇલ સેવ કરવામાં નિષ્ફળ"
   },
   "cow": {
     "myCows": "મારી ગાયો",
@@ -678,7 +682,8 @@
       "stover": "દાંડા",
       "straw": "ઘાસચારો",
       "succulent": "રસદાર",
-      "treeLeaves": "વૃક્ષના પાન"
+      "treeLeaves": "વૃક્ષના પાન",
+      "byProductForage": "ઉપ-ઉત્પાદન ઘાસચારો"
     },
     "labels": {
       "dmPercent": "શુષ્ક પદાર્થ (DM)",
@@ -706,7 +711,15 @@
       "pricing": "ભાવ",
       "season": "ઋતુ",
       "type": "પ્રકાર",
-      "typeRequired": "પ્રકાર *"
+      "typeRequired": "પ્રકાર *",
+      "adfPercent": "એસિડ ડિટર્જન્ટ ફાઇબર (ADF)",
+      "adfPercentShort": "ADF",
+      "ashPercent": "રાખ",
+      "eePercent": "ઇથર એક્સટ્રેક્ટ (EE)",
+      "stPercent": "સ્ટાર્ચ",
+      "lgPercent": "લિગ્નિન",
+      "ndinPercent": "NDIN",
+      "adinPercent": "ADIN"
     },
     "seasons": {
       "allYear": "આખું વર્ષ",
@@ -1869,7 +1882,14 @@
       "subtitle": "ઘાસચારો ઉમેરો, સુધારો અને મેનેજ કરો",
       "bulkUpload": "જથ્થાબંધ અપલોડ",
       "export": "નિકાસ કરો",
-      "noFeeds": "કોઈ ઘાસચારો મળ્યો નથી"
+      "noFeeds": "કોઈ ઘાસચારો મળ્યો નથી",
+      "manageTypes": "પ્રકારોનું સંચાલન કરો",
+      "feedTypes": "ફીડના પ્રકાર",
+      "feedCategories": "ફીડની શ્રેણીઓ",
+      "type": "પ્રકાર",
+      "category": "શ્રેણી",
+      "newTypeName": "નવા પ્રકારનું નામ",
+      "newCategoryName": "નવી શ્રેણીનું નામ"
     },
     "feedback": {
       "title": "પ્રતિભાવ",
@@ -1892,7 +1912,15 @@
       "evaluations": "મૂલ્યાંકન",
       "countryBreakdown": "દેશ પ્રમાણે વિભાજન",
       "superOnly": "માત્ર સુપર એડમિન માટે"
-    }
+    },
+    "welcomeLabel": "સ્વાગત છે",
+    "bulkUploadExport": "મોટા પ્રમાણમાં અપલોડ કરો અને ફીડ નિકાસ કરો",
+    "adminLabel": "એડમિન",
+    "confirmToggleStatus": "શું તમે યુઝર {name} ને {action} કરવા માંગો છો?",
+    "statusUpdated": "યુઝર સ્ટેટસ સફળતાપૂર્વક અપડેટ થયું",
+    "statusUpdateFailed": "યુઝર સ્ટેટસ અપડેટ કરવામાં નિષ્ફળ",
+    "enable": "ચાલુ કરો",
+    "disable": "બંધ કરો"
   },
   "theme": {
     "zinc": "ઝીંક",
@@ -1951,7 +1979,9 @@
       "distance": "ચાલવાનું અંતર (કિમી)",
       "grazing": "ચરાણ",
       "bwGain": "શરીરના વજનમાં વધારો (કિલો/દિવસ)",
-      "simulationName": "સિમ્યુલેશનનું નામ"
+      "simulationName": "સિમ્યુલેશનનું નામ",
+      "simulationCountry": "દેશ",
+      "activeGrazing": "સક્રિય ચરાણ"
     },
     "topographyOptions": {
       "flat": "સપાટ",
@@ -2026,7 +2056,18 @@
       "price": "ભાવ",
       "qty": "જથ્થો",
       "feedType_forage": "ચારા",
-      "feedType_concentrate": "દાણ"
+      "feedType_concentrate": "દાણ",
+      "noForageWarning": "કોઈ ચારાના ફીડ પસંદ નથી. પશુઓને યોગ્ય પાચન માટે રફાઝની જરૂર હોય છે. ઓછામાં ઓછો એક ચારાનો ફીડ ઉમેરવાનું વિચારો.",
+      "feedTypeLabel": "ફીડનો પ્રકાર",
+      "feedCategoryLabel": "ફીડની શ્રેણી",
+      "feedNameLabel": "ફીડ",
+      "addMoreFeed": "વધુ ફીડ ઉમેરો",
+      "addCustomFeed": "કસ્ટમ ફીડ ઉમેરો",
+      "feedDetails": "ફીડની વિગતો",
+      "feedName": "ફીડનું નામ",
+      "nutritionalInfo": "પોષક માહિતી",
+      "costLabel": "ખર્ચ",
+      "customFeedCreated": "કસ્ટમ ફીડ સફળતાપૂર્વક બનાવવામાં આવ્યું"
     },
     "constraints": {
       "title": "આહારની કસ્ટમ મર્યાદા",
@@ -2084,7 +2125,11 @@
       "infeasible": "કોઈ શક્ય આહાર મળ્યો નથી",
       "infeasibleDetail": "પસંદ કરેલ ચારો આ પ્રાણીની પોષણ જરૂરિયાતો પૂરી કરી શકતો નથી. ઓપ્ટિમાઇઝર સંતુલિત આહાર શોધી શક્યું નથી.",
       "infeasibleHint": "વિવિધ પ્રકારનો ચારો ઉમેરવાનો પ્રયાસ કરો — તેમાં ઘાસચારો, પ્રોટીનયુક્ત સાંદ્ર (દા.ત. તેલબિયાંનો ખોળ), અને ખનિજ પૂરકનો સમાવેશ કરો.",
-      "tryAgain": "ચારો બદલો"
+      "tryAgain": "ચારો બદલો",
+      "reportSavedDesc": "તમારો રિપોર્ટ સાચવી દેવામાં આવ્યો છે. તમે તેને નેવિગેશન પેનલમાં ફીડ રિપોર્ટ્સ હેઠળ શોધી શકો છો. શું તમે તેને શેર કરવા માંગો છો?",
+      "sharePrompt": "આ રિપોર્ટ શેર કરવો છે?",
+      "yesShare": "હા, શેર કરો",
+      "noDone": "ના, થઈ ગયું"
     },
     "methane": {
       "title": "પર્યાવરણીય અસર",
@@ -2165,7 +2210,8 @@
       "calvingInterval": "300 – 600",
       "temperature": "-20 – 50",
       "distance": "0 – 50",
-      "bwGain": "-1 – 2"
+      "bwGain": "-1 – 2",
+      "simulationCountry": "ફીડ અને જાતિની પસંદગી માટેનો દેશ"
     },
     "nutrientLabels": {
       "ne_l": "શક્તિ",
@@ -2182,6 +2228,12 @@
       "calcium_kg": "કેલ્શિયમ (કિલો)",
       "phosphorus_kg": "ફોસ્ફરસ (કિલો)",
       "ndf_kg": "ફાઈબર (કિલો)"
+    },
+    "resetConfirmMessage": "શું તમે ફોર્મ રીસેટ કરવા માંગો છો તેની ખાતરી છે? દાખલ કરેલો તમામ ડેટા સાફ થઈ જશે.",
+    "report": {
+      "share": "શેર કરો",
+      "print": "પ્રિન્ટ / PDF",
+      "copiedToClipboard": "રિપોર્ટ ક્લિપબોર્ડ પર કોપી થઈ ગયો"
     }
   }
 }

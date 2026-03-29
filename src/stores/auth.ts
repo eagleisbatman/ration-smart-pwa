@@ -4,7 +4,6 @@ import { api } from 'src/lib/api';
 import { db, User } from 'src/lib/offline/db';
 import { setCountryCache, clearCountryCache, toAlpha2 } from 'src/services/api-adapter';
 import { extractUserFriendlyError } from 'src/lib/error-messages';
-import { setLocale } from 'src/boot/i18n';
 
 export interface Country {
   id: string;
@@ -50,11 +49,8 @@ function normalizeUser(data: Record<string, unknown>): User {
 }
 
 export const useAuthStore = defineStore('auth', () => {
-  // State
+  // State — EC2 has no JWT; auth is client-side (userId + email in storage)
   const user = ref<User | null>(null);
-  const token = ref<string | null>(
-    localStorage.getItem('auth_token') || sessionStorage.getItem('auth_token'),
-  );
   const userId = ref<string | null>(
     localStorage.getItem('user_id') || sessionStorage.getItem('user_id'),
   );
@@ -179,7 +175,7 @@ export const useAuthStore = defineStore('auth', () => {
 
       const responseData = response.data;
 
-      // Backend may return {access_token, user} or {success, user}
+      // EC2 returns {success, message, user}
       const rawUser = responseData.user;
       if (!rawUser) {
         error.value = responseData.message || 'Registration failed';
@@ -193,18 +189,12 @@ export const useAuthStore = defineStore('auth', () => {
       user.value = userData;
       userId.value = responseUserId;
       userEmail.value = data.email;
-      if (responseData.access_token) {
-        token.value = responseData.access_token;
-      }
 
       // Persist to localStorage (new users stay signed in)
       if (responseUserId) {
         localStorage.setItem('user_id', responseUserId);
       }
       localStorage.setItem('user_email', data.email);
-      if (responseData.access_token) {
-        localStorage.setItem('auth_token', responseData.access_token);
-      }
 
       // Save user to IndexedDB
       if (userData) {
@@ -253,7 +243,7 @@ export const useAuthStore = defineStore('auth', () => {
 
       const responseData = response.data;
 
-      // Backend may return {access_token, user} or {success, user}
+      // EC2 returns {success, message, user}
       const rawUser = responseData.user;
       if (!rawUser) {
         error.value = responseData.message || 'Login failed';
@@ -267,9 +257,6 @@ export const useAuthStore = defineStore('auth', () => {
       user.value = userData;
       userId.value = responseUserId;
       userEmail.value = data.email;
-      if (responseData.access_token) {
-        token.value = responseData.access_token;
-      }
 
       // Choose storage backend based on "Remember me" preference
       if (data.rememberMe) {
@@ -283,9 +270,6 @@ export const useAuthStore = defineStore('auth', () => {
         storage.setItem('user_id', responseUserId);
       }
       storage.setItem('user_email', data.email);
-      if (responseData.access_token) {
-        storage.setItem('auth_token', responseData.access_token);
-      }
 
       // Save user to IndexedDB
       if (userData) {
@@ -304,14 +288,6 @@ export const useAuthStore = defineStore('auth', () => {
       } else {
         adminLevel.value = null;
         localStorage.removeItem('admin_level');
-      }
-
-      // Restore language if available
-      if (userData?.language_code || userData?.language) {
-        const lang = userData.language_code || userData.language || 'en';
-        preferredLanguage.value = lang;
-        localStorage.setItem('preferred_language', lang);
-        setLocale(lang);
       }
 
       return true;
@@ -420,6 +396,30 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
+  /**
+   * Delete the current user's account.
+   * EC2 POST /auth/user-delete-account expects query params: user_id, pin
+   */
+  async function deleteAccount(pin: string): Promise<boolean> {
+    if (!userId.value) return false;
+
+    loading.value = true;
+    error.value = null;
+
+    try {
+      await api.post('/auth/user-delete-account', null, {
+        params: { user_id: userId.value, pin },
+      });
+      await logout();
+      return true;
+    } catch (err) {
+      error.value = extractUserFriendlyError(err);
+      return false;
+    } finally {
+      loading.value = false;
+    }
+  }
+
   function setProfileImage(image: string | null): void {
     profileImage.value = image;
     if (image) {
@@ -431,7 +431,6 @@ export const useAuthStore = defineStore('auth', () => {
 
   function clearAuth(): void {
     user.value = null;
-    token.value = null;
     userId.value = null;
     userEmail.value = null;
     const savedRole = localStorage.getItem('user_role') || 'farmer';
@@ -444,7 +443,6 @@ export const useAuthStore = defineStore('auth', () => {
     for (const storage of [localStorage, sessionStorage]) {
       storage.removeItem('user_id');
       storage.removeItem('user_email');
-      storage.removeItem('auth_token');
     }
     localStorage.removeItem('remember_me');
     localStorage.removeItem('admin_level');
@@ -485,7 +483,6 @@ export const useAuthStore = defineStore('auth', () => {
   return {
     // State
     user,
-    token,
     userId,
     userEmail,
     loading,
@@ -517,6 +514,7 @@ export const useAuthStore = defineStore('auth', () => {
     loadUserProfile,
     updateProfile,
     changePin,
+    deleteAccount,
     setProfileImage,
     clearAuth,
     logout,

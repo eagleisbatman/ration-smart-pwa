@@ -4,19 +4,17 @@ import Dexie, { Table } from 'dexie';
 export interface User {
   id: string;
   email?: string;
-  phone?: string;
   name?: string;
   country_code: string;
   country_id?: string;
-  language: string;
-  language_code?: string;
+  is_admin?: boolean;
   user_role?: string;
   admin_level?: string | null;
-  organization_id?: string | null;
-  self_farmer_profile_id?: string | null;
-  profile_image_url?: string | null;
   created_at: string;
   updated_at: string;
+  // Local-only fields (not from EC2)
+  language?: string;
+  profile_image_url?: string | null;
 }
 
 export interface Cow {

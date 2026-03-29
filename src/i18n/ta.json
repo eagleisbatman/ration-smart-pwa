@@ -79,7 +79,9 @@
     "addCow": "மாடு சேர்",
     "logMilk": "பால் பதிவுசெய்",
     "getDiet": "தீவனம் பெறு",
-    "admin": "நிர்வாகி"
+    "admin": "நிர்வாகி",
+    "feedReports": "தீவன அறிக்கைகள்",
+    "termsConditions": "விதிமுறைகள் மற்றும் நிபந்தனைகள்"
   },
   "roles": {
     "farmer": "விவசாயி",
@@ -236,7 +238,9 @@
     "newPhone": "புதிய தொலைபேசி எண்",
     "currentValue": "தற்போது: {value}",
     "sendCode": "சரிபார்ப்புக் குறியீட்டை அனுப்பு",
-    "changeSuccess": "உங்கள் {type} வெற்றிகரமாக புதுப்பிக்கப்பட்டது."
+    "changeSuccess": "உங்கள் {type} வெற்றிகரமாக புதுப்பிக்கப்பட்டது.",
+    "dangerZone": "ஆபத்தான பகுதி",
+    "profileUpdateFailed": "சுயவிவரத்தைச் சேமிக்கத் தவறிவிட்டது"
   },
   "cow": {
     "myCows": "என் மாடுகள்",
@@ -348,7 +352,7 @@
     },
     "ageFormatYears": "{count} வருடம்",
     "ageFormatYearsPlural": "{count} வருடங்கள்",
-    "ageFormatYearsAndMonths": "{years} {months}",
+    "ageFormatYearsAndMonths": "{years} ஆண்டுகள் {months} மாதங்கள்",
     "ageFormatMonth": "{count} மாதம்",
     "ageFormatMonthPlural": "{count} மாதங்கள்",
     "validation": {
@@ -678,7 +682,8 @@
       "stover": "தழை",
       "straw": "போர்",
       "succulent": "சதைப்பற்றுள்ள",
-      "treeLeaves": "மரம் இலைகள்"
+      "treeLeaves": "மரம் இலைகள்",
+      "byProductForage": "துணை உற்பத்தி தீவனம்"
     },
     "labels": {
       "dmPercent": "உலர்ந்த பொருள் (DM)",
@@ -706,7 +711,15 @@
       "pricing": "விலை",
       "season": "பருவம்",
       "type": "வகை",
-      "typeRequired": "வகை *"
+      "typeRequired": "வகை *",
+      "adfPercent": "அமில சவர்க்கார நார்ச்சத்து (ADF)",
+      "adfPercentShort": "ADF",
+      "ashPercent": "சாம்பல்",
+      "eePercent": "ஈதர் சாறு (EE)",
+      "stPercent": "மாவுச்சத்து",
+      "lgPercent": "லிக்னின்",
+      "ndinPercent": "NDIN",
+      "adinPercent": "ADIN"
     },
     "seasons": {
       "allYear": "வருடம் முழுவதும்",
@@ -1869,7 +1882,14 @@
       "subtitle": "தீவனங்களைச் சேர்க்கவும், திருத்தவும் மற்றும் நிர்வகிக்கவும்",
       "bulkUpload": "மொத்தமாக பதிவேற்று",
       "export": "ஏற்றுமதி",
-      "noFeeds": "தீவனங்கள் எதுவும் இல்லை"
+      "noFeeds": "தீவனங்கள் எதுவும் இல்லை",
+      "manageTypes": "வகைகளை நிர்வகி",
+      "feedTypes": "தீவன வகைகள்",
+      "feedCategories": "தீவன வகைகள் (பிரிவுகள்)",
+      "type": "வகை",
+      "category": "பிரிவு",
+      "newTypeName": "புதிய வகை பெயர்",
+      "newCategoryName": "புதிய பிரிவு பெயர்"
     },
     "feedback": {
       "title": "கருத்து",
@@ -1892,7 +1912,15 @@
       "evaluations": "மதிப்பீடுகள்",
       "countryBreakdown": "நாடு வாரியான விவரம்",
       "superOnly": "சூப்பர் நிர்வாகிக்கு மட்டும்"
-    }
+    },
+    "welcomeLabel": "வரவேற்பு",
+    "bulkUploadExport": "மொத்தமாக பதிவேற்று & தீவனத்தை ஏற்றுமதி செய்",
+    "adminLabel": "நிர்வாகம்",
+    "confirmToggleStatus": "{name} பயனரை {action} செய்யவா?",
+    "statusUpdated": "பயனர் நிலை வெற்றிகரமாக புதுப்பிக்கப்பட்டது",
+    "statusUpdateFailed": "பயனர் நிலையை புதுப்பிக்கத் தவறிவிட்டது",
+    "enable": "செயல்படுத்து",
+    "disable": "முடக்கு"
   },
   "theme": {
     "zinc": "துத்தநாகம்",
@@ -1951,7 +1979,9 @@
       "distance": "நடக்கும் தூரம் (கி.மீ)",
       "grazing": "மேய்ச்சல்",
       "bwGain": "உடல் எடை அதிகரிப்பு (கிலோ/நாள்)",
-      "simulationName": "உருவகப்படுத்துதல் பெயர்"
+      "simulationName": "உருவகப்படுத்துதல் பெயர்",
+      "simulationCountry": "நாடு",
+      "activeGrazing": "செயலில் உள்ள மேய்ச்சல்"
     },
     "topographyOptions": {
       "flat": "சமவெளி",
@@ -2026,7 +2056,18 @@
       "price": "விலை",
       "qty": "அளவு",
       "feedType_forage": "தீவனம்",
-      "feedType_concentrate": "கவனக்குவிப்பு"
+      "feedType_concentrate": "கவனக்குவிப்பு",
+      "noForageWarning": "தீவனப் பயிர்கள் எதுவும் தேர்ந்தெடுக்கப்படவில்லை. கால்நடைகளுக்கு சரியான செரிமானத்திற்கு粗ப்பு (ரஃபேஜ்) தேவை. குறைந்தபட்சம் ஒரு தீவனப் பயிரையாவது சேர்க்கவும்.",
+      "feedTypeLabel": "தீவன வகை",
+      "feedCategoryLabel": "தீவனப் பிரிவு",
+      "feedNameLabel": "தீவனம்",
+      "addMoreFeed": "மேலும் தீவனம் சேர்க்கவும்",
+      "addCustomFeed": "தனிப்பயன் தீவனம் சேர்க்கவும்",
+      "feedDetails": "தீவன விவரங்கள்",
+      "feedName": "தீவனப் பெயர்",
+      "nutritionalInfo": "ஊட்டச்சத்து தகவல்",
+      "costLabel": "செலவு",
+      "customFeedCreated": "தனிப்பயன் தீவனம் வெற்றிகரமாக உருவாக்கப்பட்டது"
     },
     "constraints": {
       "title": "தனிப்பயன் தீவன வரம்புகள்",
@@ -2084,7 +2125,11 @@
       "infeasible": "செயலாக்கக்கூடிய தீவனம் இல்லை",
       "infeasibleDetail": "தேர்ந்தெடுக்கப்பட்ட தீவனங்கள் இந்த விலங்கின் ஊட்டச்சத்து தேவைகளை பூர்த்தி செய்யவில்லை. சீரான உணவை உகந்த கருவி கண்டறிய முடியவில்லை.",
       "infeasibleHint": "மேலும் பல வகையான தீவனங்களைச் சேர்க்க முயற்சிக்கவும் — பசுந்தீவனம், புரதச்சத்து நிறைந்த அடர்தீவனம் (எ.கா. எண்ணெய் வித்துப் பிண்ணாக்குகள்) மற்றும் ஒரு கனிமச் சப்ளிமென்ட் ஆகியவற்றைச் சேர்க்கவும்.",
-      "tryAgain": "தீவனங்களை மாற்று"
+      "tryAgain": "தீவனங்களை மாற்று",
+      "reportSavedDesc": "உங்கள் அறிக்கை சேமிக்கப்பட்டுள்ளது. Navigation Panel-ல் உள்ள Feed Reports-க்கு அடியில் அதைக் காணலாம். இதை பகிர விரும்புகிறீர்களா?",
+      "sharePrompt": "இந்த அறிக்கையைப் பகிர வேண்டுமா?",
+      "yesShare": "ஆம், பகிரவும்",
+      "noDone": "இல்லை, முடிந்தது"
     },
     "methane": {
       "title": "சுற்றுச்சூழல் தாக்கம்",
@@ -2165,7 +2210,8 @@
       "calvingInterval": "300 – 600",
       "temperature": "-20 – 50",
       "distance": "0 – 50",
-      "bwGain": "-1 – 2"
+      "bwGain": "-1 – 2",
+      "simulationCountry": "தீவனம் மற்றும் கால்நடை தேர்வுக்கான நாடு"
     },
     "nutrientLabels": {
       "ne_l": "ஆற்றல்",
@@ -2182,6 +2228,12 @@
       "calcium_kg": "கால்சியம் (கிலோ)",
       "phosphorus_kg": "பாஸ்பரஸ் (கிலோ)",
       "ndf_kg": "நார்ச்சத்து (கிலோ)"
+    },
+    "resetConfirmMessage": "படிவத்தை மீட்டமைக்க வேண்டுமா? உள்ளிடப்பட்ட அனைத்து தரவுகளும் அழிக்கப்படும்.",
+    "report": {
+      "share": "பகிரவும்",
+      "print": "அச்சிடு / PDF",
+      "copiedToClipboard": "அறிக்கை கிளிப்போர்டுக்கு நகலெடுக்கப்பட்டது"
     }
   }
 }

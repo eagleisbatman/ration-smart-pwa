@@ -79,7 +79,9 @@
     "addCow": "गाई थप्नुहोस्",
     "logMilk": "दूधको विवरण राख्नुहोस्",
     "getDiet": "आहारा योजना लिनुहोस्",
-    "admin": "एडमिन"
+    "admin": "एडमिन",
+    "feedReports": "दाना रिपोर्ट",
+    "termsConditions": "नियम र शर्तहरू"
   },
   "roles": {
     "farmer": "किसान",
@@ -236,7 +238,9 @@
     "newPhone": "नयाँ फोन नम्बर",
     "currentValue": "हालको: {value}",
     "sendCode": "प्रमाणीकरण कोड पठाउनुहोस्",
-    "changeSuccess": "तपाईंको {type} सफलतापूर्वक अपडेट गरियो।"
+    "changeSuccess": "तपाईंको {type} सफलतापूर्वक अपडेट गरियो।",
+    "dangerZone": "खतरा क्षेत्र",
+    "profileUpdateFailed": "प्रोफाइल बचत गर्न असफल भयो"
   },
   "cow": {
     "myCows": "मेरा गाईहरू",
@@ -678,7 +682,8 @@
       "stover": "डाँठ",
       "straw": "भुस",
       "succulent": "रसिलो",
-      "treeLeaves": "रुखका पातहरू"
+      "treeLeaves": "रुखका पातहरू",
+      "byProductForage": "उप-उत्पादन घाँस"
     },
     "labels": {
       "dmPercent": "सुख्खा पदार्थ (DM)",
@@ -706,7 +711,15 @@
       "pricing": "मूल्य",
       "season": "मौसम",
       "type": "प्रकार",
-      "typeRequired": "प्रकार *"
+      "typeRequired": "प्रकार *",
+      "adfPercent": "एसिड डिटर्जेन्ट फाइबर (ADF)",
+      "adfPercentShort": "ADF",
+      "ashPercent": "खरानी",
+      "eePercent": "ईथर एक्स्ट्र्याक्ट (EE)",
+      "stPercent": "स्टार्च",
+      "lgPercent": "लिग्निन",
+      "ndinPercent": "NDIN",
+      "adinPercent": "ADIN"
     },
     "seasons": {
       "allYear": "वर्षैभरी",
@@ -1869,7 +1882,14 @@
       "subtitle": "दाना थप्नुहोस्, सम्पादन गर्नुहोस् र व्यवस्थापन गर्नुहोस्",
       "bulkUpload": "बल्क अपलोड",
       "export": "निर्यात",
-      "noFeeds": "कुनै दाना भेटिएन"
+      "noFeeds": "कुनै दाना भेटिएन",
+      "manageTypes": "प्रकारहरू व्यवस्थापन गर्नुहोस्",
+      "feedTypes": "दानाका प्रकारहरू",
+      "feedCategories": "दानाका वर्गहरू",
+      "type": "प्रकार",
+      "category": "वर्ग",
+      "newTypeName": "नयाँ प्रकारको नाम",
+      "newCategoryName": "नयाँ वर्गको नाम"
     },
     "feedback": {
       "title": "प्रतिक्रिया",
@@ -1892,7 +1912,15 @@
       "evaluations": "मूल्याङ्कनहरू",
       "countryBreakdown": "देश अनुसारको विवरण",
       "superOnly": "सुपर एडमिन मात्र"
-    }
+    },
+    "welcomeLabel": "स्वागत छ",
+    "bulkUploadExport": "बल्क अपलोड र दाना निर्यात गर्नुहोस्",
+    "adminLabel": "एडमिन",
+    "confirmToggleStatus": "के तपाईं {name} प्रयोगकर्तालाई {action} गर्ने निश्चित हुनुहुन्छ?",
+    "statusUpdated": "प्रयोगकर्ताको स्थिति सफलतापूर्वक अपडेट भयो",
+    "statusUpdateFailed": "प्रयोगकर्ताको स्थिति अपडेट गर्न असफल भयो",
+    "enable": "सक्षम गर्नुहोस्",
+    "disable": "असक्षम गर्नुहोस्"
   },
   "theme": {
     "zinc": "जिंक",
@@ -1951,7 +1979,9 @@
       "distance": "हिँड्ने दूरी (किमी)",
       "grazing": "चराउने",
       "bwGain": "शारीरिक तौल वृद्धि (के.जी./दिन)",
-      "simulationName": "सिमुलेशन नाम"
+      "simulationName": "सिमुलेशन नाम",
+      "simulationCountry": "देश",
+      "activeGrazing": "सक्रिय चराइ"
     },
     "topographyOptions": {
       "flat": "समतल",
@@ -2026,7 +2056,18 @@
       "price": "मूल्य",
       "qty": "मात्रा",
       "feedType_forage": "घाँस",
-      "feedType_concentrate": "दाना"
+      "feedType_concentrate": "दाना",
+      "noForageWarning": "कुनै पनि हरियो दाना छनोट गरिएको छैन। गाईवस्तुलाई राम्रो पाचनका लागि रफेज आवश्यक पर्छ। कम्तिमा एउटा हरियो दाना थप्ने विचार गर्नुहोस्।",
+      "feedTypeLabel": "दानाको प्रकार",
+      "feedCategoryLabel": "दानाको वर्ग",
+      "feedNameLabel": "दाना",
+      "addMoreFeed": "थप दाना थप्नुहोस्",
+      "addCustomFeed": "अनुकूलित दाना थप्नुहोस्",
+      "feedDetails": "दानाको विवरण",
+      "feedName": "दानाको नाम",
+      "nutritionalInfo": "पोषण जानकारी",
+      "costLabel": "लागत",
+      "customFeedCreated": "आफ्नै दाना सफलतापूर्वक सिर्जना गरियो"
     },
     "constraints": {
       "title": "आहारको सीमा निर्धारण गर्नुहोस्",
@@ -2084,7 +2125,11 @@
       "infeasible": "कुनै सम्भव आहार फेला परेन",
       "infeasibleDetail": "चयन गरिएका दानाहरूले यस जनावरको पोषण आवश्यकताहरू पूरा गर्न सक्दैनन्। अप्टिमाइजरले सन्तुलित आहार फेला पार्न सकेन।",
       "infeasibleHint": "थप दाना विविधता थप्ने प्रयास गर्नुहोस् — घाँस, प्रोटिन-समृद्ध दाना (जस्तै तेलहनको पिना), र खनिज पूरक समावेश गर्नुहोस्।",
-      "tryAgain": "दाना परिवर्तन गर्नुहोस्"
+      "tryAgain": "दाना परिवर्तन गर्नुहोस्",
+      "reportSavedDesc": "तपाईंको रिपोर्ट सुरक्षित गरिएको छ। तपाईंले यसलाई नेभिगेसन प्यानलमा दाना रिपोर्टहरू अन्तर्गत फेला पार्न सक्नुहुन्छ। के तपाईं यसलाई साझा गर्न चाहनुहुन्छ?",
+      "sharePrompt": "यो रिपोर्ट साझा गर्ने?",
+      "yesShare": "हो, साझा गर्ने",
+      "noDone": "होइन, भयो"
     },
     "methane": {
       "title": "वातावरणीय प्रभाव",
@@ -2133,11 +2178,11 @@
     "loadFromHistory": "इतिहासबाट लोड गर्नुहोस्",
     "units": {
       "days": "दिन",
-      "kg": "kg",
+      "kg": "केजी",
       "litersPerDay": "L/दिन",
       "kgPerDay": "kg/दिन",
       "degreeC": "°C",
-      "km": "km",
+      "km": "किमी",
       "percent": "%"
     },
     "topographyHint": "समतल / पहाडी / हिमाली",
@@ -2165,7 +2210,8 @@
       "calvingInterval": "३०० – ६००",
       "temperature": "-२० – ५०",
       "distance": "० – ५०",
-      "bwGain": "-१ – २"
+      "bwGain": "-१ – २",
+      "simulationCountry": "दाना र नश्ल छनोटका लागि देश"
     },
     "nutrientLabels": {
       "ne_l": "ऊर्जा",
@@ -2182,6 +2228,12 @@
       "calcium_kg": "क्याल्सियम (kg)",
       "phosphorus_kg": "फस्फोरस (kg)",
       "ndf_kg": "फाइबर (kg)"
+    },
+    "resetConfirmMessage": "के तपाईं निश्चित हुनुहुन्छ कि तपाईं फारम रिसेट गर्न चाहनुहुन्छ? प्रविष्ट गरिएका सबै डाटा मेटिनेछन्।",
+    "report": {
+      "share": "साझा गर्नुहोस्",
+      "print": "प्रिन्ट / PDF",
+      "copiedToClipboard": "रिपोर्ट क्लिपबोर्डमा प्रतिलिपि गरियो"
     }
   }
 }

@@ -62,10 +62,12 @@ import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { api } from 'src/lib/api';
 import { useQuasar } from 'quasar';
+import { useAuthStore } from 'src/stores/auth';
 
 const { t } = useI18n();
 const router = useRouter();
 const $q = useQuasar();
+const authStore = useAuthStore();
 
 const submitting = ref(false);
 const showSuccess = ref(false);
@@ -89,6 +91,8 @@ async function onSubmit() {
       feedback_type: form.feedback_type,
       overall_rating: form.overall_rating > 0 ? form.overall_rating : null,
       text_feedback: form.text_feedback || null,
+    }, {
+      params: { user_id: authStore.userId },
     });
     showSuccess.value = true;
   } catch {

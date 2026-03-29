@@ -79,7 +79,9 @@
     "addCow": "เพิ่มวัว",
     "logMilk": "บันทึกน้ำนม",
     "getDiet": "รับสูตรอาหาร",
-    "admin": "ผู้ดูแลระบบ"
+    "admin": "ผู้ดูแลระบบ",
+    "feedReports": "รายงานอาหาร",
+    "termsConditions": "ข้อกำหนดและเงื่อนไข"
   },
   "roles": {
     "farmer": "เกษตรกร",
@@ -236,7 +238,9 @@
     "newPhone": "เบอร์โทรศัพท์ใหม่",
     "currentValue": "ปัจจุบัน: {value}",
     "sendCode": "ส่งรหัสยืนยัน",
-    "changeSuccess": "{type} ของคุณได้รับการอัปเดตเรียบร้อยแล้ว"
+    "changeSuccess": "{type} ของคุณได้รับการอัปเดตเรียบร้อยแล้ว",
+    "dangerZone": "พื้นที่อันตราย",
+    "profileUpdateFailed": "บันทึกโปรไฟล์ไม่สำเร็จ"
   },
   "cow": {
     "myCows": "วัวของฉัน",
@@ -678,7 +682,8 @@
       "stover": "ต้นและใบ",
       "straw": "ฟาง",
       "succulent": "พืชฉ่ำน้ำ",
-      "treeLeaves": "ใบไม้"
+      "treeLeaves": "ใบไม้",
+      "byProductForage": "พืชอาหารสัตว์ผลพลอยได้"
     },
     "labels": {
       "dmPercent": "วัตถุแห้ง (DM)",
@@ -706,7 +711,15 @@
       "pricing": "ราคา",
       "season": "ฤดูกาล",
       "type": "ชนิด",
-      "typeRequired": "ชนิด *"
+      "typeRequired": "ชนิด *",
+      "adfPercent": "เยื่อใยที่ละลายในกรด (ADF)",
+      "adfPercentShort": "ADF",
+      "ashPercent": "เถ้า",
+      "eePercent": "ไขมัน (EE)",
+      "stPercent": "แป้ง",
+      "lgPercent": "ลิกนิน",
+      "ndinPercent": "NDIN",
+      "adinPercent": "ADIN"
     },
     "seasons": {
       "allYear": "ตลอดปี",
@@ -1869,7 +1882,14 @@
       "subtitle": "เพิ่ม, แก้ไข & จัดการอาหารสัตว์",
       "bulkUpload": "อัปโหลดจำนวนมาก",
       "export": "ส่งออก",
-      "noFeeds": "ไม่พบอาหารสัตว์"
+      "noFeeds": "ไม่พบอาหารสัตว์",
+      "manageTypes": "จัดการประเภท",
+      "feedTypes": "ประเภทอาหาร",
+      "feedCategories": "หมวดหมู่อาหาร",
+      "type": "ประเภท",
+      "category": "หมวดหมู่",
+      "newTypeName": "ชื่อประเภทใหม่",
+      "newCategoryName": "ชื่อหมวดหมู่ใหม่"
     },
     "feedback": {
       "title": "ข้อเสนอแนะ",
@@ -1892,7 +1912,15 @@
       "evaluations": "การประเมิน",
       "countryBreakdown": "แบ่งตามประเทศ",
       "superOnly": "เฉพาะผู้ดูแลระบบขั้นสูงเท่านั้น"
-    }
+    },
+    "welcomeLabel": "ยินดีต้อนรับ",
+    "bulkUploadExport": "อัปโหลดและส่งออกข้อมูลอาหารจำนวนมาก",
+    "adminLabel": "ผู้ดูแลระบบ",
+    "confirmToggleStatus": "{action} ผู้ใช้ {name}?",
+    "statusUpdated": "อัปเดตสถานะผู้ใช้สำเร็จ",
+    "statusUpdateFailed": "อัปเดตสถานะผู้ใช้ไม่สำเร็จ",
+    "enable": "เปิดใช้งาน",
+    "disable": "ปิดใช้งาน"
   },
   "theme": {
     "zinc": "สังกะสี",
@@ -1951,7 +1979,9 @@
       "distance": "ระยะทางเดิน (กม.)",
       "grazing": "การเล็มหญ้า",
       "bwGain": "น้ำหนักตัวที่เพิ่มขึ้น (กก./วัน)",
-      "simulationName": "ชื่อการจำลอง"
+      "simulationName": "ชื่อการจำลอง",
+      "simulationCountry": "ประเทศ",
+      "activeGrazing": "การปล่อยเล็มหญ้า"
     },
     "topographyOptions": {
       "flat": "ราบ",
@@ -2026,7 +2056,18 @@
       "price": "ราคา",
       "qty": "ปริมาณ",
       "feedType_forage": "อาหารหยาบ",
-      "feedType_concentrate": "อาหารข้น"
+      "feedType_concentrate": "อาหารข้น",
+      "noForageWarning": "ไม่ได้เลือกอาหารหยาบเลย โคต้องการอาหารหยาบเพื่อช่วยระบบย่อยอาหาร โปรดพิจารณาเพิ่มอาหารหยาบอย่างน้อยหนึ่งรายการ",
+      "feedTypeLabel": "ประเภทอาหาร",
+      "feedCategoryLabel": "หมวดหมู่อาหาร",
+      "feedNameLabel": "อาหาร",
+      "addMoreFeed": "เพิ่มอาหารอีก",
+      "addCustomFeed": "เพิ่มอาหารที่กำหนดเอง",
+      "feedDetails": "รายละเอียดอาหาร",
+      "feedName": "ชื่ออาหาร",
+      "nutritionalInfo": "ข้อมูลทางโภชนาการ",
+      "costLabel": "ราคา",
+      "customFeedCreated": "สร้างอาหารสัตว์ที่กำหนดเองสำเร็จแล้ว"
     },
     "constraints": {
       "title": "ข้อจำกัดสูตรอาหาร",
@@ -2084,7 +2125,11 @@
       "infeasible": "ไม่พบสูตรอาหารที่เป็นไปได้",
       "infeasibleDetail": "วัตถุดิบอาหารที่เลือกไม่สามารถตอบสนองความต้องการทางโภชนาการของสัตว์ตัวนี้ได้ ระบบไม่สามารถหาสูตรอาหารที่สมดุลได้",
       "infeasibleHint": "ลองเพิ่มความหลากหลายของวัตถุดิบอาหาร เช่น อาหารหยาบ, อาหารข้นที่มีโปรตีนสูง (เช่น กากเมล็ดพืชน้ำมัน) และแร่ธาตุเสริม",
-      "tryAgain": "เปลี่ยนอาหารสัตว์"
+      "tryAgain": "เปลี่ยนอาหารสัตว์",
+      "reportSavedDesc": "รายงานของคุณถูกบันทึกแล้ว คุณสามารถค้นหาได้ภายใต้รายงานอาหารสัตว์ในแผงนำทาง คุณต้องการแบ่งปันหรือไม่?",
+      "sharePrompt": "แบ่งปันรายงานนี้หรือไม่?",
+      "yesShare": "ใช่, แบ่งปัน",
+      "noDone": "ไม่, เสร็จแล้ว"
     },
     "methane": {
       "title": "ผลกระทบต่อสิ่งแวดล้อม",
@@ -2165,7 +2210,8 @@
       "calvingInterval": "300 – 600",
       "temperature": "-20 – 50",
       "distance": "0 – 50",
-      "bwGain": "-1 – 2"
+      "bwGain": "-1 – 2",
+      "simulationCountry": "ประเทศสำหรับการเลือกอาหารและสายพันธุ์"
     },
     "nutrientLabels": {
       "ne_l": "พลังงาน",
@@ -2182,6 +2228,12 @@
       "calcium_kg": "แคลเซียม (กก.)",
       "phosphorus_kg": "ฟอสฟอรัส (กก.)",
       "ndf_kg": "ใยอาหาร (กก.)"
+    },
+    "resetConfirmMessage": "คุณแน่ใจหรือไม่ว่าต้องการรีเซ็ตแบบฟอร์ม? ข้อมูลที่ป้อนทั้งหมดจะถูกล้าง",
+    "report": {
+      "share": "แบ่งปัน",
+      "print": "พิมพ์ / PDF",
+      "copiedToClipboard": "คัดลอกรายงานไปยังคลิปบอร์ดแล้ว"
     }
   }
 }

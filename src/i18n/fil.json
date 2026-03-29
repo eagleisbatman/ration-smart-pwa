@@ -79,7 +79,9 @@
     "addCow": "Magdagdag ng Baka",
     "logMilk": "Magtala ng Gatas",
     "getDiet": "Kumuha ng Diet",
-    "admin": "Admin"
+    "admin": "Admin",
+    "feedReports": "Mga Ulat sa Pakain",
+    "termsConditions": "Mga Tuntunin at Kondisyon"
   },
   "roles": {
     "farmer": "Magsasaka",
@@ -236,7 +238,9 @@
     "newPhone": "Bagong Numero ng Telepono",
     "currentValue": "Kasalukuyan: {value}",
     "sendCode": "Ipadala ang Verification Code",
-    "changeSuccess": "Matagumpay na na-update ang iyong {type}."
+    "changeSuccess": "Matagumpay na na-update ang iyong {type}.",
+    "dangerZone": "Peligrosong Bahagi",
+    "profileUpdateFailed": "Hindi na-save ang profile"
   },
   "cow": {
     "myCows": "Aking mga Baka",
@@ -678,7 +682,8 @@
       "stover": "Dayami",
       "straw": "Dayami",
       "succulent": "Makatas",
-      "treeLeaves": "Dahon ng Puno"
+      "treeLeaves": "Dahon ng Puno",
+      "byProductForage": "By-product Forage"
     },
     "labels": {
       "dmPercent": "Tuyo (DM)",
@@ -706,7 +711,15 @@
       "pricing": "Pagpepresyo",
       "season": "Panahon",
       "type": "Uri",
-      "typeRequired": "Uri *"
+      "typeRequired": "Uri *",
+      "adfPercent": "Acid Detergent Fiber (ADF)",
+      "adfPercentShort": "ADF",
+      "ashPercent": "Ash",
+      "eePercent": "Ether Extract (EE)",
+      "stPercent": "Starch",
+      "lgPercent": "Lignin",
+      "ndinPercent": "NDIN",
+      "adinPercent": "ADIN"
     },
     "seasons": {
       "allYear": "Buong Taon",
@@ -1866,9 +1879,16 @@
     "feeds": {
       "title": "Pamamahala ng Pagkain ng Baka",
       "subtitle": "Magdagdag, mag-edit at mamahala ng pagkain",
-      "bulkUpload": "Bulk Upload",
+      "bulkUpload": "Maramihang Pag-upload",
       "export": "I-export",
-      "noFeeds": "Walang nakitang pagkain"
+      "noFeeds": "Walang nakitang pagkain",
+      "manageTypes": "Pamahalaan ang mga Uri",
+      "feedTypes": "Mga Uri ng Pagkain",
+      "feedCategories": "Mga Kategorya ng Pagkain",
+      "type": "Uri",
+      "category": "Kategorya",
+      "newTypeName": "Bagong pangalan ng uri",
+      "newCategoryName": "Bagong pangalan ng kategorya"
     },
     "feedback": {
       "title": "Feedback",
@@ -1886,12 +1906,20 @@
     "simStats": {
       "title": "Stats ng Simulation",
       "total": "Kabuuan",
-      "successRate": "Success Rate",
+      "successRate": "Antas ng Tagumpay",
       "recommendations": "Mga Rekomendasyon",
       "evaluations": "Mga Pagsusuri",
       "countryBreakdown": "Pagsira ng Bansa",
       "superOnly": "Para lang sa super admin"
-    }
+    },
+    "welcomeLabel": "WELCOME",
+    "bulkUploadExport": "Bulk Upload & Export Feed",
+    "adminLabel": "Admin",
+    "confirmToggleStatus": "{action} user {name}?",
+    "statusUpdated": "Matagumpay na na-update ang status ng user",
+    "statusUpdateFailed": "Nabigo ang pag-update ng status ng user",
+    "enable": "I-enable",
+    "disable": "Huwag paganahin"
   },
   "theme": {
     "zinc": "Zinc",
@@ -1936,7 +1964,7 @@
     "fields": {
       "bodyWeight": "Timbang ng Katawan (kg)",
       "breed": "Lahi",
-      "bcScore": "Body Condition Score",
+      "bcScore": "Marka ng Kondisyon ng Katawan",
       "lactating": "Nagpapasuso Kasalukuyan",
       "daysInMilk": "Araw ng Pagpapasuso",
       "milkProduction": "Produksyon ng Gatas (L/araw)",
@@ -1950,7 +1978,9 @@
       "distance": "Layo ng Lakad (km)",
       "grazing": "Pangangaso",
       "bwGain": "Pagtaas ng Timbang ng Katawan (kg/araw)",
-      "simulationName": "Pangalan ng Simulation"
+      "simulationName": "Pangalan ng Simulation",
+      "simulationCountry": "Bansa",
+      "activeGrazing": "Aktibong Panginain"
     },
     "topographyOptions": {
       "flat": "Patag",
@@ -2025,7 +2055,18 @@
       "price": "Presyo",
       "qty": "Dami",
       "feedType_forage": "Damo/Pananim",
-      "feedType_concentrate": "Konsentrado"
+      "feedType_concentrate": "Konsentrado",
+      "noForageWarning": "Walang napiling damong-kumpay. Nangangailangan ang baka ng roughage para sa tamang pagtunaw. Pag-isipan ang pagdaragdag ng kahit isang damong-kumpay.",
+      "feedTypeLabel": "Uri ng Pagkain",
+      "feedCategoryLabel": "Kategorya ng Pagkain",
+      "feedNameLabel": "Pagkain",
+      "addMoreFeed": "Magdagdag ng Maraming Pagkain",
+      "addCustomFeed": "Magdagdag ng Pasadyang Pagkain",
+      "feedDetails": "Mga Detalye ng Pagkain",
+      "feedName": "Pangalan ng Pagkain",
+      "nutritionalInfo": "Impormasyon sa Nutrisyon",
+      "costLabel": "Halaga",
+      "customFeedCreated": "Matagumpay na nagawa ang custom na pakain"
     },
     "constraints": {
       "title": "Pasadyang Limitasyon ng Diyeta",
@@ -2083,7 +2124,11 @@
       "infeasible": "Walang nahanap na posibleng pagkain",
       "infeasibleDetail": "Ang napiling pakain ay hindi sapat para sa pangangailangan ng hayop. Hindi makahanap ang optimizer ng balanseng pagkain.",
       "infeasibleHint": "Subukang magdagdag ng iba't ibang pakain — isama ang forages, konsentradong mayaman sa protina (hal. oilseed meals), at mineral supplement.",
-      "tryAgain": "Baguhin ang Pakain"
+      "tryAgain": "Baguhin ang Pakain",
+      "reportSavedDesc": "Na-save na ang iyong ulat. Makikita mo ito sa ilalim ng Feed Reports sa Navigation Panel. Gusto mo bang ibahagi ito?",
+      "sharePrompt": "IBABAHAGI BA ANG ULAT NA ITO?",
+      "yesShare": "Oo, Ibahagi",
+      "noDone": "Hindi, Tapos na"
     },
     "methane": {
       "title": "Epekto sa Kapaligiran",
@@ -2164,7 +2209,8 @@
       "calvingInterval": "300 – 600",
       "temperature": "-20 – 50",
       "distance": "0 – 50",
-      "bwGain": "-1 – 2"
+      "bwGain": "-1 – 2",
+      "simulationCountry": "Bansa para sa pagpili ng pagkain at lahi"
     },
     "nutrientLabels": {
       "ne_l": "Enerhiya",
@@ -2181,6 +2227,12 @@
       "calcium_kg": "Kalsiyum (kg)",
       "phosphorus_kg": "Posporus (kg)",
       "ndf_kg": "Hibla (kg)"
+    },
+    "resetConfirmMessage": "Sigurado ka bang gusto mong i-reset ang form? Lahat ng nailagay na data ay buburahin.",
+    "report": {
+      "share": "Ibahagi",
+      "print": "I-print / PDF",
+      "copiedToClipboard": "Nakopya ang ulat sa clipboard"
     }
   }
 }

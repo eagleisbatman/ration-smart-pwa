@@ -26,6 +26,9 @@
       <div class="col-auto">
         <q-btn outline color="primary" icon="download" :label="$t('admin.feeds.export')" no-caps :loading="exporting" @click="doExport" />
       </div>
+      <div class="col-auto">
+        <q-btn outline color="secondary" icon="category" :label="$t('admin.feeds.manageTypes', 'Manage Types')" no-caps @click="showTypesDialog = true" />
+      </div>
     </div>
 
     <!-- Loading -->
@@ -71,8 +74,26 @@
         </q-card-section>
         <q-card-section class="q-gutter-sm">
           <q-input v-model="feedForm.name" label="Feed Name" outlined dense />
-          <q-select v-model="feedForm.fd_type" :options="['Forage', 'Concentrate']" label="Type" outlined dense behavior="menu" />
-          <q-input v-model="feedForm.category" label="Category" outlined dense />
+          <q-select
+            v-model="feedForm.fd_type"
+            :options="typeOptions"
+            :label="$t('admin.feeds.type', 'Type')"
+            outlined
+            dense
+            emit-value
+            map-options
+            behavior="menu"
+          />
+          <q-select
+            v-model="feedForm.category"
+            :options="filteredCategoryOptions"
+            :label="$t('admin.feeds.category', 'Category')"
+            outlined
+            dense
+            emit-value
+            map-options
+            behavior="menu"
+          />
           <q-input v-model.number="feedForm.price_per_kg" label="Price/kg" type="number" outlined dense />
         </q-card-section>
         <q-card-actions align="right">
@@ -97,11 +118,76 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
+
+    <!-- Manage Feed Types & Categories Dialog -->
+    <q-dialog v-model="showTypesDialog" persistent>
+      <q-card style="min-width: 400px; max-width: 550px">
+        <q-card-section>
+          <div class="text-h6">{{ $t('admin.feeds.manageTypes', 'Manage Feed Types & Categories') }}</div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          <!-- Feed Types -->
+          <div class="text-subtitle2 q-mb-xs">{{ $t('admin.feeds.feedTypes', 'Feed Types') }}</div>
+          <q-list dense separator bordered class="rounded-borders q-mb-md">
+            <q-item v-for="ft in adminStore.feedTypes" :key="ft.id">
+              <q-item-section>{{ ft.type_name }}</q-item-section>
+              <q-item-section side>
+                <q-btn flat round dense icon="delete" color="negative" size="xs" @click="doDeleteType(ft)" />
+              </q-item-section>
+            </q-item>
+            <q-item v-if="adminStore.feedTypes.length === 0">
+              <q-item-section class="text-grey-5 text-caption">{{ $t('common.noData', 'No data') }}</q-item-section>
+            </q-item>
+          </q-list>
+          <div class="row q-gutter-xs q-mb-lg">
+            <q-input v-model="newTypeName" :placeholder="$t('admin.feeds.newTypeName', 'New type name')" outlined dense class="col" />
+            <q-btn color="primary" icon="add" dense unelevated :disable="!newTypeName.trim()" :loading="addingType" @click="doAddType" />
+          </div>
+
+          <!-- Feed Categories -->
+          <div class="text-subtitle2 q-mb-xs">{{ $t('admin.feeds.feedCategories', 'Feed Categories') }}</div>
+          <q-list dense separator bordered class="rounded-borders q-mb-md">
+            <q-item v-for="fc in adminStore.feedCategories" :key="fc.id">
+              <q-item-section>
+                <q-item-label>{{ fc.category_name }}</q-item-label>
+                <q-item-label caption>{{ getTypeName(fc.feed_type_id) }}</q-item-label>
+              </q-item-section>
+              <q-item-section side>
+                <q-btn flat round dense icon="delete" color="negative" size="xs" @click="doDeleteCategory(fc)" />
+              </q-item-section>
+            </q-item>
+            <q-item v-if="adminStore.feedCategories.length === 0">
+              <q-item-section class="text-grey-5 text-caption">{{ $t('common.noData', 'No data') }}</q-item-section>
+            </q-item>
+          </q-list>
+          <div class="row q-gutter-xs">
+            <q-select
+              v-model="newCatTypeId"
+              :options="typeOptions"
+              :label="$t('admin.feeds.type', 'Type')"
+              outlined
+              dense
+              emit-value
+              map-options
+              class="col-5"
+              behavior="menu"
+            />
+            <q-input v-model="newCatName" :placeholder="$t('admin.feeds.newCategoryName', 'New category name')" outlined dense class="col" />
+            <q-btn color="primary" icon="add" dense unelevated :disable="!newCatName.trim() || !newCatTypeId" :loading="addingCategory" @click="doAddCategory" />
+          </div>
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn flat :label="$t('common.close', 'Close')" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted } from 'vue';
+import { ref, computed, watch, onMounted } from 'vue';
 import { useQuasar } from 'quasar';
 import { useI18n } from 'vue-i18n';
 import { useAdminStore } from 'src/stores/admin';
@@ -118,20 +204,49 @@ const page = ref(1);
 const search = ref('');
 const showAddDialog = ref(false);
 const showBulkUpload = ref(false);
+const showTypesDialog = ref(false);
 const editingFeed = ref<Record<string, unknown> | null>(null);
 const saving = ref(false);
 const exporting = ref(false);
 const uploading = ref(false);
 const uploadFile = ref<File | null>(null);
 
+// New type/category management
+const newTypeName = ref('');
+const addingType = ref(false);
+const newCatName = ref('');
+const newCatTypeId = ref('');
+const addingCategory = ref(false);
+
 const feedForm = ref({
   name: '',
-  fd_type: 'Concentrate',
+  fd_type: '',
   category: '',
   price_per_kg: 0,
 });
 
 const totalPages = ref(1);
+
+// Dynamic options from backend
+const typeOptions = computed(() =>
+  adminStore.feedTypes.map((ft) => ({ label: ft.type_name, value: ft.type_name }))
+);
+
+const filteredCategoryOptions = computed(() => {
+  const selectedType = feedForm.value.fd_type;
+  if (!selectedType) return adminStore.feedCategories.map((fc) => ({ label: fc.category_name, value: fc.category_name }));
+  // Find the type id for the selected type name
+  const typeObj = adminStore.feedTypes.find((ft) => ft.type_name === selectedType);
+  if (!typeObj) return [];
+  return adminStore.feedCategories
+    .filter((fc) => fc.feed_type_id === typeObj.id)
+    .map((fc) => ({ label: fc.category_name, value: fc.category_name }));
+});
+
+function getTypeName(typeId: string): string {
+  const ft = adminStore.feedTypes.find((t) => t.id === typeId);
+  return ft?.type_name || typeId;
+}
 
 async function loadFeeds() {
   const result = await adminStore.fetchFeeds(page.value, search.value || undefined);
@@ -140,14 +255,25 @@ async function loadFeeds() {
   totalPages.value = Math.max(1, Math.ceil(result.total / 25));
 }
 
+async function loadTypesAndCategories() {
+  await Promise.all([adminStore.listFeedTypes(), adminStore.listFeedCategories()]);
+}
+
 watch([page, search], () => loadFeeds());
-onMounted(loadFeeds);
+onMounted(async () => {
+  await Promise.all([loadFeeds(), loadTypesAndCategories()]);
+});
+
+// Reset category when type changes in form
+watch(() => feedForm.value.fd_type, () => {
+  feedForm.value.category = '';
+});
 
 function editFeed(feed: Record<string, unknown>) {
   editingFeed.value = feed;
   feedForm.value = {
     name: String(feed.fd_name || feed.name || ''),
-    fd_type: String(feed.fd_type || 'Concentrate'),
+    fd_type: String(feed.fd_type || ''),
     category: String(feed.fd_category || feed.category || ''),
     price_per_kg: Number(feed.price_per_kg || 0),
   };
@@ -157,7 +283,7 @@ function editFeed(feed: Record<string, unknown>) {
 function closeDialog() {
   showAddDialog.value = false;
   editingFeed.value = null;
-  feedForm.value = { name: '', fd_type: 'Concentrate', category: '', price_per_kg: 0 };
+  feedForm.value = { name: '', fd_type: '', category: '', price_per_kg: 0 };
 }
 
 async function saveFeed() {
@@ -198,6 +324,8 @@ function confirmDelete(feed: Record<string, unknown>) {
     if (ok) {
       $q.notify({ type: 'positive', message: 'Feed deleted' });
       await loadFeeds();
+    } else {
+      $q.notify({ type: 'negative', message: adminStore.error || t('common.error') });
     }
   });
 }
@@ -206,9 +334,7 @@ async function doExport() {
   exporting.value = true;
   const url = await adminStore.exportFeeds(authStore.user?.country_id as string);
   exporting.value = false;
-  if (url) {
-    window.open(url, '_blank');
-  } else {
+  if (!url) {
     $q.notify({ type: 'negative', message: adminStore.error || 'Export failed' });
   }
 }
@@ -222,5 +348,69 @@ async function doBulkUpload() {
   uploadFile.value = null;
   $q.notify({ type: result.success ? 'positive' : 'negative', message: result.message });
   if (result.success) await loadFeeds();
+}
+
+// ---- Type Management ----
+async function doAddType() {
+  if (!newTypeName.value.trim()) return;
+  addingType.value = true;
+  const ok = await adminStore.addFeedType(newTypeName.value.trim());
+  addingType.value = false;
+  if (ok) {
+    newTypeName.value = '';
+    $q.notify({ type: 'positive', message: t('common.success') });
+    await adminStore.listFeedTypes();
+  } else {
+    $q.notify({ type: 'negative', message: adminStore.error || t('common.error') });
+  }
+}
+
+async function doDeleteType(ft: { id: string; type_name: string }) {
+  $q.dialog({
+    title: t('common.confirm'),
+    message: `Delete type "${ft.type_name}"? This will also remove associated categories.`,
+    cancel: true,
+    persistent: true,
+  }).onOk(async () => {
+    const ok = await adminStore.deleteFeedType(ft.id);
+    if (ok) {
+      $q.notify({ type: 'positive', message: 'Feed type deleted' });
+      await loadTypesAndCategories();
+    } else {
+      $q.notify({ type: 'negative', message: adminStore.error || t('common.error') });
+    }
+  });
+}
+
+// ---- Category Management ----
+async function doAddCategory() {
+  if (!newCatName.value.trim() || !newCatTypeId.value) return;
+  addingCategory.value = true;
+  const ok = await adminStore.addFeedCategory(newCatName.value.trim(), newCatTypeId.value);
+  addingCategory.value = false;
+  if (ok) {
+    newCatName.value = '';
+    $q.notify({ type: 'positive', message: t('common.success') });
+    await adminStore.listFeedCategories();
+  } else {
+    $q.notify({ type: 'negative', message: adminStore.error || t('common.error') });
+  }
+}
+
+async function doDeleteCategory(fc: { id: string; category_name: string }) {
+  $q.dialog({
+    title: t('common.confirm'),
+    message: `Delete category "${fc.category_name}"?`,
+    cancel: true,
+    persistent: true,
+  }).onOk(async () => {
+    const ok = await adminStore.deleteFeedCategory(fc.id);
+    if (ok) {
+      $q.notify({ type: 'positive', message: 'Feed category deleted' });
+      await adminStore.listFeedCategories();
+    } else {
+      $q.notify({ type: 'negative', message: adminStore.error || t('common.error') });
+    }
+  });
 }
 </script>

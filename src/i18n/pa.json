@@ -79,7 +79,9 @@
     "addCow": "ਗਾਂ ਸ਼ਾਮਲ ਕਰੋ",
     "logMilk": "ਦੁੱਧ ਦਰਜ ਕਰੋ",
     "getDiet": "ਖੁਰਾਕ ਲਵੋ",
-    "admin": "ਐਡਮਿਨ"
+    "admin": "ਐਡਮਿਨ",
+    "feedReports": "ਚਾਰੇ ਦੀਆਂ ਰਿਪੋਰਟਾਂ",
+    "termsConditions": "ਨਿਯਮ ਅਤੇ ਸ਼ਰਤਾਂ"
   },
   "roles": {
     "farmer": "ਕਿਸਾਨ",
@@ -236,7 +238,9 @@
     "newPhone": "ਨਵਾਂ ਫ਼ੋਨ ਨੰਬਰ",
     "currentValue": "ਮੌਜੂਦਾ: {value}",
     "sendCode": "ਪੁਸ਼ਟੀਕਰਨ ਕੋਡ ਭੇਜੋ",
-    "changeSuccess": "ਤੁਹਾਡਾ {type} ਸਫ਼ਲਤਾਪੂਰਵਕ ਅੱਪਡੇਟ ਹੋ ਗਿਆ ਹੈ।"
+    "changeSuccess": "ਤੁਹਾਡਾ {type} ਸਫ਼ਲਤਾਪੂਰਵਕ ਅੱਪਡੇਟ ਹੋ ਗਿਆ ਹੈ।",
+    "dangerZone": "ਖ਼ਤਰਨਾਕ ਖੇਤਰ",
+    "profileUpdateFailed": "ਪ੍ਰੋਫਾਈਲ ਸੇਵ ਕਰਨ ਵਿੱਚ ਅਸਫ਼ਲ"
   },
   "cow": {
     "myCows": "ਮੇਰੀਆਂ ਗਾਵਾਂ",
@@ -678,7 +682,8 @@
       "stover": "ਸੁੱਕਾ ਤਣਾ",
       "straw": "ਤੂੜੀ",
       "succulent": "ਰਸੀਲਾ",
-      "treeLeaves": "ਰੁੱਖਾਂ ਦੇ ਪੱਤੇ"
+      "treeLeaves": "ਰੁੱਖਾਂ ਦੇ ਪੱਤੇ",
+      "byProductForage": "ਬਾਈ-ਪ੍ਰੋਡਕਟ ਚਾਰਾ"
     },
     "labels": {
       "dmPercent": "ਖੁਸ਼ਕ ਪਦਾਰਥ (DM)",
@@ -706,7 +711,15 @@
       "pricing": "ਕੀਮਤ",
       "season": "ਮੌਸਮ",
       "type": "ਕਿਸਮ",
-      "typeRequired": "ਕਿਸਮ *"
+      "typeRequired": "ਕਿਸਮ *",
+      "adfPercent": "ਐਸਿਡ ਡਿਟਰਜੈਂਟ ਫਾਈਬਰ (ADF)",
+      "adfPercentShort": "ADF",
+      "ashPercent": "ਰਾਖ",
+      "eePercent": "ਈਥਰ ਐਕਸਟਰੈਕਟ (EE)",
+      "stPercent": "ਸਟਾਰਚ",
+      "lgPercent": "ਲਿਗਨਿਨ",
+      "ndinPercent": "NDIN",
+      "adinPercent": "ADIN"
     },
     "seasons": {
       "allYear": "ਸਾਰਾ ਸਾਲ",
@@ -1869,7 +1882,14 @@
       "subtitle": "ਫੀਡ ਸ਼ਾਮਲ ਕਰੋ, ਸੰਪਾਦਿਤ ਕਰੋ ਅਤੇ ਪ੍ਰਬੰਧਿਤ ਕਰੋ",
       "bulkUpload": "ਥੋਕ ਅੱਪਲੋਡ",
       "export": "ਐਕਸਪੋਰਟ",
-      "noFeeds": "ਕੋਈ ਫੀਡ ਨਹੀਂ ਮਿਲੀ"
+      "noFeeds": "ਕੋਈ ਫੀਡ ਨਹੀਂ ਮਿਲੀ",
+      "manageTypes": "ਕਿਸਮਾਂ ਦਾ ਪ੍ਰਬੰਧਨ ਕਰੋ",
+      "feedTypes": "ਚਾਰੇ ਦੀਆਂ ਕਿਸਮਾਂ",
+      "feedCategories": "ਚਾਰੇ ਦੀਆਂ ਸ਼੍ਰੇਣੀਆਂ",
+      "type": "ਕਿਸਮ",
+      "category": "ਸ਼੍ਰੇਣੀ",
+      "newTypeName": "ਨਵੀਂ ਕਿਸਮ ਦਾ ਨਾਮ",
+      "newCategoryName": "ਨਵੀਂ ਸ਼੍ਰੇਣੀ ਦਾ ਨਾਮ"
     },
     "feedback": {
       "title": "ਫੀਡਬੈਕ",
@@ -1892,7 +1912,15 @@
       "evaluations": "ਮੁਲਾਂਕਣ",
       "countryBreakdown": "ਦੇਸ਼ ਅਨੁਸਾਰ ਵੰਡ",
       "superOnly": "ਸਿਰਫ ਸੁਪਰ ਐਡਮਿਨ"
-    }
+    },
+    "welcomeLabel": "ਜੀ ਆਇਆਂ ਨੂੰ",
+    "bulkUploadExport": "ਬਲਕ ਅੱਪਲੋਡ ਅਤੇ ਚਾਰਾ ਐਕਸਪੋਰਟ ਕਰੋ",
+    "adminLabel": "ਐਡਮਿਨ",
+    "confirmToggleStatus": "ਯੂਜ਼ਰ {name} ਨੂੰ {action} ਕਰੀਏ?",
+    "statusUpdated": "ਯੂਜ਼ਰ ਦਾ ਸਟੇਟਸ ਸਫਲਤਾਪੂਰਵਕ ਅੱਪਡੇਟ ਹੋ ਗਿਆ",
+    "statusUpdateFailed": "ਯੂਜ਼ਰ ਦਾ ਸਟੇਟਸ ਅੱਪਡੇਟ ਕਰਨ ਵਿੱਚ ਅਸਫ਼ਲ",
+    "enable": "ਚਾਲੂ ਕਰੋ",
+    "disable": "ਬੰਦ ਕਰੋ"
   },
   "theme": {
     "zinc": "ਜ਼ਿੰਕ",
@@ -1951,7 +1979,9 @@
       "distance": "ਚੱਲਣ ਦੀ ਦੂਰੀ (ਕਿਲੋਮੀਟਰ)",
       "grazing": "ਚਰਾਉਣ",
       "bwGain": "ਸਰੀਰ ਦੇ ਭਾਰ ਵਿੱਚ ਵਾਧਾ (ਕਿਲੋਗ੍ਰਾਮ/ਦਿਨ)",
-      "simulationName": "ਸਿਮੂਲੇਸ਼ਨ ਦਾ ਨਾਮ"
+      "simulationName": "ਸਿਮੂਲੇਸ਼ਨ ਦਾ ਨਾਮ",
+      "simulationCountry": "ਦੇਸ਼",
+      "activeGrazing": "ਚਰਾਉਣ ਲਈ ਉਪਲਬਧ"
     },
     "topographyOptions": {
       "flat": "ਸਮਤਲ",
@@ -2026,7 +2056,18 @@
       "price": "ਕੀਮਤ",
       "qty": "ਮਾਤਰਾ",
       "feedType_forage": "ਚਾਰਾ",
-      "feedType_concentrate": "ਦਾਣਾ"
+      "feedType_concentrate": "ਦਾਣਾ",
+      "noForageWarning": "ਕੋਈ ਚਾਰਾ ਫੀਡ ਨਹੀਂ ਚੁਣਿਆ ਗਿਆ। ਪਸ਼ੂਆਂ ਨੂੰ ਸਹੀ ਪਾਚਨ ਲਈ ਮੋਟੇ ਚਾਰੇ ਦੀ ਲੋੜ ਹੁੰਦੀ ਹੈ। ਘੱਟੋ-ਘੱਟ ਇੱਕ ਚਾਰਾ ਫੀਡ ਸ਼ਾਮਲ ਕਰਨ ਬਾਰੇ ਵਿਚਾਰ ਕਰੋ।",
+      "feedTypeLabel": "ਫੀਡ ਦੀ ਕਿਸਮ",
+      "feedCategoryLabel": "ਫੀਡ ਸ਼੍ਰੇਣੀ",
+      "feedNameLabel": "ਫੀਡ",
+      "addMoreFeed": "ਹੋਰ ਫੀਡ ਸ਼ਾਮਲ ਕਰੋ",
+      "addCustomFeed": "ਕਸਟਮ ਫੀਡ ਸ਼ਾਮਲ ਕਰੋ",
+      "feedDetails": "ਫੀਡ ਵੇਰਵੇ",
+      "feedName": "ਫੀਡ ਦਾ ਨਾਮ",
+      "nutritionalInfo": "ਪੌਸ਼ਟਿਕ ਜਾਣਕਾਰੀ",
+      "costLabel": "ਲਾਗਤ",
+      "customFeedCreated": "ਕਸਟਮ ਫੀਡ ਸਫਲਤਾਪੂਰਵਕ ਬਣਾਈ ਗਈ"
     },
     "constraints": {
       "title": "ਖੁਰਾਕ ਦੀਆਂ ਖਾਸ ਸੀਮਾਵਾਂ",
@@ -2084,7 +2125,11 @@
       "infeasible": "ਕੋਈ ਸੰਭਵ ਖੁਰਾਕ ਨਹੀਂ ਮਿਲੀ",
       "infeasibleDetail": "ਚੁਣੀਆਂ ਗਈਆਂ ਖੁਰਾਕਾਂ ਇਸ ਜਾਨਵਰ ਦੀਆਂ ਪੌਸ਼ਟਿਕ ਲੋੜਾਂ ਨੂੰ ਪੂਰਾ ਨਹੀਂ ਕਰ ਸਕਦੀਆਂ। ਔਪਟੀਮਾਈਜ਼ਰ ਇੱਕ ਸੰਤੁਲਿਤ ਖੁਰਾਕ ਨਹੀਂ ਲੱਭ ਸਕਿਆ।",
       "infeasibleHint": "ਵਧੇਰੇ ਕਿਸਮ ਦੀਆਂ ਖੁਰਾਕਾਂ ਸ਼ਾਮਲ ਕਰਨ ਦੀ ਕੋਸ਼ਿਸ਼ ਕਰੋ — ਚਾਰੇ, ਪ੍ਰੋਟੀਨ-ਭਰਪੂਰ ਗਾੜ੍ਹੇ ਪਦਾਰਥ (ਜਿਵੇਂ ਤੇਲ ਬੀਜਾਂ ਦੀਆਂ ਖਲੀਆਂ), ਅਤੇ ਇੱਕ ਖਣਿਜ ਪੂਰਕ ਸ਼ਾਮਲ ਕਰੋ।",
-      "tryAgain": "ਖੁਰਾਕ ਬਦਲੋ"
+      "tryAgain": "ਖੁਰਾਕ ਬਦਲੋ",
+      "reportSavedDesc": "ਤੁਹਾਡੀ ਰਿਪੋਰਟ ਸੁਰੱਖਿਅਤ ਕਰ ਲਈ ਗਈ ਹੈ। ਤੁਸੀਂ ਇਸਨੂੰ ਨੈਵੀਗੇਸ਼ਨ ਪੈਨਲ ਵਿੱਚ ਫੀਡ ਰਿਪੋਰਟਾਂ ਦੇ ਅਧੀਨ ਲੱਭ ਸਕਦੇ ਹੋ। ਕੀ ਤੁਸੀਂ ਇਸਨੂੰ ਸਾਂਝਾ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ?",
+      "sharePrompt": "ਇਸ ਰਿਪੋਰਟ ਨੂੰ ਸਾਂਝਾ ਕਰੋ?",
+      "yesShare": "ਹਾਂ, ਸਾਂਝਾ ਕਰੋ",
+      "noDone": "ਨਹੀਂ, ਹੋ ਗਿਆ"
     },
     "methane": {
       "title": "ਵਾਤਾਵਰਣ 'ਤੇ ਪ੍ਰਭਾਵ",
@@ -2165,7 +2210,8 @@
       "calvingInterval": "300 – 600",
       "temperature": "-20 – 50",
       "distance": "0 – 50",
-      "bwGain": "-1 – 2"
+      "bwGain": "-1 – 2",
+      "simulationCountry": "ਫੀਡ ਅਤੇ ਨਸਲ ਦੀ ਚੋਣ ਲਈ ਦੇਸ਼"
     },
     "nutrientLabels": {
       "ne_l": "ਊਰਜਾ",
@@ -2182,6 +2228,12 @@
       "calcium_kg": "ਕੈਲਸ਼ੀਅਮ (ਕਿਲੋ)",
       "phosphorus_kg": "ਫਾਸਫੋਰਸ (ਕਿਲੋ)",
       "ndf_kg": "ਫਾਈਬਰ (ਕਿਲੋ)"
+    },
+    "resetConfirmMessage": "ਕੀ ਤੁਸੀਂ ਨਿਸ਼ਚਤ ਹੋ ਕਿ ਤੁਸੀਂ ਫਾਰਮ ਰੀਸੈਟ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ? ਦਰਜ ਕੀਤਾ ਸਾਰਾ ਡਾਟਾ ਸਾਫ਼ ਕਰ ਦਿੱਤਾ ਜਾਵੇਗਾ।",
+    "report": {
+      "share": "ਸਾਂਝਾ ਕਰੋ",
+      "print": "ਪ੍ਰਿੰਟ / PDF",
+      "copiedToClipboard": "ਰਿਪੋਰਟ ਕਲਿੱਪਬੋਰਡ 'ਤੇ ਕਾਪੀ ਕੀਤੀ ਗਈ"
     }
   }
 }

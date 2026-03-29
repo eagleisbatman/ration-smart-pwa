@@ -79,7 +79,9 @@
     "addCow": "ఆవును జోడించండి",
     "logMilk": "పాలను నమోదు చేయండి",
     "getDiet": "ఆహారం పొందండి",
-    "admin": "అడ్మిన్"
+    "admin": "అడ్మిన్",
+    "feedReports": "ఫీడ్ నివేదికలు",
+    "termsConditions": "నిబంధనలు & షరతులు"
   },
   "roles": {
     "farmer": "రైతు",
@@ -236,7 +238,9 @@
     "newPhone": "కొత్త ఫోన్ నంబర్",
     "currentValue": "ప్రస్తుతం: {value}",
     "sendCode": "ధృవీకరణ కోడ్‌ను పంపండి",
-    "changeSuccess": "మీ {type} విజయవంతంగా నవీకరించబడింది."
+    "changeSuccess": "మీ {type} విజయవంతంగా నవీకరించబడింది.",
+    "dangerZone": "ప్రమాదకర ప్రాంతం",
+    "profileUpdateFailed": "ప్రొఫైల్‌ను సేవ్ చేయడంలో విఫలమైంది"
   },
   "cow": {
     "myCows": "నా ఆవులు",
@@ -678,7 +682,8 @@
       "stover": "పంట అవశేషాలు",
       "straw": "గడ్డి",
       "succulent": "రసవంతమైనది",
-      "treeLeaves": "చెట్ల ఆకులు"
+      "treeLeaves": "చెట్ల ఆకులు",
+      "byProductForage": "ఉప-ఉత్పత్తి పశుగ్రాసం"
     },
     "labels": {
       "dmPercent": "పొడి పదార్థం (DM)",
@@ -706,7 +711,15 @@
       "pricing": "ధర",
       "season": "సీజన్",
       "type": "రకం",
-      "typeRequired": "రకం *"
+      "typeRequired": "రకం *",
+      "adfPercent": "యాసిడ్ డిటర్జెంట్ ఫైబర్ (ADF)",
+      "adfPercentShort": "ADF",
+      "ashPercent": "యాష్",
+      "eePercent": "ఈథర్ ఎక్స్‌ట్రాక్ట్ (EE)",
+      "stPercent": "స్టార్చ్",
+      "lgPercent": "లిగ్నిన్",
+      "ndinPercent": "NDIN",
+      "adinPercent": "ADIN"
     },
     "seasons": {
       "allYear": "సంవత్సరం పొడవునా",
@@ -1869,7 +1882,14 @@
       "subtitle": "మేతను జోడించండి, సవరించండి & నిర్వహించండి",
       "bulkUpload": "బల్క్ అప్‌లోడ్",
       "export": "ఎగుమతి",
-      "noFeeds": "మేత దొరకలేదు"
+      "noFeeds": "మేత దొరకలేదు",
+      "manageTypes": "రకాలను నిర్వహించండి",
+      "feedTypes": "ఫీడ్ రకాలు",
+      "feedCategories": "ఫీడ్ కేటగిరీలు",
+      "type": "రకం",
+      "category": "కేటగిరీ",
+      "newTypeName": "కొత్త రకం పేరు",
+      "newCategoryName": "కొత్త కేటగిరీ పేరు"
     },
     "feedback": {
       "title": "అభిప్రాయం",
@@ -1892,7 +1912,15 @@
       "evaluations": "మూల్యాంకనాలు",
       "countryBreakdown": "దేశాల వారీగా వివరాలు",
       "superOnly": "సూపర్ అడ్మిన్ మాత్రమే"
-    }
+    },
+    "welcomeLabel": "స్వాగతం",
+    "bulkUploadExport": "ఫీడ్‌లను బల్క్ అప్‌లోడ్ & ఎగుమతి చేయండి",
+    "adminLabel": "అడ్మిన్",
+    "confirmToggleStatus": "యూజర్ {name}ను {action} చేయాలా?",
+    "statusUpdated": "యూజర్ స్టేటస్ విజయవంతంగా అప్‌డేట్ చేయబడింది",
+    "statusUpdateFailed": "యూజర్ స్టేటస్‌ను అప్‌డేట్ చేయడంలో విఫలమైంది",
+    "enable": "ఎనేబుల్ చేయండి",
+    "disable": "డిసేబుల్ చేయండి"
   },
   "theme": {
     "zinc": "జింక్",
@@ -1951,7 +1979,9 @@
       "distance": "నడిచే దూరం (కి.మీ)",
       "grazing": "మేత మేయడం",
       "bwGain": "శరీర బరువు పెరుగుదల (కిలోలు/రోజు)",
-      "simulationName": "సిమ్యులేషన్ పేరు"
+      "simulationName": "సిమ్యులేషన్ పేరు",
+      "simulationCountry": "దేశం",
+      "activeGrazing": "చురుకైన పచ్చిక బయళ్ళు"
     },
     "topographyOptions": {
       "flat": "సమతలం",
@@ -2026,7 +2056,18 @@
       "price": "ధర",
       "qty": "పరిమాణం",
       "feedType_forage": "పశుగ్రాసం",
-      "feedType_concentrate": "కాన్‌సెంట్రేట్"
+      "feedType_concentrate": "కాన్‌సెంట్రేట్",
+      "noForageWarning": "ఎటువంటి పశుగ్రాసం ఫీడ్‌లు ఎంపిక చేయబడలేదు. సరైన జీర్ణక్రియ కోసం పశువులకు పచ్చిమేత అవసరం. కనీసం ఒక పశుగ్రాసం ఫీడ్‌ను జోడించడాన్ని పరిగణించండి.",
+      "feedTypeLabel": "ఫీడ్ రకం",
+      "feedCategoryLabel": "ఫీడ్ కేటగిరీ",
+      "feedNameLabel": "మేత",
+      "addMoreFeed": "మరింత మేతను జోడించండి",
+      "addCustomFeed": "కస్టమ్ మేతను జోడించండి",
+      "feedDetails": "మేత వివరాలు",
+      "feedName": "మేత పేరు",
+      "nutritionalInfo": "పోషకాహార సమాచారం",
+      "costLabel": "ఖర్చు",
+      "customFeedCreated": "కస్టమ్ మేత విజయవంతంగా సృష్టించబడింది"
     },
     "constraints": {
       "title": "ప్రత్యేక ఆహార పరిమితులు",
@@ -2084,7 +2125,11 @@
       "infeasible": "సాధ్యమయ్యే ఆహారం కనుగొనబడలేదు",
       "infeasibleDetail": "ఎంచుకున్న దాణా ఈ జంతువుకు అవసరమైన పోషకాలను అందించలేదు. ఆప్టిమైజర్ సమతుల్య ఆహారాన్ని కనుగొనలేకపోయింది.",
       "infeasibleHint": "ఎక్కువ రకాల దాణాను కలపడానికి ప్రయత్నించండి — పశుగ్రాసం, ప్రోటీన్-ఎక్కువ గాఢ ఆహారాలు (ఉదా. నూనెగింజల పిండి), మరియు ఖనిజాల అనుబంధం చేర్చండి.",
-      "tryAgain": "దాణాను మార్చండి"
+      "tryAgain": "దాణాను మార్చండి",
+      "reportSavedDesc": "మీ నివేదిక సేవ్ చేయబడింది. మీరు దీన్ని నావిగేషన్ ప్యానెల్‌లోని ఫీడ్ రిపోర్ట్‌ల కింద కనుగొనవచ్చు. మీరు దీన్ని షేర్ చేయాలనుకుంటున్నారా?",
+      "sharePrompt": "ఈ నివేదికను షేర్ చేయాలా?",
+      "yesShare": "అవును, షేర్ చేయండి",
+      "noDone": "వద్దు, పూర్తయింది"
     },
     "methane": {
       "title": "పర్యావరణ ప్రభావం",
@@ -2133,11 +2178,11 @@
     "loadFromHistory": "చరిత్ర నుండి లోడ్ చేయండి",
     "units": {
       "days": "రోజులు",
-      "kg": "kg",
-      "litersPerDay": "L/day",
-      "kgPerDay": "kg/day",
+      "kg": "కిలోలు",
+      "litersPerDay": "లీ/రోజు",
+      "kgPerDay": "కిలోలు/రోజు",
       "degreeC": "°C",
-      "km": "km",
+      "km": "కి.మీ",
       "percent": "%"
     },
     "topographyHint": "సమతలం / కొండలు / పర్వతాలు",
@@ -2165,7 +2210,8 @@
       "calvingInterval": "300 – 600",
       "temperature": "-20 – 50",
       "distance": "0 – 50",
-      "bwGain": "-1 – 2"
+      "bwGain": "-1 – 2",
+      "simulationCountry": "ఫీడ్ మరియు జాతి ఎంపిక కోసం దేశం"
     },
     "nutrientLabels": {
       "ne_l": "శక్తి",
@@ -2182,6 +2228,12 @@
       "calcium_kg": "కాల్షియం (కిలో)",
       "phosphorus_kg": "ఫాస్పరస్ (కిలో)",
       "ndf_kg": "ఫైబర్ (కిలో)"
+    },
+    "resetConfirmMessage": "మీరు ఫారమ్‌ను రీసెట్ చేయాలనుకుంటున్నారా? నమోదు చేసిన మొత్తం డేటా క్లియర్ చేయబడుతుంది.",
+    "report": {
+      "share": "షేర్ చేయండి",
+      "print": "ప్రింట్ / PDF",
+      "copiedToClipboard": "నివేదిక క్లిప్‌బోర్డ్‌కు కాపీ చేయబడింది"
     }
   }
 }

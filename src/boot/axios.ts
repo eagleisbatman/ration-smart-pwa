@@ -1,5 +1,5 @@
 import { boot } from 'quasar/wrappers';
-import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
+import axios, { AxiosError } from 'axios';
 import axiosRetry from 'axios-retry';
 import { Notify } from 'quasar';
 import { setApiRef } from 'src/services/api-adapter';
@@ -25,30 +25,10 @@ axiosRetry(api, {
   },
 });
 
-// Request interceptor — attach Bearer token if available
-api.interceptors.request.use(
-  (config: InternalAxiosRequestConfig) => {
-    const authToken =
-      localStorage.getItem('auth_token') || sessionStorage.getItem('auth_token');
-    if (authToken && config.headers) {
-      config.headers.Authorization = `Bearer ${authToken}`;
-    }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
-
-// Response interceptor — handle auth expiry and network errors
+// Response interceptor — handle network errors
 api.interceptors.response.use(
   (response) => response,
   async (error: AxiosError) => {
-    if (error.response?.status === 401) {
-      // Token expired or invalid — clear stored token
-      localStorage.removeItem('auth_token');
-      sessionStorage.removeItem('auth_token');
-    }
     if (!error.response && error.code === 'ERR_NETWORK') {
       console.warn('Network error - app may be offline');
     }
