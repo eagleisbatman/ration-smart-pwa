@@ -463,15 +463,7 @@
       "failed": "અમે આ ફીડ્સ સાથે સંતુલિત આહાર બનાવી શક્યા નથી. અલગ મિશ્રણ પસંદ કરવાનો પ્રયાસ કરો — અનાજ, લીલો ચારો અને પ્રોટીન સ્ત્રોતોનો સમાવેશ કરો.",
       "waiting": "ઓપ્ટિમાઇઝેશન શરૂ થવાની રાહ જોઈ રહ્યું છે..."
     },
-    "statusLabel": {
-      "completed": "પૂર્ણ થયું",
-      "processing": "ચાલુ છે",
-      "failed": "નિષ્ફળ",
-      "pending": "બાકી",
-      "saved": "સાચવેલ",
-      "following": "અનુસરી રહ્યું છે",
-      "archived": "આર્કાઇવ કરેલ"
-    },
+    "statusLabel": "સ્થિતિ",
     "tdnLabel": "TDN",
     "dailyCost": "દૈનિક ખર્ચ",
     "dmKg": "શુષ્ક પદાર્થનો વપરાશ (કિલો)",
@@ -602,7 +594,9 @@
     "ofNeeded": "જરૂરીમાંથી",
     "needsMore": "{amount} {unit} વધુ જોઈએ છે",
     "overNeeded": "{ratio}x જરૂરી કરતાં વધુ",
-    "nutrientExcessWarning": "{nutrient} જરૂરિયાત કરતાં {ratio}x વધારે છે. આ મિનરલ સપ્લિમેન્ટ્સને કારણે હોઈ શકે છે."
+    "nutrientExcessWarning": "{nutrient} જરૂરિયાત કરતાં {ratio}x વધારે છે. આ મિનરલ સપ્લિમેન્ટ્સને કારણે હોઈ શકે છે.",
+    "nutrient": "પોષક તત્ત્વ",
+    "balance": "સંતુલન"
   },
   "feed": {
     "feeds": "ખોરાક",
@@ -1889,7 +1883,8 @@
       "type": "પ્રકાર",
       "category": "શ્રેણી",
       "newTypeName": "નવા પ્રકારનું નામ",
-      "newCategoryName": "નવી શ્રેણીનું નામ"
+      "newCategoryName": "નવી શ્રેણીનું નામ",
+      "exportCustom": "કસ્ટમ નિકાસ કરો"
     },
     "feedback": {
       "title": "પ્રતિભાવ",
@@ -2067,7 +2062,10 @@
       "feedName": "ફીડનું નામ",
       "nutritionalInfo": "પોષક માહિતી",
       "costLabel": "ખર્ચ",
-      "customFeedCreated": "કસ્ટમ ફીડ સફળતાપૂર્વક બનાવવામાં આવ્યું"
+      "customFeedCreated": "કસ્ટમ ફીડ સફળતાપૂર્વક બનાવવામાં આવ્યું",
+      "noForageTitle": "કોઈ ચારાનો ખોરાક પસંદ કરેલ નથી",
+      "noForageConfirm": "યોગ્ય પાચન માટે પશુઓને રફ્ફાગે/ચારો જરૂરી છે. શું તમે કોઈપણ ચારા વગર આગળ વધવા માંગો છો?",
+      "proceedAnyway": "તો પણ આગળ વધો"
     },
     "constraints": {
       "title": "આહારની કસ્ટમ મર્યાદા",

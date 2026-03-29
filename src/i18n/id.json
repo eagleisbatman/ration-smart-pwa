@@ -463,15 +463,7 @@
       "failed": "Kami tidak dapat membuat rencana pakan seimbang dengan pakan ini. Coba pilih campuran yang berbeda — sertakan biji-bijian, hijauan, dan sumber protein.",
       "waiting": "Menunggu untuk memulai optimasi..."
     },
-    "statusLabel": {
-      "completed": "Selesai",
-      "processing": "Sedang Diproses",
-      "failed": "Gagal",
-      "pending": "Tertunda",
-      "saved": "Tersimpan",
-      "following": "Mengikuti",
-      "archived": "Diarsipkan"
-    },
+    "statusLabel": "Status",
     "tdnLabel": "TDN",
     "dailyCost": "Biaya Harian",
     "dmKg": "Asupan Bahan Kering (kg)",
@@ -602,7 +594,9 @@
     "ofNeeded": "dari yang dibutuhkan",
     "needsMore": "butuh {amount} {unit} lagi",
     "overNeeded": "{ratio}x lebih dari yang dibutuhkan",
-    "nutrientExcessWarning": "{nutrient} {ratio}x di atas kebutuhan. Ini mungkin disebabkan oleh suplemen mineral."
+    "nutrientExcessWarning": "{nutrient} {ratio}x di atas kebutuhan. Ini mungkin disebabkan oleh suplemen mineral.",
+    "nutrient": "Nutrisi",
+    "balance": "Keseimbangan"
   },
   "feed": {
     "feeds": "Pakan",
@@ -1888,7 +1882,8 @@
       "type": "Tipe",
       "category": "Kategori",
       "newTypeName": "Nama jenis baru",
-      "newCategoryName": "Nama kategori baru"
+      "newCategoryName": "Nama kategori baru",
+      "exportCustom": "Ekspor Kustom"
     },
     "feedback": {
       "title": "Umpan Balik",
@@ -2066,7 +2061,10 @@
       "feedName": "Nama Pakan",
       "nutritionalInfo": "Informasi Nutrisi",
       "costLabel": "Biaya",
-      "customFeedCreated": "Pakan kustom berhasil dibuat"
+      "customFeedCreated": "Pakan kustom berhasil dibuat",
+      "noForageTitle": "Tidak Ada Pakan Hijauan yang Dipilih",
+      "noForageConfirm": "Ternak membutuhkan pakan serat/hijauan untuk pencernaan yang baik. Anda yakin ingin melanjutkan tanpa pakan hijauan?",
+      "proceedAnyway": "Lanjutkan Saja"
     },
     "constraints": {
       "title": "Batasan Diet Khusus",

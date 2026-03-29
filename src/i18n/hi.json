@@ -463,15 +463,7 @@
       "failed": "हम इन चारे के साथ एक संतुलित आहार नहीं बना सके। एक अलग मिश्रण चुनने का प्रयास करें — अनाज, हरा चारा और प्रोटीन स्रोत शामिल करें।",
       "waiting": "अनुकूलन शुरू होने की प्रतीक्षा कर रहा है..."
     },
-    "statusLabel": {
-      "completed": "पूरा हुआ",
-      "processing": "प्रसंस्करण",
-      "failed": "असफल",
-      "pending": "लंबित",
-      "saved": "सहेजा गया",
-      "following": "अनुसरण कर रहा है",
-      "archived": "पुराना"
-    },
+    "statusLabel": "स्थिति:",
     "tdnLabel": "टीडीएन",
     "dailyCost": "दैनिक लागत",
     "dmKg": "शुष्क पदार्थ सेवन (किग्रा)",
@@ -602,7 +594,9 @@
     "ofNeeded": "आवश्यक का",
     "needsMore": "और {amount} {unit} चाहिए",
     "overNeeded": "आवश्यकता से {ratio}x अधिक",
-    "nutrientExcessWarning": "{nutrient} आवश्यकता से {ratio}x ऊपर है। यह मिनरल सप्लीमेंट्स के कारण हो सकता है।"
+    "nutrientExcessWarning": "{nutrient} आवश्यकता से {ratio}x ऊपर है। यह मिनरल सप्लीमेंट्स के कारण हो सकता है।",
+    "nutrient": "पोषक तत्व:",
+    "balance": "संतुलन:"
   },
   "feed": {
     "feeds": "चारा",
@@ -713,13 +707,13 @@
       "type": "प्रकार",
       "typeRequired": "प्रकार *",
       "adfPercent": "एसिड डिटर्जेंट फाइबर (ADF)",
-      "adfPercentShort": "ADF",
+      "adfPercentShort": "एडीएफ",
       "ashPercent": "राख",
       "eePercent": "ईथर एक्सट्रेक्ट (EE)",
       "stPercent": "स्टार्च",
       "lgPercent": "लिग्निन",
-      "ndinPercent": "NDIN",
-      "adinPercent": "ADIN"
+      "ndinPercent": "एनडीआईएन",
+      "adinPercent": "एडीआईएन"
     },
     "seasons": {
       "allYear": "पूरे साल",
@@ -1889,7 +1883,8 @@
       "type": "प्रकार",
       "category": "श्रेणी",
       "newTypeName": "नए प्रकार का नाम",
-      "newCategoryName": "नई श्रेणी का नाम"
+      "newCategoryName": "नई श्रेणी का नाम",
+      "exportCustom": "कस्टम निर्यात करें"
     },
     "feedback": {
       "title": "प्रतिक्रिया",
@@ -2067,7 +2062,10 @@
       "feedName": "चारे का नाम",
       "nutritionalInfo": "पोषक जानकारी",
       "costLabel": "लागत",
-      "customFeedCreated": "कस्टम चारा सफलतापूर्वक बनाया गया"
+      "customFeedCreated": "कस्टम चारा सफलतापूर्वक बनाया गया",
+      "noForageTitle": "कोई चारा फ़ीड नहीं चुना गया",
+      "noForageConfirm": "पशुओं को उचित पाचन के लिए मोटा चारा/फॉरएज की आवश्यकता होती है। क्या आप बिना किसी चारे के आगे बढ़ना चाहते हैं?",
+      "proceedAnyway": "फिर भी आगे बढ़ें"
     },
     "constraints": {
       "title": "आहार की अपनी सीमाएँ",

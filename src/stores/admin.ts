@@ -164,12 +164,13 @@ export const useAdminStore = defineStore('admin', () => {
     }
   }
 
-  async function exportFeeds(countryId?: string): Promise<string | null> {
+  async function exportFeeds(countryId?: string, customOnly?: boolean): Promise<string | null> {
     const authStore = useAuthStore();
     error.value = null;
     try {
       const params: Record<string, string> = { admin_user_id: authStore.userId || '' };
       if (countryId) params.country_id = countryId;
+      if (customOnly) params.custom_only = 'true';
       const resp = await api.get('/admin/export-feeds', { params, responseType: 'blob' });
 
       // If response is a blob (CSV/Excel), trigger download directly
@@ -177,7 +178,7 @@ export const useAdminStore = defineStore('admin', () => {
         const url = URL.createObjectURL(resp.data);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `feeds-export-${new Date().toISOString().slice(0, 10)}.csv`;
+        a.download = `${customOnly ? 'custom-' : ''}feeds-export-${new Date().toISOString().slice(0, 10)}.csv`;
         a.click();
         URL.revokeObjectURL(url);
         return url;

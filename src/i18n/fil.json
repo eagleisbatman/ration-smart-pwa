@@ -463,15 +463,7 @@
       "failed": "Hindi kami makagawa ng balanseng rasyon gamit ang mga pakain na ito. Subukang pumili ng ibang halo — magsama ng butil, sariwang damo, at sources ng protina.",
       "waiting": "Naghihintay na magsimula ang optimization..."
     },
-    "statusLabel": {
-      "completed": "Kumpleto",
-      "processing": "Ino-optimize",
-      "failed": "Nabigo",
-      "pending": "Nakabinbin",
-      "saved": "Naka-save",
-      "following": "Sinusundan",
-      "archived": "Na-archive"
-    },
+    "statusLabel": "Status",
     "tdnLabel": "TDN",
     "dailyCost": "Pang-araw-araw na Gastos",
     "dmKg": "Damit ng Tuyong Bagay (kg)",
@@ -602,7 +594,9 @@
     "ofNeeded": "sa kailangan",
     "needsMore": "kailangan pa ng {amount} {unit}",
     "overNeeded": "{ratio}x na lampas sa kailangan",
-    "nutrientExcessWarning": "Ang {nutrient} ay {ratio}x na lampas sa kailangan. Maaaring dulot ito ng mga mineral supplement."
+    "nutrientExcessWarning": "Ang {nutrient} ay {ratio}x na lampas sa kailangan. Maaaring dulot ito ng mga mineral supplement.",
+    "nutrient": "Nutrient",
+    "balance": "Balance"
   },
   "feed": {
     "feeds": "Mga Pagkain",
@@ -714,7 +708,7 @@
       "typeRequired": "Uri *",
       "adfPercent": "Acid Detergent Fiber (ADF)",
       "adfPercentShort": "ADF",
-      "ashPercent": "Ash",
+      "ashPercent": "Abo",
       "eePercent": "Ether Extract (EE)",
       "stPercent": "Starch",
       "lgPercent": "Lignin",
@@ -1105,7 +1099,7 @@
     "profile": "Profile",
     "pushNotSupported": "Hindi suportado ang mga push notification sa browser na ito",
     "pushDenied": "Naka-block ang mga notification - i-enable sa settings ng browser",
-    "darkMode": "Dark Mode",
+    "darkMode": "Madilim na Mode",
     "darkModeDesc": "Lumipat sa pagitan ng light at dark themes",
     "logoutDesc": "Mag-sign out sa iyong account",
     "deleteAccountDesc": "Permanenteng i-deactivate ang iyong account",
@@ -1888,7 +1882,8 @@
       "type": "Uri",
       "category": "Kategorya",
       "newTypeName": "Bagong pangalan ng uri",
-      "newCategoryName": "Bagong pangalan ng kategorya"
+      "newCategoryName": "Bagong pangalan ng kategorya",
+      "exportCustom": "Export Custom"
     },
     "feedback": {
       "title": "Feedback",
@@ -1913,7 +1908,7 @@
       "superOnly": "Para lang sa super admin"
     },
     "welcomeLabel": "WELCOME",
-    "bulkUploadExport": "Bulk Upload & Export Feed",
+    "bulkUploadExport": "Bulk Upload at Export ng Pakain",
     "adminLabel": "Admin",
     "confirmToggleStatus": "{action} user {name}?",
     "statusUpdated": "Matagumpay na na-update ang status ng user",
@@ -2066,7 +2061,10 @@
       "feedName": "Pangalan ng Pagkain",
       "nutritionalInfo": "Impormasyon sa Nutrisyon",
       "costLabel": "Halaga",
-      "customFeedCreated": "Matagumpay na nagawa ang custom na pakain"
+      "customFeedCreated": "Matagumpay na nagawa ang custom na pakain",
+      "noForageTitle": "Walang Napiling Forage Feed",
+      "noForageConfirm": "Kailangan ng baka ng roughage/forage para sa tamang panunaw. Sigurado ka bang gusto mong magpatuloy nang walang forage feed?",
+      "proceedAnyway": "Ituloy Pa Rin"
     },
     "constraints": {
       "title": "Pasadyang Limitasyon ng Diyeta",

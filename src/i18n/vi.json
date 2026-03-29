@@ -463,15 +463,7 @@
       "failed": "Không thể lập khẩu phần cân bằng với các loại thức ăn này. Hãy thử chọn tổ hợp khác — bao gồm ngũ cốc, thức ăn xanh và nguồn đạm.",
       "waiting": "Đang chờ để bắt đầu tính toán..."
     },
-    "statusLabel": {
-      "completed": "Hoàn thành",
-      "processing": "Đang xử lý",
-      "failed": "Thất bại",
-      "pending": "Đang chờ",
-      "saved": "Đã lưu",
-      "following": "Đang áp dụng",
-      "archived": "Đã lưu trữ"
-    },
+    "statusLabel": "Tình trạng",
     "tdnLabel": "TDN",
     "dailyCost": "Chi phí hàng ngày",
     "dmKg": "Lượng vật chất khô (kg)",
@@ -602,7 +594,9 @@
     "ofNeeded": "trên nhu cầu",
     "needsMore": "cần thêm {amount} {unit}",
     "overNeeded": "{ratio}x vượt nhu cầu",
-    "nutrientExcessWarning": "{nutrient} cao hơn yêu cầu {ratio}x. Điều này có thể do bổ sung khoáng chất."
+    "nutrientExcessWarning": "{nutrient} cao hơn yêu cầu {ratio}x. Điều này có thể do bổ sung khoáng chất.",
+    "nutrient": "Dưỡng chất",
+    "balance": "Cân bằng"
   },
   "feed": {
     "feeds": "Thức ăn",
@@ -1889,7 +1883,8 @@
       "type": "Loại",
       "category": "Danh mục",
       "newTypeName": "Tên loại mới",
-      "newCategoryName": "Tên danh mục mới"
+      "newCategoryName": "Tên danh mục mới",
+      "exportCustom": "Xuất tùy chỉnh"
     },
     "feedback": {
       "title": "Phản hồi",
@@ -2067,7 +2062,10 @@
       "feedName": "Tên thức ăn",
       "nutritionalInfo": "Thông tin dinh dưỡng",
       "costLabel": "Chi phí",
-      "customFeedCreated": "Đã tạo thức ăn tùy chỉnh thành công"
+      "customFeedCreated": "Đã tạo thức ăn tùy chỉnh thành công",
+      "noForageTitle": "Chưa chọn thức ăn thô xanh",
+      "noForageConfirm": "Gia súc cần thức ăn thô/thức ăn xanh để tiêu hóa tốt. Bạn có chắc muốn tiếp tục mà không chọn thức ăn thô xanh nào không?",
+      "proceedAnyway": "Vẫn tiếp tục"
     },
     "constraints": {
       "title": "Giới hạn Khẩu phần Ăn Tùy chỉnh",

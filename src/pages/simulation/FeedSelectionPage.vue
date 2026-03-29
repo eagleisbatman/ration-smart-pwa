@@ -46,7 +46,7 @@
     <div v-for="(slot, idx) in feedSlots" :key="idx" class="feed-card q-mb-md">
       <div class="row items-center q-mb-sm">
         <div class="col text-subtitle2 text-weight-bold">FEED {{ idx + 1 }}</div>
-        <q-btn v-if="!slot.isEditing" flat round dense icon="edit" size="sm" color="primary" @click="slot.isEditing = true" />
+        <q-btn v-if="slot.feedId" flat round dense icon="info" size="sm" color="primary" @click="openNutrientSheet(slot)" />
         <q-btn v-if="idx > 0" flat round dense icon="delete" size="sm" color="negative" @click="removeSlot(idx)" />
       </div>
 
@@ -162,7 +162,7 @@
         icon-right="arrow_forward"
         :loading="simStore.recommending || simStore.evaluating"
         :disable="!isFormValid"
-        @click="dietMode === 'recommendation' ? runRecommendation() : runEvaluation()"
+        @click="checkForageAndRun(dietMode === 'recommendation' ? runRecommendation : runEvaluation)"
       />
     </div>
 
@@ -178,6 +178,42 @@
 
     <!-- Custom Constraints Dialog -->
     <CustomConstraintsDialog v-model="showConstraints" />
+
+    <!-- Nutrient Info Bottom Sheet -->
+    <q-dialog v-model="showNutrientSheet" position="bottom" maximized>
+      <q-card class="custom-feed-sheet">
+        <div class="sheet-handle" />
+        <q-card-section>
+          <div class="text-h6">{{ nutrientSheetFeed?.feedName || 'Feed Nutrients' }}</div>
+          <div class="text-caption text-grey-6">{{ nutrientSheetFeed?.feedType }} &middot; {{ nutrientSheetFeed?.feedCategory }}</div>
+        </q-card-section>
+        <q-card-section v-if="nutrientSheetData" class="q-pt-none">
+          <q-list dense separator>
+            <q-item v-for="item in nutrientSheetData" :key="item.key">
+              <q-item-section>
+                <q-item-label>{{ item.label }}</q-item-label>
+              </q-item-section>
+              <q-item-section side>
+                <q-item-label class="text-weight-medium">{{ item.value }}</q-item-label>
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-card-section>
+        <q-card-section v-else class="text-center text-grey-5 q-pa-lg">
+          {{ $t('common.noData', 'No nutrient data available') }}
+        </q-card-section>
+        <q-card-actions class="q-px-md q-pb-md">
+          <q-btn
+            :label="$t('common.close', 'Close')"
+            color="primary"
+            class="full-width action-btn"
+            unelevated
+            no-caps
+            v-close-popup
+          />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
 
     <!-- Custom Feed Bottom Sheet -->
     <q-dialog v-model="showCustomFeed" position="bottom" maximized>
@@ -317,6 +353,9 @@ const dietMode = ref<'recommendation' | 'evaluation'>('recommendation');
 const showConstraints = ref(false);
 const showCustomFeed = ref(false);
 const showGenerating = ref(false);
+const showNutrientSheet = ref(false);
+const nutrientSheetFeed = ref<FeedSlot | null>(null);
+const nutrientSheetData = ref<{ key: string; label: string; value: string }[] | null>(null);
 
 // Custom feed form
 const cfDetailsOpen = ref(true);
@@ -445,6 +484,33 @@ function removeSlot(idx: number) {
   feedSlots.value.splice(idx, 1);
 }
 
+function openNutrientSheet(slot: FeedSlot) {
+  if (!slot.feedId) return;
+  const feed = feedsStore.allFeeds.find((f) => f.id === slot.feedId);
+  if (!feed) return;
+  nutrientSheetFeed.value = slot;
+  const items: { key: string; label: string; value: string }[] = [];
+  const add = (key: string, label: string, val: number | undefined) => {
+    if (val != null && val > 0) items.push({ key, label, value: `${val}%` });
+  };
+  add('dm', 'Dry Matter (DM)', feed.dm_percentage);
+  add('cp', 'Crude Protein (CP)', feed.cp_percentage);
+  add('tdn', 'TDN', feed.tdn_percentage);
+  add('ndf', 'NDF', feed.ndf_percentage);
+  add('adf', 'ADF', feed.fd_adf);
+  add('ash', 'Ash', feed.fd_ash);
+  add('ee', 'Ether Extract (EE)', feed.fd_ee);
+  add('starch', 'Starch', feed.fd_st);
+  add('lignin', 'Lignin', feed.fd_lg);
+  add('ndin', 'NDIN', feed.fd_ndin);
+  add('adin', 'ADIN', feed.fd_adin);
+  add('ca', 'Calcium', feed.ca_percentage);
+  add('p', 'Phosphorus', feed.p_percentage);
+  add('npn', 'NPN', feed.fd_npn_cp);
+  nutrientSheetData.value = items.length > 0 ? items : null;
+  showNutrientSheet.value = true;
+}
+
 // Sync slots to store before submission
 function syncSlotsToStore() {
   simStore.selectedFeeds = feedSlots.value
@@ -477,12 +543,26 @@ const isFormValid = computed(() => {
   return true;
 });
 
-async function runRecommendation() {
+function checkForageAndRun(runFn: () => Promise<void>) {
   syncSlotsToStore();
   if (simStore.selectedFeeds.length === 0) {
     $q.notify({ type: 'warning', message: t('simulation.feedSelect.priceRequired') });
     return;
   }
+  if (noForageWarning.value) {
+    $q.dialog({
+      title: t('simulation.feedSelect.noForageTitle', 'No Forage Feed Selected'),
+      message: t('simulation.feedSelect.noForageConfirm', 'Cattle require roughage/forage for proper digestion. Are you sure you want to proceed without any forage feed?'),
+      cancel: { label: t('common.cancel'), flat: true },
+      ok: { label: t('simulation.feedSelect.proceedAnyway', 'Proceed Anyway'), color: 'warning', flat: true },
+      persistent: true,
+    }).onOk(() => void runFn());
+    return;
+  }
+  void runFn();
+}
+
+async function runRecommendation() {
   showGenerating.value = true;
   try {
     const ok = await simStore.generateRecommendation();
@@ -499,7 +579,6 @@ async function runRecommendation() {
 }
 
 async function runEvaluation() {
-  syncSlotsToStore();
   const missingQty = simStore.selectedFeeds.some(
     (f) => !f.quantity_as_fed || f.quantity_as_fed <= 0
   );

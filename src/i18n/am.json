@@ -463,15 +463,7 @@
       "failed": "በእነዚህ መኖዎች ሚዛናዊ አመጋገብ መፍጠር አልቻልንም። የተለየ ድብልቅ ለመምረጥ ይሞክሩ — እህሎችን፣ አረንጓዴ መኖዎችን እና የፕሮቲን ምንጮችን ያካትቱ።",
       "waiting": "ማመቻቸት ለመጀመር በመጠባበቅ ላይ..."
     },
-    "statusLabel": {
-      "completed": "ተጠናቋል",
-      "processing": "በሂደት ላይ",
-      "failed": "ከሽፏል",
-      "pending": "በመጠባበቅ ላይ",
-      "saved": "ተቀምጧል",
-      "following": "እየተከተለ ነው",
-      "archived": "ማህደር"
-    },
+    "statusLabel": "ሁኔታ",
     "tdnLabel": "ቲዲኤን",
     "dailyCost": "ዕለታዊ ወጪ",
     "dmKg": "ደረቅ ነገር ቅበላ (ኪግ)",
@@ -602,7 +594,9 @@
     "ofNeeded": "ከሚያስፈልገው",
     "needsMore": "ተጨማሪ {amount} {unit} ያስፈልገዋል",
     "overNeeded": "ከሚያስፈልገው {ratio}x በላይ",
-    "nutrientExcessWarning": "{nutrient} ከሚያስፈልገው {ratio}x ከፍ ያለ ነው። ይህም በማዕድን ተጨማሪዎች ምክንያት ሊሆን ይችላል።"
+    "nutrientExcessWarning": "{nutrient} ከሚያስፈልገው {ratio}x ከፍ ያለ ነው። ይህም በማዕድን ተጨማሪዎች ምክንያት ሊሆን ይችላል።",
+    "nutrient": "ንጥረ ነገር",
+    "balance": "ሚዛን"
   },
   "feed": {
     "feeds": "መኖዎች",
@@ -1888,7 +1882,8 @@
       "type": "ዓይነት",
       "category": "ምድብ",
       "newTypeName": "የአዲስ ዓይነት ስም",
-      "newCategoryName": "የአዲስ ምድብ ስም"
+      "newCategoryName": "የአዲስ ምድብ ስም",
+      "exportCustom": "ብጁ ወደ ውጭ ላክ"
     },
     "feedback": {
       "title": "አስተያየት",
@@ -2066,7 +2061,10 @@
       "feedName": "የመኖ ስም",
       "nutritionalInfo": "የአመጋገብ መረጃ",
       "costLabel": "ዋጋ",
-      "customFeedCreated": "የራስዎ መኖ በተሳካ ሁኔታ ተፈጠረ"
+      "customFeedCreated": "የራስዎ መኖ በተሳካ ሁኔታ ተፈጠረ",
+      "noForageTitle": "ምንም የእንስሳት መኖ አልተመረጠም",
+      "noForageConfirm": "ከብቶች ለትክክለኛ የምግብ መፈጨት ጭራሮ/ደረቅ መኖ ያስፈልጋቸዋል። ምንም የእንስሳት መኖ ሳይመርጡ ለመቀጠል እርግጠኛ ነዎት?",
+      "proceedAnyway": "እንዲሁም ይቀጥሉ"
     },
     "constraints": {
       "title": "የተበጁ የምግብ ገደቦች",
